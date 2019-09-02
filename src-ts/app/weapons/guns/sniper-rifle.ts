@@ -5,31 +5,30 @@ import { Gun, GunDecorator } from "./gun";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
-import { Game } from "../../game";
 import { WeaponModule } from "../weapon-module";
 import { TimedEvent } from "../../types/timed-event";
 import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
-import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
+import { PlayNewSoundOnUnit, staticDecorator, getYawPitchRollFromVector } from "../../../lib/translators";
 import { getCrewmemberForUnit } from "../../crewmember/crewmember-module";
 
 @staticDecorator<GunDecorator>()
-export class BurstRifle implements Gun {
+export class SniperRifle implements Gun {
     public item: item;
     public equippedTo: unit | undefined;
     
-    static abilityId: number = FourCC('A002');
-    static itemId: number = FourCC('I000');
+    static abilityId: number = FourCC('A005');
+    static itemId: number = FourCC('I001');
 
-    private DEFAULT_STRAY = 200;
-    private SHOT_DISTANCE = 800;
+    private DEFAULT_STRAY = 30;
+    private SHOT_DISTANCE = 1600;
 
     // Set when the gun is removed and a cooldown still exists
     remainingCooldown: number | undefined;
 
     public static initialise(weaponModule: WeaponModule) {
-        weaponModule.weaponItemIds.push(BurstRifle.itemId);
-        weaponModule.weaponAbilityIds.push(BurstRifle.abilityId);
+        weaponModule.weaponItemIds.push(SniperRifle.itemId);
+        weaponModule.weaponAbilityIds.push(SniperRifle.abilityId);
     }
 
     constructor(item: item, equippedTo: unit) {
@@ -39,7 +38,7 @@ export class BurstRifle implements Gun {
 
     public onAdd(weaponModule: WeaponModule, caster: Crewmember): void {
         this.equippedTo = caster.unit;
-        UnitAddAbility(caster.unit, BurstRifle.abilityId);
+        UnitAddAbility(caster.unit, SniperRifle.abilityId);
         this.updateTooltip(weaponModule, caster);
 
         if (this.remainingCooldown && this.remainingCooldown > 0) {
@@ -49,8 +48,8 @@ export class BurstRifle implements Gun {
     };
     public onRemove(weaponModule: WeaponModule): void {
         if (this.equippedTo) {
-            UnitRemoveAbility(this.equippedTo, BurstRifle.abilityId);
-            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo, BurstRifle.abilityId);
+            UnitRemoveAbility(this.equippedTo, SniperRifle.abilityId);
+            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo, SniperRifle.abilityId);
             this.equippedTo = undefined;
         }
     };
@@ -65,28 +64,21 @@ export class BurstRifle implements Gun {
                 this.SHOT_DISTANCE+accuracyModifier
             );
             if (GetLocalPlayer() === owner) {
-                BlzSetAbilityExtendedTooltip(BurstRifle.abilityId, newTooltip, 0);
+                BlzSetAbilityExtendedTooltip(SniperRifle.abilityId, newTooltip, 0);
             }
         }
     };
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         const unit = caster.unit;
-        const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", caster.unit, 50);
+        // TODO get sound
+        // const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", caster.unit, 50);
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.SHOT_DISTANCE);
 
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
 
-
-        let delay = 0;
-        for (var i = 0; i < 5; i++) {
-            weaponModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-                this.fireProjectile(weaponModule, caster, newTargetLocation);
-                return true;
-            }, delay, false));
-            delay = delay + 50;
-        }   
+        this.fireProjectile(weaponModule, caster, newTargetLocation);
     };
 
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
@@ -105,14 +97,37 @@ export class BurstRifle implements Gun {
             "war3mapImported\\Bullet.mdx",
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
-            1.6
+            2.5
         )
-            .setVelocity(2400)
+            .setCollisionRadius(40)
+            .setVelocity(3000)
             .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)
             );
 
         weaponModule.addProjectile(projectile);
+
+        // Create smoke rings every tick
+        let delay = 0;
+        while (delay < 1000) {
+            weaponModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                if (!projectile || projectile.willDestroy()) return true;
+                const position = projectile.getPosition().add(deltaTarget.normalise().multiplyN(500));
+                const sfxOrientation = getYawPitchRollFromVector(deltaTarget.normalise());
+
+                const sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", position.x, position.y);
+                BlzSetSpecialEffectHeight(sfx, position.z);
+                BlzSetSpecialEffectYaw(sfx, sfxOrientation.yaw + 90 * bj_DEGTORAD);
+                BlzSetSpecialEffectRoll(sfx, sfxOrientation.pitch + 90 * bj_DEGTORAD);
+                BlzSetSpecialEffectAlpha(sfx, 40);
+                BlzSetSpecialEffectScale(sfx, 0.7);
+                BlzSetSpecialEffectTimeScale(sfx, 1);
+                
+                DestroyEffect(sfx);
+                return true;
+            }, delay, false));
+            delay += 200;
+        }
     }
     
     private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
@@ -120,10 +135,11 @@ export class BurstRifle implements Gun {
         if (this.equippedTo) {
             const crewmember = getCrewmemberForUnit(this.equippedTo);
             if (crewmember) {
+                const damage = this.getDamage(weaponModule, crewmember);
                 UnitDamageTarget(
                     projectile.source, 
                     collidesWith, 
-                    this.getDamage(weaponModule, crewmember), 
+                    damage, 
                     false, 
                     true, 
                     ATTACK_TYPE_PIERCE, 
@@ -147,6 +163,6 @@ export class BurstRifle implements Gun {
     }
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        return 15;
+        return 120;
     }
 }

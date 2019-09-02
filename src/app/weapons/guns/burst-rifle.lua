@@ -15,6 +15,8 @@ local BURST_RIFLE_EXTENDED = __TSTL_weapon_2Dtooltips.BURST_RIFLE_EXTENDED
 local __TSTL_translators = require("lib.translators")
 local PlayNewSoundOnUnit = __TSTL_translators.PlayNewSoundOnUnit
 local staticDecorator = __TSTL_translators.staticDecorator
+local __TSTL_crewmember_2Dmodule = require("app.crewmember.crewmember-module")
+local getCrewmemberForUnit = __TSTL_crewmember_2Dmodule.getCrewmemberForUnit
 ____exports.BurstRifle = {}
 local BurstRifle = ____exports.BurstRifle
 BurstRifle.name = "BurstRifle"
@@ -49,6 +51,7 @@ function BurstRifle.prototype.onRemove(self, weaponModule)
     if self.equippedTo then
         UnitRemoveAbility(self.equippedTo, ____exports.BurstRifle.abilityId)
         self.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(self.equippedTo, ____exports.BurstRifle.abilityId)
+        self.equippedTo = nil
     end
 end
 function BurstRifle.prototype.updateTooltip(self, weaponModule, caster)
@@ -120,12 +123,28 @@ function BurstRifle.prototype.fireProjectile(self, weaponModule, caster, targetL
         Vector3.new(0, 0, 0),
         deltaTarget:normalise(),
         1.6
-    ):setVelocity(2400):onCollide(self.onProjectileCollide)
+    ):setVelocity(2400):onCollide(
+        function(____self, weaponModule, projectile, collidesWith) return self:onProjectileCollide(weaponModule, projectile, collidesWith) end
+    )
     weaponModule:addProjectile(projectile)
 end
-function BurstRifle.prototype.onProjectileCollide(self, projectile, collidesWith)
+function BurstRifle.prototype.onProjectileCollide(self, weaponModule, projectile, collidesWith)
     projectile:setDestroy(true)
-    UnitDamageTarget(projectile.source, collidesWith, 20, false, true, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WOOD_MEDIUM_STAB)
+    if self.equippedTo then
+        local crewmember = getCrewmemberForUnit(self.equippedTo)
+        if crewmember then
+            UnitDamageTarget(
+                projectile.source,
+                collidesWith,
+                self:getDamage(weaponModule, crewmember),
+                false,
+                true,
+                ATTACK_TYPE_PIERCE,
+                DAMAGE_TYPE_NORMAL,
+                WEAPON_TYPE_WOOD_MEDIUM_STAB
+            )
+        end
+    end
 end
 function BurstRifle.prototype.getStrayLocation(self, originalLocation, caster)
     local accuracy = caster.accuracy

@@ -214,3 +214,57 @@ STRING 43
 Run 40% faster for 7 seconds
 }
 
+STRING 44
+// Items: I001 (Sniper Rifle), Name (Name)
+{
+Sniper Rifle
+}
+
+STRING 45
+// Items: I001 (Sniper Rifle), Tip (Tooltip - Basic)
+{
+Sniper Rifle
+}
+
+STRING 46
+// Abilities: A004 (Equip Weapon), Name (Name)
+{
+Equip Weapon
+}
+
+STRING 47
+// Abilities: A004 (Equip Weapon), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 48
+// Abilities: A004 (Equip Weapon), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 49
+// Abilities: A004 (Equip Weapon), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - SI Battle Rifle
+}
+
+STRING 50
+// Abilities: A005 (Attack - Sniper Rifle), Name (Name)
+{
+Attack - Sniper Rifle
+}
+
+STRING 51
+// Abilities: A005 (Attack - Sniper Rifle), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 52
+// Abilities: A005 (Attack - Sniper Rifle), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Particle Accelerator
+}
+

@@ -1,7 +1,17 @@
+import { Vector3 } from "../app/types/vector3";
+
 export class console {
     public static log(input: string): void {
         SendMessage(input);
     }
+}
+
+export function getYawPitchRollFromVector(vector: Vector3): {yaw: number, pitch: number, roll: number} {
+    return {
+        yaw: Atan2(vector.y, vector.x),
+        pitch: Asin(vector.z),
+        roll: 0 // TODO
+    };
 }
 
 export function staticDecorator<T>() {

@@ -51,6 +51,10 @@ end
 function Projectile.prototype.getCollisionRadius(self)
     return self.collisionRadius
 end
+function Projectile.prototype.setCollisionRadius(self, radius)
+    self.collisionRadius = radius
+    return self
+end
 function Projectile.prototype.willDestroy(self)
     return self.doDestroy
 end
@@ -70,10 +74,13 @@ function Projectile.prototype.onDeath(self, callback)
     self.onDeathCallback = callback
     return self
 end
-function Projectile.prototype.collide(self, withUnit)
+function Projectile.prototype.collide(self, weaponModule, withUnit)
     if self.onCollideCallback then
-        self:onCollideCallback(self, withUnit)
+        self:onCollideCallback(weaponModule, self, withUnit)
     end
+end
+function Projectile.prototype.getTarget(self)
+    return self.target
 end
 function Projectile.prototype.update(self, weaponModule, deltaTime)
     local targetVector = self.target:getTargetVector()

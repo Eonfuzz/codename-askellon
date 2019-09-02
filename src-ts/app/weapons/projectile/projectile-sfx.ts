@@ -1,5 +1,6 @@
 /** @noSelfInFile **/
 import { Vector3 } from "../../types/vector3";
+import { getYawPitchRollFromVector } from "../../../lib/translators";
 
 export class ProjectileSFX {
     private offset: Vector3;
@@ -12,9 +13,10 @@ export class ProjectileSFX {
     constructor(sfx: string, startingLoc: Vector3, offset: Vector3, facing: Vector3) {
         this.offset = offset;
 
-        this.yaw = Atan2(facing.y, facing.x);
-        this.pitch = Asin(facing.z);
-        this.roll = 0;
+        const facingData = getYawPitchRollFromVector(facing);
+        this.yaw = facingData.yaw;
+        this.pitch = facingData.pitch;
+        this.roll = facingData.roll;
 
         this.sfx = AddSpecialEffect(sfx, startingLoc.x, startingLoc.y); 
         BlzSetSpecialEffectZ(this.sfx, startingLoc.z);

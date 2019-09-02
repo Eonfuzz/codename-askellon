@@ -8,6 +8,8 @@ local __TSTL_crewmember_2Dmodule = require("app.crewmember.crewmember-module")
 local getCrewmemberForUnit = __TSTL_crewmember_2Dmodule.getCrewmemberForUnit
 local __TSTL_trigger = require("app.types.jass-overrides.trigger")
 local Trigger = __TSTL_trigger.Trigger
+local __TSTL_sniper_2Drifle = require("app.weapons.guns.sniper-rifle")
+local SniperRifle = __TSTL_sniper_2Drifle.SniperRifle
 ____exports.WeaponModule = {}
 local WeaponModule = ____exports.WeaponModule
 WeaponModule.name = "WeaponModule"
@@ -26,16 +28,18 @@ function WeaponModule.prototype.____constructor(self, game)
     self.guns = {}
     self.projectileUpdateTimer = Trigger.new()
     self.projectiles = {}
+    self.equipWeaponAbilityId = FourCC("A004")
     self.collisionCheckGroup = CreateGroup()
-    self.weaponPickupTrigger = Trigger.new()
+    self.weaponEquipTrigger = Trigger.new()
     self.weaponShootTrigger = Trigger.new()
     self.weaponDropTrigger = Trigger.new()
     self.game = game
-    self:initProjectiles()
     BurstRifle:initialise(self)
-    self:initialiseWeaponPickup()
+    SniperRifle:initialise(self)
+    self:initialiseWeaponEquip()
     self:initaliseWeaponShooting()
     self:initialiseWeaponDropping()
+    self:initProjectiles()
 end
 function WeaponModule.prototype.initProjectiles(self)
     local WEAPON_UPDATE_PERIOD = 0.03
@@ -62,14 +66,13 @@ function WeaponModule.prototype.updateProjectiles(self, DELTA_TIME)
     )
 end
 function WeaponModule.prototype.checkCollisionsForProjectile(self, projectile, from, to, delta)
-    local centerPoint = from:add(to):multiplyN(0.5)
-    local checkDist = delta:getLength() + projectile:getCollisionRadius()
-    GroupClear(self.collisionCheckGroup)
-    if projectile.filter then
-        GroupEnumUnitsInRange(self.collisionCheckGroup, centerPoint.x, centerPoint.y, checkDist, projectile.filter)
-    else
+    if not projectile.filter then
         return
     end
+    GroupClear(self.collisionCheckGroup)
+    local centerPoint = from:add(to):multiplyN(0.5)
+    local checkDist = delta:getLength() + projectile:getCollisionRadius()
+    GroupEnumUnitsInRange(self.collisionCheckGroup, centerPoint.x, centerPoint.y, checkDist, projectile.filter)
     ForGroup(
         self.collisionCheckGroup,
         function()
@@ -81,7 +84,7 @@ function WeaponModule.prototype.checkCollisionsForProjectile(self, projectile, f
             )
             local distance = unitLoc:distanceToLine(from, to)
             if distance < (projectile:getCollisionRadius() + BlzGetUnitCollisionSize(unit)) then
-                projectile:collide(unit)
+                projectile:collide(self, unit)
             end
         end
     )
@@ -104,21 +107,26 @@ function WeaponModule.prototype.getGunForUnit(self, unit)
         end
     end
 end
-function WeaponModule.prototype.initialiseWeaponPickup(self)
-    self.weaponPickupTrigger:RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_PICKUP_ITEM)
-    self.weaponPickupTrigger:AddCondition(
+function WeaponModule.prototype.initialiseWeaponEquip(self)
+    self.weaponEquipTrigger:RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    self.weaponEquipTrigger:AddCondition(
         function()
-            local item = GetManipulatedItem()
-            local itemId = GetItemTypeId(item)
-            return __TS__ArrayIndexOf(self.weaponItemIds, itemId) >= 0
+            local spellId = GetSpellAbilityId()
+            return spellId == self.equipWeaponAbilityId
         end
     )
-    self.weaponPickupTrigger:AddAction(
+    self.weaponEquipTrigger:AddAction(
         function()
-            local item = GetManipulatedItem()
-            local unit = GetManipulatingUnit()
+            local unit = GetTriggerUnit()
+            local orderId = GetUnitCurrentOrder(unit)
+            local itemSlot = orderId - 852008
+            local item = UnitItemInSlot(unit, itemSlot)
             local crewmember = getCrewmemberForUnit(unit)
             local weapon = self:getGunForItem(item)
+            local oldWeapon = self:getGunForUnit(unit)
+            if oldWeapon then
+                oldWeapon:onRemove(self)
+            end
             if not weapon then
                 weapon = self:createWeaponForId(item, unit)
                 __TS__ArrayPush(self.guns, weapon)
@@ -178,6 +186,9 @@ function WeaponModule.prototype.initialiseWeaponDropping(self)
 end
 function WeaponModule.prototype.createWeaponForId(self, item, unit)
     local itemId = GetItemTypeId(item)
+    if itemId == SniperRifle.itemId then
+        return SniperRifle.new(item, unit)
+    end
     return BurstRifle.new(item, unit)
 end
 return ____exports

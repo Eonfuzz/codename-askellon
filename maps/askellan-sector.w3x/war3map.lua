@@ -7,6 +7,8 @@ function CreateAllItems()
     CreateItem(FourCC("I000"), 60.4, -160.3)
     CreateItem(FourCC("I000"), -167.3, -284.7)
     CreateItem(FourCC("I000"), 93.2, 55.7)
+    CreateItem(FourCC("I001"), -407.0, 80.9)
+    CreateItem(FourCC("I001"), -252.0, 37.1)
 end
 
 function CreateUnitsForPlayer0()

@@ -10,44 +10,43 @@ import { getCrewmemberForUnit } from "../crewmember/crewmember-module";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
+import { SniperRifle } from "./guns/sniper-rifle";
 
 export class WeaponModule {
-
     game: Game;
-
+    
     weaponItemIds: Array<number> = [];
     weaponAbilityIds: Array<number> = [];
 
     guns: Array<Gun> = [];
 
-    projectileUpdateTimer = new Trigger();
     projectiles: Array<Projectile> = [];
 
-    /**
-     * Used 
-     */
     constructor(game: Game) {
         this.game = game;
-        this.initProjectiles();
         
         /**
          * Initialise all guns first
+         * To add a new weapon call its initialisation AND add it to CreateWeaponForId()
+         * I tried to work out a better way of doing this, but sleep is hurting my thoughts
          */
         BurstRifle.initialise(this);
-        // SomeGun.initialise(this);
-
+        SniperRifle.initialise(this);
 
         /**
          * Now initialise all weapon systems
          */
-        this.initialiseWeaponPickup();
+        this.initialiseWeaponEquip();
         this.initaliseWeaponShooting();
         this.initialiseWeaponDropping();
+
+        this.initProjectiles();
     }
 
     /**
      * Registers are repeating timer that updates projectiles
      */
+    projectileUpdateTimer = new Trigger();
     initProjectiles() {
         const WEAPON_UPDATE_PERIOD = 0.03;
         this.projectileUpdateTimer.RegisterTimerEventPeriodic(WEAPON_UPDATE_PERIOD);
@@ -110,7 +109,7 @@ export class WeaponModule {
             // Calculates the distance away from the dot product
             const distance = unitLoc.distanceToLine(from, to);
             if (distance < (projectile.getCollisionRadius() + BlzGetUnitCollisionSize(unit))) {
-                projectile.collide(unit);
+                projectile.collide(this, unit);
             }
         });
     }
@@ -136,22 +135,34 @@ export class WeaponModule {
         }
     }
 
-    weaponPickupTrigger = new Trigger();
-    initialiseWeaponPickup() {
-        this.weaponPickupTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_PICKUP_ITEM);
-        this.weaponPickupTrigger.AddCondition(() => {
-            const item = GetManipulatedItem();
-            let itemId = GetItemTypeId(item);
-
-            return this.weaponItemIds.indexOf(itemId) >= 0;
+    /**
+     * Here there be dragons
+     */
+    // Equip weapon ability ID
+    private equipWeaponAbilityId = FourCC('A004');
+    weaponEquipTrigger = new Trigger();
+    initialiseWeaponEquip() {
+        this.weaponEquipTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.weaponEquipTrigger.AddCondition(() => {
+            let spellId = GetSpellAbilityId();
+            return spellId === this.equipWeaponAbilityId;
         });
-        this.weaponPickupTrigger.AddAction(() => {
-            const item = GetManipulatedItem();
-            const unit = GetManipulatingUnit();
-            
+        this.weaponEquipTrigger.AddAction(() => {
+            const unit = GetTriggerUnit();
+            // Because blizzard is smart and we can't detect if an item is being manipulated AND cast
+            // Lets grab the order ID, subtract a magic number by it and the remaining number is the inventory slot used
+            const orderId = GetUnitCurrentOrder(unit);
+            const itemSlot = orderId - 852008;
+            const item = UnitItemInSlot(unit, itemSlot);
+
+            // Phew, hope you have the water running, ready for your shower            
             let crewmember = getCrewmemberForUnit(unit);
             let weapon = this.getGunForItem(item);
+            let oldWeapon = this.getGunForUnit(unit);
 
+            if (oldWeapon) {
+                oldWeapon.onRemove(this);
+            }
             if (!weapon) {
                 weapon = this.createWeaponForId(item, unit);
                 this.guns.push(weapon);
@@ -210,6 +221,8 @@ export class WeaponModule {
 
     createWeaponForId(item: item, unit: unit) : Gun {
         let itemId = GetItemTypeId(item);
+        if (itemId == SniperRifle.itemId)
+            return new SniperRifle(item, unit);
         // if (itemId === BurstRifle.itemId) 
             return new BurstRifle(item, unit);
         // return undefined;

@@ -1,4 +1,6 @@
 local ____exports = {}
+local __TSTL_translators = require("lib.translators")
+local getYawPitchRollFromVector = __TSTL_translators.getYawPitchRollFromVector
 ____exports.ProjectileSFX = {}
 local ProjectileSFX = ____exports.ProjectileSFX
 ProjectileSFX.name = "ProjectileSFX"
@@ -13,9 +15,10 @@ function ProjectileSFX.new(...)
 end
 function ProjectileSFX.prototype.____constructor(self, sfx, startingLoc, offset, facing)
     self.offset = offset
-    self.yaw = Atan2(facing.y, facing.x)
-    self.pitch = Asin(facing.z)
-    self.roll = 0
+    local facingData = getYawPitchRollFromVector(nil, facing)
+    self.yaw = facingData.yaw
+    self.pitch = facingData.pitch
+    self.roll = facingData.roll
     self.sfx = AddSpecialEffect(sfx, startingLoc.x, startingLoc.y)
     BlzSetSpecialEffectZ(self.sfx, startingLoc.z)
     BlzSetSpecialEffectRoll(self.sfx, self.pitch)

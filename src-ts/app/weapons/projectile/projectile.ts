@@ -77,6 +77,11 @@ export class Projectile {
         return this.collisionRadius;
     }
 
+    setCollisionRadius(radius: number): Projectile {
+        this.collisionRadius = radius;
+        return this;
+    }
+
     willDestroy(): boolean {
         return this.doDestroy;
     }
@@ -101,12 +106,15 @@ export class Projectile {
         return this;
     }
 
-    public collide(withUnit: unit): void {
+    public collide(weaponModule: WeaponModule, withUnit: unit): void {
         if (this.onCollideCallback) {
-            this.onCollideCallback(this, withUnit);
+            this.onCollideCallback(weaponModule, this, withUnit);
         }
     }
     
+    public getTarget(): ProjectileTarget {
+        return this.target;
+    }
     /**
      * Updates the projectile's location and returns distance moved
      * @param deltaTime 
