@@ -1,0 +1,3 @@
+local ____exports = {}
+____exports.BURST_RIFLE_EXTENDED = function(____, damage, accuracyMin, accuracyMax) return "|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. \nNow many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r\n\nFires a short burst of six bullets with |cff00ffff" .. tostring(accuracyMin) .. "|r to |cff00ffff" .. tostring(accuracyMax) .. "|r range, with each bullet dealing |cff00ff00" .. tostring(damage) .. " damage|r.\n\n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r\n" end
+return ____exports

@@ -1,0 +1,216 @@
+﻿STRING 1
+{
+Player 1
+}
+
+STRING 3
+// Units: h000 (Wraith), Name (Name)
+{
+Wraith
+}
+
+STRING 4
+// Abilities: A000 (Decrease Speed S), Name (Name)
+{
+Decrease Speed S
+}
+
+STRING 5
+// Abilities: A000 (Decrease Speed S), Hotkey (Hotkey - Normal)
+{
+S
+}
+
+STRING 6
+// Abilities: A000 (Decrease Speed S), Ubertip (Tooltip - Normal - Extended)
+{
+Increases Ship Speed
+}
+
+STRING 7
+// Abilities: A000 (Decrease Speed S), Tip (Tooltip - Normal)
+{
+W - Increase Speed
+}
+
+STRING 8
+// Abilities: A001 (Increase Speed W), Name (Name)
+{
+Increase Speed W
+}
+
+STRING 9
+// Abilities: A001 (Increase Speed W), Hotkey (Hotkey - Normal)
+{
+W
+}
+
+STRING 10
+// Abilities: A001 (Increase Speed W), Ubertip (Tooltip - Normal - Extended)
+{
+Increases Ship Speed
+}
+
+STRING 11
+// Abilities: A001 (Increase Speed W), Tip (Tooltip - Normal)
+{
+W - Increase Speed
+}
+
+STRING 12
+{
+Akellon
+}
+
+STRING 13
+{
+Any
+}
+
+STRING 14
+{
+Nondescript
+}
+
+STRING 15
+{
+Unknown
+}
+
+STRING 16
+// Units: H001 (Crewmember), Name (Name)
+{
+Crewmember
+}
+
+STRING 17
+// Abilities: A002 (Attack - Gauss Rifle), Name (Name)
+{
+Attack - Gauss Rifle
+}
+
+STRING 18
+// Abilities: A002 (Attack - Gauss Rifle), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 21
+// Items: I000 (Burst Rifle), Name (Name)
+{
+Burst Rifle
+}
+
+STRING 22
+{
+Player 2
+}
+
+STRING 23
+{
+Player 3
+}
+
+STRING 24
+{
+Player 4
+}
+
+STRING 25
+{
+Player 5
+}
+
+STRING 26
+{
+Player 6
+}
+
+STRING 27
+{
+Player 7
+}
+
+STRING 28
+{
+Player 8
+}
+
+STRING 29
+{
+Player 9
+}
+
+STRING 30
+{
+Player 10
+}
+
+STRING 31
+{
+Alien
+}
+
+STRING 32
+{
+Security
+}
+
+STRING 33
+{
+Crew
+}
+
+STRING 34
+{
+Xenos
+}
+
+STRING 35
+// Abilities: A002 (Attack - Gauss Rifle), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 36
+// Abilities: A003 (Sprint), Name (Name)
+{
+Sprint
+}
+
+STRING 37
+// Abilities: A003 (Sprint), Tip (Tooltip - Normal)
+{
+[|cffffff00W|r] - Sprint
+}
+
+STRING 39
+// Buffs/Effects: B000 (), Bufftip (Tooltip)
+{
+Sprint
+}
+
+STRING 40
+// Buffs/Effects: B000 (), Buffubertip (Tooltip - Extended)
+{
+This unit is sprinting.
+}
+
+STRING 41
+// Abilities: A003 (Sprint), Hotkey (Hotkey - Normal)
+{
+W
+}
+
+STRING 42
+// Abilities: A002 (Attack - Gauss Rifle), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - SI Battle Rifle
+}
+
+STRING 43
+// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+Run 40% faster for 7 seconds
+}
+

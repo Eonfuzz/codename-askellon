@@ -1,0 +1,16 @@
+{
+  "name": "ts-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src-ts/main.ts",
+  "scripts": {
+    "test": "tstl -p tsconfig.json --rootDir \"src-ts\" && ceres.exe run askellan-sector.w3x",
+    "build": "tstl -p tsconfig.json --rootDir \"src-ts\" && ceres.exe build askellan-sector.w3x"
+  },
+  "author": "TriggerHappy",
+  "license": "ISC",
+  "dependencies": {
+    "lua-types": "^2.6.0",
+    "typescript-to-lua": "^0.23.0"
+  }
+}
