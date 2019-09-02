@@ -37,4 +37,8 @@ export class ProjectileSFX {
     destroy() {
         DestroyEffect(this.sfx);
     }
+
+    getEffect() {
+        return this.sfx;
+    }
 }

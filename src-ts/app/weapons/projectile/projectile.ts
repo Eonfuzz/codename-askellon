@@ -50,11 +50,11 @@ export class Projectile {
      * @param offset 
      * @param facing 
      */
-    addEffect(sfx: string, offset: Vector3, facing: Vector3, scale: number): Projectile {
+    addEffect(sfx: string, offset: Vector3, facing: Vector3, scale: number): effect {
         let _sfx = new ProjectileSFX(sfx, this.position, offset, facing);
         _sfx.setScale(scale);
         this.sfx.push(_sfx);
-        return this;
+        return _sfx.getEffect();
     }
 
     /**

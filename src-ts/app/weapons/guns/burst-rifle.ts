@@ -107,6 +107,7 @@ export class BurstRifle implements Gun {
             deltaTarget.normalise(),
             1.6
         )
+        projectile
             .setVelocity(2400)
             .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)

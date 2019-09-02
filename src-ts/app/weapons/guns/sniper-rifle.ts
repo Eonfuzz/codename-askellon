@@ -83,7 +83,7 @@ export class SniperRifle implements Gun {
 
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
         const unit = caster.unit;
-        // print("Target "+targetLocation.toString())
+        const sound = PlayNewSoundOnUnit("Sounds\\SniperRifleShoot.mp3", caster.unit, 50);
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
         let strayTarget = this.getStrayLocation(targetLocation, caster)
         let deltaTarget = strayTarget.subtract(casterLoc);
@@ -93,14 +93,17 @@ export class SniperRifle implements Gun {
             casterLoc, 
             new ProjectileTargetStatic(deltaTarget)
         );
-        projectile.addEffect(
+        const effect =  projectile.addEffect(
             "war3mapImported\\Bullet.mdx",
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
             2.5
-        )
+        );
+        BlzSetSpecialEffectColor(effect, 130, 160, 255);
+
+        projectile
             .setCollisionRadius(40)
-            .setVelocity(3000)
+            .setVelocity(2400)
             .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)
             );
@@ -112,7 +115,7 @@ export class SniperRifle implements Gun {
         while (delay < 1000) {
             weaponModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
                 if (!projectile || projectile.willDestroy()) return true;
-                const position = projectile.getPosition().add(deltaTarget.normalise().multiplyN(500));
+                const position = projectile.getPosition().add(deltaTarget.normalise());
                 const sfxOrientation = getYawPitchRollFromVector(deltaTarget.normalise());
 
                 const sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", position.x, position.y);
@@ -122,11 +125,19 @@ export class SniperRifle implements Gun {
                 BlzSetSpecialEffectAlpha(sfx, 40);
                 BlzSetSpecialEffectScale(sfx, 0.7);
                 BlzSetSpecialEffectTimeScale(sfx, 1);
+
+                const secondSfx = AddSpecialEffect("Abilities\\Weapons\\GryphonRiderMissile\\GryphonRiderMissileTarget.mdl", position.x, position.y);
+                BlzSetSpecialEffectHeight(secondSfx, position.z - 30);
+                BlzSetSpecialEffectScale(secondSfx, 0.5);
+                BlzSetSpecialEffectTimeScale(secondSfx, 0.7);
+                BlzSetSpecialEffectYaw(secondSfx, sfxOrientation.yaw + 90 * bj_DEGTORAD);
+                BlzSetSpecialEffectRoll(secondSfx, sfxOrientation.pitch + 90 * bj_DEGTORAD);
                 
                 DestroyEffect(sfx);
+                DestroyEffect(secondSfx);
                 return true;
             }, delay, false));
-            delay += 200;
+            delay += 100;
         }
     }
     
