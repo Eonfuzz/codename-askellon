@@ -4,6 +4,10 @@ export class console {
     }
 }
 
+export function staticDecorator<T>() {
+    return (constructor: T) => {};
+}
+
 export function SendMessage(this: void, msg: any): void {
     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `${msg}`);
 }

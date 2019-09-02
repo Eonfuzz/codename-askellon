@@ -94,8 +94,8 @@ function Projectile.prototype.setVelocity(self, velocity)
     return self
 end
 function Projectile.prototype.reachedEnd(self, weaponModule, targetVector)
-    MoveLocation(weaponModule.GLOBAL_LOCATION, self.position.x, self.position.y)
-    local z = GetLocationZ(weaponModule.GLOBAL_LOCATION)
+    MoveLocation(weaponModule.game.TEMP_LOCATION, self.position.x, self.position.y)
+    local z = GetLocationZ(weaponModule.game.TEMP_LOCATION)
     return (self.position.z <= z)
 end
 function Projectile.prototype.destroy(self)

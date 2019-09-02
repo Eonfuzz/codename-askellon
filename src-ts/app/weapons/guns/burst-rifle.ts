@@ -1,7 +1,7 @@
 /** @noSelfInFile **/
 
 import { Vector3 } from "../../types/vector3";
-import { Gun } from "./gun";
+import { Gun, GunDecorator } from "./gun";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
@@ -10,8 +10,9 @@ import { WeaponModule } from "../weapon-module";
 import { TimedEvent } from "../../types/timed-event";
 import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
-import { PlayNewSoundOnUnit } from "../../../lib/translators";
+import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 
+@staticDecorator<GunDecorator>()
 export class BurstRifle implements Gun {
     public item: item;
     public equippedTo: unit | undefined;
@@ -22,9 +23,13 @@ export class BurstRifle implements Gun {
     private DEFAULT_STRAY = 200;
     private SHOT_DISTANCE = 800;
 
-
     // Set when the gun is removed and a cooldown still exists
     remainingCooldown: number | undefined;
+
+    public static initialise(weaponModule: WeaponModule) {
+        weaponModule.weaponItemIds.push(BurstRifle.itemId);
+        weaponModule.weaponAbilityIds.push(BurstRifle.abilityId);
+    }
 
     constructor(item: item, equippedTo: unit) {
         this.item = item;

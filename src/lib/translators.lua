@@ -24,6 +24,10 @@ end
 function console.log(self, input)
     ____exports.SendMessage(input)
 end
+function ____exports.staticDecorator(self)
+    return function(____, constructor)
+    end
+end
 function ____exports.SendMessageUnlogged(msg)
     DisplayTimedTextToForce(
         bj_FORCE_ALL_PLAYERS,
@@ -71,32 +75,32 @@ function Util.isUnitCreep(self, u)
     local ownerID = GetPlayerId(
         GetOwningPlayer(u)
     )
-    local ____TS_switch10 = ownerID
-    if ____TS_switch10 == ____exports.COLOUR.NAVY then
-        goto ____TS_switch10_case_0
+    local ____TS_switch12 = ownerID
+    if ____TS_switch12 == ____exports.COLOUR.NAVY then
+        goto ____TS_switch12_case_0
     end
-    if ____TS_switch10 == ____exports.COLOUR.TURQUOISE then
-        goto ____TS_switch10_case_1
+    if ____TS_switch12 == ____exports.COLOUR.TURQUOISE then
+        goto ____TS_switch12_case_1
     end
-    if ____TS_switch10 == ____exports.COLOUR.VOILET then
-        goto ____TS_switch10_case_2
+    if ____TS_switch12 == ____exports.COLOUR.VOILET then
+        goto ____TS_switch12_case_2
     end
-    if ____TS_switch10 == ____exports.COLOUR.WHEAT then
-        goto ____TS_switch10_case_3
+    if ____TS_switch12 == ____exports.COLOUR.WHEAT then
+        goto ____TS_switch12_case_3
     end
-    goto ____TS_switch10_case_default
-    ::____TS_switch10_case_0::
-    ::____TS_switch10_case_1::
-    ::____TS_switch10_case_2::
-    ::____TS_switch10_case_3::
+    goto ____TS_switch12_case_default
+    ::____TS_switch12_case_0::
+    ::____TS_switch12_case_1::
+    ::____TS_switch12_case_2::
+    ::____TS_switch12_case_3::
     do
         return true
     end
-    ::____TS_switch10_case_default::
+    ::____TS_switch12_case_default::
     do
         return false
     end
-    ::____TS_switch10_end::
+    ::____TS_switch12_end::
 end
 function Util.ColourString(self, colour, str)
     return "|cFF" .. tostring(colour) .. tostring(str) .. "|r"
@@ -177,11 +181,11 @@ function Util.ArraysToString(self, arr)
             do
                 if i == #arr - 1 then
                     output = tostring(output) .. "\"" .. tostring(arr[i + 1]) .. "\""
-                    goto __continue23
+                    goto __continue25
                 end
                 output = tostring(output) .. "\"" .. tostring(arr[i + 1]) .. "\", "
             end
-            ::__continue23::
+            ::__continue25::
             i = i + 1
         end
     end

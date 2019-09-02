@@ -21,16 +21,18 @@ function WeaponModule.new(...)
     return self
 end
 function WeaponModule.prototype.____constructor(self, game)
+    self.weaponItemIds = {}
+    self.weaponAbilityIds = {}
     self.guns = {}
     self.projectileUpdateTimer = Trigger.new()
     self.projectiles = {}
-    self.GLOBAL_LOCATION = Location(0, 0)
     self.collisionCheckGroup = CreateGroup()
     self.weaponPickupTrigger = Trigger.new()
     self.weaponShootTrigger = Trigger.new()
     self.weaponDropTrigger = Trigger.new()
     self.game = game
     self:initProjectiles()
+    BurstRifle:initialise(self)
     self:initialiseWeaponPickup()
     self:initaliseWeaponShooting()
     self:initialiseWeaponDropping()
@@ -107,44 +109,56 @@ function WeaponModule.prototype.initialiseWeaponPickup(self)
     self.weaponPickupTrigger:AddCondition(
         function()
             local item = GetManipulatedItem()
-            local unit = GetManipulatingUnit()
             local itemId = GetItemTypeId(item)
-            if itemId == BurstRifle.itemId then
-                local crewmember = getCrewmemberForUnit(unit)
-                local burstRifle = self:getGunForItem(item)
-                if not burstRifle then
-                    burstRifle = BurstRifle.new(item, unit)
-                    __TS__ArrayPush(self.guns, burstRifle)
-                end
-                if crewmember then
-                    burstRifle:onAdd(self, crewmember)
-                end
+            return __TS__ArrayIndexOf(self.weaponItemIds, itemId) >= 0
+        end
+    )
+    self.weaponPickupTrigger:AddAction(
+        function()
+            local item = GetManipulatedItem()
+            local unit = GetManipulatingUnit()
+            local crewmember = getCrewmemberForUnit(unit)
+            local weapon = self:getGunForItem(item)
+            if not weapon then
+                weapon = self:createWeaponForId(item, unit)
+                __TS__ArrayPush(self.guns, weapon)
             end
-            return false
+            if crewmember then
+                weapon:onAdd(self, crewmember)
+            end
         end
     )
 end
 function WeaponModule.prototype.initaliseWeaponShooting(self)
     self.weaponShootTrigger:RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT)
     self.weaponShootTrigger:AddCondition(
+        function() return __TS__ArrayIndexOf(
+            self.weaponAbilityIds,
+            GetSpellAbilityId()
+        ) >= 0 end
+    )
+    self.weaponShootTrigger:AddAction(
         function()
-            local spellId = GetSpellAbilityId()
-            if spellId == BurstRifle.abilityId then
-                local unit = GetTriggerUnit()
-                local targetLocation = GetSpellTargetLoc()
-                local targetLoc = Vector3.new(
-                    GetLocationX(targetLocation),
-                    GetLocationY(targetLocation),
-                    GetLocationZ(targetLocation)
-                )
-                local crewmember = getCrewmemberForUnit(unit)
-                local burstRifle = self:getGunForUnit(unit)
-                if burstRifle and crewmember then
-                    burstRifle:onShoot(self, crewmember, targetLoc)
+            local unit = GetTriggerUnit()
+            local targetLocation = GetSpellTargetLoc()
+            local targetLoc = Vector3.new(
+                GetLocationX(targetLocation),
+                GetLocationY(targetLocation),
+                GetLocationZ(targetLocation)
+            )
+            local crewmember = getCrewmemberForUnit(unit)
+            local weapon = self:getGunForUnit(unit)
+            if weapon and crewmember then
+                local targetedUnit = GetSpellTargetUnit()
+                if targetedUnit then
+                    self.game.forceModule:aggressionBetweenTwoPlayers(
+                        GetOwningPlayer(unit),
+                        GetOwningPlayer(targetedUnit)
+                    )
                 end
-                RemoveLocation(targetLocation)
+                weapon:onShoot(self, crewmember, targetLoc)
             end
-            return false
+            RemoveLocation(targetLocation)
         end
     )
 end
@@ -161,5 +175,9 @@ function WeaponModule.prototype.initialiseWeaponDropping(self)
             return false
         end
     )
+end
+function WeaponModule.prototype.createWeaponForId(self, item, unit)
+    local itemId = GetItemTypeId(item)
+    return BurstRifle.new(item, unit)
 end
 return ____exports

@@ -14,7 +14,7 @@ end
 function Crewmember.prototype.____constructor(self, player, unit)
     self.role = ""
     self.name = ""
-    self.accuracy = 300
+    self.accuracy = 100
     self.player = player
     self.unit = unit
 end

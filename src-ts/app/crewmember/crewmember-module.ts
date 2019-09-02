@@ -15,7 +15,7 @@ export function initCrew(game: Game) {
 
     // Initialise first crewmember todo
 
-    game.humanPlayers.forEach(player => {
+    game.forceModule.activePlayers.forEach(player => {
         let crew = createCrew(GetPlayerId(player));
         // crew.log();
         CREW_MEMBERS.push(crew);
@@ -23,7 +23,7 @@ export function initCrew(game: Game) {
 }
 
 function initialiseRoles(game: Game) {
-    game.humanPlayers.forEach((p, index) => {
+    game.forceModule.activePlayers.forEach((p, index) => {
         if (index === 0) {
             AVAILABLE_ROLES.push("Captain");
         } 

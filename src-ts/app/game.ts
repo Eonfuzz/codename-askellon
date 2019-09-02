@@ -2,33 +2,31 @@
 
 import * as GALAXY_MODULE from "./galaxy/galaxy-module";
 import * as CREW_MODULE from "./crewmember/crewmember-module";
-import * as WEAPON_MODULE from "./weapons/weapon-module";
+import { WeaponModule } from "./weapons/weapon-module";
 import { TimedEventQueue } from "./types/timed-event-queue";
+import { ForceModule } from "./force/force-module";
 
 export class Game{
     public timedEventQueue: TimedEventQueue;
-    
-    public weaponModule: WEAPON_MODULE.WeaponModule;
+    public weaponModule: WeaponModule;
+    public forceModule: ForceModule;
 
-    public humanPlayers: Array<player>;
+    /**
+     * Should always be defined,
+     * Used for measuring Z heights
+     */
+    public TEMP_LOCATION = Location(0, 0);
+
 
     constructor() {
-        this.timedEventQueue = new TimedEventQueue(this);
+        // Load order is important
+        this.timedEventQueue    = new TimedEventQueue(this);
+        // Load modules after all helper objects
+        this.forceModule        = new ForceModule(this);
+        this.weaponModule       = new WeaponModule(this);
 
-        this.humanPlayers = [];
-
-        for (let i = 0; i < GetBJMaxPlayerSlots(); i ++) {
-            const currentPlayer = Player(i);
-            const isPlaying = GetPlayerSlotState(currentPlayer) == PLAYER_SLOT_STATE_PLAYING;
-            const isUser = GetPlayerController(currentPlayer) == MAP_CONTROL_USER;
-            if (isPlaying && isUser) {
-                this.humanPlayers.push(Player(i));
-            }
-        }
-        
+        // Here be dragons, old code is below and needs update
         GALAXY_MODULE.initSectors();
         CREW_MODULE.initCrew(this);
-
-        this.weaponModule = new WEAPON_MODULE.WeaponModule(this);
     }
 }

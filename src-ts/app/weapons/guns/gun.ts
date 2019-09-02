@@ -18,3 +18,14 @@ export interface Gun {
 
     updateTooltip(weaponModule: WeaponModule, caster: Crewmember): void;
 }
+
+export interface GunDecorator {
+    abilityId: number;
+    itemId: number;
+
+    /**
+     * Adds the gun to the weapon module
+     * @param weaponModule 
+     */
+    initialise(weaponModule: WeaponModule): void;
+}

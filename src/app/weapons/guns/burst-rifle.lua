@@ -1,3 +1,4 @@
+require("lualib_bundle");
 local ____exports = {}
 local __TSTL_vector3 = require("app.types.vector3")
 local Vector3 = __TSTL_vector3.Vector3
@@ -13,6 +14,7 @@ local __TSTL_weapon_2Dtooltips = require("resources.weapon-tooltips")
 local BURST_RIFLE_EXTENDED = __TSTL_weapon_2Dtooltips.BURST_RIFLE_EXTENDED
 local __TSTL_translators = require("lib.translators")
 local PlayNewSoundOnUnit = __TSTL_translators.PlayNewSoundOnUnit
+local staticDecorator = __TSTL_translators.staticDecorator
 ____exports.BurstRifle = {}
 local BurstRifle = ____exports.BurstRifle
 BurstRifle.name = "BurstRifle"
@@ -31,21 +33,34 @@ function BurstRifle.prototype.____constructor(self, item, equippedTo)
     self.item = item
     self.equippedTo = equippedTo
 end
+function BurstRifle.initialise(self, weaponModule)
+    __TS__ArrayPush(weaponModule.weaponItemIds, ____exports.BurstRifle.itemId)
+    __TS__ArrayPush(weaponModule.weaponAbilityIds, ____exports.BurstRifle.abilityId)
+end
 function BurstRifle.prototype.onAdd(self, weaponModule, caster)
     self.equippedTo = caster.unit
     UnitAddAbility(caster.unit, ____exports.BurstRifle.abilityId)
     self:updateTooltip(weaponModule, caster)
+    if self.remainingCooldown and self.remainingCooldown > 0 then
+        print("Reforged better add a way to set cooldowns remaining")
+    end
 end
 function BurstRifle.prototype.onRemove(self, weaponModule)
     if self.equippedTo then
         UnitRemoveAbility(self.equippedTo, ____exports.BurstRifle.abilityId)
+        self.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(self.equippedTo, ____exports.BurstRifle.abilityId)
     end
 end
 function BurstRifle.prototype.updateTooltip(self, weaponModule, caster)
     if self.equippedTo then
         local owner = GetOwningPlayer(self.equippedTo)
         local accuracyModifier = (self.DEFAULT_STRAY * (100 / caster.accuracy)) / 2
-        local newTooltip = BURST_RIFLE_EXTENDED(nil, 15, self.SHOT_DISTANCE - accuracyModifier, self.SHOT_DISTANCE + accuracyModifier)
+        local newTooltip = BURST_RIFLE_EXTENDED(
+            nil,
+            self:getDamage(weaponModule, caster),
+            self.SHOT_DISTANCE - accuracyModifier,
+            self.SHOT_DISTANCE + accuracyModifier
+        )
         if GetLocalPlayer() == owner then
             BlzSetAbilityExtendedTooltip(____exports.BurstRifle.abilityId, newTooltip, 0)
         end
@@ -53,6 +68,7 @@ function BurstRifle.prototype.updateTooltip(self, weaponModule, caster)
 end
 function BurstRifle.prototype.onShoot(self, weaponModule, caster, targetLocation)
     local unit = caster.unit
+    local sound = PlayNewSoundOnUnit(nil, "Sounds\\BattleRifleShoot.mp3", caster.unit, 50)
     local casterLoc = Vector3.new(
         GetUnitX(unit),
         GetUnitY(unit),
@@ -63,7 +79,6 @@ function BurstRifle.prototype.onShoot(self, weaponModule, caster, targetLocation
     )
     local targetDistance = Vector2.new(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y):normalise():multiplyN(self.SHOT_DISTANCE)
     local newTargetLocation = Vector3.new(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z)
-    local sound = PlayNewSoundOnUnit(nil, "Sounds\\BattleRifleShoot.mp3", caster.unit, 50)
     local delay = 0
     do
         local i = 0
@@ -121,6 +136,15 @@ function BurstRifle.prototype.getStrayLocation(self, originalLocation, caster)
     )
     return newLocation
 end
+function BurstRifle.prototype.getDamage(self, weaponModule, caster)
+    return 15
+end
 BurstRifle.abilityId = FourCC("A002")
 BurstRifle.itemId = FourCC("I000")
+____exports.BurstRifle = __TS__Decorate(
+    {
+        staticDecorator(nil)
+    },
+    ____exports.BurstRifle
+)
 return ____exports

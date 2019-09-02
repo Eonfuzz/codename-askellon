@@ -7,7 +7,7 @@ local ROLE_NAMES = __TSTL_crewmember_2Dnames.ROLE_NAMES
 local CREWMEMBER_UNIT_ID, AVAILABLE_ROLES, initialiseRoles, createCrew, getCrewmemberRole, getCrewmemberName
 function initialiseRoles(game)
     __TS__ArrayForEach(
-        game.humanPlayers,
+        game.forceModule.activePlayers,
         function(____, p, index)
             if index == 0 then
                 __TS__ArrayPush(AVAILABLE_ROLES, "Captain")
@@ -60,7 +60,7 @@ AVAILABLE_ROLES = {}
 function ____exports.initCrew(game)
     initialiseRoles(game)
     __TS__ArrayForEach(
-        game.humanPlayers,
+        game.forceModule.activePlayers,
         function(____, player)
             local crew = createCrew(
                 GetPlayerId(player)

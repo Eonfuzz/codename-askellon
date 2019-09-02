@@ -131,8 +131,8 @@ export class Projectile {
     }
 
     private reachedEnd(weaponModule: WeaponModule, targetVector: Vector3): boolean {
-        MoveLocation(weaponModule.GLOBAL_LOCATION, this.position.x, this.position.y);
-        let z = GetLocationZ(weaponModule.GLOBAL_LOCATION)
+        MoveLocation(weaponModule.game.TEMP_LOCATION, this.position.x, this.position.y);
+        let z = GetLocationZ(weaponModule.game.TEMP_LOCATION)
         // let location = GLOBAL_LOCATION
         return (this.position.z <= z);
     }
