@@ -268,3 +268,9 @@ STRING 52
 [|cffffff00A|r] - Particle Accelerator
 }
 
+STRING 53
+// Destructibles: B000 (Forest Tree), Name (Name)
+{
+Forest Tree
+}
+

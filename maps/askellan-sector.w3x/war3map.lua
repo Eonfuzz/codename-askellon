@@ -26,7 +26,7 @@ function CreateUnitsForPlayer20()
     local unitID
     local t
     local life
-    u = CreateUnit(p, FourCC("uaco"), 688.6, -235.0, 197.837)
+    u = CreateUnit(p, FourCC("uaco"), 922.9, -3387.4, 197.837)
     u = CreateUnit(p, FourCC("uaco"), 663.9, -302.4, 250.155)
     u = CreateUnit(p, FourCC("uaco"), 611.5, -373.3, 21.940)
     u = CreateUnit(p, FourCC("uaco"), 566.7, -422.8, 312.538)

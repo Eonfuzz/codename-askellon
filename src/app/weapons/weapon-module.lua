@@ -26,10 +26,10 @@ function WeaponModule.prototype.____constructor(self, game)
     self.weaponItemIds = {}
     self.weaponAbilityIds = {}
     self.guns = {}
-    self.projectileUpdateTimer = Trigger.new()
     self.projectiles = {}
-    self.equipWeaponAbilityId = FourCC("A004")
+    self.projectileUpdateTimer = Trigger.new()
     self.collisionCheckGroup = CreateGroup()
+    self.equipWeaponAbilityId = FourCC("A004")
     self.weaponEquipTrigger = Trigger.new()
     self.weaponShootTrigger = Trigger.new()
     self.weaponDropTrigger = Trigger.new()

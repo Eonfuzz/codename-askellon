@@ -40,7 +40,7 @@ function Projectile.prototype.addEffect(self, sfx, offset, facing, scale)
     local _sfx = ProjectileSFX.new(sfx, self.position, offset, facing)
     _sfx:setScale(scale)
     __TS__ArrayPush(self.sfx, _sfx)
-    return self
+    return _sfx:getEffect()
 end
 function Projectile.prototype.doesCollide(self)
     return true

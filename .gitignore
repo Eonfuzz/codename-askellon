@@ -5,3 +5,6 @@ node_modules/
 #ignore build paths
 src/
 target/**
+
+#ignore ceres.toml
+ceres.toml
