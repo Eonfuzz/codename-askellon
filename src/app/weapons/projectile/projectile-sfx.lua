@@ -35,4 +35,7 @@ end
 function ProjectileSFX.prototype.destroy(self)
     DestroyEffect(self.sfx)
 end
+function ProjectileSFX.prototype.getEffect(self)
+    return self.sfx
+end
 return ____exports

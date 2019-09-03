@@ -123,7 +123,8 @@ function BurstRifle.prototype.fireProjectile(self, weaponModule, caster, targetL
         Vector3.new(0, 0, 0),
         deltaTarget:normalise(),
         1.6
-    ):setVelocity(2400):onCollide(
+    )
+    projectile:setVelocity(2400):onCollide(
         function(____self, weaponModule, projectile, collidesWith) return self:onProjectileCollide(weaponModule, projectile, collidesWith) end
     )
     weaponModule:addProjectile(projectile)
