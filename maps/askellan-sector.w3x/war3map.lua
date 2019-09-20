@@ -18,6 +18,7 @@ function CreateUnitsForPlayer0()
     local t
     local life
     u = CreateUnit(p, FourCC("h000"), 22235.8, -9868.7, 29.744)
+    u = CreateUnit(p, FourCC("H001"), 234.0, 211.5, 97.320)
 end
 
 function CreateUnitsForPlayer20()
@@ -26,7 +27,7 @@ function CreateUnitsForPlayer20()
     local unitID
     local t
     local life
-    u = CreateUnit(p, FourCC("uaco"), 922.9, -3387.4, 197.837)
+    u = CreateUnit(p, FourCC("uaco"), 328.3, -2182.2, 197.837)
     u = CreateUnit(p, FourCC("uaco"), 663.9, -302.4, 250.155)
     u = CreateUnit(p, FourCC("uaco"), 460.5, -541.0, 120.974)
     u = CreateUnit(p, FourCC("uaco"), 396.1, -598.2, 132.774)

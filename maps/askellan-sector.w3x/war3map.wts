@@ -274,3 +274,33 @@ STRING 53
 Forest Tree
 }
 
+STRING 54
+// Units: nfr2 (Furbolg Hut), Ubertip (Tooltip - Extended)
+{
+This is your home, defend it with your life!
+}
+
+STRING 55
+// Units: nfr1 (Furbolg Home), Tip (Tooltip - Basic)
+{
+Upgrade Furbolg Home
+}
+
+STRING 56
+// Units: nfr1 (Furbolg Home), Name (Name)
+{
+Furbolg Home
+}
+
+STRING 57
+// Units: nfr1 (Furbolg Home), Ubertip (Tooltip - Extended)
+{
+A Fancier furbolg hut, with room to start a loving family or an army to brutally slaughter the gnolls!
+}
+
+STRING 58
+// Units: Furb (Furbolg Chieftain), Name (Name)
+{
+Furbolg Chieftain
+}
+
