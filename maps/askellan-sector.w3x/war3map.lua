@@ -11,16 +11,6 @@ function CreateAllItems()
     CreateItem(FourCC("I001"), -252.0, 37.1)
 end
 
-function CreateUnitsForPlayer0()
-    local p = Player(0)
-    local u
-    local unitID
-    local t
-    local life
-    u = CreateUnit(p, FourCC("h000"), 22235.8, -9868.7, 29.744)
-    u = CreateUnit(p, FourCC("H001"), 234.0, 211.5, 97.320)
-end
-
 function CreateUnitsForPlayer20()
     local p = Player(20)
     local u
@@ -40,7 +30,6 @@ function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
-    CreateUnitsForPlayer0()
     CreateUnitsForPlayer20()
 end
 

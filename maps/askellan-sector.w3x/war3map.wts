@@ -28,7 +28,7 @@ Increases Ship Speed
 }
 
 STRING 7
-// Abilities: A000 (Decrease Speed S), Tip (Tooltip - Normal)
+// Abilities: A001 (Increase Speed W), Tip (Tooltip - Normal)
 {
 W - Increase Speed
 }
@@ -49,12 +49,6 @@ STRING 10
 // Abilities: A001 (Increase Speed W), Ubertip (Tooltip - Normal - Extended)
 {
 Increases Ship Speed
-}
-
-STRING 11
-// Abilities: A001 (Increase Speed W), Tip (Tooltip - Normal)
-{
-W - Increase Speed
 }
 
 STRING 12
@@ -302,5 +296,35 @@ STRING 58
 // Units: Furb (Furbolg Chieftain), Name (Name)
 {
 Furbolg Chieftain
+}
+
+STRING 59
+// Abilities: A006 (Stop Ship), Name (Name)
+{
+Stop Ship
+}
+
+STRING 61
+// Abilities: A006 (Stop Ship), Ubertip (Tooltip - Normal - Extended)
+{
+Stops ship movement
+}
+
+STRING 62
+// Abilities: A006 (Stop Ship), Tip (Tooltip - Normal)
+{
+X - Stop Ship
+}
+
+STRING 63
+// Abilities: A000 (Decrease Speed S), Tip (Tooltip - Normal)
+{
+S - Decrease Speed
+}
+
+STRING 64
+// Abilities: A006 (Stop Ship), Hotkey (Hotkey - Normal)
+{
+X
 }
 

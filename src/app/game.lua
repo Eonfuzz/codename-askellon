@@ -7,6 +7,8 @@ local __TSTL_timed_2Devent_2Dqueue = require("app.types.timed-event-queue")
 local TimedEventQueue = __TSTL_timed_2Devent_2Dqueue.TimedEventQueue
 local __TSTL_force_2Dmodule = require("app.force.force-module")
 local ForceModule = __TSTL_force_2Dmodule.ForceModule
+local __TSTL_space_2Dmodule = require("app.space.space-module")
+local SpaceModule = __TSTL_space_2Dmodule.SpaceModule
 ____exports.Game = {}
 local Game = ____exports.Game
 Game.name = "Game"
@@ -21,10 +23,15 @@ function Game.new(...)
 end
 function Game.prototype.____constructor(self)
     self.TEMP_LOCATION = Location(0, 0)
+    self.globalTimer = CreateTimer()
     self.timedEventQueue = TimedEventQueue.new(self)
     self.forceModule = ForceModule.new(self)
     self.weaponModule = WeaponModule.new(self)
+    self.spaceModule = SpaceModule.new(self)
     GALAXY_MODULE.initSectors()
     CREW_MODULE.initCrew(self)
+end
+function Game.prototype.getTimeStamp(self)
+    return TimerGetElapsed(self.globalTimer)
 end
 return ____exports
