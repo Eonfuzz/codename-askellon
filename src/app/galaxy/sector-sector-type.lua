@@ -29,6 +29,9 @@ function SpaceSector.prototype.nameSector(self)
         math.random() * #SECTOR_NAMES
     ) + 1]
     self.name = tostring(prefix) .. " " .. tostring(name)
+    print(
+        "Sector [" .. tostring(self.name) .. "]"
+    )
 end
 function SpaceSector.prototype.setSeed(self, seed)
     self.seed = seed

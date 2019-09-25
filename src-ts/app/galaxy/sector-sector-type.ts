@@ -15,7 +15,7 @@ export class SpaceSector {
         const prefix    = SECTOR_PREFIXES[ Math.floor( Math.random() * SECTOR_PREFIXES.length) ];
         const name      = SECTOR_NAMES[ Math.floor( Math.random() * SECTOR_NAMES.length) ];
         this.name = prefix + ' ' + name;
-        // print("Sector ["+this.name+"]");
+        print("Sector ["+this.name+"]");
     }
 
     setSeed(seed: string) {
