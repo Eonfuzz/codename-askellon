@@ -340,3 +340,39 @@ STRING 66
 Space Station
 }
 
+STRING 67
+// Doodads: D000 (JunkLargeRound), Name (Name)
+{
+JunkLargeRound
+}
+
+STRING 68
+// Doodads: D001 (JunkLargeRound2), Name (Name)
+{
+JunkLargeRound2
+}
+
+STRING 69
+// Doodads: D002 (JunkLargeRound3), Name (Name)
+{
+JunkLargeRound3
+}
+
+STRING 70
+// Doodads: D003 (JunkLargeRound4), Name (Name)
+{
+JunkLargeRound4
+}
+
+STRING 71
+// Doodads: D004 (JunkBrick), Name (Name)
+{
+JunkBrick
+}
+
+STRING 72
+// Destructibles: B001 (Tree HQ), Name (Name)
+{
+Tree HQ
+}
+

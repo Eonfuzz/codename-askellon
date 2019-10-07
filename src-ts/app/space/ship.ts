@@ -166,4 +166,12 @@ export class Ship {
     public getMomentum() {
        return this.momentum; 
     }
+
+    public getPosition() {
+        return this.position;
+    }
+
+    public setPosition(pos: Vector2) {
+        this.position = pos;
+    }
 }

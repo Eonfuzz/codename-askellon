@@ -36,7 +36,7 @@ export class SpaceModule {
 
         this.createTestShip();
         let i = 0;
-        while (i < 100) {
+        while (i < 3000) {
             i ++;
             this.createTestAsteroid();
         }
@@ -68,7 +68,7 @@ export class SpaceModule {
         this.spaceObjects.push(newAsteroid);
 
         // Now load it in
-        newAsteroid.load(this.game);
+        // newAsteroid.load(this.game);
     }
 
     
@@ -90,6 +90,8 @@ export class SpaceModule {
         // Update mothership
         this.mainShip.updateThrust(updatePeriod);
         this.mainShip.applyThrust(updatePeriod);
+        
+        const oldShipPos = this.mainShip.getPosition();
 
         // Dont call update position
         const shipDelta = this.mainShip.getMomentum().multiplyN(updatePeriod);
