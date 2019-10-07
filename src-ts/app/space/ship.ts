@@ -15,8 +15,8 @@ export class Ship {
     private thrust: Vector2;
 
     private mass = 1.0;
-    private acceleration = 200.0;
-    private accelerationBackwards = 25.0;
+    protected acceleration = 200.0;
+    protected accelerationBackwards = 25.0;
 
     private velocity = 0.0;
     private velocityForwardMax = 1200.0;
@@ -28,8 +28,8 @@ export class Ship {
     // Are we trying to go to a stop?
     private isGoingToStop = false;
 
-    constructor() {
-        this.position   = new Vector2(0, 0);
+    constructor(startX: number, startY: number) {
+        this.position   = new Vector2(startX, startY);
         this.momentum   = new Vector2(0, 0);
         this.thrust     = new Vector2(0, 0);
     }
@@ -79,9 +79,13 @@ export class Ship {
         return this;
     }
 
-    public updatePosition(deltaTime: number) {
+    public updatePosition(deltaTime: number, mainShipDelta?: Vector2 | undefined) {
         // Apply momentum and velocity
-        this.position = this.position.add(this.momentum.multiplyN(deltaTime))
+        this.position = this.position.add(this.momentum.multiplyN(deltaTime));
+
+        if (mainShipDelta) {
+            this.position = this.position.subtract(mainShipDelta);
+        }
     
         if (this.unit) {
             // If we have a unit, update that unit's X and Y position
@@ -157,5 +161,9 @@ export class Ship {
     public goToAStop() {
         this.isGoingToStop = true;
         return this;
+    }
+
+    public getMomentum() {
+       return this.momentum; 
     }
 }

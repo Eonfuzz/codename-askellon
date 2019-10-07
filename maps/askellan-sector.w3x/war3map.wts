@@ -328,3 +328,15 @@ STRING 64
 X
 }
 
+STRING 65
+// Units: h002 (Asteroid), Name (Name)
+{
+Asteroid
+}
+
+STRING 66
+// Units: h003 (Space Station), Name (Name)
+{
+Space Station
+}
+

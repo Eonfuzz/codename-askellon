@@ -3,13 +3,20 @@
 import { Game } from "../game";
 import { Ship } from "./ship";
 import { Trigger } from "../types/jass-overrides/trigger";
+import { SpaceObject } from "./space-objects/space-object";
+import { Asteroid } from "./space-objects/asteroid";
 
 export class SpaceModule {
     private game: Game;
 
+    //@ts-ignore
+    public spaceRect: rect = gg_rct_Space;
+
     // These are things like minerals, asteroids
     // These will not move normally
-    public spaceObjects: Object[];
+    public spaceObjects: SpaceObject[];
+
+    public mainShip: Ship;
 
     // An array of ships
     public ships: Ship[];
@@ -20,7 +27,19 @@ export class SpaceModule {
         this.ships          = [];
         this.spaceObjects   = [];
 
+
+        const spaceX = GetRectCenterX(this.spaceRect);
+        const spaceY = GetRectCenterY(this.spaceRect);
+
+        this.mainShip = new Ship(spaceX, spaceY);
+        this.mainShip.unit = CreateUnit(Player(0), FourCC('h003'), spaceX, spaceY, bj_UNIT_FACING);
+
         this.createTestShip();
+        let i = 0;
+        while (i < 100) {
+            i ++;
+            this.createTestAsteroid();
+        }
 
         this.initShips();
         this.initShipAbilities();
@@ -29,11 +48,27 @@ export class SpaceModule {
     createTestShip() {
         const unitId = FourCC('h000');
 
-        const ship = new Ship();
-        ship.unit = CreateUnit(Player(0), unitId, 0, 0, bj_UNIT_FACING);
+        const spaceX = GetRectCenterX(this.spaceRect);
+        const spaceY = GetRectCenterY(this.spaceRect);
+
+        const ship = new Ship(spaceX, spaceY);
+        ship.unit = CreateUnit(Player(0), unitId, spaceX, spaceY, bj_UNIT_FACING);
 
         // Add to our ship array
         this.ships.push(ship);
+    }
+
+    createTestAsteroid() {
+        if (!this.mainShip.unit) return;
+
+        const x = GetUnitX(this.mainShip.unit) + GetRandomReal(-2000, 2000);
+        const y = GetUnitY(this.mainShip.unit) + GetRandomReal(-2000, 2000);
+
+        const newAsteroid = new Asteroid(x, y);
+        this.spaceObjects.push(newAsteroid);
+
+        // Now load it in
+        newAsteroid.load(this.game);
     }
 
     
@@ -52,10 +87,24 @@ export class SpaceModule {
      * @param updatePeriod 
      */
     updateShips(updatePeriod: number) {
-        this.ships.forEach(ship => 
+        // Update mothership
+        this.mainShip.updateThrust(updatePeriod);
+        this.mainShip.applyThrust(updatePeriod);
+
+        // Dont call update position
+        const shipDelta = this.mainShip.getMomentum().multiplyN(updatePeriod);
+
+        // update space object
+        this.spaceObjects.forEach(o => 
+            o.updateLocation(shipDelta)
+             .onUpdate());
+
+        // Now update smol ships
+        this.ships.forEach(ship => {
             ship.updateThrust(updatePeriod)
                 .applyThrust(updatePeriod)
-                .updatePosition(updatePeriod));
+                .updatePosition(updatePeriod, shipDelta)
+        });
     }
 
     /**
@@ -63,6 +112,8 @@ export class SpaceModule {
      * @param unit 
      */
     getShipForUnit(unit: unit): Ship | undefined {
+        if (unit === this.mainShip.unit) return this.mainShip;
+
         for (let ship of this.ships) {
             if (ship.unit == unit) {
                 return ship;

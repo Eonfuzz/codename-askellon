@@ -1,3 +1,4 @@
+gg_rct_Space = nil
 function InitGlobals()
 end
 
@@ -36,6 +37,11 @@ end
 function CreateAllUnits()
     CreatePlayerBuildings()
     CreatePlayerUnits()
+end
+
+function CreateRegions()
+    local we
+    gg_rct_Space = Rect(14528.0, -19520.0, 29984.0, 864.0)
 end
 
 function InitCustomPlayerSlots()
@@ -311,6 +317,7 @@ function main()
     SetAmbientDaySound("SunkenRuinsDay")
     SetAmbientNightSound("SunkenRuinsNight")
     SetMapMusic("Music", true, 0)
+    CreateRegions()
     CreateAllItems()
     CreateAllUnits()
     InitBlizzard()

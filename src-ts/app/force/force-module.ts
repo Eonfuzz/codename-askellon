@@ -5,6 +5,10 @@ import { Game } from "../game";
 export class ForceModule {
     public activePlayers: Array<player>;
 
+
+    public neutralPassive: player;
+    public neutralHostile: player;
+
     constructor(game: Game) {
         // Load and set players based on active and human players
         this.activePlayers = [];
@@ -16,6 +20,9 @@ export class ForceModule {
                 this.activePlayers.push(Player(i));
             }
         }
+
+        this.neutralPassive = Player(22);
+        this.neutralHostile = Player(23);
     }
 
     /**
