@@ -36,7 +36,7 @@ export class SpaceModule {
 
         this.createTestShip();
         let i = 0;
-        while (i < 3000) {
+        while (i < 400) {
             i ++;
             this.createTestAsteroid();
         }
@@ -61,14 +61,14 @@ export class SpaceModule {
     createTestAsteroid() {
         if (!this.mainShip.unit) return;
 
-        const x = GetUnitX(this.mainShip.unit) + GetRandomReal(-2000, 2000);
-        const y = GetUnitY(this.mainShip.unit) + GetRandomReal(-2000, 2000);
+        const x = GetUnitX(this.mainShip.unit) + GetRandomReal(-5000, 5000);
+        const y = GetUnitY(this.mainShip.unit) + GetRandomReal(-5000, 5000);
 
         const newAsteroid = new Asteroid(x, y);
         this.spaceObjects.push(newAsteroid);
 
         // Now load it in
-        // newAsteroid.load(this.game);
+        newAsteroid.load(this.game);
     }
 
     

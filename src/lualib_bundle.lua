@@ -307,6 +307,18 @@ function __TS__ArraySplice(list, start, deleteCount, ...)
     return out
 end
 
+function __TS__ArrayToObject(array)
+    local object = {}
+    do
+        local i = 0
+        while i < #array do
+            object[i] = array[i + 1]
+            i = i + 1
+        end
+    end
+    return object
+end
+
 function __TS__ArrayFlat(array, depth)
     if depth == nil then
         depth = 1
@@ -382,16 +394,18 @@ end
 function __TS__ClassNewIndex(classTable, key, val)
     local tbl = classTable
     repeat
-        local setters = rawget(tbl, "____setters")
-        if setters then
-            local setter
-            setter = setters[key]
-            if setter then
-                setter(tbl, val)
-                return
+        do
+            local setters = rawget(tbl, "____setters")
+            if setters then
+                local setter
+                setter = setters[key]
+                if setter then
+                    setter(tbl, val)
+                    return
+                end
             end
+            tbl = rawget(tbl, "____super")
         end
-        tbl = rawget(tbl, "____super")
     until not tbl
     rawset(classTable, key, val)
 end
@@ -563,6 +577,8 @@ Map = (function()
         self[Symbol.toStringTag] = "Map"
         self.items = {}
         self.size = 0
+        self.nextKey = {}
+        self.previousKey = {}
         if entries == nil then
             return
         end
@@ -579,14 +595,17 @@ Map = (function()
             end
         else
             local array = entries
-            self.size = #array
             for ____, kvp in ipairs(array) do
-                self.items[kvp[1]] = kvp[2]
+                self:set(kvp[1], kvp[2])
             end
         end
     end
     function Map.prototype.clear(self)
         self.items = {}
+        self.nextKey = {}
+        self.previousKey = {}
+        self.firstKey = nil
+        self.lastKey = nil
         self.size = 0
         return
     end
@@ -594,12 +613,31 @@ Map = (function()
         local contains = self:has(key)
         if contains then
             self.size = self.size - 1
+            local next = self.nextKey[key]
+            local previous = self.previousKey[key]
+            if next and previous then
+                self.nextKey[previous] = next
+                self.previousKey[next] = previous
+            elseif next then
+                self.firstKey = next
+                self.previousKey[next] = nil
+            elseif previous then
+                self.lastKey = previous
+                self.nextKey[previous] = nil
+            else
+                self.firstKey = nil
+                self.lastKey = nil
+            end
+            self.nextKey[key] = nil
+            self.previousKey[key] = nil
         end
         self.items[key] = nil
         return contains
     end
     function Map.prototype.forEach(self, callback)
-        for key in pairs(self.items) do
+        for key in __TS__Iterator(
+            self:keys()
+        ) do
             callback(_G, self.items[key], key, self)
         end
         return
@@ -608,13 +646,22 @@ Map = (function()
         return self.items[key]
     end
     function Map.prototype.has(self, key)
-        return self.items[key] ~= nil
+        return self.nextKey[key] ~= nil or self.lastKey == key
     end
     function Map.prototype.set(self, key, value)
-        if not self:has(key) then
+        local isNewValue = not self:has(key)
+        if isNewValue then
             self.size = self.size + 1
         end
         self.items[key] = value
+        if self.firstKey == nil then
+            self.firstKey = key
+            self.lastKey = key
+        elseif isNewValue then
+            self.nextKey[self.lastKey] = key
+            self.previousKey[key] = self.lastKey
+            self.lastKey = key
+        end
         return self
     end
     Map.prototype[Symbol.iterator] = function(self)
@@ -622,42 +669,45 @@ Map = (function()
     end
     function Map.prototype.entries(self)
         local items = self.items
-        local key
-        local value
+        local nextKey = self.nextKey
+        local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
                 return self
             end,
             next = function(self)
-                key, value = next(items, key)
-                return {done = not key, value = {key, value}}
+                local result = {done = not key, value = {key, items[key]}}
+                key = nextKey[key]
+                return result
             end
         }
     end
     function Map.prototype.keys(self)
-        local items = self.items
-        local key
+        local nextKey = self.nextKey
+        local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
                 return self
             end,
             next = function(self)
-                key = next(items, key)
-                return {done = not key, value = key}
+                local result = {done = not key, value = key}
+                key = nextKey[key]
+                return result
             end
         }
     end
     function Map.prototype.values(self)
         local items = self.items
-        local key
-        local value
+        local nextKey = self.nextKey
+        local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
                 return self
             end,
             next = function(self)
-                key, value = next(items, key)
-                return {done = not key, value = value}
+                local result = {done = not key, value = items[key]}
+                key = nextKey[key]
+                return result
             end
         }
     end
@@ -776,6 +826,16 @@ function __TS__ObjectKeys(obj)
     return result
 end
 
+function __TS__ObjectRest(target, usedProperties)
+    local result = {}
+    for property in pairs(target) do
+        if not usedProperties[property] then
+            result[property] = target[property]
+        end
+    end
+    return result
+end
+
 function __TS__ObjectValues(obj)
     local result = {}
     for key in pairs(obj) do
@@ -798,8 +858,9 @@ Set = (function()
     end
     function Set.prototype.____constructor(self, values)
         self[Symbol.toStringTag] = "Set"
-        self.items = {}
         self.size = 0
+        self.nextKey = {}
+        self.previousKey = {}
         if values == nil then
             return
         end
@@ -815,21 +876,31 @@ Set = (function()
             end
         else
             local array = values
-            self.size = #array
             for ____, value in ipairs(array) do
-                self.items[value] = true
+                self:add(value)
             end
         end
     end
     function Set.prototype.add(self, value)
-        if not self:has(value) then
+        local isNewValue = not self:has(value)
+        if isNewValue then
             self.size = self.size + 1
         end
-        self.items[value] = true
+        if self.firstKey == nil then
+            self.firstKey = value
+            self.lastKey = value
+        elseif isNewValue then
+            self.nextKey[self.lastKey] = value
+            self.previousKey[value] = self.lastKey
+            self.lastKey = value
+        end
         return self
     end
     function Set.prototype.clear(self)
-        self.items = {}
+        self.nextKey = {}
+        self.previousKey = {}
+        self.firstKey = nil
+        self.lastKey = nil
         self.size = 0
         return
     end
@@ -837,57 +908,78 @@ Set = (function()
         local contains = self:has(value)
         if contains then
             self.size = self.size - 1
+            local next = self.nextKey[value]
+            local previous = self.previousKey[value]
+            if next and previous then
+                self.nextKey[previous] = next
+                self.previousKey[next] = previous
+            elseif next then
+                self.firstKey = next
+                self.previousKey[next] = nil
+            elseif previous then
+                self.lastKey = previous
+                self.nextKey[previous] = nil
+            else
+                self.firstKey = nil
+                self.lastKey = nil
+            end
+            self.nextKey[value] = nil
+            self.previousKey[value] = nil
         end
-        self.items[value] = nil
         return contains
     end
     function Set.prototype.forEach(self, callback)
-        for key in pairs(self.items) do
+        for key in __TS__Iterator(
+            self:keys()
+        ) do
             callback(_G, key, key, self)
         end
     end
     function Set.prototype.has(self, value)
-        return self.items[value] == true
+        return self.nextKey[value] ~= nil or self.lastKey == value
     end
     Set.prototype[Symbol.iterator] = function(self)
         return self:values()
     end
     function Set.prototype.entries(self)
-        local items = self.items
-        local key
+        local nextKey = self.nextKey
+        local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
                 return self
             end,
             next = function(self)
-                key = next(items, key)
-                return {done = not key, value = {key, key}}
+                local result = {done = not key, value = {key, key}}
+                key = nextKey[key]
+                return result
             end
         }
     end
     function Set.prototype.keys(self)
-        local items = self.items
-        local key
+        local nextKey = self.nextKey
+        local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
                 return self
             end,
             next = function(self)
-                key = next(items, key)
-                return {done = not key, value = key}
+                local result = {done = not key, value = key}
+                key = nextKey[key]
+                return result
             end
         }
     end
     function Set.prototype.values(self)
-        local items = self.items
-        local key
+        local nextKey = self.nextKey
+        local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
                 return self
             end,
             next = function(self)
-                key = next(items, key)
-                return {done = not key, value = key}
+                local result = {done = not key, value = key}
+                key = nextKey[key]
+                return result
             end
         }
     end
@@ -923,7 +1015,7 @@ WeakMap = (function()
                     break
                 end
                 local value = result.value
-                self:set(value[1], value[2])
+                self.items[value[1]] = value[2]
             end
         else
             for ____, kvp in ipairs(entries) do
@@ -977,7 +1069,7 @@ WeakSet = (function()
                 if result.done then
                     break
                 end
-                self:add(result.value)
+                self.items[result.value] = true
             end
         else
             for ____, value in ipairs(values) do
@@ -1012,10 +1104,9 @@ function __TS__SourceMapTraceBack(fileName, sourceMap)
                 trace,
                 "(%S+).lua:(%d+)",
                 function(file, line)
-                    if _G.__TS__sourcemap[tostring(file) .. ".lua"] and _G.__TS__sourcemap[tostring(file) .. ".lua"][line] then
-                        return tostring(file) .. ".ts:" .. tostring(
-                            _G.__TS__sourcemap[tostring(file) .. ".lua"][line]
-                        )
+                    local fileSourceMap = _G.__TS__sourcemap[tostring(file) .. ".lua"]
+                    if fileSourceMap and fileSourceMap[line] then
+                        return tostring(file) .. ".ts:" .. tostring(fileSourceMap[line])
                     end
                     return tostring(file) .. ".lua:" .. tostring(line)
                 end
@@ -1027,8 +1118,18 @@ end
 
 function __TS__Spread(iterable)
     local arr = {}
-    for item in __TS__Iterator(iterable) do
-        arr[#arr + 1] = item
+    if type(iterable) == "string" then
+        do
+            local i = 0
+            while i < #iterable do
+                arr[#arr + 1] = string.sub(iterable, i + 1, i + 1)
+                i = i + 1
+            end
+        end
+    else
+        for item in __TS__Iterator(iterable) do
+            arr[#arr + 1] = item
+        end
     end
     return (table.unpack or unpack)(arr)
 end
@@ -1146,7 +1247,7 @@ function __TS__StringSplit(source, separator, limit)
         end
     else
         local separatorLength = #separator
-        local nextIndex = ((string.find(source, separator) or 0) - 1)
+        local nextIndex = ((string.find(source, separator, nil, true) or 0) - 1)
         while nextIndex >= 0 and count < limit do
             out[count + 1] = string.sub(source, index + 1, nextIndex)
             count = count + 1

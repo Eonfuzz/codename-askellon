@@ -376,3 +376,21 @@ STRING 72
 Tree HQ
 }
 
+STRING 73
+// Abilities: A007 (Resolve), Tip (Tooltip - Normal)
+{
+Resolve
+}
+
+STRING 74
+// Abilities: A007 (Resolve), Name (Name)
+{
+Resolve
+}
+
+STRING 75
+// Abilities: A007 (Resolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 30% increased movement speed|n - All damage received is reduced by 30%|r
+}
+

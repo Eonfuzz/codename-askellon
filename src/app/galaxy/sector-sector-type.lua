@@ -1,7 +1,7 @@
 local ____exports = {}
-local __TSTL_sector_2Dnames = require("app.galaxy.sector-names")
-local SECTOR_NAMES = __TSTL_sector_2Dnames.SECTOR_NAMES
-local SECTOR_PREFIXES = __TSTL_sector_2Dnames.SECTOR_PREFIXES
+local ____sector_2Dnames = require("app.galaxy.sector-names")
+local SECTOR_NAMES = ____sector_2Dnames.SECTOR_NAMES
+local SECTOR_PREFIXES = ____sector_2Dnames.SECTOR_PREFIXES
 ____exports.SpaceSector = {}
 local SpaceSector = ____exports.SpaceSector
 SpaceSector.name = "SpaceSector"

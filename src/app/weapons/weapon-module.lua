@@ -1,15 +1,15 @@
 require("lualib_bundle");
 local ____exports = {}
-local __TSTL_vector3 = require("app.types.vector3")
-local Vector3 = __TSTL_vector3.Vector3
-local __TSTL_burst_2Drifle = require("app.weapons.guns.burst-rifle")
-local BurstRifle = __TSTL_burst_2Drifle.BurstRifle
-local __TSTL_crewmember_2Dmodule = require("app.crewmember.crewmember-module")
-local getCrewmemberForUnit = __TSTL_crewmember_2Dmodule.getCrewmemberForUnit
-local __TSTL_trigger = require("app.types.jass-overrides.trigger")
-local Trigger = __TSTL_trigger.Trigger
-local __TSTL_sniper_2Drifle = require("app.weapons.guns.sniper-rifle")
-local SniperRifle = __TSTL_sniper_2Drifle.SniperRifle
+local ____vector3 = require("app.types.vector3")
+local Vector3 = ____vector3.Vector3
+local ____burst_2Drifle = require("app.weapons.guns.burst-rifle")
+local BurstRifle = ____burst_2Drifle.BurstRifle
+local ____crewmember_2Dmodule = require("app.crewmember.crewmember-module")
+local getCrewmemberForUnit = ____crewmember_2Dmodule.getCrewmemberForUnit
+local ____trigger = require("app.types.jass-overrides.trigger")
+local Trigger = ____trigger.Trigger
+local ____sniper_2Drifle = require("app.weapons.guns.sniper-rifle")
+local SniperRifle = ____sniper_2Drifle.SniperRifle
 ____exports.WeaponModule = {}
 local WeaponModule = ____exports.WeaponModule
 WeaponModule.name = "WeaponModule"

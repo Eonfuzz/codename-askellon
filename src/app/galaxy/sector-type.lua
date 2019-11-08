@@ -1,7 +1,7 @@
 require("lualib_bundle");
 local ____exports = {}
-local __TSTL_sector_2Dsector_2Dtype = require("app.galaxy.sector-sector-type")
-local SpaceSector = __TSTL_sector_2Dsector_2Dtype.SpaceSector
+local ____sector_2Dsector_2Dtype = require("app.galaxy.sector-sector-type")
+local SpaceSector = ____sector_2Dsector_2Dtype.SpaceSector
 ____exports.SpaceGrid = {}
 local SpaceGrid = ____exports.SpaceGrid
 SpaceGrid.name = "SpaceGrid"
@@ -20,16 +20,16 @@ end
 function SpaceGrid.prototype.initSectors(self, minX, minY, maxX, maxY)
     local x = minX
     while (function()
-        local ____TS_tmp = x
-        x = ____TS_tmp + 1
-        return ____TS_tmp
+        local ____tmp = x
+        x = ____tmp + 1
+        return ____tmp
     end)() < maxX do
         local newSectors = {}
         local y = minY
         while (function()
-            local ____TS_tmp = y
-            y = ____TS_tmp + 1
-            return ____TS_tmp
+            local ____tmp = y
+            y = ____tmp + 1
+            return ____tmp
         end)() < maxY do
             __TS__ArrayPush(
                 newSectors,

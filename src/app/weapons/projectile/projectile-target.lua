@@ -1,6 +1,6 @@
 local ____exports = {}
-local __TSTL_vector3 = require("app.types.vector3")
-local Vector3 = __TSTL_vector3.Vector3
+local ____vector3 = require("app.types.vector3")
+local Vector3 = ____vector3.Vector3
 ____exports.ProjectileTargetStatic = {}
 local ProjectileTargetStatic = ____exports.ProjectileTargetStatic
 ProjectileTargetStatic.name = "ProjectileTargetStatic"

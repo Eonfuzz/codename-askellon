@@ -1,7 +1,7 @@
 require("lualib_bundle");
 local ____exports = {}
-local __TSTL_projectile_2Dsfx = require("app.weapons.projectile.projectile-sfx")
-local ProjectileSFX = __TSTL_projectile_2Dsfx.ProjectileSFX
+local ____projectile_2Dsfx = require("app.weapons.projectile.projectile-sfx")
+local ProjectileSFX = ____projectile_2Dsfx.ProjectileSFX
 local DEFAULT_FILTER
 DEFAULT_FILTER = function(projectile)
     return Filter(

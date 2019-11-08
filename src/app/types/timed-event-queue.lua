@@ -1,9 +1,9 @@
 require("lualib_bundle");
 local ____exports = {}
-local __TSTL_trigger = require("app.types.jass-overrides.trigger")
-local Trigger = __TSTL_trigger.Trigger
-local __TSTL_translators = require("lib.translators")
-local Util = __TSTL_translators.Util
+local ____trigger = require("app.types.jass-overrides.trigger")
+local Trigger = ____trigger.Trigger
+local ____translators = require("lib.translators")
+local Util = ____translators.Util
 ____exports.TimedEventQueue = {}
 local TimedEventQueue = ____exports.TimedEventQueue
 TimedEventQueue.name = "TimedEventQueue"

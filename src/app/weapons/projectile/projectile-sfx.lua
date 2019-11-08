@@ -1,6 +1,6 @@
 local ____exports = {}
-local __TSTL_translators = require("lib.translators")
-local getYawPitchRollFromVector = __TSTL_translators.getYawPitchRollFromVector
+local ____translators = require("lib.translators")
+local getYawPitchRollFromVector = ____translators.getYawPitchRollFromVector
 ____exports.ProjectileSFX = {}
 local ProjectileSFX = ____exports.ProjectileSFX
 ProjectileSFX.name = "ProjectileSFX"

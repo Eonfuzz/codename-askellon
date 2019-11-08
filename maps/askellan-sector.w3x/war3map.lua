@@ -4,12 +4,12 @@ end
 
 function CreateAllItems()
     local itemID
-    CreateItem(FourCC("I000"), -155.3, -90.6)
-    CreateItem(FourCC("I000"), 60.4, -160.3)
-    CreateItem(FourCC("I000"), -167.3, -284.7)
-    CreateItem(FourCC("I000"), 93.2, 55.7)
-    CreateItem(FourCC("I001"), -407.0, 80.9)
-    CreateItem(FourCC("I001"), -252.0, 37.1)
+    BlzCreateItemWithSkin(FourCC("I000"), -155.3, -90.6, FourCC("I000"))
+    BlzCreateItemWithSkin(FourCC("I000"), 60.4, -160.3, FourCC("I000"))
+    BlzCreateItemWithSkin(FourCC("I000"), -167.3, -284.7, FourCC("I000"))
+    BlzCreateItemWithSkin(FourCC("I000"), 93.2, 55.7, FourCC("I000"))
+    BlzCreateItemWithSkin(FourCC("I001"), -407.0, 80.9, FourCC("I001"))
+    BlzCreateItemWithSkin(FourCC("I001"), -252.0, 37.1, FourCC("I001"))
 end
 
 function CreateUnitsForPlayer20()
@@ -18,13 +18,13 @@ function CreateUnitsForPlayer20()
     local unitID
     local t
     local life
-    u = CreateUnit(p, FourCC("uaco"), 328.3, -2182.2, 197.837)
-    u = CreateUnit(p, FourCC("uaco"), 663.9, -302.4, 250.155)
-    u = CreateUnit(p, FourCC("uaco"), 460.5, -541.0, 120.974)
-    u = CreateUnit(p, FourCC("uaco"), 396.1, -598.2, 132.774)
-    u = CreateUnit(p, FourCC("uaco"), 337.8, -628.5, 305.078)
-    u = CreateUnit(p, FourCC("uaco"), 260.3, -658.4, 315.998)
-    u = CreateUnit(p, FourCC("uaco"), 184.7, -671.5, 193.893)
+    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 328.3, -2182.2, 197.837, FourCC("uaco"))
+    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 663.9, -302.4, 250.155, FourCC("uaco"))
+    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 460.5, -541.0, 120.974, FourCC("uaco"))
+    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 396.1, -598.2, 132.774, FourCC("uaco"))
+    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 337.8, -628.5, 305.078, FourCC("uaco"))
+    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 260.3, -658.4, 315.998, FourCC("uaco"))
+    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 184.7, -671.5, 193.893, FourCC("uaco"))
 end
 
 function CreatePlayerBuildings()

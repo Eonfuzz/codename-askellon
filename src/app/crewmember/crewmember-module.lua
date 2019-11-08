@@ -1,9 +1,9 @@
 require("lualib_bundle");
 local ____exports = {}
-local __TSTL_crewmember_2Dtype = require("app.crewmember.crewmember-type")
-local Crewmember = __TSTL_crewmember_2Dtype.Crewmember
-local __TSTL_crewmember_2Dnames = require("app.crewmember.crewmember-names")
-local ROLE_NAMES = __TSTL_crewmember_2Dnames.ROLE_NAMES
+local ____crewmember_2Dtype = require("app.crewmember.crewmember-type")
+local Crewmember = ____crewmember_2Dtype.Crewmember
+local ____crewmember_2Dnames = require("app.crewmember.crewmember-names")
+local ROLE_NAMES = ____crewmember_2Dnames.ROLE_NAMES
 local CREWMEMBER_UNIT_ID, AVAILABLE_ROLES, initialiseRoles, createCrew, getCrewmemberRole, getCrewmemberName
 function initialiseRoles(game)
     __TS__ArrayForEach(

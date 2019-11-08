@@ -1,10 +1,10 @@
 local ____exports = {}
-local __TSTL_serilog = require("lib.serilog.serilog")
-local Log = __TSTL_serilog.Log
-local LogEventType = __TSTL_serilog.LogEventType
-local LogLevel = __TSTL_serilog.LogLevel
-local __TSTL_translators = require("lib.translators")
-local SendMessageUnlogged = __TSTL_translators.SendMessageUnlogged
+local ____serilog = require("lib.serilog.serilog")
+local Log = ____serilog.Log
+local LogEventType = ____serilog.LogEventType
+local LogLevel = ____serilog.LogLevel
+local ____translators = require("lib.translators")
+local SendMessageUnlogged = ____translators.SendMessageUnlogged
 ____exports.StringSink = {}
 local StringSink = ____exports.StringSink
 StringSink.name = "StringSink"

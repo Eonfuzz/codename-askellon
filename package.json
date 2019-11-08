@@ -1,16 +1,31 @@
 {
-  "name": "ts-template",
+  "name": "codename-askellon",
   "version": "1.0.0",
   "description": "",
+  "author": "Eonfuzz",
+  "license": "MIT",
   "main": "src-ts/main.ts",
   "scripts": {
-    "test": "tstl -p tsconfig.json --rootDir \"src-ts\" && ceres.exe run askellan-sector.w3x",
-    "build": "tstl -p tsconfig.json --rootDir \"src-ts\" && ceres.exe build askellan-sector.w3x"
+    "test": "tstl -p tsconfig.json --rootDir \"src-ts\" && node bin/operations build && node bin/operations run",
+    "build": "tstl -p tsconfig.json --rootDir \"src-ts\" && node bin/operations build",
+    "dev": "npm-watch",
+    "build:defs": "node bin/operations gen-defs"
   },
-  "author": "TriggerHappy",
-  "license": "ISC",
+  "watch": {
+    "build:defs": {
+      "patterns": [
+        "./maps/map.w3x"
+      ],
+      "extensions": "lua",
+      "legacyWatch": true
+    }
+  },
   "dependencies": {
-    "lua-types": "^2.6.0",
-    "typescript-to-lua": "^0.23.0"
+    "npm-watch": "^0.6.0",
+    "typescript-to-lua": "^0.27.1",
+    "war3tstlhelper": "^1.0.0"
+  },
+  "devDependencies": {
+    "lua-types": "^2.6.1"
   }
 }

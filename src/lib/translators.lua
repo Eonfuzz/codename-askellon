@@ -82,32 +82,32 @@ function Util.isUnitCreep(self, u)
     local ownerID = GetPlayerId(
         GetOwningPlayer(u)
     )
-    local ____TS_switch13 = ownerID
-    if ____TS_switch13 == ____exports.COLOUR.NAVY then
-        goto ____TS_switch13_case_0
+    local ____switch13 = ownerID
+    if ____switch13 == ____exports.COLOUR.NAVY then
+        goto ____switch13_case_0
     end
-    if ____TS_switch13 == ____exports.COLOUR.TURQUOISE then
-        goto ____TS_switch13_case_1
+    if ____switch13 == ____exports.COLOUR.TURQUOISE then
+        goto ____switch13_case_1
     end
-    if ____TS_switch13 == ____exports.COLOUR.VOILET then
-        goto ____TS_switch13_case_2
+    if ____switch13 == ____exports.COLOUR.VOILET then
+        goto ____switch13_case_2
     end
-    if ____TS_switch13 == ____exports.COLOUR.WHEAT then
-        goto ____TS_switch13_case_3
+    if ____switch13 == ____exports.COLOUR.WHEAT then
+        goto ____switch13_case_3
     end
-    goto ____TS_switch13_case_default
-    ::____TS_switch13_case_0::
-    ::____TS_switch13_case_1::
-    ::____TS_switch13_case_2::
-    ::____TS_switch13_case_3::
+    goto ____switch13_case_default
+    ::____switch13_case_0::
+    ::____switch13_case_1::
+    ::____switch13_case_2::
+    ::____switch13_case_3::
     do
         return true
     end
-    ::____TS_switch13_case_default::
+    ::____switch13_case_default::
     do
         return false
     end
-    ::____TS_switch13_end::
+    ::____switch13_end::
 end
 function Util.ColourString(self, colour, str)
     return "|cFF" .. tostring(colour) .. tostring(str) .. "|r"
@@ -163,9 +163,9 @@ function Util.GetRandomKey(self, collection)
         collection:keys()
     ) do
         if (function()
-            local ____TS_tmp = cntr
-            cntr = ____TS_tmp + 1
-            return ____TS_tmp
+            local ____tmp = cntr
+            cntr = ____tmp + 1
+            return ____tmp
         end)() == index then
             return key
         end
@@ -215,73 +215,73 @@ end
 Util.COLOUR_IDS = {RED = 0, BLUE = 1, TEAL = 2, PURPLE = 3, YELLOW = 4, ORANGE = 5, GREEN = 6, PINK = 7, GRAY = 8, GREY = 8, LIGHT_BLUE = 9, LIGHTBLUE = 9, LB = 9, DARK_GREEN = 10, DARKGREEN = 10, DG = 10, BROWN = 11, MAROON = 12, NAVY = 13, TURQUOISE = 14, VOILET = 15, WHEAT = 16, PEACH = 17, MINT = 18, LAVENDER = 19, COAL = 20, SNOW = 21, EMERALD = 22, PEANUT = 23}
 ____exports.COLOUR = {}
 ____exports.COLOUR.RED = 0
-____exports.COLOUR[0] = "RED"
+____exports.COLOUR[____exports.COLOUR.RED] = "RED"
 ____exports.COLOUR.BLUE = 1
-____exports.COLOUR[1] = "BLUE"
+____exports.COLOUR[____exports.COLOUR.BLUE] = "BLUE"
 ____exports.COLOUR.TEAL = 2
-____exports.COLOUR[2] = "TEAL"
+____exports.COLOUR[____exports.COLOUR.TEAL] = "TEAL"
 ____exports.COLOUR.PURPLE = 3
-____exports.COLOUR[3] = "PURPLE"
+____exports.COLOUR[____exports.COLOUR.PURPLE] = "PURPLE"
 ____exports.COLOUR.YELLOW = 4
-____exports.COLOUR[4] = "YELLOW"
+____exports.COLOUR[____exports.COLOUR.YELLOW] = "YELLOW"
 ____exports.COLOUR.ORANGE = 5
-____exports.COLOUR[5] = "ORANGE"
+____exports.COLOUR[____exports.COLOUR.ORANGE] = "ORANGE"
 ____exports.COLOUR.GREEN = 6
-____exports.COLOUR[6] = "GREEN"
+____exports.COLOUR[____exports.COLOUR.GREEN] = "GREEN"
 ____exports.COLOUR.PINK = 7
-____exports.COLOUR[7] = "PINK"
+____exports.COLOUR[____exports.COLOUR.PINK] = "PINK"
 ____exports.COLOUR.GRAY = 8
-____exports.COLOUR[8] = "GRAY"
+____exports.COLOUR[____exports.COLOUR.GRAY] = "GRAY"
 ____exports.COLOUR.LIGHT_BLUE = 9
-____exports.COLOUR[9] = "LIGHT_BLUE"
+____exports.COLOUR[____exports.COLOUR.LIGHT_BLUE] = "LIGHT_BLUE"
 ____exports.COLOUR.DARK_GREEN = 10
-____exports.COLOUR[10] = "DARK_GREEN"
+____exports.COLOUR[____exports.COLOUR.DARK_GREEN] = "DARK_GREEN"
 ____exports.COLOUR.BROWN = 11
-____exports.COLOUR[11] = "BROWN"
+____exports.COLOUR[____exports.COLOUR.BROWN] = "BROWN"
 ____exports.COLOUR.MAROON = 12
-____exports.COLOUR[12] = "MAROON"
+____exports.COLOUR[____exports.COLOUR.MAROON] = "MAROON"
 ____exports.COLOUR.NAVY = 13
-____exports.COLOUR[13] = "NAVY"
+____exports.COLOUR[____exports.COLOUR.NAVY] = "NAVY"
 ____exports.COLOUR.TURQUOISE = 14
-____exports.COLOUR[14] = "TURQUOISE"
+____exports.COLOUR[____exports.COLOUR.TURQUOISE] = "TURQUOISE"
 ____exports.COLOUR.VOILET = 15
-____exports.COLOUR[15] = "VOILET"
+____exports.COLOUR[____exports.COLOUR.VOILET] = "VOILET"
 ____exports.COLOUR.WHEAT = 16
-____exports.COLOUR[16] = "WHEAT"
+____exports.COLOUR[____exports.COLOUR.WHEAT] = "WHEAT"
 ____exports.COLOUR.PEACH = 17
-____exports.COLOUR[17] = "PEACH"
+____exports.COLOUR[____exports.COLOUR.PEACH] = "PEACH"
 ____exports.COLOUR.MINT = 18
-____exports.COLOUR[18] = "MINT"
+____exports.COLOUR[____exports.COLOUR.MINT] = "MINT"
 ____exports.COLOUR.LAVENDER = 19
-____exports.COLOUR[19] = "LAVENDER"
+____exports.COLOUR[____exports.COLOUR.LAVENDER] = "LAVENDER"
 ____exports.COLOUR.COAL = 20
-____exports.COLOUR[20] = "COAL"
+____exports.COLOUR[____exports.COLOUR.COAL] = "COAL"
 ____exports.COLOUR.SNOW = 21
-____exports.COLOUR[21] = "SNOW"
+____exports.COLOUR[____exports.COLOUR.SNOW] = "SNOW"
 ____exports.COLOUR.EMERALD = 22
-____exports.COLOUR[22] = "EMERALD"
+____exports.COLOUR[____exports.COLOUR.EMERALD] = "EMERALD"
 ____exports.COLOUR.PEANUT = 23
-____exports.COLOUR[23] = "PEANUT"
+____exports.COLOUR[____exports.COLOUR.PEANUT] = "PEANUT"
 ____exports.CREEP_TYPE = {}
 ____exports.CREEP_TYPE.NORMAL = 0
-____exports.CREEP_TYPE[0] = "NORMAL"
+____exports.CREEP_TYPE[____exports.CREEP_TYPE.NORMAL] = "NORMAL"
 ____exports.CREEP_TYPE.AIR = 1
-____exports.CREEP_TYPE[1] = "AIR"
+____exports.CREEP_TYPE[____exports.CREEP_TYPE.AIR] = "AIR"
 ____exports.CREEP_TYPE.CHAMPION = 2
-____exports.CREEP_TYPE[2] = "CHAMPION"
+____exports.CREEP_TYPE[____exports.CREEP_TYPE.CHAMPION] = "CHAMPION"
 ____exports.CREEP_TYPE.BOSS = 3
-____exports.CREEP_TYPE[3] = "BOSS"
+____exports.CREEP_TYPE[____exports.CREEP_TYPE.BOSS] = "BOSS"
 ____exports.ARMOUR_TYPE = {}
 ____exports.ARMOUR_TYPE.UNARMOURED = 0
-____exports.ARMOUR_TYPE[0] = "UNARMOURED"
+____exports.ARMOUR_TYPE[____exports.ARMOUR_TYPE.UNARMOURED] = "UNARMOURED"
 ____exports.ARMOUR_TYPE.LIGHT = 1
-____exports.ARMOUR_TYPE[1] = "LIGHT"
+____exports.ARMOUR_TYPE[____exports.ARMOUR_TYPE.LIGHT] = "LIGHT"
 ____exports.ARMOUR_TYPE.MEDIUM = 2
-____exports.ARMOUR_TYPE[2] = "MEDIUM"
+____exports.ARMOUR_TYPE[____exports.ARMOUR_TYPE.MEDIUM] = "MEDIUM"
 ____exports.ARMOUR_TYPE.HEAVY = 3
-____exports.ARMOUR_TYPE[3] = "HEAVY"
+____exports.ARMOUR_TYPE[____exports.ARMOUR_TYPE.HEAVY] = "HEAVY"
 ____exports.ARMOUR_TYPE.FORTIFIED = 4
-____exports.ARMOUR_TYPE[4] = "FORTIFIED"
+____exports.ARMOUR_TYPE[____exports.ARMOUR_TYPE.FORTIFIED] = "FORTIFIED"
 ____exports.ARMOUR_TYPE.HERO = 5
-____exports.ARMOUR_TYPE[5] = "HERO"
+____exports.ARMOUR_TYPE[____exports.ARMOUR_TYPE.HERO] = "HERO"
 return ____exports
