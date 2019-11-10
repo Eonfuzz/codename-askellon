@@ -1,6 +1,8 @@
+require("lualib_bundle");
 local ____exports = {}
 local GALAXY_MODULE = require("app.galaxy.galaxy-module")
-local CREW_MODULE = require("app.crewmember.crewmember-module")
+local ____crewmember_2Dmodule = require("app.crewmember.crewmember-module")
+local CrewModule = ____crewmember_2Dmodule.CrewModule
 local ____weapon_2Dmodule = require("app.weapons.weapon-module")
 local WeaponModule = ____weapon_2Dmodule.WeaponModule
 local ____timed_2Devent_2Dqueue = require("app.types.timed-event-queue")
@@ -9,6 +11,10 @@ local ____force_2Dmodule = require("app.force.force-module")
 local ForceModule = ____force_2Dmodule.ForceModule
 local ____space_2Dmodule = require("app.space.space-module")
 local SpaceModule = ____space_2Dmodule.SpaceModule
+local ____trigger = require("app.types.jass-overrides.trigger")
+local Trigger = ____trigger.Trigger
+local ____game_2Dtime_2Delapsed = require("app.types.game-time-elapsed")
+local GameTimeElapsed = ____game_2Dtime_2Delapsed.GameTimeElapsed
 ____exports.Game = {}
 local Game = ____exports.Game
 Game.name = "Game"
@@ -23,15 +29,43 @@ function Game.new(...)
 end
 function Game.prototype.____constructor(self)
     self.TEMP_LOCATION = Location(0, 0)
-    self.globalTimer = CreateTimer()
     self.timedEventQueue = TimedEventQueue.new(self)
+    self.gameTimeElapsed = GameTimeElapsed.new()
     self.forceModule = ForceModule.new(self)
     self.weaponModule = WeaponModule.new(self)
     self.spaceModule = SpaceModule.new(self)
+    self.crewModule = CrewModule.new(self)
     GALAXY_MODULE.initSectors()
-    CREW_MODULE.initCrew(self)
+    self:initCommands()
 end
 function Game.prototype.getTimeStamp(self)
-    return TimerGetElapsed(self.globalTimer)
+    return self.gameTimeElapsed:getTimeElapsed()
+end
+function Game.prototype.initCommands(self)
+    local commandTrigger = Trigger.new()
+    __TS__ArrayForEach(
+        self.forceModule.activePlayers,
+        function(____, player)
+            commandTrigger:RegisterPlayerChatEvent(player, "-", false)
+        end
+    )
+    commandTrigger:AddAction(
+        function()
+            local triggerPlayer = GetTriggerPlayer()
+            local crew = self.crewModule:getCrewmemberForPlayer(triggerPlayer)
+            local message = GetEventPlayerChatString()
+            if message == "-resolve" and crew then
+                crew.resolve:createResolve(
+                    self,
+                    crew,
+                    {
+                        startTimeStamp = self:getTimeStamp(),
+                        duration = 5
+                    }
+                )
+                SetUnitLifePercentBJ(crew.unit, 20)
+            end
+        end
+    )
 end
 return ____exports

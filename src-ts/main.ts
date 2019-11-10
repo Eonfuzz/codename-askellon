@@ -11,7 +11,6 @@ ceres.addHook("main::after", () => {
     
     Log.Init([
         new StringSink(LogLevel.Debug, TRANSLATORS.SendMessageUnlogged),
-                 // new PreloadSink(LogLevel.Message, `WCMAUL\\${os.time()}.txt`),
     ]);
 
     function Main(){

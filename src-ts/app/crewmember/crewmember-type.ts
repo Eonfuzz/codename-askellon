@@ -1,5 +1,8 @@
 import { BurstRifle } from "../weapons/guns/burst-rifle";
 import { Gun } from "../weapons/guns/gun";
+import { BuffInstance } from "../buff/buff-instance";
+import { Resolve } from "../buff/resolve";
+import { Game } from "../game";
 
 /** @noSelfInFile **/
 
@@ -13,11 +16,13 @@ export class Crewmember {
 
     public weapon: Gun | undefined;
 
-    constructor(player: player, unit: unit) {
+    public resolve: Resolve
+
+    constructor(game: Game, player: player, unit: unit) {
         this.player = player;
         this.unit = unit;
-        // this.weapon = new BurstRifle();
-        // this.weapon.onAdd(this);
+        this.resolve = new Resolve();
+        this.resolve.onChange(() => this.onResolveChange(game))
     }
 
     setUnit(unit: unit) { this.unit = unit; }
@@ -25,6 +30,23 @@ export class Crewmember {
     setName(name: string) { this.name = name; }
     setPlayer(player: player) { this.player = player; }
 
+    onResolveChange(game: Game) {
+        const resolveActive = this.resolve.isActiveNoCheck();
+
+        if (resolveActive) {
+            this.resolve.removeHighlightEffect(game, this);
+            this.resolve.createHighlightEffect(game, this);
+        }
+        else if (GetUnitLifePercent(this.unit) <= 30) {
+            this.resolve.createResolve(game, this, {
+                startTimeStamp: game.getTimeStamp(),
+                duration: 2
+            });
+        }
+        else {
+            this.resolve.removeHighlightEffect(game, this);
+        }
+    }
 
     log() {
         print("+++ Crewmember Information +++");

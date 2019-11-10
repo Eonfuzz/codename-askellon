@@ -30,9 +30,32 @@ export class TimedEventQueue {
         }));
     }
 
-    public AddEvent(event: TimedEvent): void {
+    /**
+     * Retruns the event hash
+     * @param event 
+     */
+    public AddEvent(event: TimedEvent): string {
+        const hash = Util.RandomHash(10);
         event.setTickRate(1000 * this.tickRate);
-        this.events.set(Util.RandomHash(10), event);
+        // event.SetCreatedTime(this.game.getTimeStamp());
+        this.events.set(hash, event);
+        return hash;
+    }
+
+    public RemoveEvent(eventHash: string): void {
+        if (this.events.has(eventHash)) {
+            this.events.delete(eventHash);
+        }
+    }
+
+    public GetEvent(eventHash: string): TimedEvent | undefined {
+        if (this.events.has(eventHash)) {
+            return this.events.get(eventHash);
+        }
+    }
+
+    public GetEventExpireTime(event: TimedEvent): number {
+        return event.GetEndTick() * this.tickRate;
     }
 
     public GetGame(): Game {

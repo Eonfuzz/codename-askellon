@@ -41,11 +41,23 @@ function TimedEventQueue.prototype.HandleTick(self)
     )
 end
 function TimedEventQueue.prototype.AddEvent(self, event)
+    local hash = Util:RandomHash(10)
     event:setTickRate(1000 * self.tickRate)
-    self.events:set(
-        Util:RandomHash(10),
-        event
-    )
+    self.events:set(hash, event)
+    return hash
+end
+function TimedEventQueue.prototype.RemoveEvent(self, eventHash)
+    if self.events:has(eventHash) then
+        self.events:delete(eventHash)
+    end
+end
+function TimedEventQueue.prototype.GetEvent(self, eventHash)
+    if self.events:has(eventHash) then
+        return self.events:get(eventHash)
+    end
+end
+function TimedEventQueue.prototype.GetEventExpireTime(self, event)
+    return event:GetEndTick() * self.tickRate
 end
 function TimedEventQueue.prototype.GetGame(self)
     return self.game

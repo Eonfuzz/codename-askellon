@@ -35,4 +35,7 @@ function TimedEvent.prototype.AttemptAction(self, currentTick, teq)
     end
     return false
 end
+function TimedEvent.prototype.GetEndTick(self)
+    return self.endtime or 1
+end
 return ____exports

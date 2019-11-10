@@ -15,8 +15,6 @@ local BURST_RIFLE_EXTENDED = ____weapon_2Dtooltips.BURST_RIFLE_EXTENDED
 local ____translators = require("lib.translators")
 local PlayNewSoundOnUnit = ____translators.PlayNewSoundOnUnit
 local staticDecorator = ____translators.staticDecorator
-local ____crewmember_2Dmodule = require("app.crewmember.crewmember-module")
-local getCrewmemberForUnit = ____crewmember_2Dmodule.getCrewmemberForUnit
 ____exports.BurstRifle = {}
 local BurstRifle = ____exports.BurstRifle
 BurstRifle.name = "BurstRifle"
@@ -132,7 +130,7 @@ end
 function BurstRifle.prototype.onProjectileCollide(self, weaponModule, projectile, collidesWith)
     projectile:setDestroy(true)
     if self.equippedTo then
-        local crewmember = getCrewmemberForUnit(self.equippedTo)
+        local crewmember = weaponModule.game.crewModule:getCrewmemberForUnit(self.equippedTo)
         if crewmember then
             UnitDamageTarget(
                 projectile.source,

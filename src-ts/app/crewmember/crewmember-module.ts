@@ -3,80 +3,91 @@ import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES } from "./crewmember-names";
 import { Game } from "../game";
 
-// TODO Replace with unit id
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 
-const CREW_MEMBERS: Array<Crewmember> = [];
-const AVAILABLE_ROLES: Array<string> = [];
+export class CrewModule {
 
-export function initCrew(game: Game) {
-    // Load available roles
-    initialiseRoles(game);
+    CREW_MEMBERS: Array<Crewmember> = [];
+    AVAILABLE_ROLES: Array<string> = [];
 
-    // Initialise first crewmember todo
+    constructor(game: Game) {
+        // Load available roles
+        this.initialiseRoles(game);
+    
+        // Initialise first crewmember todo
+    
+        game.forceModule.activePlayers.forEach(player => {
+            let crew = this.createCrew(game, GetPlayerId(player));
+            // crew.log();
+            this.CREW_MEMBERS.push(crew);
+        });
+    }
 
-    game.forceModule.activePlayers.forEach(player => {
-        let crew = createCrew(GetPlayerId(player));
-        // crew.log();
-        CREW_MEMBERS.push(crew);
-    });
-}
+    initialiseRoles(game: Game) {
+        game.forceModule.activePlayers.forEach((p, index) => {
+            if (index === 0) {
+                this.AVAILABLE_ROLES.push("Captain");
+            } 
+            else {
+                this.AVAILABLE_ROLES.push("Security Guard");
+            }
+    
+        });
+    }
 
-function initialiseRoles(game: Game) {
-    game.forceModule.activePlayers.forEach((p, index) => {
-        if (index === 0) {
-            AVAILABLE_ROLES.push("Captain");
-        } 
-        else {
-            AVAILABLE_ROLES.push("Security Guard");
+    createCrew(game: Game, playerId: number): Crewmember {
+        let nPlayer = Player(playerId);
+    
+        let nUnit = CreateUnit(nPlayer, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
+    
+        let crewmember = new Crewmember(game, nPlayer, nUnit);
+        crewmember.setRole(this.getCrewmemberRole());
+        crewmember.setName(this.getCrewmemberName(crewmember.role));
+        crewmember.setPlayer(nPlayer);
+    
+        BlzSetUnitName(nUnit, crewmember.role);
+        BlzSetHeroProperName(nUnit, crewmember.name);
+    
+        return crewmember;
+    }
+    
+
+    getCrewmemberRole() {
+        const i = Math.floor( Math.random() * this.AVAILABLE_ROLES.length );
+        const role = this.AVAILABLE_ROLES[i];
+        this.AVAILABLE_ROLES.splice(i, 1);
+        return role;
+    }
+    
+    getCrewmemberName(role: string) {
+        // TODO Fix this
+        let namesForRole;
+        if (role === "Captain") {
+            namesForRole = ROLE_NAMES["Captain"];
         }
-
-    });
-}
-
-function createCrew(playerId: number): Crewmember {
-    let nPlayer = Player(playerId);
-
-    let nUnit = CreateUnit(nPlayer, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
-
-    let crewmember = new Crewmember(nPlayer, nUnit);
-    crewmember.setRole(getCrewmemberRole());
-    crewmember.setName(getCrewmemberName(crewmember.role));
-    crewmember.setPlayer(nPlayer);
-
-    BlzSetUnitName(nUnit, crewmember.role);
-    BlzSetHeroProperName(nUnit, crewmember.name);
-
-    return crewmember;
-}
-
-function getCrewmemberRole() {
-    const i = Math.floor( Math.random() * AVAILABLE_ROLES.length );
-    const role = AVAILABLE_ROLES[i];
-    AVAILABLE_ROLES.splice(i, 1);
-    return role;
-}
-
-function getCrewmemberName(role: string) {
-    // TODO Fix this
-    let namesForRole;
-    if (role === "Captain") {
-        namesForRole = ROLE_NAMES["Captain"];
+        else {
+            namesForRole = ROLE_NAMES["Security Guard"];
+        }
+        const i = Math.floor( Math.random() * namesForRole.length );
+        const name = namesForRole[i];
+        // print("")
+        namesForRole.splice(i, 1);
+        return name;
     }
-    else {
-        namesForRole = ROLE_NAMES["Security Guard"];
-    }
-    const i = Math.floor( Math.random() * namesForRole.length );
-    const name = namesForRole[i];
-    // print("")
-    namesForRole.splice(i, 1);
-    return name;
-}
 
-export function getCrewmemberForUnit(unit: unit): Crewmember | void {
-    for (let member of CREW_MEMBERS) {
-        if (member.unit == unit) {
-            return member;
+    getCrewmemberForPlayer(player: player) {
+        for (let member of this.CREW_MEMBERS) {
+            if (member.player == player) {
+                return member;
+            }
+        }
+    }
+
+    getCrewmemberForUnit(unit: unit): Crewmember | void {
+        for (let member of this.CREW_MEMBERS) {
+            if (member.unit == unit) {
+                return member;
+            }
         }
     }
 }

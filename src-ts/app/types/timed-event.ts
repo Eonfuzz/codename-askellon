@@ -5,6 +5,7 @@ export class TimedEvent {
     private func: () => boolean;
     private safe: boolean;
     private endtime: number | undefined;
+    // private created: number | undefined;
 
     /**
      * 
@@ -40,4 +41,16 @@ export class TimedEvent {
         }
         return false;
     }
+
+    public GetEndTick() {
+        return this.endtime || 1;
+    }
+
+    // public SetCreatedTime(time: number) {
+    //     this.created = time;
+    // }
+
+    // public GetCreatedTime() {
+    //     return this.created;
+    // }
 }

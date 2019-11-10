@@ -6,7 +6,6 @@ import { ProjectileTargetStatic } from "./projectile/projectile-target";
 import { ProjectileSFX } from "./projectile/projectile-sfx";
 import { Gun } from "./guns/gun";
 import { BurstRifle } from "./guns/burst-rifle";
-import { getCrewmemberForUnit } from "../crewmember/crewmember-module";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
@@ -156,7 +155,7 @@ export class WeaponModule {
             const item = UnitItemInSlot(unit, itemSlot);
 
             // Phew, hope you have the water running, ready for your shower            
-            let crewmember = getCrewmemberForUnit(unit);
+            let crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
             let weapon = this.getGunForItem(item);
             let oldWeapon = this.getGunForUnit(unit);
 
@@ -188,7 +187,7 @@ export class WeaponModule {
             );
 
             // Get unit weapon instance
-            const crewmember = getCrewmemberForUnit(unit);
+            const crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
             const weapon = this.getGunForUnit(unit);
             if (weapon && crewmember) {
                 // If we are targeting a unit pass the event over to the force module

@@ -10,7 +10,6 @@ import { TimedEvent } from "../../types/timed-event";
 import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator, getYawPitchRollFromVector } from "../../../lib/translators";
-import { getCrewmemberForUnit } from "../../crewmember/crewmember-module";
 
 @staticDecorator<GunDecorator>()
 export class SniperRifle implements Gun {
@@ -144,7 +143,7 @@ export class SniperRifle implements Gun {
     private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
-            const crewmember = getCrewmemberForUnit(this.equippedTo);
+            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo);
             if (crewmember) {
                 const damage = this.getDamage(weaponModule, crewmember);
                 UnitDamageTarget(

@@ -4,8 +4,6 @@ local ____vector3 = require("app.types.vector3")
 local Vector3 = ____vector3.Vector3
 local ____burst_2Drifle = require("app.weapons.guns.burst-rifle")
 local BurstRifle = ____burst_2Drifle.BurstRifle
-local ____crewmember_2Dmodule = require("app.crewmember.crewmember-module")
-local getCrewmemberForUnit = ____crewmember_2Dmodule.getCrewmemberForUnit
 local ____trigger = require("app.types.jass-overrides.trigger")
 local Trigger = ____trigger.Trigger
 local ____sniper_2Drifle = require("app.weapons.guns.sniper-rifle")
@@ -121,7 +119,7 @@ function WeaponModule.prototype.initialiseWeaponEquip(self)
             local orderId = GetUnitCurrentOrder(unit)
             local itemSlot = orderId - 852008
             local item = UnitItemInSlot(unit, itemSlot)
-            local crewmember = getCrewmemberForUnit(unit)
+            local crewmember = self.game.crewModule:getCrewmemberForUnit(unit)
             local weapon = self:getGunForItem(item)
             local oldWeapon = self:getGunForUnit(unit)
             if oldWeapon then
@@ -154,7 +152,7 @@ function WeaponModule.prototype.initaliseWeaponShooting(self)
                 GetLocationY(targetLocation),
                 GetLocationZ(targetLocation)
             )
-            local crewmember = getCrewmemberForUnit(unit)
+            local crewmember = self.game.crewModule:getCrewmemberForUnit(unit)
             local weapon = self:getGunForUnit(unit)
             if weapon and crewmember then
                 local targetedUnit = GetSpellTargetUnit()

@@ -132,6 +132,7 @@ declare interface defensetype extends handle { __defensetype: never; }
 declare interface regentype extends handle { __regentype: never; }
 declare interface unitcategory extends handle { __unitcategory: never; }
 declare interface pathingflag extends handle { __pathingflag: never; }
+declare interface commandcardbuttoneffect extends handle {}
 
 declare function ConvertRace(i: number): race;
 declare function ConvertAllianceType(i: number): alliancetype;
@@ -1540,6 +1541,12 @@ declare function BlzPauseUnitEx(whichUnit: unit, flag: boolean): void;
 declare function BlzBitOr(x: number, y: number): number;
 declare function BlzBitAnd(x: number, y: number): number;
 declare function BlzBitXor(x: number, y: number): number;
+
+declare function CreateCommandButtonEffect(abilityId: number, order: string): commandcardbuttoneffect;
+declare function CreateLearnCommandButtonEffect(whichUpgrade: number): commandcardbuttoneffect;
+declare function CreateupgradeCommandButtonEffect(abilityId: number): commandcardbuttoneffect;
+declare function DestroyCommandButtonEffect(effect: commandcardbuttoneffect): void;
+
 declare function BlzGetAbilityBooleanField(whichAbility: ability, whichField: abilitybooleanfield): boolean;
 declare function BlzGetAbilityIntegerField(whichAbility: ability, whichField: abilityintegerfield): number;
 declare function BlzGetAbilityRealField(whichAbility: ability, whichField: abilityrealfield): number;
