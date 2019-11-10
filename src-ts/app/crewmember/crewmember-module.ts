@@ -2,6 +2,7 @@
 import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES } from "./crewmember-names";
 import { Game } from "../game";
+import { Trigger } from "../types/jass-overrides/trigger";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 
@@ -10,16 +11,33 @@ export class CrewModule {
     CREW_MEMBERS: Array<Crewmember> = [];
     AVAILABLE_ROLES: Array<string> = [];
 
+    crewmemberDamageTrigger: Trigger;
+
     constructor(game: Game) {
         // Load available roles
         this.initialiseRoles(game);
     
-        // Initialise first crewmember todo
-    
+        // Initialise first crewmember todo    
         game.forceModule.activePlayers.forEach(player => {
             let crew = this.createCrew(game, GetPlayerId(player));
             // crew.log();
             this.CREW_MEMBERS.push(crew);
+        });
+
+        // Create crew takes damagte trigger
+        this.crewmemberDamageTrigger = new Trigger();
+        this.crewmemberDamageTrigger.RegisterUnitTakesDamage();
+        this.crewmemberDamageTrigger.AddCondition(() => {
+            const player = GetOwningPlayer(GetTriggerUnit());
+            return (GetPlayerId(player) <= 22);
+        });
+        this.crewmemberDamageTrigger.AddAction(() => {
+            const unit = GetTriggerUnit();
+            const crew = this.getCrewmemberForUnit(unit);
+
+            if (crew) {
+                crew.onDamage(game);
+            }
         });
     }
 
@@ -31,7 +49,6 @@ export class CrewModule {
             else {
                 this.AVAILABLE_ROLES.push("Security Guard");
             }
-    
         });
     }
 

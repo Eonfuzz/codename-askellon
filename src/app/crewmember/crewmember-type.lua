@@ -19,9 +19,9 @@ function Crewmember.prototype.____constructor(self, game, player, unit)
     self.accuracy = 100
     self.player = player
     self.unit = unit
-    self.resolve = Resolve.new()
-    self.resolve:onChange(
-        function() return self:onResolveChange(game) end
+    self.resolve = Resolve.new(game, self)
+    self.resolve:doChange(
+        function() return self:onResolveDoChange(game) end
     )
 end
 function Crewmember.prototype.setUnit(self, unit)
@@ -36,12 +36,25 @@ end
 function Crewmember.prototype.setPlayer(self, player)
     self.player = player
 end
-function Crewmember.prototype.onResolveChange(self, game)
+function Crewmember.prototype.onResolveDoChange(self, game)
+    if GetUnitLifePercent(self.unit) <= 30 then
+        self.resolve:createResolve(
+            game,
+            self,
+            {
+                startTimeStamp = game:getTimeStamp(),
+                duration = 3
+            }
+        )
+        return true
+    end
+    return false
+end
+function Crewmember.prototype.onDamage(self, game)
     local resolveActive = self.resolve:isActiveNoCheck()
-    if resolveActive then
-        self.resolve:removeHighlightEffect(game, self)
-        self.resolve:createHighlightEffect(game, self)
-    elseif GetUnitLifePercent(self.unit) <= 30 then
+    local maxHP = BlzGetUnitMaxHP(self.unit)
+    local hpPercentage = (GetUnitState(self.unit, UNIT_STATE_LIFE) - GetEventDamage()) * 0.7 / maxHP
+    if hpPercentage <= 0.3 then
         self.resolve:createResolve(
             game,
             self,
@@ -50,8 +63,12 @@ function Crewmember.prototype.onResolveChange(self, game)
                 duration = 2
             }
         )
-    else
-        self.resolve:removeHighlightEffect(game, self)
+        return true
+    end
+    if resolveActive then
+        BlzSetEventDamage(
+            GetEventDamage() * 0.7
+        )
     end
 end
 function Crewmember.prototype.log(self)

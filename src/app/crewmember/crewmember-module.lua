@@ -4,6 +4,8 @@ local ____crewmember_2Dtype = require("app.crewmember.crewmember-type")
 local Crewmember = ____crewmember_2Dtype.Crewmember
 local ____crewmember_2Dnames = require("app.crewmember.crewmember-names")
 local ROLE_NAMES = ____crewmember_2Dnames.ROLE_NAMES
+local ____trigger = require("app.types.jass-overrides.trigger")
+local Trigger = ____trigger.Trigger
 local CREWMEMBER_UNIT_ID = FourCC("H001")
 ____exports.CrewModule = {}
 local CrewModule = ____exports.CrewModule
@@ -29,6 +31,25 @@ function CrewModule.prototype.____constructor(self, game)
                 GetPlayerId(player)
             )
             __TS__ArrayPush(self.CREW_MEMBERS, crew)
+        end
+    )
+    self.crewmemberDamageTrigger = Trigger.new()
+    self.crewmemberDamageTrigger:RegisterUnitTakesDamage()
+    self.crewmemberDamageTrigger:AddCondition(
+        function()
+            local player = GetOwningPlayer(
+                GetTriggerUnit()
+            )
+            return (GetPlayerId(player) <= 22)
+        end
+    )
+    self.crewmemberDamageTrigger:AddAction(
+        function()
+            local unit = GetTriggerUnit()
+            local crew = self:getCrewmemberForUnit(unit)
+            if crew then
+                crew:onDamage(game)
+            end
         end
     )
 end

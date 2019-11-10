@@ -53,6 +53,9 @@ end
 function Trigger.prototype.RegisterPlayerStateEvent(self, whichPlayer, whichState, opcode, limitval)
     return TriggerRegisterPlayerStateEvent(self.nativeTrigger, whichPlayer, whichState, opcode, limitval)
 end
+function Trigger.prototype.RegisterUnitTakesDamage(self)
+    return TriggerRegisterAnyUnitEventBJ(self.nativeTrigger, EVENT_PLAYER_UNIT_DAMAGED)
+end
 function Trigger.prototype.RegisterDeathEvent(self, whichWidget)
     return TriggerRegisterDeathEvent(self.nativeTrigger, whichWidget)
 end

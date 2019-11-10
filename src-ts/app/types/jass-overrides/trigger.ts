@@ -46,6 +46,10 @@ export class Trigger {
         return TriggerRegisterPlayerStateEvent(this.nativeTrigger, whichPlayer, whichState, opcode, limitval);
     }
 
+    public RegisterUnitTakesDamage() {
+        return TriggerRegisterAnyUnitEventBJ(this.nativeTrigger, EVENT_PLAYER_UNIT_DAMAGED);
+    }
+
     public RegisterDeathEvent(whichWidget: widget): event {
         return TriggerRegisterDeathEvent(this.nativeTrigger, whichWidget);
     }

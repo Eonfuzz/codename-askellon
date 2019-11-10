@@ -21,8 +21,8 @@ export class Crewmember {
     constructor(game: Game, player: player, unit: unit) {
         this.player = player;
         this.unit = unit;
-        this.resolve = new Resolve();
-        this.resolve.onChange(() => this.onResolveChange(game))
+        this.resolve = new Resolve(game, this);
+        this.resolve.doChange(() => this.onResolveDoChange(game));
     }
 
     setUnit(unit: unit) { this.unit = unit; }
@@ -30,21 +30,39 @@ export class Crewmember {
     setName(name: string) { this.name = name; }
     setPlayer(player: player) { this.player = player; }
 
-    onResolveChange(game: Game) {
+    onResolveDoChange(game: Game) {
+        // print("Unit life: "+GetUnitLifePercent(this.unit));
+        if (GetUnitLifePercent(this.unit) <= 30) {
+            this.resolve.createResolve(game, this, {
+                startTimeStamp: game.getTimeStamp(),
+                duration: 3
+            });
+            return true;
+        }
+        // print("DO NOT continue");
+        return false;
+    }
+
+    /**
+     * 
+     * @param game 
+     */
+    onDamage(game: Game) {
         const resolveActive = this.resolve.isActiveNoCheck();
 
-        if (resolveActive) {
-            this.resolve.removeHighlightEffect(game, this);
-            this.resolve.createHighlightEffect(game, this);
-        }
-        else if (GetUnitLifePercent(this.unit) <= 30) {
+        const maxHP = BlzGetUnitMaxHP(this.unit);
+        const hpPercentage  = (GetUnitState(this.unit, UNIT_STATE_LIFE) - GetEventDamage()) * 0.7 / maxHP;
+
+        if (hpPercentage <= 0.3) {
             this.resolve.createResolve(game, this, {
                 startTimeStamp: game.getTimeStamp(),
                 duration: 2
             });
+            return true;
         }
-        else {
-            this.resolve.removeHighlightEffect(game, this);
+
+        if (resolveActive) {
+            BlzSetEventDamage(GetEventDamage() * 0.7);
         }
     }
 

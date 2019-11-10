@@ -27,6 +27,25 @@ function CreateUnitsForPlayer20()
     u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 184.7, -671.5, 193.893, FourCC("uaco"))
 end
 
+function CreateNeutralHostile()
+    local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 576.3, 227.9, 301.331, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 896.8, 340.5, 315.812, FourCC("ntrd"))
+end
+
+function CreateNeutralPassiveBuildings()
+    local p = Player(PLAYER_NEUTRAL_PASSIVE)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("nfoh"), -1088.0, 1088.0, 270.000, FourCC("nfoh"))
+end
+
 function CreatePlayerBuildings()
 end
 
@@ -35,7 +54,9 @@ function CreatePlayerUnits()
 end
 
 function CreateAllUnits()
+    CreateNeutralPassiveBuildings()
     CreatePlayerBuildings()
+    CreateNeutralHostile()
     CreatePlayerUnits()
 end
 
@@ -247,36 +268,33 @@ end
 
 function InitAllyPriorities()
     SetStartLocPrioCount(0, 2)
-    SetStartLocPrio(0, 0, 5, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(0, 1, 9, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(0, 0, 2, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(0, 1, 4, MAP_LOC_PRIO_HIGH)
     SetStartLocPrioCount(1, 1)
     SetStartLocPrio(1, 0, 6, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(2, 3)
-    SetStartLocPrio(2, 0, 0, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(2, 1, 5, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(2, 2, 9, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(2, 2)
+    SetStartLocPrio(2, 0, 4, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(2, 1, 9, MAP_LOC_PRIO_LOW)
     SetStartLocPrioCount(3, 1)
     SetStartLocPrio(3, 0, 7, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(4, 7)
-    SetStartLocPrio(4, 0, 0, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(4, 1, 2, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(4, 2, 3, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(4, 3, 5, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(4, 4, 7, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(4, 5, 8, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(4, 6, 9, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(5, 1)
-    SetStartLocPrio(5, 0, 9, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(4, 1)
+    SetStartLocPrio(4, 0, 2, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(5, 2)
+    SetStartLocPrio(5, 0, 2, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(5, 1, 9, MAP_LOC_PRIO_HIGH)
     SetStartLocPrioCount(6, 1)
     SetStartLocPrio(6, 0, 1, MAP_LOC_PRIO_HIGH)
     SetStartLocPrioCount(7, 1)
     SetStartLocPrio(7, 0, 3, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(8, 3)
+    SetStartLocPrioCount(8, 5)
     SetStartLocPrio(8, 0, 0, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(8, 1, 5, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(8, 2, 9, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(9, 1)
-    SetStartLocPrio(9, 0, 5, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(8, 1, 2, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(8, 2, 4, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(8, 3, 5, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(8, 4, 9, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(9, 2)
+    SetStartLocPrio(9, 0, 2, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(9, 1, 5, MAP_LOC_PRIO_HIGH)
     SetStartLocPrioCount(10, 10)
     SetStartLocPrio(10, 0, 1, MAP_LOC_PRIO_LOW)
     SetStartLocPrio(10, 1, 2, MAP_LOC_PRIO_HIGH)
@@ -332,9 +350,9 @@ function config()
     SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
     DefineStartLocation(0, 0.0, 256.0)
     DefineStartLocation(1, 21696.0, 15424.0)
-    DefineStartLocation(2, -4096.0, -6720.0)
+    DefineStartLocation(2, 192.0, 256.0)
     DefineStartLocation(3, -27840.0, 21376.0)
-    DefineStartLocation(4, -26368.0, -2944.0)
+    DefineStartLocation(4, 128.0, 256.0)
     DefineStartLocation(5, 320.0, 256.0)
     DefineStartLocation(6, 19776.0, 13120.0)
     DefineStartLocation(7, -27520.0, 26176.0)
