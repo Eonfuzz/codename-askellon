@@ -1,4 +1,10 @@
 local ____exports = {}
+function ____exports.vectorFromUnit(u)
+    return ____exports.Vector2.new(
+        GetUnitX(u),
+        GetUnitY(u)
+    )
+end
 ____exports.Vector2 = {}
 local Vector2 = ____exports.Vector2
 Vector2.name = "Vector2"

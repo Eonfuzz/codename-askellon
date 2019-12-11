@@ -1,5 +1,9 @@
 /** @noSelfInFile **/
 
+export function vectorFromUnit(u: unit): Vector2 {
+    return new Vector2(GetUnitX(u), GetUnitY(u));
+}
+
 export class Vector2 {
     public x: number;
     public y: number;
