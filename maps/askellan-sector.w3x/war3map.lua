@@ -44,6 +44,7 @@ function CreateNeutralPassiveBuildings()
     local t
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("nfoh"), -1088.0, 1088.0, 270.000, FourCC("nfoh"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n000"), 128.0, 896.0, 270.000, FourCC("n000"))
 end
 
 function CreatePlayerBuildings()

@@ -400,3 +400,57 @@ STRING 79
 F
 }
 
+STRING 80
+// Upgrades: R000 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Adaptive Regeneration
+}
+
+STRING 81
+// Upgrades: R000 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Gene Upgrade
+}
+
+STRING 82
+// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Enhanced Mobility
+}
+
+STRING 83
+// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Gene Upgrade
+}
+
+STRING 84
+// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect1 (Effect 1)
+{
+rmov
+}
+
+STRING 85
+// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+No Genes Chosen
+}
+
+STRING 86
+// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Tier 1
+}
+
+STRING 87
+// Doodads: D005 (Fusion Core), Name (Name)
+{
+Fusion Core
+}
+
+STRING 88
+// Units: n000 (Upgrade Center), Name (Name)
+{
+Upgrade Center
+}
+

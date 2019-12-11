@@ -13,8 +13,6 @@ const RESOLVE_ABILITY_ID = FourCC('A008');
  */
 export class Resolve {
     
-    private instances: Array<BuffInstance>;
-
     private onChangeCallbacks: Array<Function>;
     private doChangeCallbacks: Array<Function>;
 
@@ -29,7 +27,6 @@ export class Resolve {
     private isActive: boolean = false;
 
     constructor(game: Game, crewmember: Crewmember) {
-        this.instances = [];
         this.onChangeCallbacks = [];
         this.doChangeCallbacks = [];
 
@@ -48,8 +45,6 @@ export class Resolve {
             instance.startTimeStamp = game.getTimeStamp();
         }
 
-        this.instances.push(instance);
-
         if (!wasActive) {
             this.onChangeCallbacks.forEach(cb => cb(this));
         }
@@ -62,9 +57,10 @@ export class Resolve {
                 const newEndTime = (instance.startTimeStamp + instance.duration);
                 const oldEndTime = (game.timedEventQueue.GetEventExpireTime(ticker) - 1);
 
-                print("")
                 hasLongerTicker = newEndTime < oldEndTime;
-                if (hasLongerTicker) game.timedEventQueue.RemoveEvent(this.currentTicker);
+                if (!hasLongerTicker) {
+                    game.timedEventQueue.RemoveEvent(this.currentTicker);
+                }
             }
         }
 
@@ -88,8 +84,6 @@ export class Resolve {
 
     private onStatusChange(game: Game, crewmember: Crewmember) {
         const isActive = this.isActive;
-
-        print("Resolve Active? "+isActive);
         if (isActive) {
             this.resolveMusic.setVolume(15);
 
@@ -102,10 +96,6 @@ export class Resolve {
             else {
                 DestroyCommandButtonEffect(this.buttonHighlight);
             }
-
-            if (crewmember.weapon) {
-                crewmember.weapon.updateTooltip(game.weaponModule, crewmember);
-            }
         }
         else {
             if (GetLocalPlayer() === crewmember.player) {
@@ -113,9 +103,6 @@ export class Resolve {
                 this.breathSound.stopSound();
                 ResumeMusic();
                 if (this.buttonHighlight) DestroyCommandButtonEffect(this.buttonHighlight);
-            }
-            if (crewmember.weapon) {
-                crewmember.weapon.updateTooltip(game.weaponModule, crewmember);
             }
         }
     }
@@ -127,20 +114,10 @@ export class Resolve {
      */
     public updateActiveState(game: Game): void {
         const wasActive = this.isActive;
-
-        const gameTime = game.getTimeStamp();
-        const activeInstances = this.instances
-            .filter(instance => (instance.startTimeStamp + instance.duration) > gameTime);
-
-        this.instances = activeInstances;
-        let nowIsActive = activeInstances.length > 0
-
-        if (wasActive && !nowIsActive) {
-            nowIsActive = this.doChangeCallbacks.filter(cb => cb(this)).length > 0;
-        }
-
-        this.isActive = nowIsActive;
-        if (wasActive !== nowIsActive) {
+        const isNowActive = wasActive && this.doChangeCallbacks.filter(cb => cb(this)).length > 0;
+        
+        this.isActive = isNowActive;
+        if (wasActive !== isNowActive) {
             this.onChangeCallbacks.forEach(cb => cb(this));
         } 
     }

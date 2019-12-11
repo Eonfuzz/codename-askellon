@@ -15,6 +15,10 @@ local ____trigger = require("app.types.jass-overrides.trigger")
 local Trigger = ____trigger.Trigger
 local ____game_2Dtime_2Delapsed = require("app.types.game-time-elapsed")
 local GameTimeElapsed = ____game_2Dtime_2Delapsed.GameTimeElapsed
+local ____gene_2Dmodules = require("app.shops.gene-modules")
+local GeneModule = ____gene_2Dmodules.GeneModule
+local ____ability_2Dmodule = require("app.abilities.ability-module")
+local AbilityModule = ____ability_2Dmodule.AbilityModule
 ____exports.Game = {}
 local Game = ____exports.Game
 Game.name = "Game"
@@ -35,6 +39,8 @@ function Game.prototype.____constructor(self)
     self.weaponModule = WeaponModule.new(self)
     self.spaceModule = SpaceModule.new(self)
     self.crewModule = CrewModule.new(self)
+    self.abilityModule = AbilityModule.new(self)
+    self.geneModule = GeneModule.new(self)
     GALAXY_MODULE.initSectors()
     self:initCommands()
 end

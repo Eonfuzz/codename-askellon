@@ -16,13 +16,15 @@ export class Crewmember {
 
     public weapon: Gun | undefined;
 
-    public resolve: Resolve
+    public resolve: Resolve;
+    // public despair: Despair;
 
     constructor(game: Game, player: player, unit: unit) {
         this.player = player;
         this.unit = unit;
         this.resolve = new Resolve(game, this);
         this.resolve.doChange(() => this.onResolveDoChange(game));
+        this.resolve.onChange(() => this.onResolveChange(game));
     }
 
     setUnit(unit: unit) { this.unit = unit; }
@@ -31,7 +33,6 @@ export class Crewmember {
     setPlayer(player: player) { this.player = player; }
 
     onResolveDoChange(game: Game) {
-        // print("Unit life: "+GetUnitLifePercent(this.unit));
         if (GetUnitLifePercent(this.unit) <= 30) {
             this.resolve.createResolve(game, this, {
                 startTimeStamp: game.getTimeStamp(),
@@ -39,8 +40,13 @@ export class Crewmember {
             });
             return true;
         }
-        // print("DO NOT continue");
         return false;
+    }
+
+    onResolveChange(game: Game) {
+        const isActive = this.resolve.isActiveNoCheck();
+        this.accuracy += (isActive ? 80 : -80); 
+        if (this.weapon) this.weapon.updateTooltip(game.weaponModule, this);
     }
 
     /**

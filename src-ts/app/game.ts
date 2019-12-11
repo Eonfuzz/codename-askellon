@@ -8,6 +8,8 @@ import { ForceModule } from "./force/force-module";
 import { SpaceModule } from "./space/space-module";
 import { Trigger } from "./types/jass-overrides/trigger";
 import { GameTimeElapsed } from "./types/game-time-elapsed";
+import { GeneModule } from "./shops/gene-modules";
+import { AbilityModule } from "./abilities/ability-module";
 
 export class Game {
     // Helper objects
@@ -18,6 +20,8 @@ export class Game {
     public forceModule: ForceModule;
     public spaceModule: SpaceModule;
     public crewModule: CrewModule;
+    public abilityModule: AbilityModule;
+    public geneModule: GeneModule;
 
     /**
      * Should always be defined,
@@ -39,6 +43,9 @@ export class Game {
         this.weaponModule       = new WeaponModule(this);
         this.spaceModule        = new SpaceModule(this);
         this.crewModule         = new CrewModule(this);
+
+        this.abilityModule      = new AbilityModule(this);
+        this.geneModule         = new GeneModule(this);
 
         // Here be dragons, old code is below and needs update
         GALAXY_MODULE.initSectors();

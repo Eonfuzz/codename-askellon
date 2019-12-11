@@ -23,6 +23,9 @@ function Crewmember.prototype.____constructor(self, game, player, unit)
     self.resolve:doChange(
         function() return self:onResolveDoChange(game) end
     )
+    self.resolve:onChange(
+        function() return self:onResolveChange(game) end
+    )
 end
 function Crewmember.prototype.setUnit(self, unit)
     self.unit = unit
@@ -49,6 +52,13 @@ function Crewmember.prototype.onResolveDoChange(self, game)
         return true
     end
     return false
+end
+function Crewmember.prototype.onResolveChange(self, game)
+    local isActive = self.resolve:isActiveNoCheck()
+    self.accuracy = self.accuracy + (isActive and 80 or -80)
+    if self.weapon then
+        self.weapon:updateTooltip(game.weaponModule, self)
+    end
 end
 function Crewmember.prototype.onDamage(self, game)
     local resolveActive = self.resolve:isActiveNoCheck()
