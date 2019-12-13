@@ -4,8 +4,8 @@ import { Vector2, vectorFromUnit } from "../types/vector2";
 import { Log } from "../../lib/serilog/serilog";
 
 /** @noSelfInFile **/
-const ROLL_DISTANCE = 600;
-const ROLL_DURATION = 1.5;
+const ROLL_DISTANCE = 330;
+const ROLL_DURATION = 0.3;
 
 export class rollWhenSprinting implements Ability {
 
@@ -22,9 +22,11 @@ export class rollWhenSprinting implements Ability {
 
         const unitPos = vectorFromUnit(this.unit);
         // TODO
-        const targetPos = new Vector2( BlzGetTriggerPlayerMouseX(), BlzGetTriggerPlayerMouseY() );
 
-        Log.Information(`New Roll: ${targetPos.toString()}`);
+        const targetPos = unitPos.applyPolarOffset(
+            GetUnitFacing(this.unit), 
+            ROLL_DISTANCE
+        );
 
         this.direction = targetPos.subtract( unitPos )
             .normalise()

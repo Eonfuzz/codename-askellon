@@ -3,6 +3,7 @@ import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES } from "./crewmember-names";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
+import { BurstRifle } from "../weapons/guns/burst-rifle";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 
@@ -65,6 +66,16 @@ export class CrewModule {
         BlzSetUnitName(nUnit, crewmember.role);
         BlzSetHeroProperName(nUnit, crewmember.name);
     
+        /**
+         * Now apply crewmember default weapons
+         */
+        if (crewmember.role) {
+            const item = CreateItem(BurstRifle.itemId, 0, 0);
+            UnitAddItem(crewmember.unit, item);
+            game.weaponModule.applyWeaponEquip(crewmember, item);
+        }
+        
+
         return crewmember;
     }
     

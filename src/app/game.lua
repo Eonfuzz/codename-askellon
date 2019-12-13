@@ -74,4 +74,17 @@ function Game.prototype.initCommands(self)
         end
     )
 end
+function Game.prototype.useDummyFor(self, callback, abilityToCast)
+    local dummyUnit = CreateUnit(
+        Player(25),
+        FourCC("dumy"),
+        0,
+        0,
+        bj_UNIT_FACING
+    )
+    ShowUnit(dummyUnit, false)
+    UnitAddAbility(dummyUnit, abilityToCast)
+    callback(nil, dummyUnit)
+    UnitApplyTimedLife(dummyUnit, 0, 3)
+end
 return ____exports

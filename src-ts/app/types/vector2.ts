@@ -27,6 +27,19 @@ export class Vector2 {
         return new Vector2(this.x / len, this.y / len);
     }
 
+    /**
+     * Returns a new Vector2 translated towards a polar offset by angle
+     * @param offset 
+     * @param angle 
+     */
+    applyPolarOffset(angle: number, offset: number) {
+        const result = new Vector2(
+            this.x + Cos(angle * bj_DEGTORAD) * offset,
+            this.y + Sin(angle * bj_DEGTORAD) * offset
+        );
+        return result;
+    }
+
     multiply(value: Vector2) : Vector2 {
         return new Vector2(this.x * value.x, this.y * value.y);
     }

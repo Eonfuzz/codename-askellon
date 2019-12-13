@@ -4,6 +4,7 @@ import { BuffInstance } from "./buff-instance";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { TimedEvent } from "../types/timed-event";
 import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
+import { Log } from "../../lib/serilog/serilog";
 
 const RESOLVE_ABILITY_ID = FourCC('A008');
 
@@ -25,6 +26,7 @@ export class Resolve {
     private resolveMusic: SoundRef;
 
     private isActive: boolean = false;
+    private unit: unit;
 
     constructor(game: Game, crewmember: Crewmember) {
         this.onChangeCallbacks = [];
@@ -32,6 +34,8 @@ export class Resolve {
 
         this.breathSound = new SoundWithCooldown(10, "Sounds\\HeavyBreath.mp3");
         this.resolveMusic = new SoundRef("Music\\KavinskyRampage.mp3", true);
+
+        this.unit = crewmember.unit;
 
         this.onChangeCallbacks.push(() => this.onStatusChange(game, crewmember));
     }
@@ -62,6 +66,14 @@ export class Resolve {
                     game.timedEventQueue.RemoveEvent(this.currentTicker);
                 }
             }
+        }
+        else {
+            // If we don't have another ticker apply the buff to the unit
+            game.useDummyFor((self: any, dummy: unit) => {
+                SetUnitX(dummy, GetUnitX(this.unit));
+                SetUnitY(dummy, GetUnitY(this.unit));
+                IssueTargetOrder(dummy, "bloodlust", crewmember.unit);
+            }, FourCC('A007'));
         }
 
         if (!hasLongerTicker) {
@@ -118,6 +130,8 @@ export class Resolve {
         
         this.isActive = isNowActive;
         if (wasActive !== isNowActive) {
+            // Also remove resolve buff
+            UnitRemoveBuffBJ(FourCC('B001'), this.unit);
             this.onChangeCallbacks.forEach(cb => cb(this));
         } 
     }

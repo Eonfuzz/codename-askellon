@@ -10,6 +10,7 @@ import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { SniperRifle } from "./guns/sniper-rifle";
+import { Log } from "../../lib/serilog/serilog";
 
 export class WeaponModule {
     game: Game;
@@ -157,20 +158,28 @@ export class WeaponModule {
             // Phew, hope you have the water running, ready for your shower            
             let crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
             let weapon = this.getGunForItem(item);
-            let oldWeapon = this.getGunForUnit(unit);
 
-            if (oldWeapon) {
-                oldWeapon.onRemove(this);
-            }
-            if (!weapon) {
-                weapon = this.createWeaponForId(item, unit);
-                this.guns.push(weapon);
-            }
+            
 
             if (crewmember) {
-                weapon.onAdd(this, crewmember);
+                this.applyWeaponEquip(crewmember, item, weapon);
             }
         })
+    }
+
+    applyWeaponEquip(unit: Crewmember, item: item, gun: Gun | void) {
+        let oldWeapon = this.getGunForUnit(unit.unit);
+        if (oldWeapon) {
+            oldWeapon.onRemove(this);
+        }
+
+        if (!gun) {
+            // Log.Information("No gun for item, creating new");
+            gun = this.createWeaponForId(item, unit.unit);
+            this.guns.push(gun);
+        }
+
+        gun.onAdd(this, unit);
     }
 
     weaponShootTrigger = new Trigger();
@@ -211,7 +220,9 @@ export class WeaponModule {
         this.weaponDropTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DROP_ITEM);
         this.weaponDropTrigger.AddCondition(() => {
             const gun = this.getGunForItem(GetManipulatedItem());
+            // Log.Information("Weapon dropped");
             if (gun) {
+                // Log.Information("... removing");
                 gun.onRemove(this);
             }
             return false;

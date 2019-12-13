@@ -31,6 +31,13 @@ function Vector2.prototype.normalise(self)
     end
     return ____exports.Vector2.new(self.x / len, self.y / len)
 end
+function Vector2.prototype.applyPolarOffset(self, angle, offset)
+    local result = ____exports.Vector2.new(
+        self.x + Cos(angle * bj_DEGTORAD) * offset,
+        self.y + Sin(angle * bj_DEGTORAD) * offset
+    )
+    return result
+end
 function Vector2.prototype.multiply(self, value)
     return ____exports.Vector2.new(self.x * value.x, self.y * value.y)
 end

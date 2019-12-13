@@ -121,19 +121,22 @@ function WeaponModule.prototype.initialiseWeaponEquip(self)
             local item = UnitItemInSlot(unit, itemSlot)
             local crewmember = self.game.crewModule:getCrewmemberForUnit(unit)
             local weapon = self:getGunForItem(item)
-            local oldWeapon = self:getGunForUnit(unit)
-            if oldWeapon then
-                oldWeapon:onRemove(self)
-            end
-            if not weapon then
-                weapon = self:createWeaponForId(item, unit)
-                __TS__ArrayPush(self.guns, weapon)
-            end
             if crewmember then
-                weapon:onAdd(self, crewmember)
+                self:applyWeaponEquip(crewmember, item, weapon)
             end
         end
     )
+end
+function WeaponModule.prototype.applyWeaponEquip(self, unit, item, gun)
+    local oldWeapon = self:getGunForUnit(unit.unit)
+    if oldWeapon then
+        oldWeapon:onRemove(self)
+    end
+    if not gun then
+        gun = self:createWeaponForId(item, unit.unit)
+        __TS__ArrayPush(self.guns, gun)
+    end
+    gun:onAdd(self, unit)
 end
 function WeaponModule.prototype.initaliseWeaponShooting(self)
     self.weaponShootTrigger:RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT)

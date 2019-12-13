@@ -23,6 +23,8 @@ export class Game {
     public abilityModule: AbilityModule;
     public geneModule: GeneModule;
 
+    // public dummyUnit: unit;
+
     /**
      * Should always be defined,
      * Used for measuring Z heights
@@ -31,8 +33,6 @@ export class Game {
 
 
     constructor() {
-
-        // ResumeTimer(this.globalTimer);
 
         // Load order is important
         this.timedEventQueue    = new TimedEventQueue(this);
@@ -84,4 +84,18 @@ export class Game {
     }
 
 
+    /**
+     * passes the dummy unit as a parameter to the callback
+     * ensure you remove any abilities afterwards
+     * @param callback 
+     */
+    public useDummyFor(callback: Function, abilityToCast: number) {
+        // Create a dummy unit for all abilities
+        const dummyUnit = CreateUnit(Player(25), FourCC('dumy'), 0, 0, bj_UNIT_FACING);
+        ShowUnit(dummyUnit, false);
+        UnitAddAbility(dummyUnit, abilityToCast);
+        callback(dummyUnit);
+
+        UnitApplyTimedLife(dummyUnit, 0, 3);
+    }
 }
