@@ -17,7 +17,7 @@ export class Resolve {
     private onChangeCallbacks: Array<Function>;
     private doChangeCallbacks: Array<Function>;
 
-    private buttonHighlight: commandcardbuttoneffect | undefined;
+    private buttonHighlight: commandbuttoneffect | undefined;
 
     private currentTicker: string | undefined;
 
