@@ -99,14 +99,15 @@ export class Resolve {
         if (isActive) {
             this.resolveMusic.setVolume(15);
 
-            this.buttonHighlight = CreateCommandButtonEffect(RESOLVE_ABILITY_ID, "entangle");
+            // TODO Uncomment this once no desyncs are caused by it
+            // this.buttonHighlight = CreateCommandButtonEffect(RESOLVE_ABILITY_ID, "entangle");
             if (GetLocalPlayer() === crewmember.player) {
                 this.resolveMusic.playSound();
                 this.breathSound.playSound();
                 StopMusic(true);
             }
             else {
-                DestroyCommandButtonEffect(this.buttonHighlight);
+                // DestroyCommandButtonEffect(this.buttonHighlight);
             }
         }
         else {
@@ -114,7 +115,7 @@ export class Resolve {
                 this.resolveMusic.stopSound();
                 this.breathSound.stopSound();
                 ResumeMusic();
-                if (this.buttonHighlight) DestroyCommandButtonEffect(this.buttonHighlight);
+                // if (this.buttonHighlight) DestroyCommandButtonEffect(this.buttonHighlight);
             }
         }
     }

@@ -4,10 +4,13 @@ local ____vector3 = require("app.types.vector3")
 local Vector3 = ____vector3.Vector3
 local ____burst_2Drifle = require("app.weapons.guns.burst-rifle")
 local BurstRifle = ____burst_2Drifle.BurstRifle
+local InitBurstRifle = ____burst_2Drifle.InitBurstRifle
 local ____trigger = require("app.types.jass-overrides.trigger")
 local Trigger = ____trigger.Trigger
 local ____sniper_2Drifle = require("app.weapons.guns.sniper-rifle")
 local SniperRifle = ____sniper_2Drifle.SniperRifle
+local InitSniperRifle = ____sniper_2Drifle.InitSniperRifle
+local SNIPER_ITEM_ID = ____sniper_2Drifle.SNIPER_ITEM_ID
 ____exports.WeaponModule = {}
 local WeaponModule = ____exports.WeaponModule
 WeaponModule.name = "WeaponModule"
@@ -32,8 +35,8 @@ function WeaponModule.prototype.____constructor(self, game)
     self.weaponShootTrigger = Trigger.new()
     self.weaponDropTrigger = Trigger.new()
     self.game = game
-    BurstRifle:initialise(self)
-    SniperRifle:initialise(self)
+    InitBurstRifle(self)
+    InitSniperRifle(self)
     self:initialiseWeaponEquip()
     self:initaliseWeaponShooting()
     self:initialiseWeaponDropping()
@@ -187,7 +190,7 @@ function WeaponModule.prototype.initialiseWeaponDropping(self)
 end
 function WeaponModule.prototype.createWeaponForId(self, item, unit)
     local itemId = GetItemTypeId(item)
-    if itemId == SniperRifle.itemId then
+    if itemId == SNIPER_ITEM_ID then
         return SniperRifle.new(item, unit)
     end
     return BurstRifle.new(item, unit)

@@ -2,30 +2,60 @@
 import { Vector3 } from "../../types/vector3";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { WeaponModule } from "../weapon-module";
+import { Attachment } from "../attachment/attachment";
 
-export interface Gun {
+export abstract class Gun {
     item: item;
     equippedTo: unit | undefined;
 
-    // Set when the gun is removed and a cooldown still exists
+    attachment: Attachment | undefined;
     remainingCooldown: number | undefined;
+
+    constructor(item: item, equippedTo: unit) {
+        this.item = item;
+        this.equippedTo = equippedTo;
+    }
     
-    onAdd(weaponModule: WeaponModule, caster: Crewmember): void;
-    onRemove(weaponModule: WeaponModule): void;
+    public onAdd(weaponModule: WeaponModule, caster: Crewmember) {
+        this.equippedTo = caster.unit;
+        UnitAddAbility(caster.unit, this.getAbilityId());
+        this.updateTooltip(weaponModule, caster);
 
-    onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void;
-    getDamage(weaponModule: WeaponModule, caster: Crewmember): number;
+        if (this.remainingCooldown && this.remainingCooldown > 0) {
+            // SetAbilityCooldown
+            print("Reforged better add a way to set cooldowns remaining");
+        }
+    };
+    public onRemove(weaponModule: WeaponModule) {
+        if (this.equippedTo) {
+            UnitRemoveAbility(this.equippedTo, this.getAbilityId());
+            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo, this.getAbilityId());
+            this.equippedTo = undefined;
+        }
+    };
 
-    updateTooltip(weaponModule: WeaponModule, caster: Crewmember): void;
-}
+    public updateTooltip(weaponModule: WeaponModule, caster: Crewmember) {
+        if (this.equippedTo) {
+            const owner = GetOwningPlayer(this.equippedTo);
+            const newTooltip = this.getTooltip(weaponModule, caster);
+            if (GetLocalPlayer() === owner) {
+                BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
+            }
+        }
+    };
+    protected abstract getTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string;
 
-export interface GunDecorator {
-    abilityId: number;
-    itemId: number;
+    public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
+        this.remainingCooldown = weaponModule.game.getTimeStamp();
+    }
+    abstract getDamage(weaponModule: WeaponModule, caster: Crewmember): number;
 
-    /**
-     * Adds the gun to the weapon module
-     * @param weaponModule 
-     */
-    initialise(weaponModule: WeaponModule): void;
+
+    public attach(attachment: Attachment): boolean {
+        this.attachment = this.attachment;
+        return true;
+    }
+
+    abstract getAbilityId(): number;
+    abstract getItemId(): number;
 }

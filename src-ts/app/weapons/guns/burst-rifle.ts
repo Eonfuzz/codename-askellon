@@ -1,7 +1,7 @@
 /** @noSelfInFile **/
 
 import { Vector3 } from "../../types/vector3";
-import { Gun, GunDecorator } from "./gun";
+import { Gun } from "./gun";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
@@ -11,65 +11,27 @@ import { TimedEvent } from "../../types/timed-event";
 import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
+import { Attachment } from "../attachment/attachment";
 
-@staticDecorator<GunDecorator>()
-export class BurstRifle implements Gun {
-    public item: item;
-    public equippedTo: unit | undefined;
-    
-    static abilityId: number = FourCC('A002');
-    static itemId: number = FourCC('I000');
+export const BURST_RIFLE_ABILITY_ID = FourCC('A002');
+export const BURST_RIFLE_ITEM_ID = FourCC('I000');
 
+export const InitBurstRifle = (weaponModule: WeaponModule) => {
+    weaponModule.weaponItemIds.push(BURST_RIFLE_ITEM_ID);
+    weaponModule.weaponAbilityIds.push(BURST_RIFLE_ABILITY_ID);
+}
+@staticDecorator()
+export class BurstRifle extends Gun {    
     private DEFAULT_STRAY = 200;
     private SHOT_DISTANCE = 800;
 
-    // Set when the gun is removed and a cooldown still exists
-    remainingCooldown: number | undefined;
-
-    public static initialise(weaponModule: WeaponModule) {
-        weaponModule.weaponItemIds.push(BurstRifle.itemId);
-        weaponModule.weaponAbilityIds.push(BurstRifle.abilityId);
-    }
-
     constructor(item: item, equippedTo: unit) {
-        this.item = item;
-        this.equippedTo = equippedTo;
+        super(item, equippedTo);
     }
-
-    public onAdd(weaponModule: WeaponModule, caster: Crewmember): void {
-        this.equippedTo = caster.unit;
-        UnitAddAbility(caster.unit, BurstRifle.abilityId);
-        this.updateTooltip(weaponModule, caster);
-
-        if (this.remainingCooldown && this.remainingCooldown > 0) {
-            // SetAbilityCooldown
-            print("Reforged better add a way to set cooldowns remaining");
-        }
-    };
-    public onRemove(weaponModule: WeaponModule): void {
-        if (this.equippedTo) {
-            UnitRemoveAbility(this.equippedTo, BurstRifle.abilityId);
-            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo, BurstRifle.abilityId);
-            this.equippedTo = undefined;
-        }
-    };
-
-    public updateTooltip(weaponModule: WeaponModule, caster: Crewmember) {
-        if (this.equippedTo) {
-            const owner = GetOwningPlayer(this.equippedTo);
-            const accuracyModifier = (this.DEFAULT_STRAY*(100/caster.accuracy))/2
-            const newTooltip = BURST_RIFLE_EXTENDED(
-                this.getDamage(weaponModule, caster), 
-                this.SHOT_DISTANCE-accuracyModifier, 
-                this.SHOT_DISTANCE+accuracyModifier
-            );
-            if (GetLocalPlayer() === owner) {
-                BlzSetAbilityExtendedTooltip(BurstRifle.abilityId, newTooltip, 0);
-            }
-        }
-    };
-
+    
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
+        super.onShoot(weaponModule, caster, targetLocation);
+
         const unit = caster.unit;
         const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", caster.unit, 50);
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
@@ -134,6 +96,16 @@ export class BurstRifle implements Gun {
         }
     }
 
+    protected getTooltip(weaponModule: WeaponModule, crewmember: Crewmember) {
+        const accuracyModifier = (this.DEFAULT_STRAY*(100/crewmember.accuracy))/2
+        const newTooltip = BURST_RIFLE_EXTENDED(
+            this.getDamage(weaponModule, crewmember), 
+            this.SHOT_DISTANCE-accuracyModifier, 
+            this.SHOT_DISTANCE+accuracyModifier
+        );
+        return newTooltip;
+    }
+
     private getStrayLocation(originalLocation: Vector3, caster: Crewmember): Vector3 {
         let accuracy = caster.accuracy;
 
@@ -149,4 +121,7 @@ export class BurstRifle implements Gun {
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
         return 15;
     }
+
+    public getAbilityId() { return BURST_RIFLE_ABILITY_ID; }
+    public getItemId() { return BURST_RIFLE_ITEM_ID; }
 }

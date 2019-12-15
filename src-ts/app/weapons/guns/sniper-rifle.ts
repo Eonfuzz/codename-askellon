@@ -1,7 +1,7 @@
 /** @noSelfInFile **/
 
 import { Vector3 } from "../../types/vector3";
-import { Gun, GunDecorator } from "./gun";
+import { Gun } from "./gun";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
@@ -11,67 +11,35 @@ import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator, getYawPitchRollFromVector } from "../../../lib/translators";
 
-@staticDecorator<GunDecorator>()
-export class SniperRifle implements Gun {
-    public item: item;
-    public equippedTo: unit | undefined;
-    
-    static abilityId: number = FourCC('A005');
-    static itemId: number = FourCC('I001');
+export const SNIPER_ABILITY_ID = FourCC('A052');
+export const SNIPER_ITEM_ID = FourCC('I001');
 
+export const InitSniperRifle = (weaponModule: WeaponModule) => {
+    weaponModule.weaponItemIds.push(SNIPER_ABILITY_ID);
+    weaponModule.weaponAbilityIds.push(SNIPER_ITEM_ID);
+}
+@staticDecorator()
+export class SniperRifle extends Gun {    
     private DEFAULT_STRAY = 30;
     private SHOT_DISTANCE = 1600;
 
-    // Set when the gun is removed and a cooldown still exists
-    remainingCooldown: number | undefined;
-
-    public static initialise(weaponModule: WeaponModule) {
-        weaponModule.weaponItemIds.push(SniperRifle.itemId);
-        weaponModule.weaponAbilityIds.push(SniperRifle.abilityId);
-    }
-
     constructor(item: item, equippedTo: unit) {
-        this.item = item;
-        this.equippedTo = equippedTo;
+        super(item, equippedTo);
     }
-
-    public onAdd(weaponModule: WeaponModule, caster: Crewmember): void {
-        this.equippedTo = caster.unit;
-        UnitAddAbility(caster.unit, SniperRifle.abilityId);
-        this.updateTooltip(weaponModule, caster);
-
-        if (this.remainingCooldown && this.remainingCooldown > 0) {
-            // SetAbilityCooldown
-            print("Reforged better add a way to set cooldowns remaining");
-        }
-    };
-    public onRemove(weaponModule: WeaponModule): void {
-        if (this.equippedTo) {
-            UnitRemoveAbility(this.equippedTo, SniperRifle.abilityId);
-            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo, SniperRifle.abilityId);
-            this.equippedTo = undefined;
-        }
-    };
-
-    public updateTooltip(weaponModule: WeaponModule, caster: Crewmember) {
-        if (this.equippedTo) {
-            const owner = GetOwningPlayer(this.equippedTo);
-            const accuracyModifier = (this.DEFAULT_STRAY*(100/caster.accuracy))/2
-            const newTooltip = BURST_RIFLE_EXTENDED(
-                this.getDamage(weaponModule, caster), 
-                this.SHOT_DISTANCE-accuracyModifier, 
-                this.SHOT_DISTANCE+accuracyModifier
-            );
-            if (GetLocalPlayer() === owner) {
-                BlzSetAbilityExtendedTooltip(SniperRifle.abilityId, newTooltip, 0);
-            }
-        }
+    
+    protected getTooltip(weaponModule: WeaponModule, crewmember: Crewmember) {
+        const accuracyModifier = (this.DEFAULT_STRAY*(100/crewmember.accuracy))/2
+        const newTooltip = BURST_RIFLE_EXTENDED(
+            this.getDamage(weaponModule, crewmember), 
+            this.SHOT_DISTANCE-accuracyModifier, 
+            this.SHOT_DISTANCE+accuracyModifier
+        );
+        return newTooltip;
     };
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
+        super.onShoot(weaponModule, caster, targetLocation);
         const unit = caster.unit;
-        // TODO get sound
-        // const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", caster.unit, 50);
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.SHOT_DISTANCE);
 
@@ -175,4 +143,7 @@ export class SniperRifle implements Gun {
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
         return 120;
     }
+
+    public getAbilityId() { return SNIPER_ABILITY_ID; }
+    public getItemId() { return SNIPER_ITEM_ID; }
 }

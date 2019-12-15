@@ -5,11 +5,11 @@ import { Vector3 } from "../types/vector3";
 import { ProjectileTargetStatic } from "./projectile/projectile-target";
 import { ProjectileSFX } from "./projectile/projectile-sfx";
 import { Gun } from "./guns/gun";
-import { BurstRifle } from "./guns/burst-rifle";
+import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
-import { SniperRifle } from "./guns/sniper-rifle";
+import { SniperRifle, InitSniperRifle, SNIPER_ITEM_ID } from "./guns/sniper-rifle";
 import { Log } from "../../lib/serilog/serilog";
 
 export class WeaponModule {
@@ -30,8 +30,8 @@ export class WeaponModule {
          * To add a new weapon call its initialisation AND add it to CreateWeaponForId()
          * I tried to work out a better way of doing this, but sleep is hurting my thoughts
          */
-        BurstRifle.initialise(this);
-        SniperRifle.initialise(this);
+        InitBurstRifle(this);
+        InitSniperRifle(this);
 
         /**
          * Now initialise all weapon systems
@@ -231,7 +231,7 @@ export class WeaponModule {
 
     createWeaponForId(item: item, unit: unit) : Gun {
         let itemId = GetItemTypeId(item);
-        if (itemId == SniperRifle.itemId)
+        if (itemId == SNIPER_ITEM_ID)
             return new SniperRifle(item, unit);
         // if (itemId === BurstRifle.itemId) 
             return new BurstRifle(item, unit);
