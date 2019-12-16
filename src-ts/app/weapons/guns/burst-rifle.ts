@@ -23,7 +23,7 @@ export const InitBurstRifle = (weaponModule: WeaponModule) => {
 @staticDecorator()
 export class BurstRifle extends Gun {    
     private DEFAULT_STRAY = 200;
-    private SHOT_DISTANCE = 800;
+    private SHOT_DISTANCE = 900;
 
     constructor(item: item, equippedTo: unit) {
         super(item, equippedTo);
@@ -67,7 +67,7 @@ export class BurstRifle extends Gun {
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
             1.6
-        )
+        );
         projectile
             .setVelocity(2400)
             .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 

@@ -484,3 +484,21 @@ STRING 95
 |cff808080The last attempt to survive, this unit feels resolve.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
 }
 
+STRING 96
+// Items: I002 (High Polymer Casing), Name (Name)
+{
+High Polymer Casing
+}
+
+STRING 97
+// Items: I002 (High Polymer Casing), Tip (Tooltip - Basic)
+{
+High Polymer Casing
+}
+
+STRING 99
+// Items: I002 (High Polymer Casing), Ubertip (Tooltip - Extended)
+{
+|cff808080A lighter and tougher polymer compound designed by the Askellon's research staff.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+

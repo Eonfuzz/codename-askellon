@@ -1,5 +1,6 @@
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { Gun } from "../guns/gun";
+import { PlayNewSoundOnUnit } from "../../../lib/translators";
 
 /** @noSelfInFile **/
 
@@ -8,7 +9,7 @@ import { Gun } from "../guns/gun";
  */
 export abstract class Attachment {
 
-    private attachedTo: Gun | undefined;
+    protected attachedTo: Gun | undefined;
 
     /**
      * Returns true if it successfully equiped
@@ -18,6 +19,9 @@ export abstract class Attachment {
         const canAttach = this.onAttach(weapon);
 
         if (canAttach) {
+            if (weapon.equippedTo) {
+                const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", weapon.equippedTo, 50);
+            }
             return weapon.attach(this);
         }
         return false;

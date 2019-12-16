@@ -5,12 +5,14 @@ import { Vector3 } from "../types/vector3";
 import { ProjectileTargetStatic } from "./projectile/projectile-target";
 import { ProjectileSFX } from "./projectile/projectile-sfx";
 import { Gun } from "./guns/gun";
-import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
+import { BurstRifle, InitBurstRifle, BURST_RIFLE_ABILITY_ID } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { SniperRifle, InitSniperRifle, SNIPER_ITEM_ID } from "./guns/sniper-rifle";
 import { Log } from "../../lib/serilog/serilog";
+import { HIGH_QUALITY_POLYMER_ITEM_ID, HighQualityPolymer } from "./attachment/high-quality-polymer";
+import { Attachment } from "./attachment/attachment";
 
 export class WeaponModule {
     game: Game;
@@ -157,12 +159,8 @@ export class WeaponModule {
 
             // Phew, hope you have the water running, ready for your shower            
             let crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
-            let weapon = this.getGunForItem(item);
-
-            
-
             if (crewmember) {
-                this.applyWeaponEquip(crewmember, item, weapon);
+                this.applyWeaponEquip(crewmember, item, this.getGunForItem(item));
             }
         })
     }
@@ -176,10 +174,24 @@ export class WeaponModule {
         if (!gun) {
             // Log.Information("No gun for item, creating new");
             gun = this.createWeaponForId(item, unit.unit);
-            this.guns.push(gun);
         }
 
-        gun.onAdd(this, unit);
+        // Now check to see if we created a gun or not
+        if (gun) {
+            this.guns.push(gun);
+            gun.onAdd(this, unit);
+        }
+        // Otherwise it's an attachment
+        else {
+            const equippedTo = unit.weapon;
+            if (equippedTo) {
+                const attachment = this.createAttachmentForId(item);
+                if (attachment) {
+                    attachment.equipTo(equippedTo)
+                }
+            }
+        }
+
     }
 
     weaponShootTrigger = new Trigger();
@@ -229,12 +241,19 @@ export class WeaponModule {
         });
     }
 
-    createWeaponForId(item: item, unit: unit) : Gun {
+    createWeaponForId(item: item, unit: unit) : Gun | undefined {
         let itemId = GetItemTypeId(item);
         if (itemId == SNIPER_ITEM_ID)
             return new SniperRifle(item, unit);
-        // if (itemId === BurstRifle.itemId) 
+        else if (itemId === BURST_RIFLE_ABILITY_ID) 
             return new BurstRifle(item, unit);
-        // return undefined;
+        return undefined;
+    }
+
+    createAttachmentForId(item: item) : Attachment | undefined {
+        let itemId = GetItemTypeId(item);
+        if (itemId == HIGH_QUALITY_POLYMER_ITEM_ID)
+            return new HighQualityPolymer();
+        return undefined;
     }
 }
