@@ -10,13 +10,13 @@ Main Feature Roadmap:
 - [100%] Resolve System
 - [00%] Despair System
 - [00%] Break System
-> Milestone Combat Playtest
+> Milestone: Combat Playtest
 - [25%] Dynamically Generated Space Exploration
 - [00%] Aliens?!
 - [00%] Human Upgrades
 - [00%] Station Map Design
 - [00%] Alien Infestation Upgrades
-> Milestone We Have An Actual Game Playtest
+> Milestone: Actual Game Playtest
 - [00%] Alternative Human Roles
 - [00%] Detective
 - [00%] ... Others TBD
