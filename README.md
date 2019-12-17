@@ -3,7 +3,7 @@ Askellon is a large orion class dreadnaught ship stranded in deep space.
 The crew must reboot systems and ensure the Askellon and its contents survive!
 
 But the ship is dangerous; one of the crewmembers has been replaced with an alien simulacrum.
-Find out who it is and stop it; before it is too late.
+Find out who it is and stop it before its too late.
 
 # Whats the status of development?
 Main Feature Roadmap:
