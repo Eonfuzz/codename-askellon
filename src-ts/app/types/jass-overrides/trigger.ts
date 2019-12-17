@@ -1,6 +1,7 @@
 export class Trigger {
 
     nativeTrigger: trigger;
+    public isDestroyed: boolean = false;
 
     constructor() {
         this.nativeTrigger = CreateTrigger();
@@ -27,7 +28,6 @@ export class Trigger {
 
     public AddAction(actionFunc: () => void): triggeraction {
         return TriggerAddAction(this.nativeTrigger, () => xpcall(() => actionFunc(), err => Trigger.printError(err)));
-
     }
 
     public RegisterTimerEvent(timeout: number, periodic: boolean): event {
@@ -95,4 +95,12 @@ export class Trigger {
     // }
 
 
+    public RegisterUnitIssuedOrder(whichUnit: unit, whichEvent: unitevent): event {
+        return TriggerRegisterUnitEvent(this.nativeTrigger, whichUnit, whichEvent);
+    }
+
+    public destroy() {
+        this.isDestroyed = true;
+        DestroyTrigger(this.nativeTrigger);
+    }
 }
