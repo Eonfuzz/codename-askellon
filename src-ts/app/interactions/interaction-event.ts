@@ -15,14 +15,15 @@ export class InteractionEvent {
     private interactionTrigger: Trigger | undefined;
     private callback: Function;
 
-    private timeRemainingForAction: number;
+    private timeRequired: number;
+    private timeRemaining: number;
 
     private progressBar: ProgressBar | undefined;
   
     constructor(unit: unit, targetUnit: unit, interactTime: number, callback: Function) {
         this.unit = unit; 
         this.targetUnit = targetUnit;
-        this.timeRemainingForAction = interactTime;
+        this.timeRequired = this.timeRemaining = interactTime;
         this.callback = callback;
         this.progressBar = new ProgressBar();
     }
@@ -55,8 +56,8 @@ export class InteractionEvent {
                 delta = delta / 2;
             
             // Process delta time
-            this.timeRemainingForAction -= delta;
-            if (this.timeRemainingForAction <= 0) {
+            this.timeRemaining -= delta;
+            if (this.timeRemaining <= 0) {
                 this.onInteractionCompletion();
                 return false;
             }
@@ -66,7 +67,10 @@ export class InteractionEvent {
         }
 
         // Now update progress bar
-        this.progressBar && this.progressBar.moveTo(v1.x, v1.y);
+        this.progressBar && this.progressBar
+            .moveTo(v1.x, v1.y)
+            .setPercentage(this.timeRemaining / this.timeRequired);
+            
         return true;
     }
   
