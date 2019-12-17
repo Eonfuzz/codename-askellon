@@ -26,9 +26,10 @@ export class InteractionModule {
         // TODO This event *may* need to become specific in the future for optimisation
         this.interactionBeginTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
         // TODO Do we care about this unit interaction?
-        this.interactionBeginTrigger.AddCondition(() => true);
+        this.interactionBeginTrigger.AddCondition(() => GetIssuedOrderId() === FourCC('smart'));
         this.interactionBeginTrigger.AddAction(() => {
-            const newInteraction = new InteractionEvent(GetTriggerUnit(), 1.5, () => {
+            Log.Information("Unit starting interaction!");
+            const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, () => {
                 Log.Information("Unit finished interaction!");
             });
             this.interactions.push(newInteraction);
