@@ -24,5 +24,5 @@ Milestone We Have An Actual Game Playtest
 # How can I test out the latest development branch?
 You'll need to have [node](https://nodejs.org/en/) and [git](https://git-scm.com/downloads) installed on your computer.
 - Clone the repository via `git clone ${repositoryCloneURL}`
-- run `npm i` to install dependancies
-- and test the map using `npm run test` (You may have to change the path in config.json)
+- Run `npm i` to install dependancies
+- Finally test the map using `npm run test` (You may have to change the path in config.json)
