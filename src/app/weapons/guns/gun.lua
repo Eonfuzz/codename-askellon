@@ -12,6 +12,7 @@ function Gun.new(...)
     return self
 end
 function Gun.prototype.____constructor(self, item, equippedTo)
+    self.name = "default"
     self.item = item
     self.equippedTo = equippedTo
 end
@@ -22,6 +23,9 @@ function Gun.prototype.onAdd(self, weaponModule, caster)
         self:getAbilityId()
     )
     self:updateTooltip(weaponModule, caster)
+    if self.attachment then
+        self.attachment:equipTo(self)
+    end
     if self.remainingCooldown and self.remainingCooldown > 0 then
         print("Reforged better add a way to set cooldowns remaining")
     end
@@ -56,7 +60,16 @@ function Gun.prototype.onShoot(self, weaponModule, caster, targetLocation)
     self.remainingCooldown = weaponModule.game:getTimeStamp()
 end
 function Gun.prototype.attach(self, attachment)
+    if self.attachment then
+        self:detach()
+    end
     self.attachment = self.attachment
     return true
+end
+function Gun.prototype.detach(self)
+    if self.attachment then
+        self.attachment:unequip()
+        self.attachment = nil
+    end
 end
 return ____exports

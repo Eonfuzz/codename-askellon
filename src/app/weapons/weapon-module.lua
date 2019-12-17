@@ -5,12 +5,16 @@ local Vector3 = ____vector3.Vector3
 local ____burst_2Drifle = require("app.weapons.guns.burst-rifle")
 local BurstRifle = ____burst_2Drifle.BurstRifle
 local InitBurstRifle = ____burst_2Drifle.InitBurstRifle
+local BURST_RIFLE_ABILITY_ID = ____burst_2Drifle.BURST_RIFLE_ABILITY_ID
 local ____trigger = require("app.types.jass-overrides.trigger")
 local Trigger = ____trigger.Trigger
 local ____sniper_2Drifle = require("app.weapons.guns.sniper-rifle")
 local SniperRifle = ____sniper_2Drifle.SniperRifle
 local InitSniperRifle = ____sniper_2Drifle.InitSniperRifle
 local SNIPER_ITEM_ID = ____sniper_2Drifle.SNIPER_ITEM_ID
+local ____high_2Dquality_2Dpolymer = require("app.weapons.attachment.high-quality-polymer")
+local HIGH_QUALITY_POLYMER_ITEM_ID = ____high_2Dquality_2Dpolymer.HIGH_QUALITY_POLYMER_ITEM_ID
+local HighQualityPolymer = ____high_2Dquality_2Dpolymer.HighQualityPolymer
 ____exports.WeaponModule = {}
 local WeaponModule = ____exports.WeaponModule
 WeaponModule.name = "WeaponModule"
@@ -123,9 +127,12 @@ function WeaponModule.prototype.initialiseWeaponEquip(self)
             local itemSlot = orderId - 852008
             local item = UnitItemInSlot(unit, itemSlot)
             local crewmember = self.game.crewModule:getCrewmemberForUnit(unit)
-            local weapon = self:getGunForItem(item)
             if crewmember then
-                self:applyWeaponEquip(crewmember, item, weapon)
+                self:applyWeaponEquip(
+                    crewmember,
+                    item,
+                    self:getGunForItem(item)
+                )
             end
         end
     )
@@ -137,9 +144,19 @@ function WeaponModule.prototype.applyWeaponEquip(self, unit, item, gun)
     end
     if not gun then
         gun = self:createWeaponForId(item, unit.unit)
-        __TS__ArrayPush(self.guns, gun)
     end
-    gun:onAdd(self, unit)
+    if gun then
+        __TS__ArrayPush(self.guns, gun)
+        gun:onAdd(self, unit)
+    else
+        local equippedTo = unit.weapon
+        if equippedTo then
+            local attachment = self:createAttachmentForId(item)
+            if attachment then
+                attachment:equipTo(equippedTo)
+            end
+        end
+    end
 end
 function WeaponModule.prototype.initaliseWeaponShooting(self)
     self.weaponShootTrigger:RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT)
@@ -192,7 +209,16 @@ function WeaponModule.prototype.createWeaponForId(self, item, unit)
     local itemId = GetItemTypeId(item)
     if itemId == SNIPER_ITEM_ID then
         return SniperRifle.new(item, unit)
+    elseif itemId == BURST_RIFLE_ABILITY_ID then
+        return BurstRifle.new(item, unit)
     end
-    return BurstRifle.new(item, unit)
+    return nil
+end
+function WeaponModule.prototype.createAttachmentForId(self, item)
+    local itemId = GetItemTypeId(item)
+    if itemId == HIGH_QUALITY_POLYMER_ITEM_ID then
+        return HighQualityPolymer.new()
+    end
+    return nil
 end
 return ____exports

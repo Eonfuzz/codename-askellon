@@ -12,6 +12,7 @@ function Trigger.new(...)
     return self
 end
 function Trigger.prototype.____constructor(self)
+    self.isDestroyed = false
     self.nativeTrigger = CreateTrigger()
 end
 function Trigger.EvaluateCondition(self, func)
@@ -84,5 +85,12 @@ function Trigger.prototype.RegisterPlayerChatEvent(self, whichPlayer, chatMessag
 end
 function Trigger.prototype.RegisterPlayerUnitEventSimple(self, whichPlayer, whichEvent)
     return TriggerRegisterPlayerUnitEventSimple(self.nativeTrigger, whichPlayer, whichEvent)
+end
+function Trigger.prototype.RegisterUnitIssuedOrder(self, whichUnit, whichEvent)
+    return TriggerRegisterUnitEvent(self.nativeTrigger, whichUnit, whichEvent)
+end
+function Trigger.prototype.destroy(self)
+    self.isDestroyed = true
+    DestroyTrigger(self.nativeTrigger)
 end
 return ____exports

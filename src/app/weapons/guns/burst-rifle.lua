@@ -41,7 +41,7 @@ end
 function BurstRifle.prototype.____constructor(self, item, equippedTo)
     Gun.prototype.____constructor(self, item, equippedTo)
     self.DEFAULT_STRAY = 200
-    self.SHOT_DISTANCE = 800
+    self.SHOT_DISTANCE = 900
 end
 function BurstRifle.prototype.onShoot(self, weaponModule, caster, targetLocation)
     Gun.prototype.onShoot(self, weaponModule, caster, targetLocation)

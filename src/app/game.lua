@@ -19,6 +19,8 @@ local ____gene_2Dmodules = require("app.shops.gene-modules")
 local GeneModule = ____gene_2Dmodules.GeneModule
 local ____ability_2Dmodule = require("app.abilities.ability-module")
 local AbilityModule = ____ability_2Dmodule.AbilityModule
+local ____interaction_2Dmodule = require("app.interactions.interaction-module")
+local InteractionModule = ____interaction_2Dmodule.InteractionModule
 ____exports.Game = {}
 local Game = ____exports.Game
 Game.name = "Game"
@@ -41,6 +43,7 @@ function Game.prototype.____constructor(self)
     self.crewModule = CrewModule.new(self)
     self.abilityModule = AbilityModule.new(self)
     self.geneModule = GeneModule.new(self)
+    self.interactionsModule = InteractionModule.new(self)
     GALAXY_MODULE.initSectors()
     self:initCommands()
 end
