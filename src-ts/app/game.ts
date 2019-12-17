@@ -10,6 +10,7 @@ import { Trigger } from "./types/jass-overrides/trigger";
 import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { GeneModule } from "./shops/gene-modules";
 import { AbilityModule } from "./abilities/ability-module";
+import { InteractionModule } from "./interactions/interaction-module";
 
 export class Game {
     // Helper objects
@@ -22,6 +23,7 @@ export class Game {
     public crewModule: CrewModule;
     public abilityModule: AbilityModule;
     public geneModule: GeneModule;
+    public interactionsModule: InteractionModule;
 
     // public dummyUnit: unit;
 
@@ -46,6 +48,8 @@ export class Game {
 
         this.abilityModule      = new AbilityModule(this);
         this.geneModule         = new GeneModule(this);
+
+        this.interactionsModule = new InteractionModule(this);
 
         // Here be dragons, old code is below and needs update
         GALAXY_MODULE.initSectors();
