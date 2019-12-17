@@ -2,32 +2,34 @@
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { vectorFromUnit } from "../types/vector2";
+import { ProgressBar } from "../types/progress-bar";
 
 export const INTERACT_MAXIMUM_DISTANCE = 300;
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
 
 export class InteractionEvent {
-    private interactionTrigger: Trigger | undefined;
-
     private unit: unit;
     private targetUnit: unit;
 
+    private interactionTrigger: Trigger | undefined;
     private callback: Function;
 
     private timeRemainingForAction: number;
+
+    private progressBar: ProgressBar | undefined;
   
     constructor(unit: unit, targetUnit: unit, interactTime: number, callback: Function) {
         this.unit = unit; 
         this.targetUnit = targetUnit;
         this.timeRemainingForAction = interactTime;
         this.callback = callback;
+        this.progressBar = new ProgressBar();
     }
   
     startInteraction() {
       this.interactionTrigger = new Trigger();
-      this.interactionTrigger.RegisterUnitIssuedOrder(this.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
-      this.interactionTrigger.AddCondition(() => GetIssuedOrderId() === FourCC('smart'));
+      this.interactionTrigger.RegisterUnitIssuedOrder(this.unit, EVENT_UNIT_ISSUED_ORDER);
       this.interactionTrigger.AddAction(() => { this.onCancel(); });
     }
 
@@ -63,6 +65,8 @@ export class InteractionEvent {
             // Otherwise should we have interact time increase? Not sure
         }
 
+        // Now update progress bar
+        this.progressBar && this.progressBar.moveTo(v1.x, v1.y);
         return true;
     }
   
