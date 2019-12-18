@@ -100,23 +100,23 @@ export class Resolve {
             this.resolveMusic.setVolume(15);
 
             // TODO Uncomment this once no desyncs are caused by it
-            // this.buttonHighlight = CreateCommandButtonEffect(RESOLVE_ABILITY_ID, "entangle");
+            let order = "thisIsUsedInLocalPlayerBlock";
             if (GetLocalPlayer() === crewmember.player) {
                 this.resolveMusic.playSound();
                 this.breathSound.playSound();
                 StopMusic(true);
+                // This is used to avoid desyncs
+                order = "entangle";
             }
-            else {
-                // DestroyCommandButtonEffect(this.buttonHighlight);
-            }
+            this.buttonHighlight = CreateCommandButtonEffect(RESOLVE_ABILITY_ID, order);
         }
         else {
             if (GetLocalPlayer() === crewmember.player) {
                 this.resolveMusic.stopSound();
                 this.breathSound.stopSound();
                 ResumeMusic();
-                // if (this.buttonHighlight) DestroyCommandButtonEffect(this.buttonHighlight);
             }
+            if (this.buttonHighlight) DestroyCommandButtonEffect(this.buttonHighlight);
         }
     }
     

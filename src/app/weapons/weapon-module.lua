@@ -5,13 +5,15 @@ local Vector3 = ____vector3.Vector3
 local ____burst_2Drifle = require("app.weapons.guns.burst-rifle")
 local BurstRifle = ____burst_2Drifle.BurstRifle
 local InitBurstRifle = ____burst_2Drifle.InitBurstRifle
-local BURST_RIFLE_ABILITY_ID = ____burst_2Drifle.BURST_RIFLE_ABILITY_ID
+local BURST_RIFLE_ITEM_ID = ____burst_2Drifle.BURST_RIFLE_ITEM_ID
 local ____trigger = require("app.types.jass-overrides.trigger")
 local Trigger = ____trigger.Trigger
 local ____sniper_2Drifle = require("app.weapons.guns.sniper-rifle")
 local SniperRifle = ____sniper_2Drifle.SniperRifle
 local InitSniperRifle = ____sniper_2Drifle.InitSniperRifle
 local SNIPER_ITEM_ID = ____sniper_2Drifle.SNIPER_ITEM_ID
+local ____serilog = require("lib.serilog.serilog")
+local Log = ____serilog.Log
 local ____high_2Dquality_2Dpolymer = require("app.weapons.attachment.high-quality-polymer")
 local HIGH_QUALITY_POLYMER_ITEM_ID = ____high_2Dquality_2Dpolymer.HIGH_QUALITY_POLYMER_ITEM_ID
 local HighQualityPolymer = ____high_2Dquality_2Dpolymer.HighQualityPolymer
@@ -143,9 +145,11 @@ function WeaponModule.prototype.applyWeaponEquip(self, unit, item, gun)
         oldWeapon:onRemove(self)
     end
     if not gun then
+        Log.Information("No gun for item, creating new")
         gun = self:createWeaponForId(item, unit.unit)
     end
     if gun then
+        Log.Information("Gun added!")
         __TS__ArrayPush(self.guns, gun)
         gun:onAdd(self, unit)
     else
@@ -209,7 +213,7 @@ function WeaponModule.prototype.createWeaponForId(self, item, unit)
     local itemId = GetItemTypeId(item)
     if itemId == SNIPER_ITEM_ID then
         return SniperRifle.new(item, unit)
-    elseif itemId == BURST_RIFLE_ABILITY_ID then
+    elseif itemId == BURST_RIFLE_ITEM_ID then
         return BurstRifle.new(item, unit)
     end
     return nil

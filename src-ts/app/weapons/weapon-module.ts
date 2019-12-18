@@ -5,7 +5,7 @@ import { Vector3 } from "../types/vector3";
 import { ProjectileTargetStatic } from "./projectile/projectile-target";
 import { ProjectileSFX } from "./projectile/projectile-sfx";
 import { Gun } from "./guns/gun";
-import { BurstRifle, InitBurstRifle, BURST_RIFLE_ABILITY_ID } from "./guns/burst-rifle";
+import { BurstRifle, InitBurstRifle, BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
@@ -172,12 +172,13 @@ export class WeaponModule {
         }
 
         if (!gun) {
-            // Log.Information("No gun for item, creating new");
+            Log.Information("No gun for item, creating new");
             gun = this.createWeaponForId(item, unit.unit);
         }
 
         // Now check to see if we created a gun or not
         if (gun) {
+            Log.Information("Gun added!");
             this.guns.push(gun);
             gun.onAdd(this, unit);
         }
@@ -245,7 +246,7 @@ export class WeaponModule {
         let itemId = GetItemTypeId(item);
         if (itemId == SNIPER_ITEM_ID)
             return new SniperRifle(item, unit);
-        else if (itemId === BURST_RIFLE_ABILITY_ID) 
+        else if (itemId === BURST_RIFLE_ITEM_ID) 
             return new BurstRifle(item, unit);
         return undefined;
     }

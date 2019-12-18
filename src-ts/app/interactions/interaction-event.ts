@@ -78,7 +78,7 @@ export class InteractionEvent {
 
     // Now update progress bar
     this.progressBar && this.progressBar
-      .moveTo(v1.x, v1.y, BlzGetUnitZ(this.unit) + 200)
+      .moveTo(v1.x, v1.y, BlzGetUnitZ(this.unit) + 229)
       .setPercentage(1 - this.timeRemaining / this.timeRequired);
 
     return true;

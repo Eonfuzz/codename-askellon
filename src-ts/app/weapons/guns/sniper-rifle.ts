@@ -10,13 +10,14 @@ import { TimedEvent } from "../../types/timed-event";
 import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator, getYawPitchRollFromVector } from "../../../lib/translators";
+import { Log } from "../../../lib/serilog/serilog";
 
-export const SNIPER_ABILITY_ID = FourCC('A052');
+export const SNIPER_ABILITY_ID = FourCC('A005');
 export const SNIPER_ITEM_ID = FourCC('I001');
 
 export const InitSniperRifle = (weaponModule: WeaponModule) => {
-    weaponModule.weaponItemIds.push(SNIPER_ABILITY_ID);
-    weaponModule.weaponAbilityIds.push(SNIPER_ITEM_ID);
+    weaponModule.weaponItemIds.push(SNIPER_ITEM_ID);
+    weaponModule.weaponAbilityIds.push(SNIPER_ABILITY_ID);
 }
 @staticDecorator()
 export class SniperRifle extends Gun {    
@@ -34,11 +35,13 @@ export class SniperRifle extends Gun {
             this.SHOT_DISTANCE-accuracyModifier, 
             this.SHOT_DISTANCE+accuracyModifier
         );
-        return newTooltip;
+        return "";
     };
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
+        Log.Information("Shooting sniper!");
         super.onShoot(weaponModule, caster, targetLocation);
+
         const unit = caster.unit;
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.SHOT_DISTANCE);
@@ -92,16 +95,9 @@ export class SniperRifle extends Gun {
                 BlzSetSpecialEffectAlpha(sfx, 40);
                 BlzSetSpecialEffectScale(sfx, 0.7);
                 BlzSetSpecialEffectTimeScale(sfx, 1);
+                BlzSetSpecialEffectTime(sfx, 0.5);
 
-                const secondSfx = AddSpecialEffect("Abilities\\Weapons\\GryphonRiderMissile\\GryphonRiderMissileTarget.mdl", position.x, position.y);
-                BlzSetSpecialEffectHeight(secondSfx, position.z - 30);
-                BlzSetSpecialEffectScale(secondSfx, 0.5);
-                BlzSetSpecialEffectTimeScale(secondSfx, 0.7);
-                BlzSetSpecialEffectYaw(secondSfx, sfxOrientation.yaw + 90 * bj_DEGTORAD);
-                BlzSetSpecialEffectRoll(secondSfx, sfxOrientation.pitch + 90 * bj_DEGTORAD);
-                
                 DestroyEffect(sfx);
-                DestroyEffect(secondSfx);
                 return true;
             }, delay, false));
             delay += 100;

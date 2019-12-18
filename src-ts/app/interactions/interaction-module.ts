@@ -3,6 +3,7 @@ import { Game } from "../game";
 import { InteractionEvent } from "./interaction-event";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
+import { Interactables } from "./interaction-data";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 export const SMART_ORDER_ID = 851971;
@@ -31,11 +32,21 @@ export class InteractionModule {
             return GetIssuedOrderId() === SMART_ORDER_ID
         });
         this.interactionBeginTrigger.AddAction(() => {
-            const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, () => {
-                Log.Information("Unit finished interaction!");
-            });
-            newInteraction.startInteraction();
-            this.interactions.push(newInteraction);
+            const trigUnit = GetTriggerUnit();
+            const targetUnit = GetOrderTargetUnit();
+            const targetUnitType = GetUnitTypeId(targetUnit);
+
+            // Check to see if we have it in our interactable data
+            const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
+
+            if (interact && (!interact.condition || interact.condition(this, trigUnit, targetUnit))) {
+                const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, () => {
+                    Log.Information(`Interaction ${GetUnitName(trigUnit)}::${GetUnitName(targetUnit)}`);
+                    interact.action(this, trigUnit, targetUnit);
+                });
+                newInteraction.startInteraction();
+                this.interactions.push(newInteraction);
+            }
         });
     }
 
