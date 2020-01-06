@@ -52,6 +52,8 @@ function Gun.prototype.onRemove(self, weaponModule)
     end
 end
 function Gun.prototype.updateTooltip(self, weaponModule, caster)
+    local itemTooltip = self:getItemTooltip(weaponModule, caster)
+    BlzSetItemExtendedTooltip(self.item, itemTooltip)
     if self.equippedTo then
         local owner = GetOwningPlayer(self.equippedTo.unit)
         local newTooltip = self:getTooltip(weaponModule, caster)

@@ -9,7 +9,7 @@ import { Game } from "../../game";
 import { WeaponModule } from "../weapon-module";
 import { TimedEvent } from "../../types/timed-event";
 import { Vector2 } from "../../types/vector2";
-import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
+import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
@@ -98,13 +98,17 @@ export class BurstRifle extends Gun {
     }
 
     protected getTooltip(weaponModule: WeaponModule, crewmember: Crewmember) {
-        const accuracyModifier = (this.DEFAULT_STRAY*(100/crewmember.accuracy))/2
+        const accuracyModifier = (this.DEFAULT_STRAY*(100/crewmember.accuracy))/2;
         const newTooltip = BURST_RIFLE_EXTENDED(
             this.getDamage(weaponModule, crewmember), 
             this.SHOT_DISTANCE-accuracyModifier, 
             this.SHOT_DISTANCE+accuracyModifier
         );
         return newTooltip;
+    }
+
+    protected getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string {
+        return BURST_RIFLE_ITEM(this);
     }
 
     private getStrayLocation(originalLocation: Vector3, caster: Crewmember): Vector3 {

@@ -5,6 +5,7 @@ import { WeaponModule } from "../weapon-module";
 import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
+import { Log } from "../../../lib/serilog/serilog";
 
 export abstract class Gun {
     item: item;
@@ -51,8 +52,14 @@ export abstract class Gun {
     }
 
     public updateTooltip(weaponModule: WeaponModule, caster: Crewmember) {
+        // Update the item tooltip
+        const itemTooltip = this.getItemTooltip(weaponModule, caster);
+        BlzSetItemExtendedTooltip(this.item, itemTooltip);
+
         if (this.equippedTo) {
             const owner = GetOwningPlayer(this.equippedTo.unit);
+
+            // Update the equip tooltip
             const newTooltip = this.getTooltip(weaponModule, caster);
             if (GetLocalPlayer() === owner) {
                 BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
@@ -61,6 +68,7 @@ export abstract class Gun {
     }
 
     protected abstract getTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string;
+    protected abstract getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string;
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         this.remainingCooldown = weaponModule.game.getTimeStamp();

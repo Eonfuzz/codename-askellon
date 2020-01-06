@@ -14,6 +14,8 @@ export const HIGH_QUALITY_POLYMER_ITEM_ID = FourCC('I002');
  */
 export class HighQualityPolymer extends Attachment {
 
+    name = "High Quality Polymer"
+
     /**
      * Gets the tooltip for the attachment
      * @param weapon 

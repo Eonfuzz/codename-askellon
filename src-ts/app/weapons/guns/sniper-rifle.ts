@@ -8,7 +8,7 @@ import { ProjectileTargetStatic } from "../projectile/projectile-target";
 import { WeaponModule } from "../weapon-module";
 import { TimedEvent } from "../../types/timed-event";
 import { Vector2 } from "../../types/vector2";
-import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
+import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator, getYawPitchRollFromVector } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
 import { ArmableUnit } from "./unit-has-weapon";
@@ -38,6 +38,10 @@ export class SniperRifle extends Gun {
         );
         return "";
     };
+
+    protected getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string {
+        return BURST_RIFLE_ITEM(this);
+    }
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         Log.Information("Shooting sniper!");

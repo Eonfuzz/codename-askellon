@@ -13,6 +13,7 @@ export abstract class Attachment {
     protected attachedTo: Gun | undefined;
     protected item: item | undefined;
     protected itemId: number;
+    public name: string = '';
 
     constructor(item: item) {
         this.item = item;

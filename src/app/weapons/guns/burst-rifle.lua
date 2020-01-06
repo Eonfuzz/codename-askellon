@@ -14,6 +14,7 @@ local ____vector2 = require("app.types.vector2")
 local Vector2 = ____vector2.Vector2
 local ____weapon_2Dtooltips = require("resources.weapon-tooltips")
 local BURST_RIFLE_EXTENDED = ____weapon_2Dtooltips.BURST_RIFLE_EXTENDED
+local BURST_RIFLE_ITEM = ____weapon_2Dtooltips.BURST_RIFLE_ITEM
 local ____translators = require("lib.translators")
 local PlayNewSoundOnUnit = ____translators.PlayNewSoundOnUnit
 local staticDecorator = ____translators.staticDecorator
@@ -131,6 +132,9 @@ function BurstRifle.prototype.getTooltip(self, weaponModule, crewmember)
         self.SHOT_DISTANCE + accuracyModifier
     )
     return newTooltip
+end
+function BurstRifle.prototype.getItemTooltip(self, weaponModule, crewmember)
+    return BURST_RIFLE_ITEM(nil, self)
 end
 function BurstRifle.prototype.getStrayLocation(self, originalLocation, caster)
     local accuracy = caster.accuracy
