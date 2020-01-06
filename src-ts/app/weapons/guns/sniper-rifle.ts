@@ -12,9 +12,8 @@ import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapo
 import { PlayNewSoundOnUnit, staticDecorator, getYawPitchRollFromVector } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
 import { ArmableUnit } from "./unit-has-weapon";
+import { SNIPER_ITEM_ID, SNIPER_ABILITY_ID } from "../weapon-constants";
 
-export const SNIPER_ABILITY_ID = FourCC('A005');
-export const SNIPER_ITEM_ID = FourCC('I001');
 
 export const InitSniperRifle = (weaponModule: WeaponModule) => {
     weaponModule.weaponItemIds.push(SNIPER_ITEM_ID);
@@ -40,11 +39,10 @@ export class SniperRifle extends Gun {
     };
 
     protected getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string {
-        return BURST_RIFLE_ITEM(this);
+        return BURST_RIFLE_ITEM(this, this.getDamage(weaponModule, crewmember));
     }
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
-        Log.Information("Shooting sniper!");
         super.onShoot(weaponModule, caster, targetLocation);
 
         const unit = caster.unit;

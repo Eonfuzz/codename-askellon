@@ -520,9 +520,50 @@ STRING 105
 R
 }
 
-STRING 106
+STRING 107
 // Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n -  |cffffff00Resolve:|r Quick dash |cff00ff00330|r distance forwards|n|n|cff80808020 Second Cooldown|r
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r. |cffffff00Resolve:|r Casting Sprint now dashes |cff00ff00330|r forwards|n|n|cff80808020 Second Cooldown|r
+}
+
+STRING 108
+{
+ 
+}
+
+STRING 109
+// Items: I003 (EMS Rifling), Name (Name)
+{
+EMS Rifling
+}
+
+STRING 110
+// Items: I003 (EMS Rifling), Tip (Tooltip - Basic)
+{
+EMS Rifling
+}
+
+STRING 112
+// Abilities: A00A (EMS Rifling), Tip (Tooltip - Normal)
+{
+EMS Rifling
+}
+
+STRING 114
+// Abilities: A00A (EMS Rifling), Name (Name)
+{
+EMS Rifling
+}
+
+STRING 116
+// Items: I003 (EMS Rifling), Ubertip (Tooltip - Extended)
+{
+|cff808080Innovative internal components created by EMS industries, these parts greatly improved the efficiency of any weapon that uses them.|r|n|nIncreases range by |cff00ff0020%|r and base damage by |cff00ff005|r.
+}
+
+STRING 117
+// Abilities: A00A (EMS Rifling), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Innovative internal components created by EMS industries, these parts greatly improved the efficiency of any weapon that uses them.|r|n|nIncreases range by |cff00ff0020%|r and base damage by |cff00ff005|r.
 }
 

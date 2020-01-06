@@ -35,6 +35,7 @@ export abstract class Attachment {
             if (didAttach) {
                 this.item && RemoveItem(this.item);
                 this.item = undefined;
+                this.attachedTo = weapon;
             }
             return didAttach;
         }
@@ -50,7 +51,9 @@ export abstract class Attachment {
         
         // Create a new item instance of the attached item
         // If we are attached to a unit, try to create it in their inventory
+        Log.Information(`Detatch! ${!!this.attachedTo}`);
         if (this.attachedTo && this.attachedTo.equippedTo) {
+            Log.Information("Some thing!");
             const unit = this.attachedTo.equippedTo.unit;
             const unitHasSpareItemSlot = UnitInventoryCount(unit) < UnitInventorySize(unit);
 
@@ -61,12 +64,6 @@ export abstract class Attachment {
         // Now remove this attached info
         this.attachedTo = undefined;
     };
-
-    /**
-     * Gets the tooltip for the attachment
-     * @param weapon 
-     */
-    public abstract getTooltip(weapon: Gun): string;
 
     /**
      * Returns true if we did attach successfully

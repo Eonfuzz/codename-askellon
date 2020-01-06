@@ -11,6 +11,7 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("I001"), -407.0, 80.9, FourCC("I001"))
     BlzCreateItemWithSkin(FourCC("I001"), -252.0, 37.1, FourCC("I001"))
     BlzCreateItemWithSkin(FourCC("I002"), -361.7, 571.7, FourCC("I002"))
+    BlzCreateItemWithSkin(FourCC("I003"), -265.1, 602.5, FourCC("I003"))
 end
 
 function CreateUnitsForPlayer20()

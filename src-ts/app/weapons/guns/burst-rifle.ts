@@ -13,9 +13,9 @@ import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapo
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
+import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
+import { Log } from "../../../lib/serilog/serilog";
 
-export const BURST_RIFLE_ABILITY_ID = FourCC('A002');
-export const BURST_RIFLE_ITEM_ID = FourCC('I000');
 
 export const InitBurstRifle = (weaponModule: WeaponModule) => {
     weaponModule.weaponItemIds.push(BURST_RIFLE_ITEM_ID);
@@ -23,8 +23,8 @@ export const InitBurstRifle = (weaponModule: WeaponModule) => {
 }
 @staticDecorator()
 export class BurstRifle extends Gun {    
-    private DEFAULT_STRAY = 200;
-    private SHOT_DISTANCE = 900;
+    private DEFAULT_STRAY = 240;
+    private SHOT_DISTANCE = 1200;
 
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
@@ -108,7 +108,8 @@ export class BurstRifle extends Gun {
     }
 
     protected getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string {
-        return BURST_RIFLE_ITEM(this);
+        const damage = this.getDamage(weaponModule, crewmember);
+        return BURST_RIFLE_ITEM(this, damage);
     }
 
     private getStrayLocation(originalLocation: Vector3, caster: Crewmember): Vector3 {
@@ -124,6 +125,9 @@ export class BurstRifle extends Gun {
     }
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
+        if (this.attachment && this.attachment.name === "Ems Rifling") {
+            return 20;
+        }
         return 15;
     }
 

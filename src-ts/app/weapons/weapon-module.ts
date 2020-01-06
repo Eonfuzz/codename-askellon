@@ -5,15 +5,17 @@ import { Vector3 } from "../types/vector3";
 import { ProjectileTargetStatic } from "./projectile/projectile-target";
 import { ProjectileSFX } from "./projectile/projectile-sfx";
 import { Gun } from "./guns/gun";
-import { BurstRifle, InitBurstRifle, BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID } from "./guns/burst-rifle";
+import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
-import { SniperRifle, InitSniperRifle, SNIPER_ITEM_ID } from "./guns/sniper-rifle";
+import { SniperRifle, InitSniperRifle } from "./guns/sniper-rifle";
 import { Log } from "../../lib/serilog/serilog";
-import { HIGH_QUALITY_POLYMER_ITEM_ID, HighQualityPolymer } from "./attachment/high-quality-polymer";
+import { HighQualityPolymer } from "./attachment/high-quality-polymer";
 import { Attachment } from "./attachment/attachment";
 import { ArmableUnit } from "./guns/unit-has-weapon";
+import { EmsRifling } from "./attachment/em-rifling";
+import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID } from "./weapon-constants";
 
 export class WeaponModule {
     game: Game;
@@ -257,6 +259,7 @@ export class WeaponModule {
 
     itemIsAttachment(itemId: number) : boolean {
         if (itemId === HIGH_QUALITY_POLYMER_ITEM_ID) return true;
+        if (itemId === EMS_RIFLING_ITEM_ID) return true;
         return false;
     }
 
@@ -273,6 +276,8 @@ export class WeaponModule {
         let itemId = GetItemTypeId(item);
         if (itemId == HIGH_QUALITY_POLYMER_ITEM_ID)
             return new HighQualityPolymer(item);
+        if (itemId == EMS_RIFLING_ITEM_ID)
+            return new EmsRifling(item);
         return undefined;
     }
 }

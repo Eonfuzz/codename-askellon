@@ -2,7 +2,7 @@ import { Ability } from "./ability-type";
 import { AbilityModule } from "./ability-module";
 import { Vector2, vectorFromUnit } from "../types/vector2";
 import { Log } from "../../lib/serilog/serilog";
-import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../weapons/attachment/high-quality-polymer";
+import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../weapons/weapon-constants";
 
 /** @noSelfInFile **/
 const ROLL_DISTANCE = 330;

@@ -3,8 +3,8 @@ import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES } from "./crewmember-names";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
-import { BurstRifle, BURST_RIFLE_ITEM_ID } from "../weapons/guns/burst-rifle";
 import { Log } from "../../lib/serilog/serilog";
+import { BURST_RIFLE_ITEM_ID } from "../weapons/weapon-constants";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 

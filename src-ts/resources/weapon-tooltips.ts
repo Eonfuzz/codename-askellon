@@ -10,16 +10,21 @@ Fires a short burst of six bullets with |cff00ffff${accuracyMin}|r to |cff00ffff
 |cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 `;
 
-export const BURST_RIFLE_ITEM = (weapon: Gun) => 
+export const BURST_RIFLE_ITEM = (weapon: Gun, damage: any) => 
 `|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
 Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
 
-Attached: ${weapon.attachment ? (`${COL_GOLD}${weapon.attachment.name}`) : `${COL_ATTATCH}Empty Slot`}|r
+Attached: ${weapon.attachment 
+    ? `${COL_GOLD}${weapon.attachment.name}`
+    : `${COL_ATTATCH}Nothing`
+}|r
 
-The basic starter weapon; shoots in short burts, is good for thinning hordes and can do some serious damage up close.
+The standard issue rifle; ideal for thinning hordes and can dish out serious damage up close.
 ${COL_GOOD}- 6 Shot Burst
-- Each shot does 15 damage
+- Each shot does ${damage} damage
 - Short Cooldown|r
 
-${COL_INFO}Can be enhanced with ${COL_ATTATCH}High Quality Polymer|r.|r
-`;
+${!weapon.attachment
+     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}High Quality Polymer|r${COL_INFO} and |r${COL_ATTATCH}EMS Rifling|r${COL_INFO}.|r` 
+     : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
+}`;

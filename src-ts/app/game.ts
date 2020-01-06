@@ -84,6 +84,11 @@ export class Game {
                 });
                 SetUnitLifePercentBJ(crew.unit, 20);
             }
+            else if (message === "-u" && crew) {
+                if (crew.weapon) {
+                    crew.weapon.detach();
+                }
+            }
         });
     }
 
