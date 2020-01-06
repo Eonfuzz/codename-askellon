@@ -109,7 +109,7 @@ function WeaponModule.prototype.getGunForItem(self, item)
 end
 function WeaponModule.prototype.getGunForUnit(self, unit)
     for ____, gun in ipairs(self.guns) do
-        if gun.equippedTo == unit then
+        if gun.equippedTo and gun.equippedTo.unit == unit then
             return gun
         end
     end
@@ -130,36 +130,37 @@ function WeaponModule.prototype.initialiseWeaponEquip(self)
             local item = UnitItemInSlot(unit, itemSlot)
             local crewmember = self.game.crewModule:getCrewmemberForUnit(unit)
             if crewmember then
-                self:applyWeaponEquip(
-                    crewmember,
-                    item,
-                    self:getGunForItem(item)
-                )
+                self:applyItemEquip(crewmember, item)
             end
         end
     )
 end
-function WeaponModule.prototype.applyWeaponEquip(self, unit, item, gun)
-    local oldWeapon = self:getGunForUnit(unit.unit)
-    if oldWeapon then
-        oldWeapon:onRemove(self)
-    end
-    if not gun then
-        Log.Information("No gun for item, creating new")
-        gun = self:createWeaponForId(item, unit.unit)
-    end
-    if gun then
-        Log.Information("Gun added!")
-        __TS__ArrayPush(self.guns, gun)
-        gun:onAdd(self, unit)
-    else
-        local equippedTo = unit.weapon
-        if equippedTo then
+function WeaponModule.prototype.applyItemEquip(self, unit, item)
+    local itemId = GetItemTypeId(item)
+    local itemIsWeapon = self:itemIsWeapon(itemId)
+    local itemIsAttachment = self:itemIsAttachment(itemId)
+    if itemIsWeapon then
+        local oldWeapon = self:getGunForUnit(unit.unit)
+        local weaponForItem = self:getGunForItem(item) or self:createWeaponForId(item, unit)
+        if oldWeapon then
+            oldWeapon:onRemove(self)
+        end
+        if weaponForItem then
+            __TS__ArrayPush(self.guns, weaponForItem)
+            weaponForItem:onAdd(self, unit)
+        end
+    elseif itemIsAttachment then
+        if unit.weapon then
             local attachment = self:createAttachmentForId(item)
             if attachment then
-                attachment:equipTo(equippedTo)
+                Log.Information("Equipping Attachment...")
+                attachment:attachTo(unit.weapon)
             end
         end
+    else
+        Log.Warning(
+            "Warning, item " .. tostring(itemId) .. " is being attached but is not attachment or weapon"
+        )
     end
 end
 function WeaponModule.prototype.initaliseWeaponShooting(self)
@@ -209,6 +210,21 @@ function WeaponModule.prototype.initialiseWeaponDropping(self)
         end
     )
 end
+function WeaponModule.prototype.itemIsWeapon(self, itemId)
+    if itemId == SNIPER_ITEM_ID then
+        return true
+    end
+    if itemId == BURST_RIFLE_ITEM_ID then
+        return true
+    end
+    return false
+end
+function WeaponModule.prototype.itemIsAttachment(self, itemId)
+    if itemId == HIGH_QUALITY_POLYMER_ITEM_ID then
+        return true
+    end
+    return false
+end
 function WeaponModule.prototype.createWeaponForId(self, item, unit)
     local itemId = GetItemTypeId(item)
     if itemId == SNIPER_ITEM_ID then
@@ -221,7 +237,7 @@ end
 function WeaponModule.prototype.createAttachmentForId(self, item)
     local itemId = GetItemTypeId(item)
     if itemId == HIGH_QUALITY_POLYMER_ITEM_ID then
-        return HighQualityPolymer.new()
+        return HighQualityPolymer.new(item)
     end
     return nil
 end

@@ -3,29 +3,35 @@ import { Vector3 } from "../../types/vector3";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { WeaponModule } from "../weapon-module";
 import { Attachment } from "../attachment/attachment";
+import { ArmableUnit } from "./unit-has-weapon";
+import { PlayNewSoundOnUnit } from "../../../lib/translators";
 
 export abstract class Gun {
     item: item;
-    equippedTo: unit | undefined;
+    equippedTo: ArmableUnit | undefined;
 
     attachment: Attachment | undefined;
     remainingCooldown: number | undefined;
 
     public name = "default";
 
-    constructor(item: item, equippedTo: unit) {
+    constructor(item: item, equippedTo: ArmableUnit) {
         this.item = item;
         this.equippedTo = equippedTo;
     }
     
     public onAdd(weaponModule: WeaponModule, caster: Crewmember) {
-        this.equippedTo = caster.unit;
+        this.equippedTo = caster;
+        this.equippedTo.onWeaponAdd(weaponModule, this);
+
         UnitAddAbility(caster.unit, this.getAbilityId());
         this.updateTooltip(weaponModule, caster);
         
+        const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
+
         // If we have an attachment make sure it's added to the unit
         if (this.attachment) {
-            this.attachment.equipTo(this);
+            this.attachment.onEquip(this);
         }
         
         if (this.remainingCooldown && this.remainingCooldown > 0) {
@@ -36,15 +42,17 @@ export abstract class Gun {
 
     public onRemove(weaponModule: WeaponModule) {
         if (this.equippedTo) {
-            UnitRemoveAbility(this.equippedTo, this.getAbilityId());
-            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo, this.getAbilityId());
+            UnitRemoveAbility(this.equippedTo.unit, this.getAbilityId());
+            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit, this.getAbilityId());
+            this.equippedTo.onWeaponRemove(weaponModule, this);
+            if (this.attachment) this.attachment.onUnequip(this);
             this.equippedTo = undefined;
         }
     }
 
     public updateTooltip(weaponModule: WeaponModule, caster: Crewmember) {
         if (this.equippedTo) {
-            const owner = GetOwningPlayer(this.equippedTo);
+            const owner = GetOwningPlayer(this.equippedTo.unit);
             const newTooltip = this.getTooltip(weaponModule, caster);
             if (GetLocalPlayer() === owner) {
                 BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
@@ -65,13 +73,13 @@ export abstract class Gun {
         if (this.attachment) {
             this.detach();
         }
-        this.attachment = this.attachment;
+        this.attachment = attachment;
         return true;
     }
 
     public detach() {
         if (this.attachment) {
-            this.attachment.unequip();
+            this.attachment.unattach();
             this.attachment = undefined;
         }
     }

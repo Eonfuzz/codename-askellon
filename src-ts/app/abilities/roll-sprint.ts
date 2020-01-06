@@ -2,6 +2,7 @@ import { Ability } from "./ability-type";
 import { AbilityModule } from "./ability-module";
 import { Vector2, vectorFromUnit } from "../types/vector2";
 import { Log } from "../../lib/serilog/serilog";
+import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../weapons/attachment/high-quality-polymer";
 
 /** @noSelfInFile **/
 const ROLL_DISTANCE = 330;
@@ -21,16 +22,18 @@ export class rollWhenSprinting implements Ability {
         this.unit = GetTriggerUnit();
 
         const unitPos = vectorFromUnit(this.unit);
-        // TODO
+
+        // Distance is increased if the unit has high quality polymers
+        const rollModifier = GetUnitAbilityLevel(this.unit, HIGH_QUALITY_POLYMER_ABILITY_ID) > 0 ? 1.3 : 1;
 
         const targetPos = unitPos.applyPolarOffset(
             GetUnitFacing(this.unit), 
-            ROLL_DISTANCE
+            ROLL_DISTANCE * rollModifier
         );
 
         this.direction = targetPos.subtract( unitPos )
             .normalise()
-            .multiplyN(ROLL_DISTANCE / ROLL_DURATION);
+            .multiplyN((ROLL_DISTANCE * rollModifier) / ROLL_DURATION);
 
         return true;
     };

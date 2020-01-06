@@ -1,6 +1,8 @@
 local ____exports = {}
 local ____resolve = require("app.buff.resolve")
 local Resolve = ____resolve.Resolve
+local ____unit_2Dhas_2Dweapon = require("app.weapons.guns.unit-has-weapon")
+local ArmableUnit = ____unit_2Dhas_2Dweapon.ArmableUnit
 ____exports.Crewmember = {}
 local Crewmember = ____exports.Crewmember
 Crewmember.name = "Crewmember"
@@ -8,12 +10,16 @@ Crewmember.__index = Crewmember
 Crewmember.prototype = {}
 Crewmember.prototype.__index = Crewmember.prototype
 Crewmember.prototype.constructor = Crewmember
+Crewmember.____super = ArmableUnit
+setmetatable(Crewmember, Crewmember.____super)
+setmetatable(Crewmember.prototype, Crewmember.____super.prototype)
 function Crewmember.new(...)
     local self = setmetatable({}, Crewmember.prototype)
     self:____constructor(...)
     return self
 end
 function Crewmember.prototype.____constructor(self, game, player, unit)
+    ArmableUnit.prototype.____constructor(self, unit)
     self.role = ""
     self.name = ""
     self.accuracy = 100
@@ -38,6 +44,12 @@ function Crewmember.prototype.setName(self, name)
 end
 function Crewmember.prototype.setPlayer(self, player)
     self.player = player
+end
+function Crewmember.prototype.onWeaponAdd(self, weaponModule, whichGun)
+    self.weapon = whichGun
+end
+function Crewmember.prototype.onWeaponRemove(self, weaponModule, whichGun)
+    self.weapon = nil
 end
 function Crewmember.prototype.onResolveDoChange(self, game)
     if GetUnitLifePercent(self.unit) <= 30 then

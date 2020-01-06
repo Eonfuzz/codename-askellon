@@ -11,6 +11,7 @@ import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator, getYawPitchRollFromVector } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
+import { ArmableUnit } from "./unit-has-weapon";
 
 export const SNIPER_ABILITY_ID = FourCC('A005');
 export const SNIPER_ITEM_ID = FourCC('I001');
@@ -24,7 +25,7 @@ export class SniperRifle extends Gun {
     private DEFAULT_STRAY = 30;
     private SHOT_DISTANCE = 1600;
 
-    constructor(item: item, equippedTo: unit) {
+    constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
     }
     
@@ -107,7 +108,7 @@ export class SniperRifle extends Gun {
     private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
-            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo);
+            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
             if (crewmember) {
                 const damage = this.getDamage(weaponModule, crewmember);
                 UnitDamageTarget(

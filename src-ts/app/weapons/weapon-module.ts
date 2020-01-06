@@ -13,6 +13,7 @@ import { SniperRifle, InitSniperRifle, SNIPER_ITEM_ID } from "./guns/sniper-rifl
 import { Log } from "../../lib/serilog/serilog";
 import { HIGH_QUALITY_POLYMER_ITEM_ID, HighQualityPolymer } from "./attachment/high-quality-polymer";
 import { Attachment } from "./attachment/attachment";
+import { ArmableUnit } from "./guns/unit-has-weapon";
 
 export class WeaponModule {
     game: Game;
@@ -131,7 +132,7 @@ export class WeaponModule {
 
     getGunForUnit(unit: unit): Gun | void {
         for (let gun of this.guns) {
-            if (gun.equippedTo == unit) {
+            if (gun.equippedTo && gun.equippedTo.unit == unit) {
                 return gun;
             }
         }
@@ -160,39 +161,47 @@ export class WeaponModule {
             // Phew, hope you have the water running, ready for your shower            
             let crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
             if (crewmember) {
-                this.applyWeaponEquip(crewmember, item, this.getGunForItem(item));
+                this.applyItemEquip(crewmember, item);
             }
         })
     }
 
-    applyWeaponEquip(unit: Crewmember, item: item, gun: Gun | void) {
-        let oldWeapon = this.getGunForUnit(unit.unit);
-        if (oldWeapon) {
-            oldWeapon.onRemove(this);
+    applyItemEquip(unit: Crewmember, item: item) {
+
+        const itemId = GetItemTypeId(item);
+        const itemIsWeapon = this.itemIsWeapon(itemId);
+        const itemIsAttachment = this.itemIsAttachment(itemId);
+
+        if (itemIsWeapon) {
+            const oldWeapon = this.getGunForUnit(unit.unit);
+            const weaponForItem = this.getGunForItem(item) || this.createWeaponForId(item, unit);
+
+            if (oldWeapon) {
+                oldWeapon.onRemove(this);
+            }
+
+            // Now check to see if we created a gun or not
+            if (weaponForItem) {
+                this.guns.push(weaponForItem);
+                weaponForItem.onAdd(this, unit);
+            }
         }
 
-        if (!gun) {
-            Log.Information("No gun for item, creating new");
-            gun = this.createWeaponForId(item, unit.unit);
-        }
-
-        // Now check to see if we created a gun or not
-        if (gun) {
-            Log.Information("Gun added!");
-            this.guns.push(gun);
-            gun.onAdd(this, unit);
-        }
         // Otherwise it's an attachment
-        else {
-            const equippedTo = unit.weapon;
-            if (equippedTo) {
+        else if (itemIsAttachment) {
+            if (unit.weapon) {
                 const attachment = this.createAttachmentForId(item);
                 if (attachment) {
-                    attachment.equipTo(equippedTo)
+                    Log.Information("Equipping Attachment...");
+                    attachment.attachTo(unit.weapon);
                 }
             }
         }
 
+        // Uh oh, unsupported. Log and remind myself to add support.
+        else {
+            Log.Warning(`Warning, item ${itemId} is being attached but is not attachment or weapon`);
+        }
     }
 
     weaponShootTrigger = new Trigger();
@@ -233,16 +242,25 @@ export class WeaponModule {
         this.weaponDropTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DROP_ITEM);
         this.weaponDropTrigger.AddCondition(() => {
             const gun = this.getGunForItem(GetManipulatedItem());
-            // Log.Information("Weapon dropped");
             if (gun) {
-                // Log.Information("... removing");
                 gun.onRemove(this);
             }
             return false;
         });
     }
 
-    createWeaponForId(item: item, unit: unit) : Gun | undefined {
+    itemIsWeapon(itemId: number) : boolean {
+        if (itemId === SNIPER_ITEM_ID) return true;
+        if (itemId === BURST_RIFLE_ITEM_ID) return true;
+        return false;
+    }
+
+    itemIsAttachment(itemId: number) : boolean {
+        if (itemId === HIGH_QUALITY_POLYMER_ITEM_ID) return true;
+        return false;
+    }
+
+    createWeaponForId(item: item, unit: ArmableUnit) : Gun | undefined {
         let itemId = GetItemTypeId(item);
         if (itemId == SNIPER_ITEM_ID)
             return new SniperRifle(item, unit);
@@ -254,7 +272,7 @@ export class WeaponModule {
     createAttachmentForId(item: item) : Attachment | undefined {
         let itemId = GetItemTypeId(item);
         if (itemId == HIGH_QUALITY_POLYMER_ITEM_ID)
-            return new HighQualityPolymer();
+            return new HighQualityPolymer(item);
         return undefined;
     }
 }

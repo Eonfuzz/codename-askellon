@@ -12,6 +12,7 @@ import { Vector2 } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { Attachment } from "../attachment/attachment";
+import { ArmableUnit } from "./unit-has-weapon";
 
 export const BURST_RIFLE_ABILITY_ID = FourCC('A002');
 export const BURST_RIFLE_ITEM_ID = FourCC('I000');
@@ -25,7 +26,7 @@ export class BurstRifle extends Gun {
     private DEFAULT_STRAY = 200;
     private SHOT_DISTANCE = 900;
 
-    constructor(item: item, equippedTo: unit) {
+    constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
     }
     
@@ -80,7 +81,7 @@ export class BurstRifle extends Gun {
     private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
-            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo);
+            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
             if (crewmember) {
                 UnitDamageTarget(
                     projectile.source, 

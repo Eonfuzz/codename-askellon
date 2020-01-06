@@ -202,12 +202,6 @@ STRING 42
 [|cffffff00A|r] - SI Battle Rifle
 }
 
-STRING 43
-// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
-{
-Run 40% faster for 7 seconds
-}
-
 STRING 44
 // Items: I001 (Sniper Rifle), Name (Name)
 {
@@ -500,5 +494,35 @@ STRING 99
 // Items: I002 (High Polymer Casing), Ubertip (Tooltip - Extended)
 {
 |cff808080A lighter and tougher polymer compound designed by the Askellon's research staff.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 100
+// Abilities: A009 (High Quality Polymer), Name (Name)
+{
+High Quality Polymer
+}
+
+STRING 102
+// Abilities: A009 (High Quality Polymer), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r|n|n|cffc81e1eAttachment: High Quality Polymer|r
+}
+
+STRING 104
+// Abilities: A009 (High Quality Polymer), Tip (Tooltip - Normal)
+{
+[|cffffff00R|r] - High Quality Polymers
+}
+
+STRING 105
+// Abilities: A009 (High Quality Polymer), Hotkey (Hotkey - Normal)
+{
+R
+}
+
+STRING 106
+// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n -  |cffffff00Resolve:|r Quick dash |cff00ff00330|r distance forwards|n|n|cff80808020 Second Cooldown|r
 }
 

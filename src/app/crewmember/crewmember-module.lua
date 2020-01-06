@@ -8,6 +8,8 @@ local ____trigger = require("app.types.jass-overrides.trigger")
 local Trigger = ____trigger.Trigger
 local ____burst_2Drifle = require("app.weapons.guns.burst-rifle")
 local BURST_RIFLE_ITEM_ID = ____burst_2Drifle.BURST_RIFLE_ITEM_ID
+local ____serilog = require("lib.serilog.serilog")
+local Log = ____serilog.Log
 local CREWMEMBER_UNIT_ID = FourCC("H001")
 ____exports.CrewModule = {}
 local CrewModule = ____exports.CrewModule
@@ -80,10 +82,13 @@ function CrewModule.prototype.createCrew(self, game, playerId)
     crewmember:setPlayer(nPlayer)
     BlzSetUnitName(nUnit, crewmember.role)
     BlzSetHeroProperName(nUnit, crewmember.name)
+    Log.Information(
+        "Created Crewmember " .. tostring(crewmember.name) .. "::" .. tostring(crewmember.role)
+    )
     if crewmember.role then
         local item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0)
         UnitAddItem(crewmember.unit, item)
-        game.weaponModule:applyWeaponEquip(crewmember, item)
+        game.weaponModule:applyItemEquip(crewmember, item)
     end
     return crewmember
 end

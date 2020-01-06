@@ -3,23 +3,24 @@ import { Gun } from "../weapons/guns/gun";
 import { BuffInstance } from "../buff/buff-instance";
 import { Resolve } from "../buff/resolve";
 import { Game } from "../game";
+import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
+import { WeaponModule } from "../weapons/weapon-module";
 
 /** @noSelfInFile **/
 
-export class Crewmember {
+export class Crewmember extends ArmableUnit {
     public role = '';
     public name = '';
-    public unit: unit;
     public player: player;
 
     public accuracy = 100;
-
-    public weapon: Gun | undefined;
 
     public resolve: Resolve;
     // public despair: Despair;
 
     constructor(game: Game, player: player, unit: unit) {
+        super(unit);
+
         this.player = player;
         this.unit = unit;
         this.resolve = new Resolve(game, this);
@@ -31,6 +32,14 @@ export class Crewmember {
     setRole(role: string) { this.role = role; }
     setName(name: string) { this.name = name; }
     setPlayer(player: player) { this.player = player; }
+
+    onWeaponAdd(weaponModule: WeaponModule, whichGun: Gun) {
+        this.weapon = whichGun;
+    }
+
+    onWeaponRemove(weaponModule: WeaponModule, whichGun: Gun) {
+        this.weapon = undefined;
+    }
 
     onResolveDoChange(game: Game) {
         if (GetUnitLifePercent(this.unit) <= 30) {

@@ -107,7 +107,7 @@ end
 function BurstRifle.prototype.onProjectileCollide(self, weaponModule, projectile, collidesWith)
     projectile:setDestroy(true)
     if self.equippedTo then
-        local crewmember = weaponModule.game.crewModule:getCrewmemberForUnit(self.equippedTo)
+        local crewmember = weaponModule.game.crewModule:getCrewmemberForUnit(self.equippedTo.unit)
         if crewmember then
             UnitDamageTarget(
                 projectile.source,
