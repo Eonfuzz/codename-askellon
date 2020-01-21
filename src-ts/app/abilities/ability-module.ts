@@ -2,8 +2,9 @@
 import { Game } from "../game";
 import { Ability } from "./ability-type";
 import { Trigger } from "../types/jass-overrides/trigger";
-import { rollWhenSprinting } from "./roll-sprint";
+import { RollWhenSprinting } from "./human/roll-sprint";
 import { Log } from "../../lib/serilog/serilog";
+import { AcidPoolAbility } from "./alien/acid-pool";
 
 
 const TIMEOUT = 0.03;
@@ -28,7 +29,7 @@ export class AbilityModule {
         this.triggerIterator.AddAction(() => this.process(TIMEOUT));
 
         this.triggerAbilityCast = new Trigger();
-        this.triggerAbilityCast.RegisterAnyUnitEventBJ( EVENT_PLAYER_UNIT_SPELL_FINISH );
+        this.triggerAbilityCast.RegisterAnyUnitEventBJ( EVENT_PLAYER_UNIT_SPELL_EFFECT );
         this.triggerAbilityCast.AddAction(() => this.checkSpells())
     }
 
@@ -42,9 +43,16 @@ export class AbilityModule {
 
         // Sprint
         if (id === FourCC('A003')) {
-            const instance = new rollWhenSprinting();
+            const instance = new RollWhenSprinting();
             if (instance.initialise(this)) {
                 Log.Information("Adding new A003[SPRINT] to ability queue");
+                this.data.push(instance);
+            }
+        }
+        else if (id === FourCC('ACID')) {
+            const instance = new AcidPoolAbility();
+            if (instance.initialise(this)) {
+                Log.Information("Adding new ACID[ACID POOL] to ability queue");
                 this.data.push(instance);
             }
         }
@@ -54,10 +62,11 @@ export class AbilityModule {
         this.data = this.data.filter( ability => {
             const doDestroy = !ability.process(this, delta);
             if (doDestroy) {
-                Log.Information(`Removing expired ability`);
+                // Log.Information(`Removing expired ability`);
                 ability.destroy(this);
             }
             return !doDestroy;
         });
     }
+
 }

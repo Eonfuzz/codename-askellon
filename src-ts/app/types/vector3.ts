@@ -113,6 +113,6 @@ export class Vector3 {
     }
 
     toString() : string {
-        return `Vector3={x:${this.x}, y:${this.y},z:${this.z},len:${this.getLength()}}`;
+        return `Vector3=x:${this.x}, y:${this.y},z:${this.z},len:${this.getLength()}`;
     }
 }

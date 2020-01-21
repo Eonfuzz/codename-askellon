@@ -90,8 +90,8 @@ function Vector3.prototype.projectTowards2D(self, angle, offset)
     return result
 end
 function Vector3.prototype.__tostring(self)
-    return "Vector3={x:" .. tostring(self.x) .. ", y:" .. tostring(self.y) .. ",z:" .. tostring(self.z) .. ",len:" .. tostring(
+    return "Vector3=x:" .. tostring(self.x) .. ", y:" .. tostring(self.y) .. ",z:" .. tostring(self.z) .. ",len:" .. tostring(
         self:getLength()
-    ) .. "}"
+    )
 end
 return ____exports

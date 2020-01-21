@@ -73,6 +73,10 @@ function Game.prototype.initCommands(self)
                     }
                 )
                 SetUnitLifePercentBJ(crew.unit, 20)
+            elseif message == "-u" and crew then
+                if crew.weapon then
+                    crew.weapon:detach()
+                end
             end
         end
     )
@@ -89,5 +93,9 @@ function Game.prototype.useDummyFor(self, callback, abilityToCast)
     UnitAddAbility(dummyUnit, abilityToCast)
     callback(nil, dummyUnit)
     UnitApplyTimedLife(dummyUnit, 0, 3)
+end
+function Game.prototype.getZFromXY(self, x, y)
+    MoveLocation(self.TEMP_LOCATION, x, y)
+    return GetLocationZ(self.TEMP_LOCATION)
 end
 return ____exports

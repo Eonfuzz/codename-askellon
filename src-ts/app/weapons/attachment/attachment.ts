@@ -51,9 +51,7 @@ export abstract class Attachment {
         
         // Create a new item instance of the attached item
         // If we are attached to a unit, try to create it in their inventory
-        Log.Information(`Detatch! ${!!this.attachedTo}`);
         if (this.attachedTo && this.attachedTo.equippedTo) {
-            Log.Information("Some thing!");
             const unit = this.attachedTo.equippedTo.unit;
             const unitHasSpareItemSlot = UnitInventoryCount(unit) < UnitInventorySize(unit);
 

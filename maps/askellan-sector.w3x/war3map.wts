@@ -490,12 +490,6 @@ STRING 97
 High Polymer Casing
 }
 
-STRING 99
-// Items: I002 (High Polymer Casing), Ubertip (Tooltip - Extended)
-{
-|cff808080A lighter and tougher polymer compound designed by the Askellon's research staff.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
-}
-
 STRING 100
 // Abilities: A009 (High Quality Polymer), Name (Name)
 {
@@ -565,5 +559,29 @@ STRING 117
 // Abilities: A00A (EMS Rifling), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Innovative internal components created by EMS industries, these parts greatly improved the efficiency of any weapon that uses them.|r|n|nIncreases range by |cff00ff0020%|r and base damage by |cff00ff005|r.
+}
+
+STRING 118
+// Items: I002 (High Polymer Casing), Ubertip (Tooltip - Extended)
+{
+|cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r
+}
+
+STRING 119
+// Abilities: ACID (Acid Pool), Name (Name)
+{
+Acid Pool
+}
+
+STRING 120
+// Abilities: ACID (Acid Pool), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Caustic enzymes found in the Alien's stomach can dissolve the strongest of compounds.|r|n|nHurls a blob of acid that explodes at target point, dealing |cff00ff0050|r damage and leaving a pool of acid; lasts |cff00ffff6|r seconds and deals |cff00ff00100|r damage per second.
+}
+
+STRING 121
+// Abilities: ACID (Acid Pool), Tip (Tooltip - Normal)
+{
+Acid Hurl
 }
 

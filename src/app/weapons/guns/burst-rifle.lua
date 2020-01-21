@@ -18,11 +18,12 @@ local BURST_RIFLE_ITEM = ____weapon_2Dtooltips.BURST_RIFLE_ITEM
 local ____translators = require("lib.translators")
 local PlayNewSoundOnUnit = ____translators.PlayNewSoundOnUnit
 local staticDecorator = ____translators.staticDecorator
-____exports.BURST_RIFLE_ABILITY_ID = FourCC("A002")
-____exports.BURST_RIFLE_ITEM_ID = FourCC("I000")
+local ____weapon_2Dconstants = require("app.weapons.weapon-constants")
+local BURST_RIFLE_ABILITY_ID = ____weapon_2Dconstants.BURST_RIFLE_ABILITY_ID
+local BURST_RIFLE_ITEM_ID = ____weapon_2Dconstants.BURST_RIFLE_ITEM_ID
 ____exports.InitBurstRifle = function(weaponModule)
-    __TS__ArrayPush(weaponModule.weaponItemIds, ____exports.BURST_RIFLE_ITEM_ID)
-    __TS__ArrayPush(weaponModule.weaponAbilityIds, ____exports.BURST_RIFLE_ABILITY_ID)
+    __TS__ArrayPush(weaponModule.weaponItemIds, BURST_RIFLE_ITEM_ID)
+    __TS__ArrayPush(weaponModule.weaponAbilityIds, BURST_RIFLE_ABILITY_ID)
 end
 ____exports.BurstRifle = {}
 local BurstRifle = ____exports.BurstRifle
@@ -41,8 +42,8 @@ function BurstRifle.new(...)
 end
 function BurstRifle.prototype.____constructor(self, item, equippedTo)
     Gun.prototype.____constructor(self, item, equippedTo)
-    self.DEFAULT_STRAY = 200
-    self.SHOT_DISTANCE = 900
+    self.DEFAULT_STRAY = 240
+    self.SHOT_DISTANCE = 1200
 end
 function BurstRifle.prototype.onShoot(self, weaponModule, caster, targetLocation)
     Gun.prototype.onShoot(self, weaponModule, caster, targetLocation)
@@ -134,7 +135,8 @@ function BurstRifle.prototype.getTooltip(self, weaponModule, crewmember)
     return newTooltip
 end
 function BurstRifle.prototype.getItemTooltip(self, weaponModule, crewmember)
-    return BURST_RIFLE_ITEM(nil, self)
+    local damage = self:getDamage(weaponModule, crewmember)
+    return BURST_RIFLE_ITEM(nil, self, damage)
 end
 function BurstRifle.prototype.getStrayLocation(self, originalLocation, caster)
     local accuracy = caster.accuracy
@@ -146,13 +148,16 @@ function BurstRifle.prototype.getStrayLocation(self, originalLocation, caster)
     return newLocation
 end
 function BurstRifle.prototype.getDamage(self, weaponModule, caster)
+    if self.attachment and self.attachment.name == "Ems Rifling" then
+        return 20
+    end
     return 15
 end
 function BurstRifle.prototype.getAbilityId(self)
-    return ____exports.BURST_RIFLE_ABILITY_ID
+    return BURST_RIFLE_ABILITY_ID
 end
 function BurstRifle.prototype.getItemId(self)
-    return ____exports.BURST_RIFLE_ITEM_ID
+    return BURST_RIFLE_ITEM_ID
 end
 ____exports.BurstRifle = __TS__Decorate(
     {

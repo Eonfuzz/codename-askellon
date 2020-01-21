@@ -107,4 +107,10 @@ export class Game {
 
         UnitApplyTimedLife(dummyUnit, 0, 3);
     }
+
+    
+    public getZFromXY(x: number, y: number): number {
+        MoveLocation(this.TEMP_LOCATION, x, y);
+        return GetLocationZ(this.TEMP_LOCATION)
+    }
 }

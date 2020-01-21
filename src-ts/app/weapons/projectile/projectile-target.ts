@@ -1,4 +1,5 @@
 import { Vector3 } from "../../types/vector3";
+import { Log } from "../../../lib/serilog/serilog";
 
 /** @noSelfInFile **/
 
@@ -36,5 +37,35 @@ export class ProjectileTargetUnit implements ProjectileTarget {
     getTargetZ(): number { return BlzGetUnitZ(this.target); };
     getTargetVector(): Vector3 {
         return new Vector3(this.getTargetX(), this.getTargetY(), this.getTargetZ());
+    }
+}
+
+export interface ProjectileMover {
+    move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3
+}
+
+export class ProjectileMoverLinear implements ProjectileMover {
+    move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3 {
+        let velocityVector = goal.normalise().multiplyN(velocity * delta);
+        return velocityVector;
+    }
+}
+
+export class ProjectileMoverParabolic implements ProjectileMover {
+    originalPosition: Vector3;
+    height: number;
+
+    constructor(originalPosition: Vector3, height: number) {
+        this.originalPosition = originalPosition;
+        this.height = height;
+    }
+    
+    move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3 {
+
+        // Log.Information(`Start: ${currentPostion.toString()}`);
+        // Log.Information(`Goal: ${goal.toString()}`);
+
+        let velocityVector = goal.normalise().multiplyN(velocity * delta);
+        return velocityVector;
     }
 }

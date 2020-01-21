@@ -63,4 +63,42 @@ function ProjectileTargetUnit.prototype.getTargetVector(self)
         self:getTargetZ()
     )
 end
+____exports.ProjectileMoverLinear = {}
+local ProjectileMoverLinear = ____exports.ProjectileMoverLinear
+ProjectileMoverLinear.name = "ProjectileMoverLinear"
+ProjectileMoverLinear.__index = ProjectileMoverLinear
+ProjectileMoverLinear.prototype = {}
+ProjectileMoverLinear.prototype.__index = ProjectileMoverLinear.prototype
+ProjectileMoverLinear.prototype.constructor = ProjectileMoverLinear
+function ProjectileMoverLinear.new(...)
+    local self = setmetatable({}, ProjectileMoverLinear.prototype)
+    self:____constructor(...)
+    return self
+end
+function ProjectileMoverLinear.prototype.____constructor(self)
+end
+function ProjectileMoverLinear.prototype.move(self, currentPostion, goal, velocity, delta)
+    local velocityVector = goal:normalise():multiplyN(velocity * delta)
+    return velocityVector
+end
+____exports.ProjectileMoverParabolic = {}
+local ProjectileMoverParabolic = ____exports.ProjectileMoverParabolic
+ProjectileMoverParabolic.name = "ProjectileMoverParabolic"
+ProjectileMoverParabolic.__index = ProjectileMoverParabolic
+ProjectileMoverParabolic.prototype = {}
+ProjectileMoverParabolic.prototype.__index = ProjectileMoverParabolic.prototype
+ProjectileMoverParabolic.prototype.constructor = ProjectileMoverParabolic
+function ProjectileMoverParabolic.new(...)
+    local self = setmetatable({}, ProjectileMoverParabolic.prototype)
+    self:____constructor(...)
+    return self
+end
+function ProjectileMoverParabolic.prototype.____constructor(self, originalPosition, height)
+    self.originalPosition = originalPosition
+    self.height = height
+end
+function ProjectileMoverParabolic.prototype.move(self, currentPostion, goal, velocity, delta)
+    local velocityVector = goal:normalise():multiplyN(velocity * delta)
+    return velocityVector
+end
 return ____exports

@@ -1,5 +1,5 @@
 /** @noSelfInFile **/
-import { ProjectileTarget } from "./projectile-target";
+import { ProjectileTarget, ProjectileMover, ProjectileMoverLinear } from "./projectile-target";
 import { Vector3 } from "../../types/vector3";
 import { ProjectileSFX } from "./projectile-sfx";
 import { WeaponModule } from "../weapon-module";
@@ -20,6 +20,8 @@ export class Projectile {
     private position: Vector3;
 
     private target: ProjectileTarget;
+    private mover: ProjectileMover;
+    
     public source: unit;
 
     private collisionRadius: number = 30;
@@ -35,10 +37,12 @@ export class Projectile {
     private onCollideCallback: Function | undefined;
     private onDeathCallback: Function | undefined;
 
-    constructor(source: unit, startPosition: Vector3, target: ProjectileTarget) {
+    constructor(source: unit, startPosition: Vector3, target: ProjectileTarget, projectileMover?: ProjectileMover) {
         this.position = startPosition;
         this.target = target;
         this.sfx = [];
+
+        this.mover = projectileMover || new ProjectileMoverLinear();
 
         this.source = source;
         this.filter = DEFAULT_FILTER(this);
@@ -120,17 +124,17 @@ export class Projectile {
      * @param deltaTime 
      */
     update(weaponModule: WeaponModule, deltaTime: number): Vector3 {
-        let targetVector = this.target.getTargetVector();
-        let velocityVector = targetVector.normalise().multiplyN(this.velocity * deltaTime);
-        let newPosition = this.position.add(velocityVector);
+
+        let velocityToApply = this.mover.move(this.position, this.getTarget().getTargetVector(), this.velocity, deltaTime);
+        let newPosition = this.position.add(velocityToApply);
         this.position = newPosition;
 
         // Now update attached sfx
         this.sfx.forEach(sfx => sfx.updatePosition(this.position));
 
-        if (this.reachedEnd(weaponModule, targetVector)) this.doDestroy = true;
+        if (this.reachedEnd(weaponModule, velocityToApply)) this.doDestroy = true;
         // Return distance travelled
-        return velocityVector;
+        return velocityToApply;
     }
 
     public setVelocity(velocity: number): Projectile {
@@ -146,6 +150,7 @@ export class Projectile {
     }
 
     public destroy(): boolean {
+        this.onDeathCallback && this.onDeathCallback(this);
         this.sfx.forEach(sfx => sfx.destroy());
         this.sfx = [];
         return true;

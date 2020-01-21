@@ -194,8 +194,8 @@ export class WeaponModule {
             if (unit.weapon) {
                 const attachment = this.createAttachmentForId(item);
                 if (attachment) {
-                    Log.Information("Equipping Attachment...");
                     attachment.attachTo(unit.weapon);
+                    unit.weapon.updateTooltip(this, unit);
                 }
             }
         }

@@ -1,5 +1,7 @@
 require("lualib_bundle");
 local ____exports = {}
+local ____projectile_2Dtarget = require("app.weapons.projectile.projectile-target")
+local ProjectileMoverLinear = ____projectile_2Dtarget.ProjectileMoverLinear
 local ____projectile_2Dsfx = require("app.weapons.projectile.projectile-sfx")
 local ProjectileSFX = ____projectile_2Dsfx.ProjectileSFX
 local DEFAULT_FILTER
@@ -26,13 +28,14 @@ function Projectile.new(...)
     self:____constructor(...)
     return self
 end
-function Projectile.prototype.____constructor(self, source, startPosition, target)
+function Projectile.prototype.____constructor(self, source, startPosition, target, projectileMover)
     self.collisionRadius = 30
     self.velocity = 10
     self.doDestroy = false
     self.position = startPosition
     self.target = target
     self.sfx = {}
+    self.mover = projectileMover or ProjectileMoverLinear.new()
     self.source = source
     self.filter = DEFAULT_FILTER(self)
 end
@@ -83,18 +86,22 @@ function Projectile.prototype.getTarget(self)
     return self.target
 end
 function Projectile.prototype.update(self, weaponModule, deltaTime)
-    local targetVector = self.target:getTargetVector()
-    local velocityVector = targetVector:normalise():multiplyN(self.velocity * deltaTime)
-    local newPosition = self.position:add(velocityVector)
+    local velocityToApply = self.mover:move(
+        self.position,
+        self:getTarget():getTargetVector(),
+        self.velocity,
+        deltaTime
+    )
+    local newPosition = self.position:add(velocityToApply)
     self.position = newPosition
     __TS__ArrayForEach(
         self.sfx,
         function(____, sfx) return sfx:updatePosition(self.position) end
     )
-    if self:reachedEnd(weaponModule, targetVector) then
+    if self:reachedEnd(weaponModule, velocityToApply) then
         self.doDestroy = true
     end
-    return velocityVector
+    return velocityToApply
 end
 function Projectile.prototype.setVelocity(self, velocity)
     self.velocity = velocity
@@ -106,6 +113,7 @@ function Projectile.prototype.reachedEnd(self, weaponModule, targetVector)
     return (self.position.z <= z)
 end
 function Projectile.prototype.destroy(self)
+    local ____ = self.onDeathCallback and self:onDeathCallback(self)
     __TS__ArrayForEach(
         self.sfx,
         function(____, sfx) return sfx:destroy() end

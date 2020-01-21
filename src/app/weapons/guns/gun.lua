@@ -1,6 +1,8 @@
 local ____exports = {}
 local ____translators = require("lib.translators")
 local PlayNewSoundOnUnit = ____translators.PlayNewSoundOnUnit
+local ____serilog = require("lib.serilog.serilog")
+local Log = ____serilog.Log
 ____exports.Gun = {}
 local Gun = ____exports.Gun
 Gun.name = "Gun"
@@ -58,10 +60,22 @@ function Gun.prototype.updateTooltip(self, weaponModule, caster)
         local owner = GetOwningPlayer(self.equippedTo.unit)
         local newTooltip = self:getTooltip(weaponModule, caster)
         if GetLocalPlayer() == owner then
+            local abilLevel = GetUnitAbilityLevel(
+                self.equippedTo.unit,
+                self:getAbilityId()
+            )
+            Log.Information(
+                "Updating weapon tooltip " .. tostring(abilLevel)
+            )
             BlzSetAbilityExtendedTooltip(
                 self:getAbilityId(),
-                newTooltip,
-                0
+                "TEST",
+                1
+            )
+            BlzSetAbilityTooltip(
+                self:getAbilityId(),
+                "BAH",
+                abilLevel
             )
         end
     end
