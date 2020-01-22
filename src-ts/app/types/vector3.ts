@@ -1,3 +1,5 @@
+import { Vector2 } from "./vector2";
+
 /** @noSelfInFile **/
 
 export class Vector3 {
@@ -114,5 +116,9 @@ export class Vector3 {
 
     toString() : string {
         return `Vector3=x:${this.x}, y:${this.y},z:${this.z},len:${this.getLength()}`;
+    }
+
+    to2D(): Vector2 {
+        return new Vector2(this.x, this.y);
     }
 }

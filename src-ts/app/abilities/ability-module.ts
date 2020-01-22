@@ -52,7 +52,7 @@ export class AbilityModule {
         else if (id === FourCC('ACID')) {
             const instance = new AcidPoolAbility();
             if (instance.initialise(this)) {
-                Log.Information("Adding new ACID[ACID POOL] to ability queue");
+                // Log.Information("Adding new ACID[ACID POOL] to ability queue");
                 this.data.push(instance);
             }
         }

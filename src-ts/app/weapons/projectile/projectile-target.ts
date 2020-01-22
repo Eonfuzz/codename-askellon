@@ -1,5 +1,6 @@
 import { Vector3 } from "../../types/vector3";
 import { Log } from "../../../lib/serilog/serilog";
+import { Vector2 } from "../../types/vector2";
 
 /** @noSelfInFile **/
 
@@ -51,21 +52,66 @@ export class ProjectileMoverLinear implements ProjectileMover {
     }
 }
 
-export class ProjectileMoverParabolic implements ProjectileMover {
-    originalPosition: Vector3;
-    height: number;
+const GRAVITY = 800;
 
-    constructor(originalPosition: Vector3, height: number) {
-        this.originalPosition = originalPosition;
-        this.height = height;
+export class ProjectileMoverParabolic implements ProjectileMover {
+    originalPos: Vector3;
+    originalDelta: Vector3;
+    distanceTravelled: number = 0;
+    distanceTravelledVertically: number = 0;
+
+    angle: number = 0;
+    velocity: number = 0;
+    timeElapsed: number = 0;
+
+    /**
+     * 
+     * @param originalPosition 
+     * @param goal 
+     * @param angle radians
+     */
+    constructor(originalPosition: Vector3, goal: Vector3, angle: number) {
+        this.originalPos = originalPosition;
+        this.originalDelta = goal.subtract(originalPosition);
+        const dLen = this.originalDelta.to2D().getLength();
+
+        // TODO Handle delta of z axis
+        const velocity = SquareRoot(
+            ((dLen*dLen)*GRAVITY) / dLen*Sin(2*angle)
+        );
+
+        this.angle = angle;
+        this.velocity = velocity;
+
+        // Log.Information("Required velocity: "+velocity);
     }
     
-    move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3 {
+    move(currentPostion: Vector3, goal: Vector3, velocity: number, deltaTime: number): Vector3 {
 
-        // Log.Information(`Start: ${currentPostion.toString()}`);
-        // Log.Information(`Goal: ${goal.toString()}`);
+        // this.thrustVector = this.thrustVector.add(GRAVITY_VECTOR.multiplyN(delta))
 
-        let velocityVector = goal.normalise().multiplyN(velocity * delta);
-        return velocityVector;
+        const direction = this.originalDelta.normalise();
+
+        const totalXY = this.velocity * this.timeElapsed * Cos(this.angle);
+        const xyDelta = totalXY - this.distanceTravelled;
+        
+        // const vg = 2 * (this.velocity*this.velocity) * (Cos(this.angle)*Cos(this.angle));
+        // const zDelta = Tan(this.angle)*totalXY - (GRAVITY / vg) * (totalXY * totalXY);
+        const totalZ = (this.velocity * this.timeElapsed * Sin(this.angle)) - (GRAVITY * (this.timeElapsed * this.timeElapsed))/2;
+        const zDelta = totalZ - this.distanceTravelledVertically;
+        // - GRAVITY*(this.timeElapsed*this.timeElapsed)/2;
+        
+
+        this.distanceTravelled += xyDelta;
+        this.distanceTravelledVertically += zDelta;
+        this.timeElapsed += deltaTime;
+
+        // Log.Information(`Vel=${this.velocity} TotalChange=${xyDelta} zDelta=${zDelta}`);
+
+        return new Vector3(
+            direction.x * xyDelta,
+            direction.y * xyDelta,
+            0 + zDelta
+        );
     }
 }
