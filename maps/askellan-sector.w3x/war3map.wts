@@ -585,3 +585,15 @@ STRING 121
 Acid Hurl
 }
 
+STRING 123
+// Buffs/Effects: B002 (), Bufftip (Tooltip)
+{
+Slow 30%
+}
+
+STRING 124
+// Abilities: A00B (SLOW 30% 1s), Name (Name)
+{
+SLOW 30% 1s
+}
+

@@ -77,7 +77,9 @@ export class ProjectileMoverParabolic implements ProjectileMover {
 
         // TODO Handle delta of z axis
         const velocity = SquareRoot(
-            ((dLen*dLen)*GRAVITY) / dLen*Sin(2*angle)
+            ((dLen*dLen)*GRAVITY) / (
+                dLen*Sin(2*angle) - 2*this.originalDelta.z*(Cos(angle) * Cos(angle))
+            )
         );
 
         this.angle = angle;

@@ -71,7 +71,7 @@ export class Resolve {
             // If we don't have another ticker apply the buff to the unit
             game.useDummyFor((self: any, dummy: unit) => {
                 SetUnitX(dummy, GetUnitX(this.unit));
-                SetUnitY(dummy, GetUnitY(this.unit));
+                SetUnitY(dummy, GetUnitY(this.unit) + 50);
                 IssueTargetOrder(dummy, "bloodlust", crewmember.unit);
             }, FourCC('A007'));
         }

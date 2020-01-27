@@ -14,6 +14,15 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("I003"), -265.1, 602.5, FourCC("I003"))
 end
 
+function CreateUnitsForPlayer0()
+    local p = Player(0)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("hpea"), -458.9, 362.0, 187.345, FourCC("hpea"))
+end
+
 function CreateUnitsForPlayer20()
     local p = Player(20)
     local u
@@ -53,6 +62,7 @@ function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
+    CreateUnitsForPlayer0()
     CreateUnitsForPlayer20()
 end
 
