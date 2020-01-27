@@ -75,7 +75,7 @@ export class ProjectileMoverParabolic implements ProjectileMover {
         this.originalDelta = goal.subtract(originalPosition);
         const dLen = this.originalDelta.to2D().getLength();
 
-        // TODO Handle delta of z axis
+        // Calculate velocity given goal and angle
         const velocity = SquareRoot(
             ((dLen*dLen)*GRAVITY) / (
                 dLen*Sin(2*angle) - 2*this.originalDelta.z*(Cos(angle) * Cos(angle))
@@ -84,31 +84,21 @@ export class ProjectileMoverParabolic implements ProjectileMover {
 
         this.angle = angle;
         this.velocity = velocity;
-
-        // Log.Information("Required velocity: "+velocity);
     }
     
     move(currentPostion: Vector3, goal: Vector3, velocity: number, deltaTime: number): Vector3 {
-
-        // this.thrustVector = this.thrustVector.add(GRAVITY_VECTOR.multiplyN(delta))
-
         const direction = this.originalDelta.normalise();
 
         const totalXY = this.velocity * this.timeElapsed * Cos(this.angle);
         const xyDelta = totalXY - this.distanceTravelled;
         
-        // const vg = 2 * (this.velocity*this.velocity) * (Cos(this.angle)*Cos(this.angle));
-        // const zDelta = Tan(this.angle)*totalXY - (GRAVITY / vg) * (totalXY * totalXY);
         const totalZ = (this.velocity * this.timeElapsed * Sin(this.angle)) - (GRAVITY * (this.timeElapsed * this.timeElapsed))/2;
         const zDelta = totalZ - this.distanceTravelledVertically;
-        // - GRAVITY*(this.timeElapsed*this.timeElapsed)/2;
         
 
         this.distanceTravelled += xyDelta;
         this.distanceTravelledVertically += zDelta;
         this.timeElapsed += deltaTime;
-
-        // Log.Information(`Vel=${this.velocity} TotalChange=${xyDelta} zDelta=${zDelta}`);
 
         return new Vector3(
             direction.x * xyDelta,
