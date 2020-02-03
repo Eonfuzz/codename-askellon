@@ -1,12 +1,9 @@
-import { BurstRifle } from "../weapons/guns/burst-rifle";
+/** @noSelfInFile **/
 import { Gun } from "../weapons/guns/gun";
-import { BuffInstance } from "../buff/buff-instance";
 import { Resolve } from "../buff/resolve";
 import { Game } from "../game";
 import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
 import { WeaponModule } from "../weapons/weapon-module";
-
-/** @noSelfInFile **/
 
 export class Crewmember extends ArmableUnit {
     public role = '';

@@ -4,6 +4,7 @@ import { Vector3 } from "../../types/vector3";
 import { ProjectileSFX } from "./projectile-sfx";
 import { WeaponModule } from "../weapon-module";
 
+const AIRBORN_ABILITY_DUMMY = FourCC('A00C');
 const DEFAULT_FILTER = (projectile: Projectile) => {
     return Filter(() => {
         let unit = GetFilterUnit(); 
@@ -12,7 +13,8 @@ const DEFAULT_FILTER = (projectile: Projectile) => {
             !IsUnitAlly(unit, GetOwningPlayer(projectile.source)) && 
             IsUnitType(unit, UNIT_TYPE_STRUCTURE) == false && 
             IsUnitType(unit, UNIT_TYPE_MAGIC_IMMUNE) == false && 
-            IsUnitType(unit, UNIT_TYPE_MECHANICAL) == false;
+            IsUnitType(unit, UNIT_TYPE_MECHANICAL) == false &&
+            GetUnitAbilityLevel(unit, AIRBORN_ABILITY_DUMMY) == 0;
     });
 };
 

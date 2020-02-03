@@ -597,3 +597,81 @@ STRING 124
 SLOW 30% 1s
 }
 
+STRING 125
+// Units: ALI1 (Alien), Name (Name)
+{
+Alien
+}
+
+STRING 126
+// Abilities: ACID (Acid Pool), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 127
+// Abilities: LEAP (Leap), Name (Name)
+{
+Leap
+}
+
+STRING 128
+// Abilities: LEAP (Leap), Tip (Tooltip - Normal)
+{
+Leap
+}
+
+STRING 130
+// Abilities: LEAP (Leap), Hotkey (Hotkey - Normal)
+{
+Z
+}
+
+STRING 132
+// Buffs/Effects: B003 (Airborne), Bufftip (Tooltip)
+{
+Airborne
+}
+
+STRING 133
+// Buffs/Effects: B003 (Airborne), Buffubertip (Tooltip - Extended)
+{
+It's a bird, it's a plane...
+}
+
+STRING 134
+// Buffs/Effects: B003 (Airborne), EditorName (Name (Editor Only))
+{
+Airborne
+}
+
+STRING 135
+// Abilities: A00C (UnitCanHaveFlyHeight), Name (Name)
+{
+UnitCanHaveFlyHeight
+}
+
+STRING 136
+// Abilities: LEAP (Leap), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Tightly nit muscles react to twitch neuron pulses from this creature.|r|n|nCauses the user to jump in place, granting |cff00ffffairborne|r until it arrives at its destination. Will automatically be cast when possible, causing the alien to leap |cff00ff00330|r forward.|n|cff00ffffAirborne:|r Gain |cff00ff0050%|r damage reduction and become immune to projectiles.|n|n|cff8080805 Second Cooldown|r
+}
+
+STRING 137
+// Doodads: D006 (Ventilator), Name (Name)
+{
+Ventilator
+}
+
+STRING 138
+// Doodads: D007 (Support Column), Name (Name)
+{
+Support Column
+}
+
+STRING 139
+// Doodads: D008 (Cliff Collumn), Name (Name)
+{
+Cliff Collumn
+}
+

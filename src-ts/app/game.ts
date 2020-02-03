@@ -11,6 +11,8 @@ import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { GeneModule } from "./shops/gene-modules";
 import { AbilityModule } from "./abilities/ability-module";
 import { InteractionModule } from "./interactions/interaction-module";
+import { Log } from "../lib/serilog/serilog";
+import { Vector2 } from "./types/vector2";
 
 export class Game {
     // Helper objects
@@ -56,6 +58,9 @@ export class Game {
 
         // Initialise commands
         this.initCommands();
+
+        // Misc
+        this.makeUnitsTurnInstantly();
     }
 
     /**
@@ -77,6 +82,9 @@ export class Game {
             const crew = this.crewModule.getCrewmemberForPlayer(triggerPlayer);
             const message = GetEventPlayerChatString();
 
+            const hasCommanderPower = true;
+            Log.Information("Player name: ", GetPlayerName(triggerPlayer))
+
             if (message === "-resolve" && crew) {
                 crew.resolve.createResolve(this, crew, {
                     startTimeStamp: this.getTimeStamp(), 
@@ -88,6 +96,17 @@ export class Game {
                 if (crew.weapon) {
                     crew.weapon.detach();
                 }
+            }
+            else if (message === "-nt") {
+                this.noTurn = !this.noTurn;
+            }
+            else if (message === "-testalien") {
+                this.getCameraXY(triggerPlayer, (self: any, pos: Vector2) => {
+                    const alien = CreateUnit(triggerPlayer, FourCC('ALI1'), pos.x, pos.y, bj_UNIT_FACING);
+                    this.abilityModule.trackUnitOrdersForAbilities(alien);
+                    // Disable unused abilities
+                    BlzUnitDisableAbility(alien, FourCC('A00C'), true, true);
+                })
             }
         });
     }
@@ -112,5 +131,65 @@ export class Game {
     public getZFromXY(x: number, y: number): number {
         MoveLocation(this.TEMP_LOCATION, x, y);
         return GetLocationZ(this.TEMP_LOCATION)
+    }
+
+    private getCameraXY(whichPlayer: player, cb: Function) {
+        const HANDLE = 'CAMERA';
+        const syncTrigger = new Trigger();
+        BlzTriggerRegisterPlayerSyncEvent(syncTrigger.nativeTrigger, whichPlayer, HANDLE, false);
+        syncTrigger.AddAction(() => {
+            const data = BlzGetTriggerSyncData();
+
+            const dataSplit = data.split(',');
+            const result = new Vector2(
+                S2R(dataSplit[0]), 
+                S2R(dataSplit[1])
+            );
+            Log.Information("Got data: "+result.x+", "+result.y);
+
+            // Erase this trigger
+            syncTrigger.destroy();
+            cb(result);
+        });
+
+        if (GetLocalPlayer() === whichPlayer) {
+            const x = GetCameraTargetPositionX();
+            const y = GetCameraTargetPositionY();
+            BlzSendSyncData(HANDLE, `${x},${y}`);
+        }
+    }
+
+    
+    /**
+     * Is this something we want?
+     */
+    private noTurn: boolean = false;
+    private makeUnitsTurnInstantly(): void {
+        const unitTurnTrigger = new Trigger();
+        unitTurnTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
+        unitTurnTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER);
+        unitTurnTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER);
+
+        unitTurnTrigger.AddAction(() => {
+            if (!this.noTurn) return;
+
+            const triggerUnit = GetTriggerUnit();
+
+            const oX = GetUnitX(triggerUnit);
+            const oY = GetUnitY(triggerUnit);
+
+            let targetLocationX = GetOrderPointX();
+            let targetLocationY = GetOrderPointY();
+
+            // Loc is undefined, must be a unit target order
+            if (targetLocationX === undefined) {
+                const u = GetOrderTargetUnit();
+                targetLocationX = GetUnitX(u);
+                targetLocationY = GetUnitY(u);
+            }
+            
+            const angle = Rad2Deg(Atan2(targetLocationY-oY, targetLocationX-oX));
+            BlzSetUnitFacingEx(triggerUnit, angle);
+        })
     }
 }

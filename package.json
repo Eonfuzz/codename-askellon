@@ -29,6 +29,6 @@
   },
   "devDependencies": {
     "lua-types": "^2.6.1",
-    "war3-types": "^1.0.0"
+    "war3-types": "^1.0.1"
   }
 }

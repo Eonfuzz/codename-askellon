@@ -70,7 +70,7 @@ export class ProjectileMoverParabolic implements ProjectileMover {
      * @param goal 
      * @param angle radians
      */
-    constructor(originalPosition: Vector3, goal: Vector3, angle: number) {
+    constructor(originalPosition: Vector3, goal: Vector3, radians: number) {
         this.originalPos = originalPosition;
         this.originalDelta = goal.subtract(originalPosition);
         const dLen = this.originalDelta.to2D().getLength();
@@ -78,12 +78,15 @@ export class ProjectileMoverParabolic implements ProjectileMover {
         // Calculate velocity given goal and angle
         const velocity = SquareRoot(
             ((dLen*dLen)*GRAVITY) / (
-                dLen*Sin(2*angle) - 2*this.originalDelta.z*(Cos(angle) * Cos(angle))
+                dLen*Sin(2*radians) - 2*this.originalDelta.z*(Cos(radians) * Cos(radians))
             )
         );
 
-        this.angle = angle;
+        this.angle = radians;
         this.velocity = velocity;
+
+        // Log.Information(`Velocity ${this.velocity} at ${this.angle} degs`);
+        // Log.Information(`Delta: ${this.originalDelta.x}, ${this.originalDelta.y}, ${this.originalDelta.z}`)
     }
     
     move(currentPostion: Vector3, goal: Vector3, velocity: number, deltaTime: number): Vector3 {

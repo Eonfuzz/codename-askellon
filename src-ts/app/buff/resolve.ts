@@ -108,7 +108,7 @@ export class Resolve {
                 // This is used to avoid desyncs
                 order = "entangle";
             }
-            this.buttonHighlight = CreateCommandButtonEffect(RESOLVE_ABILITY_ID, order);
+            // this.buttonHighlight = CreateCommandButtonEffect(RESOLVE_ABILITY_ID, order);
         }
         else {
             if (GetLocalPlayer() === crewmember.player) {
@@ -116,7 +116,7 @@ export class Resolve {
                 this.breathSound.stopSound();
                 ResumeMusic();
             }
-            if (this.buttonHighlight) DestroyCommandButtonEffect(this.buttonHighlight);
+            // if (this.buttonHighlight) DestroyCommandButtonEffect(this.buttonHighlight);
         }
     }
     

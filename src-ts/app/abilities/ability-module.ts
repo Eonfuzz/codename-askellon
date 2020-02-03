@@ -5,6 +5,8 @@ import { Trigger } from "../types/jass-overrides/trigger";
 import { RollWhenSprinting } from "./human/roll-sprint";
 import { Log } from "../../lib/serilog/serilog";
 import { AcidPoolAbility } from "./alien/acid-pool";
+import { LeapAbility } from "./alien/leap";
+import { SMART_ORDER_ID } from "../../lib/order-ids";
 
 
 const TIMEOUT = 0.03;
@@ -19,6 +21,7 @@ export class AbilityModule {
 
     private triggerIterator: Trigger;
     private triggerAbilityCast: Trigger;
+    private unitIssuedCommand: Trigger;
 
     constructor(game: Game) {
         this.game = game;
@@ -31,6 +34,10 @@ export class AbilityModule {
         this.triggerAbilityCast = new Trigger();
         this.triggerAbilityCast.RegisterAnyUnitEventBJ( EVENT_PLAYER_UNIT_SPELL_EFFECT );
         this.triggerAbilityCast.AddAction(() => this.checkSpells())
+
+        this.unitIssuedCommand = new Trigger();
+
+        this.unitIssuedCommand.AddAction(() => this.onTrackUnitOrders())
     }
 
 
@@ -45,7 +52,7 @@ export class AbilityModule {
         if (id === FourCC('A003')) {
             const instance = new RollWhenSprinting();
             if (instance.initialise(this)) {
-                Log.Information("Adding new A003[SPRINT] to ability queue");
+                // Log.Information("Adding new A003[SPRINT] to ability queue");
                 this.data.push(instance);
             }
         }
@@ -56,6 +63,34 @@ export class AbilityModule {
                 this.data.push(instance);
             }
         }
+        else if (id === FourCC('LEAP')) {
+            const instance = new LeapAbility();
+            if (instance.initialise(this)) {
+                this.data.push(instance);
+            }
+        }
+    }
+
+    /**
+     * Abilities that need to listen to unit orders
+     * WARNING: The units must be added to the track list seperately
+     */
+    onTrackUnitOrders() {
+        const triggerUnit = GetTriggerUnit();
+        const orderId = GetIssuedOrderId();
+
+        // Leap ability
+        if (orderId == SMART_ORDER_ID && GetUnitAbilityLevel(triggerUnit, FourCC('LEAP')) >= 1) {
+            const instance = new LeapAbility();
+            if (instance.initialise(this)) {
+                this.data.push(instance);
+            }
+        }
+    }
+
+    public trackUnitOrdersForAbilities(whichUnit: unit) {
+        // this.unitIssuedCommand.RegisterUnitIssuedOrder(whichUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
+        this.unitIssuedCommand.RegisterUnitIssuedOrder(whichUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
     }
 
     process(delta: number) {
