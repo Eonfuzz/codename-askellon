@@ -5,6 +5,7 @@ import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
 import { BURST_RIFLE_ITEM_ID } from "../weapons/weapon-constants";
+import { CREW_FORCE_NAME } from "../force/crewmember-force";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 
@@ -16,17 +17,20 @@ export class CrewModule {
     crewmemberDamageTrigger: Trigger;
 
     constructor(game: Game) {
+        const playerList = game.forceModule.getActivePlayers();
+        const crewForce = game.forceModule.getForce(CREW_FORCE_NAME);
+
         // Load available roles
-        this.initialiseRoles(game);
+        this.initialiseRoles(playerList);
     
         // Initialise first crewmember todo    
-        game.forceModule.activePlayers.forEach(player => {
+        playerList.forEach(player => {
             let crew = this.createCrew(game, GetPlayerId(player));
-            // crew.log();
             this.CREW_MEMBERS.push(crew);
+            crewForce?.addPlayer(player);
         });
 
-        // Create crew takes damagte trigger
+        // Create crew takes damage trigger
         this.crewmemberDamageTrigger = new Trigger();
         this.crewmemberDamageTrigger.RegisterUnitTakesDamage();
         this.crewmemberDamageTrigger.AddCondition(() => {
@@ -43,8 +47,8 @@ export class CrewModule {
         });
     }
 
-    initialiseRoles(game: Game) {
-        game.forceModule.activePlayers.forEach((p, index) => {
+    initialiseRoles(players: Array<player>) {
+        players.forEach((p, index) => {
             if (index === 0) {
                 this.AVAILABLE_ROLES.push("Captain");
             } 

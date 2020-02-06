@@ -73,7 +73,7 @@ export class Game {
     private initCommands() {
         const commandTrigger = new Trigger();
 
-        this.forceModule.activePlayers.forEach(player => {
+        this.forceModule.getActivePlayers().forEach(player => {
             commandTrigger.RegisterPlayerChatEvent(player, "-", false);
         })
 
