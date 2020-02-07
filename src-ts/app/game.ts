@@ -104,8 +104,6 @@ export class Game {
                 this.getCameraXY(triggerPlayer, (self: any, pos: Vector2) => {
                     const alien = CreateUnit(triggerPlayer, FourCC('ALI1'), pos.x, pos.y, bj_UNIT_FACING);
                     this.abilityModule.trackUnitOrdersForAbilities(alien);
-                    // Disable unused abilities
-                    BlzUnitDisableAbility(alien, FourCC('A00C'), true, true);
                 })
             }
         });

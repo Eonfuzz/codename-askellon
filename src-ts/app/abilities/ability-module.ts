@@ -7,6 +7,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { SMART_ORDER_ID } from "../../lib/order-ids";
+import { TRANSFORM_ID, TransformAbility } from "./alien/transform";
 
 
 const TIMEOUT = 0.03;
@@ -65,6 +66,12 @@ export class AbilityModule {
         }
         else if (id === FourCC('LEAP')) {
             const instance = new LeapAbility();
+            if (instance.initialise(this)) {
+                this.data.push(instance);
+            }
+        }
+        else if (id === TRANSFORM_ID) {
+            const instance = new TransformAbility();
             if (instance.initialise(this)) {
                 this.data.push(instance);
             }
