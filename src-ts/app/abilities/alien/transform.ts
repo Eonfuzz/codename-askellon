@@ -137,6 +137,9 @@ export class TransformAbility implements Ability {
                 IssuePointOrderById(alien, this.previousOrder, this.previousOrderTarget.x, this.previousOrderTarget.y);
             }
 
+            // ForceRemovePlayer(HUMAN_FORCE, this.casterUnit);
+            // GetForceOfPlayer()
+
             // Delete order trigger
             this.orderTrigger.destroy();
         }

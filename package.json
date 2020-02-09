@@ -14,7 +14,7 @@
   "watch": {
     "build:defs": {
       "patterns": [
-        "./maps/map.w3x"
+        "./maps/askellan-sector.w3x"
       ],
       "extensions": "lua",
       "legacyWatch": true

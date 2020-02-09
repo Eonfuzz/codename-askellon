@@ -699,3 +699,21 @@ STRING 143
 Transform
 }
 
+STRING 144
+// Doodads: D009 (Omnilight Red), Name (Name)
+{
+Omnilight Red
+}
+
+STRING 145
+// Doodads: D00A (Omnilight Test), Name (Name)
+{
+Omnilight Test
+}
+
+STRING 146
+// Units: n001 (Elevator), Name (Name)
+{
+Elevator
+}
+

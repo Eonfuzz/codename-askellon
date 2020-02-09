@@ -3,7 +3,7 @@ import { Game } from "../game";
 import { InteractionEvent } from "./interaction-event";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
-import { Interactables } from "./interaction-data";
+import { Interactables, initElevators } from "./interaction-data";
 import { SMART_ORDER_ID } from "../../lib/order-ids";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
@@ -40,14 +40,17 @@ export class InteractionModule {
             const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
             if (interact && (!interact.condition || interact.condition(this, trigUnit, targetUnit))) {
-                const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, () => {
-                    Log.Information(`Interaction ${GetUnitName(trigUnit)}::${GetUnitName(targetUnit)}`);
-                    interact.action(this, trigUnit, targetUnit);
-                });
+                const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, 
+                    () => interact.action(this, trigUnit, targetUnit),
+                    () => interact.onStart && interact.onStart(this, trigUnit, targetUnit),
+                    () => interact.onCancel && interact.onCancel(this, trigUnit, targetUnit)
+                );
                 newInteraction.startInteraction();
                 this.interactions.push(newInteraction);
             }
         });
+
+        initElevators();
     }
 
     processInteractions(delta: number) {

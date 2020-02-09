@@ -13,6 +13,8 @@ import { AbilityModule } from "./abilities/ability-module";
 import { InteractionModule } from "./interactions/interaction-module";
 import { Log } from "../lib/serilog/serilog";
 import { Vector2 } from "./types/vector2";
+import { SoundRef } from "./types/sound-ref";
+import { WorldModule } from "./world/world-module";
 
 export class Game {
     // Helper objects
@@ -26,6 +28,7 @@ export class Game {
     public abilityModule: AbilityModule;
     public geneModule: GeneModule;
     public interactionsModule: InteractionModule;
+    public worldModule: WorldModule;
 
     // public dummyUnit: unit;
 
@@ -52,6 +55,8 @@ export class Game {
         this.geneModule         = new GeneModule(this);
 
         this.interactionsModule = new InteractionModule(this);
+
+        this.worldModule = new WorldModule(this);
 
         // Here be dragons, old code is below and needs update
         GALAXY_MODULE.initSectors();
@@ -95,10 +100,16 @@ export class Game {
             else if (message === "-u" && crew) {
                 if (crew.weapon) {
                     crew.weapon.detach();
+                    crew.weapon.updateTooltip(this.weaponModule, crew);
                 }
             }
             else if (message === "-nt") {
                 this.noTurn = !this.noTurn;
+            }
+            else if (message === "-nl") {
+                const sound = new SoundRef("Sounds\\PowerDown.mp3", false);
+                sound.playSound();
+                SetDayNightModels("", "");
             }
             else if (message === "-testalien") {
                 this.getCameraXY(triggerPlayer, (self: any, pos: Vector2) => {
