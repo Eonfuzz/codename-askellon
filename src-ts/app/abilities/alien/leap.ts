@@ -21,6 +21,7 @@ export class LeapAbility implements Ability {
 
     private timeElapsed: number;
     private unitLocTracker = new Vector3(0, 0, 0);
+    private initialZ: number = 0;
 
     constructor() {
         this.timeElapsed = 0;
@@ -70,6 +71,7 @@ export class LeapAbility implements Ability {
             targetLoc.z = abMod.game.getZFromXY(targetLoc.x, targetLoc.y) + 10;
         }
 
+        this.initialZ = casterLoc.z;
         this.mover = new ProjectileMoverParabolic(
             casterLoc, 
             targetLoc, 
@@ -143,14 +145,11 @@ export class LeapAbility implements Ability {
                 this.unitLocTracker.z + posDelta.z
             );
             this.unitLocTracker = unitLoc;
+            const terrainZ = abMod.game.getZFromXY(unitLoc.x, unitLoc.y);
 
             SetUnitX(this.casterUnit, unitLoc.x);
             SetUnitY(this.casterUnit, unitLoc.y);
-            SetUnitFlyHeight(this.casterUnit, unitLoc.z, 9999);
-
-            const terrainZ = abMod.game.getZFromXY(unitLoc.x, unitLoc.y);
-
-            // Log.Information("Delta: "+posDelta.x+", "+posDelta.y+", "+unitLoc.z);
+            SetUnitFlyHeight(this.casterUnit, unitLoc.z+this.initialZ-terrainZ, 9999);
 
             if (this.unitLocTracker.z < terrainZ) return false;
         }

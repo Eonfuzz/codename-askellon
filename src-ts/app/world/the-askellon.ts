@@ -20,7 +20,7 @@ const EXTREME_DAMAGE_THRESHOLD = 1800;
 
 export class TheAskellon {
     
-    powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false)
+    powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false);
 
     world: WorldModule;
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
@@ -60,6 +60,12 @@ export class TheAskellon {
      */
     damageShip(damage: number, zone?: ZONE_TYPE) {
         const damagedZone = zone ? this.findZone(zone) : this.getRandomZone()[1];
+        const askellonUnit = this.world.game.spaceModule.mainShip.unit;
+
+        // Damage the ship
+        if (askellonUnit) {
+            UnitDamageTarget(askellonUnit, askellonUnit, damage, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+        }
 
         if (damage > SMALL_DAMAGE_THRESHOLD) {
             // Play ship groan sfx

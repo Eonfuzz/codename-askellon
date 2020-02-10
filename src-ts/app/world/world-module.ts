@@ -48,7 +48,11 @@ export class WorldModule {
         const unit = GetTriggerUnit();
         const handle = GetHandleId(unit);
 
-        if (this.unitLocation.has(handle)) this.unitLocation.delete(handle);
+        if (this.unitLocation.has(handle)) {
+            const zone = this.unitLocation.get(handle);
+            zone?.onLeave(this, unit);
+            this.unitLocation.delete(handle);
+        }
     }
 
     getZone(whichZone: ZONE_TYPE) {
