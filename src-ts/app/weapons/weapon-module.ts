@@ -43,7 +43,7 @@ export class WeaponModule {
          */
         this.initialiseWeaponEquip();
         this.initaliseWeaponShooting();
-        this.initialiseWeaponDropping();
+        this.initialiseWeaponDropPickup();
 
         this.initProjectiles();
     }
@@ -240,12 +240,23 @@ export class WeaponModule {
     }
 
     weaponDropTrigger = new Trigger();
-    initialiseWeaponDropping() {
+    weaponPickupTrigger = new Trigger();
+    initialiseWeaponDropPickup() {
         this.weaponDropTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DROP_ITEM);
         this.weaponDropTrigger.AddCondition(() => {
             const gun = this.getGunForItem(GetManipulatedItem());
             if (gun) {
                 gun.onRemove(this);
+            }
+            return false;
+        });
+
+        this.weaponPickupTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_PICKUP_ITEM);
+        this.weaponPickupTrigger.AddCondition(() => {
+            const gun = this.getGunForItem(GetManipulatedItem());
+            const crewmember = this.game.crewModule && this.game.crewModule.getCrewmemberForUnit(GetManipulatingUnit());
+            if (gun && crewmember) {
+                gun.updateTooltip(this, crewmember)
             }
             return false;
         });

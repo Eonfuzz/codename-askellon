@@ -675,3 +675,45 @@ STRING 139
 Cliff Collumn
 }
 
+STRING 140
+// Abilities: TF01 (Transform), Name (Name)
+{
+Transform
+}
+
+STRING 141
+// Abilities: TF01 (Transform), Hotkey (Hotkey - Normal)
+{
+T
+}
+
+STRING 142
+// Abilities: TF01 (Transform), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Oof Ouch this looks like it hurts.|r|n|nTransforms into alien form over 1 second.
+}
+
+STRING 143
+// Abilities: TF01 (Transform), Tip (Tooltip - Normal)
+{
+Transform
+}
+
+STRING 144
+// Doodads: D009 (Omnilight Red), Name (Name)
+{
+Omnilight Red
+}
+
+STRING 145
+// Doodads: D00A (Omnilight Test), Name (Name)
+{
+Omnilight Test
+}
+
+STRING 146
+// Units: n001 (Elevator), Name (Name)
+{
+Elevator
+}
+

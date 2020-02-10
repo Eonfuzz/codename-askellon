@@ -50,13 +50,13 @@ switch (operation) {
     break;
   case "gen-defs":
     // Create definitions file for generated globals
-    const luaFile = "maps/map.w3x/war3map.lua";
+    const luaFile = "maps/askellan-sector.w3x/war3map.lua";
 
     try {
       const contents = fs.readFileSync(luaFile, "utf8");
       const parser = new War3TSTLHelper(contents);
       const result = parser.genTSDefinitions();
-      fs.writeFileSync("src-ts/types/war3map.d.ts", result);
+      fs.writeFileSync("src-ts/app/types/war3map.d.ts", result);
     } catch (err) {
       console.log(err);
       console.log(`There was an error generating the definition file for '${luaFile}'`);

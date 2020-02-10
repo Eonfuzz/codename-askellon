@@ -15,17 +15,21 @@ export class InteractionEvent {
 
   private interactionTrigger: Trigger | undefined;
   private callback: Function;
+  private startCallback: Function;
+  private cancelCallback: Function;
 
   private timeRequired: number;
   private timeRemaining: number;
 
   private progressBar: ProgressBar | undefined;
 
-  constructor(unit: unit, targetUnit: unit, interactTime: number, callback: Function) {
+  constructor(unit: unit, targetUnit: unit, interactTime: number, callback: Function, startCallback: Function, cancelCallback: Function) {
     this.unit = unit;
     this.targetUnit = targetUnit;
     this.timeRequired = this.timeRemaining = interactTime;
     this.callback = callback;
+    this.startCallback = startCallback;
+    this.cancelCallback = cancelCallback;
     this.progressBar = new ProgressBar();
   }
 
@@ -55,6 +59,7 @@ export class InteractionEvent {
       if (this.timeRemaining === this.timeRequired) {
         // if this is the first tick show the progress bar
         this.progressBar && this.progressBar.show();
+        this.startCallback();
       }
 
       // alter the delta depending on buffs / debuffs
@@ -92,5 +97,6 @@ export class InteractionEvent {
     this.interactionTrigger && this.interactionTrigger.destroy();
     this.progressBar && this.progressBar.destroy();
     this.interactionTrigger = undefined;
+    this.cancelCallback();
   }
 }

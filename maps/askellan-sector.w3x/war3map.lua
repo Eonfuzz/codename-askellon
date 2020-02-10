@@ -1,5 +1,16 @@
+udg_ELEVATORS = {}
 gg_rct_Space = nil
+gg_unit_n001_0032 = nil
+gg_trg_Set = nil
+gg_unit_n001_0021 = nil
 function InitGlobals()
+    local i = 0
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_ELEVATORS[i] = nil
+        i = i + 1
+    end
 end
 
 function CreateAllItems()
@@ -45,8 +56,9 @@ function CreateNeutralPassiveBuildings()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("nfoh"), -1088.0, 1088.0, 270.000, FourCC("nfoh"))
+    gg_unit_n001_0021 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n000"), 128.0, 896.0, 270.000, FourCC("n000"))
+    gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()
@@ -68,53 +80,81 @@ function CreateRegions()
     gg_rct_Space = Rect(14528.0, -19520.0, 29984.0, 864.0)
 end
 
+function Trig_Set_Actions()
+    udg_ELEVATORS[0] = gg_unit_n001_0032
+    udg_ELEVATORS[1] = gg_unit_n001_0021
+end
+
+function InitTrig_Set()
+    gg_trg_Set = CreateTrigger()
+    TriggerAddAction(gg_trg_Set, Trig_Set_Actions)
+end
+
+function InitCustomTriggers()
+    InitTrig_Set()
+end
+
+function RunInitializationTriggers()
+    ConditionalTriggerExecute(gg_trg_Set)
+end
+
 function InitCustomPlayerSlots()
     SetPlayerStartLocation(Player(0), 0)
+    ForcePlayerStartLocation(Player(0), 0)
     SetPlayerColor(Player(0), ConvertPlayerColor(0))
     SetPlayerRacePreference(Player(0), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(0), false)
     SetPlayerController(Player(0), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(1), 1)
+    ForcePlayerStartLocation(Player(1), 1)
     SetPlayerColor(Player(1), ConvertPlayerColor(1))
     SetPlayerRacePreference(Player(1), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(1), false)
     SetPlayerController(Player(1), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(2), 2)
+    ForcePlayerStartLocation(Player(2), 2)
     SetPlayerColor(Player(2), ConvertPlayerColor(2))
     SetPlayerRacePreference(Player(2), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(2), false)
     SetPlayerController(Player(2), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(3), 3)
+    ForcePlayerStartLocation(Player(3), 3)
     SetPlayerColor(Player(3), ConvertPlayerColor(3))
     SetPlayerRacePreference(Player(3), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(3), false)
     SetPlayerController(Player(3), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(4), 4)
+    ForcePlayerStartLocation(Player(4), 4)
     SetPlayerColor(Player(4), ConvertPlayerColor(4))
     SetPlayerRacePreference(Player(4), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(4), false)
     SetPlayerController(Player(4), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(5), 5)
+    ForcePlayerStartLocation(Player(5), 5)
     SetPlayerColor(Player(5), ConvertPlayerColor(5))
     SetPlayerRacePreference(Player(5), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(5), false)
     SetPlayerController(Player(5), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(6), 6)
+    ForcePlayerStartLocation(Player(6), 6)
     SetPlayerColor(Player(6), ConvertPlayerColor(6))
     SetPlayerRacePreference(Player(6), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(6), false)
     SetPlayerController(Player(6), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(7), 7)
+    ForcePlayerStartLocation(Player(7), 7)
     SetPlayerColor(Player(7), ConvertPlayerColor(7))
     SetPlayerRacePreference(Player(7), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(7), false)
     SetPlayerController(Player(7), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(8), 8)
+    ForcePlayerStartLocation(Player(8), 8)
     SetPlayerColor(Player(8), ConvertPlayerColor(8))
     SetPlayerRacePreference(Player(8), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(8), false)
     SetPlayerController(Player(8), MAP_CONTROL_USER)
     SetPlayerStartLocation(Player(9), 9)
+    ForcePlayerStartLocation(Player(9), 9)
     SetPlayerColor(Player(9), ConvertPlayerColor(9))
     SetPlayerRacePreference(Player(9), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(9), false)
@@ -343,6 +383,8 @@ function main()
     CreateAllUnits()
     InitBlizzard()
     InitGlobals()
+    InitCustomTriggers()
+    RunInitializationTriggers()
 end
 
 function config()

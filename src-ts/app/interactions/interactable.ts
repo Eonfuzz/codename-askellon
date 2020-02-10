@@ -10,5 +10,8 @@ export interface InteractableData {
    */
   condition?: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => boolean;
 
+  onStart?:  (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => void;
+  onCancel?:  (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => void;
+
   action: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => void;
 }
