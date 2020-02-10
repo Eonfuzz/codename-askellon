@@ -21,7 +21,7 @@ export class WorldModule {
 
     constructor(game: Game) {
         this.game = game;
-        this.askellon = new TheAskellon(game);
+        this.askellon = new TheAskellon(this);
 
         const deathTrigger = new Trigger();
         deathTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DEATH);
@@ -33,8 +33,9 @@ export class WorldModule {
         const oldZone = this.unitLocation.get(uHandle);
         const newZone = this.getZone(to);        
 
-        // oldZone.onLeave(unit);
-        // newZone.onEnter(unit);
+        // Now call on enter and on leave for the zones
+        oldZone?.onLeave(this, unit);
+        newZone?.onEnter(this, unit);
         
         newZone && this.unitLocation.set(uHandle, newZone);
 
@@ -52,5 +53,9 @@ export class WorldModule {
 
     getZone(whichZone: ZONE_TYPE) {
         return this.askellon.findZone(whichZone) || this.worldZones.get(whichZone);
+    }
+
+    getPlayersInZone(whichZone: ZONE_TYPE): Array<player> {
+        return [];
     }
 }

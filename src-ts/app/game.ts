@@ -15,6 +15,7 @@ import { Log } from "../lib/serilog/serilog";
 import { Vector2 } from "./types/vector2";
 import { SoundRef } from "./types/sound-ref";
 import { WorldModule } from "./world/world-module";
+import { ZONE_TYPE } from "./world/zone-id";
 
 export class Game {
     // Helper objects
@@ -106,10 +107,13 @@ export class Game {
             else if (message === "-nt") {
                 this.noTurn = !this.noTurn;
             }
-            else if (message === "-nl") {
-                const sound = new SoundRef("Sounds\\PowerDown.mp3", false);
-                sound.playSound();
-                SetDayNightModels("", "");
+            else if (message === "-p1off") {
+                Log.Information("Killing power to floor 1");
+                this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)?.updatePower(this.worldModule, false);
+            }
+            else if (message === "-p1on") {
+                Log.Information("Restoring power to floor 1");
+                this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)?.updatePower(this.worldModule, true);
             }
             else if (message === "-testalien") {
                 this.getCameraXY(triggerPlayer, (self: any, pos: Vector2) => {
