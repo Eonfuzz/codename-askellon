@@ -2,9 +2,12 @@ import { ZONE_TYPE } from "./zone-id";
 import { SoundRef } from "../types/sound-ref";
 import { WorldModule } from "./world-module";
 import { TimedEvent } from "../types/timed-event";
+import { Log } from "../../lib/serilog/serilog";
+import { LIGHT_DEST_ID } from "../types/widget-id";
 
 /** @noSelfInFile **/
 
+const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 
 export class Zone {
     public id: ZONE_TYPE;
@@ -73,37 +76,66 @@ export class ShipZone extends Zone {
             // Apply power change to all players
             this.getPlayersInZone().map(p => worldModule.askellon.applyPowerChange(p, newState, true));
 
-            if (newState) {
-                let poweredSFX = this.lightSources.slice();
+            if (!newState) {
+                this.lightSources.forEach((lightSource, i) => {
+                    const _i = i;
+                    const r = GetRandomInt(2, 4);
+                    const timer = 500 + r*r * 200;
 
-                // Apply light sources shutting down sfx
-                // Hide half of all lights first 500ms
-                worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-                    poweredSFX = poweredSFX.filter((l, i) => {
-                        if (i <= (poweredSFX.length / 2)) {
-                            ShowDestructable(l, false);
-                            return false;
-                        }
-                    })
-                    return true;
-                }, 500));
+                    worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                        const oldSource = this.lightSources[_i];
+                        const oldX = GetDestructableX(oldSource);
+                        const oldY = GetDestructableY(oldSource);
+                        const terrainZ = worldModule.game.getZFromXY(oldX, oldY);
 
-                // Another half
-                worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-                    poweredSFX = poweredSFX.filter((l, i) => {
-                        if (i <= (poweredSFX.length / 2)) {
-                            ShowDestructable(l, false);
-                            return false;
-                        }
-                    })
-                    return true;
-                }, 1000));
+                        const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
+                        SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
+                        SetSoundChannel(result, 0);
+                        SetSoundVolume(result, 127);
+                        SetSoundPitch(result, 1.0);
+                        SetSoundDistances(result, 2000.0, 10000.0);
+                        SetSoundDistanceCutoff(result, 4500.0);
+    
+                        const location = Location(oldX, oldY);
+                        PlaySoundAtPointBJ(result, 127, location, terrainZ);
+                        RemoveLocation(location);
 
-                // And all of them
-                worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-                    poweredSFX.forEach((l, i) => ShowDestructable(l, false))
-                    return true;
-                }, 1500));
+                        RemoveDestructable(oldSource);
+                        this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 9999, 0, 1, 0);
+                        return true;
+                    }, timer));
+                });
+            }
+            // Otherwise we need to reset the lights
+            else {
+                this.lightSources.forEach((lightSource, i) => {
+                    const _i = i;
+                    const r = GetRandomInt(2, 4);
+                    const timer = 500 + r*r * 200;
+
+                    worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                        const oldSource = this.lightSources[_i];
+                        const oldX = GetDestructableX(oldSource);
+                        const oldY = GetDestructableY(oldSource);
+                        const terrainZ = worldModule.game.getZFromXY(oldX, oldY);
+
+                        const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
+                        SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
+                        SetSoundChannel(result, 0);
+                        SetSoundVolume(result, 127);
+                        SetSoundPitch(result, 1.0);
+                        SetSoundDistances(result, 2000.0, 10000.0);
+                        SetSoundDistanceCutoff(result, 4500.0);
+    
+                        const location = Location(oldX, oldY);
+                        PlaySoundAtPointBJ(result, 127, location, terrainZ);
+                        RemoveLocation(location);
+
+                        RemoveDestructable(oldSource);
+                        this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 100, 0, 1, 0);
+                        return true;
+                    }, timer));
+                });
             }
         }
         this.hasPower = newState;

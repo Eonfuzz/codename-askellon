@@ -1,8 +1,13 @@
 udg_ELEVATORS = {}
+udg_LIGHTS = {}
 gg_rct_Space = nil
-gg_unit_n001_0032 = nil
 gg_trg_Set = nil
+gg_unit_n001_0032 = nil
 gg_unit_n001_0021 = nil
+gg_dest_B002_0015 = nil
+gg_dest_B002_0017 = nil
+gg_dest_B002_0019 = nil
+gg_dest_B002_0022 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -11,6 +16,16 @@ function InitGlobals()
         udg_ELEVATORS[i] = nil
         i = i + 1
     end
+end
+
+function CreateAllDestructables()
+    local d
+    local t
+    local life
+    gg_dest_B002_0017 = BlzCreateDestructableZWithSkin(FourCC("B002"), -104.7, -37.8, 134.4, 217.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0019 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.0, -62.8, 134.4, 117.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0022 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.8, 542.7, 134.4, 210.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0015 = BlzCreateDestructableZWithSkin(FourCC("B002"), -121.9, 576.3, 134.4, 358.000, 1.000, 0, FourCC("B002"))
 end
 
 function CreateAllItems()
@@ -46,8 +61,8 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 576.3, 227.9, 301.331, FourCC("ntrd"))
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 896.8, 340.5, 315.812, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 1398.0, 286.8, 210.264, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 1224.0, 430.4, 215.074, FourCC("ntrd"))
 end
 
 function CreateNeutralPassiveBuildings()
@@ -83,6 +98,10 @@ end
 function Trig_Set_Actions()
     udg_ELEVATORS[0] = gg_unit_n001_0032
     udg_ELEVATORS[1] = gg_unit_n001_0021
+    udg_LIGHTS[0] = gg_dest_B002_0015
+    udg_LIGHTS[1] = gg_dest_B002_0017
+    udg_LIGHTS[2] = gg_dest_B002_0019
+    udg_LIGHTS[3] = gg_dest_B002_0022
 end
 
 function InitTrig_Set()
@@ -379,6 +398,7 @@ function main()
     SetAmbientNightSound("SunkenRuinsNight")
     SetMapMusic("Music", true, 0)
     CreateRegions()
+    CreateAllDestructables()
     CreateAllItems()
     CreateAllUnits()
     InitBlizzard()

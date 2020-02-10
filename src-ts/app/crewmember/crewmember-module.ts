@@ -6,6 +6,7 @@ import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
 import { BURST_RIFLE_ITEM_ID } from "../weapons/weapon-constants";
 import { CREW_FORCE_NAME } from "../force/crewmember-force";
+import { ZONE_TYPE } from "../world/zone-id";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 
@@ -27,7 +28,8 @@ export class CrewModule {
         playerList.forEach(player => {
             let crew = this.createCrew(game, GetPlayerId(player));
             this.CREW_MEMBERS.push(crew);
-            crewForce?.addPlayer(player);
+            crewForce && crewForce.addPlayer(player);
+            game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
         });
 
         // Create crew takes damage trigger

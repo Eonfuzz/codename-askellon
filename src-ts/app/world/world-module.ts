@@ -34,8 +34,8 @@ export class WorldModule {
         const newZone = this.getZone(to);        
 
         // Now call on enter and on leave for the zones
-        oldZone?.onLeave(this, unit);
-        newZone?.onEnter(this, unit);
+        oldZone && oldZone.onLeave(this, unit);
+        newZone && newZone.onEnter(this, unit);
         
         newZone && this.unitLocation.set(uHandle, newZone);
 
@@ -50,7 +50,7 @@ export class WorldModule {
 
         if (this.unitLocation.has(handle)) {
             const zone = this.unitLocation.get(handle);
-            zone?.onLeave(this, unit);
+            zone && zone.onLeave(this, unit);
             this.unitLocation.delete(handle);
         }
     }

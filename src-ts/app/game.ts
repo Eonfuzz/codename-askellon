@@ -50,6 +50,7 @@ export class Game {
         this.forceModule        = new ForceModule(this);
         this.weaponModule       = new WeaponModule(this);
         this.spaceModule        = new SpaceModule(this);
+        this.worldModule        = new WorldModule(this);
         this.crewModule         = new CrewModule(this);
 
         this.abilityModule      = new AbilityModule(this);
@@ -57,7 +58,6 @@ export class Game {
 
         this.interactionsModule = new InteractionModule(this);
 
-        this.worldModule = new WorldModule(this);
 
         // Here be dragons, old code is below and needs update
         GALAXY_MODULE.initSectors();
@@ -109,11 +109,13 @@ export class Game {
             }
             else if (message === "-p1off") {
                 Log.Information("Killing power to floor 1");
-                this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)?.updatePower(this.worldModule, false);
+                const z = this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
+                z && z.updatePower(this.worldModule, false);
             }
             else if (message === "-p1on") {
                 Log.Information("Restoring power to floor 1");
-                this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)?.updatePower(this.worldModule, true);
+                const z = this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
+                z && z.updatePower(this.worldModule, true);
             }
             else if (message === "-testalien") {
                 this.getCameraXY(triggerPlayer, (self: any, pos: Vector2) => {

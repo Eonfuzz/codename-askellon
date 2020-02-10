@@ -70,6 +70,6 @@ export class ForceModule {
      * @param whichForce 
      */
     public getForce(whichForce: string): ForceType | undefined {
-        return this.forces.find(f => f.is(whichForce));
+        return this.forces.filter(f => f.is(whichForce))[0];
     }
 }

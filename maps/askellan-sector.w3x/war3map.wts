@@ -717,3 +717,9 @@ STRING 146
 Elevator
 }
 
+STRING 147
+// Destructibles: B002 (Light White), Name (Name)
+{
+Light White
+}
+

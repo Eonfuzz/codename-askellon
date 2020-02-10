@@ -4,6 +4,7 @@ import { Game } from "../game";
 import { Zone, ShipZone } from "./zone-type";
 import { WorldModule } from "./world-module";
 import { SoundRef } from "../types/sound-ref";
+import { TimedEvent } from "../types/timed-event";
 
 // Small damage
 // Will not cause damage to interior
@@ -30,6 +31,15 @@ export class TheAskellon {
 
         this.floors.set(ZONE_TYPE.FLOOR_1, new ShipZone(ZONE_TYPE.FLOOR_1));
         this.floors.set(ZONE_TYPE.FLOOR_2, new ShipZone(ZONE_TYPE.FLOOR_2));
+
+        // Now apply lights to the zones
+        const z1 = this.floors.get(ZONE_TYPE.FLOOR_1);
+        if (z1) {
+            z1.lightSources.push(gg_dest_B002_0015);
+            z1.lightSources.push(gg_dest_B002_0017);
+            z1.lightSources.push(gg_dest_B002_0019);
+            z1.lightSources.push(gg_dest_B002_0022);
+        }
     }
 
     findZone(zone: ZONE_TYPE): ShipZone | undefined {
@@ -37,7 +47,19 @@ export class TheAskellon {
     }
 
     applyPowerChange(player: player, hasPower: boolean, justChanged: boolean) {
-        if (hasPower && player === GetLocalPlayer()) {
+        if (hasPower && justChanged) {
+
+            this.world.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                if (GetLocalPlayer() === player) {
+                    SetDayNightModels(
+                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+                    );
+                }
+                return true;
+            }, 4000));
+        }
+        else if (hasPower && !justChanged && player === GetLocalPlayer()) {
             SetDayNightModels(
                 "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
                 "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
