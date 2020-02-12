@@ -3,7 +3,8 @@ import { InteractableData } from "./interactable";
 import { InteractionModule } from "./interaction-module";
 import { Log } from "../../lib/serilog/serilog";
 import { ZONE_TYPE } from "../world/zone-id";
-import { PlayNewSoundOnUnit } from "../../lib/translators";
+import { PlayNewSoundOnUnit, COLOUR } from "../../lib/translators";
+import { COL_FLOOR_1, COL_FLOOR_2 } from "../../resources/colours";
 
 export let Interactables = new Map<number, InteractableData>();
 
@@ -40,7 +41,10 @@ export function initElevators() {
     
     TEST_ELEVATOR_FLOOR_1.to = TEST_ELEVATOR_FLOOR_2;
     TEST_ELEVATOR_FLOOR_2.to = TEST_ELEVATOR_FLOOR_1;
-    
+
+    BlzSetUnitName(TEST_ELEVATOR_FLOOR_1.unit, `Elevator to ${COL_FLOOR_2}Floor 2|r`);
+    BlzSetUnitName(TEST_ELEVATOR_FLOOR_2.unit, `Elevator to ${COL_FLOOR_1}Floor 1|r`);
+
     elevatorMap.set(GetHandleId(TEST_ELEVATOR_FLOOR_1.unit), TEST_ELEVATOR_FLOOR_1);
     elevatorMap.set(GetHandleId(TEST_ELEVATOR_FLOOR_2.unit), TEST_ELEVATOR_FLOOR_2);
 
