@@ -16,6 +16,7 @@ import { Vector2 } from "./types/vector2";
 import { SoundRef } from "./types/sound-ref";
 import { WorldModule } from "./world/world-module";
 import { ZONE_TYPE } from "./world/zone-id";
+import { BuffInstanceDuration, BuffInstanceCallback } from "./buff/buff-instance";
 
 export class Game {
     // Helper objects
@@ -92,11 +93,7 @@ export class Game {
             Log.Information("Player name: ", GetPlayerName(triggerPlayer))
 
             if (message === "-resolve" && crew) {
-                crew.resolve.createResolve(this, crew, {
-                    startTimeStamp: this.getTimeStamp(), 
-                    duration: 5
-                });
-                SetUnitLifePercentBJ(crew.unit, 20);
+                crew.testResolve(this);
             }
             else if (message === "-u" && crew) {
                 if (crew.weapon) {
