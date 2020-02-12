@@ -3,4 +3,4 @@
 ///<reference path="../node_modules/war3-types/core/blizzard.d.ts" /> #
 ///<reference path="../node_modules/war3-types/core/common.d.ts" /> #
 ///<reference path="../node_modules/war3-types/core/polyfill.d.ts" /> #
-///<reference path="../node_modules/war3-types/special/ceres.d.ts" /> #
+///<reference path="../node_modules/ceres-decl/ceres.d.ts" /> #

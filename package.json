@@ -21,6 +21,7 @@
     }
   },
   "dependencies": {
+    "ceres-decl": "^1.0.1",
     "convertjasstots": "latest",
     "fs-extra": "latest",
     "npm-watch": "^0.6.0",
