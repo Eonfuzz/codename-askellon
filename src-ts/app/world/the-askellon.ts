@@ -22,6 +22,7 @@ const EXTREME_DAMAGE_THRESHOLD = 1800;
 export class TheAskellon {
     
     powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false);
+    powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false);
 
     world: WorldModule;
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
@@ -49,6 +50,9 @@ export class TheAskellon {
     applyPowerChange(player: player, hasPower: boolean, justChanged: boolean) {
         if (hasPower && justChanged) {
 
+            if (GetLocalPlayer() === player) {
+                this.powerUpSound.playSound();
+            }
             this.world.game.timedEventQueue.AddEvent(new TimedEvent(() => {
                 if (GetLocalPlayer() === player) {
                     SetDayNightModels(
