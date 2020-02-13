@@ -5,6 +5,7 @@ import { Zone, ShipZone } from "./zone-type";
 import { WorldModule } from "./world-module";
 import { SoundRef } from "../types/sound-ref";
 import { TimedEvent } from "../types/timed-event";
+import { BuffInstanceDuration } from "../buff/buff-instance";
 
 // Small damage
 // Will not cause damage to interior
@@ -71,6 +72,12 @@ export class TheAskellon {
                 this.powerDownSound.playSound();
             }
             SetDayNightModels("", "");
+            
+            // Try to get crewmember
+            const crew = this.world.game.crewModule.getCrewmemberForPlayer(player);
+            if (crew) {
+                crew.addDespair(this.world.game, new BuffInstanceDuration(this.world.game.getTimeStamp(), 10000));
+            }
         }
     }
 

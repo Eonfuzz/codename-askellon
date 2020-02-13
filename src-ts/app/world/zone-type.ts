@@ -95,6 +95,7 @@ export class ShipZone extends Zone {
                         SetSoundPitch(result, 1.0);
                         SetSoundDistances(result, 2000.0, 10000.0);
                         SetSoundDistanceCutoff(result, 4500.0);
+                        KillSoundWhenDone(result);
     
                         const location = Location(oldX, oldY);
                         PlaySoundAtPointBJ(result, 127, location, terrainZ);
@@ -126,6 +127,7 @@ export class ShipZone extends Zone {
                         SetSoundPitch(result, 1.0);
                         SetSoundDistances(result, 2000.0, 10000.0);
                         SetSoundDistanceCutoff(result, 4500.0);
+                        KillSoundWhenDone(result);
     
                         const location = Location(oldX, oldY);
                         PlaySoundAtPointBJ(result, 127, location, terrainZ);

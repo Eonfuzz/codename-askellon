@@ -1,8 +1,29 @@
 /** @noSelfInFile **/
 import { SpaceGrid } from "./sector-type";
+import { Game } from "../game";
 
-const SPACE_GRID: SpaceGrid = new SpaceGrid();
+declare const NAGIVATION_RECT: rect;
 
-export function initSectors() {
-    SPACE_GRID.initSectors(-5, -5, 5, 5);
+export class GalaxyModule {
+    public spaceGrid: SpaceGrid;
+    public game: Game;
+
+    constructor(game: Game) {
+        this.game = game;
+        this.spaceGrid = new SpaceGrid();
+    }
+
+    initSectors() {
+        this.spaceGrid.initSectors(-5, -5, 5, 5);
+    }
+
+    /**
+     * Creates a visible "Holographic navigation grid"
+     */
+    createNavigationGrid() {
+        const centerX = GetRectCenterX(NAGIVATION_RECT);
+        const centerY = GetRectCenterY(NAGIVATION_RECT);
+
+        
+    }
 }
