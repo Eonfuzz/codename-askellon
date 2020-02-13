@@ -9,8 +9,11 @@ import { CREW_FORCE_NAME } from "../force/crewmember-force";
 import { ZONE_TYPE } from "../world/zone-id";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
+const DELTA_CHECK = 0.25;
 
 export class CrewModule {
+
+    game: Game;
 
     CREW_MEMBERS: Array<Crewmember> = [];
     AVAILABLE_ROLES: Array<string> = [];
@@ -18,6 +21,7 @@ export class CrewModule {
     crewmemberDamageTrigger: Trigger;
 
     constructor(game: Game) {
+        this.game = game;
         const playerList = game.forceModule.getActivePlayers();
         const crewForce = game.forceModule.getForce(CREW_FORCE_NAME);
 
@@ -47,6 +51,10 @@ export class CrewModule {
                 crew.onDamage(game);
             }
         });
+
+        const updateCrewTrigger = new Trigger();
+        updateCrewTrigger.RegisterTimerEventPeriodic(DELTA_CHECK);
+        updateCrewTrigger.AddAction(() => this.processCrew(DELTA_CHECK));
     }
 
     initialiseRoles(players: Array<player>) {
@@ -57,6 +65,13 @@ export class CrewModule {
             else {
                 this.AVAILABLE_ROLES.push("Security Guard");
             }
+        });
+    }
+
+    processCrew(time: number) {
+        this.CREW_MEMBERS.forEach(crew => {
+            crew.resolve.process(this.game, time);
+            crew.despair.process(this.game, time);
         });
     }
 

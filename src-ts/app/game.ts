@@ -1,6 +1,4 @@
 /** @NoSelfInFile **/
-
-import * as GALAXY_MODULE from "./galaxy/galaxy-module";
 import { CrewModule } from "./crewmember/crewmember-module";
 import { WeaponModule } from "./weapons/weapon-module";
 import { TimedEventQueue } from "./types/timed-event-queue";
@@ -17,6 +15,7 @@ import { SoundRef } from "./types/sound-ref";
 import { WorldModule } from "./world/world-module";
 import { ZONE_TYPE } from "./world/zone-id";
 import { BuffInstanceDuration, BuffInstanceCallback } from "./buff/buff-instance";
+import { GalaxyModule } from "./galaxy/galaxy-module";
 
 export class Game {
     // Helper objects
@@ -31,6 +30,7 @@ export class Game {
     public geneModule: GeneModule;
     public interactionsModule: InteractionModule;
     public worldModule: WorldModule;
+    public galaxyModule: GalaxyModule;
 
     // public dummyUnit: unit;
 
@@ -48,6 +48,7 @@ export class Game {
         this.gameTimeElapsed    = new GameTimeElapsed();
 
         // Load modules after all helper objects
+        this.galaxyModule       = new GalaxyModule(this);
         this.forceModule        = new ForceModule(this);
         this.weaponModule       = new WeaponModule(this);
         this.spaceModule        = new SpaceModule(this);
@@ -59,9 +60,8 @@ export class Game {
 
         this.interactionsModule = new InteractionModule(this);
 
-
         // Here be dragons, old code is below and needs update
-        GALAXY_MODULE.initSectors();
+        this.galaxyModule.initSectors();
 
         // Initialise commands
         this.initCommands();

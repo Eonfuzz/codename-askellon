@@ -57,7 +57,7 @@ export abstract class DynamicBuff {
      * @param game 
      * @param delta 
      */
-    public process(game: Game, delta: number): Boolean {
+    public process(game: Game, delta: number): boolean {
         const timestamp = game.getTimeStamp();
         const wasActive = this.instances.length > 0;
         this.instances = this.instances.filter(i => i.isActive(timestamp));

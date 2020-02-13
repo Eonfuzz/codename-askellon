@@ -21,6 +21,8 @@ export class Despair extends DynamicBuff {
 
     private crewmember: Crewmember;
 
+    private prevUnitHealth: number;
+
     constructor(game: Game, crewmember: Crewmember) {
         super();
         
@@ -28,6 +30,19 @@ export class Despair extends DynamicBuff {
         this.despairMusic = new SoundRef("Music\\KavinskyRampage.mp3", true);
 
         this.crewmember = crewmember;
+        this.prevUnitHealth = GetUnitState(this.crewmember.unit, UNIT_STATE_LIFE);
+    }
+
+    public process(game: Game, delta: number): boolean {
+        const result =  super.process(game, delta);
+        const currentHealth = GetUnitState(this.crewmember.unit, UNIT_STATE_LIFE);
+        const deltaHealth = currentHealth - this.prevUnitHealth;
+
+        // If the unit has gained health reduce it by 50%
+        if (deltaHealth > 0) {
+            SetUnitState(this.crewmember.unit, UNIT_STATE_LIFE, currentHealth - deltaHealth/2);
+        }
+        return result;
     }
 
     public onStatusChange(game: Game, newStatus: boolean) {
