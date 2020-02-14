@@ -8,6 +8,8 @@ gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
+gg_unit_n002_0033 = nil
+gg_unit_n002_0034 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -74,6 +76,8 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0021 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n000"), 128.0, 896.0, 270.000, FourCC("n000"))
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
+    gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
+    gg_unit_n002_0034 = BlzCreateUnitWithSkin(p, FourCC("n002"), -28670.7, 26621.0, 270.000, FourCC("n002"))
 end
 
 function CreatePlayerBuildings()
@@ -98,6 +102,8 @@ end
 function Trig_Set_Actions()
     udg_ELEVATORS[0] = gg_unit_n001_0032
     udg_ELEVATORS[1] = gg_unit_n001_0021
+    udg_ELEVATORS[2] = gg_unit_n002_0033
+    udg_ELEVATORS[3] = gg_unit_n002_0034
     udg_LIGHTS[0] = gg_dest_B002_0015
     udg_LIGHTS[1] = gg_dest_B002_0017
     udg_LIGHTS[2] = gg_dest_B002_0019

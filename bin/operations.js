@@ -1,7 +1,8 @@
-const fs = require("fs");
+const fs = require("fs-extra");
 const War3TSTLHelper = require("war3tstlhelper");
-const exec = require("child_process").execFile;
+const execFile = require("child_process").execFile;
 const cwd = process.cwd();
+const luamin = require('luamin');
 
 // Parse configuration
 let config = {};
@@ -16,47 +17,64 @@ const operation = process.argv[2];
 
 switch (operation) {
   case "build":
-    // create temporary ceres.toml to prevent ceres from throwing an error
-    fs.writeFileSync("ceres.toml", '[run]\nwc3_start_command=""');
+    const tsLua = "./dist/tstl_output.lua";
 
-    // build war3map.lua with ceres
-    exec("./bin/ceres", ["build", config.mapFolder], function(err, data) {
-      console.log(data);
+    if (!fs.existsSync(tsLua)) {
+      return console.error(`Could not find "${tsLua}"`);
+    }
 
-      if (err != null) {
-        console.log(err);
-        console.log("There was an error launching ceres.");
+    console.log(`Building "${config.mapFolder}"...`);
+    fs.copy(`./maps/${config.mapFolder}`, `./dist/${config.mapFolder}`, function (err) {
+      if (err) {
+        return console.error(err);
       }
 
-      // remove ceres.toml, we don't need multiple config files for the same thing
-      fs.unlinkSync("ceres.toml");
+      // Merge the TSTL output with war3map.lua
+      const mapLua = `./dist/${config.mapFolder}/war3map.lua`;
+
+      if (!fs.existsSync(mapLua)) {
+        return console.error(`Could not find "${mapLua}"`);
+      }
+
+      try {
+        let contents = fs.readFileSync(mapLua) + fs.readFileSync(tsLua);
+        if (config.minifyScript) {
+          console.log(`Minifying script...`);
+          contents = luamin.minify(contents.toString());
+        }
+        fs.writeFileSync(mapLua, contents);
+      } catch (err) {
+        return console.error(err);
+      }
+
+      console.log(`Completed!`);
     });
 
     break;
 
   case "run":
-    const filename = `${cwd}\\target\\${config.mapFolder}`;
+    const filename = `${cwd}/dist/${config.mapFolder}`;
 
-    exec(config.gameExecutable, ["-loadfile", filename, ...config.launchArgs], function(err, data) {
-      if (err != null) {
-        console.log(`Error: ${err.code}`);
-        console.log('There was an error launching the game. Make sure the path to your game executable has been set correctly in "config.js".');
-        console.log(`Current Path: "${config.gameExecutable}"`);
-      } else {
-        console.log(`Warcraft III has been launched!`);
+    console.log(`Launching map "${filename.replace(/\\/g, "/")}"...`);
+
+    execFile(config.gameExecutable, ["-loadfile", filename, ...config.launchArgs], (err, stdout, stderr) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          return console.error(`No such file or directory "${config.gameExecutable}". Make sure gameExecutable is configured properly in config.json.`);
+        }
       }
     });
 
     break;
   case "gen-defs":
     // Create definitions file for generated globals
-    const luaFile = "maps/askellan-sector.w3x/war3map.lua";
+    const luaFile = `./maps/${config.mapFolder}/war3map.lua`;
 
     try {
       const contents = fs.readFileSync(luaFile, "utf8");
       const parser = new War3TSTLHelper(contents);
       const result = parser.genTSDefinitions();
-      fs.writeFileSync("src-ts/app/types/war3map.d.ts", result);
+      fs.writeFileSync("src/war3map.d.ts", result);
     } catch (err) {
       console.log(err);
       console.log(`There was an error generating the definition file for '${luaFile}'`);

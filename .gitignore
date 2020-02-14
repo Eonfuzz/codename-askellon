@@ -1,7 +1,2 @@
 #ignore node modules
 node_modules/
-
-
-#ignore build paths
-src/**
-target/**

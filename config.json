@@ -1,5 +1,10 @@
 {
     "mapFolder": "askellan-sector.w3x",
     "gameExecutable": "E:\\Warcraft III\\x86_64\\Warcraft III.exe",
-    "launchArgs": ["-launch", "-windowmode", "windowed"]
+    "minifyScript": true,
+    "launchArgs": [
+      "-launch",
+      "-windowmode",
+      "windowed"
+    ]
   }

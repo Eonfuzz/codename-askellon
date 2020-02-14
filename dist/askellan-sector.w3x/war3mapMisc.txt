@@ -1,0 +1,4 @@
+[Misc]
+MaxUnitSpeed=522.0
+MinUnitSpeed=0.0
+
