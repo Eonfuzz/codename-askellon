@@ -759,3 +759,9 @@ STRING 154
 Light Red
 }
 
+STRING 155
+// Destructibles: B004 (Fuel), Name (Name)
+{
+Fuel
+}
+
