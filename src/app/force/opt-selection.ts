@@ -58,6 +58,13 @@ export class OptSelection {
 
     private optsPossible: OptSelectOption[] = [];
 
+    // The default opt to be used (read: human)
+    private defaultOpt: OptSelectOption;
+
+    constructor(defaultOpt: OptSelectOption) {
+        this.defaultOpt = defaultOpt;
+    }
+    
     /**
      * Adds a new opt option to the display list
      * @param what 
@@ -86,9 +93,12 @@ export class OptSelection {
      * Asks for opts
      */
     public askPlayerOpts(forces: ForceModule) {
+        let allOpts = this.optsPossible.slice();
+        allOpts.push(this.defaultOpt);
+
         DialogSetMessage(this.dialog, STR_OPT_MESSAGE);
 
-        this.optsPossible.forEach((opt, i) => {
+        allOpts.forEach((opt, i) => {
 
             const tooltip = opt.text;
             const button = DialogAddButton(this.dialog, this.getTypePefix(opt.type)+tooltip, GetLocalizedHotkey(opt.hotkey));
@@ -138,15 +148,13 @@ export class OptSelection {
      * Updates the dialog's display
      */
     public updateDialog() {
-
-        // Get players opt power
-        // Divide opt power among buttons
-
-        let opts: { player: player, power: number, opted: OPT_TYPES[]}[] = [];
+        let allOpts = this.optsPossible.slice();
+        allOpts.push(this.defaultOpt);
 
         DialogClear(this.dialog);
 
-        this.optsPossible.forEach(opt => {
+        // Add variable opts
+        allOpts.forEach(opt => {
             const playersOpted = this.playersInOpt.get(opt);
 
             let text = this.getTypePefix(opt.type)+opt.text;
@@ -178,6 +186,8 @@ export class OptSelection {
             this.optVsButton.set(opt, button);
             this.buttonVsOpt.set(button, opt);
         });
+
+        // Now add the default opt
     }
 
 
@@ -192,7 +202,7 @@ export class OptSelection {
     /**
      * Destroys the opt selection and returns gathered data
      */
-    private endOptSelection(force: ForceModule) {
+    private endOptSelection(force: ForceModule): { player: player, role: OptSelectOption }[] {
         // Clear button cache
         this.buttonVsOpt.clear();
         DialogClear(this.dialog);
@@ -200,8 +210,38 @@ export class OptSelection {
 
         // Time to roll for opts
         const playersNoRole = force.getActivePlayers();
+        const rolesToUse = this.optsPossible.filter(opt => GetRandomInt(0, 100) <= opt.chanceToExist);
+        let result: { player: player, role: OptSelectOption }[] = [];
 
-        // Assume opt order matters for now
-        // Each role must be chosen
+        rolesToUse.forEach(r => {
+            const playersOptedForRole = this.playersInOpt.get(r) || [];
+            let srcPlayersAvailableForRole = playersNoRole
+                .filter(p1 => playersOptedForRole.some(p2 => p1 === p2));
+
+
+            // Are we less than the required number?
+            if (r.isRequired && r.count && srcPlayersAvailableForRole.length <= r.count) {
+                // Try and fill to required count
+                while (srcPlayersAvailableForRole.length < r.count && playersNoRole.length > 0) {
+                    // Grab a random player from playersNoRole
+                    srcPlayersAvailableForRole.push(playersNoRole.splice(GetRandomInt(0, playersNoRole.length-1), 1)[0]);
+                }
+            }
+            
+            // Grab from srcPlayersAvailableForRole
+            let playersGettingRole: player[] = [];
+            while (playersGettingRole.length <= (r.count || 1) && playersNoRole.length > 0) {
+                playersGettingRole.push(srcPlayersAvailableForRole.splice(GetRandomInt(0, srcPlayersAvailableForRole.length-1), 1)[0]);
+            }
+
+            // Add picked players to that role list
+            playersGettingRole.forEach(p => result.push({player: p, role: r}));
+        });
+
+        // We're done going through the optional roles
+        // Now assign to the default human role
+        playersNoRole.forEach(p => result.push({player: p, role: this.defaultOpt}));
+
+        return result;
     }
 }

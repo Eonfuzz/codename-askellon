@@ -8,6 +8,7 @@ import { ObserverForce } from "./observer-force";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
 import { OptSelection, OPT_TYPES } from "./opt-selection";
+import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 
 export class ForceModule {
     public forces: Array<ForceType> = [];
@@ -80,26 +81,33 @@ export class ForceModule {
      * Gets the player opts
      */
     public getOpts() {
-        const optSelection = new OptSelection();
+        const optSelection = new OptSelection({
+            isRequired: false,
+            text: STR_OPT_HUMAN,
+            hotkey: "h",
+            type: OPT_TYPES.PROTAGANIST,
+            chanceToExist: 100,
+        });
 
         // Add alien
         optSelection.addOpt({
             isRequired: true,
-            text: ALIEN_FORCE_NAME,
+            text: STR_OPT_ALIEN,
             hotkey: "a",
             type: OPT_TYPES.ANTAGONST,
             chanceToExist: 100,
             count: 1
         });
 
-        // Add crew
+        // Add Cultist
         optSelection.addOpt({
-            isRequired: false,
-            text: CREW_FORCE_NAME,
-            hotkey: "c",
-            type: OPT_TYPES.PROTAGANIST,
-            chanceToExist: 100,
+            isRequired: true,
+            text: STR_OPT_CULT,
+            hotkey: "a",
+            type: OPT_TYPES.NEUTRAL,
+            chanceToExist: 30,
         });
+
 
         // TODO
         // Go through and increase player chance?? Maybe.
