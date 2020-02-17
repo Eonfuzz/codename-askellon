@@ -6,6 +6,8 @@ import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
 import { WeaponModule } from "../weapons/weapon-module";
 import { Despair } from "../buff/despair";
 import { BuffInstanceCallback, BuffInstance } from "../buff/buff-instance";
+import { RESOLVE_TOOLTIP } from "resources/ability-tooltips";
+import { ABILITY_CREWMEMBER_INFO } from "resources/ability-ids";
 
 export class Crewmember extends ArmableUnit {
     public role = '';
@@ -26,8 +28,8 @@ export class Crewmember extends ArmableUnit {
         this.despair = new Despair(game, this);
 
         // Cause resolve and despair to update weapon tooltips
-        this.resolve.onChange(() => this.weapon && this.weapon.updateTooltip(game.weaponModule, this));
-        this.despair.onChange(() => this.weapon && this.weapon.updateTooltip(game.weaponModule, this));
+        this.resolve.onChange(() => this.weapon && this.updateTooltips(game.weaponModule));
+        this.despair.onChange(() => this.weapon && this.updateTooltips(game.weaponModule));
     }
 
     setUnit(unit: unit) { this.unit = unit; }
@@ -96,5 +98,16 @@ export class Crewmember extends ArmableUnit {
         print("+++ Crewmember Information +++");
         print("Who: "+this.name);
         print("Position: "+this.role);
+    }
+
+    updateTooltips(weaponModule: WeaponModule) {
+        if (this.weapon) this.weapon.updateTooltip(weaponModule, this);
+        
+        // Now update resolve tooltip
+        const income = 1800;
+        const tooltip = RESOLVE_TOOLTIP(income);
+        if (GetLocalPlayer() === this.player) {
+            BlzSetAbilityExtendedTooltip(ABILITY_CREWMEMBER_INFO, tooltip, 0);
+        }
     }
 }

@@ -2,11 +2,12 @@
 import { Game } from "../game";
 import { Log } from "../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
-import { CrewmemberForce } from "./crewmember-force";
-import { AlienForce } from "./alien-force";
+import { CrewmemberForce, CREW_FORCE_NAME } from "./crewmember-force";
+import { AlienForce, ALIEN_FORCE_NAME } from "./alien-force";
 import { ObserverForce } from "./observer-force";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
+import { OptSelection, OPT_TYPES } from "./opt-selection";
 
 export class ForceModule {
     public forces: Array<ForceType> = [];
@@ -75,27 +76,35 @@ export class ForceModule {
         return this.forces.filter(f => f.is(whichForce))[0];
     }
 
-
     /**
-     * Asks for opts
+     * Gets the player opts
      */
-    public askPlayerOpts() {
-        const optDialog = DialogCreate();
-        DialogSetMessage(optDialog, `${COL_BAD}Role Preference`);
-        DialogAddButton(optDialog, `${COL_GOOD}Protaganist:|r Human`, GetLocalizedHotkey("p"));
-        DialogAddButton(optDialog, `${COL_VENTS}Antagonist:|r Alien`, GetLocalizedHotkey("a"));
+    public getOpts() {
+        const optSelection = new OptSelection();
 
-        const dialogClickTrigger = new Trigger();
-        dialogClickTrigger.RegisterDialogEventBJ(optDialog);
-        dialogClickTrigger.AddAction(() => this.onDialogClick());
-        this.getActivePlayers().forEach(player => DialogDisplay(player, optDialog, true));
-    }
+        // Add alien
+        optSelection.addOpt({
+            isRequired: true,
+            text: ALIEN_FORCE_NAME,
+            hotkey: "a",
+            type: OPT_TYPES.ANTAGONST,
+            chanceToExist: 100,
+            count: 1
+        });
 
-    public onDialogClick() {
-        const clickedItem = GetClickedDialog();
+        // Add crew
+        optSelection.addOpt({
+            isRequired: false,
+            text: CREW_FORCE_NAME,
+            hotkey: "c",
+            type: OPT_TYPES.PROTAGANIST,
+            chanceToExist: 100,
+        });
 
-        if (clickedItem) {
-            
-        }
+        // TODO
+        // Go through and increase player chance?? Maybe.
+
+        // Now ask for opts
+        optSelection.askPlayerOpts(this);
     }
 }

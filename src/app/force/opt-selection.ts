@@ -6,29 +6,65 @@ import { CrewmemberForce } from "./crewmember-force";
 import { AlienForce } from "./alien-force";
 import { ObserverForce } from "./observer-force";
 import { Trigger } from "app/types/jass-overrides/trigger";
-import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
+import { COL_GOOD, COL_BAD, COL_MISC, COL_ALIEN } from "resources/colours";
 import { ForceModule } from "./force-module";
 import { STR_OPT_HUMAN, STR_OPT_ALIEN, STR_OPT_MESSAGE } from "resources/strings";
 
-enum OPT_TYPES {
-    HUMAN = 'p',
-    ALIEN = 'a'
+export enum OPT_TYPES {
+    PROTAGANIST = "Protagainst",
+    ANTAGONST = "Antagonist",
+    NEUTRAL = "Neutral"
 }
 
-const OPTS_AVAILABLE = [OPT_TYPES.HUMAN, OPT_TYPES.ALIEN];
+interface OptSelectOption {
+    // The text displayed during selection
+    text: string,
+
+    // The hotkey for the opt
+    hotkey: string,
+
+    // What type of opt is this
+    type: OPT_TYPES,
+
+    // This must ALWAYS be selected
+    // Only the main antagonist should have this selected
+    isRequired: boolean,
+
+    // The amount of times this role must be picked
+    // Leave undefined for infinite
+    count?: number,
+
+    // 0..100 chance for the role to exist
+    // No effect if isRequired = true
+    chanceToExist: number,
+
+    // Balancing  cost
+    // unused
+    balanceCost?: { protag: number, antag: number, neutral: number};
+}
 
 export class OptSelection {
 
     dialog: dialog = DialogCreate();
     clickTrigger: Trigger = new Trigger();
 
-    private optVsButton: Map<OPT_TYPES, button> = new Map();
-    private buttonVsOpt: Map<button, OPT_TYPES> = new Map();
+    private optVsButton: Map<OptSelectOption, button> = new Map();
+    private buttonVsOpt: Map<button, OptSelectOption> = new Map();
 
-    private playersInOpt: Map<OPT_TYPES, player[]> = new Map();
-    private optsForPlayer: Map<player, OPT_TYPES[]> = new Map();
+    private playersInOpt: Map<OptSelectOption, player[]> = new Map();
+    private optsForPlayer: Map<player, OptSelectOption[]> = new Map();
 
     private playerOptPower: Map<player, number> = new Map();
+
+    private optsPossible: OptSelectOption[] = [];
+
+    /**
+     * Adds a new opt option to the display list
+     * @param what 
+     */
+    public addOpt(what: OptSelectOption) {
+        this.optsPossible.push(what)
+    }
 
     /**
      * Sets the player's opt power
@@ -52,9 +88,10 @@ export class OptSelection {
     public askPlayerOpts(forces: ForceModule) {
         DialogSetMessage(this.dialog, STR_OPT_MESSAGE);
 
-        OPTS_AVAILABLE.forEach((opt, i) => {
-            const tooltip = this.getButtonText(opt);
-            const button = DialogAddButton(this.dialog, tooltip, GetLocalizedHotkey(opt));
+        this.optsPossible.forEach((opt, i) => {
+
+            const tooltip = opt.text;
+            const button = DialogAddButton(this.dialog, this.getTypePefix(opt.type)+tooltip, GetLocalizedHotkey(opt.hotkey));
 
             this.optVsButton.set(opt, button);
             this.buttonVsOpt.set(button, opt);
@@ -109,10 +146,10 @@ export class OptSelection {
 
         DialogClear(this.dialog);
 
-        OPTS_AVAILABLE.forEach(opt => {
+        this.optsPossible.forEach(opt => {
             const playersOpted = this.playersInOpt.get(opt);
-            
-            let text = this.getButtonText(opt);
+
+            let text = this.getTypePefix(opt.type)+opt.text;
             let totalOptPower = 0;
 
             if (playersOpted) {
@@ -120,31 +157,51 @@ export class OptSelection {
                 playersOpted.forEach(p => {
                     const opts = this.optsForPlayer.get(p)
                     const numOpts = opts ? opts.length : 0;
-                    totalOptPower += this.getOptPower(p) / numOpts;
+                    const optPowerForPlayer = this.getOptPower(p) / numOpts;
+                    totalOptPower += optPowerForPlayer
+
+                    let localString = text + `+ ${COL_GOOD}${optPowerForPlayer}|r`;
+
+                    if (p === GetLocalPlayer()) {
+                        text = localString;
+                    }
                 })
             }
 
             if (totalOptPower > 0) {
-                text += `( ${totalOptPower} )`
+                text += ` ( ${totalOptPower} )`
             }
 
 
-            const button = DialogAddButton(this.dialog, text, GetLocalizedHotkey(opt));
+            const button = DialogAddButton(this.dialog, text, GetLocalizedHotkey(opt.hotkey));
 
             this.optVsButton.set(opt, button);
             this.buttonVsOpt.set(button, opt);
         });
     }
 
-    /**
-     * Returns a buttons text based on opt type
-     * Used to refer to the resources file
-     * @param type 
-     */
-    private getButtonText(type: OPT_TYPES) {
+
+    private getTypePefix(type: OPT_TYPES) {
         switch (type) {
-            case OPT_TYPES.HUMAN: return STR_OPT_HUMAN;
-            case OPT_TYPES.ALIEN: return STR_OPT_ALIEN;
+            case OPT_TYPES.PROTAGANIST: return `${COL_GOOD}Protaganist:|r`;
+            case OPT_TYPES.ANTAGONST: return `${COL_ALIEN}Antagonist:|r`;
+            case OPT_TYPES.NEUTRAL: return `${COL_MISC}Protaganist:|r`;
         }
+    }
+
+    /**
+     * Destroys the opt selection and returns gathered data
+     */
+    private endOptSelection(force: ForceModule) {
+        // Clear button cache
+        this.buttonVsOpt.clear();
+        DialogClear(this.dialog);
+        DialogDestroy(this.dialog);
+
+        // Time to roll for opts
+        const playersNoRole = force.getActivePlayers();
+
+        // Assume opt order matters for now
+        // Each role must be chosen
     }
 }

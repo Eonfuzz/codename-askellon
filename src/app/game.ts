@@ -98,8 +98,8 @@ export class Game {
             else if (message === "-u" && crew) {
                 if (crew.weapon) {
                     crew.weapon.detach();
-                    crew.weapon.updateTooltip(this.weaponModule, crew);
                 }
+                crew.updateTooltips(this.weaponModule);
             }
             else if (message === "-nt") {
                 this.noTurn = !this.noTurn;

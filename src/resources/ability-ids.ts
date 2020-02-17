@@ -1,0 +1,1 @@
+export const ABILITY_CREWMEMBER_INFO = FourCC('');
