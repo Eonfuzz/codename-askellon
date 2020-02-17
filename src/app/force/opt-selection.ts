@@ -48,6 +48,8 @@ export class OptSelection {
     dialog: dialog = DialogCreate();
     clickTrigger: Trigger = new Trigger();
 
+    private players: player[] = [];
+
     private optVsButton: Map<OptSelectOption, button> = new Map();
     private buttonVsOpt: Map<button, OptSelectOption> = new Map();
 
@@ -96,7 +98,9 @@ export class OptSelection {
         let allOpts = this.optsPossible.slice();
         allOpts.push(this.defaultOpt);
 
-        forces.getActivePlayers().forEach(p => DialogDisplay(p, this.dialog, true));
+        this.players = forces.getActivePlayers();
+        this.players.forEach(p => DialogDisplay(p, this.dialog, true));
+
         DialogSetMessage(this.dialog, STR_OPT_MESSAGE);
 
         allOpts.forEach((opt, i) => {
@@ -113,7 +117,7 @@ export class OptSelection {
         forces.getActivePlayers().forEach(player => DialogDisplay(player, this.dialog, true));
     }
 
-    private onDialogClick() {
+    private onDialogClick() {        
         const dialog = GetClickedDialog();
         const button = GetClickedButton();
         const player = GetTriggerPlayer();
@@ -143,16 +147,19 @@ export class OptSelection {
             if (idx >= 0) optsForPlayerList.splice(idx, 1);
             else optsForPlayerList.push(optType);
         }
+
+        this.updateDialog();
     }
 
     /**
      * Updates the dialog's display
      */
-    public updateDialog() {
+    private updateDialog() {
         let allOpts = this.optsPossible.slice();
         allOpts.push(this.defaultOpt);
 
         DialogClear(this.dialog);
+        DialogSetMessage(this.dialog, STR_OPT_MESSAGE);
 
         // Add variable opts
         allOpts.forEach(opt => {
@@ -166,10 +173,10 @@ export class OptSelection {
                 playersOpted.forEach(p => {
                     const opts = this.optsForPlayer.get(p)
                     const numOpts = opts ? opts.length : 0;
-                    const optPowerForPlayer = this.getOptPower(p) / numOpts;
+                    const optPowerForPlayer = MathRound(this.getOptPower(p) / numOpts);
                     totalOptPower += optPowerForPlayer
 
-                    let localString = text + `+ ${COL_GOOD}${optPowerForPlayer}|r`;
+                    let localString = text + ` ${COL_GOOD}+${optPowerForPlayer}|r`;
 
                     if (p === GetLocalPlayer()) {
                         text = localString;
@@ -178,7 +185,7 @@ export class OptSelection {
             }
 
             if (totalOptPower > 0) {
-                text += ` ( ${totalOptPower} )`
+                text += ` ( ${MathRound(totalOptPower)} )`
             }
 
 
@@ -188,31 +195,32 @@ export class OptSelection {
             this.buttonVsOpt.set(button, opt);
         });
 
-        // Now add the default opt
+        this.players.forEach(p => DialogDisplay(p, this.dialog, true));
     }
 
 
     private getTypePefix(type: OPT_TYPES) {
         switch (type) {
-            case OPT_TYPES.PROTAGANIST: return `${COL_GOOD}Protaganist:|r`;
-            case OPT_TYPES.ANTAGONST: return `${COL_ALIEN}Antagonist:|r`;
-            case OPT_TYPES.NEUTRAL: return `${COL_MISC}Protaganist:|r`;
+            case OPT_TYPES.PROTAGANIST: return `${COL_GOOD}Protaganist:|r `;
+            case OPT_TYPES.ANTAGONST: return `${COL_ALIEN}Antagonist:|r `;
+            case OPT_TYPES.NEUTRAL: return `${COL_MISC}Neutral:|r `;
         }
     }
 
     /**
      * Destroys the opt selection and returns gathered data
      */
-    public endOptSelection(force: ForceModule): { player: player, role: OptSelectOption }[] {
+    public endOptSelection(force: ForceModule) {
         // Clear button cache
         this.buttonVsOpt.clear();
-        DialogClear(this.dialog);
-        DialogDestroy(this.dialog);
+        this.players.forEach(p => DialogDisplay(p, this.dialog, false));
+        // DialogClear(this.dialog);
+        // DialogDestroy(this.dialog);
 
         // Time to roll for opts
         const playersNoRole = force.getActivePlayers();
-        const rolesToUse = this.optsPossible.filter(opt => GetRandomInt(0, 100) <= opt.chanceToExist);
-        let result: { player: player, role: OptSelectOption }[] = [];
+        const rolesToUse = this.optsPossible.filter(opt => (GetRandomInt(0, 100) <= opt.chanceToExist));
+        const result: Array<{ player: player, role: OptSelectOption}> = [];
 
         rolesToUse.forEach(r => {
             const playersOptedForRole = this.playersInOpt.get(r) || [];
@@ -222,26 +230,37 @@ export class OptSelection {
 
             // Are we less than the required number?
             if (r.isRequired && r.count && srcPlayersAvailableForRole.length <= r.count) {
+                // Log.Information(`Not enough users opting for ${r.text} stealing from pool`);
                 // Try and fill to required count
-                while (srcPlayersAvailableForRole.length < r.count && playersNoRole.length > 0) {
+                while ((srcPlayersAvailableForRole.length < r.count) && playersNoRole.length > 0) {
                     // Grab a random player from playersNoRole
                     srcPlayersAvailableForRole.push(playersNoRole.splice(GetRandomInt(0, playersNoRole.length-1), 1)[0]);
                 }
             }
             
             // Grab from srcPlayersAvailableForRole
+            // Log.Information(`Setting players from pool for ${r.text}`);
             let playersGettingRole: player[] = [];
-            while (playersGettingRole.length <= (r.count || 1) && playersNoRole.length > 0) {
-                playersGettingRole.push(srcPlayersAvailableForRole.splice(GetRandomInt(0, srcPlayersAvailableForRole.length-1), 1)[0]);
+            while (playersGettingRole.length <= (r.count || 1) && srcPlayersAvailableForRole.length > 0) {
+                let player = srcPlayersAvailableForRole.splice(GetRandomInt(0, srcPlayersAvailableForRole.length-1), 1)[0];
+                const idx = playersNoRole.indexOf(player);
+
+                if (idx >= 0) playersNoRole.splice(idx, 1);
+                playersGettingRole.push(player);
             }
 
             // Add picked players to that role list
-            playersGettingRole.forEach(p => result.push({player: p, role: r}));
+            playersGettingRole.forEach(p => {
+                Log.Information(`${r.text} is ${ GetPlayerId(p)}`);
+                result.push({player: p, role: r});
+            });
         });
 
         // We're done going through the optional roles
         // Now assign to the default human role
         playersNoRole.forEach(p => result.push({player: p, role: this.defaultOpt}));
+
+        Log.Information(`Got ${result.length} results!`);
 
         return result;
     }

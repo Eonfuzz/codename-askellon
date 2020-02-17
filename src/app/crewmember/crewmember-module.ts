@@ -22,19 +22,6 @@ export class CrewModule {
 
     constructor(game: Game) {
         this.game = game;
-        const playerList = game.forceModule.getActivePlayers();
-        const crewForce = game.forceModule.getForce(CREW_FORCE_NAME);
-
-        // Load available roles
-        this.initialiseRoles(playerList);
-    
-        // Initialise first crewmember todo    
-        playerList.forEach(player => {
-            let crew = this.createCrew(game, GetPlayerId(player));
-            this.CREW_MEMBERS.push(crew);
-            crewForce && crewForce.addPlayer(player);
-            game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
-        });
 
         // Create crew takes damage trigger
         this.crewmemberDamageTrigger = new Trigger();
@@ -57,7 +44,7 @@ export class CrewModule {
         updateCrewTrigger.AddAction(() => this.processCrew(DELTA_CHECK));
     }
 
-    initialiseRoles(players: Array<player>) {
+    initCrew(players: Array<player>) {
         players.forEach((p, index) => {
             if (index === 0) {
                 this.AVAILABLE_ROLES.push("Captain");
@@ -65,6 +52,17 @@ export class CrewModule {
             else {
                 this.AVAILABLE_ROLES.push("Security Guard");
             }
+        });
+
+        const playerList = this.game.forceModule.getActivePlayers();
+        const crewForce = this.game.forceModule.getForce(CREW_FORCE_NAME);
+    
+        // Initialise first crewmember todo    
+        playerList.forEach(player => {
+            let crew = this.createCrew(this.game, GetPlayerId(player));
+            this.CREW_MEMBERS.push(crew);
+            crewForce && crewForce.addPlayer(player);
+            this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
         });
     }
 

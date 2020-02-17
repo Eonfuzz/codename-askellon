@@ -121,11 +121,11 @@ export function initHatches() {
 
             SetUnitTimeScale(targetUnit, 1.4);
             SetUnitAnimationByIndex(targetUnit, 1);
-            KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp33", targetUnit, 60));
+            KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp33", targetUnit, 40));
 
             if (targetElevator && targetElevator.to) {
                 SetUnitTimeScale(targetElevator.to.unit, 1.4);
-                PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 60);
+                PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 40);
                 SetUnitAnimationByIndex(targetElevator.to.unit, 1);
             }
         },

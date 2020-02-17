@@ -113,21 +113,26 @@ export class ForceModule {
 
         // Start a 15 second timer
         const timer = CreateTimer();
-        const timerDialog = CreateTimerDialog(timer);
-        TimerDialogDisplay(timerDialog, true);
+        StartTimerBJ(timer, false, 15);
 
         const timerTrig = new Trigger();
-        timerTrig.RegisterTimerEvent(15, false);
+
+        timerTrig.RegisterTimerExpire(timer);
         timerTrig.AddAction(() => {
             TimerDialogDisplay(timerDialog, false);
-            DestroyTimer(timer);
-            timerTrig.destroy();
+            // DestroyTimer(timer);
+            // timerTrig.destroy();
 
             // Now complete the opt select
+            // Log.Information(`Getting results`);
             const results = optSelection.endOptSelection(this);
+            // Log.Information(`Got results`);
             results.forEach(r => {
                 Log.Information(`PLAYER ${GetPlayerName(r.player)} is ${r.role.text}`);
             });
         });
+
+        const timerDialog = CreateTimerDialog(timer);
+        TimerDialogDisplay(timerDialog, true);
     }
 }
