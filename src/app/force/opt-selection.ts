@@ -16,7 +16,7 @@ export enum OPT_TYPES {
     NEUTRAL = "Neutral"
 }
 
-interface OptSelectOption {
+export interface OptSelectOption {
     // The text displayed during selection
     text: string,
 

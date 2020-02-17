@@ -7,7 +7,7 @@ import { AlienForce, ALIEN_FORCE_NAME } from "./alien-force";
 import { ObserverForce } from "./observer-force";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
-import { OptSelection, OPT_TYPES } from "./opt-selection";
+import { OptSelection, OPT_TYPES, OptSelectOption } from "./opt-selection";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 
 export class ForceModule {
@@ -80,7 +80,7 @@ export class ForceModule {
     /**
      * Gets the player opts
      */
-    public getOpts() {
+    public getOpts(callback: (optSelection: { player: player, role: OptSelectOption}[]) => void) {
         const optSelection = new OptSelection({
             isRequired: false,
             text: STR_OPT_HUMAN,
@@ -125,9 +125,7 @@ export class ForceModule {
 
             // Now complete the opt select
             const results = optSelection.endOptSelection(this);
-            results.forEach(r => {
-                Log.Information(`PLAYER ${GetPlayerName(r.player)} is ${r.role.text}`);
-            });
+            callback(results);
         });
     }
 }
