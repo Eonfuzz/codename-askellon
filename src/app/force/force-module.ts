@@ -5,6 +5,8 @@ import { ForceType } from "./force-type";
 import { CrewmemberForce } from "./crewmember-force";
 import { AlienForce } from "./alien-force";
 import { ObserverForce } from "./observer-force";
+import { Trigger } from "app/types/jass-overrides/trigger";
+import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
 
 export class ForceModule {
     public forces: Array<ForceType> = [];
@@ -71,5 +73,29 @@ export class ForceModule {
      */
     public getForce(whichForce: string): ForceType | undefined {
         return this.forces.filter(f => f.is(whichForce))[0];
+    }
+
+
+    /**
+     * Asks for opts
+     */
+    public askPlayerOpts() {
+        const optDialog = DialogCreate();
+        DialogSetMessage(optDialog, `${COL_BAD}Role Preference`);
+        DialogAddButton(optDialog, `${COL_GOOD}Protaganist:|r Human`, GetLocalizedHotkey("p"));
+        DialogAddButton(optDialog, `${COL_VENTS}Antagonist:|r Alien`, GetLocalizedHotkey("a"));
+
+        const dialogClickTrigger = new Trigger();
+        dialogClickTrigger.RegisterDialogEventBJ(optDialog);
+        dialogClickTrigger.AddAction(() => this.onDialogClick());
+        this.getActivePlayers().forEach(player => DialogDisplay(player, optDialog, true));
+    }
+
+    public onDialogClick() {
+        const clickedItem = GetClickedDialog();
+
+        if (clickedItem) {
+            
+        }
     }
 }
