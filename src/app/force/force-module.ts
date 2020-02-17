@@ -108,11 +108,26 @@ export class ForceModule {
             chanceToExist: 30,
         });
 
-
-        // TODO
-        // Go through and increase player chance?? Maybe.
-
         // Now ask for opts
         optSelection.askPlayerOpts(this);
+
+        // Start a 15 second timer
+        const timer = CreateTimer();
+        const timerDialog = CreateTimerDialog(timer);
+        TimerDialogDisplay(timerDialog, true);
+
+        const timerTrig = new Trigger();
+        timerTrig.RegisterTimerEvent(15, false);
+        timerTrig.AddAction(() => {
+            TimerDialogDisplay(timerDialog, false);
+            DestroyTimer(timer);
+            timerTrig.destroy();
+
+            // Now complete the opt select
+            const results = optSelection.endOptSelection(this);
+            results.forEach(r => {
+                Log.Information(`PLAYER ${GetPlayerName(r.player)} is ${r.role.text}`);
+            });
+        });
     }
 }

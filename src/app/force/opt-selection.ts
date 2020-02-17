@@ -96,6 +96,7 @@ export class OptSelection {
         let allOpts = this.optsPossible.slice();
         allOpts.push(this.defaultOpt);
 
+        forces.getActivePlayers().forEach(p => DialogDisplay(p, this.dialog, true));
         DialogSetMessage(this.dialog, STR_OPT_MESSAGE);
 
         allOpts.forEach((opt, i) => {
@@ -202,7 +203,7 @@ export class OptSelection {
     /**
      * Destroys the opt selection and returns gathered data
      */
-    private endOptSelection(force: ForceModule): { player: player, role: OptSelectOption }[] {
+    public endOptSelection(force: ForceModule): { player: player, role: OptSelectOption }[] {
         // Clear button cache
         this.buttonVsOpt.clear();
         DialogClear(this.dialog);

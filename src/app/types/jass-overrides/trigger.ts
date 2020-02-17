@@ -30,6 +30,10 @@ export class Trigger {
         return TriggerAddAction(this.nativeTrigger, () => xpcall(() => actionFunc(), err => Trigger.printError(err)));
     }
 
+    public RegisterTimerExpire(timer: timer): event {
+        return TriggerRegisterTimerExpireEvent(this.nativeTrigger, timer);
+    }
+
     public RegisterTimerEvent(timeout: number, periodic: boolean): event {
         return TriggerRegisterTimerEvent(this.nativeTrigger, timeout, periodic);
     }
