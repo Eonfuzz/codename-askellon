@@ -60,14 +60,23 @@ export class Game {
 
         this.interactionsModule = new InteractionModule(this);
 
+    }
+
+    public startGame() {
         // Here be dragons, old code is below and needs update
         this.galaxyModule.initSectors();
 
         // Initialise commands
         this.initCommands();
 
+        // Start role selection
+        this.forceModule.getOpts();
+
         // Misc
         this.makeUnitsTurnInstantly();
+
+        // Init crew
+        this.crewModule.initCrew(this.forceModule.getActivePlayers());
     }
 
     /**

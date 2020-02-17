@@ -4,12 +4,12 @@ gg_rct_Space = nil
 gg_trg_Set = nil
 gg_unit_n001_0032 = nil
 gg_unit_n001_0021 = nil
+gg_unit_n002_0033 = nil
+gg_unit_n002_0034 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
-gg_unit_n002_0033 = nil
-gg_unit_n002_0034 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -78,6 +78,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
     gg_unit_n002_0034 = BlzCreateUnitWithSkin(p, FourCC("n002"), -28670.7, 26621.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -26110.7, 26365.0, 270.000, FourCC("n002"))
 end
 
 function CreatePlayerBuildings()

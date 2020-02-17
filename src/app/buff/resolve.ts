@@ -6,7 +6,7 @@ import { TimedEvent } from "../types/timed-event";
 import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
 
-const RESOLVE_ABILITY_ID = FourCC('A008');
+const RESOLVE_ABILITY_ID = FourCC('A007');
 const RESOLVE_BUFF_ID = FourCC('B001');
 
 /**

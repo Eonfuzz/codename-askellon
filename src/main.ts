@@ -14,6 +14,10 @@ function tsMain() {
 
     function Main(){
         const AksellonSector = new Game();
+
+        const gameStartTimer = new Trigger();
+        gameStartTimer.RegisterTimerEventSingle(0.1);
+        gameStartTimer.AddAction(() => AksellonSector.startGame());
     }
 
     Main();
