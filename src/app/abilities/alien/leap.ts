@@ -39,10 +39,15 @@ export class LeapAbility implements Ability {
             GetUnitY(this.casterUnit), 
             0
         );
+        const clickLoc = new Vector3(GetOrderPointX(), GetOrderPointY(), 0);
+        let isSelfCast = GetSpellAbilityId() > 0;
+        
+        // Only continue if the alien is ordered to move far away
+        if (!isSelfCast && clickLoc.subtract(casterLoc).getLength() < 800) return false;
+
         casterLoc.z = abMod.game.getZFromXY(casterLoc.x, casterLoc.y);
 
         let targetLoc = new Vector3(0, 0, 0);
-        let isSelfCast = GetSpellAbilityId() > 0;
 
         // Log.Information(`Is self cast? ${isSelfCast}::${isSelfCast ? 'YES' : 'NO'}`);
 
