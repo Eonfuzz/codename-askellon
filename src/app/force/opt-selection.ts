@@ -17,6 +17,9 @@ export enum OPT_TYPES {
 }
 
 export interface OptSelectOption {
+    // The name of the role opt
+    name: string,
+
     // The text displayed during selection
     text: string,
 
@@ -42,6 +45,8 @@ export interface OptSelectOption {
     // unused
     balanceCost?: { protag: number, antag: number, neutral: number};
 }
+
+export interface OptResult { player: player, role: OptSelectOption };
 
 export class OptSelection {
 
@@ -220,7 +225,7 @@ export class OptSelection {
         // Time to roll for opts
         const playersNoRole = force.getActivePlayers();
         const rolesToUse = this.optsPossible.filter(opt => (GetRandomInt(0, 100) <= opt.chanceToExist));
-        const result: Array<{ player: player, role: OptSelectOption}> = [];
+        const result: Array<OptResult> = [];
 
         rolesToUse.forEach(r => {
             const playersOptedForRole = this.playersInOpt.get(r) || [];

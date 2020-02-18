@@ -3,13 +3,48 @@ import { Game } from "../game";
 import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
+import { ABILITY_CREWMEMBER_INFO } from "resources/ability-ids";
+import { TRANSFORM_ID } from "app/abilities/alien/transform";
+import { Vector2, vectorFromUnit } from "app/types/vector2";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
+export const DEFAULT_ALIEN_FORM = FourCC('');
+
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
+
     private alienHost: player | undefined;
+    private playerAlienUnits: Map<player, unit> = new Map();
+    private playerIsTransformed: Map<player, boolean> = new Map();
     
+    private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
+    
+    makeAlien(who: unit, owner: player): unit {
+        const unitLocation = vectorFromUnit(who);
+        const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
+
+        // Is this unit being added to aliens for the first time
+        if (!this.playerAlienUnits.has(owner)) {
+            // Remove the crewmember information ability
+            UnitRemoveAbility(who, ABILITY_CREWMEMBER_INFO);
+            // Add the transform ability
+            UnitAddAbility(who, TRANSFORM_ID);
+            const alien = CreateUnit(owner, 
+                this.currentAlienEvolution, 
+                unitLocation.x, 
+                unitLocation.y, 
+                GetUnitFacing(who)
+            );
+            SetUnitColor(alien, PLAYER_COLOR_BROWN);
+            // Now create an alien for player
+            this.playerAlienUnits.set(owner, alien);
+            return alien;
+        }
+        
+        return this.playerAlienUnits.get(owner) as unit;
+    }
+
     setHost(who: player) {
         this.alienHost = who;
     }
@@ -24,5 +59,72 @@ export class AlienForce extends ForceType {
      */
     checkVictoryConditions(forceModule: ForceModule): boolean {
         return this.players.length > 0;
+    }
+
+    /**
+     * TODO
+     */
+    addPlayerMainUnit(whichUnit: unit, player: player) {
+        super.addPlayerMainUnit(whichUnit, player);
+
+        this.makeAlien(whichUnit, player);
+        // mark this unit as the alien host
+        this.setHost(player);
+    }
+
+    transform(who: player, toAlien: boolean): unit {
+        this.playerIsTransformed.set(who, toAlien);
+
+        const alien = this.playerAlienUnits.get(who);
+        const unit = this.playerUnits.get(who);
+
+        if (!alien) throw new Error("AlienForce::transform No alien for player!");
+        if (!unit) throw new Error("AlienForce::transform No human for player!");
+
+        const toHide = toAlien ? unit : alien;
+        const toShow = toAlien ? alien : unit;
+
+        // get the hiding unit's location and facing
+        const facing = GetUnitFacing(toHide);
+        const pos = vectorFromUnit(toHide);
+        const unitWasSelected = IsUnitSelected(toHide, who);
+        const healthPercent = GetUnitLifePercent(toHide);
+
+        // hide and make the unit invul
+        ShowUnit(toHide, false);
+        SetUnitInvulnerable(toHide, true);
+        BlzPauseUnitEx(toHide, true);
+        // Update location
+        SetUnitX(toShow, pos.x);
+        SetUnitY(toShow, pos.y);
+        // Unpause and show
+        ShowUnit(toShow, false);
+        SetUnitInvulnerable(toShow, false);
+        BlzPauseUnitEx(toShow, false);
+        // Set shown unit life percent
+        SetUnitLifePercentBJ(toShow, healthPercent);
+
+        // Update player name
+        if (toAlien) {
+            const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
+            SetPlayerName(who, unitName);
+            SetPlayerColor(who, PLAYER_COLOR_BROWN);
+            BlzSetHeroProperName(toShow, unitName);
+        }
+        else {
+            const originalDetails = this.forceModule.getOriginalPlayerDetails(who);
+            if (originalDetails) {
+                SetPlayerName(who, originalDetails.name);
+                SetPlayerColor(who, originalDetails.colour);
+            }
+        }
+
+        if (unitWasSelected) SelectUnitAddForPlayer(toShow, who);
+
+        return toShow;
+    }
+
+    isPlayerTransformed(who: player) {
+        return this.playerIsTransformed.get(who);
     }
 }

@@ -63,6 +63,9 @@ export class Game {
     }
 
     public startGame() {
+        // Misc
+        this.makeUnitsTurnInstantly();
+
         // Here be dragons, old code is below and needs update
         this.galaxyModule.initSectors();
 
@@ -70,13 +73,13 @@ export class Game {
         this.initCommands();
 
         // Start role selection
-        this.forceModule.getOpts();
+        this.forceModule.getOpts((optResults) => {
+            // Init forces
+            this.forceModule.initForcesFor(optResults);
 
-        // Misc
-        this.makeUnitsTurnInstantly();
-
-        // Init crew
-        this.crewModule.initCrew(this.forceModule.getActivePlayers());
+            // Init crew
+            this.crewModule.initCrew(this.forceModule.getForces());
+        });
     }
 
     /**

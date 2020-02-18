@@ -7,25 +7,47 @@ import { AlienForce, ALIEN_FORCE_NAME } from "./alien-force";
 import { ObserverForce } from "./observer-force";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
-import { OptSelection, OPT_TYPES, OptSelectOption } from "./opt-selection";
+import { OptSelection, OPT_TYPES, OptSelectOption, OptResult } from "./opt-selection";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 
+export interface playerDetails {
+    name: string, colour: playercolor
+};
+
 export class ForceModule {
-    public forces: Array<ForceType> = [];
+    private forces: Array<ForceType> = [];
+
+    private playerOriginalDetails = new Map<player, playerDetails>();
 
     public neutralPassive: player;
     public neutralHostile: player;
+    public game: Game;
 
     constructor(game: Game) {
+        this.game = game;
+
+        // set original player details
+        this.getActivePlayers().forEach(p => {
+            this.playerOriginalDetails.set(p, {
+                name: GetPlayerName(p),
+                colour: GetPlayerColor(p)
+            });
+        });
+
         // Add main forces to force array
-        this.forces.push(new CrewmemberForce());
+        this.forces.push(new CrewmemberForce(this));
         // Add observer to forces
-        this.forces.push(new ObserverForce());
+        this.forces.push(new ObserverForce(this));
 
         this.neutralPassive = Player(22);
         this.neutralHostile = Player(23);
     }
 
+
+    public getOriginalPlayerDetails(who: player) {
+        return this.playerOriginalDetails.get(who);
+    }
+    
     /**
      * Handles aggression between two players
      * default behaviour sets players as enemies
@@ -62,6 +84,7 @@ export class ForceModule {
             const currentPlayer = Player(i);
             const isPlaying = GetPlayerSlotState(currentPlayer) == PLAYER_SLOT_STATE_PLAYING;
             const isUser = GetPlayerController(currentPlayer) == MAP_CONTROL_USER;
+
             if (isPlaying && isUser) {
                 result.push(Player(i));
             }
@@ -77,11 +100,51 @@ export class ForceModule {
         return this.forces.filter(f => f.is(whichForce))[0];
     }
 
+    public getForces() {
+        return this.forces;
+    }
+
+
+    /**
+     * Initialises forces
+     * @param opts 
+     */
+    public initForcesFor(opts: OptResult[]) {
+        opts.forEach(opt => {
+            // get the force
+            const force = this.getForceFromName(opt.role.name);
+            force.addPlayer(opt.player);
+        });
+    }
+
+    /**
+     * Gets the force based on name
+     * Will create a new force if it doesnt exist already
+     * @param name 
+     */
+    private getForceFromName(name: string) {
+        let force = this.getForce(name);
+        if (!force) {
+            switch(name) {
+                case ALIEN_FORCE_NAME:
+                    force = new AlienForce(this); 
+                    break;
+                case CREW_FORCE_NAME: 
+                default:
+                    force = new CrewmemberForce(this); 
+                    break;
+            }
+            this.forces.push(force);
+        }
+        return force;
+    }
+
     /**
      * Gets the player opts
      */
-    public getOpts(callback: (optSelection: { player: player, role: OptSelectOption}[]) => void) {
+    public getOpts(callback: (optSelection: OptResult[]) => void) {
         const optSelection = new OptSelection({
+            name: CREW_FORCE_NAME,
             isRequired: false,
             text: STR_OPT_HUMAN,
             hotkey: "h",
@@ -91,21 +154,13 @@ export class ForceModule {
 
         // Add alien
         optSelection.addOpt({
+            name: ALIEN_FORCE_NAME,
             isRequired: true,
             text: STR_OPT_ALIEN,
             hotkey: "a",
             type: OPT_TYPES.ANTAGONST,
             chanceToExist: 100,
             count: 1
-        });
-
-        // Add Cultist
-        optSelection.addOpt({
-            isRequired: true,
-            text: STR_OPT_CULT,
-            hotkey: "a",
-            type: OPT_TYPES.NEUTRAL,
-            chanceToExist: 30,
         });
 
         // Now ask for opts

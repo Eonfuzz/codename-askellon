@@ -7,6 +7,11 @@ import { Log } from "../../lib/serilog/serilog";
 import { BURST_RIFLE_ITEM_ID } from "../weapons/weapon-constants";
 import { CREW_FORCE_NAME } from "../force/crewmember-force";
 import { ZONE_TYPE } from "../world/zone-id";
+import { OptResult } from "app/force/opt-selection";
+import { ForceType } from "app/force/force-type";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { TRANSFORM_ID } from "app/abilities/alien/transform";
+import { ABILITY_CREWMEMBER_INFO } from "resources/ability-ids";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 const DELTA_CHECK = 0.25;
@@ -16,7 +21,7 @@ export class CrewModule {
     game: Game;
 
     CREW_MEMBERS: Array<Crewmember> = [];
-    AVAILABLE_ROLES: Array<string> = [];
+    allJobs: Array<string> = [];
 
     crewmemberDamageTrigger: Trigger;
 
@@ -44,26 +49,30 @@ export class CrewModule {
         updateCrewTrigger.AddAction(() => this.processCrew(DELTA_CHECK));
     }
 
-    initCrew(players: Array<player>) {
-        players.forEach((p, index) => {
-            if (index === 0) {
-                this.AVAILABLE_ROLES.push("Captain");
-            } 
-            else {
-                this.AVAILABLE_ROLES.push("Security Guard");
-            }
-        });
+    initCrew(forces: ForceType[]) {
+        let totalPlayers = 0;
 
-        const playerList = this.game.forceModule.getActivePlayers();
+        forces.forEach(force => { totalPlayers += force.getPlayers().length });
+
+        Log.Information(`${totalPlayers} players detected`);
+
+        let it = 0;
+        while (it++ < totalPlayers) {
+            if (it === 0) this.allJobs.push("Captain");
+            else if (it === 1) this.allJobs.push("Navigator");
+            else if (it === 2) this.allJobs.push("Noble");
+            else this.allJobs.push("Security Guard");
+        }      
+
         const crewForce = this.game.forceModule.getForce(CREW_FORCE_NAME);
     
-        // Initialise first crewmember todo    
-        playerList.forEach(player => {
-            let crew = this.createCrew(this.game, GetPlayerId(player));
-            this.CREW_MEMBERS.push(crew);
-            crewForce && crewForce.addPlayer(player);
-            this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
-        });
+        forces.forEach(force => force.getPlayers()
+            .forEach(player => {
+                let crew = this.createCrew(player, force);
+                this.CREW_MEMBERS.push(crew);
+                crewForce && crewForce.addPlayer(player);
+                this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
+            }));
     }
 
     processCrew(time: number) {
@@ -73,43 +82,41 @@ export class CrewModule {
         });
     }
 
-    createCrew(game: Game, playerId: number): Crewmember {
-        let nPlayer = Player(playerId);
-    
-        let nUnit = CreateUnit(nPlayer, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
-    
-        let crewmember = new Crewmember(game, nPlayer, nUnit);
+    createCrew(player: player, force: ForceType): Crewmember {   
+        let nUnit = CreateUnit(player, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
+        let crewmember = new Crewmember(this.game, player, nUnit);
+
         crewmember.setRole(this.getCrewmemberRole());
         crewmember.setName(this.getCrewmemberName(crewmember.role));
-        crewmember.setPlayer(nPlayer);
+        crewmember.setPlayer(player);
 
         BlzShowUnitTeamGlow(crewmember.unit, false);
-    
         BlzSetUnitName(nUnit, crewmember.role);
         BlzSetHeroProperName(nUnit, crewmember.name);
     
-        Log.Information(`Created Crewmember ${crewmember.name}::${crewmember.role}`);
-
         /**
          * Now apply crewmember default weapons
          */
         if (crewmember.role) {
             const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
             UnitAddItem(crewmember.unit, item);
-            game.weaponModule.applyItemEquip(crewmember, item);
+            this.game.weaponModule.applyItemEquip(crewmember, item);
         }
         
 
-        game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
+        this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
+
+        // Add the unit to its force
+        force.addPlayerMainUnit(nUnit, player);
 
         return crewmember;
     }
     
 
     getCrewmemberRole() {
-        const i = Math.floor( Math.random() * this.AVAILABLE_ROLES.length );
-        const role = this.AVAILABLE_ROLES[i];
-        this.AVAILABLE_ROLES.splice(i, 1);
+        const i = Math.floor( Math.random() * this.allJobs.length );
+        const role = this.allJobs[i];
+        this.allJobs.splice(i, 1);
         return role;
     }
     

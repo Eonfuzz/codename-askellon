@@ -10,6 +10,7 @@ import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { UNIT_IS_FLY, SMART_ORDER_ID } from "../../../lib/order-ids";
 import { Trigger } from "../../types/jass-overrides/trigger";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 
 
 export const TRANSFORM_ID = FourCC('TF01');
@@ -114,32 +115,15 @@ export class TransformAbility implements Ability {
     
     public destroy(abMod: AbilityModule) {
         if (this.casterUnit) {
-            const tLoc = vectorFromUnit(this.casterUnit);
-            const player = GetOwningPlayer(this.casterUnit);
-            const unitWasSelected = IsUnitSelected(this.casterUnit, player);
 
-            ShowUnit(this.casterUnit, false);
-
-            const alien = CreateUnit(player, FourCC('ALI1'), tLoc.x, tLoc.y, GetUnitFacing(this.casterUnit));
-            abMod.trackUnitOrdersForAbilities(alien);
-
-            SetUnitColor(alien, PLAYER_COLOR_BROWN);
-            SetUnitLifePercentBJ(alien, GetUnitLifePercent(this.casterUnit));
-
-            if (unitWasSelected) {
-                SelectUnitAddForPlayer(alien, player);
-                SetPlayerName(player, "Alien");
-                // SetPlayerColor(player, PLAYER_COLOR_BROWN);
-            }
+            const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+            const alien = alienForce.transform(GetOwningPlayer(this.casterUnit), true);
 
             // If we have an existing order send it to the new unit
             if (this.previousOrder && this.previousOrderTarget) {
                 IssuePointOrderById(alien, this.previousOrder, this.previousOrderTarget.x, this.previousOrderTarget.y);
             }
-
-            // ForceRemovePlayer(HUMAN_FORCE, this.casterUnit);
-            // GetForceOfPlayer()
-
+            
             // Delete order trigger
             this.orderTrigger.destroy();
         }

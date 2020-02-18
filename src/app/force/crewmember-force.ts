@@ -16,4 +16,11 @@ export class CrewmemberForce extends ForceType {
     checkVictoryConditions(forceModule: ForceModule): boolean {
         return this.players.length > 0;
     }
+
+    /**
+     * TODO
+     */
+    addPlayerMainUnit(whichUnit: unit, player: player) {
+
+    }
 }
