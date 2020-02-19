@@ -168,7 +168,7 @@ export class ForceModule {
 
         // Start a 15 second timer
         const timer = CreateTimer();
-        StartTimerBJ(timer, false, 15);
+        StartTimerBJ(timer, false, this.getActivePlayers().length > 1 ? 15 : 1);
 
         const timerTrig = new Trigger();
 

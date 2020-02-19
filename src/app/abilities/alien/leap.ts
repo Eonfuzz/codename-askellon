@@ -121,6 +121,8 @@ export class LeapAbility implements Ability {
         SetUnitTimeScale(this.casterUnit, 0.3);
         UnitAddAbility(this.casterUnit, UNIT_IS_FLY);
         BlzUnitDisableAbility(this.casterUnit, UNIT_IS_FLY, true, true);
+
+        Log.Information("Leap reached here:: "+GetUnitName(this.casterUnit));
         return true;
     };
 

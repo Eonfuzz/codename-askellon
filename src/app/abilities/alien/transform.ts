@@ -13,7 +13,6 @@ import { Trigger } from "../../types/jass-overrides/trigger";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 
 
-export const TRANSFORM_ID = FourCC('TF01');
 const CREATE_SFX_EVERY = 0.06;
 const MEAT_SFX = [
     "Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdl", 

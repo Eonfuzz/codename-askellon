@@ -20,7 +20,7 @@ export class CrewmemberForce extends ForceType {
     /**
      * TODO
      */
-    addPlayerMainUnit(whichUnit: unit, player: player) {
+    addPlayerMainUnit(game: Game, whichUnit: unit, player: player) {
 
     }
 }

@@ -9,8 +9,6 @@ import { CREW_FORCE_NAME } from "../force/crewmember-force";
 import { ZONE_TYPE } from "../world/zone-id";
 import { OptResult } from "app/force/opt-selection";
 import { ForceType } from "app/force/force-type";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
-import { TRANSFORM_ID } from "app/abilities/alien/transform";
 import { ABILITY_CREWMEMBER_INFO } from "resources/ability-ids";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
@@ -107,7 +105,7 @@ export class CrewModule {
         this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         // Add the unit to its force
-        force.addPlayerMainUnit(nUnit, player);
+        force.addPlayerMainUnit(this.game, nUnit, player);
 
         return crewmember;
     }

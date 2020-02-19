@@ -3,13 +3,12 @@ import { Game } from "../game";
 import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
-import { ABILITY_CREWMEMBER_INFO } from "resources/ability-ids";
-import { TRANSFORM_ID } from "app/abilities/alien/transform";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
+import { ABILITY_CREWMEMBER_INFO, TRANSFORM_ID } from "resources/ability-ids";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
-export const DEFAULT_ALIEN_FORM = FourCC('');
+export const DEFAULT_ALIEN_FORM = FourCC('ALI1');
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
@@ -20,29 +19,38 @@ export class AlienForce extends ForceType {
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
     
-    makeAlien(who: unit, owner: player): unit {
+    makeAlien(game: Game, who: unit, owner: player): unit {
         const unitLocation = vectorFromUnit(who);
-        const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
+        // const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
 
+        let alien = this.playerAlienUnits.get(owner);
         // Is this unit being added to aliens for the first time
-        if (!this.playerAlienUnits.has(owner)) {
+        if (!alien) {
             // Remove the crewmember information ability
             UnitRemoveAbility(who, ABILITY_CREWMEMBER_INFO);
             // Add the transform ability
             UnitAddAbility(who, TRANSFORM_ID);
-            const alien = CreateUnit(owner, 
+            alien = CreateUnit(owner, 
                 this.currentAlienEvolution, 
                 unitLocation.x, 
                 unitLocation.y, 
                 GetUnitFacing(who)
             );
+            SetUnitInvulnerable(alien, true);
+            BlzPauseUnitEx(alien, true);
+            ShowUnit(alien, false);
+
+            // Make brown
             SetUnitColor(alien, PLAYER_COLOR_BROWN);
+            // Track unit ability orders
+            game.abilityModule.trackUnitOrdersForAbilities(alien);
+
             // Now create an alien for player
             this.playerAlienUnits.set(owner, alien);
             return alien;
         }
         
-        return this.playerAlienUnits.get(owner) as unit;
+        return alien;
     }
 
     setHost(who: player) {
@@ -64,10 +72,10 @@ export class AlienForce extends ForceType {
     /**
      * TODO
      */
-    addPlayerMainUnit(whichUnit: unit, player: player) {
-        super.addPlayerMainUnit(whichUnit, player);
+    addPlayerMainUnit(game: Game, whichUnit: unit, player: player) {
+        super.addPlayerMainUnit(game, whichUnit, player);
 
-        this.makeAlien(whichUnit, player);
+        this.makeAlien(game, whichUnit, player);
         // mark this unit as the alien host
         this.setHost(player);
     }
@@ -91,14 +99,14 @@ export class AlienForce extends ForceType {
         const healthPercent = GetUnitLifePercent(toHide);
 
         // hide and make the unit invul
-        ShowUnit(toHide, false);
         SetUnitInvulnerable(toHide, true);
         BlzPauseUnitEx(toHide, true);
+        ShowUnit(toHide, false);
         // Update location
         SetUnitX(toShow, pos.x);
         SetUnitY(toShow, pos.y);
         // Unpause and show
-        ShowUnit(toShow, false);
+        ShowUnit(toShow, true);
         SetUnitInvulnerable(toShow, false);
         BlzPauseUnitEx(toShow, false);
         // Set shown unit life percent

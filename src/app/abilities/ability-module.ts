@@ -7,7 +7,8 @@ import { Log } from "../../lib/serilog/serilog";
 import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { SMART_ORDER_ID } from "../../lib/order-ids";
-import { TRANSFORM_ID, TransformAbility } from "./alien/transform";
+import { TransformAbility } from "./alien/transform";
+import { TRANSFORM_ID } from "resources/ability-ids";
 
 
 const TIMEOUT = 0.03;

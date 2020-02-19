@@ -38,7 +38,7 @@ export abstract class ForceType {
         }
     }
 
-    public addPlayerMainUnit(whichUnit: unit, player: player): void {
+    public addPlayerMainUnit(game: Game, whichUnit: unit, player: player): void {
         this.playerUnits.set(player, whichUnit);
     };
 
