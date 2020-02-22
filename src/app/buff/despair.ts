@@ -5,6 +5,7 @@ import { Crewmember } from "../crewmember/crewmember-type";
 import { TimedEvent } from "../types/timed-event";
 import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
+import { ABIL_ACCURACY_PENALTY_30 } from "resources/ability-ids";
 
 const DESPAIR_ABILITY_ID = FourCC('A00D');
 const DESPAIR_BUFF_ID = FourCC('B004');
@@ -20,8 +21,9 @@ export class Despair extends DynamicBuff {
     private despairMusic: SoundRef;
 
     private crewmember: Crewmember;
-
     private prevUnitHealth: number;
+
+    private checkForDespairBuffTicker: number = 0;
 
     constructor(game: Game, crewmember: Crewmember) {
         super();
@@ -36,18 +38,33 @@ export class Despair extends DynamicBuff {
 
     public process(game: Game, delta: number): boolean {
         const result =  super.process(game, delta);
+        if (!this.isActive) return result;
+        
         const currentHealth = GetUnitState(this.crewmember.unit, UNIT_STATE_LIFE);
         const deltaHealth = currentHealth - this.prevUnitHealth;
+        this.checkForDespairBuffTicker += delta
 
         // If the unit has gained health reduce it by 50%
         if (deltaHealth > 0) {
             SetUnitState(this.crewmember.unit, UNIT_STATE_LIFE, currentHealth - deltaHealth/2);
+        }
+        if (this.checkForDespairBuffTicker >= 1) {
+            this.checkForDespairBuffTicker = 0;
+            if (!UnitHasBuffBJ(this.crewmember.unit, DESPAIR_BUFF_ID)) {
+                // If we don't have another ticker apply the buff to the unit
+                game.useDummyFor((self: any, dummy: unit) => {
+                    SetUnitX(dummy, GetUnitX(this.crewmember.unit));
+                    SetUnitY(dummy, GetUnitY(this.crewmember.unit) + 50);
+                    IssueTargetOrder(dummy, "faeriefire", this.crewmember.unit);
+                }, DESPAIR_ABILITY_ID);
+            }
         }
         return result;
     }
 
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
+            UnitAddAbility(this.crewmember.unit, ABIL_ACCURACY_PENALTY_30);
             this.despairMusic.setVolume(127);
             if (GetLocalPlayer() === this.crewmember.player) {
                 StopMusic(true);
@@ -66,6 +83,8 @@ export class Despair extends DynamicBuff {
             }
         }
         else {
+            UnitRemoveAbility(this.crewmember.unit, ABIL_ACCURACY_PENALTY_30);
+
             // Also remove resolve buff
             UnitRemoveBuffBJ(DESPAIR_BUFF_ID, this.crewmember.unit);
             this.onChangeCallbacks.forEach(cb => cb(this));

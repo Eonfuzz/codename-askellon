@@ -7,6 +7,9 @@ import { SoundRef } from "../types/sound-ref";
 import { TimedEvent } from "../types/timed-event";
 import { BuffInstanceDuration, BuffInstanceCallback } from "../buff/buff-instance";
 import { Log } from "../../lib/serilog/serilog";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { Vector2 } from "app/types/vector2";
+import { Crewmember } from "app/crewmember/crewmember-type";
 
 // Small damage
 // Will not cause damage to interior
@@ -28,6 +31,8 @@ export class TheAskellon {
 
     world: WorldModule;
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
+
+    private pilot: Crewmember | undefined;
 
     constructor(world: WorldModule) {
         this.world = world;
@@ -58,8 +63,10 @@ export class TheAskellon {
     }
 
     applyPowerChange(player: player, hasPower: boolean, justChanged: boolean) {
-        if (hasPower && justChanged) {
+        let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+        let playerIsAlien = alienForce.hasPlayer(player);
 
+        if (hasPower && justChanged) {
             if (GetLocalPlayer() === player) {
                 this.powerUpSound.playSound();
             }
@@ -84,12 +91,18 @@ export class TheAskellon {
             if (justChanged) {
                 this.powerDownSound.playSound();
             }
-            SetDayNightModels("", "");
+            if (playerIsAlien) {
+                Log.Information("Player is alien!");
+                SetDayNightModels("war3mapImported\\NightVisionModel.mdx", "war3mapImported\\NightVisionModel.mdx");
+            }
+            else {
+                SetDayNightModels("", "");
+            }
         }
 
 
         // IF we dont have power add despair to the unit
-        if (!hasPower) {
+        if (!hasPower && !playerIsAlien) {
             // Try to get crewmember
             const crew = this.world.game.crewModule.getCrewmemberForPlayer(player);
             if (crew) {
@@ -137,5 +150,17 @@ export class TheAskellon {
     private getRandomZone() {
         let items = Array.from(this.floors);
         return items[Math.floor(Math.random() * items.length)];
+    }
+
+
+    public setPilot(crewmember?: Crewmember) {
+        this.pilot = crewmember;
+    }
+
+    /**
+     * Gets the current pilot of the askellon
+     */
+    public getPilot(): Crewmember | undefined {
+        return this.pilot;
     }
 }

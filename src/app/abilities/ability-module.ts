@@ -8,7 +8,8 @@ import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { SMART_ORDER_ID } from "../../lib/order-ids";
 import { TransformAbility } from "./alien/transform";
-import { TRANSFORM_ID } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM } from "resources/ability-ids";
+import { ScreamAbility } from "./alien/scream";
 
 
 const TIMEOUT = 0.03;
@@ -49,33 +50,42 @@ export class AbilityModule {
      */
     checkSpells() {
         const id = GetSpellAbilityId();
+        let instance: Ability;
 
-        // Sprint
-        if (id === FourCC('A003')) {
-            const instance = new RollWhenSprinting();
-            if (instance.initialise(this)) {
-                // Log.Information("Adding new A003[SPRINT] to ability queue");
-                this.data.push(instance);
-            }
-        }
-        else if (id === FourCC('ACID')) {
-            const instance = new AcidPoolAbility();
-            if (instance.initialise(this)) {
-                // Log.Information("Adding new ACID[ACID POOL] to ability queue");
-                this.data.push(instance);
-            }
-        }
-        else if (id === FourCC('LEAP')) {
-            const instance = new LeapAbility();
-            if (instance.initialise(this)) {
-                this.data.push(instance);
-            }
-        }
-        else if (id === TRANSFORM_ID) {
-            const instance = new TransformAbility();
-            if (instance.initialise(this)) {
-                this.data.push(instance);
-            }
+        switch(id) {
+            case ABIL_HUMAN_SPRINT:
+                instance = new RollWhenSprinting();
+                if (instance.initialise(this)) {
+                    // Log.Information("Adding new A003[SPRINT] to ability queue");
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_ALIEN_ACID_POOL:
+                instance = new AcidPoolAbility();
+                if (instance.initialise(this)) {
+                    // Log.Information("Adding new ACID[ACID POOL] to ability queue");
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_ALIEN_LEAP:
+                instance = new LeapAbility();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_ALIEN_SCREAM:
+                instance = new ScreamAbility();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_TRANSFORM_HUMAN_ALIEN:
+            case ABIL_TRANSFORM_ALIEN_HUMAN:
+                instance = new TransformAbility(id === ABIL_TRANSFORM_HUMAN_ALIEN);
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
         }
     }
 

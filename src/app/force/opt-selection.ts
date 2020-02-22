@@ -171,17 +171,17 @@ export class OptSelection {
             const playersOpted = this.playersInOpt.get(opt);
 
             let text = this.getTypePefix(opt.type)+opt.text;
-            let totalOptPower = 0;
+            // let totalOptPower = 0;
 
             if (playersOpted) {
                 // Increase the opt value per opt
                 playersOpted.forEach(p => {
                     const opts = this.optsForPlayer.get(p)
                     const numOpts = opts ? opts.length : 0;
-                    const optPowerForPlayer = MathRound(this.getOptPower(p) / numOpts);
-                    totalOptPower += optPowerForPlayer
+                    // const optPowerForPlayer = MathRound(this.getOptPower(p) / numOpts);
+                    // totalOptPower += optPowerForPlayer
 
-                    let localString = text + ` ${COL_GOOD}+${optPowerForPlayer}|r`;
+                    let localString = text + ` ${COL_GOOD}Opted In!|r`;
 
                     if (p === GetLocalPlayer()) {
                         text = localString;
@@ -189,9 +189,9 @@ export class OptSelection {
                 })
             }
 
-            if (totalOptPower > 0) {
-                text += ` ( ${MathRound(totalOptPower)} )`
-            }
+            // if (totalOptPower > 0) {
+            //     text += ` ( ${MathRound(totalOptPower)} )`
+            // }
 
 
             const button = DialogAddButton(this.dialog, text, GetLocalizedHotkey(opt.hotkey));
@@ -256,7 +256,7 @@ export class OptSelection {
 
             // Add picked players to that role list
             playersGettingRole.forEach(p => {
-                Log.Information(`${r.text} is ${ GetPlayerId(p)}`);
+                // Log.Information(`${r.text} is ${ GetPlayerId(p)}`);
                 result.push({player: p, role: r});
             });
         });
@@ -265,7 +265,7 @@ export class OptSelection {
         // Now assign to the default human role
         playersNoRole.forEach(p => result.push({player: p, role: this.defaultOpt}));
 
-        Log.Information(`Got ${result.length} results!`);
+        // Log.Information(`Got ${result.length} results!`);
 
         return result;
     }

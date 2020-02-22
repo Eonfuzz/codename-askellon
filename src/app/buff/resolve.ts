@@ -5,6 +5,7 @@ import { Crewmember } from "../crewmember/crewmember-type";
 import { TimedEvent } from "../types/timed-event";
 import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
+import { ABIL_ACCURACY_BONUS_30 } from "resources/ability-ids";
 
 const RESOLVE_ABILITY_ID = FourCC('A007');
 const RESOLVE_BUFF_ID = FourCC('B001');
@@ -31,6 +32,7 @@ export class Resolve extends DynamicBuff {
 
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
+            UnitAddAbility(this.crewmember.unit, ABIL_ACCURACY_BONUS_30);
             this.resolveMusic.setVolume(15);
             if (GetLocalPlayer() === this.crewmember.player) {
                 StopMusic(true);
@@ -49,6 +51,7 @@ export class Resolve extends DynamicBuff {
             }
         }
         else {
+            UnitRemoveAbility(this.crewmember.unit, ABIL_ACCURACY_BONUS_30);
             // Also remove resolve buff
             UnitRemoveBuffBJ(RESOLVE_BUFF_ID, this.crewmember.unit);
             this.onChangeCallbacks.forEach(cb => cb(this));

@@ -132,6 +132,14 @@ export class Game {
                     this.abilityModule.trackUnitOrdersForAbilities(alien);
                 })
             }
+            else if (message.indexOf("-m") === 0) {
+                const mSplit = message.split(" ");
+                const dX = S2I(mSplit[1] || "0");
+                const dY = S2I(mSplit[2] || "0");
+
+                Log.Information(`Warping Askellon x+${dX} y+${dY}`);
+                this.galaxyModule.navigateToSector(dX, dY);
+            }
         });
     }
 

@@ -765,3 +765,161 @@ STRING 155
 Fuel
 }
 
+STRING 156
+// Abilities: TF01 (Transform), EditorSuffix (Editor Suffix)
+{
+ to alien
+}
+
+STRING 157
+// Abilities: TF02 (Transform), Name (Name)
+{
+Transform
+}
+
+STRING 158
+// Abilities: TF02 (Transform), Hotkey (Hotkey - Normal)
+{
+T
+}
+
+STRING 159
+// Abilities: TF02 (Transform), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Oof Ouch this looks like it hurts.|r|n|nTransforms into alien form over 1 second.
+}
+
+STRING 160
+// Abilities: TF02 (Transform), Tip (Tooltip - Normal)
+{
+Transform
+}
+
+STRING 161
+// Abilities: TF02 (Transform), EditorSuffix (Editor Suffix)
+{
+ to human
+}
+
+STRING 162
+{
+Accuracy
+}
+
+STRING 163
+{
+|Cffffff00Accuracy|R
+}
+
+STRING 164
+{
+Accuracy:
+}
+
+STRING 165
+{
+Will:
+}
+
+STRING 166
+{
+Vitality:
+}
+
+STRING 167
+{
+Will
+}
+
+STRING 168
+{
+|Cffffff00Will|R
+}
+
+STRING 169
+{
+Will
+}
+
+STRING 170
+{
+Vitality
+}
+
+STRING 171
+{
+|Cffffff00Vitality|R
+}
+
+STRING 172
+{
+ - Each point improves weapon range
+}
+
+STRING 173
+{
+ - Each point increases melee damage by %d
+}
+
+STRING 174
+{
+ - Improves bullet spread
+}
+
+STRING 176
+{
+ - Each point increases hit points by %d
+}
+
+STRING 177
+{
+ - Each point increases hit point regeneration by %d
+}
+
+STRING 178
+{
+ - Improves bullet spread
+}
+
+STRING 179
+// Abilities: A00E (Accuracy Penalty -30), Name (Name)
+{
+Accuracy Penalty -30
+}
+
+STRING 180
+// Abilities: A00F (Accuracy Bonus +30), Name (Name)
+{
+Accuracy Bonus +30
+}
+
+STRING 181
+// Units: gMap (Galaxy Map Tile), Name (Name)
+{
+Galaxy Map Tile
+}
+
+STRING 182
+// Units: gMap (Galaxy Map Tile), EditorSuffix (Name - Editor Suffix)
+{
+Dummy
+}
+
+STRING 184
+// Abilities: A00G (Roar), Hotkey (Hotkey - Normal)
+{
+W
+}
+
+STRING 186
+// Abilities: A00G (Roar), Tip (Tooltip - Normal)
+{
+Screech
+}
+
+STRING 188
+// Abilities: A00G (Roar), Ubertip (Tooltip - Normal - Extended)
+{
+|cff000000|cff808080Fear is pain arising from the anticipation of evil.|r|n|nThe |cff666633Alien|r roars, causing it and nearby |cff666633alien|r to deal 50% bonus damage. Additionally, all |cff00ffffhumans|r are filled with |cff666633Despair|r for 30 seconds, reducing their |cffc81e1earmor, accuracy|r and granting you |cffc81e1evision|r of them.|n|n|cff80808060 Second Cooldown|r|r
+}
+

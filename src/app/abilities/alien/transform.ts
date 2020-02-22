@@ -24,20 +24,26 @@ const SFX_BLOOD_EXPLODE = "Units\\Undead\\Abomination\\AbominationExplosion.mdl"
 
 const MEAT_AOE = 950;
 const MEAT_AOE_MIN = 150;
-const DURATION = 2;
+const DURATION_TO_ALIEN = 2;
+const DURATION_TO_HUMAN = 0.5;
 
 export class TransformAbility implements Ability {
 
     private casterUnit: unit | undefined;
-    private timeElapsed: number = 0;
+    private timeElapsed: number;
     private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
 
     private orderTrigger = new Trigger();
     private previousOrder: number | undefined;
     private previousOrderTarget: Vector2 | undefined;
 
-    constructor() {
+    private toAlien: boolean = true;
+    private duration: number;
+
+    constructor(toAlienFromHuman: boolean) {
         this.timeElapsed = 0;
+        this.toAlien = toAlienFromHuman;
+        this.duration = (this.toAlien ? DURATION_TO_ALIEN : DURATION_TO_HUMAN);
     }
 
     public initialise(abMod: AbilityModule) {
@@ -89,7 +95,7 @@ export class TransformAbility implements Ability {
 
             abMod.game.weaponModule.addProjectile(projectile);
         }
-        return this.timeElapsed < DURATION;
+        return this.timeElapsed < this.duration;
     };
 
     private getRandomOffset(): number {
@@ -98,8 +104,12 @@ export class TransformAbility implements Ability {
     }
 
     private getBloodEffect(): string {
-        const t = GetRandomReal(this.timeElapsed / DURATION, this.timeElapsed / DURATION * 2);
-        return t > 0.5 ? SFX_ALIEN_BLOOD : SFX_HUMAN_BLOOD;
+        const deltaPercent = this.timeElapsed / this.duration;
+        const t = GetRandomReal(deltaPercent, deltaPercent * 2);
+        if (this.toAlien) {
+            return t > 0.5 ? SFX_ALIEN_BLOOD : SFX_HUMAN_BLOOD;
+        }
+        return t > 0.5 ? SFX_HUMAN_BLOOD : SFX_ALIEN_BLOOD;
     }
 
     private getRandomSFX() {
@@ -116,7 +126,7 @@ export class TransformAbility implements Ability {
         if (this.casterUnit) {
 
             const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            const alien = alienForce.transform(GetOwningPlayer(this.casterUnit), true);
+            const alien = alienForce.transform(GetOwningPlayer(this.casterUnit), this.toAlien);
 
             // If we have an existing order send it to the new unit
             if (this.previousOrder && this.previousOrderTarget) {

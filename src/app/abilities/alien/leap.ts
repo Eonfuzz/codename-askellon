@@ -122,7 +122,7 @@ export class LeapAbility implements Ability {
         UnitAddAbility(this.casterUnit, UNIT_IS_FLY);
         BlzUnitDisableAbility(this.casterUnit, UNIT_IS_FLY, true, true);
 
-        Log.Information("Leap reached here:: "+GetUnitName(this.casterUnit));
+        // Log.Information("Leap reached here:: "+GetUnitName(this.casterUnit));
         return true;
     };
 

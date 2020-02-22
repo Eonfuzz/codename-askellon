@@ -1,4 +1,8 @@
 [Misc]
+AgiAttackSpeedBonus=0.0
+AgiDefenseBonus=0.0
+IntManaBonus=5.0
 MaxUnitSpeed=522.0
 MinUnitSpeed=0.0
+StrHitPointBonus=5.0
 

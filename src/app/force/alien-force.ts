@@ -4,7 +4,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { ABILITY_CREWMEMBER_INFO, TRANSFORM_ID } from "resources/ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN } from "resources/ability-ids";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -27,9 +27,9 @@ export class AlienForce extends ForceType {
         // Is this unit being added to aliens for the first time
         if (!alien) {
             // Remove the crewmember information ability
-            UnitRemoveAbility(who, ABILITY_CREWMEMBER_INFO);
+            UnitRemoveAbility(who, ABIL_CREWMEMBER_INFO);
             // Add the transform ability
-            UnitAddAbility(who, TRANSFORM_ID);
+            UnitAddAbility(who, ABIL_TRANSFORM_HUMAN_ALIEN);
             alien = CreateUnit(owner, 
                 this.currentAlienEvolution, 
                 unitLocation.x, 
@@ -51,6 +51,10 @@ export class AlienForce extends ForceType {
         }
         
         return alien;
+    }
+
+    getFormName() {
+        return GetObjectName(this.currentAlienEvolution);
     }
 
     setHost(who: player) {
@@ -133,6 +137,6 @@ export class AlienForce extends ForceType {
     }
 
     isPlayerTransformed(who: player) {
-        return this.playerIsTransformed.get(who);
+        return !!this.playerIsTransformed.get(who);
     }
 }

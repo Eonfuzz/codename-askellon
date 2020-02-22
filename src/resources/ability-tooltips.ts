@@ -10,3 +10,15 @@ Addtionally, your determination to survive will cause you to gain ${COL_RESOLVE}
 
 ${COL_MISC}Current Income: ${playerIncome} per minute|r
 `;
+
+export const TRANSFORM_TOOLTIP = (playerIncome: number, toAlien: boolean, alienFormName: string) => `${COL_MISC}This host is still only a fleshy meatbag. We must hunt. Consume. Evolve. The prey on this ship shall feed us.|r
+
+You are the ${COL_ALIEN}Alien.|r You must destroy and devour all Crew onboard the Askellon. 
+Cast this ability to ${COL_INFO}transform|r into ${
+    toAlien ? `${COL_ALIEN}${alienFormName}|r` : `${COL_INFO}Hunan|r`
+}; feed on humans to increase your strength and evolve into more powerful forms.
+
+Gain ${COL_RESOLVE}Resolve|r at low HP; at the ${COL_INFO}third evolution|r you no longer gain ${COL_RESOLVE}Resolve.|r
+
+${COL_MISC}Current Income: ${playerIncome} per minute|r
+`;

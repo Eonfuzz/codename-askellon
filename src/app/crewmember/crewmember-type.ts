@@ -6,26 +6,34 @@ import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
 import { WeaponModule } from "../weapons/weapon-module";
 import { Despair } from "../buff/despair";
 import { BuffInstanceCallback, BuffInstance } from "../buff/buff-instance";
-import { RESOLVE_TOOLTIP } from "resources/ability-tooltips";
-import { ABILITY_CREWMEMBER_INFO } from "resources/ability-ids";
+import { RESOLVE_TOOLTIP, TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_TRANSFORM_HUMAN_ALIEN } from "resources/ability-ids";
+import { ForceType } from "app/force/force-type";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { Log } from "lib/serilog/serilog";
+import { CrewModule } from "./crewmember-module";
 
 export class Crewmember extends ArmableUnit {
     public role = '';
     public name = '';
     public player: player;
 
-    private baseAccuracy = 100;
-
     public resolve: Resolve;
     public despair: Despair;
+    private force: ForceType;
 
-    constructor(game: Game, player: player, unit: unit) {
+    private crewModule: CrewModule;
+
+    constructor(game: Game, player: player, unit: unit, force: ForceType) {
         super(unit);
+
+        this.crewModule = game.crewModule;
 
         this.player = player;
         this.unit = unit;
         this.resolve = new Resolve(game, this);
         this.despair = new Despair(game, this);
+        this.force = force;
 
         // Cause resolve and despair to update weapon tooltips
         this.resolve.onChange(() => this.weapon && this.updateTooltips(game.weaponModule));
@@ -71,10 +79,11 @@ export class Crewmember extends ArmableUnit {
     getAccuracy(): number {
         let modifier = 0;
 
-        if (this.resolve.getIsActive()) modifier = modifier + 10;
-        if (this.despair.getIsActive()) modifier = modifier - 75;
+        const accuracy = GetHeroStatBJ(1, this.unit, true);
+        // if (this.resolve.getIsActive()) modifier = modifier + 10;
+        // if (this.despair.getIsActive()) modifier = modifier - 75;
 
-        return this.baseAccuracy + modifier;
+        return accuracy;
     }
 
     /**
@@ -104,10 +113,36 @@ export class Crewmember extends ArmableUnit {
         if (this.weapon) this.weapon.updateTooltip(weaponModule, this);
         
         // Now update resolve tooltip
-        const income = 1800;
-        const tooltip = RESOLVE_TOOLTIP(income);
-        if (GetLocalPlayer() === this.player) {
-            BlzSetAbilityExtendedTooltip(ABILITY_CREWMEMBER_INFO, tooltip, 0);
+        const income = this.crewModule.calculateIncome(this);
+
+        // TODO
+        // Work out a better way of handling this?
+        const isAlienForce = this.force.is(ALIEN_FORCE_NAME);
+        // Log.Information("Updating player tooltip!");
+        
+        if (isAlienForce) {
+            // Log.Information("Player is alien!");
+            let alienForce = this.force as AlienForce;
+            const tooltip = TRANSFORM_TOOLTIP(
+                income, 
+                true, 
+                alienForce.getFormName()
+            );
+            const tfAlien = TRANSFORM_TOOLTIP(
+                income, 
+                false, 
+                alienForce.getFormName()
+            );
+            if (GetLocalPlayer() === this.player) {
+                BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_HUMAN_ALIEN, tooltip, 0);
+                BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_ALIEN_HUMAN, tfAlien, 0);
+            }
+        }
+        else {
+            const tooltip = RESOLVE_TOOLTIP(income);
+            if (GetLocalPlayer() === this.player) {
+                BlzSetAbilityExtendedTooltip(ABIL_CREWMEMBER_INFO, tooltip, 0);
+            }
         }
     }
 }

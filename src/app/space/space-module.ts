@@ -123,6 +123,11 @@ export class SpaceModule {
         }
     }
 
+    getAskellonPosition() {
+        const result = this.mainShip.getPosition();
+        return result;
+    }
+
     /**
      * Ship abilities
      */

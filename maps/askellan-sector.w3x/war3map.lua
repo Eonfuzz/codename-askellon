@@ -1,6 +1,7 @@
 udg_ELEVATORS = {}
 udg_LIGHTS = {}
 gg_rct_Space = nil
+gg_rct_Galaxy_Map = nil
 gg_trg_Set = nil
 gg_unit_n001_0032 = nil
 gg_unit_n001_0021 = nil
@@ -98,6 +99,7 @@ end
 function CreateRegions()
     local we
     gg_rct_Space = Rect(14528.0, -19520.0, 29984.0, 864.0)
+    gg_rct_Galaxy_Map = Rect(-3520.0, 1856.0, -2656.0, 2720.0)
 end
 
 function Trig_Set_Actions()

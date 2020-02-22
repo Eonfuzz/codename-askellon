@@ -9,7 +9,6 @@ import { CREW_FORCE_NAME } from "../force/crewmember-force";
 import { ZONE_TYPE } from "../world/zone-id";
 import { OptResult } from "app/force/opt-selection";
 import { ForceType } from "app/force/force-type";
-import { ABILITY_CREWMEMBER_INFO } from "resources/ability-ids";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 const DELTA_CHECK = 0.25;
@@ -52,7 +51,7 @@ export class CrewModule {
 
         forces.forEach(force => { totalPlayers += force.getPlayers().length });
 
-        Log.Information(`${totalPlayers} players detected`);
+        // Log.Information(`${totalPlayers} players detected`);
 
         let it = 0;
         while (it++ < totalPlayers) {
@@ -70,6 +69,7 @@ export class CrewModule {
                 this.CREW_MEMBERS.push(crew);
                 crewForce && crewForce.addPlayer(player);
                 this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
+                crew.updateTooltips(this.game.weaponModule);
             }));
     }
 
@@ -82,7 +82,7 @@ export class CrewModule {
 
     createCrew(player: player, force: ForceType): Crewmember {   
         let nUnit = CreateUnit(player, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
-        let crewmember = new Crewmember(this.game, player, nUnit);
+        let crewmember = new Crewmember(this.game, player, nUnit, force);
 
         crewmember.setRole(this.getCrewmemberRole());
         crewmember.setName(this.getCrewmemberName(crewmember.role));
@@ -108,6 +108,16 @@ export class CrewModule {
         force.addPlayerMainUnit(this.game, nUnit, player);
 
         return crewmember;
+    }
+
+    calculateIncome(crew: Crewmember) {
+        const crewModified = 1.0; // TODO
+        const baseIncome = 200; // TODO
+        const incomePerLevel = 100; // TODO
+
+        const crewLevel = GetHeroLevel(crew.unit);
+        const crewExperience = GetHeroXP(crew.unit);
+        return baseIncome + incomePerLevel * crewLevel;
     }
     
 

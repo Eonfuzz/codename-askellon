@@ -1,7 +1,7 @@
 /** @noSelfInFile **/
 
 export class SoundRef {
-    protected sound: sound;
+    public sound: sound;
 
     constructor(sound: string, looping: boolean) {
         this.sound = CreateSound(sound, looping, false, false, 0, 3, "");

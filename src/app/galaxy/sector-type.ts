@@ -1,5 +1,6 @@
 /** @noSelfInFile **/
 import { SpaceSector } from "./sector-sector-type";
+import { Vector2 } from "app/types/vector2";
 
 export class SpaceGrid {
     public sectors: Array<Array<SpaceSector>> = [];
@@ -20,5 +21,10 @@ export class SpaceGrid {
 
         this.sectors.forEach(sectorArray => 
             sectorArray.forEach(sector => sector.initalise()))
+    }
+
+    navigateTo(position: Vector2): SpaceSector {
+        const nSector = this.sectors[position.x][position.y];
+        return nSector;
     }
 }
