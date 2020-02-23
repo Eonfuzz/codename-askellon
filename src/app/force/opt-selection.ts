@@ -246,7 +246,7 @@ export class OptSelection {
             // Grab from srcPlayersAvailableForRole
             // Log.Information(`Setting players from pool for ${r.text}`);
             let playersGettingRole: player[] = [];
-            while (playersGettingRole.length <= (r.count || 1) && srcPlayersAvailableForRole.length > 0) {
+            while (playersGettingRole.length < (r.count || 1) && srcPlayersAvailableForRole.length > 0) {
                 let player = srcPlayersAvailableForRole.splice(GetRandomInt(0, srcPlayersAvailableForRole.length-1), 1)[0];
                 const idx = playersNoRole.indexOf(player);
 
