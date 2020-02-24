@@ -177,7 +177,7 @@ export class OptSelection {
                 // Increase the opt value per opt
                 playersOpted.forEach(p => {
                     const opts = this.optsForPlayer.get(p)
-                    const numOpts = opts ? opts.length : 0;
+                    // const numOpts = opts ? opts.length : 0;
                     // const optPowerForPlayer = MathRound(this.getOptPower(p) / numOpts);
                     // totalOptPower += optPowerForPlayer
 
@@ -226,7 +226,7 @@ export class OptSelection {
         const result: Array<OptResult> = [];
 
         rolesToUse.forEach(r => {
-            const playersOptedForRole = this.playersInOpt.get(r) ?? [];
+            const playersOptedForRole = this.playersInOpt.get(r) || [];
             let srcPlayersAvailableForRole = playersNoRole
                 .filter(p1 => playersOptedForRole.some(p2 => p1 === p2));
 

@@ -55,7 +55,7 @@ export class ForceModule {
      * @param player2 
      */
     public aggressionBetweenTwoPlayers(player1: player, player2: player) {
-        Log.Information(`Player aggression between ${GetPlayerName(player1)} and ${GetPlayerName(player2)}`);
+        // Log.Information(`Player aggression between ${GetPlayerName(player1)} and ${GetPlayerName(player2)}`);
         // TODO
         // For now just force them as enemies
         SetPlayerAllianceStateAllyBJ(player1, player2, false);
