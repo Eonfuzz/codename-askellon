@@ -162,7 +162,6 @@ export class ForceModule {
             chanceToExist: 100,
             count: 1
         });
-
         // Now ask for opts
         optSelection.askPlayerOpts(this);
 

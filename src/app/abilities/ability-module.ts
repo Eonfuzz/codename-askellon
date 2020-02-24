@@ -112,10 +112,11 @@ export class AbilityModule {
     }
 
     process(delta: number) {
+        // Go through all abilities cast
         this.data = this.data.filter( ability => {
             const doDestroy = !ability.process(this, delta);
+            // Destroy the ability if needed
             if (doDestroy) {
-                // Log.Information(`Removing expired ability`);
                 ability.destroy(this);
             }
             return !doDestroy;

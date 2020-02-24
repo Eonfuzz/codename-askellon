@@ -91,6 +91,7 @@ export class CrewModule {
         BlzShowUnitTeamGlow(crewmember.unit, false);
         BlzSetUnitName(nUnit, crewmember.role);
         BlzSetHeroProperName(nUnit, crewmember.name);
+        SuspendHeroXP(nUnit, true);
     
         /**
          * Now apply crewmember default weapons

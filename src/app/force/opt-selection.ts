@@ -119,7 +119,7 @@ export class OptSelection {
 
         this.clickTrigger.RegisterDialogEventBJ(this.dialog);
         this.clickTrigger.AddAction(() => this.onDialogClick());
-        forces.getActivePlayers().forEach(player => DialogDisplay(player, this.dialog, true));
+        this.players.forEach(player => DialogDisplay(player, this.dialog, true));
     }
 
     private onDialogClick() {        
@@ -219,8 +219,6 @@ export class OptSelection {
         // Clear button cache
         this.buttonVsOpt.clear();
         this.players.forEach(p => DialogDisplay(p, this.dialog, false));
-        // DialogClear(this.dialog);
-        // DialogDestroy(this.dialog);
 
         // Time to roll for opts
         const playersNoRole = force.getActivePlayers();
@@ -228,14 +226,13 @@ export class OptSelection {
         const result: Array<OptResult> = [];
 
         rolesToUse.forEach(r => {
-            const playersOptedForRole = this.playersInOpt.get(r) || [];
+            const playersOptedForRole = this.playersInOpt.get(r) ?? [];
             let srcPlayersAvailableForRole = playersNoRole
                 .filter(p1 => playersOptedForRole.some(p2 => p1 === p2));
 
 
             // Are we less than the required number?
             if (r.isRequired && r.count && srcPlayersAvailableForRole.length <= r.count) {
-                // Log.Information(`Not enough users opting for ${r.text} stealing from pool`);
                 // Try and fill to required count
                 while ((srcPlayersAvailableForRole.length < r.count) && playersNoRole.length > 0) {
                     // Grab a random player from playersNoRole
@@ -244,7 +241,6 @@ export class OptSelection {
             }
             
             // Grab from srcPlayersAvailableForRole
-            // Log.Information(`Setting players from pool for ${r.text}`);
             let playersGettingRole: player[] = [];
             while (playersGettingRole.length < (r.count || 1) && srcPlayersAvailableForRole.length > 0) {
                 let player = srcPlayersAvailableForRole.splice(GetRandomInt(0, srcPlayersAvailableForRole.length-1), 1)[0];

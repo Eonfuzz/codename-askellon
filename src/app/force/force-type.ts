@@ -2,6 +2,7 @@
 import { Game } from "../game";
 import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
+import { Crewmember } from "app/crewmember/crewmember-type";
 
 
 export abstract class ForceType {
@@ -42,9 +43,35 @@ export abstract class ForceType {
         this.playerUnits.set(player, whichUnit);
     };
 
+    public removePlayerMainUnit(game: Game, whichUnit: unit, player: player): void {
+        this.playerUnits.delete(player);
+    };
+
     /**
      * Checks the victory conditions of this force
      * Returns true if victory conditions are met
      */
     abstract checkVictoryConditions(forceModule: ForceModule): boolean;
+
+    /**
+     * Does nothing by default
+     * @param game 
+     * @param whichUnit 
+     * @param whichPlayer 
+     * @param amount 
+     */
+    public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
+
+    }
+
+    /**
+     * Updates the forces tooltip
+     * does nothing by default
+     * @param game 
+     * @param whichUnit 
+     * @param whichPlayer 
+     */
+    public updateForceTooltip(game: Game, whichUnit: Crewmember) {
+
+    }
 }

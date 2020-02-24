@@ -25,9 +25,11 @@ export class ProjectileSFX {
     }
 
     updatePosition(currentPosition: Vector3) {
-        BlzSetSpecialEffectX(this.sfx, currentPosition.x + this.offset.x);
-        BlzSetSpecialEffectY(this.sfx, currentPosition.y + this.offset.y);
-        BlzSetSpecialEffectZ(this.sfx, currentPosition.z + this.offset.z);
+        BlzSetSpecialEffectPosition(this.sfx,
+            currentPosition.x + this.offset.x,
+            currentPosition.y + this.offset.y,
+            currentPosition.z + this.offset.z
+        );
     }
 
     setScale(scale: number) {

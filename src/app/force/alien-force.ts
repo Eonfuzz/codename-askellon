@@ -4,7 +4,9 @@ import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN } from "resources/ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN } from "resources/ability-ids";
+import { Crewmember } from "app/crewmember/crewmember-type";
+import { TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -26,8 +28,6 @@ export class AlienForce extends ForceType {
         let alien = this.playerAlienUnits.get(owner);
         // Is this unit being added to aliens for the first time
         if (!alien) {
-            // Remove the crewmember information ability
-            UnitRemoveAbility(who, ABIL_CREWMEMBER_INFO);
             // Add the transform ability
             UnitAddAbility(who, ABIL_TRANSFORM_HUMAN_ALIEN);
             alien = CreateUnit(owner, 
@@ -39,6 +39,12 @@ export class AlienForce extends ForceType {
             SetUnitInvulnerable(alien, true);
             BlzPauseUnitEx(alien, true);
             ShowUnit(alien, false);
+            SuspendHeroXP(alien, true);
+
+            // Additionally force the transform ability to start on cooldown
+            BlzStartUnitAbilityCooldown(who, ABIL_TRANSFORM_HUMAN_ALIEN,
+                BlzGetAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
+            );
 
             // Make brown
             SetUnitColor(alien, PLAYER_COLOR_BROWN);
@@ -82,6 +88,11 @@ export class AlienForce extends ForceType {
         this.makeAlien(game, whichUnit, player);
         // mark this unit as the alien host
         this.setHost(player);
+    }
+
+
+    removePlayerMainUnit(game: Game, whichUnit: unit, player: player) {
+        UnitRemoveAbility(whichUnit, ABIL_TRANSFORM_HUMAN_ALIEN);
     }
 
     transform(who: player, toAlien: boolean): unit {
@@ -138,5 +149,48 @@ export class AlienForce extends ForceType {
 
     isPlayerTransformed(who: player) {
         return !!this.playerIsTransformed.get(who);
+    }
+
+    /**
+     * Updates the forces tooltip
+     * does nothing by default
+     * @param game 
+     * @param whichUnit 
+     * @param whichPlayer 
+     */
+    public updateForceTooltip(game: Game, whichCrew: Crewmember) {
+        const income = game.crewModule.calculateIncome(whichCrew);
+
+        const tooltip = TRANSFORM_TOOLTIP(
+            income, 
+            true, 
+            this.getFormName()
+        );
+        const tfAlien = TRANSFORM_TOOLTIP(
+            income, 
+            false, 
+            this.getFormName()
+        );
+        if (GetLocalPlayer() === whichCrew.player) {
+            BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_HUMAN_ALIEN, tooltip, 0);
+            BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_ALIEN_HUMAN, tfAlien, 0);
+        }
+    }
+
+    /**
+     * Updates the alien form's XP to match
+     * @param game 
+     * @param whichUnit 
+     * @param whichPlayer 
+     * @param amount 
+     */
+    public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
+        const alien = this.playerAlienUnits.get(whichUnit.player);
+        if (!alien) return; // Do nothing if no alien for player
+
+        // Apply XP gain to alien form
+        SuspendHeroXP(alien, false);
+        AddHeroXP(alien, amount, true);
+        SuspendHeroXP(alien, false);
     }
 }

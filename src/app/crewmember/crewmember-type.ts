@@ -6,10 +6,7 @@ import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
 import { WeaponModule } from "../weapons/weapon-module";
 import { Despair } from "../buff/despair";
 import { BuffInstanceCallback, BuffInstance } from "../buff/buff-instance";
-import { RESOLVE_TOOLTIP, TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_TRANSFORM_HUMAN_ALIEN } from "resources/ability-ids";
 import { ForceType } from "app/force/force-type";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { Log } from "lib/serilog/serilog";
 import { CrewModule } from "./crewmember-module";
 
@@ -112,37 +109,17 @@ export class Crewmember extends ArmableUnit {
     updateTooltips(weaponModule: WeaponModule) {
         if (this.weapon) this.weapon.updateTooltip(weaponModule, this);
         
-        // Now update resolve tooltip
-        const income = this.crewModule.calculateIncome(this);
+        // Update our tooltips via our force
+        this.force.updateForceTooltip(weaponModule.game, this);
+    }
 
-        // TODO
-        // Work out a better way of handling this?
-        const isAlienForce = this.force.is(ALIEN_FORCE_NAME);
-        // Log.Information("Updating player tooltip!");
-        
-        if (isAlienForce) {
-            // Log.Information("Player is alien!");
-            let alienForce = this.force as AlienForce;
-            const tooltip = TRANSFORM_TOOLTIP(
-                income, 
-                true, 
-                alienForce.getFormName()
-            );
-            const tfAlien = TRANSFORM_TOOLTIP(
-                income, 
-                false, 
-                alienForce.getFormName()
-            );
-            if (GetLocalPlayer() === this.player) {
-                BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_HUMAN_ALIEN, tooltip, 0);
-                BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_ALIEN_HUMAN, tfAlien, 0);
-            }
-        }
-        else {
-            const tooltip = RESOLVE_TOOLTIP(income);
-            if (GetLocalPlayer() === this.player) {
-                BlzSetAbilityExtendedTooltip(ABIL_CREWMEMBER_INFO, tooltip, 0);
-            }
-        }
+    addExperience(game: Game, amount: number) {
+        // temporarily re-enable xp gain
+        SuspendHeroXP(this.unit, false);
+
+        this.force.onUnitGainsXp(game, this, amount);
+
+        // now disable it
+        SuspendHeroXP(this.unit, true);
     }
 }
