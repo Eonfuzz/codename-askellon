@@ -25,14 +25,14 @@ export const InitLaserRifle = (weaponModule: WeaponModule) => {
 export class LaserRifle extends Gun {
 
     // The intensity of the gun, each increment increases damage and sound
-    private insensity = 0;
+    private intensity = 0;
     private collideDict = new Map<number, boolean>();
 
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 100;
-        this.bulletDistance = 2000;
+        this.bulletDistance = 2100;
     }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
@@ -41,23 +41,23 @@ export class LaserRifle extends Gun {
         const unit = caster.unit;
         
         // Play sound based on intensity
-        switch (this.insensity) {
+        switch (this.intensity) {
             case 0: 
-                PlayNewSoundOnUnit("Sounds\\LaserShoot0.mp3", caster.unit, 50);
+                PlayNewSoundOnUnit("Sounds\\Laser1.mp3", caster.unit, 127);
                 break;
             case 1:
-                PlayNewSoundOnUnit("Sounds\\LaserShoot1.mp3", caster.unit, 50);
+                PlayNewSoundOnUnit("Sounds\\Laser2.mp3", caster.unit, 127);
                 break;
             case 2:
-                PlayNewSoundOnUnit("Sounds\\LaserShoot2.mp3", caster.unit, 50);
+                PlayNewSoundOnUnit("Sounds\\Laser3.mp3", caster.unit, 127);
                 break;
             case 3:
-                PlayNewSoundOnUnit("Sounds\\LaserShoot3.mp3", caster.unit, 50);
+                PlayNewSoundOnUnit("Sounds\\Laser4.mp3", caster.unit, 127);
                 break;
             default:
-                PlayNewSoundOnUnit("Sounds\\LaserShoot4.mp3", caster.unit, 50);
+                PlayNewSoundOnUnit("Sounds\\Laser5.mp3", caster.unit, 127);
         }
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
+        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 10);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
 
@@ -77,20 +77,29 @@ export class LaserRifle extends Gun {
             new ProjectileTargetStatic(deltaTarget)
         );
         projectile.addEffect(
-            "war3mapImported\\Bullet.mdx",
+            this.getModelPath(),
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
             1.6
         );
         projectile
-            .setVelocity(2400)
+            .setVelocity(3000)
             .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)
             )
             .onDeath((self: any, weaponModule: WeaponModule, projectile: Projectile) => {
                 const didCollide = this.collideDict.get(projectile.getId());
-                if (!didCollide) this.insensity = 0;
-                else this.collideDict.delete(projectile.getId());
+                if (!didCollide) {
+                    if (this.intensity > 1) {
+                        PlayNewSoundOnUnit("war3mapImported\\laserMiss.mp3", caster.unit, 30);
+                    }
+                    this.intensity = 0;
+                }
+                else {
+                    this.collideDict.delete(projectile.getId());
+                    PlayNewSoundOnUnit("Sounds\\LaserConfirmedHit.mp3", caster.unit, 80);
+                }
+                this.updateTooltip(weaponModule, caster);
             })
 
         weaponModule.addProjectile(projectile);
@@ -103,7 +112,7 @@ export class LaserRifle extends Gun {
         projectile.setDestroy(true);
 
         // increase intensity
-        this.insensity = Min(this.insensity + 1, INTENSITY_MAX);
+        this.intensity = Math.min(this.intensity + 1, INTENSITY_MAX);
 
         // Case equipped unit to damage the target
         if (this.equippedTo) {
@@ -127,7 +136,7 @@ export class LaserRifle extends Gun {
         const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
         const newTooltip = LASER_EXTENDED(
             this.getDamage(weaponModule, crewmember), 
-            this.insensity,
+            this.intensity,
             minDistance, 
             this.spreadAOE
         );
@@ -141,9 +150,20 @@ export class LaserRifle extends Gun {
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        return 25 * Pow(1.5, this.insensity);
+        return 25 * Pow(1.5, this.intensity);
     }
 
     public getAbilityId() { return LASER_ABILITY_ID; }
     public getItemId() { return LASER_ITEM_ID; }
+
+    private getModelPath() {
+           // Play sound based on intensity
+           switch (this.intensity) {
+            case 0: return "Weapons\\Laser1.mdx";
+            case 1: return "Weapons\\Laser2.mdx";
+            case 2: return "Weapons\\Laser3.mdx";
+            case 3: return "Weapons\\Laser4.mdx";
+            default: return "Weapons\\Laser5.mdx";
+        }
+    }
 }

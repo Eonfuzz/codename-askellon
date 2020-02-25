@@ -2,8 +2,8 @@ export const BURST_RIFLE_ABILITY_ID = FourCC('A002');
 export const BURST_RIFLE_ITEM_ID = FourCC('I000');
 export const SNIPER_ABILITY_ID = FourCC('A005');
 export const SNIPER_ITEM_ID = FourCC('I001');
-export const LASER_ABILITY_ID = FourCC('');
-export const LASER_ITEM_ID = FourCC('');
+export const LASER_ABILITY_ID = FourCC('A00H');
+export const LASER_ITEM_ID = FourCC('I004');
 
 
 export const EMS_RIFLING_ABILITY_ID = FourCC('A00A');

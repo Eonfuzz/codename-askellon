@@ -28,15 +28,15 @@ ${!weapon.attachment
 }`;
 
 export const LASER_EXTENDED = (damage: number, currentCharges: number, accuracyMin: number, accuracyMax: number) => `
-    ${COL_MISC}Fluff TODO|r
+${COL_MISC}Fluff TODO|r
 
-    Discharges a focused pulse of prismatic energy, dealing ${COL_GOOD}${damage} damage|r.
-    The inbuilt A.I recalculates pulse intensity on impact; successive hits increase this weapon's damage by ${COL_GOOD}50%|r.
+Discharges a focused pulse of prismatic energy, dealing ${COL_GOOD}${damage} damage|r.
+The inbuilt A.I recalculates pulse intensity on impact; successive hits increase this weapon's damage by ${COL_GOOD}50%|r.
 
-    INTENSITY
-    [${'▓▓▓'.repeat(currentCharges)+'▒▒▒'+'░░░'.repeat(4 - currentCharges)}]
+INTENSITY
+[${'sss'.repeat(currentCharges)+'▒▒▒'+'░░░'.repeat(4 - currentCharges)}]
 
-    ${COL_MISC}5 second cooldown|r
+${COL_MISC}2 second cooldown|r
 `;
 
 export const LASER_ITEM = (weapon: Gun, damage: any) => 

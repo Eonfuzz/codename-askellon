@@ -923,3 +923,39 @@ STRING 188
 |cff000000|cff808080Fear is pain arising from the anticipation of evil.|r|n|nThe |cff666633Alien|r roars, causing it and nearby |cff666633alien|r to deal 50% bonus damage. Additionally, all |cff00ffffhumans|r are filled with |cff666633Despair|r for 30 seconds, reducing their |cffc81e1earmor, accuracy|r and granting you |cffc81e1evision|r of them.|n|n|cff80808060 Second Cooldown|r|r
 }
 
+STRING 189
+// Abilities: A00H (Attack - Laser), Name (Name)
+{
+Attack - Laser
+}
+
+STRING 190
+// Abilities: A00H (Attack - Laser), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 191
+// Abilities: A00H (Attack - Laser), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Particle Accelerator
+}
+
+STRING 192
+// Items: I004 (Prismatic Accelerator), Name (Name)
+{
+Prismatic Accelerator
+}
+
+STRING 193
+// Items: I004 (Prismatic Accelerator), Tip (Tooltip - Basic)
+{
+Prismatic Accelerator
+}
+
+STRING 194
+// Items: I004 (Prismatic Accelerator), Ubertip (Tooltip - Extended)
+{
+|cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r
+}
+

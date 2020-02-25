@@ -116,7 +116,7 @@ export abstract class Gun {
         const maxLength = this.spreadAOE + accuracyModifier / 2;
 
         // The maximimum possible spread for the shot
-        const angleSpread = Min(30 + accuracyModifier / 40, 10);
+        const angleSpread = Math.min(30 + accuracyModifier / 40, 10);
 
         // Get the angle back towards the caster
         const dX = GetUnitX(caster.unit) - originalLocation.x;
@@ -125,7 +125,7 @@ export abstract class Gun {
 
         // Project the point with a random distance
         let newLocation = originalLocation.projectTowards2D( 
-            Rad2Deg(thetaRadians) * GetRandomInt(-angleSpread, angleSpread), 
+            Rad2Deg(thetaRadians) * GetRandomReal(-angleSpread, angleSpread), 
             GetRandomInt(minLength, maxLength)
         );
 
