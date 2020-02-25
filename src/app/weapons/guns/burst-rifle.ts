@@ -8,7 +8,7 @@ import { ProjectileTargetStatic } from "../projectile/projectile-target";
 import { Game } from "../../game";
 import { WeaponModule } from "../weapon-module";
 import { TimedEvent } from "../../types/timed-event";
-import { Vector2 } from "../../types/vector2";
+import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { Attachment } from "../attachment/attachment";
@@ -112,12 +112,29 @@ export class BurstRifle extends Gun {
     }
 
     private getStrayLocation(originalLocation: Vector3, caster: Crewmember): Vector3 {
-        let accuracy = caster.getAccuracy();
+        // Accuracy is some number, starting at 100
+        const accuracy = caster.getAccuracy();
+        // Make accuracy exponentially effect the weapon
+        const accuracyModifier = Pow(100-accuracy, 2) * (accuracy > 0 ? -1 : 1);
 
-        let newLocation = new Vector3(
-            originalLocation.x + ((Math.random()-0.5)*this.DEFAULT_STRAY*(100/accuracy)),
-            originalLocation.y + ((Math.random()-0.5)*this.DEFAULT_STRAY*(100/accuracy)),
-            originalLocation.z,
+        // Minimum distance for the shot
+        const minLength = 0;
+        // Maximum distance for stray shots
+        // Accuracy is exponentially good / bad
+        const maxLength = this.DEFAULT_STRAY + accuracyModifier / 2;
+
+        // The maximimum possible spread for the shot
+        const angleSpread = Min(30 + accuracyModifier / 40, 10);
+
+        // Get the angle back towards the caster
+        const dX = GetUnitX(caster.unit) - originalLocation.x;
+        const dY = GetUnitY(caster.unit) - originalLocation.y;
+        const thetaRadians = Atan2(dY, dX);
+
+        // Project the point with a random distance
+        let newLocation = originalLocation.projectTowards2D( 
+            Rad2Deg(thetaRadians) * GetRandomInt(-angleSpread, angleSpread), 
+            GetRandomInt(minLength, maxLength)
         );
 
         return newLocation;
