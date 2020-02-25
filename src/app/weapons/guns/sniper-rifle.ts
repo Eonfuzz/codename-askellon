@@ -20,21 +20,21 @@ export const InitSniperRifle = (weaponModule: WeaponModule) => {
     weaponModule.weaponAbilityIds.push(SNIPER_ABILITY_ID);
 }
 export class SniperRifle extends Gun {    
-    private DEFAULT_STRAY = 30;
-    private SHOT_DISTANCE = 1600;
 
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
+        this.bulletDistance = 2500;
+        this.spreadAOE = 100;
     }
     
     protected getTooltip(weaponModule: WeaponModule, crewmember: Crewmember) {
-        const accuracyModifier = (this.DEFAULT_STRAY*(100/crewmember.getAccuracy()))/2
+        const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
         const newTooltip = BURST_RIFLE_EXTENDED(
             this.getDamage(weaponModule, crewmember), 
-            this.SHOT_DISTANCE-accuracyModifier, 
-            this.SHOT_DISTANCE+accuracyModifier
+            minDistance, 
+            this.spreadAOE
         );
-        return "";
+        return newTooltip;
     };
 
     protected getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string {
@@ -46,7 +46,7 @@ export class SniperRifle extends Gun {
 
         const unit = caster.unit;
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
-        let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.SHOT_DISTANCE);
+        let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
 
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
 
@@ -124,18 +124,6 @@ export class SniperRifle extends Gun {
                 );
             }
         }
-    }
-
-    private getStrayLocation(originalLocation: Vector3, caster: Crewmember): Vector3 {
-        let accuracy = caster.getAccuracy();
-
-        let newLocation = new Vector3(
-            originalLocation.x + ((Math.random()-0.5)*this.DEFAULT_STRAY*(100/accuracy)),
-            originalLocation.y + ((Math.random()-0.5)*this.DEFAULT_STRAY*(100/accuracy)),
-            originalLocation.z,
-        );
-
-        return newLocation;
     }
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {

@@ -9,45 +9,59 @@ import { Game } from "../../game";
 import { WeaponModule } from "../weapon-module";
 import { TimedEvent } from "../../types/timed-event";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapon-tooltips";
+import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM, LASER_EXTENDED, LASER_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
-import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
 import { Log } from "../../../lib/serilog/serilog";
+import { LASER_ITEM_ID, LASER_ABILITY_ID } from "../weapon-constants";
 
+const INTENSITY_MAX = 4;
 
-export const InitBurstRifle = (weaponModule: WeaponModule) => {
-    weaponModule.weaponItemIds.push(BURST_RIFLE_ITEM_ID);
-    weaponModule.weaponAbilityIds.push(BURST_RIFLE_ABILITY_ID);
+export const InitLaserRifle = (weaponModule: WeaponModule) => {
+    weaponModule.weaponItemIds.push(LASER_ITEM_ID);
+    weaponModule.weaponAbilityIds.push(LASER_ABILITY_ID);
 }
-export class BurstRifle extends Gun {
+export class LaserRifle extends Gun {
+
+    // The intensity of the gun, each increment increases damage and sound
+    private insensity = 0;
+    private collideDict = new Map<number, boolean>();
+
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
         // Define spread and bullet distance
-        this.spreadAOE = 240;
-        this.bulletDistance = 1600;
+        this.spreadAOE = 100;
+        this.bulletDistance = 2000;
     }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         super.onShoot(weaponModule, caster, targetLocation);
 
         const unit = caster.unit;
-        const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", caster.unit, 50);
+        
+        // Play sound based on intensity
+        switch (this.insensity) {
+            case 0: 
+                PlayNewSoundOnUnit("Sounds\\LaserShoot0.mp3", caster.unit, 50);
+                break;
+            case 1:
+                PlayNewSoundOnUnit("Sounds\\LaserShoot1.mp3", caster.unit, 50);
+                break;
+            case 2:
+                PlayNewSoundOnUnit("Sounds\\LaserShoot2.mp3", caster.unit, 50);
+                break;
+            case 3:
+                PlayNewSoundOnUnit("Sounds\\LaserShoot3.mp3", caster.unit, 50);
+                break;
+            default:
+                PlayNewSoundOnUnit("Sounds\\LaserShoot4.mp3", caster.unit, 50);
+        }
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
-
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
 
-
-        let delay = 0;
-        for (let i = 0; i < 5; i++) {
-            weaponModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-                this.fireProjectile(weaponModule, caster, newTargetLocation);
-                return true;
-            }, delay, false));
-            delay = delay + 50;
-        }   
+        this.fireProjectile(weaponModule, caster, newTargetLocation);
     };
 
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
@@ -72,13 +86,26 @@ export class BurstRifle extends Gun {
             .setVelocity(2400)
             .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)
-            );
+            )
+            .onDeath((self: any, weaponModule: WeaponModule, projectile: Projectile) => {
+                const didCollide = this.collideDict.get(projectile.getId());
+                if (!didCollide) this.insensity = 0;
+                else this.collideDict.delete(projectile.getId());
+            })
 
         weaponModule.addProjectile(projectile);
     }
     
     private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
+        // Set true in the collide dict
+        this.collideDict.set(projectile.getId(), true);
+        // Destroy projectile
         projectile.setDestroy(true);
+
+        // increase intensity
+        this.insensity = Min(this.insensity + 1, INTENSITY_MAX);
+
+        // Case equipped unit to damage the target
         if (this.equippedTo) {
             const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
             if (crewmember) {
@@ -98,8 +125,9 @@ export class BurstRifle extends Gun {
 
     protected getTooltip(weaponModule: WeaponModule, crewmember: Crewmember) {
         const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
-        const newTooltip = BURST_RIFLE_EXTENDED(
+        const newTooltip = LASER_EXTENDED(
             this.getDamage(weaponModule, crewmember), 
+            this.insensity,
             minDistance, 
             this.spreadAOE
         );
@@ -108,17 +136,14 @@ export class BurstRifle extends Gun {
 
     protected getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string {
         const damage = this.getDamage(weaponModule, crewmember);
-        return BURST_RIFLE_ITEM(this, damage);
+        return LASER_ITEM(this, damage);
     }
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        if (this.attachment && this.attachment.name === "Ems Rifling") {
-            return 20;
-        }
-        return 15;
+        return 25 * Pow(1.5, this.insensity);
     }
 
-    public getAbilityId() { return BURST_RIFLE_ABILITY_ID; }
-    public getItemId() { return BURST_RIFLE_ITEM_ID; }
+    public getAbilityId() { return LASER_ABILITY_ID; }
+    public getItemId() { return LASER_ITEM_ID; }
 }

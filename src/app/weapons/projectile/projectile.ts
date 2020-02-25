@@ -19,6 +19,7 @@ const DEFAULT_FILTER = (projectile: Projectile) => {
 };
 
 export class Projectile {
+    private id = 0;
     private position: Vector3;
 
     private target: ProjectileTarget;
@@ -48,6 +49,14 @@ export class Projectile {
 
         this.source = source;
         this.filter = DEFAULT_FILTER(this);
+    }
+
+    setId(to: number) {
+        this.id = to;
+    }
+
+    getId() {
+        return this.id;
     }
 
     /**
@@ -151,8 +160,8 @@ export class Projectile {
         return (this.position.z <= z);
     }
 
-    public destroy(): boolean {
-        this.onDeathCallback && this.onDeathCallback(this);
+    public destroy(weaponModule: WeaponModule): boolean {
+        this.onDeathCallback && this.onDeathCallback(weaponModule, this);
         this.sfx.forEach(sfx => sfx.destroy());
         this.sfx = [];
         return true;

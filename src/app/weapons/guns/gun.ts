@@ -14,6 +14,9 @@ export abstract class Gun {
     attachment: Attachment | undefined;
     remainingCooldown: number | undefined;
 
+    protected spreadAOE: number = 0;
+    protected bulletDistance = 1200;
+
     public name = "default";
 
     constructor(item: item, equippedTo: ArmableUnit) {
@@ -94,4 +97,38 @@ export abstract class Gun {
 
     abstract getAbilityId(): number;
     abstract getItemId(): number;
+
+    protected getStrayValue(caster: Crewmember) {
+        // Accuracy is some number, starting at 100
+        const accuracy = caster.getAccuracy();
+        // Make accuracy exponentially effect the weapon
+        const accuracyModifier = Pow(100-accuracy, 2) * (accuracy > 0 ? -1 : 1);
+        return accuracyModifier;
+    }
+
+    protected getStrayLocation(originalLocation: Vector3, caster: Crewmember): Vector3 {
+        const accuracyModifier = this.getStrayValue(caster);
+
+        // Minimum distance for the shot
+        const minLength = 0;
+        // Maximum distance for stray shots
+        // Accuracy is exponentially good / bad
+        const maxLength = this.spreadAOE + accuracyModifier / 2;
+
+        // The maximimum possible spread for the shot
+        const angleSpread = Min(30 + accuracyModifier / 40, 10);
+
+        // Get the angle back towards the caster
+        const dX = GetUnitX(caster.unit) - originalLocation.x;
+        const dY = GetUnitY(caster.unit) - originalLocation.y;
+        const thetaRadians = Atan2(dY, dX);
+
+        // Project the point with a random distance
+        let newLocation = originalLocation.projectTowards2D( 
+            Rad2Deg(thetaRadians) * GetRandomInt(-angleSpread, angleSpread), 
+            GetRandomInt(minLength, maxLength)
+        );
+
+        return newLocation;
+    }
 }

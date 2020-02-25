@@ -26,6 +26,7 @@ export class WeaponModule {
     guns: Array<Gun> = [];
 
     projectiles: Array<Projectile> = [];
+    projectileIdCounter: number = 0;
 
     constructor(game: Game) {
         this.game = game;
@@ -76,7 +77,7 @@ export class WeaponModule {
             // Destroy projectile if it asks nicely
             if (projectile.willDestroy()) {
                 // Destroy is a callback, it may not actually destroy itself
-                return !projectile.destroy();
+                return !projectile.destroy(this);
             }
             return true;
         });
@@ -120,6 +121,7 @@ export class WeaponModule {
     }
 
     addProjectile(projectile: Projectile): void {
+        projectile.setId(this.projectileIdCounter);
         this.projectiles.push(projectile);
     }
     
