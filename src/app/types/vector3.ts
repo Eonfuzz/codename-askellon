@@ -122,7 +122,11 @@ export class Vector3 {
         return new Vector2(this.x, this.y);
     }
 
-    angle2Dto(where: Vector3) {
+    angle2Dto(where: Vector3 | Vector2) {
         return Rad2Deg(Atan2(where.y-this.y, where.x-this.x));
+    }
+
+    dot(v: Vector3 | Vector2): number {
+        return this.x*v.x + this.y*v.y;
     }
 }
