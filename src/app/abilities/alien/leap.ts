@@ -194,10 +194,10 @@ export class LeapAbility implements Ability {
 
             SetUnitAnimation(this.casterUnit, "stand");
             SetUnitTimeScale(this.casterUnit, 1);
+            
             UnitRemoveAbility(this.casterUnit, UNIT_IS_FLY);
-
-            this.casterUnit && BlzPauseUnitEx(this.casterUnit, false);
-            this.casterUnit && SetUnitFlyHeight(this.casterUnit, 0, 9999);
+            BlzPauseUnitEx(this.casterUnit, false);
+            SetUnitFlyHeight(this.casterUnit, 0, 9999);
         }
         return true; 
     };

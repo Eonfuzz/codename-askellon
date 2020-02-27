@@ -5,6 +5,9 @@ export const ABIL_HUMAN_SPRINT = FourCC('A003');
 export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
 export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 
+export const ABIL_WEP_GRENADE = FourCC('GREN');
+export const ABIL_WEP_DIODE_EJ = FourCC('DIOJ');
+
 export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 
 export const ABIL_ACCURACY_PENALTY_30 = FourCC('A00E');

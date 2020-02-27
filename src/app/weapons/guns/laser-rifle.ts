@@ -15,6 +15,7 @@ import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
 import { Log } from "../../../lib/serilog/serilog";
 import { LASER_ITEM_ID, LASER_ABILITY_ID } from "../weapon-constants";
+import { DiodeEjector } from "../attachment/diode-ejector";
 
 const INTENSITY_MAX = 4;
 
@@ -33,6 +34,7 @@ export class LaserRifle extends Gun {
         // Define spread and bullet distance
         this.spreadAOE = 100;
         this.bulletDistance = 2100;
+        this.attachment = new DiodeEjector(item);
     }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
@@ -151,6 +153,10 @@ export class LaserRifle extends Gun {
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
         return 25 * Pow(1.5, this.intensity);
+    }
+
+    public getIntensity() {
+        return this.intensity;
     }
 
     public getAbilityId() { return LASER_ABILITY_ID; }

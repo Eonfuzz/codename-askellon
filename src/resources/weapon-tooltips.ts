@@ -33,14 +33,11 @@ ${COL_MISC}Fluff TODO|r
 Discharges a focused pulse of prismatic energy, dealing ${COL_GOOD}${damage} damage|r.
 The inbuilt A.I recalculates pulse intensity on impact; successive hits increase this weapon's damage by ${COL_GOOD}50%|r.
 
-INTENSITY
-[${'sss'.repeat(currentCharges)+'▒▒▒'+'░░░'.repeat(4 - currentCharges)}]
-
 ${COL_MISC}2 second cooldown|r
 `;
 
 export const LASER_ITEM = (weapon: Gun, damage: any) => 
-`|cff808080fluff todo|r
+`${COL_MISC}Fluff todo|r
 
 Attached: ${COL_ATTATCH}Diode Ejector|r
 
