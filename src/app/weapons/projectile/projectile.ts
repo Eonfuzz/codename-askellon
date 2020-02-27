@@ -37,7 +37,7 @@ export class Projectile {
     public filter: filterfunc;
 
     // Callbacks
-    private onCollideCallback: Function | undefined;
+    private onCollideCallback: ((module: WeaponModule, projectile: Projectile, who: unit) => void) | undefined;
     private onDeathCallback: Function | undefined;
 
     constructor(source: unit, startPosition: Vector3, target: ProjectileTarget, projectileMover?: ProjectileMover) {
@@ -111,7 +111,7 @@ export class Projectile {
         return this;
     }
 
-    public onCollide(callback: Function): Projectile {
+    public onCollide(callback: (module: WeaponModule, projectile: Projectile, who: unit) => void): Projectile {
         this.onCollideCallback = callback;
         return this;
     }

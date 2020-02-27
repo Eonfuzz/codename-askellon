@@ -121,4 +121,8 @@ export class Vector3 {
     to2D(): Vector2 {
         return new Vector2(this.x, this.y);
     }
+
+    angle2Dto(where: Vector3) {
+        return Rad2Deg(Atan2(where.y-this.y, where.x-this.x));
+    }
 }

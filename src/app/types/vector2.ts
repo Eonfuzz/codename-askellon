@@ -89,4 +89,8 @@ export class Vector2 {
     toString() : string {
         return "Vector2={x:"+this.x+", y:"+this.y+",len:"+this.getLength()+"}";
     }
+
+    angleTo(where: Vector2) {
+        return Rad2Deg(Atan2(where.y-this.y, where.x-this.x));
+    }
 }

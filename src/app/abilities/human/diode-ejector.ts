@@ -5,7 +5,7 @@ import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
-import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
+import { ProjectileTargetStatic, ProjectileMoverParabolic, ProjectileMoverLinear } from "../../weapons/projectile/projectile-target";
 import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { UNIT_IS_FLY, SMART_ORDER_ID } from "../../../lib/order-ids";
@@ -13,9 +13,17 @@ import { Trigger } from "../../types/jass-overrides/trigger";
 import { LaserRifle } from "app/weapons/guns/laser-rifle";
 import { Crewmember } from "app/crewmember/crewmember-type";
 
+// How many projectiles are fired inside the cone
+const NUM_PROJECTILES = 20;
+const PROJECTILE_CONE = 45;
+const PROJECTILE_RANGE = 900;
+const PROJECTILE_SPEED = 800;
+
 export class DiodeEjectAbility implements Ability {
 
     private casterUnit: unit | undefined;
+    private targetLoc: Vector3 | undefined;
+
     private timeElapsed: number;
 
     private doneDamage: boolean = false;
@@ -37,6 +45,9 @@ export class DiodeEjectAbility implements Ability {
 
     public initialise(abMod: AbilityModule) {
         this.casterUnit = GetTriggerUnit();
+
+        this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
+        this.targetLoc.z = abMod.game.getZFromXY(this.targetLoc.x, this.targetLoc.y);
 
         this.crew = abMod.game.crewModule.getCrewmemberForUnit(this.casterUnit) as Crewmember;
         this.weapon = this.crew.weapon as LaserRifle;
@@ -65,10 +76,59 @@ export class DiodeEjectAbility implements Ability {
     };
 
     private doVentDamage(abMod: AbilityModule) {
-        if (!this.casterUnit || !this.weapon || !this.crew) return;
+        if (!this.casterUnit || !this.weapon || !this.crew || !this.targetLoc) return;
 
+        const cX = GetUnitX(this.casterUnit);
+        const cY = GetUnitY(this.casterUnit);
+        const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
+
+        // Missile appear loc
+        const projStartLoc = casterLoc.projectTowards2D( GetUnitFacing(this.casterUnit), 10);
+
+        // Target loc
+        const angleToTarget = projStartLoc.angle2Dto(this.targetLoc);
+        const deltaTarget = this.targetLoc.subtract(projStartLoc);
+        const sfxModel = this.weapon.getModelPath();
+
+
+        // Damage numbers
         const weaponBaseDamage = this.weapon.getDamage(abMod.game.weaponModule, this.crew);
-        const diodeDamage = 50 + weaponBaseDamage * 1.25;
+        const diodeDamage = 50 + weaponBaseDamage * 1.5 / 20;
+
+        const endAngle = angleToTarget + PROJECTILE_CONE;
+        const incrementBy = angleToTarget*2 / NUM_PROJECTILES;
+        let currentAngle = angleToTarget - PROJECTILE_CONE;
+
+        while (currentAngle <= endAngle) {
+            const endLoc = projStartLoc.projectTowards2D(currentAngle, PROJECTILE_RANGE);
+            endLoc.z = abMod.game.getZFromXY(endLoc.x, endLoc.y);
+
+            const projectile = new Projectile(
+                this.casterUnit,
+                projStartLoc,
+                new ProjectileTargetStatic(endLoc),
+                new ProjectileMoverLinear()
+            )
+            .onCollide((module, projectile, who) => {
+                if (this.casterUnit) {
+                    UnitDamageTarget(this.casterUnit, 
+                        who, 
+                        diodeDamage, 
+                        true, 
+                        true, 
+                        ATTACK_TYPE_MAGIC, 
+                        DAMAGE_TYPE_ACID, 
+                        WEAPON_TYPE_WHOKNOWS
+                    );
+                }
+            });
+    
+            projectile.addEffect(sfxModel, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
+            abMod.game.weaponModule.addProjectile(projectile);
+
+            // Increment current angle
+            currentAngle += incrementBy;
+        }
 
         Log.Information("Vent damage: "+diodeDamage);
     }
@@ -126,6 +186,9 @@ export class DiodeEjectAbility implements Ability {
             if (this.unitLocTracker.z < terrainZ) return true;
         }
         return false;
+    }
+
+    private damage(who: unit) {
     }
     
     public destroy(abMod: AbilityModule) {

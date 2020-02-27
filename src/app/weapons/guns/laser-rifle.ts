@@ -86,7 +86,7 @@ export class LaserRifle extends Gun {
         );
         projectile
             .setVelocity(3000)
-            .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
+            .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)
             )
             .onDeath((self: any, weaponModule: WeaponModule, projectile: Projectile) => {
@@ -162,7 +162,7 @@ export class LaserRifle extends Gun {
     public getAbilityId() { return LASER_ABILITY_ID; }
     public getItemId() { return LASER_ITEM_ID; }
 
-    private getModelPath() {
+    public getModelPath() {
            // Play sound based on intensity
            switch (this.intensity) {
             case 0: return "Weapons\\Laser1.mdx";
