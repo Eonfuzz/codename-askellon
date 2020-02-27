@@ -89,18 +89,22 @@ export class DiodeEjectAbility implements Ability {
         const angleToTarget = projStartLoc.angle2Dto(this.targetLoc);
         const deltaTarget = this.targetLoc.subtract(projStartLoc);
         const sfxModel = this.weapon.getModelPath();
+        const accuracy = this.crew.getAccuracy() / 100;
 
+        // Range and spread, increase them slightly base on accuracy
+        let projectileRange = PROJECTILE_RANGE * (1 + accuracy - 1);
+        let spread = PROJECTILE_CONE * (1 + 1 - accuracy);
 
         // Damage numbers
         const weaponBaseDamage = this.weapon.getDamage(abMod.game.weaponModule, this.crew);
         const diodeDamage = 50 + weaponBaseDamage * 1.5 / 20;
 
-        const endAngle = angleToTarget + PROJECTILE_CONE;
+        const endAngle = angleToTarget + spread;
         const incrementBy = angleToTarget*2 / NUM_PROJECTILES;
-        let currentAngle = angleToTarget - PROJECTILE_CONE;
+        let currentAngle = angleToTarget - spread;
 
         while (currentAngle <= endAngle) {
-            const endLoc = projStartLoc.projectTowards2D(currentAngle, PROJECTILE_RANGE);
+            const endLoc = projStartLoc.projectTowards2D(currentAngle, projectileRange);
             endLoc.z = abMod.game.getZFromXY(endLoc.x, endLoc.y);
 
             const projectile = new Projectile(
