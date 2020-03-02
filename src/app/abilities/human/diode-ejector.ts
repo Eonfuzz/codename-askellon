@@ -12,6 +12,7 @@ import { UNIT_IS_FLY, SMART_ORDER_ID } from "../../../lib/order-ids";
 import { Trigger } from "../../types/jass-overrides/trigger";
 import { LaserRifle } from "app/weapons/guns/laser-rifle";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { getZFromXY } from "lib/utils";
 
 // How many projectiles are fired inside the cone
 const NUM_PROJECTILES = 20;
@@ -138,7 +139,7 @@ export class DiodeEjectAbility implements Ability {
 
         const cX = GetUnitX(this.casterUnit);
         const cY = GetUnitY(this.casterUnit);
-        const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
+        const casterLoc = new Vector3(cX, cY, getZFromXY(cX, cY));
         
         const weaponIntensity = this.weapon.getIntensity();
 
