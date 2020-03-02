@@ -76,7 +76,7 @@ export class SniperRifle extends Gun {
         projectile
             .setCollisionRadius(40)
             .setVelocity(2400)
-            .onCollide((self: any, weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
+            .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)
             );
 

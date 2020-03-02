@@ -109,8 +109,8 @@ export class Vector3 {
 
     projectTowards2D(angle: number, offset: number) {
         const result = new Vector3(this.x, this.y, this.z);
-        result.x = result.x + offset * Cos(angle);
-        result.y = result.y + offset * Sin(angle);
+        result.x = result.x + offset * Cos(angle * bj_DEGTORAD);
+        result.y = result.y + offset * Sin(angle * bj_DEGTORAD);
         return result;
     }
 

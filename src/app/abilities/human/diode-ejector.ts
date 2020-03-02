@@ -16,8 +16,8 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 // How many projectiles are fired inside the cone
 const NUM_PROJECTILES = 20;
 const PROJECTILE_CONE = 45;
-const PROJECTILE_RANGE = 900;
-const PROJECTILE_SPEED = 800;
+const PROJECTILE_RANGE = 450;
+const PROJECTILE_SPEED = 2800;
 
 export class DiodeEjectAbility implements Ability {
 
@@ -29,8 +29,8 @@ export class DiodeEjectAbility implements Ability {
     private doneDamage: boolean = false;
     private hasLeaped: boolean = false;
 
-    private ventDamagePoint: number = 0.4;
-    private startLeapAt: number = 0.5;
+    private ventDamagePoint: number = 0.1;
+    private startLeapAt: number = 0.15;
 
     private unitLocTracker: Vector3 | undefined;
     private initialZ: number = 0;
@@ -38,6 +38,8 @@ export class DiodeEjectAbility implements Ability {
     private mover: ProjectileMoverParabolic | undefined;  
     private crew: Crewmember | undefined;
     private weapon: LaserRifle | undefined;  
+
+    private weaponIntensityOnCast: number = 0;
 
     constructor() {
         this.timeElapsed = 0;
@@ -48,10 +50,11 @@ export class DiodeEjectAbility implements Ability {
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
         this.targetLoc.z = abMod.game.getZFromXY(this.targetLoc.x, this.targetLoc.y);
+        
 
         this.crew = abMod.game.crewModule.getCrewmemberForUnit(this.casterUnit) as Crewmember;
         this.weapon = this.crew.weapon as LaserRifle;
-
+        this.weaponIntensityOnCast = this.weapon.getIntensity();
         return true;
     };
 
@@ -66,13 +69,14 @@ export class DiodeEjectAbility implements Ability {
 
         if (!this.hasLeaped && this.startLeapAt <= this.timeElapsed) {
             this.startLeap(abMod);
+            this.hasLeaped = true;
         }
         
         if (this.hasLeaped) {
             leapFinished = this.processLeap(abMod, delta);
         }
 
-        return leapFinished;
+        return !leapFinished;
     };
 
     private doVentDamage(abMod: AbilityModule) {
@@ -83,7 +87,8 @@ export class DiodeEjectAbility implements Ability {
         const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
 
         // Missile appear loc
-        const projStartLoc = casterLoc.projectTowards2D( GetUnitFacing(this.casterUnit), 10);
+        const projStartLoc = casterLoc.projectTowards2D(GetUnitFacing(this.casterUnit), 30);
+        projStartLoc.z = projStartLoc.z + 20;
 
         // Target loc
         const angleToTarget = projStartLoc.angle2Dto(this.targetLoc);
@@ -97,23 +102,29 @@ export class DiodeEjectAbility implements Ability {
 
         // Damage numbers
         const weaponBaseDamage = this.weapon.getDamage(abMod.game.weaponModule, this.crew);
-        const diodeDamage = 50 + weaponBaseDamage * 1.5 / 20;
+        const diodeDamage = (50 + weaponBaseDamage * 3) / NUM_PROJECTILES;
 
         const endAngle = angleToTarget + spread;
-        const incrementBy = angleToTarget*2 / NUM_PROJECTILES;
         let currentAngle = angleToTarget - spread;
+        const incrementBy = (endAngle - currentAngle) / NUM_PROJECTILES;
 
-        while (currentAngle <= endAngle) {
+        PlayNewSoundOnUnit(this.weapon.getSoundPath(), this.casterUnit, 127);
+
+        while (currentAngle <= endAngle) {    
             const endLoc = projStartLoc.projectTowards2D(currentAngle, projectileRange);
             endLoc.z = abMod.game.getZFromXY(endLoc.x, endLoc.y);
 
             const projectile = new Projectile(
                 this.casterUnit,
-                projStartLoc,
-                new ProjectileTargetStatic(endLoc),
+                new Vector3(projStartLoc.x, projStartLoc.y, projStartLoc.z),
+                new ProjectileTargetStatic(
+                    endLoc.subtract(projStartLoc),
+                ),
                 new ProjectileMoverLinear()
             )
+            .setVelocity(PROJECTILE_SPEED)
             .onCollide((module, projectile, who) => {
+                projectile.setDestroy(true);
                 if (this.casterUnit) {
                     UnitDamageTarget(this.casterUnit, 
                         who, 
@@ -133,8 +144,7 @@ export class DiodeEjectAbility implements Ability {
             // Increment current angle
             currentAngle += incrementBy;
         }
-
-        Log.Information("Vent damage: "+diodeDamage);
+        this.weapon.setIntensity(0);
     }
 
     private startLeap(abMod: AbilityModule) {
@@ -142,27 +152,36 @@ export class DiodeEjectAbility implements Ability {
 
         const cX = GetUnitX(this.casterUnit);
         const cY = GetUnitY(this.casterUnit);
+
         const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
         this.initialZ = casterLoc.z;
         
-        const weaponIntensity = this.weapon.getIntensity();
+        const weaponIntensity = this.weaponIntensityOnCast;
 
         // Set target loc as projection backwards of caster facing
         // 128 is the default tile distance
         // At 4 stacks the user jumps back two tiles
-        const distanceJumpBack = 128 + 128 * weaponIntensity / 4;
+        const distanceJumpBack = 128 + 140 * weaponIntensity / 4;
         let targetLoc = casterLoc.projectTowards2D(GetUnitFacing(this.casterUnit), -distanceJumpBack);
 
         this.mover = new ProjectileMoverParabolic(
             casterLoc, 
             targetLoc, 
-            Deg2Rad(45)
+            Deg2Rad(70)
         );
         this.unitLocTracker = casterLoc;
 
         BlzPauseUnitEx(this.casterUnit, true);
         UnitAddAbility(this.casterUnit, UNIT_IS_FLY);
         BlzUnitDisableAbility(this.casterUnit, UNIT_IS_FLY, true, true);
+
+        let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", casterLoc.x, casterLoc.y);
+        BlzSetSpecialEffectAlpha(sfx, 40);
+        BlzSetSpecialEffectScale(sfx, 0.8);
+        BlzSetSpecialEffectTimeScale(sfx, 0.8);
+        BlzSetSpecialEffectTime(sfx, 0.2);
+        BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
+        DestroyEffect(sfx);
     }
 
     private processLeap(abMod: AbilityModule, delta: number) {
@@ -171,8 +190,9 @@ export class DiodeEjectAbility implements Ability {
             const posDelta = this.mover.move(
                 this.mover.originalPos, 
                 this.mover.originalDelta, 
-                this.mover.velocity, 
-                delta
+                this.mover.velocity,
+                // Faster timescale 
+                delta * 2
             );
 
             const unitLoc = new Vector3(
@@ -191,12 +211,17 @@ export class DiodeEjectAbility implements Ability {
         }
         return false;
     }
-
-    private damage(who: unit) {
-    }
     
     public destroy(abMod: AbilityModule) {
         if (this.casterUnit) {
+            const cX = GetUnitX(this.casterUnit);
+            const cY = GetUnitY(this.casterUnit);
+            const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
+
+            let sfx = AddSpecialEffect("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", casterLoc.x, casterLoc.y);
+            DestroyEffect(sfx);
+
+            
             UnitRemoveAbility(this.casterUnit, UNIT_IS_FLY);
             BlzPauseUnitEx(this.casterUnit, false);
             SetUnitFlyHeight(this.casterUnit, 0, 9999);

@@ -4,7 +4,7 @@ import { ROLE_NAMES } from "./crewmember-names";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
-import { BURST_RIFLE_ITEM_ID } from "../weapons/weapon-constants";
+import { BURST_RIFLE_ITEM_ID, LASER_ITEM_ID } from "../weapons/weapon-constants";
 import { CREW_FORCE_NAME } from "../force/crewmember-force";
 import { ZONE_TYPE } from "../world/zone-id";
 import { OptResult } from "app/force/opt-selection";
@@ -97,7 +97,7 @@ export class CrewModule {
          * Now apply crewmember default weapons
          */
         if (crewmember.role) {
-            const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
+            const item = CreateItem(LASER_ITEM_ID, 0, 0);
             UnitAddItem(crewmember.unit, item);
             this.game.weaponModule.applyItemEquip(crewmember, item);
         }

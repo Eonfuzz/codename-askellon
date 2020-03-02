@@ -92,8 +92,7 @@ export class TheAskellon {
                 this.powerDownSound.playSound();
             }
             if (playerIsAlien) {
-                Log.Information("Player is alien!");
-                SetDayNightModels("war3mapImported\\NightVisionModel.mdx", "war3mapImported\\NightVisionModel.mdx");
+                SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\NiteVisionModelRed.mdx");
             }
             else {
                 SetDayNightModels("", "");

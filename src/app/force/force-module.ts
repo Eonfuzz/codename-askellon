@@ -171,11 +171,15 @@ export class ForceModule {
 
         const timerTrig = new Trigger();
 
+        const timerDialog = CreateTimerDialog(timer);
+        TimerDialogDisplay(timerDialog, true);
+
         timerTrig.RegisterTimerExpire(timer);
         timerTrig.AddAction(() => {
             TimerDialogDisplay(timerDialog, false);
             // DestroyTimer(timer);
             // timerTrig.destroy();
+
 
             // Now complete the opt select
             // Log.Information(`Getting results`);
@@ -183,7 +187,5 @@ export class ForceModule {
             callback(results);
         });
 
-        const timerDialog = CreateTimerDialog(timer);
-        TimerDialogDisplay(timerDialog, true);
     }
 }

@@ -143,7 +143,8 @@ export class LeapAbility implements Ability {
                 this.mover.originalPos, 
                 this.mover.originalDelta, 
                 this.mover.velocity, 
-                delta
+                // Faster timescale
+                delta * 1.5
             );
 
             const unitLoc = new Vector3(

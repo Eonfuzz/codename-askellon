@@ -42,23 +42,7 @@ export class LaserRifle extends Gun {
 
         const unit = caster.unit;
         
-        // Play sound based on intensity
-        switch (this.intensity) {
-            case 0: 
-                PlayNewSoundOnUnit("Sounds\\Laser1.mp3", caster.unit, 127);
-                break;
-            case 1:
-                PlayNewSoundOnUnit("Sounds\\Laser2.mp3", caster.unit, 127);
-                break;
-            case 2:
-                PlayNewSoundOnUnit("Sounds\\Laser3.mp3", caster.unit, 127);
-                break;
-            case 3:
-                PlayNewSoundOnUnit("Sounds\\Laser4.mp3", caster.unit, 127);
-                break;
-            default:
-                PlayNewSoundOnUnit("Sounds\\Laser5.mp3", caster.unit, 127);
-        }
+        PlayNewSoundOnUnit(this.getSoundPath(), caster.unit, 127);
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 10);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
@@ -171,5 +155,20 @@ export class LaserRifle extends Gun {
             case 3: return "Weapons\\Laser4.mdx";
             default: return "Weapons\\Laser5.mdx";
         }
+    }
+
+    public getSoundPath() {
+        // Play sound based on intensity
+        switch (this.intensity) {
+         case 0: return "Sounds\\Laser1.mp3";
+         case 1: return "Sounds\\Laser2.mp3";
+         case 2: return "Sounds\\Laser3.mp3";
+         case 3: return "Sounds\\Laser4.mp3";
+         default: return "Sounds\\Laser5.mp3";
+        }
+    }
+
+    public setIntensity(val: number) {
+        this.intensity = val;
     }
 }

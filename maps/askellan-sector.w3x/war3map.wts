@@ -959,3 +959,21 @@ STRING 194
 |cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r
 }
 
+STRING 195
+// Abilities: DIOJ (Diode Eject), Name (Name)
+{
+Diode Eject
+}
+
+STRING 196
+// Abilities: DIOJ (Diode Eject), Hotkey (Hotkey - Normal)
+{
+T
+}
+
+STRING 197
+// Abilities: DIOJ (Diode Eject), Tip (Tooltip - Normal)
+{
+Eject Them Diodes
+}
+
