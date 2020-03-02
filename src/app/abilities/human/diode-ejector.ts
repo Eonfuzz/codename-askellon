@@ -70,11 +70,7 @@ export class DiodeEjectAbility implements Ability {
             this.hasLeaped = true;
         }
         
-        if (this.hasLeaped) {
-            leapFinished = this.processLeap(abMod, delta);
-        }
-
-        return !leapFinished;
+        return !this.leapExpired;
     };
 
     private doVentDamage(abMod: AbilityModule) {
@@ -169,10 +165,6 @@ export class DiodeEjectAbility implements Ability {
         ).onFinish((leapEntry) => {
             this.leapExpired = true;
         });
-    }
-
-    private processLeap(abMod: AbilityModule, delta: number) {
-        return !this.leapExpired;
     }
     
     public destroy(abMod: AbilityModule) {

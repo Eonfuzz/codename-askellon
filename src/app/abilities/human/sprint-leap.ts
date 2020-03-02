@@ -23,9 +23,11 @@ export class SprintLeapAbility implements Ability {
     public initialise(module: AbilityModule) {
         this.unit = GetTriggerUnit();
 
+        Log.Information("Fast sprint!");
+
         // If unit doesn't have the right tech upgrade return false
         const hasUpgrade = GetPlayerTechCount(GetOwningPlayer(this.unit), TECH_UPGRADE_SPRINT_LEAP, true) > 0;
-        // if (!hasUpgrade) return false;
+        if (!hasUpgrade) return false;
 
         this.unitLastLoc = vectorFromUnit(this.unit);
 
@@ -37,7 +39,8 @@ export class SprintLeapAbility implements Ability {
     public process(module: AbilityModule, delta: number) {
         if (this.unit && UnitHasBuffBJ(this.unit, SPRINT_BUFF_ID) && this.unitLastLoc) {
             const newPos = vectorFromUnit(this.unit);
-            this.distanceTravelled += newPos.subtract(this.unitLastLoc).getLength();
+            const delta = newPos.subtract(this.unitLastLoc).getLength();
+            this.distanceTravelled = (delta == 0) ? 0 : (this.distanceTravelled + delta)
             this.unitLastLoc = newPos;
         }
         else {
@@ -60,13 +63,11 @@ export class SprintLeapAbility implements Ability {
             BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
             DestroyEffect(sfx);
 
-            targetLoc.projectTowards2D(GetUnitFacing(this.unit), this.distanceTravelled);
-
             aMod.game.leapModule.newLeap(
                 this.unit,
-                targetLoc,
-                45,
-                1.5
+                targetLoc.projectTowards2D(GetUnitFacing(this.unit), this.distanceTravelled/1.5),
+                30,
+                2.5
             );
         }
         return false;

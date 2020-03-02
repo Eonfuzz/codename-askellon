@@ -983,3 +983,21 @@ STRING 198
 Ventilator Large
 }
 
+STRING 199
+// Abilities: A003 (Sprint), Tip (Tooltip - Normal)
+{
+[|cffffff00W|r] - Sprint
+}
+
+STRING 201
+// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect2 (Effect 2)
+{
+rlev
+}
+
+STRING 202
+// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1260%|r for |cffd45e122 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
+}
+

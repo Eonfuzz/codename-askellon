@@ -86,7 +86,7 @@ export class ForceModule {
             const isUser = GetPlayerController(currentPlayer) == MAP_CONTROL_USER;
 
             if (isPlaying && isUser) {
-                result.push(Player(i));
+                result.push(currentPlayer);
             }
         }
         return result;

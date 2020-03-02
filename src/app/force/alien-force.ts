@@ -7,6 +7,7 @@ import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
+import { VISION_TYPE } from "app/world/vision-type";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -40,6 +41,9 @@ export class AlienForce extends ForceType {
             BlzPauseUnitEx(alien, true);
             ShowUnit(alien, false);
             SuspendHeroXP(alien, true);
+
+            const crewmember = game.crewModule.getCrewmemberForPlayer(owner);
+            if (crewmember) crewmember.setVisionType(VISION_TYPE.ALIEN);
 
             // Additionally force the transform ability to start on cooldown
             BlzStartUnitAbilityCooldown(who, ABIL_TRANSFORM_HUMAN_ALIEN,

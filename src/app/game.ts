@@ -17,6 +17,7 @@ import { ZONE_TYPE } from "./world/zone-id";
 import { BuffInstanceDuration, BuffInstanceCallback } from "./buff/buff-instance";
 import { GalaxyModule } from "./galaxy/galaxy-module";
 import { LeapModule } from "./leap-engine/leap-module";
+import { TECH_MOBILITY } from "resources/ability-ids";
 
 export class Game {
     // Helper objects
@@ -121,6 +122,9 @@ export class Game {
             }
             else if (message === "-nt") {
                 this.noTurn = !this.noTurn;
+            }
+            else if (message === "-michaeljordan") {
+                SetPlayerTechResearched(triggerPlayer, TECH_MOBILITY, 1);
             }
             else if (message === "-p1off") {
                 Log.Information("Killing power to floor 1");

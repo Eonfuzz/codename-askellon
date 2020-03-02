@@ -49,16 +49,18 @@ export class CrewModule {
     initCrew(forces: ForceType[]) {
         let totalPlayers = 0;
 
-        forces.forEach(force => { totalPlayers += force.getPlayers().length });
-
-        // Log.Information(`${totalPlayers} players detected`);
+        forces.forEach(force => {
+            Log.Information(`Force[${force.name}].players = ${force.getPlayers().length}`)
+            totalPlayers += force.getPlayers().length;
+        });
 
         let it = 0;
-        while (it++ < totalPlayers) {
+        while (it < totalPlayers) {
             if (it === 0) this.allJobs.push("Captain");
             else if (it === 1) this.allJobs.push("Navigator");
             else if (it === 2) this.allJobs.push("Noble");
             else this.allJobs.push("Security Guard");
+            it++;
         }      
 
         const crewForce = this.game.forceModule.getForce(CREW_FORCE_NAME);
@@ -132,16 +134,15 @@ export class CrewModule {
     getCrewmemberName(role: string) {
         // TODO Fix this
         let namesForRole;
-        if (role === "Captain") {
-            namesForRole = ROLE_NAMES["Captain"];
+
+        if (role === "Captain" || role === "Noble" ||  role === "Navigator" || role === "Security Guard") {
+            namesForRole = ROLE_NAMES[role];
+            const i = Math.floor( Math.random() * namesForRole.length );
+            const name = namesForRole[i];
+            namesForRole.splice(i, 1);
+            return name;
         }
-        else {
-            namesForRole = ROLE_NAMES["Security Guard"];
-        }
-        const i = Math.floor( Math.random() * namesForRole.length );
-        const name = namesForRole[i];
-        namesForRole.splice(i, 1);
-        return name;
+        return 'Error';
     }
 
     getCrewmemberForPlayer(player: player) {
