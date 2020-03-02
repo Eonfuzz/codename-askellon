@@ -32,12 +32,10 @@ export class DiodeEjectAbility implements Ability {
     private ventDamagePoint: number = 0.4;
     private startLeapAt: number = 0.5;
 
-    private unitLocTracker: Vector3 | undefined;
-    private initialZ: number = 0;
-
-    private mover: ProjectileMoverParabolic | undefined;  
     private crew: Crewmember | undefined;
     private weapon: LaserRifle | undefined;  
+
+    private leapExpired: boolean = false;
 
     constructor() {
         this.timeElapsed = 0;
@@ -133,8 +131,6 @@ export class DiodeEjectAbility implements Ability {
             // Increment current angle
             currentAngle += incrementBy;
         }
-
-        Log.Information("Vent damage: "+diodeDamage);
     }
 
     private startLeap(abMod: AbilityModule) {
@@ -143,7 +139,6 @@ export class DiodeEjectAbility implements Ability {
         const cX = GetUnitX(this.casterUnit);
         const cY = GetUnitY(this.casterUnit);
         const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
-        this.initialZ = casterLoc.z;
         
         const weaponIntensity = this.weapon.getIntensity();
 
@@ -153,46 +148,19 @@ export class DiodeEjectAbility implements Ability {
         const distanceJumpBack = 128 + 128 * weaponIntensity / 4;
         let targetLoc = casterLoc.projectTowards2D(GetUnitFacing(this.casterUnit), -distanceJumpBack);
 
-        this.mover = new ProjectileMoverParabolic(
-            casterLoc, 
-            targetLoc, 
-            Deg2Rad(45)
-        );
-        this.unitLocTracker = casterLoc;
-
-        BlzPauseUnitEx(this.casterUnit, true);
-        UnitAddAbility(this.casterUnit, UNIT_IS_FLY);
-        BlzUnitDisableAbility(this.casterUnit, UNIT_IS_FLY, true, true);
+        // Register the leap and its callback
+        abMod.game.leapModule.newLeap(
+            this.casterUnit,
+            targetLoc,
+            45,
+            3
+        ).onFinish((leapEntry) => {
+            this.leapExpired = true;
+        });
     }
 
     private processLeap(abMod: AbilityModule, delta: number) {
-        if (this.mover && this.casterUnit && this.unitLocTracker) {
-
-            const posDelta = this.mover.move(
-                this.mover.originalPos, 
-                this.mover.originalDelta, 
-                this.mover.velocity, 
-                delta
-            );
-
-            const unitLoc = new Vector3(
-                GetUnitX(this.casterUnit) + posDelta.x,
-                GetUnitY(this.casterUnit) + posDelta.y,
-                this.unitLocTracker.z + posDelta.z
-            );
-            this.unitLocTracker = unitLoc;
-            const terrainZ = abMod.game.getZFromXY(unitLoc.x, unitLoc.y);
-
-            SetUnitX(this.casterUnit, unitLoc.x);
-            SetUnitY(this.casterUnit, unitLoc.y);
-            SetUnitFlyHeight(this.casterUnit, unitLoc.z+this.initialZ-terrainZ, 9999);
-
-            if (this.unitLocTracker.z < terrainZ) return true;
-        }
-        return false;
-    }
-
-    private damage(who: unit) {
+        return !this.leapExpired;
     }
     
     public destroy(abMod: AbilityModule) {

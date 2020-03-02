@@ -59,6 +59,19 @@ export class WorldModule {
         return this.askellon.findZone(whichZone) || this.worldZones.get(whichZone);
     }
 
+    getZoneByName(whichZone: string) {
+        switch (whichZone) {
+            case "FLOOR 1":
+            case "Floor 1": 
+                return ZONE_TYPE.FLOOR_1;
+            case "FLOOR 2":
+            case "Floor 2": 
+                return ZONE_TYPE.FLOOR_2;
+            default:
+                return ZONE_TYPE.VENTRATION;
+        }
+    }
+
     getPlayersInZone(whichZone: ZONE_TYPE): Array<player> {
         return [];
     }
