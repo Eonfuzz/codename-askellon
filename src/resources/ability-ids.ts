@@ -13,4 +13,4 @@ export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 export const ABIL_ACCURACY_PENALTY_30 = FourCC('A00E');
 export const ABIL_ACCURACY_BONUS_30 = FourCC('A00F');
 
-export const SPRINT_BUFF_ID = FourCC('');
+export const SPRINT_BUFF_ID = FourCC('A003');

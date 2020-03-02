@@ -186,7 +186,6 @@ export class DiodeEjectAbility implements Ability {
 
             
             UnitRemoveAbility(this.casterUnit, UNIT_IS_FLY);
-            BlzPauseUnitEx(this.casterUnit, false);
             SetUnitFlyHeight(this.casterUnit, 0, 9999);
         }
         return true; 

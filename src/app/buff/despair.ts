@@ -53,7 +53,7 @@ export class Despair extends DynamicBuff {
             this.checkForDespairBuffTicker = 0;
             if (!UnitHasBuffBJ(this.crewmember.unit, DESPAIR_BUFF_ID)) {
                 // If we don't have another ticker apply the buff to the unit
-                game.useDummyFor((self: any, dummy: unit) => {
+                game.useDummyFor((dummy: unit) => {
                     SetUnitX(dummy, GetUnitX(this.crewmember.unit));
                     SetUnitY(dummy, GetUnitY(this.crewmember.unit) + 50);
                     IssueTargetOrder(dummy, "faeriefire", this.crewmember.unit);
@@ -76,7 +76,7 @@ export class Despair extends DynamicBuff {
             // If we dont got the buff cast that bad boi
             if (!UnitHasBuffBJ(this.crewmember.unit, DESPAIR_BUFF_ID)) {
                 // If we don't have another ticker apply the buff to the unit
-                game.useDummyFor((self: any, dummy: unit) => {
+                game.useDummyFor((dummy: unit) => {
                     SetUnitX(dummy, GetUnitX(this.crewmember.unit));
                     SetUnitY(dummy, GetUnitY(this.crewmember.unit) + 50);
                     IssueTargetOrder(dummy, "faeriefire", this.crewmember.unit);

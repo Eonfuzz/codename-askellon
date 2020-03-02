@@ -977,3 +977,9 @@ STRING 197
 Eject Them Diodes
 }
 
+STRING 198
+// Doodads: D00B (Ventilator Large), Name (Name)
+{
+Ventilator Large
+}
+

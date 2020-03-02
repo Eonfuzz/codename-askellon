@@ -18,7 +18,7 @@ You can ${COL_INFO}transform|r into your ${
     toAlien ? `${COL_ALIEN}${alienFormName}|r` : `${COL_INFO}Human|r`
 } form at will.
 
-When critically injured you gain ${COL_RESOLVE}Resolve|r, this ability is lost at the D${COL_ALIEN}third evolution|r.
+When critically injured you gain ${COL_RESOLVE}Resolve|r, this ability is lost at the ${COL_ALIEN}third evolution|r.
 
 ${COL_MISC}Current Income: ${playerIncome} per minute|r
 `;

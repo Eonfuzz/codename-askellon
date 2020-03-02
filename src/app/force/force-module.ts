@@ -177,12 +177,6 @@ export class ForceModule {
         timerTrig.RegisterTimerExpire(timer);
         timerTrig.AddAction(() => {
             TimerDialogDisplay(timerDialog, false);
-            // DestroyTimer(timer);
-            // timerTrig.destroy();
-
-
-            // Now complete the opt select
-            // Log.Information(`Getting results`);
             const results = optSelection.endOptSelection(this);
             callback(results);
         });

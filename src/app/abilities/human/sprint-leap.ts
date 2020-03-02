@@ -9,7 +9,7 @@ import { getZFromXY } from "lib/utils";
 
 /** @noSelfInFile **/
 
-const TECH_UPGRADE_SPRINT_LEAP = FourCC('');
+const TECH_UPGRADE_SPRINT_LEAP = FourCC('R001');
 
 export class SprintLeapAbility implements Ability {
 
@@ -25,7 +25,7 @@ export class SprintLeapAbility implements Ability {
 
         // If unit doesn't have the right tech upgrade return false
         const hasUpgrade = GetPlayerTechCount(GetOwningPlayer(this.unit), TECH_UPGRADE_SPRINT_LEAP, true) > 0;
-        if (!hasUpgrade) return false;
+        // if (!hasUpgrade) return false;
 
         this.unitLastLoc = vectorFromUnit(this.unit);
 

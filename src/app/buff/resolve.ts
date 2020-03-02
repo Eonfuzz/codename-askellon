@@ -43,7 +43,7 @@ export class Resolve extends DynamicBuff {
             // If we dont got the buff cast that bad boi
             if (!UnitHasBuffBJ(this.crewmember.unit, RESOLVE_BUFF_ID)) {
                 // If we don't have another ticker apply the buff to the unit
-                game.useDummyFor((self: any, dummy: unit) => {
+                game.useDummyFor((dummy: unit) => {
                     SetUnitX(dummy, GetUnitX(this.crewmember.unit));
                     SetUnitY(dummy, GetUnitY(this.crewmember.unit) + 50);
                     IssueTargetOrder(dummy, "bloodlust", this.crewmember.unit);

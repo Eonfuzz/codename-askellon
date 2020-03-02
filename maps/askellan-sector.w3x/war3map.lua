@@ -1,7 +1,12 @@
 udg_ELEVATORS = {}
 udg_LIGHTS = {}
+udg_fall_points = {}
+udg_fall_results = {}
+udg_fall_result_zone_names = __jarray("")
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
+gg_rct_FallZone1 = nil
+gg_rct_FallZone1Land = nil
 gg_trg_Set = nil
 gg_unit_n001_0032 = nil
 gg_unit_n001_0021 = nil
@@ -17,6 +22,12 @@ function InitGlobals()
     while (true) do
         if ((i > 1)) then break end
         udg_ELEVATORS[i] = nil
+        i = i + 1
+    end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_fall_result_zone_names[i] = ""
         i = i + 1
     end
 end
@@ -76,7 +87,6 @@ function CreateNeutralPassiveBuildings()
     local t
     local life
     gg_unit_n001_0021 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n000"), 128.0, 896.0, 270.000, FourCC("n000"))
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
     gg_unit_n002_0034 = BlzCreateUnitWithSkin(p, FourCC("n002"), -28670.7, 26621.0, 270.000, FourCC("n002"))
@@ -101,6 +111,8 @@ function CreateRegions()
     local we
     gg_rct_Space = Rect(14528.0, -19520.0, 29984.0, 864.0)
     gg_rct_Galaxy_Map = Rect(-3520.0, 1856.0, -2656.0, 2720.0)
+    gg_rct_FallZone1 = Rect(-96.0, 1056.0, 480.0, 1248.0)
+    gg_rct_FallZone1Land = Rect(-27488.0, 26816.0, -27168.0, 27168.0)
 end
 
 function Trig_Set_Actions()
@@ -112,6 +124,9 @@ function Trig_Set_Actions()
     udg_LIGHTS[1] = gg_dest_B002_0017
     udg_LIGHTS[2] = gg_dest_B002_0019
     udg_LIGHTS[3] = gg_dest_B002_0022
+    udg_fall_points[1] = gg_rct_FallZone1
+    udg_fall_results[1] = gg_rct_FallZone1Land
+    udg_fall_result_zone_names[1] = "Floor1"
 end
 
 function InitTrig_Set()
