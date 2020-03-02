@@ -9,6 +9,7 @@ import { BuffInstanceCallback, BuffInstance } from "../buff/buff-instance";
 import { ForceType } from "app/force/force-type";
 import { Log } from "lib/serilog/serilog";
 import { CrewModule } from "./crewmember-module";
+import { VISION_TYPE } from "app/world/vision-type";
 
 export class Crewmember extends ArmableUnit {
     public role = '';
@@ -18,6 +19,7 @@ export class Crewmember extends ArmableUnit {
     public resolve: Resolve;
     public despair: Despair;
     private force: ForceType;
+    private visionType: VISION_TYPE = VISION_TYPE.NORMAL;
 
     private crewModule: CrewModule;
 
@@ -121,5 +123,13 @@ export class Crewmember extends ArmableUnit {
 
         // now disable it
         SuspendHeroXP(this.unit, true);
+    }
+
+    getVisionType() {
+        return this.visionType;
+    }
+
+    setVisionType(type: VISION_TYPE) {
+        this.visionType = type;
     }
 }
