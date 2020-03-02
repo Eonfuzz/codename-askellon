@@ -1,12 +1,7 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
-import { Projectile } from "../../weapons/projectile/projectile";
-import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { UNIT_IS_FLY } from "../../../lib/order-ids";
 
@@ -17,11 +12,9 @@ const LEAP_DISTANCE_MAX = 400;
 export class LeapAbility implements Ability {
 
     private casterUnit: unit | undefined;
-    private mover: ProjectileMoverParabolic | undefined;
 
     private timeElapsed: number;
-    private unitLocTracker = new Vector3(0, 0, 0);
-    private initialZ: number = 0;
+    private leapExpired: boolean = false;
 
     constructor() {
         this.timeElapsed = 0;
@@ -75,19 +68,7 @@ export class LeapAbility implements Ability {
             targetLoc = targetLoc.projectTowards2D(Rad2Deg(GetUnitFacing(this.casterUnit)), 150);
             targetLoc.z = abMod.game.getZFromXY(targetLoc.x, targetLoc.y) + 10;
         }
-
-        this.initialZ = casterLoc.z;
-        this.mover = new ProjectileMoverParabolic(
-            casterLoc, 
-            targetLoc, 
-            Deg2Rad(isSelfCast ? 82 : 45)
-        );
-        this.unitLocTracker = casterLoc;
         
-        // const MISSILE_SFX = 'Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdl';
-        // AddSpecialEffect(MISSILE_SFX, targetLoc.x, targetLoc.y);
-        // AddSpecialEffect(MISSILE_SFX, casterLoc.x, casterLoc.y);
-
         let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", casterLoc.x, casterLoc.y);
         BlzSetSpecialEffectAlpha(sfx, 40);
         BlzSetSpecialEffectScale(sfx, 0.7);
@@ -116,13 +97,19 @@ export class LeapAbility implements Ability {
 
         const angle = Rad2Deg(Atan2(targetLoc.y-casterLoc.y, targetLoc.x-casterLoc.x));
         BlzSetUnitFacingEx(this.casterUnit, angle);
-        BlzPauseUnitEx(this.casterUnit, true);
         SetUnitAnimation(this.casterUnit, "attack");
         SetUnitTimeScale(this.casterUnit, 0.3);
-        UnitAddAbility(this.casterUnit, UNIT_IS_FLY);
-        BlzUnitDisableAbility(this.casterUnit, UNIT_IS_FLY, true, true);
 
-        // Log.Information("Leap reached here:: "+GetUnitName(this.casterUnit));
+        // Register the leap and its callback
+        abMod.game.leapModule.newLeap(
+            this.casterUnit,
+            targetLoc,
+            isSelfCast ? 82 : 45,
+            3
+        ).onFinish((leapEntry) => {
+            this.leapExpired = true;
+        });
+
         return true;
     };
 
@@ -137,31 +124,7 @@ export class LeapAbility implements Ability {
     }
 
     public process(abMod: AbilityModule, delta: number) {
-        if (this.mover && this.casterUnit) {
-
-            const posDelta = this.mover.move(
-                this.mover.originalPos, 
-                this.mover.originalDelta, 
-                this.mover.velocity, 
-                // Faster timescale
-                delta * 1.5
-            );
-
-            const unitLoc = new Vector3(
-                GetUnitX(this.casterUnit) + posDelta.x,
-                GetUnitY(this.casterUnit) + posDelta.y,
-                this.unitLocTracker.z + posDelta.z
-            );
-            this.unitLocTracker = unitLoc;
-            const terrainZ = abMod.game.getZFromXY(unitLoc.x, unitLoc.y);
-
-            SetUnitX(this.casterUnit, unitLoc.x);
-            SetUnitY(this.casterUnit, unitLoc.y);
-            SetUnitFlyHeight(this.casterUnit, unitLoc.z+this.initialZ-terrainZ, 9999);
-
-            if (this.unitLocTracker.z < terrainZ) return false;
-        }
-        return true;
+        return !this.leapExpired;
     };
 
     
@@ -196,9 +159,6 @@ export class LeapAbility implements Ability {
             SetUnitAnimation(this.casterUnit, "stand");
             SetUnitTimeScale(this.casterUnit, 1);
             
-            UnitRemoveAbility(this.casterUnit, UNIT_IS_FLY);
-            BlzPauseUnitEx(this.casterUnit, false);
-            SetUnitFlyHeight(this.casterUnit, 0, 9999);
         }
         return true; 
     };

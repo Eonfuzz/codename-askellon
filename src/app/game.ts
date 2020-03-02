@@ -16,6 +16,7 @@ import { WorldModule } from "./world/world-module";
 import { ZONE_TYPE } from "./world/zone-id";
 import { BuffInstanceDuration, BuffInstanceCallback } from "./buff/buff-instance";
 import { GalaxyModule } from "./galaxy/galaxy-module";
+import { LeapModule } from "./leap-engine/leap-module";
 
 export class Game {
     // Helper objects
@@ -31,6 +32,7 @@ export class Game {
     public interactionsModule: InteractionModule;
     public worldModule: WorldModule;
     public galaxyModule: GalaxyModule;
+    public leapModule: LeapModule;
 
     // public dummyUnit: unit;
 
@@ -54,6 +56,7 @@ export class Game {
         this.spaceModule        = new SpaceModule(this);
         this.worldModule        = new WorldModule(this);
         this.crewModule         = new CrewModule(this);
+        this.leapModule         = new LeapModule(this);
 
         this.abilityModule      = new AbilityModule(this);
         this.geneModule         = new GeneModule(this);
@@ -68,6 +71,9 @@ export class Game {
 
         // Here be dragons, old code is below and needs update
         this.galaxyModule.initSectors();
+
+        // Init leaps
+        this.leapModule.initialise();
 
         // Initialise commands
         this.initCommands();
@@ -149,7 +155,7 @@ export class Game {
      * ensure you remove any abilities afterwards
      * @param callback 
      */
-    public useDummyFor(callback: Function, abilityToCast: number) {
+    public useDummyFor(callback: (dummy: unit) => void, abilityToCast: number) {
         // Create a dummy unit for all abilities
         const dummyUnit = CreateUnit(Player(25), FourCC('dumy'), 0, 0, bj_UNIT_FACING);
         ShowUnit(dummyUnit, false);
@@ -159,7 +165,7 @@ export class Game {
         UnitApplyTimedLife(dummyUnit, 0, 3);
     }
 
-    
+    //@deprecated
     public getZFromXY(x: number, y: number): number {
         MoveLocation(this.TEMP_LOCATION, x, y);
         return GetLocationZ(this.TEMP_LOCATION)

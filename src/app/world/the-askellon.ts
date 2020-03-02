@@ -10,6 +10,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { Vector2 } from "app/types/vector2";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { VISION_TYPE } from "./vision-type";
 
 // Small damage
 // Will not cause damage to interior
@@ -64,7 +65,8 @@ export class TheAskellon {
 
     applyPowerChange(player: player, hasPower: boolean, justChanged: boolean) {
         let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-        let playerIsAlien = alienForce.hasPlayer(player);
+        const crewmember = this.world.game.crewModule.getCrewmemberForPlayer(player);
+        const vision = crewmember ? crewmember.getVisionType() : VISION_TYPE.NORMAL;
 
         if (hasPower && justChanged) {
             if (GetLocalPlayer() === player) {
@@ -72,44 +74,52 @@ export class TheAskellon {
             }
             this.world.game.timedEventQueue.AddEvent(new TimedEvent(() => {
                 if (GetLocalPlayer() === player) {
-                    SetDayNightModels(
-                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-                    );
+                    switch(vision) {
+                        case VISION_TYPE.NIGHT_VISION:
+                        case VISION_TYPE.ALIEN:
+                        default:
+                            SetDayNightModels(
+                                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+                                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+                            )
+                    };
                 }
                 return true;
             }, 4000));
         }
         else if (hasPower && !justChanged && player === GetLocalPlayer()) {
-            SetDayNightModels(
-                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-            );
+            switch(vision) {
+                case VISION_TYPE.NIGHT_VISION:
+                case VISION_TYPE.ALIEN:
+                default:
+                    SetDayNightModels(
+                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+                    )
+            };
         }
         else if (!hasPower && player === GetLocalPlayer()) {
             // Play the sound effect only if the power has *just* changed
             if (justChanged) {
                 this.powerDownSound.playSound();
             }
-            if (playerIsAlien) {
-                SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\NiteVisionModelRed.mdx");
-            }
-            else {
-                SetDayNightModels("", "");
+            switch(vision) {
+                case VISION_TYPE.NIGHT_VISION:
+                case VISION_TYPE.ALIEN:
+                    SetDayNightModels("war3mapImported\\NightVisionModel.mdx", "war3mapImported\\NightVisionModel.mdx");
+                    break;
+                default:
+                    SetDayNightModels("", "");
             }
         }
 
 
         // IF we dont have power add despair to the unit
-        if (!hasPower && !playerIsAlien) {
-            // Try to get crewmember
-            const crew = this.world.game.crewModule.getCrewmemberForPlayer(player);
-            if (crew) {
-                crew.addDespair(this.world.game, new BuffInstanceCallback(() => {
-                    const z = this.world.getUnitZone(crew.unit);
-                    return z ? z.doCauseFear() : false;
-                }));
-            }
+        if (!hasPower && crewmember) {
+            crewmember.addDespair(this.world.game, new BuffInstanceCallback(() => {
+                const z = this.world.getUnitZone(crewmember.unit);
+                return z ? z.doCauseFear() : false;
+            }));
         }
     }
 

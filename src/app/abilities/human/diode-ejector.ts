@@ -12,6 +12,7 @@ import { UNIT_IS_FLY, SMART_ORDER_ID } from "../../../lib/order-ids";
 import { Trigger } from "../../types/jass-overrides/trigger";
 import { LaserRifle } from "app/weapons/guns/laser-rifle";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { getZFromXY } from "lib/utils";
 
 // How many projectiles are fired inside the cone
 const NUM_PROJECTILES = 20;
@@ -32,14 +33,11 @@ export class DiodeEjectAbility implements Ability {
     private ventDamagePoint: number = 0.1;
     private startLeapAt: number = 0.15;
 
-    private unitLocTracker: Vector3 | undefined;
-    private initialZ: number = 0;
-
-    private mover: ProjectileMoverParabolic | undefined;  
     private crew: Crewmember | undefined;
     private weapon: LaserRifle | undefined;  
 
     private weaponIntensityOnCast: number = 0;
+    private leapExpired: boolean = false;
 
     constructor() {
         this.timeElapsed = 0;
@@ -152,9 +150,7 @@ export class DiodeEjectAbility implements Ability {
 
         const cX = GetUnitX(this.casterUnit);
         const cY = GetUnitY(this.casterUnit);
-
-        const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
-        this.initialZ = casterLoc.z;
+        const casterLoc = new Vector3(cX, cY, getZFromXY(cX, cY));
         
         const weaponIntensity = this.weaponIntensityOnCast;
 
@@ -164,52 +160,19 @@ export class DiodeEjectAbility implements Ability {
         const distanceJumpBack = 128 + 140 * weaponIntensity / 4;
         let targetLoc = casterLoc.projectTowards2D(GetUnitFacing(this.casterUnit), -distanceJumpBack);
 
-        this.mover = new ProjectileMoverParabolic(
-            casterLoc, 
-            targetLoc, 
-            Deg2Rad(70)
-        );
-        this.unitLocTracker = casterLoc;
-
-        BlzPauseUnitEx(this.casterUnit, true);
-        UnitAddAbility(this.casterUnit, UNIT_IS_FLY);
-        BlzUnitDisableAbility(this.casterUnit, UNIT_IS_FLY, true, true);
-
-        let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", casterLoc.x, casterLoc.y);
-        BlzSetSpecialEffectAlpha(sfx, 40);
-        BlzSetSpecialEffectScale(sfx, 0.8);
-        BlzSetSpecialEffectTimeScale(sfx, 0.8);
-        BlzSetSpecialEffectTime(sfx, 0.2);
-        BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
-        DestroyEffect(sfx);
+        // Register the leap and its callback
+        abMod.game.leapModule.newLeap(
+            this.casterUnit,
+            targetLoc,
+            45,
+            3
+        ).onFinish((leapEntry) => {
+            this.leapExpired = true;
+        });
     }
 
     private processLeap(abMod: AbilityModule, delta: number) {
-        if (this.mover && this.casterUnit && this.unitLocTracker) {
-
-            const posDelta = this.mover.move(
-                this.mover.originalPos, 
-                this.mover.originalDelta, 
-                this.mover.velocity,
-                // Faster timescale 
-                delta * 2
-            );
-
-            const unitLoc = new Vector3(
-                GetUnitX(this.casterUnit) + posDelta.x,
-                GetUnitY(this.casterUnit) + posDelta.y,
-                this.unitLocTracker.z + posDelta.z
-            );
-            this.unitLocTracker = unitLoc;
-            const terrainZ = abMod.game.getZFromXY(unitLoc.x, unitLoc.y);
-
-            SetUnitX(this.casterUnit, unitLoc.x);
-            SetUnitY(this.casterUnit, unitLoc.y);
-            SetUnitFlyHeight(this.casterUnit, unitLoc.z+this.initialZ-terrainZ, 9999);
-
-            if (this.unitLocTracker.z < terrainZ) return true;
-        }
-        return false;
+        return !this.leapExpired;
     }
     
     public destroy(abMod: AbilityModule) {

@@ -2,7 +2,6 @@
 import { Game } from "../game";
 import { Ability } from "./ability-type";
 import { Trigger } from "../types/jass-overrides/trigger";
-import { RollWhenSprinting } from "./human/roll-sprint";
 import { Log } from "../../lib/serilog/serilog";
 import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
@@ -11,6 +10,7 @@ import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
 import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
+import { SprintLeapAbility } from "./human/sprint-leap";
 
 
 const TIMEOUT = 0.03;
@@ -55,7 +55,7 @@ export class AbilityModule {
 
         switch(id) {
             case ABIL_HUMAN_SPRINT:
-                instance = new RollWhenSprinting();
+                instance = new SprintLeapAbility();
                 if (instance.initialise(this)) {
                     this.data.push(instance);
                 }
