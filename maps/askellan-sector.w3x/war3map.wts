@@ -262,30 +262,6 @@ STRING 53
 Forest Tree
 }
 
-STRING 54
-// Units: nfr2 (Furbolg Hut), Ubertip (Tooltip - Extended)
-{
-This is your home, defend it with your life!
-}
-
-STRING 55
-// Units: nfr1 (Furbolg Home), Tip (Tooltip - Basic)
-{
-Upgrade Furbolg Home
-}
-
-STRING 56
-// Units: nfr1 (Furbolg Home), Name (Name)
-{
-Furbolg Home
-}
-
-STRING 57
-// Units: nfr1 (Furbolg Home), Ubertip (Tooltip - Extended)
-{
-A Fancier furbolg hut, with room to start a loving family or an army to brutally slaughter the gnolls!
-}
-
 STRING 58
 // Units: Furb (Furbolg Chieftain), Name (Name)
 {
@@ -999,5 +975,526 @@ STRING 202
 // Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1260%|r for |cffd45e122 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
+}
+
+STRING 203
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [1/10]
+}
+
+STRING 205
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 0%|r|n|cffd45e19New Damage Bonus: 10%|r
+}
+
+STRING 206
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 10%|r|n|cffd45e19New Damage Bonus: 21%|r
+}
+
+STRING 207
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 21%|r|n|cffd45e19New Damage Bonus: 33%|r
+}
+
+STRING 208
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 33%|r|n|cffd45e19New Damage Bonus: 46%|r
+}
+
+STRING 209
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 46%|r|n|cffd45e19New Damage Bonus: 61%|r
+}
+
+STRING 210
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 61%|r|n|cffd45e19New Damage Bonus: 77%|r
+}
+
+STRING 211
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 77%|r|n|cffd45e19New Damage Bonus: 94%|r
+}
+
+STRING 212
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 94%|r|n|cffd45e19New Damage Bonus: 115%|r
+}
+
+STRING 213
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 115%|r|n|cffd45e19New Damage Bonus: 136%|r
+}
+
+STRING 214
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
+}
+
+STRING 215
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [1/10]
+}
+
+STRING 216
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [2/10]
+}
+
+STRING 217
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [3/10]
+}
+
+STRING 218
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [4/10]
+}
+
+STRING 219
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [5/10]
+}
+
+STRING 220
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 221
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 222
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 223
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 224
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 225
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [2/10]
+}
+
+STRING 226
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [3/10]
+}
+
+STRING 227
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [5/10]
+}
+
+STRING 228
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [4/10]
+}
+
+STRING 229
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 230
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 231
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 232
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 233
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 234
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 235
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 236
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 237
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 238
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 239
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 240
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 241
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 242
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 243
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 244
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
+{
+ranged
+}
+
+STRING 245
+// Units: n003 (Weapon Shop), Name (Name)
+{
+Weapon Shop
+}
+
+STRING 246
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 252
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 61%|r|n|cffd45e19New Damage Bonus: 77%|r
+}
+
+STRING 253
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 77%|r|n|cffd45e19New Damage Bonus: 94%|r
+}
+
+STRING 254
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 94%|r|n|cffd45e19New Damage Bonus: 115%|r
+}
+
+STRING 255
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 115%|r|n|cffd45e19New Damage Bonus: 136%|r
+}
+
+STRING 256
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
+}
+
+STRING 262
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 263
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 264
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 265
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 266
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 271
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 272
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 273
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 274
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 275
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 276
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 277
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 278
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 279
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 280
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 281
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 282
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 283
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 284
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 285
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 286
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
+{
+ranged
+}
+
+STRING 287
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 288
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 289
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 290
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 291
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 292
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 293
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 294
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 295
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 296
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 297
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 298
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 299
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 300
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 301
+{
+Station
+}
+
+STRING 302
+// Units: nWEP (Weapons Terminal), Name (Name)
+{
+Weapons Terminal
+}
+
+STRING 303
+// Units: hWEP (Weapons Terminal), Name (Name)
+{
+Weapons Terminal
+}
+
+STRING 304
+// Units: hWEP (Weapons Terminal), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
 }
 

@@ -16,6 +16,7 @@ import { ArmableUnit } from "./unit-has-weapon";
 import { Log } from "../../../lib/serilog/serilog";
 import { LASER_ITEM_ID, LASER_ABILITY_ID } from "../weapon-constants";
 import { DiodeEjector } from "../attachment/diode-ejector";
+import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 
 const INTENSITY_MAX = 4;
 
@@ -136,7 +137,8 @@ export class LaserRifle extends Gun {
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        return 25 * Pow(1.5, this.intensity);
+        const upgradeLevel = GetPlayerTechCount(caster.player, TECH_WEP_DAMAGE, true);
+        return MathRound( 25 * Pow(1.5, this.intensity) * Pow(1.1, upgradeLevel + 1) );
     }
 
     public getIntensity() {

@@ -15,6 +15,7 @@ import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
 import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
 import { Log } from "../../../lib/serilog/serilog";
+import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 
 
 export const InitBurstRifle = (weaponModule: WeaponModule) => {
@@ -113,10 +114,12 @@ export class BurstRifle extends Gun {
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
+        const upgradeLevel = GetPlayerTechCount(caster.player, TECH_WEP_DAMAGE, true);
+
         if (this.attachment && this.attachment.name === "Ems Rifling") {
-            return 20;
+            return MathRound( 20 * Pow(1.1, upgradeLevel + 1));
         }
-        return 15;
+        return MathRound( 15 * Pow(1.1, upgradeLevel + 1));
     }
 
     public getAbilityId() { return BURST_RIFLE_ABILITY_ID; }

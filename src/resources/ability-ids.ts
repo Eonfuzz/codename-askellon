@@ -15,3 +15,4 @@ export const ABIL_ACCURACY_BONUS_30 = FourCC('A00F');
 
 export const SPRINT_BUFF_ID = FourCC('B000');
 export const TECH_MOBILITY = FourCC('R001');
+export const TECH_WEP_DAMAGE = FourCC('RDAM');

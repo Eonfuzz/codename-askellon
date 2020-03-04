@@ -3,7 +3,7 @@ import { Game } from "../game";
 import { InteractionEvent } from "./interaction-event";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
-import { Interactables, initElevators, initHatches } from "./interaction-data";
+import { Interactables, initElevators, initHatches, initWeaponsTerminals } from "./interaction-data";
 import { SMART_ORDER_ID } from "../../lib/order-ids";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
@@ -52,6 +52,7 @@ export class InteractionModule {
 
         initElevators();
         initHatches();
+        initWeaponsTerminals();
     }
 
     processInteractions(delta: number) {

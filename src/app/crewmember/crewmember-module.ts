@@ -13,6 +13,9 @@ import { ForceType } from "app/force/force-type";
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 const DELTA_CHECK = 0.25;
 
+// How many seconds between each income tick
+const INCOME_EVERY = 20;
+
 export class CrewModule {
 
     game: Game;
@@ -75,11 +78,26 @@ export class CrewModule {
             }));
     }
 
+    timeSinceLastIncome = 0;
     processCrew(time: number) {
+        const doIncome = this.timeSinceLastIncome >= INCOME_EVERY;
         this.CREW_MEMBERS.forEach(crew => {
             crew.resolve.process(this.game, time);
             crew.despair.process(this.game, time);
         });
+
+        if (doIncome) {
+            this.timeSinceLastIncome = 0;
+            const amount = INCOME_EVERY / 60;
+            this.CREW_MEMBERS.forEach(crew => 
+                AdjustPlayerStateBJ(amount * this.calculateIncome(crew), 
+                    crew.player, PLAYER_STATE_RESOURCE_GOLD
+                )
+            );
+        }
+        else {
+            this.timeSinceLastIncome += time;
+        }
     }
 
     createCrew(player: player, force: ForceType): Crewmember {   

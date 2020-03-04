@@ -3,8 +3,9 @@ import { InteractableData } from "./interactable";
 import { InteractionModule } from "./interaction-module";
 import { Log } from "../../lib/serilog/serilog";
 import { ZONE_TYPE } from "../world/zone-id";
-import { PlayNewSoundOnUnit, COLOUR } from "../../lib/translators";
+import { PlayNewSoundOnUnit, COLOUR, console } from "../../lib/translators";
 import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS } from "../../resources/colours";
+import { Trigger } from "app/types/jass-overrides/trigger";
 
 export let Interactables = new Map<number, InteractableData>();
 
@@ -156,4 +157,33 @@ export function initHatches() {
         }
     }
     Interactables.set(hatcInteractable.unitType, hatcInteractable);
+}
+
+export const initWeaponsTerminals = () => {
+    
+    const weaponTerminalData: InteractableData = {
+        unitType: FourCC('nWEP'),
+        onStart: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
+        },
+        onCancel: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
+        },
+        action: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
+            const handleId = GetHandleId(targetUnit);    
+            const uX = GetUnitX(targetUnit); 
+            const uY = GetUnitY(targetUnit);
+
+            const nUnit = CreateUnit(GetOwningPlayer(fromUnit), FourCC('hWEP'), uX, uY, bj_UNIT_FACING);
+            SelectUnitForPlayerSingle(nUnit, GetOwningPlayer(fromUnit));
+
+            const trackUnselectEvent = new Trigger();
+            trackUnselectEvent.RegisterPlayerUnitEventSimple(GetOwningPlayer(fromUnit), EVENT_PLAYER_UNIT_DESELECTED);
+            trackUnselectEvent.AddAction(() => {
+                if (GetTriggerUnit() === nUnit) {
+                    UnitApplyTimedLife(nUnit, FourCC('b001'), 3);
+                    trackUnselectEvent.destroy();
+                }
+            })
+        }
+    }
+    Interactables.set(weaponTerminalData.unitType, weaponTerminalData);
 }
