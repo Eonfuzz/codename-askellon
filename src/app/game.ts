@@ -18,6 +18,7 @@ import { BuffInstanceDuration, BuffInstanceCallback } from "./buff/buff-instance
 import { GalaxyModule } from "./galaxy/galaxy-module";
 import { LeapModule } from "./leap-engine/leap-module";
 import { TECH_MOBILITY } from "resources/ability-ids";
+import { ResearchModule } from "./research/research-module";
 
 export class Game {
     // Helper objects
@@ -34,6 +35,7 @@ export class Game {
     public worldModule: WorldModule;
     public galaxyModule: GalaxyModule;
     public leapModule: LeapModule;
+    public researchModule: ResearchModule;
 
     // public dummyUnit: unit;
 
@@ -58,6 +60,7 @@ export class Game {
         this.worldModule        = new WorldModule(this);
         this.crewModule         = new CrewModule(this);
         this.leapModule         = new LeapModule(this);
+        this.researchModule     = new ResearchModule(this);
 
         this.abilityModule      = new AbilityModule(this);
         this.geneModule         = new GeneModule(this);
@@ -70,6 +73,8 @@ export class Game {
         // Misc
         this.makeUnitsTurnInstantly();
 
+        this.researchModule.initialise();
+        
         // Here be dragons, old code is below and needs update
         this.galaxyModule.initSectors();
 

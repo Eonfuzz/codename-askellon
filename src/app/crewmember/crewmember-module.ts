@@ -78,6 +78,7 @@ export class CrewModule {
             }));
     }
 
+
     timeSinceLastIncome = 0;
     processCrew(time: number) {
         const doIncome = this.timeSinceLastIncome >= INCOME_EVERY;

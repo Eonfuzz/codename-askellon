@@ -114,12 +114,10 @@ export class BurstRifle extends Gun {
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        const upgradeLevel = GetPlayerTechCount(caster.player, TECH_WEP_DAMAGE, true);
-
         if (this.attachment && this.attachment.name === "Ems Rifling") {
-            return MathRound( 20 * Pow(1.1, upgradeLevel + 1));
+            return MathRound( 20 * caster.getDamageBonusMult());
         }
-        return MathRound( 15 * Pow(1.1, upgradeLevel + 1));
+        return MathRound( 15 * caster.getDamageBonusMult());
     }
 
     public getAbilityId() { return BURST_RIFLE_ABILITY_ID; }

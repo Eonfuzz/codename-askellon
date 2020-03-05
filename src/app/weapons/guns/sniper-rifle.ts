@@ -127,7 +127,7 @@ export class SniperRifle extends Gun {
     }
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        return 120;
+        return MathRound(120 * caster.getDamageBonusMult());
     }
 
     public getAbilityId() { return SNIPER_ABILITY_ID; }

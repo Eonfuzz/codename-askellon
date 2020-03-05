@@ -137,8 +137,7 @@ export class LaserRifle extends Gun {
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        const upgradeLevel = GetPlayerTechCount(caster.player, TECH_WEP_DAMAGE, true);
-        return MathRound( 25 * Pow(1.5, this.intensity) * Pow(1.1, upgradeLevel + 1) );
+        return MathRound( 25 * caster.getDamageBonusMult());
     }
 
     public getIntensity() {

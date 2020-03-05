@@ -42,8 +42,6 @@ export class LeapAbility implements Ability {
 
         let targetLoc = new Vector3(0, 0, 0);
 
-        // Log.Information(`Is self cast? ${isSelfCast}::${isSelfCast ? 'YES' : 'NO'}`);
-
         // Handle incoming from order
         if (!isSelfCast) {
             targetLoc.x = GetOrderPointX();

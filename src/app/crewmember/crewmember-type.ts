@@ -10,6 +10,7 @@ import { ForceType } from "app/force/force-type";
 import { Log } from "lib/serilog/serilog";
 import { CrewModule } from "./crewmember-module";
 import { VISION_TYPE } from "app/world/vision-type";
+import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 
 export class Crewmember extends ArmableUnit {
     public role = '';
@@ -22,6 +23,9 @@ export class Crewmember extends ArmableUnit {
     private visionType: VISION_TYPE = VISION_TYPE.NORMAL;
 
     private crewModule: CrewModule;
+
+    private damageUpgradeLevel: number = 0;
+    private damageBonusMult: number = 1;
 
     constructor(game: Game, player: player, unit: unit, force: ForceType) {
         super(unit);
@@ -131,5 +135,22 @@ export class Crewmember extends ArmableUnit {
 
     setVisionType(type: VISION_TYPE) {
         this.visionType = type;
+    }
+
+    /**
+     * Update some constants when players finish upgrades
+     */
+    onPlayerFinishUpgrade() {
+
+        const upgradeLevel = GetPlayerTechCount(this.player, TECH_WEP_DAMAGE, true);
+
+        this.damageUpgradeLevel = upgradeLevel;
+        this.damageBonusMult = upgradeLevel > 0 ? Pow(1.1, upgradeLevel) : 1;
+
+        this.updateTooltips(this.crewModule.game.weaponModule);
+    }
+
+    getDamageBonusMult() {
+        return this.damageBonusMult;
     }
 }

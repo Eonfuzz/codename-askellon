@@ -81,7 +81,7 @@ export class TheAskellon {
                             SetDayNightModels(
                                 "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
                                 "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-                            )
+                            );
                     };
                 }
                 return true;
@@ -95,7 +95,7 @@ export class TheAskellon {
                     SetDayNightModels(
                         "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
                         "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-                    )
+                    );
             };
         }
         else if (!hasPower && player === GetLocalPlayer()) {
@@ -171,5 +171,14 @@ export class TheAskellon {
      */
     public getPilot(): Crewmember | undefined {
         return this.pilot;
+    }
+
+    /**
+     * Gets a list of players currently on the Aksellon
+     */
+    public getPlayers(): player[] {
+        const result: player[] = [];
+        Array.from(this.floors).forEach(v => v[1].getPlayersInZone().forEach(p => result.push(p)));
+        return result;
     }
 }
