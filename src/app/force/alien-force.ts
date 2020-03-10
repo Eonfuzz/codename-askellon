@@ -197,4 +197,8 @@ export class AlienForce extends ForceType {
         AddHeroXP(alien, amount, true);
         SuspendHeroXP(alien, false);
     }
+
+    public getAlienFormForPlayer(who: player) {
+        return this.playerAlienUnits.get(who);
+    }
 }

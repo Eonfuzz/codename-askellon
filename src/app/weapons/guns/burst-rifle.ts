@@ -27,7 +27,7 @@ export class BurstRifle extends Gun {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 240;
-        this.bulletDistance = 1600;
+        this.bulletDistance = 1400;
     }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
@@ -67,9 +67,10 @@ export class BurstRifle extends Gun {
             "war3mapImported\\Bullet.mdx",
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
-            1.6
+            1.4
         );
         projectile
+            .setCollisionRadius(15)
             .setVelocity(2400)
             .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)

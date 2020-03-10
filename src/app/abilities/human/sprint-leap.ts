@@ -16,14 +16,13 @@ export class SprintLeapAbility implements Ability {
     private unit: unit | undefined;
     private distanceTravelled: number = 0;
 
+    private timeElapsed = 0;
     private unitLastLoc: Vector2 | undefined;
 
     constructor() {}
 
     public initialise(module: AbilityModule) {
         this.unit = GetTriggerUnit();
-
-        Log.Information("Fast sprint!");
 
         // If unit doesn't have the right tech upgrade return false
         const hasUpgrade = GetPlayerTechCount(GetOwningPlayer(this.unit), TECH_UPGRADE_SPRINT_LEAP, true) > 0;
@@ -37,9 +36,19 @@ export class SprintLeapAbility implements Ability {
     };
 
     public process(module: AbilityModule, delta: number) {
+        this.timeElapsed += delta;
+
         if (this.unit && UnitHasBuffBJ(this.unit, SPRINT_BUFF_ID) && this.unitLastLoc) {
             const newPos = vectorFromUnit(this.unit);
             const delta = newPos.subtract(this.unitLastLoc).getLength();
+
+            // If they've stopped moving, kill buff return false
+            // Require some time to be elapsed before this thing ends
+            if (delta === 0 && this.timeElapsed > 0.3) {
+                UnitRemoveBuffBJ(SPRINT_BUFF_ID, this.unit);
+                return false;
+            }
+
             this.distanceTravelled = (delta == 0) ? 0 : (this.distanceTravelled + delta)
             this.unitLastLoc = newPos;
         }
@@ -65,7 +74,7 @@ export class SprintLeapAbility implements Ability {
 
             aMod.game.leapModule.newLeap(
                 this.unit,
-                targetLoc.projectTowards2D(GetUnitFacing(this.unit), this.distanceTravelled/1.5),
+                targetLoc.projectTowards2D(GetUnitFacing(this.unit), this.distanceTravelled/2),
                 30,
                 2.5
             );

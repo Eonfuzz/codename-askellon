@@ -1,13 +1,14 @@
 import { Game } from "app/game";
 import { Trigger } from "app/types/jass-overrides/trigger";
-import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE } from "resources/ability-ids";
-import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION } from "resources/strings";
+import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
+// import { STR_OPT_ALIEN } from "resources/strings";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
+import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE } from "resources/strings";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * Handles research and upgrades
  */
-
  export class ResearchModule {
     public game: Game;
 
@@ -59,6 +60,7 @@ import { ALIEN_FORCE_NAME } from "app/force/alien-force";
      */
     techIsMajor(id: number): boolean {
         if (id === TECH_MAJOR_WEAPONS_PRODUCTION) return true;
+        if (id === TECH_MAJOR_HEALTHCARE) return true;
         return false;
     }
 
@@ -74,14 +76,14 @@ import { ALIEN_FORCE_NAME } from "app/force/alien-force";
         players.forEach(p => SetPlayerTechResearched(p, id, level));
         // Now send message to all players
         // Get all players on the ship
-        const pAlert = this.game.worldModule.askellon.getPlayers();
+        // const pAlert = this.game.worldModule.askellon.getPlayers();
         const techName = this.getTechName(id, level);
 
-        pAlert.forEach(p => {
-            DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_HEADER(techName));
+        players.forEach(p => {
+            DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_HEADER());
             DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_SUBTITLE(techName));
             if (alienForce && isInfested && alienForce.hasPlayer(p)) {
-                DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION(techName));
+                DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
                 // Play infestation complete sound
             }
             else {
@@ -94,9 +96,10 @@ import { ALIEN_FORCE_NAME } from "app/force/alien-force";
      * 
      */
     getTechName(id: number, level: number) {
-        switch (id) {
-            default:
-            case TECH_WEP_DAMAGE: return STR_UPGRADE_NAME_WEAPONS(level);
-        }
+        if (id === TECH_MAJOR_WEAPONS_PRODUCTION)
+            return STR_UPGRADE_NAME_WEAPONS(level);
+        if (id === TECH_MAJOR_HEALTHCARE)
+            return STR_UPGRADE_NAME_HEALTHCARE(level);
+        return '';
     }
  }

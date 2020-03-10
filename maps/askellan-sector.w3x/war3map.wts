@@ -53,7 +53,7 @@ Increases Ship Speed
 
 STRING 12
 {
-Akellon
+Askellon Sector v
 }
 
 STRING 13
@@ -262,12 +262,6 @@ STRING 53
 Forest Tree
 }
 
-STRING 58
-// Units: Furb (Furbolg Chieftain), Name (Name)
-{
-Furbolg Chieftain
-}
-
 STRING 59
 // Abilities: A006 (Stop Ship), Name (Name)
 {
@@ -377,7 +371,7 @@ STRING 81
 }
 
 STRING 82
-// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+// Abilities: AGJP (Enhanced Mobility), Name (Name)
 {
 Enhanced Mobility
 }
@@ -394,14 +388,8 @@ STRING 84
 rmov
 }
 
-STRING 85
-// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
-{
-No Genes Chosen
-}
-
 STRING 86
-// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -941,18 +929,6 @@ STRING 195
 Diode Eject
 }
 
-STRING 196
-// Abilities: DIOJ (Diode Eject), Hotkey (Hotkey - Normal)
-{
-T
-}
-
-STRING 197
-// Abilities: DIOJ (Diode Eject), Tip (Tooltip - Normal)
-{
-Eject Them Diodes
-}
-
 STRING 198
 // Doodads: D00B (Ventilator Large), Name (Name)
 {
@@ -1158,7 +1134,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 234
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: AGJP (Enhanced Mobility), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1326,7 +1302,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 276
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -1480,21 +1456,345 @@ STRING 301
 Station
 }
 
-STRING 302
-// Units: nWEP (Weapons Terminal), Name (Name)
-{
-Weapons Terminal
-}
-
-STRING 303
-// Units: hWEP (Weapons Terminal), Name (Name)
-{
-Weapons Terminal
-}
-
 STRING 304
-// Units: hWEP (Weapons Terminal), EditorSuffix (Name - Editor Suffix)
+// Units: hWEP (|cffa00000Weapons |rTerminal), EditorSuffix (Name - Editor Suffix)
 {
 - Invisible
+}
+
+STRING 305
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Healthcare
+}
+
+STRING 306
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 307
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Healthcare
+}
+
+STRING 308
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Healthcare
+}
+
+STRING 309
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Healthcare
+}
+
+STRING 310
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 311
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 312
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 313
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 314
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 315
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 316
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+|cff808080Fluff TODO.|r|n|nUnlocks Medkits and Emotion Inhibitors
+}
+
+STRING 317
+// Units: nWEP (|cffb40000Weapons |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cffb40000Weapons |rTerminal|n|cff808080Right Click to Use|r
+}
+
+STRING 319
+// Units: nMED (|cff00ffffMedical |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cff00ffffMedical |rTerminal|n|cff808080Right Click to Use|r
+}
+
+STRING 320
+// Units: hMED (|cff00ffffMedical |rTerminal), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 321
+// Units: hWEP (|cffa00000Weapons |rTerminal), Name (Name)
+{
+|cffa00000Weapons |rTerminal
+}
+
+STRING 322
+// Units: hMED (|cff00ffffMedical |rTerminal), Name (Name)
+{
+|cff00ffffMedical |rTerminal
+}
+
+STRING 323
+// Abilities: DIOJ (Diode Eject), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 324
+// Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+No Tier 1 Genes Chosen
+}
+
+STRING 325
+// Upgrades: RGN2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+No Tier 2 Genes Chosen
+}
+
+STRING 326
+// Upgrades: RGN2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Tier 1
+}
+
+STRING 327
+// Upgrades: RGN3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+No Tier 3 Genes Chosen
+}
+
+STRING 328
+// Upgrades: RGN3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Tier 1
+}
+
+STRING 329
+// Units: nGEN (|cff00ffffGene Splicer |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cff00ffffGene Splicer |rTerminal|n|cff808080Right Click to Use|r
+}
+
+STRING 330
+// Units: hGEN (|cff00ffffGene Splicer |rTerminal), Name (Name)
+{
+|cff00ffffGene Splicer |rTerminal
+}
+
+STRING 331
+// Units: hGEN (|cff00ffffGene Splicer |rTerminal), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 332
+// Abilities: A00I (Night Eye), Name (Name)
+{
+Night Eye
+}
+
+STRING 335
+// Abilities: A00I (Night Eye), Tip (Tooltip - Normal)
+{
+Night Eye Gene
+}
+
+STRING 336
+// Abilities: A00I (Night Eye), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 337
+// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Unit In Splicer
+}
+
+STRING 338
+// Abilities: AGJP (Enhanced Mobility), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 339
+// Upgrades: RPG1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Player Has Tier 1 Genes
+}
+
+STRING 340
+// Upgrades: RPG1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- ACTUAL
+}
+
+STRING 341
+// Upgrades: RPG2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Player Has Tier 2 Genes
+}
+
+STRING 342
+// Upgrades: RPG2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- ACTUAL
+}
+
+STRING 343
+// Upgrades: RPG3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Player Has Tier 3 Genes
+}
+
+STRING 344
+// Upgrades: RPG3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- ACTUAL
+}
+
+STRING 345
+// Abilities: ANEG (Night Eye), Name (Name)
+{
+Night Eye
+}
+
+STRING 346
+// Abilities: A00I (Night Eye), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 348
+// Abilities: ANEG (Night Eye), Tip (Tooltip - Normal)
+{
+Night Eye Gene
+}
+
+STRING 349
+// Abilities: ANEG (Night Eye), EditorSuffix (Editor Suffix)
+{
+- Ability
+}
+
+STRING 351
+// Abilities: ANEG (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A revolutionay mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nWhen used, gain |cffd45e19night vision|r for |cffd45e1930 seconds|r. You are |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
+}
+
+STRING 354
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A revolutionay mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|n|cff00ffffSplices|r the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cffd45e19night vision|r for |cffd45e1930 seconds|r. You are |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
+}
+
+STRING 357
+// Abilities: AGJP (Enhanced Mobility), Tip (Tooltip - Normal)
+{
+Night Eye Gene
+}
+
+STRING 358
+// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Enhanced Mobility
+}
+
+STRING 359
+// Abilities: AGPS (Unlock Psionic Potential), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 361
+// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personel. |r|n|n|cff00ffffSplices|r the |cffd45e19Enhanced Mobility|r power into your patient.|nIncreasing their movement speed by |cffd45e1910%|r and enhances the |cffd45e19Sprint|r ability.|nEnhanced |cffd45e19Sprint|r has a |cffff0000reduced |rcooldown, |cffd45e1920%|r faster speed but |cffff0000lower |rduration. Can be used to |cffd45e19jump|r small gaps.
+}
+
+STRING 363
+// Abilities: DIOJ (Diode Eject), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Constant use causes large, crystal like structures build around the all important prismatic diodes. These morst efficient way to clear these is blasting them with focused light.|r|n|nFires |cff00ff0020|r short ranged beams of light, dealing up to |cff00ff00300%|r of your normal damage; |cffc81e1edivided|r amongst each beam of light.|n|cff00ffffFiring this at full power causes you to be sent flying back.|r|n|n|cff80808045 Second Cooldown|r
+}
+
+STRING 364
+// Abilities: DIOJ (Diode Eject), Tip (Tooltip - Normal)
+{
+Diode Cleanse
+}
+
+STRING 369
+// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 370
+// Abilities: ANEG (Night Eye), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 371
+// Abilities: AGPS (Unlock Psionic Potential), Name (Name)
+{
+Unlock Psionic Potential
+}
+
+STRING 372
+// Abilities: AGPS (Unlock Psionic Potential), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 373
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 374
+// Abilities: AGPS (Unlock Psionic Potential), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080An extremely dangerous and volatile procedure, sections of the brain is directly exposed to dark matter. Few survive this procedure without the correct tools. The Askellon was initially sent into this sector to research such phenomena.|r|n|n|cff00ffffSplices|r the |cffd45e19Psionic Potential|r power into your patient.|nThey gain the |cffd45e19Third Eye|r power immediately. Additionally, whenever the patient would undergo further|cff00ffff Gene Splicing|r they instead progress their |cffd45e19Psionic Potential|r; Gaining |cffd45e19Psionic Bolts|r when unarmed and finally |cffd45e19Warp Mastery|r, allowing manipulation of space itself.
+}
+
+STRING 375
+// Abilities: AGPS (Unlock Psionic Potential), Tip (Tooltip - Normal)
+{
+Unlock Psionic Potential
 }
 

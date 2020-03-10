@@ -11,6 +11,7 @@ import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { Vector2 } from "app/types/vector2";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { VISION_TYPE } from "./vision-type";
+import { ABIL_NIGHTEYE } from "resources/ability-ids";
 
 // Small damage
 // Will not cause damage to interior
@@ -106,7 +107,7 @@ export class TheAskellon {
             switch(vision) {
                 case VISION_TYPE.NIGHT_VISION:
                 case VISION_TYPE.ALIEN:
-                    SetDayNightModels("war3mapImported\\NightVisionModel.mdx", "war3mapImported\\NightVisionModel.mdx");
+                    SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\war3mapImported\\NiteVisionModelRed.mdx");
                     break;
                 default:
                     SetDayNightModels("", "");
@@ -115,10 +116,11 @@ export class TheAskellon {
 
 
         // IF we dont have power add despair to the unit
-        if (!hasPower && crewmember) {
+        if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit, ABIL_NIGHTEYE) === 0) {
             crewmember.addDespair(this.world.game, new BuffInstanceCallback(() => {
                 const z = this.world.getUnitZone(crewmember.unit);
-                return z ? z.doCauseFear() : false;
+                const hasNighteye = GetUnitAbilityLevel(crewmember.unit, ABIL_NIGHTEYE);
+                return (z && hasNighteye === 0) ? z.doCauseFear() : false;
             }));
         }
     }

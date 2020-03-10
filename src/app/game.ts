@@ -11,13 +11,10 @@ import { AbilityModule } from "./abilities/ability-module";
 import { InteractionModule } from "./interactions/interaction-module";
 import { Log } from "../lib/serilog/serilog";
 import { Vector2 } from "./types/vector2";
-import { SoundRef } from "./types/sound-ref";
 import { WorldModule } from "./world/world-module";
 import { ZONE_TYPE } from "./world/zone-id";
-import { BuffInstanceDuration, BuffInstanceCallback } from "./buff/buff-instance";
 import { GalaxyModule } from "./galaxy/galaxy-module";
 import { LeapModule } from "./leap-engine/leap-module";
-import { TECH_MOBILITY } from "resources/ability-ids";
 import { ResearchModule } from "./research/research-module";
 
 export class Game {
@@ -74,6 +71,7 @@ export class Game {
         this.makeUnitsTurnInstantly();
 
         this.researchModule.initialise();
+        this.geneModule.initGenes();
         
         // Here be dragons, old code is below and needs update
         this.galaxyModule.initSectors();
@@ -127,9 +125,6 @@ export class Game {
             }
             else if (message === "-nt") {
                 this.noTurn = !this.noTurn;
-            }
-            else if (message === "-michaeljordan") {
-                SetPlayerTechResearched(triggerPlayer, TECH_MOBILITY, 1);
             }
             else if (message === "-p1off") {
                 Log.Information("Killing power to floor 1");

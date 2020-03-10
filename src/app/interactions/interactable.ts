@@ -2,7 +2,11 @@ import { InteractionModule } from "./interaction-module";
 
 /** @noSelfInFile **/
 export interface InteractableData {
-  unitType: number;
+  /**
+   * Not really used anywhere integeral
+   * Totally optional
+   */
+  unitType?: number;
   
   /**
    * Ran when the unit tries to interact, true allows the interactable effect to exist

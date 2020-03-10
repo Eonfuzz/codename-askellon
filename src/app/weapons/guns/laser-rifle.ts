@@ -137,7 +137,7 @@ export class LaserRifle extends Gun {
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        return MathRound( 25 * caster.getDamageBonusMult());
+        return MathRound( 25 * Pow(1.5, this.intensity) * caster.getDamageBonusMult());
     }
 
     public getIntensity() {

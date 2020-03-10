@@ -8,9 +8,10 @@ import { LeapAbility } from "./alien/leap";
 import { SMART_ORDER_ID } from "../../lib/order-ids";
 import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_NIGHTEYE } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
 import { SprintLeapAbility } from "./human/sprint-leap";
+import { NightVisionAbility } from "./human/night-vision";
 
 
 const TIMEOUT = 0.03;
@@ -62,6 +63,12 @@ export class AbilityModule {
                 break;
             case ABIL_WEP_DIODE_EJ:
                 instance = new DiodeEjectAbility();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_NIGHTEYE:
+                instance = new NightVisionAbility();
                 if (instance.initialise(this)) {
                     this.data.push(instance);
                 }

@@ -53,7 +53,7 @@ export class CrewModule {
         let totalPlayers = 0;
 
         forces.forEach(force => {
-            Log.Information(`Force[${force.name}].players = ${force.getPlayers().length}`)
+            // Log.Information(`Force[${force.name}].players = ${force.getPlayers().length}`)
             totalPlayers += force.getPlayers().length;
         });
 
@@ -65,17 +65,25 @@ export class CrewModule {
             else this.allJobs.push("Security Guard");
             it++;
         }      
-
-        const crewForce = this.game.forceModule.getForce(CREW_FORCE_NAME);
     
-        forces.forEach(force => force.getPlayers()
-            .forEach(player => {
+        it = 0;
+        while (it < forces.length) {
+            const force = forces[it];
+            // Log.Information("Force:  "+force.name);
+            const players = force.getPlayers();
+            let y = 0;
+
+            while (y < players.length) {
+                let player = players[y];
+                // Log.Information("Looping through "+GetPlayerName(player)+"::"+GetPlayerId(player));
                 let crew = this.createCrew(player, force);
-                this.CREW_MEMBERS.push(crew);
-                crewForce && crewForce.addPlayer(player);
                 this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
                 crew.updateTooltips(this.game.weaponModule);
-            }));
+                // Log.Information("Finished creating player!");
+                y++;
+            }
+            it++;
+        }
     }
 
 
@@ -118,12 +126,12 @@ export class CrewModule {
          * Now apply crewmember default weapons
          */
         if (crewmember.role) {
-            const item = CreateItem(LASER_ITEM_ID, 0, 0);
+            const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
             UnitAddItem(crewmember.unit, item);
             this.game.weaponModule.applyItemEquip(crewmember, item);
         }
         
-
+        this.CREW_MEMBERS.push(crewmember);
         this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         // Add the unit to its force

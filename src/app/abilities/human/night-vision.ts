@@ -9,9 +9,7 @@ import { getZFromXY } from "lib/utils";
 import { VISION_TYPE } from "app/world/vision-type";
 
 /** @noSelfInFile **/
-
-// 15 seconds duration
-const NIGHT_VISION_DURATION = 15;
+const NIGHT_VISION_DURATION = 30;
 
 export class NightVisionAbility implements Ability {
 

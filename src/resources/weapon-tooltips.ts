@@ -42,9 +42,9 @@ export const LASER_ITEM = (weapon: Gun, damage: any) =>
 Attached: ${COL_ATTATCH}Diode Ejector|r
 
 Self amplifying rifle that increases in damage with each successive hit.
-- Bad base damage 
+${COL_GOOD}- Bad base damage 
 - Missing a shot resets intensity
-- ${COL_ATTATCH}Diode Ejector|r can deal massive damage
+- |r${COL_ATTATCH}Diode Ejector|r ${COL_GOOD}can deal massive damage|r
 
 ${COL_ATTATCH}Diode Ejector|r ${COL_GOLD}cannot be removed.|r
 `;

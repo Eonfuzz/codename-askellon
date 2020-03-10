@@ -47,8 +47,25 @@ switch (operation) {
         return console.error(err);
       }
 
-      console.log(`Completed!`);
+
+      const verNumber = `${config.buildVersion}`.replace('.', '-');
+      const srcMapPath  = `./dist/${config.mapFolder}`.replace('.w3x', '-full.w3x');
+      const builtMapPath = `${config.buildMapDir}\\${config.buildName}-${verNumber}.w3x`.replace('%UserProfile%', process.env.USERPROFILE);
+
+      fs.copy(srcMapPath, builtMapPath, (err) => {
+        if (err) console.log("err on copy map", err);
+
+        // Now auto place map
+        const mpqEditor = `./bin/MPQEditor/x64/MPQEditor.exe`; 
+
+        execFile(mpqEditor, ['add', builtMapPath, mapLua, "war3map.lua"], (err) => {
+          if (err) console.log("Error executing mpqeditor auto place lua", err);
+          console.log("Complete!");
+        })
+      });
     });
+
+
 
     break;
 

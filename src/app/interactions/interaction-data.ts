@@ -4,8 +4,10 @@ import { InteractionModule } from "./interaction-module";
 import { Log } from "../../lib/serilog/serilog";
 import { ZONE_TYPE } from "../world/zone-id";
 import { PlayNewSoundOnUnit, COLOUR, console } from "../../lib/translators";
-import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS } from "../../resources/colours";
+import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS, COL_MISC } from "../../resources/colours";
 import { Trigger } from "app/types/jass-overrides/trigger";
+import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
+import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
 
 export let Interactables = new Map<number, InteractableData>();
 
@@ -43,14 +45,15 @@ export function initElevators() {
     TEST_ELEVATOR_FLOOR_1.to = TEST_ELEVATOR_FLOOR_2;
     TEST_ELEVATOR_FLOOR_2.to = TEST_ELEVATOR_FLOOR_1;
 
-    BlzSetUnitName(TEST_ELEVATOR_FLOOR_1.unit, `Elevator to ${COL_FLOOR_2}Floor 2|r`);
-    BlzSetUnitName(TEST_ELEVATOR_FLOOR_2.unit, `Elevator to ${COL_FLOOR_1}Floor 1|r`);
+    BlzSetUnitName(TEST_ELEVATOR_FLOOR_1.unit, `Elevator to ${COL_FLOOR_2}Floor 2|r|n${COL_MISC}Right Click To Use|r`);
+    BlzSetUnitName(TEST_ELEVATOR_FLOOR_2.unit, `Elevator to ${COL_FLOOR_1}Floor 1|r|n${COL_MISC}Right Click To Use|r`);
 
     elevatorMap.set(GetHandleId(TEST_ELEVATOR_FLOOR_1.unit), TEST_ELEVATOR_FLOOR_1);
     elevatorMap.set(GetHandleId(TEST_ELEVATOR_FLOOR_2.unit), TEST_ELEVATOR_FLOOR_2);
 
+    const ELEVATOR_TYPE = FourCC('n001');
     const elevatorTest: InteractableData = {
-        unitType: FourCC('n001'),
+        unitType: ELEVATOR_TYPE,
         onStart: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
             const handleId = GetHandleId(targetUnit);    
             const targetElevator = elevatorMap.get(handleId);
@@ -89,7 +92,7 @@ export function initElevators() {
             }
         }
     }
-    Interactables.set(elevatorTest.unitType, elevatorTest);
+    Interactables.set(ELEVATOR_TYPE, elevatorTest);
 }
 
 const hatchMap = new Map<number, Elevator>();
@@ -108,14 +111,15 @@ export function initHatches() {
     HATCH_FLOOR_1.to = VENT_EXIT_FLOOR_1;
     VENT_EXIT_FLOOR_1.to = HATCH_FLOOR_1;
 
-    BlzSetUnitName(HATCH_FLOOR_1.unit, `To ${COL_VENTS}Service Tunnels|r`);
-    BlzSetUnitName(VENT_EXIT_FLOOR_1.unit, `Hatch to ${COL_FLOOR_1}Floor 1|r`);
+    BlzSetUnitName(HATCH_FLOOR_1.unit, `To ${COL_VENTS}Service Tunnels|r|n${COL_MISC}Right Click To Use|r`);
+    BlzSetUnitName(VENT_EXIT_FLOOR_1.unit, `Hatch to ${COL_FLOOR_1}Floor 1|r|n${COL_MISC}Right Click To Use|r`);
 
     hatchMap.set(GetHandleId(HATCH_FLOOR_1.unit), HATCH_FLOOR_1);
     hatchMap.set(GetHandleId(VENT_EXIT_FLOOR_1.unit), VENT_EXIT_FLOOR_1);
     
+    const HATCH_TYPE = FourCC('n002');
     const hatcInteractable: InteractableData = {
-        unitType: FourCC('n002'),
+        unitType: HATCH_TYPE,
         onStart: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
             const handleId = GetHandleId(targetUnit);    
             const targetElevator = hatchMap.get(handleId);
@@ -156,13 +160,16 @@ export function initHatches() {
             }
         }
     }
-    Interactables.set(hatcInteractable.unitType, hatcInteractable);
+    Interactables.set(HATCH_TYPE, hatcInteractable);
 }
 
 export const initWeaponsTerminals = () => {
     
-    const weaponTerminalData: InteractableData = {
-        unitType: FourCC('nWEP'),
+    const WEAPONS_UPGRADE_TERMINAL = FourCC('nWEP');
+    const MEDICAL_UPGRADE_TERMINAL = FourCC('nMED');
+    const GENE_SPLICER_TERMINAL = FourCC('nGEN');
+
+    const upgradeTerminalProcessing: InteractableData = {
         onStart: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
         },
         onCancel: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
@@ -172,7 +179,28 @@ export const initWeaponsTerminals = () => {
             const uX = GetUnitX(targetUnit); 
             const uY = GetUnitY(targetUnit);
 
-            const nUnit = CreateUnit(GetOwningPlayer(fromUnit), FourCC('hWEP'), uX, uY, bj_UNIT_FACING);
+            const targetUType = GetUnitTypeId(targetUnit);
+            let unitType;
+            if (targetUType === WEAPONS_UPGRADE_TERMINAL) {
+                unitType = FourCC('hWEP');
+            }
+            else if (targetUType === MEDICAL_UPGRADE_TERMINAL) {
+                unitType = FourCC('hMED');
+            }
+            else if (targetUType === GENE_SPLICER_TERMINAL) {
+                // If we haven't got HC 2
+                // Don't do anything
+                if (GetPlayerTechCount(GetOwningPlayer(fromUnit), TECH_MAJOR_HEALTHCARE, true) < 1) {
+                    DisplayTextToPlayer(GetOwningPlayer(fromUnit), 0, 0, STR_GENE_REQUIRES_HEALTHCARE);
+                    return false;
+                }
+                unitType = FourCC('hGEN');
+            }
+            else {
+                unitType = FourCC('hWEP');
+            }
+
+            const nUnit = CreateUnit(GetOwningPlayer(fromUnit), unitType, uX, uY, bj_UNIT_FACING);
             SelectUnitForPlayerSingle(nUnit, GetOwningPlayer(fromUnit));
 
             const trackUnselectEvent = new Trigger();
@@ -183,7 +211,14 @@ export const initWeaponsTerminals = () => {
                     trackUnselectEvent.destroy();
                 }
             })
+
+            // Handle gene splicer interact
+            if (targetUType === GENE_SPLICER_TERMINAL) {
+                iModule.game.geneModule.addNewGeneInstance(fromUnit, nUnit);
+            }
         }
     }
-    Interactables.set(weaponTerminalData.unitType, weaponTerminalData);
+    Interactables.set(WEAPONS_UPGRADE_TERMINAL, upgradeTerminalProcessing);
+    Interactables.set(MEDICAL_UPGRADE_TERMINAL, upgradeTerminalProcessing);
+    Interactables.set(GENE_SPLICER_TERMINAL, upgradeTerminalProcessing);
 }

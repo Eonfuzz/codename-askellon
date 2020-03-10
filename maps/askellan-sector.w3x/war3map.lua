@@ -7,6 +7,7 @@ gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
 gg_rct_FallZone1Land = nil
+gg_rct_GeneSplicer = nil
 gg_trg_Set = nil
 gg_unit_n001_0032 = nil
 gg_unit_n001_0021 = nil
@@ -101,6 +102,9 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n002_0034 = BlzCreateUnitWithSkin(p, FourCC("n002"), -28670.7, 26621.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -26110.7, 26365.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -64.0, 960.0, 270.000, FourCC("nMED"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ncp2"), -1696.0, 288.0, 270.000, FourCC("ncp2"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -1472.0, 576.0, 270.000, FourCC("nGEN"))
 end
 
 function CreatePlayerBuildings()
@@ -124,6 +128,7 @@ function CreateRegions()
     gg_rct_Galaxy_Map = Rect(-3520.0, 1856.0, -2656.0, 2720.0)
     gg_rct_FallZone1 = Rect(-96.0, 1056.0, 480.0, 1248.0)
     gg_rct_FallZone1Land = Rect(-27488.0, 26816.0, -27168.0, 27168.0)
+    gg_rct_GeneSplicer = Rect(-1792.0, 192.0, -1600.0, 384.0)
 end
 
 function Trig_Set_Actions()
