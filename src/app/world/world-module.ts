@@ -51,6 +51,7 @@ export class WorldModule {
             Log.Information(GetHeroProperName(unit)+"::"+ZONE_TYPE[oldZone.id]+"->"+ZONE_TYPE[to]);
         }
     }
+
     travel(unit: unit, to: ZONE_TYPE) {
         const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
 
@@ -77,7 +78,7 @@ export class WorldModule {
 
         // If the traversing unit was alien or crewmember, call the floor change event
         if ((crew && crew.unit === unit) || alien == unit) 
-            this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { crewmember: crew, });
+            this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { crewmember: crew });
         
     }
 
