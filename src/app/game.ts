@@ -17,6 +17,7 @@ import { GalaxyModule } from "./galaxy/galaxy-module";
 import { LeapModule } from "./leap-engine/leap-module";
 import { ResearchModule } from "./research/research-module";
 import { ChatModule } from "./chat/chat-module";
+import { EventModule } from "./events/event-module";
 
 export class Game {
     // Helper objects
@@ -35,6 +36,7 @@ export class Game {
     public leapModule: LeapModule;
     public researchModule: ResearchModule;
     public chatModule: ChatModule;
+    public event: EventModule;
 
     // public dummyUnit: unit;
 
@@ -50,6 +52,7 @@ export class Game {
         // Load order is important
         this.timedEventQueue    = new TimedEventQueue(this);
         this.gameTimeElapsed    = new GameTimeElapsed();
+        this.event              = new EventModule();
 
         // Load modules after all helper objects
         this.galaxyModule       = new GalaxyModule(this);
