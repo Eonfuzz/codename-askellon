@@ -52,16 +52,13 @@ export class CrewModule {
     initCrew(forces: ForceType[]) {
         let totalPlayers = 0;
 
-        forces.forEach(force => {
-            // Log.Information(`Force[${force.name}].players = ${force.getPlayers().length}`)
-            totalPlayers += force.getPlayers().length;
-        });
+        forces.forEach(force => totalPlayers += force.getPlayers().length);
 
         let it = 0;
         while (it < totalPlayers) {
             if (it === 0) this.allJobs.push("Captain");
             else if (it === 1) this.allJobs.push("Navigator");
-            else if (it === 2) this.allJobs.push("Noble");
+            else if (it === 2) this.allJobs.push("Doctor");
             else this.allJobs.push("Security Guard");
             it++;
         }      
@@ -162,8 +159,8 @@ export class CrewModule {
         // TODO Fix this
         let namesForRole;
 
-        if (role === "Captain" || role === "Noble" ||  role === "Navigator" || role === "Security Guard") {
-            namesForRole = ROLE_NAMES[role];
+        if (ROLE_NAMES.has(role)) {
+            namesForRole = ROLE_NAMES.get(role) as string[];
             const i = Math.floor( Math.random() * namesForRole.length );
             const name = namesForRole[i];
             namesForRole.splice(i, 1);
