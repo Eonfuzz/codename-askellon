@@ -10,13 +10,15 @@ import { TECH_NO_GENES_TIER_1,
     GENE_INSTALL_NIGHTEYE,
     ABIL_NIGHTEYE,
     GENE_INSTALL_MOBILITY,
-    GENE_TECH_MOBILITY
+    GENE_TECH_MOBILITY,
+    GENE_INSTALL_COSMIC_SENSITIVITY
 } from "resources/ability-ids";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Log } from "lib/serilog/serilog";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { STR_GENE_SUCCESSFUL, STR_GENE_ALIEN_SUCCESSFUL } from "resources/strings";
+import { EventListener, EVENT_TYPE } from "app/events/event";
 
 interface GeneInstance {
     source: Crewmember,
@@ -157,6 +159,21 @@ export class GeneModule {
             SetPlayerTechResearched(instance.unitInGeneZone.player, TECH_HAS_GENES_TIER_1,  1);
             if (!targetIsAlien) {
                 SetPlayerTechResearched(instance.unitInGeneZone.player, GENE_TECH_MOBILITY, 1);
+            }
+        }
+        else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
+            SetPlayerTechResearched(instance.unitInGeneZone.player, TECH_HAS_GENES_TIER_2,  1);
+            if (!targetIsAlien) {
+                // Do stuff
+                this.game.event.addListener(new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, 
+                    (event: EventListener, data: any) => {
+                        const zone = this.game.worldModule.getUnitZone(data.alien);
+                        const ourZone = this.game.worldModule.getUnitZone(target.unit);
+                        Log.Information("Game transform event post listener");
+                        if (zone && ourZone && zone.id == ourZone.id) {
+                            DisplayTextToPlayer(target.player, 0, 0, `TRANSFORM DETECTED`);
+                        }
+                    }));
             }
         }
         

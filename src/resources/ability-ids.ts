@@ -36,3 +36,4 @@ export const GENE_INSTALL_MOBILITY = FourCC('AGJP');
 export const GENE_TECH_MOBILITY = FourCC('R001');
 
 export const GENE_INSTALL_PSIONIC_POTENCY = FourCC('AGPS');
+export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGPS');

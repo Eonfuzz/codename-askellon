@@ -156,7 +156,6 @@ export class CrewModule {
     }
     
     getCrewmemberName(role: string) {
-        // TODO Fix this
         let namesForRole;
 
         if (ROLE_NAMES.has(role)) {
