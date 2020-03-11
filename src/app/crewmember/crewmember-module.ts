@@ -164,6 +164,7 @@ export class CrewModule {
             const i = Math.floor( Math.random() * namesForRole.length );
             const name = namesForRole[i];
             namesForRole.splice(i, 1);
+            ROLE_NAMES.set(role, namesForRole);
             return name;
         }
         return 'Error';
