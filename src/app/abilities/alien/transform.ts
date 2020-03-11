@@ -126,7 +126,7 @@ export class TransformAbility implements Ability {
         if (this.casterUnit) {
 
             const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            const alien = alienForce.transform(GetOwningPlayer(this.casterUnit), this.toAlien);
+            const alien = alienForce.transform(abMod.game, GetOwningPlayer(this.casterUnit), this.toAlien);
 
             // If we have an existing order send it to the new unit
             if (this.previousOrder && this.previousOrderTarget) {

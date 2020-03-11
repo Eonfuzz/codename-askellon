@@ -8,6 +8,7 @@ import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
+import { EVENT_TYPE, EventListener } from "app/events/event";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -23,6 +24,26 @@ export class AlienForce extends ForceType {
     private playerIsTransformed: Map<player, boolean> = new Map();
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
+
+    constructor(forceModule: ForceModule) {
+        super(forceModule);
+
+        // Show vision on despair gain
+        forceModule.game.event.addListener(new EventListener(
+            EVENT_TYPE.CREW_GAIN_DESPAIR, 
+            (from: EventListener, data: any) => {
+                const crewmember = data.crewmember as Crewmember;
+                this.getPlayers().forEach(p => UnitShareVision(crewmember.unit, p, true));
+            }))
+        
+        // Hide vision on despair gain
+        forceModule.game.event.addListener(new EventListener(
+            EVENT_TYPE.CREW_LOSE_DESPAIR, 
+            (from: EventListener, data: any) => {
+                const crewmember = data.crewmember as Crewmember;
+                this.getPlayers().forEach(p => UnitShareVision(crewmember.unit, p, false));
+            }))
+    }
     
     makeAlien(game: Game, who: unit, owner: player): unit {
         const unitLocation = vectorFromUnit(who);
@@ -59,6 +80,9 @@ export class AlienForce extends ForceType {
 
             // Now create an alien for player
             this.playerAlienUnits.set(owner, alien);
+
+            // Post event
+            game.event.sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { crewmember: crewmember, alien: alien });
             return alien;
         }
         
@@ -101,11 +125,12 @@ export class AlienForce extends ForceType {
         UnitRemoveAbility(whichUnit, ABIL_TRANSFORM_HUMAN_ALIEN);
     }
 
-    transform(who: player, toAlien: boolean): unit {
+    transform(game: Game, who: player, toAlien: boolean): unit {
         this.playerIsTransformed.set(who, toAlien);
 
         const alien = this.playerAlienUnits.get(who);
         const unit = this.playerUnits.get(who);
+        const crewmember = game.crewModule.getCrewmemberForPlayer(who);
 
         if (!alien) throw new Error("AlienForce::transform No alien for player!");
         if (!unit) throw new Error("AlienForce::transform No human for player!");
@@ -139,6 +164,9 @@ export class AlienForce extends ForceType {
             // SetPlayerName(who, unitName);
             // SetPlayerColor(who, PLAYER_COLOR_BROWN);
             BlzSetHeroProperName(toShow, unitName);
+
+            // Post event
+            game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, alien: alien });
         }
         else {
             const originalDetails = this.forceModule.getOriginalPlayerDetails(who);
@@ -146,9 +174,13 @@ export class AlienForce extends ForceType {
                 SetPlayerName(who, originalDetails.name);
                 SetPlayerColor(who, originalDetails.colour);
             }
+
+            // Post event
+            game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, alien: alien });
         }
 
         if (unitWasSelected) SelectUnitAddForPlayer(toShow, who);
+
 
         return toShow;
     }

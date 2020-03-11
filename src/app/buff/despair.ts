@@ -7,6 +7,7 @@ import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
 import { ABIL_ACCURACY_PENALTY_30 } from "resources/ability-ids";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { EVENT_TYPE } from "app/events/event";
 
 const DESPAIR_ABILITY_ID = FourCC('A00D');
 const DESPAIR_BUFF_ID = FourCC('B004');
@@ -83,10 +84,8 @@ export class Despair extends DynamicBuff {
                 }, DESPAIR_ABILITY_ID);
             }
 
-            // Add unit visibility
-            const alienForce = game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            const players = alienForce.getPlayers();
-            players.forEach(p => UnitShareVision(this.crewmember.unit, p, true));
+            // Publish events
+            game.event.sendEvent(EVENT_TYPE.CREW_GAIN_DESPAIR, { crewmember: this.crewmember, instance: this });
         }
         else {
             UnitRemoveAbility(this.crewmember.unit, ABIL_ACCURACY_PENALTY_30);
@@ -101,11 +100,8 @@ export class Despair extends DynamicBuff {
                 this.jumpScareSound.stopSound();
                 ResumeMusic();
             }
-
-            // Remove unit visibility
-            const alienForce = game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            const players = alienForce.getPlayers();
-            players.forEach(p => UnitShareVision(this.crewmember.unit, p, false));
+            
+            game.event.sendEvent(EVENT_TYPE.CREW_LOSE_DESPAIR, { crewmember: this.crewmember, instance: this });
         }
     }
 }

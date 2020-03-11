@@ -6,20 +6,19 @@ import { EVENT_TYPE, EventListener } from "app/events/event";
 export class EventModule {
     eventListeners = new Map<EVENT_TYPE, EventListener[]>();
 
-    addListener(type: EVENT_TYPE, listener: EventListener) {
+    addListener(listener: EventListener) {
         // Get the list of listeners
-        const listeners = this.eventListeners.get(type) || [];
+        const listeners = this.eventListeners.get(listener.eventType) || [];
         // Add this listener to it
-        listener.eventType = type;
         listeners.push(listener);
         // No apply the change
-        this.eventListeners.set(type, listeners);
+        this.eventListeners.set(listener.eventType, listeners);
     }
 
-    onEvent(whichEvent: EVENT_TYPE, data: object) {
+    sendEvent(whichEvent: EVENT_TYPE, data: object) {
         // Get the list of listeners
         const listeners = this.eventListeners.get(whichEvent) || [];
-        listeners.forEach(l => l.onEvent(whichEvent, data));
+        listeners.forEach(l => l.onEvent(data));
     }
 
     removeListener(listener: EventListener) {

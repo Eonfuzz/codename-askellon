@@ -6,6 +6,9 @@ import { TheAskellon } from "./the-askellon";
 import { ZONE_TYPE } from "./zone-id";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
+import { EVENT_TYPE } from "app/events/event";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { Crewmember } from "app/crewmember/crewmember-type";
 
 export class WorldModule {
     game: Game;
@@ -28,7 +31,12 @@ export class WorldModule {
         deathTrigger.AddAction(() => this.unitDeath());
     }
 
-    travel(unit: unit, to: ZONE_TYPE) {
+    /**
+     * Actually does the travel work
+     * @param unit 
+     * @param to 
+     */
+    private handleTravel(unit: unit, to: ZONE_TYPE) {
         const uHandle = GetHandleId(unit);
         const oldZone = this.unitLocation.get(uHandle);
         const newZone = this.getZone(to);        
@@ -42,6 +50,35 @@ export class WorldModule {
         if (oldZone) {
             Log.Information(GetHeroProperName(unit)+"::"+ZONE_TYPE[oldZone.id]+"->"+ZONE_TYPE[to]);
         }
+    }
+    travel(unit: unit, to: ZONE_TYPE) {
+        const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+
+        // Does the travel work
+        this.handleTravel(unit, to);
+
+        // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
+        // If this is a player we care about
+        const crew = this.game.crewModule.getCrewmemberForUnit(unit);
+        const alien = alienForce.getAlienFormForPlayer(GetOwningPlayer(unit));
+
+        const isCrewmember = crew && crew.unit === unit;
+
+        // If it was the alien form, we need to travel the crewmember around
+        if (alien == unit) {
+            const alienCrew = this.game.crewModule.getCrewmemberForPlayer(GetOwningPlayer(unit)) as Crewmember;
+            this.handleTravel(alienCrew.unit, to);
+        }
+        // Otherwise, check if the traversing unit is crewmember AND has an alien form
+        else if (isCrewmember && alien) {
+            // If so travel that alien form
+            this.handleTravel(alien, to);
+        }
+
+        // If the traversing unit was alien or crewmember, call the floor change event
+        if ((crew && crew.unit === unit) || alien == unit) 
+            this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { crewmember: crew, });
+        
     }
 
     unitDeath() {
