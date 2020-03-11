@@ -26,3 +26,13 @@ You'll need to have [node](https://nodejs.org/en/) and [git](https://git-scm.com
 - Clone the repository via `git clone ${repositoryCloneURL}`
 - Run `npm i` to install dependancies
 - Finally test the map using `npm run test` (You may have to change the path in config.json)
+
+# Special Thanks and Credits
+- Thanks to Mythic for awesome particle effects
+- Thanks to Niklas for chat interface help
+
+And a special thanks to my awesome testers:
+- Zach
+- Aedus
+- Pipski
+- RedAxe
