@@ -4,7 +4,8 @@ export let ROLE_NAMES = {
         "Captain Keene", "Captain Kirk", "Captain Jack Sparrow", "Captain Creed", 
         "Captain Coloma", "Captain Dallas", "Captain Cutter", "Captain Reynolds", 
         "Captain Willard", "Captain Fodder", "Captain Cookie", "Captain Kimstar",
-        "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America"
+        "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America",
+        "Captain Sullivan", "Captain Frost"
     ],
     "Navigator": [
         "Admiral Ackbar", "Admiral Doubt", "Admiral Hansel", "Admiral Gretel", "Admiral Jones", "Admiral Aedus",
@@ -24,9 +25,9 @@ export let ROLE_NAMES = {
         "Engineer Fahr",
     ],
     "Major": [
-        "Maj. Bonner", "Maj. Hatter"
+        "Maj. Bonner", "Maj. Hatter", "Maj. Vonstroheim"
     ],
     "Doctor": [
-        "Doctor Dimento"
+        "Doctor Dimento", "Doctor Quack", "Dr. Diggus Bickus", "Dr. Who"
     ]
 }

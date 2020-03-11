@@ -16,6 +16,8 @@ export const DEFAULT_ALIEN_FORM = FourCC('ALI1');
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
 
+    public alienAIPlayer: player = Player(24);
+
     private alienHost: player | undefined;
     private playerAlienUnits: Map<player, unit> = new Map();
     private playerIsTransformed: Map<player, boolean> = new Map();
@@ -134,8 +136,8 @@ export class AlienForce extends ForceType {
         // Update player name
         if (toAlien) {
             const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
-            SetPlayerName(who, unitName);
-            SetPlayerColor(who, PLAYER_COLOR_BROWN);
+            // SetPlayerName(who, unitName);
+            // SetPlayerColor(who, PLAYER_COLOR_BROWN);
             BlzSetHeroProperName(toShow, unitName);
         }
         else {

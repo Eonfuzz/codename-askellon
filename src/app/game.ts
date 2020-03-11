@@ -16,6 +16,7 @@ import { ZONE_TYPE } from "./world/zone-id";
 import { GalaxyModule } from "./galaxy/galaxy-module";
 import { LeapModule } from "./leap-engine/leap-module";
 import { ResearchModule } from "./research/research-module";
+import { ChatModule } from "./chat/chat-module";
 
 export class Game {
     // Helper objects
@@ -33,6 +34,7 @@ export class Game {
     public galaxyModule: GalaxyModule;
     public leapModule: LeapModule;
     public researchModule: ResearchModule;
+    public chatModule: ChatModule;
 
     // public dummyUnit: unit;
 
@@ -63,7 +65,7 @@ export class Game {
         this.geneModule         = new GeneModule(this);
 
         this.interactionsModule = new InteractionModule(this);
-
+        this.chatModule         = new ChatModule(this);
     }
 
     public startGame() {
@@ -79,8 +81,8 @@ export class Game {
         // Init leaps
         this.leapModule.initialise();
 
-        // Initialise commands
-        this.initCommands();
+        // Init chat
+        this.chatModule.initialise();
 
         // Start role selection
         this.forceModule.getOpts((optResults) => {
@@ -98,61 +100,6 @@ export class Game {
     public getTimeStamp(): number {
         return this.gameTimeElapsed.getTimeElapsed();
     }
-
-    private initCommands() {
-        const commandTrigger = new Trigger();
-
-        this.forceModule.getActivePlayers().forEach(player => {
-            commandTrigger.RegisterPlayerChatEvent(player, "-", false);
-        })
-
-        commandTrigger.AddAction(() => {
-            const triggerPlayer = GetTriggerPlayer();
-            const crew = this.crewModule.getCrewmemberForPlayer(triggerPlayer);
-            const message = GetEventPlayerChatString();
-
-            const hasCommanderPower = true;
-            Log.Information("Player name: ", GetPlayerName(triggerPlayer))
-
-            if (message === "-resolve" && crew) {
-                crew.testResolve(this);
-            }
-            else if (message === "-u" && crew) {
-                if (crew.weapon) {
-                    crew.weapon.detach();
-                }
-                crew.updateTooltips(this.weaponModule);
-            }
-            else if (message === "-nt") {
-                this.noTurn = !this.noTurn;
-            }
-            else if (message === "-p1off") {
-                Log.Information("Killing power to floor 1");
-                const z = this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
-                z && z.updatePower(this.worldModule, false);
-            }
-            else if (message === "-p1on") {
-                Log.Information("Restoring power to floor 1");
-                const z = this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
-                z && z.updatePower(this.worldModule, true);
-            }
-            else if (message === "-testalien") {
-                this.getCameraXY(triggerPlayer, (self: any, pos: Vector2) => {
-                    const alien = CreateUnit(triggerPlayer, FourCC('ALI1'), pos.x, pos.y, bj_UNIT_FACING);
-                    this.abilityModule.trackUnitOrdersForAbilities(alien);
-                })
-            }
-            else if (message.indexOf("-m") === 0) {
-                const mSplit = message.split(" ");
-                const dX = S2I(mSplit[1] || "0");
-                const dY = S2I(mSplit[2] || "0");
-
-                Log.Information(`Warping Askellon x+${dX} y+${dY}`);
-                this.galaxyModule.navigateToSector(dX, dY);
-            }
-        });
-    }
-
 
     /**
      * passes the dummy unit as a parameter to the callback
@@ -187,7 +134,6 @@ export class Game {
                 S2R(dataSplit[0]), 
                 S2R(dataSplit[1])
             );
-            Log.Information("Got data: "+result.x+", "+result.y);
 
             // Erase this trigger
             syncTrigger.destroy();
