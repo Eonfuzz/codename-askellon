@@ -8,13 +8,13 @@ Find out who it is and stop it before its too late.
 # Whats the status of development?
 Main Feature Roadmap:
 - [100%] Resolve System
-- [00%] Despair System
-- [00%] Break System
+- [100%] Despair System
+- ~~[00%] Break System~~ CANCELLED, BAD DESIGN
 > Milestone: Combat Playtest
-- [25%] Dynamically Generated Space Exploration
-- [00%] Aliens?!
-- [00%] Human Upgrades
-- [00%] Station Map Design
+- [35%] Dynamically Generated Space Exploration
+- [30%] Aliens?!
+- [25%] Human Upgrades
+- [30%] Station Map Design
 - [00%] Alien Infestation Upgrades
 > Milestone: Actual Game Playtest
 - [00%] Alternative Human Roles
