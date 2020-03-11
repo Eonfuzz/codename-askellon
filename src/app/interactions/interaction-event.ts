@@ -4,6 +4,7 @@ import { Trigger } from "../types/jass-overrides/trigger";
 import { vectorFromUnit } from "../types/vector2";
 import { ProgressBar } from "../types/progress-bar";
 import { Log } from "../../lib/serilog/serilog";
+import { SMART_ORDER_ID } from "lib/order-ids";
 
 export const INTERACT_MAXIMUM_DISTANCE = 350;
 export const STUN_ID = FourCC('stun');
@@ -39,7 +40,11 @@ export class InteractionEvent {
     this.interactionTrigger.RegisterUnitIssuedOrder(this.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
     this.interactionTrigger.RegisterUnitIssuedOrder(this.unit, EVENT_UNIT_ISSUED_ORDER);
     this.interactionTrigger.AddAction(() => {
-      this.destroy();
+      // Only destroy if it isn't targeting the same unit
+      // Stops double click from cancelling the event
+      if (GetIssuedOrderId() != SMART_ORDER_ID && GetOrderTargetUnit() != this.targetUnit) {
+        this.destroy();
+      }
     });
   }
 
