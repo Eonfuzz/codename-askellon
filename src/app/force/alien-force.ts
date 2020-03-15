@@ -9,6 +9,7 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
+import { PLAYER_COLOR } from "lib/translators";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -130,7 +131,7 @@ export class AlienForce extends ForceType {
 
         const alien = this.playerAlienUnits.get(who);
         const unit = this.playerUnits.get(who);
-        const crewmember = game.crewModule.getCrewmemberForPlayer(who);
+        const crewmember = game.crewModule.getCrewmemberForPlayer(who) as Crewmember;
 
         if (!alien) throw new Error("AlienForce::transform No alien for player!");
         if (!unit) throw new Error("AlienForce::transform No human for player!");
@@ -163,17 +164,18 @@ export class AlienForce extends ForceType {
             const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
             // SetPlayerName(who, unitName);
             // SetPlayerColor(who, PLAYER_COLOR_BROWN);
+            
+            game.chatModule.chatHandler.setPlayerName(GetPlayerId(who), unitName);
+            game.chatModule.chatHandler.setChatColor(GetPlayerId(who), '6f2583');
+
             BlzSetHeroProperName(toShow, unitName);
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, alien: alien });
         }
         else {
-            const originalDetails = this.forceModule.getOriginalPlayerDetails(who);
-            if (originalDetails) {
-                SetPlayerName(who, originalDetails.name);
-                SetPlayerColor(who, originalDetails.colour);
-            }
+            game.chatModule.chatHandler.setPlayerName(GetPlayerId(who), crewmember.name);
+            game.chatModule.chatHandler.setChatColor(GetPlayerId(who), PLAYER_COLOR[GetPlayerId(who)]);
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, alien: alien });

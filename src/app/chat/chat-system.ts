@@ -43,7 +43,7 @@ export class ChatSystem {
             Log.Error("Chat color is wrong format");
         }
         else {
-            this.playerColors[playerId] = color;
+            this.playerColors[playerId] = `|cff${color}`;
         }
     }
 
@@ -70,7 +70,7 @@ export class ChatSystem {
     private getChatTimeTag(): string {
         const timeStamp = this.getGameTime();
         let minutes = I2S(MathRound(timeStamp / 60));
-        let seconds = I2S(this.getGameTime() % 60);
+        let seconds = I2S(MathRound(this.getGameTime() % 60));
 
         if (minutes.length < 2) minutes = `0${minutes}`;
         if (seconds.length < 2) seconds = `0${seconds}`;
@@ -113,7 +113,7 @@ export class ChatSystem {
         // Clone the queue and iterate
         let queue = this.messageQueue.slice();
         while (queue.length > 0) {
-            let message = queue.pop();
+            let message = queue.shift();
             if (message) string += `${message}\n`
             else string += '';
         }
@@ -128,6 +128,9 @@ export class ChatSystem {
      */
     private addMessage(message: string) {
         this.messageQueue.push(message);
+        if (this.messageQueue.length > 10) {
+            this.messageQueue.shift();
+        }
     }
 
     /**
@@ -136,21 +139,26 @@ export class ChatSystem {
      * @param message 
      */
     public sendMessage(playerId: number, message: string) {
-        const text = this.generateMessage(playerId, message);
         if (this.messageIsValid(message)) {
+            const text = this.generateMessage(playerId, message);
             this.addMessage(text);
             this.update();
         }
     }
 
     public init(font: string) {
+        // Hide old chat
+        BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_CHAT_MSG, 0), false);
+
         const chat: framehandle = BlzCreateSimpleFrame("Chat", BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0), 0);
         const chatText: framehandle = BlzGetFrameByName("Chat Text", 0);
 
-        BlzFrameSetAbsPoint(chat, FRAMEPOINT_TOPLEFT, -0.131, 0.595);
+        BlzFrameSetAbsPoint(chat, FRAMEPOINT_BOTTOMLEFT, -0.1, 0.17);
         BlzFrameSetLevel(chat, 8);
 
-        BlzFrameSetTextAlignment(chatText, TEXT_JUSTIFY_TOP, TEXT_JUSTIFY_LEFT);
-        BlzFrameSetFont(chatText, "UI\\Font\\" + font, 0.009, 0);
+        BlzFrameSetTextAlignment(chatText, TEXT_JUSTIFY_BOTTOM, TEXT_JUSTIFY_LEFT);
+        BlzFrameSetFont(chatText, "UI\\Font\\" + font, 0.014, 1);
+
+        this.frame = chatText;
     }
  }

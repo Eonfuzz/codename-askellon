@@ -45,7 +45,7 @@ export class SprintLeapAbility implements Ability {
             // If they've stopped moving, kill buff return false
             // Require some time to be elapsed before this thing ends
             if (delta === 0 && this.timeElapsed > 0.3) {
-                UnitRemoveBuffBJ(SPRINT_BUFF_ID, this.unit);
+                // UnitRemoveBuffBJ(SPRINT_BUFF_ID, this.unit);
                 return false;
             }
 

@@ -36,6 +36,9 @@ export class InteractionModule {
             const targetUnit = GetOrderTargetUnit();
             const targetUnitType = GetUnitTypeId(targetUnit);
 
+            // First of all make sure we don't have one already
+            if (this.interactions.filter(i => i.unit === trigUnit && i.targetUnit === targetUnit).length > 0) return;
+
             // Check to see if we have it in our interactable data
             const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 

@@ -11,8 +11,8 @@ export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
 
 export class InteractionEvent {
-  private unit: unit;
-  private targetUnit: unit;
+  public unit: unit;
+  public targetUnit: unit;
 
   private interactionTrigger: Trigger | undefined;
   private callback: Function;

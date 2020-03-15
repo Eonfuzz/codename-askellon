@@ -47,9 +47,9 @@ export class WorldModule {
         
         newZone && this.unitLocation.set(uHandle, newZone);
 
-        if (oldZone) {
-            Log.Information(GetHeroProperName(unit)+"::"+ZONE_TYPE[oldZone.id]+"->"+ZONE_TYPE[to]);
-        }
+        // if (oldZone) {
+        //     Log.Information(GetHeroProperName(unit)+"::"+ZONE_TYPE[oldZone.id]+"->"+ZONE_TYPE[to]);
+        // }
     }
 
     travel(unit: unit, to: ZONE_TYPE) {

@@ -48,6 +48,12 @@ export class Game {
 
 
     constructor() {
+        // Load the UI
+        if (!BlzLoadTOCFile("UI\\CustomUI.toc")) {
+            Log.Error("Failed to load TOC");
+        }
+
+        this.initUI();
 
         // Load order is important
         this.timedEventQueue    = new TimedEventQueue(this);
@@ -182,5 +188,9 @@ export class Game {
             const angle = Rad2Deg(Atan2(targetLocationY-oY, targetLocationX-oX));
             BlzSetUnitFacingEx(triggerUnit, angle);
         })
+    }
+
+    public initUI() {
+        // BlzHideOriginFrames(true);
     }
 }

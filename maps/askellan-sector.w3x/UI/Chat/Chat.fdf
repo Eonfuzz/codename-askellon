@@ -1,0 +1,12 @@
+Frame "SIMPLEFRAME" "Chat" {
+	Width 0.5,
+	Height 0.4,
+	
+	Layer "ARTWORK" {
+		String "Chat Text" {
+			Width 0.5,
+			Height 0.4,
+			Text "",
+		}
+	}
+}

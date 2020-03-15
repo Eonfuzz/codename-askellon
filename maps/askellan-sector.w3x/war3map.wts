@@ -53,22 +53,27 @@ Increases Ship Speed
 
 STRING 12
 {
-Askellon Sector v
+|cff627781Codename Askellon|r
 }
 
 STRING 13
 {
-Any
+8+
 }
 
 STRING 14
 {
-Nondescript
+Survive deep space as your Crew isterrorised by creatures unimaginable.
+
+Currently a work in progress by Boar.
+Join my discord at: 
+|cff627781https://discord.gg/nDMpQZm|r
+Please use |cff692929Reforged Graphics|r for the best experience
 }
 
 STRING 15
 {
-Unknown
+Boar
 }
 
 STRING 16
@@ -1796,5 +1801,34 @@ STRING 375
 // Abilities: AGPS (Unlock Psionic Potential), Tip (Tooltip - Normal)
 {
 Unlock Psionic Potential
+}
+
+STRING 376
+{
+|cff455D68Alpha Version|r
+}
+
+STRING 377
+{
+|cff839299Codename Askellon|r
+}
+
+STRING 378
+{
+|cff455D68The crew onboard the Askellon wake to blaring alarms and a damaged ship. Some of your comrades are either dead, missing or just as dazed as you are.|r
+
+|cff839299Travel through deep space, repair the broken subsystems of your Ship and escape...|r
+|n|n
+}
+
+STRING 379
+{
+Unknown
+}
+
+STRING 380
+// Doodads: D00C (Korhal Wall), Name (Name)
+{
+Korhal Wall
 }
 

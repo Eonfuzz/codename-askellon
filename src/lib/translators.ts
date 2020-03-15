@@ -209,6 +209,33 @@ export enum COLOUR {
     PEANUT,
 }
 
+export const PLAYER_COLOR = [
+    'ff0303',
+    '0042ff',
+    '1ce6b9',
+    '540081',
+    'fffc00',
+    'fe8a0e',
+    '20c000',
+    'e55bb0',
+    '959697',
+    '7ebff1',
+    '106246',
+    '4a2a04',
+    '9b0000',
+    '0000c3',
+    '00eaff',
+    'be00fe',
+    'ebcd87',
+    'f8a48b',
+    'bfff80',
+    'dcb9eb',
+    '282828',
+    'ebf0ff',
+    '00781e',
+    'a46f33'
+];
+
 
 export enum CREEP_TYPE {
     NORMAL,

@@ -3,6 +3,7 @@ import { Trigger } from "app/types/jass-overrides/trigger";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ChatSystem } from "./chat-system";
+import { Log } from "lib/serilog/serilog";
 
 export enum PRIVS {
     USER, MODERATOR, DEVELOPER
@@ -23,7 +24,7 @@ export class ChatModule {
      */
     initialise() {
         // Init chat system
-        this.chatHandler.init('someFont');
+        this.chatHandler.init('LVCMono.otf');
 
         // Init chat events
         const messageTrigger = new Trigger();
@@ -85,7 +86,8 @@ export class ChatModule {
     }
 
     getUserPrivs(who: player): PRIVS {
-        if (GetPlayerName(who) === 'Eonfuzz') return PRIVS.DEVELOPER;
+        Log.Information("Player attempting commands: "+GetPlayerName(who));
+        if (GetPlayerName(who) === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
         else if (this.game.forceModule.getActivePlayers().length === 1) return PRIVS.MODERATOR;
         return PRIVS.USER;
     }

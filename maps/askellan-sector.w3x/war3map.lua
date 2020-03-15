@@ -86,8 +86,8 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 1398.0, 286.8, 210.264, FourCC("ntrd"))
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 1224.0, 430.4, 215.074, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 2374.4, 260.4, 210.264, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 2251.3, 547.9, 215.074, FourCC("ntrd"))
 end
 
 function CreateNeutralPassiveBuildings()

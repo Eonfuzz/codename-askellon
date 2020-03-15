@@ -9,6 +9,7 @@ import { CREW_FORCE_NAME } from "../force/crewmember-force";
 import { ZONE_TYPE } from "../world/zone-id";
 import { OptResult } from "app/force/opt-selection";
 import { ForceType } from "app/force/force-type";
+import { PLAYER_COLOR } from "lib/translators";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 const DELTA_CHECK = 0.25;
@@ -72,11 +73,13 @@ export class CrewModule {
 
             while (y < players.length) {
                 let player = players[y];
-                // Log.Information("Looping through "+GetPlayerName(player)+"::"+GetPlayerId(player));
                 let crew = this.createCrew(player, force);
                 this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
                 crew.updateTooltips(this.game.weaponModule);
-                // Log.Information("Finished creating player!");
+
+                // Now set player names and colours
+                this.game.chatModule.chatHandler.setPlayerName(GetPlayerId(player), crew.name);
+                this.game.chatModule.chatHandler.setChatColor(GetPlayerId(player), PLAYER_COLOR[GetPlayerId(player)]);
                 y++;
             }
             it++;
