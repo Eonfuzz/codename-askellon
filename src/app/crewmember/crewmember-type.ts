@@ -11,7 +11,7 @@ import { Log } from "lib/serilog/serilog";
 import { CrewModule } from "./crewmember-module";
 import { VISION_TYPE } from "app/world/vision-type";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
-import { ROLE_TYPES } from "./crewmember-names";
+import { ROLE_TYPES } from "../../resources/crewmember-names";
 
 export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
@@ -71,10 +71,10 @@ export class Crewmember extends ArmableUnit {
         const maxHP = BlzGetUnitMaxHP(this.unit);
         const hpPercentage  = (GetUnitState(this.unit, UNIT_STATE_LIFE) - GetEventDamage()) * 0.7 / maxHP;
 
-        GetUnitLifePercent
+        // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {
             this.resolve.addInstance(game, this, new BuffInstanceCallback(() => {
-                return GetUnitLifePercent(this.unit) <= 30;
+                return GetUnitLifePercent(this.unit) <= 0.3;
             }));
         }
         
@@ -106,7 +106,7 @@ export class Crewmember extends ArmableUnit {
     testResolve(game: Game) {
         SetUnitLifePercentBJ(this.unit, 0.2);
         this.resolve.addInstance(game, this, new BuffInstanceCallback(() => {
-            return GetUnitLifePercent(this.unit) <= 30;
+            return GetUnitLifePercent(this.unit) <= 0.3;
         }));
     }
 

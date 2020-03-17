@@ -19,6 +19,9 @@ export class Resolve extends DynamicBuff {
     private resolveMusic: SoundRef;
 
     private crewmember: Crewmember;
+    private prevUnitHealth: number;
+
+    private checkForDespairBuffTicker: number = 0;
 
     constructor(game: Game, crewmember: Crewmember) {
         super();
@@ -27,8 +30,30 @@ export class Resolve extends DynamicBuff {
         this.resolveMusic = new SoundRef("Music\\KavinskyRampage.mp3", true);
 
         this.crewmember = crewmember;
+        this.prevUnitHealth = GetUnitState(this.crewmember.unit, UNIT_STATE_LIFE);
     }
 
+    public process(game: Game, delta: number): boolean {
+        const result =  super.process(game, delta);
+        if (!this.isActive) return result;
+        
+        // const currentHealth = GetUnitState(this.crewmember.unit, UNIT_STATE_LIFE);
+        // const deltaHealth = currentHealth - this.prevUnitHealth;
+        this.checkForDespairBuffTicker += delta
+
+        if (this.checkForDespairBuffTicker >= 1) {
+            this.checkForDespairBuffTicker = 0;
+            if (!UnitHasBuffBJ(this.crewmember.unit, RESOLVE_BUFF_ID)) {
+                // If we don't have another ticker apply the buff to the unit
+                game.useDummyFor((dummy: unit) => {
+                    SetUnitX(dummy, GetUnitX(this.crewmember.unit));
+                    SetUnitY(dummy, GetUnitY(this.crewmember.unit) + 50);
+                    IssueTargetOrder(dummy, "bloodlust", this.crewmember.unit);
+                }, RESOLVE_ABILITY_ID);
+            }
+        }
+        return result;
+    }
 
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
