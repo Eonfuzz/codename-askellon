@@ -61,7 +61,10 @@ export abstract class ForceType {
      * @param amount 
      */
     public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
-
+        // Just apply the xp earned
+        SuspendHeroXP(whichUnit.unit, false);
+        AddHeroXP(whichUnit.unit, amount, true);
+        SuspendHeroXP(whichUnit.unit, false);
     }
 
     /**

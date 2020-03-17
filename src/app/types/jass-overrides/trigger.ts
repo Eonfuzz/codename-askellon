@@ -107,6 +107,10 @@ export class Trigger {
         return TriggerRegisterUnitEvent(this.nativeTrigger, whichUnit, whichEvent);
     }
 
+    public RegisterUnitEvent(whichUnit: unit, whichEvent: unitevent): event {
+        return TriggerRegisterUnitEvent(this.nativeTrigger, whichUnit, whichEvent);
+    }
+
     public destroy() {
         this.isDestroyed = true;
         DestroyTrigger(this.nativeTrigger);

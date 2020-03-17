@@ -42,6 +42,16 @@ import { Log } from "lib/serilog/serilog";
                 this.processMajorUpgrade(techUnlocked, levelTech);
                 // Process upgrade for all players
                 this.game.crewModule.CREW_MEMBERS.forEach(c => c.onPlayerFinishUpgrade());
+                // Brilliant, now reward the player with experience
+                const pForce = this.game.forceModule.getPlayerForce(player);
+                const crewmember = this.game.crewModule.getCrewmemberForPlayer(player);
+
+                if (pForce && crewmember) pForce.onUnitGainsXp(
+                    this.game, 
+                    crewmember, 
+                    // Award XP
+                    500 * GetPlayerTechCount(player, techUnlocked, true)
+                );
             }
             // Otherwise just update it for a single player
             else {

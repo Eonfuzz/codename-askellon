@@ -10,6 +10,7 @@ import { TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
+import { Trigger } from "app/types/jass-overrides/trigger";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -25,6 +26,8 @@ export class AlienForce extends ForceType {
     private playerIsTransformed: Map<player, boolean> = new Map();
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
+
+    private alienTakesDamageTrigger = new Trigger();
 
     constructor(forceModule: ForceModule) {
         super(forceModule);
@@ -44,6 +47,8 @@ export class AlienForce extends ForceType {
                 const crewmember = data.crewmember as Crewmember;
                 this.getPlayers().forEach(p => UnitShareVision(crewmember.unit, p, false));
             }))
+
+        this.alienTakesDamageTrigger.AddAction(() => this.onAlienTakesDamage());
     }
     
     makeAlien(game: Game, who: unit, owner: player): unit {
@@ -65,6 +70,8 @@ export class AlienForce extends ForceType {
             BlzPauseUnitEx(alien, true);
             ShowUnit(alien, false);
             SuspendHeroXP(alien, true);
+            // Register it for damage event
+            this.registerAlienTakesDamageExperience(alien);
 
             const crewmember = game.crewModule.getCrewmemberForPlayer(owner);
             if (crewmember) crewmember.setVisionType(VISION_TYPE.ALIEN);
@@ -225,6 +232,10 @@ export class AlienForce extends ForceType {
      * @param amount 
      */
     public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
+        // Apply it as per normal to the crewmember
+        super.onUnitGainsXp(game, whichUnit, amount);
+
+        // Do the same to the alien
         const alien = this.playerAlienUnits.get(whichUnit.player);
         if (!alien) return; // Do nothing if no alien for player
 
@@ -236,5 +247,33 @@ export class AlienForce extends ForceType {
 
     public getAlienFormForPlayer(who: player) {
         return this.playerAlienUnits.get(who);
+    }
+
+    private registerAlienTakesDamageExperience(alien: unit) {
+        this.alienTakesDamageTrigger.RegisterUnitEvent(alien, EVENT_UNIT_DAMAGED);
+    }
+
+    private onAlienTakesDamage() {
+        const damageSource = GetEventDamageSource();
+        const damagedUnit = BlzGetEventDamageTarget();
+        const damageAmount = GetEventDamage();
+
+        const damagingPlayer = GetOwningPlayer(damageSource);
+        const damagedPlayer = GetOwningPlayer(damagedUnit);
+
+        // Ensure that they are different owners
+        // No farming xp on yourself!
+        // Also check to make sure they aren't both alien players
+        if (damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagingPlayer)) {
+            // Okay good, now reward exp based on damage done
+            const damageSourceForce = this.forceModule.getPlayerForce(damagingPlayer);
+            const crewmember = this.forceModule.game.crewModule.getCrewmemberForPlayer(damagingPlayer);
+
+            if (damageSourceForce && crewmember) {
+                // Do I make it proportional to level as a catchup mechanic?
+                const xpAmount = damageAmount;
+                damageSourceForce.onUnitGainsXp(this.forceModule.game, crewmember, xpAmount);
+            }
+        }
     }
 }

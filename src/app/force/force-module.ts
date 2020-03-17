@@ -18,6 +18,7 @@ export class ForceModule {
     private forces: Array<ForceType> = [];
 
     private playerOriginalDetails = new Map<player, playerDetails>();
+    private playerForceDetails = new Map<player, ForceType>();
 
     public neutralPassive: player;
     public neutralHostile: player;
@@ -110,11 +111,7 @@ export class ForceModule {
      * @param opts 
      */
     public initForcesFor(opts: OptResult[]) {
-        opts.forEach(opt => {
-            // get the force
-            const force = this.getForceFromName(opt.role.name);
-            force.addPlayer(opt.player);
-        });
+        opts.forEach(opt => this.addPlayerToForce(opt.player, opt.role.name));
     }
 
     /**
@@ -180,6 +177,28 @@ export class ForceModule {
             const results = optSelection.endOptSelection(this);
             callback(results);
         });
+    }
 
+
+    /**
+     * Sets the player's force
+     * @param player 
+     * @param forceName 
+     */
+    public addPlayerToForce(player: player, forceName: string) {
+        const force = this.getForce(forceName);
+
+        if (!force) Log.Error("Failed to add "+GetPlayerName(player)+" to force. Force not found:::"+forceName);
+        else {
+            this.playerForceDetails.set(player, force);
+            force.addPlayer(player);
+        }
+    }
+
+    /**
+     * Gets the player's force
+     */
+    public getPlayerForce(player: player) {
+        return this.playerForceDetails.get(player);
     }
 }
