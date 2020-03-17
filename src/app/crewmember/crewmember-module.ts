@@ -1,6 +1,6 @@
 /** @noSelfInFile **/
 import { Crewmember } from "./crewmember-type";
-import { ROLE_NAMES } from "./crewmember-names";
+import { ROLE_NAMES, ROLE_TYPES } from "./crewmember-names";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
@@ -22,7 +22,9 @@ export class CrewModule {
     game: Game;
 
     CREW_MEMBERS: Array<Crewmember> = [];
-    allJobs: Array<string> = [];
+    playerCrewmembers = new Map<player, Crewmember>();
+
+    allJobs: Array<ROLE_TYPES> = [];
 
     crewmemberDamageTrigger: Trigger;
 
@@ -57,10 +59,10 @@ export class CrewModule {
 
         let it = 0;
         while (it < totalPlayers) {
-            if (it === 0) this.allJobs.push("Captain");
-            else if (it === 1) this.allJobs.push("Navigator");
-            else if (it === 2) this.allJobs.push("Doctor");
-            else this.allJobs.push("Security Guard");
+            if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
+            else if (it === 1) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
+            else if (it === 2) this.allJobs.push(ROLE_TYPES.DOCTOR);
+            else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
             it++;
         }      
     
@@ -110,12 +112,15 @@ export class CrewModule {
     }
 
     createCrew(player: player, force: ForceType): Crewmember {   
-        let nUnit = CreateUnit(player, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
-        let crewmember = new Crewmember(this.game, player, nUnit, force);
+        const role = this.getCrewmemberRole();
+        const name = this.getCrewmemberName(role);
 
-        crewmember.setRole(this.getCrewmemberRole());
-        crewmember.setName(this.getCrewmemberName(crewmember.role));
+        let nUnit = CreateUnit(player, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
+        let crewmember = new Crewmember(this.game, player, nUnit, force, role);
+
+        crewmember.setName(name);
         crewmember.setPlayer(player);
+        this.playerCrewmembers.set(player, crewmember);
 
         BlzShowUnitTeamGlow(crewmember.unit, false);
         BlzSetUnitName(nUnit, crewmember.role);
@@ -173,11 +178,7 @@ export class CrewModule {
     }
 
     getCrewmemberForPlayer(player: player) {
-        for (let member of this.CREW_MEMBERS) {
-            if (member.player == player) {
-                return member;
-            }
-        }
+        return this.playerCrewmembers.get(player);
     }
 
     getCrewmemberForUnit(unit: unit): Crewmember | void {

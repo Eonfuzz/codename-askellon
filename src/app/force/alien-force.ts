@@ -11,6 +11,7 @@ import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
 import { Trigger } from "app/types/jass-overrides/trigger";
+import { ROLE_TYPES } from "app/crewmember/crewmember-names";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -308,7 +309,8 @@ export class AlienForce extends ForceType {
 
             if (damageSourceForce && crewmember) {
                 // Do I make it proportional to level as a catchup mechanic?
-                const xpAmount = damageAmount;
+                // Increase XP gained for damaging host by Sec Guard
+                const xpAmount = crewmember.role === ROLE_TYPES.SEC_GUARD ? damageAmount * 1.3 : 1;
                 damageSourceForce.onUnitGainsXp(this.forceModule.game, crewmember, xpAmount);
             }
         }

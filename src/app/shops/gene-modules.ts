@@ -11,7 +11,8 @@ import { TECH_NO_GENES_TIER_1,
     ABIL_NIGHTEYE,
     GENE_INSTALL_MOBILITY,
     GENE_TECH_MOBILITY,
-    GENE_INSTALL_COSMIC_SENSITIVITY
+    GENE_INSTALL_COSMIC_SENSITIVITY,
+    TECH_MAJOR_HEALTHCARE
 } from "resources/ability-ids";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { Crewmember } from "app/crewmember/crewmember-type";
@@ -19,6 +20,8 @@ import { Log } from "lib/serilog/serilog";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { STR_GENE_SUCCESSFUL, STR_GENE_ALIEN_SUCCESSFUL } from "resources/strings";
 import { EventListener, EVENT_TYPE } from "app/events/event";
+import { ROLE_NAMES, ROLE_TYPES } from "app/crewmember/crewmember-names";
+import { ForceType } from "app/force/force-type";
 
 interface GeneInstance {
     source: Crewmember,
@@ -136,6 +139,9 @@ export class GeneModule {
      */
     onGeneCast(instance: GeneInstance) {
         const castAbil = GetSpellAbilityId();
+        const techLevel = this.game.researchModule.getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE); 
+        const doGiveBonusXp = this.game.researchModule.getUpgradeSource(TECH_MAJOR_HEALTHCARE, 2) === ROLE_TYPES.DOCTOR;
+        const bonusXpInfested = this.game.researchModule.isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
 
         if (!instance.unitInGeneZone) return;
         const target = instance.unitInGeneZone;
@@ -177,6 +183,26 @@ export class GeneModule {
             }
         }
         
+        // Now grant XP if installed by doc and medicare 2 was researched
+        if (instance.source.role === ROLE_TYPES.DOCTOR && doGiveBonusXp) {
+            const installerForce = this.game.forceModule.getPlayerForce(instance.source.player) as ForceType;
+            const targetForce = this.game.forceModule.getPlayerForce(instance.unitInGeneZone.player) as ForceType;
+
+            // Grant 100 xp each
+            installerForce.onUnitGainsXp(this.game, instance.source, 100);
+            targetForce.onUnitGainsXp(this.game, instance.unitInGeneZone, 100);
+        }
+
+        // INFESTED ugprade
+        // Grant XP for HOST
+        if (bonusXpInfested) {
+            const host = alienForce.getHost();
+            if (host) {
+                const hostCrewmember = this.game.crewModule.getCrewmemberForPlayer(host);
+                hostCrewmember && alienForce.onUnitGainsXp(this.game, hostCrewmember, 100);
+            }
+        }
+
         if (targetIsAlien) {
             DisplayTextToPlayer(target.player, 0, 0, messageAlien);
         }

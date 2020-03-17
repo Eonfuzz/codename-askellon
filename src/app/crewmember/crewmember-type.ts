@@ -11,9 +11,10 @@ import { Log } from "lib/serilog/serilog";
 import { CrewModule } from "./crewmember-module";
 import { VISION_TYPE } from "app/world/vision-type";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
+import { ROLE_TYPES } from "./crewmember-names";
 
 export class Crewmember extends ArmableUnit {
-    public role = '';
+    public role: ROLE_TYPES;
     public name = '';
     public player: player;
 
@@ -27,7 +28,7 @@ export class Crewmember extends ArmableUnit {
     private damageUpgradeLevel: number = 0;
     private damageBonusMult: number = 1;
 
-    constructor(game: Game, player: player, unit: unit, force: ForceType) {
+    constructor(game: Game, player: player, unit: unit, force: ForceType, role: ROLE_TYPES) {
         super(unit);
 
         this.crewModule = game.crewModule;
@@ -38,13 +39,16 @@ export class Crewmember extends ArmableUnit {
         this.despair = new Despair(game, this);
         this.force = force;
 
+
+        this.role = role;
+
         // Cause resolve and despair to update weapon tooltips
         this.resolve.onChange(() => this.weapon && this.updateTooltips(game.weaponModule));
         this.despair.onChange(() => this.weapon && this.updateTooltips(game.weaponModule));
     }
 
     setUnit(unit: unit) { this.unit = unit; }
-    setRole(role: string) { this.role = role; }
+    setRole(role: ROLE_TYPES) { this.role = role; }
     setName(name: string) { this.name = name; }
     setPlayer(player: player) { this.player = player; }
 
