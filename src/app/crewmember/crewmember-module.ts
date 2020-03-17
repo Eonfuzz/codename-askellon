@@ -1,6 +1,6 @@
 /** @noSelfInFile **/
 import { Crewmember } from "./crewmember-type";
-import { ROLE_NAMES, ROLE_TYPES } from "./crewmember-names";
+import { ROLE_NAMES, ROLE_TYPES } from "../../resources/crewmember-names";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
@@ -163,7 +163,7 @@ export class CrewModule {
         return role;
     }
     
-    getCrewmemberName(role: string) {
+    getCrewmemberName(role: ROLE_TYPES) {
         let namesForRole;
 
         if (ROLE_NAMES.has(role)) {
@@ -174,7 +174,7 @@ export class CrewModule {
             ROLE_NAMES.set(role, namesForRole);
             return name;
         }
-        return 'Error';
+        return `NAME NOT FOUND ${role}`;
     }
 
     getCrewmemberForPlayer(player: player) {
