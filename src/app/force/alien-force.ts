@@ -219,12 +219,14 @@ export class AlienForce extends ForceType {
         const tooltip = TRANSFORM_TOOLTIP(
             income, 
             true, 
-            this.getFormName()
+            this.getFormName(),
+            whichCrew.role
         );
         const tfAlien = TRANSFORM_TOOLTIP(
             income, 
             false, 
-            this.getFormName()
+            this.getFormName(),
+            whichCrew.role
         );
         if (GetLocalPlayer() === whichCrew.player) {
             BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_HUMAN_ALIEN, tooltip, 0);

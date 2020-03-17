@@ -41,7 +41,7 @@ export class CrewmemberForce extends ForceType {
      */
     public updateForceTooltip(game: Game, whichCrew: Crewmember) {
         const income = game.crewModule.calculateIncome(whichCrew);
-        const tooltip = RESOLVE_TOOLTIP(income);
+        const tooltip = RESOLVE_TOOLTIP(income, whichCrew.role);
         if (GetLocalPlayer() === whichCrew.player) {
             BlzSetAbilityExtendedTooltip(ABIL_CREWMEMBER_INFO, tooltip, 0);
         }
