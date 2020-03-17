@@ -1,6 +1,5 @@
 import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO } from "./colours";
-import { ROLE_TYPES } from "app/crewmember/crewmember-names";
-import { ROLE_DESCRIPTIONS } from "./role-descriptions";
+import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 
 export const RESOLVE_TOOLTIP = (playerIncome: number, role: ROLE_TYPES) => `${COL_MISC}Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
 

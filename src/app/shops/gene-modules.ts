@@ -20,7 +20,7 @@ import { Log } from "lib/serilog/serilog";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { STR_GENE_SUCCESSFUL, STR_GENE_ALIEN_SUCCESSFUL } from "resources/strings";
 import { EventListener, EVENT_TYPE } from "app/events/event";
-import { ROLE_NAMES, ROLE_TYPES } from "app/crewmember/crewmember-names";
+import { ROLE_NAMES, ROLE_TYPES } from "resources/crewmember-names";
 import { ForceType } from "app/force/force-type";
 
 interface GeneInstance {
