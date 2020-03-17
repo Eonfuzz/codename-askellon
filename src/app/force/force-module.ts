@@ -22,6 +22,11 @@ export class ForceModule {
 
     public neutralPassive: player;
     public neutralHostile: player;
+
+    public stationSecurity: player;
+    public stationProperty: player;
+    public alienAIPlayer: player;
+
     public game: Game;
 
     constructor(game: Game) {
@@ -42,6 +47,9 @@ export class ForceModule {
 
         this.neutralPassive = Player(22);
         this.neutralHostile = Player(23);
+        this.stationSecurity = Player(23);
+        this.stationProperty = Player(23);
+        this.alienAIPlayer = Player(23);
     }
 
 

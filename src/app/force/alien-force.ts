@@ -28,6 +28,7 @@ export class AlienForce extends ForceType {
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
     private alienTakesDamageTrigger = new Trigger();
+    private alienDealsDamageTrigger = new Trigger();
 
     constructor(forceModule: ForceModule) {
         super(forceModule);
@@ -49,6 +50,7 @@ export class AlienForce extends ForceType {
             }))
 
         this.alienTakesDamageTrigger.AddAction(() => this.onAlienTakesDamage());
+        this.alienDealsDamageTrigger.AddAction(() => this.onAlienDealsDamage());
     }
     
     makeAlien(game: Game, who: unit, owner: player): unit {
@@ -70,8 +72,13 @@ export class AlienForce extends ForceType {
             BlzPauseUnitEx(alien, true);
             ShowUnit(alien, false);
             SuspendHeroXP(alien, true);
+
             // Register it for damage event
             this.registerAlienTakesDamageExperience(alien);
+            this.registerAlienDealsDamage(alien);
+            // Also register the crewmember for the event
+            this.registerAlienDealsDamage(who);
+
 
             const crewmember = game.crewModule.getCrewmemberForPlayer(owner);
             if (crewmember) crewmember.setVisionType(VISION_TYPE.ALIEN);
@@ -251,6 +258,36 @@ export class AlienForce extends ForceType {
 
     private registerAlienTakesDamageExperience(alien: unit) {
         this.alienTakesDamageTrigger.RegisterUnitEvent(alien, EVENT_UNIT_DAMAGED);
+    }
+
+    private registerAlienDealsDamage(alien: unit) {
+        this.alienDealsDamageTrigger.RegisterUnitEvent(alien, EVENT_UNIT_DAMAGING);
+    }
+
+    private onAlienDealsDamage() {
+        const damageSource = GetEventDamageSource();
+        const damagedUnit = BlzGetEventDamageTarget();
+        const damageAmount = GetEventDamage();
+
+        const damagingPlayer = GetOwningPlayer(damageSource);
+        const damagedPlayer = GetOwningPlayer(damagedUnit);
+
+        // Check to make sure you aren't damaging alien stuff
+        if (damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagedPlayer)) {
+            let xpGained: number;
+
+            // Now handle this different
+            // If we are damaging station property gain less XP
+            const damagingSecurity = damagedPlayer == this.forceModule.stationProperty || damagedPlayer == this.forceModule.stationSecurity;
+            const isAlienForm = this.playerIsTransformed.get(damagingPlayer);
+            // Reward slightly less xp for being in human form
+            xpGained = damagingSecurity ? damageAmount * 0.3 : (isAlienForm ? damageAmount * 1 : damageAmount * 0.4);
+
+            const crewmember = this.forceModule.game.crewModule.getCrewmemberForPlayer(damagingPlayer);
+            if (crewmember) {
+                this.onUnitGainsXp(this.forceModule.game, crewmember, xpGained);
+            }
+        }
     }
 
     private onAlienTakesDamage() {
