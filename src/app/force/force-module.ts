@@ -14,11 +14,31 @@ export interface playerDetails {
     name: string, colour: playercolor
 };
 
+export interface PlayerAggressionLog {
+    // Unique identifier
+    id: number,
+    aggressor: player;
+    defendant: player;
+    // Time stamp must be in seconds
+    timeStamp: number;
+    // Duration must be in seconds
+    remainingDuration: number;
+
+    // The key of the aggressionLog
+    key: string;
+}
+
 export class ForceModule {
     private forces: Array<ForceType> = [];
 
     private playerOriginalDetails = new Map<player, playerDetails>();
     private playerForceDetails = new Map<player, ForceType>();
+
+    // new id for the next aggresison item
+    private aggressionId = 0;
+    // Key is ${p1}::${p2}
+    private aggressionLog = new Map<string, PlayerAggressionLog[]>();
+    private allAggressionLogs: PlayerAggressionLog[] = [];
 
     public neutralPassive: player;
     public neutralHostile: player;
@@ -50,6 +70,13 @@ export class ForceModule {
         this.stationSecurity = Player(23);
         this.stationProperty = Player(23);
         this.alienAIPlayer = Player(23);
+
+        // Start aggression log ticker
+        const ticker = new Trigger();
+        // Check every second  
+        ticker.RegisterTimerEventPeriodic(5);
+        // Process the ticker
+        ticker.AddAction(() => this.onAggressionTick(5));
     }
 
 
@@ -64,14 +91,101 @@ export class ForceModule {
      * @param player2 
      */
     public aggressionBetweenTwoPlayers(player1: player, player2: player) {
-        // Log.Information(`Player aggression between ${GetPlayerName(player1)} and ${GetPlayerName(player2)}`);
-        // TODO
-        // For now just force them as enemies
+        // Make them enemies
         SetPlayerAllianceStateAllyBJ(player1, player2, false);
         SetPlayerAllianceStateAllyBJ(player2, player1, false);
-        // TODO
-        // Wait 30 seconds
-        // Re-ally
+
+        // Add the log
+        this.addAggressionLog(player1, player2);
+    }
+
+    /**
+     * Adds an aggression log between two players
+     * If they have no aggression between the two after the duration, they become allies again
+     * @param player1 
+     * @param player2 
+     */
+    private addAggressionLog(player1: player, player2: player) {
+        const newItem = {
+            id: this.aggressionId++,
+            aggressor: player1,
+            defendant: player2,
+            timeStamp: this.game.getTimeStamp(),
+            remainingDuration: 30,
+            key: '',
+        };
+        newItem.key = this.getLogKey(player1, player2);
+
+        const logs = this.aggressionLog.get(newItem.key) || [];
+        logs.push(newItem);
+        this.aggressionLog.set(newItem.key, logs);
+        this.allAggressionLogs.push(newItem);
+    }
+
+    /**
+     * Update aggression logs
+     * If there are none remaining between players we re-ally them
+     * @param delta 
+     */
+    private onAggressionTick(delta: number) {
+        this.allAggressionLogs = this.allAggressionLogs.filter(instance => {
+            const key = instance.key;
+            instance.remainingDuration -= instance.remainingDuration - delta;
+
+            // Remove the instance if needed
+            if (instance.remainingDuration <= 0) {
+                // Okay we're removing the instance
+                // Remove it from the combat logs
+                const logs = this.aggressionLog.get(key) as PlayerAggressionLog[];
+
+                const idx = logs.indexOf(instance);
+                logs.splice(idx, 1);
+
+                this.aggressionLog.set(key, logs);
+
+                if (logs.length === 0) {
+                    // We have no more combat instances between these two players
+                    // Ally them
+                    SetPlayerAllianceStateAllyBJ(instance.aggressor, instance.defendant, true);
+                    SetPlayerAllianceStateAllyBJ(instance.defendant, instance.aggressor, true);
+                }
+                return false;
+            }
+            return true;
+        });
+    }
+
+    private getLogKey(aggressor: player, defendant: player): string {
+        const p1Id = GetPlayerId(aggressor);
+        const p2Id = GetPlayerId(defendant);
+
+        const sortP2First = p2Id < p1Id;
+        return sortP2First ? `${p2Id}::${p1Id}` : `${p1Id}::${p2Id}`;
+    }
+
+    /**
+     * Makes the player allied to everyone
+     * @param forPlayer 
+     */
+    public repairAllAlliances(forPlayer: player) {
+        // Clear aggression logs and repair all alliances
+        let players = this.getActivePlayers();
+        players.forEach(p => {
+            const key = this.getLogKey(p, forPlayer);
+            const instances = this.aggressionLog.get(key);
+            if (instances) {
+                this.aggressionLog.delete(key);
+
+                // Filter it out of the aggression logs
+                this.allAggressionLogs = this.allAggressionLogs.filter(x => instances.indexOf(x) == -1);
+
+                SetPlayerAllianceStateAllyBJ(forPlayer, p, true);
+                SetPlayerAllianceStateAllyBJ(p, forPlayer, true);
+            }
+        });
+
+        // TODO Security to maintain aggression state
+        SetPlayerAllianceStateAllyBJ(forPlayer, this.stationSecurity, true);
     }
 
     /**

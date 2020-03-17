@@ -11,7 +11,7 @@ import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
 import { Trigger } from "app/types/jass-overrides/trigger";
-import { ROLE_TYPES } from "app/crewmember/crewmember-names";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -184,6 +184,12 @@ export class AlienForce extends ForceType {
             game.chatModule.chatHandler.setChatColor(GetPlayerId(who), '6f2583');
 
             BlzSetHeroProperName(toShow, unitName);
+            // Repair alliances
+            // Then make it an enemy of security
+            this.forceModule.repairAllAlliances(who);
+            // Make enemy of security
+            SetPlayerAllianceStateAllyBJ(who, this.forceModule.stationSecurity, false);
+            SetPlayerAllianceStateAllyBJ(this.forceModule.stationSecurity, who, false);
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, alien: alien });
@@ -191,6 +197,8 @@ export class AlienForce extends ForceType {
         else {
             game.chatModule.chatHandler.setPlayerName(GetPlayerId(who), crewmember.name);
             game.chatModule.chatHandler.setChatColor(GetPlayerId(who), PLAYER_COLOR[GetPlayerId(who)]);
+
+            this.forceModule.repairAllAlliances(who);
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, alien: alien });
