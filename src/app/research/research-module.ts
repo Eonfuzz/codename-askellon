@@ -5,9 +5,9 @@ import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE }
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
 import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE } from "resources/strings";
 import { Log } from "lib/serilog/serilog";
-import { ROLE_TYPES } from "app/crewmember/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/force-type";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 /**
  * Handles research and upgrades

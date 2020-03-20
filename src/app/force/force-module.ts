@@ -130,7 +130,7 @@ export class ForceModule {
     private onAggressionTick(delta: number) {
         this.allAggressionLogs = this.allAggressionLogs.filter(instance => {
             const key = instance.key;
-            instance.remainingDuration -= instance.remainingDuration - delta;
+            instance.remainingDuration = instance.remainingDuration - delta;
 
             // Remove the instance if needed
             if (instance.remainingDuration <= 0) {
@@ -308,13 +308,15 @@ export class ForceModule {
      * @param forceName 
      */
     public addPlayerToForce(player: player, forceName: string) {
-        const force = this.getForce(forceName);
+        let force = this.getForce(forceName);
 
-        if (!force) Log.Error("Failed to add "+GetPlayerName(player)+" to force. Force not found:::"+forceName);
-        else {
-            this.playerForceDetails.set(player, force);
-            force.addPlayer(player);
+        if (!force) {
+            // Log.Error("Failed to add "+GetPlayerName(player)+" to force. Force not found:::"+forceName);
+            force = this.getForceFromName(forceName);
         }
+
+        this.playerForceDetails.set(player, force);
+        force.addPlayer(player);
     }
 
     /**

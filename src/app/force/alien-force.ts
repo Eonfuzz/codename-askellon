@@ -51,6 +51,7 @@ export class AlienForce extends ForceType {
             }))
 
         this.alienTakesDamageTrigger.AddAction(() => this.onAlienTakesDamage());
+        this.alienDealsDamageTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DAMAGED);
         this.alienDealsDamageTrigger.AddAction(() => this.onAlienDealsDamage());
     }
     
@@ -259,7 +260,7 @@ export class AlienForce extends ForceType {
 
         // Apply XP gain to alien form
         SuspendHeroXP(alien, false);
-        AddHeroXP(alien, amount, true);
+        AddHeroXP(alien, MathRound(amount), true);
         SuspendHeroXP(alien, false);
     }
 
@@ -272,15 +273,18 @@ export class AlienForce extends ForceType {
     }
 
     private registerAlienDealsDamage(alien: unit) {
-        this.alienDealsDamageTrigger.RegisterUnitEvent(alien, EVENT_UNIT_DAMAGING);
+        Log.Information("Regoistering "+GetUnitName(alien));
     }
 
     private onAlienDealsDamage() {
         const damageSource = GetEventDamageSource();
+        const damagingPlayer = GetOwningPlayer(damageSource);
+
+        if (!this.playerAlienUnits.has(damagingPlayer)) return;
+
         const damagedUnit = BlzGetEventDamageTarget();
         const damageAmount = GetEventDamage();
 
-        const damagingPlayer = GetOwningPlayer(damageSource);
         const damagedPlayer = GetOwningPlayer(damagedUnit);
 
         // Check to make sure you aren't damaging alien stuff

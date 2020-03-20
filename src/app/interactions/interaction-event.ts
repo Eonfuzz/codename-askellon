@@ -42,7 +42,7 @@ export class InteractionEvent {
     this.interactionTrigger.AddAction(() => {
       // Only destroy if it isn't targeting the same unit
       // Stops double click from cancelling the event
-      if (GetIssuedOrderId() != SMART_ORDER_ID && GetOrderTargetUnit() != this.targetUnit) {
+      if (GetIssuedOrderId() != SMART_ORDER_ID  || (GetIssuedOrderId() === SMART_ORDER_ID && GetOrderTargetUnit() != this.targetUnit)) {
         this.destroy();
       }
     });

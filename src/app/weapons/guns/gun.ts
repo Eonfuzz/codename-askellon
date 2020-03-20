@@ -126,7 +126,7 @@ export abstract class Gun {
         // Project the point with a random distance
         let newLocation = originalLocation.projectTowards2D( 
             Rad2Deg(thetaRadians) * GetRandomReal(-angleSpread, angleSpread), 
-            GetRandomInt(minLength, maxLength)
+            GetRandomInt(MathRound(minLength), MathRound(maxLength))
         );
 
         return newLocation;
