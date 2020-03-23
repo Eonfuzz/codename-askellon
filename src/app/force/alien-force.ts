@@ -12,10 +12,13 @@ import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { ROLE_TYPES } from "resources/crewmember-names";
+import { SoundRef } from "app/types/sound-ref";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
 export const DEFAULT_ALIEN_FORM = FourCC('ALI1');
+export const ALIEN_CHAT_COLOR = '6f2583';
+const ALIEN_CHAT_SOUND_REF = new SoundRef('Sound/ChatSound', false);
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
@@ -77,9 +80,9 @@ export class AlienForce extends ForceType {
 
             // Register it for damage event
             this.registerAlienTakesDamageExperience(alien);
-            this.registerAlienDealsDamage(alien);
+            // this.registerAlienDealsDamage(alien);
             // Also register the crewmember for the event
-            this.registerAlienDealsDamage(who);
+            // this.registerAlienDealsDamage(who);
 
 
             const crewmember = game.crewModule.getCrewmemberForPlayer(owner);
@@ -178,11 +181,6 @@ export class AlienForce extends ForceType {
         // Update player name
         if (toAlien) {
             const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
-            // SetPlayerName(who, unitName);
-            // SetPlayerColor(who, PLAYER_COLOR_BROWN);
-            
-            game.chatModule.chatHandler.setPlayerName(GetPlayerId(who), unitName);
-            game.chatModule.chatHandler.setChatColor(GetPlayerId(who), '6f2583');
 
             BlzSetHeroProperName(toShow, unitName);
             // Repair alliances
@@ -196,9 +194,6 @@ export class AlienForce extends ForceType {
             game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, alien: alien });
         }
         else {
-            game.chatModule.chatHandler.setPlayerName(GetPlayerId(who), crewmember.name);
-            game.chatModule.chatHandler.setChatColor(GetPlayerId(who), PLAYER_COLOR[GetPlayerId(who)]);
-
             this.forceModule.repairAllAlliances(who);
 
             // Post event
@@ -272,10 +267,6 @@ export class AlienForce extends ForceType {
         this.alienTakesDamageTrigger.RegisterUnitEvent(alien, EVENT_UNIT_DAMAGED);
     }
 
-    private registerAlienDealsDamage(alien: unit) {
-        Log.Information("Regoistering "+GetUnitName(alien));
-    }
-
     private onAlienDealsDamage() {
         const damageSource = GetEventDamageSource();
         const damagingPlayer = GetOwningPlayer(damageSource);
@@ -328,5 +319,61 @@ export class AlienForce extends ForceType {
                 damageSourceForce.onUnitGainsXp(this.forceModule.game, crewmember, xpAmount);
             }
         }
+    }
+
+
+    /**
+     * Gets a list of who can see the chat messages
+     * Unless overridden returns all the players
+     */
+    public getChatRecipients(sendingPlayer: player) {
+        // If the player is transformed return a list of all alien players
+        if (this.isPlayerTransformed(sendingPlayer)) {
+            return this.players;
+        }
+        
+        // Otherwise return default behaviour
+        return super.getChatRecipients(sendingPlayer);
+    }
+
+    /**
+     * Gets the player's visible chat name, by default shows role name
+     */
+    public getChatName(who: player) {
+        // If player is transformed return an alien name
+        if (this.isPlayerTransformed(who)) {
+            return this.alienHost === who ? "Alien Host" : "Alien Spawn";
+        }
+        
+        // Otherwise return default behaviour
+        return super.getChatName(who);
+    }
+
+    /**
+     * Return's a players chat colour
+     * @param who 
+     */
+    public getChatColor(who: player): string {
+        // If player is transformed return an alien name
+        if (this.isPlayerTransformed(who)) {
+            return ALIEN_CHAT_COLOR;
+        }
+        
+        // Otherwise return default behaviour
+        return super.getChatName(who);
+    }
+
+    /**
+     * Returns the sound to be used on chat events
+     * @param who
+     */
+    public getChatSoundRef(who: player): SoundRef {
+        // If player is transformed return an alien name
+        if (this.isPlayerTransformed(who)) {
+            return ALIEN_CHAT_SOUND_REF;
+        }
+        
+        // Otherwise return default behaviour
+        return super.getChatSoundRef(who);
     }
 }

@@ -6,25 +6,21 @@
 
 import { Game } from "app/game";
 import { Log } from "lib/serilog/serilog";
-
-// UNUSED
-const CHAT_SYSTEM = "[|cffe6a200System|r]";
-const CHAT_GLOBAL = "[|cffe6a200Global|r]";
-
-// DEFAULT PLAYER COLOUR
-const DEFAULT_COLOR = "|cff990000";
+import { SoundRef } from "app/types/sound-ref";
 
 export class ChatSystem {
-    game: Game;
+    private game: Game;
 
-    playerColors: string[] = [];
-    playerNames: string[] = [];
-    messageQueue: string[] = [];
+    private player: player;
 
-    frame: framehandle | undefined;
+    private messageQueue: string[] = [];
 
-    constructor(game: Game) {
+    private frame: framehandle | undefined;
+    private timestampLastMessage: number = 0;
+
+    constructor(game: Game, forWho: player) {
         this.game = game;
+        this.player = forWho;
     }
 
     /**
@@ -33,35 +29,11 @@ export class ChatSystem {
     private getGameTime() { return this.game.getTimeStamp(); }
 
     /**
-     * Sets the chat colour for a player
-     * Color string length must be 6 and hexa
-     * @param playerId 
-     * @param color 
-     */
-    public setChatColor(playerId: number, color: string) {
-        if (StringLength(color) != 6) {
-            Log.Error("Chat color is wrong format");
-        }
-        else {
-            this.playerColors[playerId] = `|cff${color}`;
-        }
-    }
-
-    /**
-     * Sets the player's chat name
-     * @param playerId
-     * @param name 
-     */
-    public setPlayerName(playerId: number, name: string) {
-        this.playerNames[playerId] = name;
-    }
-
-    /**
      * Gets the player's chat colour
      * @param playerId 
      */
-    public getChatColor(playerId: number): string {
-        return this.playerColors[playerId] || DEFAULT_COLOR;
+    public getChatColor(playerColor: string): string {
+        return `|cff${playerColor}`;
     }
 
     /**
@@ -81,9 +53,9 @@ export class ChatSystem {
     /**
      * Returns the chat user string
      */
-    private getChatUser(playerId: number): string {
-        const name = this.playerNames[playerId] || GetPlayerName(Player(playerId));
-        const color = this.getChatColor(playerId);
+    private getChatUser(playerName: string, playerColor: string,): string {
+        const name = playerName;
+        const color = this.getChatColor(playerColor);
         return `${color}${name}|r`
     }
 
@@ -100,8 +72,8 @@ export class ChatSystem {
      * @param playerId 
      * @param message 
      */
-    private generateMessage(playerId: number, message: string): string {
-        return `${this.getChatTimeTag()} ${this.getChatUser(playerId)}: ${message}`;
+    private generateMessage(playerName: string, playerColor: string, message: string): string {
+        return `${this.getChatTimeTag()} ${this.getChatUser(playerName, playerColor)}: ${message}`;
     }
 
     /**
@@ -138,27 +110,30 @@ export class ChatSystem {
      * @param playerId 
      * @param message 
      */
-    public sendMessage(playerId: number, message: string) {
-        if (this.messageIsValid(message)) {
-            const text = this.generateMessage(playerId, message);
-            this.addMessage(text);
-            this.update();
+    public sendMessage(playerName: string, playerColor: string, sound: SoundRef, message: string) {
+        if (GetLocalPlayer() === this.player) {
+            // Hide old chat
+            if (this.messageIsValid(message)) {
+                sound.playSound();
+                const text = this.generateMessage(playerName, playerColor, message);
+                this.addMessage(text);
+                this.update();
+            }
+        }
+        this.timestampLastMessage = this.getGameTime();
+    }
+
+    public onFadeOut(timeSinceLastPost: number) {
+        if (this.frame && this.player === GetLocalPlayer()) {
+            if (timeSinceLastPost <= 7)BlzFrameSetAlpha(this.frame, 0);
+            else if (timeSinceLastPost >= 14) BlzFrameSetAlpha(this.frame, 100);
+            // else {
+            //     BlzFrameSetAlpha(this.frame, MathRound());
+            // }
         }
     }
 
-    public init(font: string) {
-        // Hide old chat
-        BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_CHAT_MSG, 0), false);
-
-        const chat: framehandle = BlzCreateSimpleFrame("Chat", BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0), 0);
-        const chatText: framehandle = BlzGetFrameByName("Chat Text", 0);
-
-        BlzFrameSetAbsPoint(chat, FRAMEPOINT_BOTTOMLEFT, -0.1, 0.17);
-        BlzFrameSetLevel(chat, 8);
-
-        BlzFrameSetTextAlignment(chatText, TEXT_JUSTIFY_BOTTOM, TEXT_JUSTIFY_LEFT);
-        BlzFrameSetFont(chatText, "UI\\Font\\" + font, 0.014, 1);
-
+    public init(chatHandle: framehandle, chatText: framehandle) {
         this.frame = chatText;
     }
  }

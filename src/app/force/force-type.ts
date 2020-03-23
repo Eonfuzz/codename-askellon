@@ -3,8 +3,11 @@ import { Game } from "../game";
 import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { PLAYER_COLOR } from "lib/translators";
+import { SoundRef } from "app/types/sound-ref";
 
 
+const GENERIC_CHAT_SOUND_REF = new SoundRef('Sound/ChatSound', false);
 export abstract class ForceType {
     // Keep track of players in force
     protected players: Array<player> = [];
@@ -76,5 +79,40 @@ export abstract class ForceType {
      */
     public updateForceTooltip(game: Game, whichUnit: Crewmember) {
 
+    }
+
+    /**
+     * Gets a list of who can see the chat messages
+     * Unless overridden returns all the players
+     */
+    public getChatRecipients(sendingPlayer: player) {
+        return this.forceModule.getActivePlayers();
+    }
+
+    /**
+     * Gets the player's visible chat name, by default shows role name
+     */
+    public getChatName(who: player): string {
+        const crew = this.forceModule.game.crewModule.getCrewmemberForPlayer(who);
+        if (crew)
+            return crew.name;
+        else
+            return "Missing Crew Name";
+    }
+
+    /**
+     * Return's a players chat colour
+     * @param who 
+     */
+    public getChatColor(who: player): string {
+        return PLAYER_COLOR[GetPlayerId(who)];
+    }
+
+    /**
+     * Returns the sound to be used on chat events
+     * @param who
+     */
+    public getChatSoundRef(who: player): SoundRef {
+        return GENERIC_CHAT_SOUND_REF;
     }
 }

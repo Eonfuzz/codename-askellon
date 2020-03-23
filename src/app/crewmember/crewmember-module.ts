@@ -78,10 +78,6 @@ export class CrewModule {
                 let crew = this.createCrew(player, force);
                 this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
                 crew.updateTooltips(this.game.weaponModule);
-
-                // Now set player names and colours
-                this.game.chatModule.chatHandler.setPlayerName(GetPlayerId(player), crew.name);
-                this.game.chatModule.chatHandler.setChatColor(GetPlayerId(player), PLAYER_COLOR[GetPlayerId(player)]);
                 y++;
             }
             it++;
@@ -101,7 +97,7 @@ export class CrewModule {
             this.timeSinceLastIncome = 0;
             const amount = INCOME_EVERY / 60;
             this.CREW_MEMBERS.forEach(crew => 
-                AdjustPlayerStateBJ(MathRound(amount * this.calculateIncome(crew)), 
+                AdjustPlayerStateBJ(amount * this.calculateIncome(crew), 
                     crew.player, PLAYER_STATE_RESOURCE_GOLD
                 )
             );
