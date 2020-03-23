@@ -73,7 +73,11 @@ export class ChatSystem {
      * @param message 
      */
     private generateMessage(playerName: string, playerColor: string, message: string): string {
-        return `${this.getChatTimeTag()} ${this.getChatUser(playerName, playerColor)}: ${message}`;
+        // Append an empty string if this isn't the local player
+        if (GetLocalPlayer() === this.player) {
+            return `${this.getChatTimeTag()} ${this.getChatUser(playerName, playerColor)}: ${message}`;
+        }
+        return ``;
     }
 
     /**
@@ -111,16 +115,18 @@ export class ChatSystem {
      * @param message 
      */
     public sendMessage(playerName: string, playerColor: string, sound: SoundRef, message: string) {
-        if (GetLocalPlayer() === this.player) {
-            // Hide old chat
-            if (this.messageIsValid(message)) {
-                sound.playSound();
-                const text = this.generateMessage(playerName, playerColor, message);
-                this.addMessage(text);
-                this.update();
-            }
+        if (this.messageIsValid(message)) {
+            const text = this.generateMessage(playerName, playerColor, message);
+            this.addMessage(text);
+            this.update();
         }
-        this.timestampLastMessage = this.getGameTime();
+
+        const timestamp = this.getGameTime();
+        if (GetLocalPlayer() === this.player) {
+            sound.playSound();
+            this.timestampLastMessage = timestamp;
+        }
+
     }
 
     public onFadeOut(timeSinceLastPost: number) {
