@@ -115,18 +115,16 @@ export class ChatSystem {
      * @param message 
      */
     public sendMessage(playerName: string, playerColor: string, sound: SoundRef, message: string) {
-        if (this.messageIsValid(message)) {
-            const text = this.generateMessage(playerName, playerColor, message);
-            this.addMessage(text);
-            this.update();
-        }
-
         const timestamp = this.getGameTime();
         if (GetLocalPlayer() === this.player) {
-            sound.playSound();
-            this.timestampLastMessage = timestamp;
+            if (this.messageIsValid(message)) {
+                const text = this.generateMessage(playerName, playerColor, message);
+                this.addMessage(text);
+                this.update();
+                sound.playSound();
+                this.timestampLastMessage = timestamp;
+            }
         }
-
     }
 
     public onFadeOut(timeSinceLastPost: number) {

@@ -4,5 +4,9 @@ AgiDefenseBonus=0.0
 IntManaBonus=5.0
 MaxUnitSpeed=522.0
 MinUnitSpeed=0.0
+NeedHeroXP=500
+NeedHeroXPFormulaA=1.0
+NeedHeroXPFormulaB=250.0
+NeedHeroXPFormulaC=0.0
 StrHitPointBonus=5.0
 

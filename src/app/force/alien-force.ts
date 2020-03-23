@@ -360,7 +360,7 @@ export class AlienForce extends ForceType {
         }
         
         // Otherwise return default behaviour
-        return super.getChatName(who);
+        return super.getChatColor(who);
     }
 
     /**

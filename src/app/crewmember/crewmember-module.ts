@@ -97,7 +97,7 @@ export class CrewModule {
             this.timeSinceLastIncome = 0;
             const amount = INCOME_EVERY / 60;
             this.CREW_MEMBERS.forEach(crew => 
-                AdjustPlayerStateBJ(amount * this.calculateIncome(crew), 
+                AdjustPlayerStateBJ(MathRound(amount * this.calculateIncome(crew)), 
                     crew.player, PLAYER_STATE_RESOURCE_GOLD
                 )
             );

@@ -26,6 +26,13 @@ export class ChatModule {
         const players = this.game.forceModule.getActivePlayers();
         const font = 'LVCMono.otf';
 
+        // Hide alliance UI
+        BlzFrameSetScale(BlzGetFrameByName("AllianceDialog", 0), 0.0001);
+        BlzFrameSetVisible(BlzGetFrameByName("AllianceDialog", 0), false);
+        BlzFrameSetAlpha(BlzGetFrameByName("AllianceDialog", 0), 0);
+        
+        BlzFrameSetScale(BlzGetFrameByName("ChatDialog ", 0), 0.0001);
+
         /**
          * Creates and prepares the text frame area
          */
@@ -124,7 +131,7 @@ export class ChatModule {
     }
 
     getUserPrivs(who: player): PRIVS {
-        Log.Information("Player attempting commands: "+GetPlayerName(who));
+        // Log.Information("Player attempting commands: "+GetPlayerName(who));
         if (GetPlayerName(who) === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
         if (GetPlayerName(who) === 'Local Player') return PRIVS.DEVELOPER;
         else if (this.game.forceModule.getActivePlayers().length === 1) return PRIVS.MODERATOR;
