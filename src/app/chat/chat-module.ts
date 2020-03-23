@@ -27,11 +27,16 @@ export class ChatModule {
         const font = 'LVCMono.otf';
 
         // Hide alliance UI
-        BlzFrameSetScale(BlzGetFrameByName("AllianceDialog", 0), 0.0001);
         BlzFrameSetVisible(BlzGetFrameByName("AllianceDialog", 0), false);
-        BlzFrameSetAlpha(BlzGetFrameByName("AllianceDialog", 0), 0);
-        
-        BlzFrameSetScale(BlzGetFrameByName("ChatDialog ", 0), 0.0001);
+        BlzFrameSetEnable(BlzGetFrameByName("AllianceDialog", 0), false);
+
+        BlzFrameSetVisible(BlzGetFrameByName("ChatDialog", 0), false);
+        BlzFrameSetEnable(BlzGetFrameByName("ChatDialog", 0), false);
+
+        BlzFrameSetVisible(BlzGetFrameByName("UpperButtonBarAlliesButton", 0), false);
+        BlzFrameSetEnable(BlzGetFrameByName("UpperButtonBarAlliesButton", 0), false);
+        BlzFrameSetVisible(BlzGetFrameByName("UpperButtonBarChatButton", 0), false);
+        BlzFrameSetEnable(BlzGetFrameByName("UpperButtonBarChatButton", 0), false);
 
         /**
          * Creates and prepares the text frame area
