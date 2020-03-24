@@ -4,6 +4,7 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
+import { SoundRef } from "app/types/sound-ref";
 
 export enum PRIVS {
     USER, MODERATOR, DEVELOPER
@@ -70,8 +71,18 @@ export class ChatModule {
             messageTrigger.RegisterPlayerChatEvent(player, "", false);
         });
         messageTrigger.AddAction(() => this.onChatMessage());
+
+        /**
+         * Create a fade tracking trigger loop
+         */
+        const fadeTrig = new Trigger();
+        fadeTrig.RegisterTimerEventPeriodic(0.3);
+        fadeTrig.AddAction(() => this.updateFade(0.3));
     }
 
+    updateFade(deltaTime: number) {
+        this.chatHandlers.forEach(handler => handler.updateFade(deltaTime));
+    }
 
     onChatMessage() {
         const player = GetTriggerPlayer();
@@ -115,7 +126,7 @@ export class ChatModule {
         }
         // Priv 0 === NORMIE
         if (priv >= 0) {
-
+            
         }
     }
 
@@ -127,12 +138,17 @@ export class ChatModule {
             const playername = force.getChatName(player);
             const color      = force.getChatColor(player);
             const sound      = force.getChatSoundRef(player);
+            const messageTag = force.getChatTag(player);
 
-            recipients.forEach(p => {
-                const cHandler = this.chatHandlers.get(p);
-                if (cHandler) cHandler.sendMessage(playername, color, sound, message);
-            });            
+            this.postMessageFor(recipients, playername, color, message, messageTag, sound);
         }
+    }
+
+    public postMessageFor(players: player[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundRef) {
+        players.forEach(p => {
+            const cHandler = this.chatHandlers.get(p);
+            if (cHandler) cHandler.sendMessage(fromName, color, message, messageTag, sound);
+        });            
     }
 
     getUserPrivs(who: player): PRIVS {

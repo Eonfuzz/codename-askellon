@@ -15,7 +15,7 @@ import { HighQualityPolymer } from "./attachment/high-quality-polymer";
 import { Attachment } from "./attachment/attachment";
 import { ArmableUnit } from "./guns/unit-has-weapon";
 import { EmsRifling } from "./attachment/em-rifling";
-import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID } from "./weapon-constants";
+import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID } from "./weapon-constants";
 import { InitLaserRifle, LaserRifle } from "./guns/laser-rifle";
 
 export class WeaponModule {
@@ -270,6 +270,7 @@ export class WeaponModule {
         if (itemId === SNIPER_ITEM_ID) return true;
         if (itemId === BURST_RIFLE_ITEM_ID) return true;
         if (itemId === LASER_ITEM_ID) return true;
+        if (itemId === SHOTGUN_ITEM_ID) return true;
         return false;
     }
 
@@ -286,6 +287,8 @@ export class WeaponModule {
         else if (itemId === BURST_RIFLE_ITEM_ID) 
             return new BurstRifle(item, unit);
         else if (itemId === LASER_ITEM_ID) 
+            return new LaserRifle(item, unit);
+        else if (itemId === SHOTGUN_ITEM_ID) 
             return new LaserRifle(item, unit);
         return undefined;
     }

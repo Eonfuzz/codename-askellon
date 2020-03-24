@@ -13,6 +13,7 @@ import { PLAYER_COLOR } from "lib/translators";
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef } from "app/types/sound-ref";
+import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG } from "resources/strings";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -28,6 +29,7 @@ export class AlienForce extends ForceType {
     private alienHost: player | undefined;
     private playerAlienUnits: Map<player, unit> = new Map();
     private playerIsTransformed: Map<player, boolean> = new Map();
+    private playerIsAlienAlliesOnly: Map<player, boolean> = new Map();
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
@@ -328,7 +330,7 @@ export class AlienForce extends ForceType {
      */
     public getChatRecipients(sendingPlayer: player) {
         // If the player is transformed return a list of all alien players
-        if (this.isPlayerTransformed(sendingPlayer)) {
+        if (this.isPlayerTransformed(sendingPlayer) && this.playerIsAlienAlliesOnly.get(sendingPlayer)) {
             return this.players;
         }
         
@@ -342,7 +344,7 @@ export class AlienForce extends ForceType {
     public getChatName(who: player) {
         // If player is transformed return an alien name
         if (this.isPlayerTransformed(who)) {
-            return this.alienHost === who ? "Alien Host" : "Alien Spawn";
+            return this.alienHost === who ? STR_CHAT_ALIEN_HOST : STR_CHAT_ALIEN_SPAWN;
         }
         
         // Otherwise return default behaviour
@@ -375,5 +377,18 @@ export class AlienForce extends ForceType {
         
         // Otherwise return default behaviour
         return super.getChatSoundRef(who);
+    }
+    
+    /**
+     * Returns the chat tag, by default it will be null
+     */
+    public getChatTag(who: player): string | undefined { 
+        // If player is transformed return an alien name
+        if (this.playerIsAlienAlliesOnly.get(who)) {
+            return STR_CHAT_ALIEN_TAG;
+        }
+        
+        // Otherwise return default behaviour
+        return super.getChatTag(who);
     }
 }

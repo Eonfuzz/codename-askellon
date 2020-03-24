@@ -16,6 +16,7 @@ export class ChatSystem {
     private messageQueue: string[] = [];
 
     private frame: framehandle | undefined;
+    private timeSinceLastMessage: number = 0;
     private timestampLastMessage: number = 0;
 
     constructor(game: Game, forWho: player) {
@@ -72,7 +73,7 @@ export class ChatSystem {
      * @param playerId 
      * @param message 
      */
-    private generateMessage(playerName: string, playerColor: string, message: string): string {
+    private generateMessage(playerName: string, playerColor: string, message: string, messageTag?: string): string {
         // Append an empty string if this isn't the local player
         if (GetLocalPlayer() === this.player) {
             return `${this.getChatTimeTag()} ${this.getChatUser(playerName, playerColor)}: ${message}`;
@@ -114,26 +115,25 @@ export class ChatSystem {
      * @param playerId 
      * @param message 
      */
-    public sendMessage(playerName: string, playerColor: string, sound: SoundRef, message: string) {
+    public sendMessage(playerName: string, playerColor: string, message: string, messageTag?: string, sound?: SoundRef, ) {
         const timestamp = this.getGameTime();
         if (GetLocalPlayer() === this.player) {
             if (this.messageIsValid(message)) {
-                const text = this.generateMessage(playerName, playerColor, message);
+                const text = this.generateMessage(playerName, playerColor, message, messageTag);
                 this.addMessage(text);
                 this.update();
-                sound.playSound();
+                if (sound) sound.playSound();
                 this.timestampLastMessage = timestamp;
+                this.timeSinceLastMessage = 0;
             }
         }
     }
 
-    public onFadeOut(timeSinceLastPost: number) {
+    public updateFade(timeSinceLastPost: number) {
+        this.timeSinceLastMessage += timeSinceLastPost;
+        const alpha = Max(Min((this.timeSinceLastMessage - 7) / 3 * 100, 100), 0);
         if (this.frame && this.player === GetLocalPlayer()) {
-            if (timeSinceLastPost <= 7)BlzFrameSetAlpha(this.frame, 0);
-            else if (timeSinceLastPost >= 14) BlzFrameSetAlpha(this.frame, 100);
-            // else {
-            //     BlzFrameSetAlpha(this.frame, MathRound());
-            // }
+            BlzFrameSetAlpha(this.frame, alpha);
         }
     }
 

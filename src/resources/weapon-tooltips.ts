@@ -18,12 +18,12 @@ Attached: ${weapon.attachment
 }|r
 
 The standard issue rifle; ideal for thinning hordes and can dish out serious damage up close.
-${COL_GOOD}- 6 Shot Burst
+- 6 Shot Burst
 - Each shot does ${damage} damage
 - Short Cooldown|r
 
 ${!weapon.attachment
-     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}High Quality Polymer|r${COL_INFO} and |r${COL_ATTATCH}EMS Rifling|r${COL_INFO}.|r` 
+     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r attachments.|r` 
      : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
 }`;
 
@@ -48,3 +48,43 @@ ${COL_GOOD}- Bad base damage
 
 ${COL_ATTATCH}Diode Ejector|r ${COL_GOLD}cannot be removed.|r
 `;
+
+export const SHOTGUN_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
+`|cff808080Originally a modification of the Burst Rifle, the Executioner is lethal at close quarters and excels at crowd control.|r
+
+Fires a blast of 6 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+`;
+
+export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 
+`|cff808080Originally a modification of the Burst Rifle, the Executioner is lethal at close quarters and excels at crowd control.|r
+
+A close ranged shotgun that deals good damage
+${COL_GOOD}- Fires a spread of shots
+- Unaffected by Accuracy
+- Can be heavily customised|r
+
+${!weapon.attachment
+    ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r attachments.|r` 
+    : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
+}`;
+
+export const TESLA_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
+`|cff808080LORE WIP|r
+
+Charges for 0.5 seconds and fires a massive bolt of lightning hitting all units in a line dealing ${damage} damage and applying ${COL_INFO}Static Shock|r.
+${COL_INFO}Static Shock|r units explode after 1 second, dealing ${damage/10} damage to all other nearby units and applying ${COL_INFO}Static Shock|r.
+`;
+
+export const TESLA_ITEM = (weapon: Gun, damage: any) => 
+`|cff808080Lore WIP|r
+
+A lightning cannon 
+${COL_GOOD}- Great Damage
+- Charge up time
+- Hits multiple units
+- Applies ${COL_INFO}Static Shock|r
+- Can be heavily customised|r
+- |r${COL_ATTATCH}Electrode Cannon|r ${COL_GOOD}can deal massive damage|r
+
+${COL_ATTATCH}Electrode Cannon|r ${COL_GOLD}cannot be removed.|r
+}`;

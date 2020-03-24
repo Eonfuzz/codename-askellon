@@ -115,4 +115,9 @@ export abstract class ForceType {
     public getChatSoundRef(who: player): SoundRef {
         return GENERIC_CHAT_SOUND_REF;
     }
+
+    /**
+     * Returns the chat tag, by default it will be null
+     */
+    public getChatTag(who: player): string | undefined { return; }
 }

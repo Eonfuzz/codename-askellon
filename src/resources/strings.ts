@@ -5,6 +5,10 @@ export const STR_OPT_HUMAN = `Human`;
 export const STR_OPT_ALIEN = `Alien`;
 export const STR_OPT_CULT = `Cultist`;
 
+export const STR_CHAT_ALIEN_HOST = 'Alien Host';
+export const STR_CHAT_ALIEN_SPAWN = 'Alien Spawn';
+export const STR_CHAT_ALIEN_TAG = '[ALIEN]';
+
 export const STR_GENE_REQUIRES_HEALTHCARE = `${COL_TEAL}Gene Splicer|r ${COL_GOLD}requires Healthcare 2.0|r`
 
 export const STR_UPGRADE_NAME_WEAPONS = (researchLevel: number) => `${COL_ATTATCH}WEAPONS PRODUCTION|r${COL_GOLD} TIER ${researchLevel}|r`;

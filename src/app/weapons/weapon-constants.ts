@@ -5,6 +5,9 @@ export const SNIPER_ITEM_ID = FourCC('I001');
 export const LASER_ABILITY_ID = FourCC('A00H');
 export const LASER_ITEM_ID = FourCC('I004');
 
+export const SHOTGUN_ITEM_ID = FourCC('ISHOT');
+export const SHOTGUN_ABILITY_ID = FourCC('ASHOT');
+
 
 export const EMS_RIFLING_ABILITY_ID = FourCC('A00A');
 export const EMS_RIFLING_ITEM_ID = FourCC('I003');
