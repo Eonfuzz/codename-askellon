@@ -28,12 +28,12 @@ ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
     "Pvt Clarke", "Pvt. \"Slick\" Jones", "Col. Kaedin", "Sly Marbo", "Pvt. Frost",
     "Pvt. Riley", "Pvt. Blake", "Pvt. Vasquez", "Pvt. Allen", "Pvt. Jenkins", "Pvt. Summers",
     "Pvt. Pyle", "Pvt. Harding", "Pvt. Hudson", "Cpl. Baker", "Cpl. Hicks", "Cpl. Emerich",
-    "Cpl. Dilan", "Cpl. Collins", "Cpl. Duncan", "Cpl Farquaad", "Pvt. Parts", "Pvt Fuzz",
+    "Cpl. Dilan", "Cpl. Collins", "Cpl. Duncan", "Cpl. Farquaad", "Pvt. Parts", "Pvt Fuzz",
     "Pvt Chapman", "Pvt Piggy"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.ENGINEER, [
-    "Engineer Fahr"
+    "Engineer Fahr", "Engineer Isaac"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.MAJOR, [

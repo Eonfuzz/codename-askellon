@@ -4,12 +4,13 @@ import { ROLE_NAMES, ROLE_TYPES } from "../../resources/crewmember-names";
 import { Game } from "../game";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
-import { BURST_RIFLE_ITEM_ID, LASER_ITEM_ID } from "../weapons/weapon-constants";
+import { BURST_RIFLE_ITEM_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID } from "../weapons/weapon-constants";
 import { CREW_FORCE_NAME } from "../force/crewmember-force";
 import { ZONE_TYPE } from "../world/zone-id";
 import { OptResult } from "app/force/opt-selection";
 import { ForceType } from "app/force/force-type";
 import { PLAYER_COLOR } from "lib/translators";
+import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 const DELTA_CHECK = 0.25;
@@ -122,21 +123,42 @@ export class CrewModule {
         BlzSetUnitName(nUnit, crewmember.role);
         BlzSetHeroProperName(nUnit, crewmember.name);
         SuspendHeroXP(nUnit, true);
-    
-        /**
-         * Now apply crewmember default weapons
-         */
-        if (crewmember.role) {
-            const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
-            UnitAddItem(crewmember.unit, item);
-            this.game.weaponModule.applyItemEquip(crewmember, item);
-        }
-        
+            
         this.CREW_MEMBERS.push(crewmember);
         this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         // Add the unit to its force
         force.addPlayerMainUnit(this.game, nUnit, player);
+
+        let roleGaveWeapons = false;
+        // Handle unique role bonuses
+        // Captain starts at level 2
+        if (crewmember.role === ROLE_TYPES.CAPTAIN) {
+            SetHeroLevel(nUnit, 2, false);
+        }
+        // Sec guard starts with weapon damage 1 and have shotguns
+        else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
+            SetPlayerTechResearched(player, TECH_WEP_DAMAGE, 1);
+            const item = CreateItem(SHOTGUN_ITEM_ID, 0, 0);
+            UnitAddItem(crewmember.unit, item);
+            this.game.weaponModule.applyItemEquip(crewmember, item);
+            roleGaveWeapons = true;
+        }
+        // Doctor begins with extra will and vigor
+        else if (crewmember.role === ROLE_TYPES.DOCTOR) {
+            SetHeroStat(nUnit, 1, GetHeroStatBJ(1, nUnit, false)+2);
+            SetHeroStat(nUnit, 3, GetHeroStatBJ(3, nUnit, false)+4);
+        }
+        // Navigator has extra accuracy
+        else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
+            SetHeroStat(nUnit, 2, GetHeroStatBJ(1, nUnit, false)+5);
+        }
+
+        if (!roleGaveWeapons) {
+            const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
+            UnitAddItem(crewmember.unit, item);
+            this.game.weaponModule.applyItemEquip(crewmember, item);
+        }
 
         return crewmember;
     }
