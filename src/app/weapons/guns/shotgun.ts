@@ -12,24 +12,27 @@ import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { SHOTGUN_EXTENDED, SHOTGUN_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { ArmableUnit } from "./unit-has-weapon";
-import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
+import { SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
 import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
+import { Log } from "lib/serilog/serilog";
 
 
 export const InitShotgun = (weaponModule: WeaponModule) => {
-    weaponModule.weaponItemIds.push(BURST_RIFLE_ITEM_ID);
-    weaponModule.weaponAbilityIds.push(BURST_RIFLE_ABILITY_ID);
+    weaponModule.weaponItemIds.push(SHOTGUN_ITEM_ID);
+    weaponModule.weaponAbilityIds.push(SHOTGUN_ABILITY_ID);
 }
 export class Shotgun extends Gun {
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 240;
-        this.bulletDistance = 450;
+        this.bulletDistance = 300;
     }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         super.onShoot(weaponModule, caster, targetLocation);
+
+        Log.Information("Shooting shotgun!"); 
 
         const unit = caster.unit;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
@@ -39,11 +42,11 @@ export class Shotgun extends Gun {
         const angleDeg = casterLoc.angle2Dto(targetLocation);
 
         const deltaLocs = getPointsInRangeWithSpread(
-            angleDeg - 30,
-            angleDeg + 30,
+            angleDeg - 15,
+            angleDeg + 15,
             NUM_BULLETS,
             this.bulletDistance,
-            1.5
+            1.3
         );
 
         let bulletsHit = 0;
@@ -106,6 +109,7 @@ export class Shotgun extends Gun {
         if (this.equippedTo) {
             const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
             if (crewmember) {
+                Log.Information("CRIT!");
                 const targetLoc = vectorFromUnit(collidesWith);
                 const text = CreateTextTag();
                 SetTextTagColor(text, 180, 50, 50, 100);

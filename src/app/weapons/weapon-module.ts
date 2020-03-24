@@ -17,6 +17,7 @@ import { ArmableUnit } from "./guns/unit-has-weapon";
 import { EmsRifling } from "./attachment/em-rifling";
 import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID } from "./weapon-constants";
 import { InitLaserRifle, LaserRifle } from "./guns/laser-rifle";
+import { Shotgun, InitShotgun } from "./guns/shotgun";
 
 export class WeaponModule {
     game: Game;
@@ -40,6 +41,7 @@ export class WeaponModule {
         InitBurstRifle(this);
         InitSniperRifle(this);
         InitLaserRifle(this);
+        InitShotgun(this);
 
         /**
          * Now initialise all weapon systems
@@ -289,7 +291,7 @@ export class WeaponModule {
         else if (itemId === LASER_ITEM_ID) 
             return new LaserRifle(item, unit);
         else if (itemId === SHOTGUN_ITEM_ID) 
-            return new LaserRifle(item, unit);
+            return new Shotgun(item, unit);
         return undefined;
     }
 

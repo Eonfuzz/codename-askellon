@@ -16,6 +16,7 @@ export class ChatSystem {
     private messageQueue: string[] = [];
 
     private frame: framehandle | undefined;
+    private chatFrame: framehandle | undefined;
     private timeSinceLastMessage: number = 0;
     private timestampLastMessage: number = 0;
 
@@ -131,13 +132,16 @@ export class ChatSystem {
 
     public updateFade(timeSinceLastPost: number) {
         this.timeSinceLastMessage += timeSinceLastPost;
-        const alpha = Max(Min((this.timeSinceLastMessage - 7) / 3 * 100, 100), 0);
-        if (this.frame && this.player === GetLocalPlayer()) {
-            BlzFrameSetAlpha(this.frame, alpha);
+        const alpha = Math.max(
+            Math.min(255 - (this.timeSinceLastMessage - 6) / 3 * 255, 255), 
+        0);
+        if (this.chatFrame && this.player === GetLocalPlayer()) {
+            BlzFrameSetAlpha(this.chatFrame, MathRound(alpha));
         }
     }
 
     public init(chatHandle: framehandle, chatText: framehandle) {
+        this.chatFrame = chatHandle;
         this.frame = chatText;
     }
  }

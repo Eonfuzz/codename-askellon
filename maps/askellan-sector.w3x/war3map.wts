@@ -1832,3 +1832,27 @@ STRING 380
 Korhal Wall
 }
 
+STRING 381
+// Items: ISHO (Harkons Blitzer), Name (Name)
+{
+Harkons Blitzer
+}
+
+STRING 382
+// Abilities: ASHO (Attack - Harkon's Blitzer), Name (Name)
+{
+Attack - Harkon's Blitzer
+}
+
+STRING 383
+// Abilities: ASHO (Attack - Harkon's Blitzer), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 384
+// Abilities: ASHO (Attack - Harkon's Blitzer), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Harkon's Blitzer
+}
+
