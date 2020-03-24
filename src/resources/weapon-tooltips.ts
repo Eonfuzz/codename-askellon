@@ -50,18 +50,22 @@ ${COL_ATTATCH}Diode Ejector|r ${COL_GOLD}cannot be removed.|r
 `;
 
 export const SHOTGUN_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
-`|cff808080Originally a modification of the Burst Rifle, the Executioner is lethal at close quarters and excels at crowd control.|r
+`|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
+Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
 Fires a blast of 6 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+If all 6 bullets hit the same target they take an additional |cff00ff00${damage*6*0.25}|r damage.
 `;
 
 export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 
-`|cff808080Originally a modification of the Burst Rifle, the Executioner is lethal at close quarters and excels at crowd control.|r
+`|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
+Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
 A close ranged shotgun that deals good damage
 ${COL_GOOD}- Fires a spread of shots
 - Unaffected by Accuracy
-- Can be heavily customised|r
+- Can be heavily customised
+- Hitting a unit with all 6 shots crits|r
 
 ${!weapon.attachment
     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r attachments.|r` 

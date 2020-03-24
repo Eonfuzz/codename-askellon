@@ -29,7 +29,7 @@ ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
     "Pvt. Riley", "Pvt. Blake", "Pvt. Vasquez", "Pvt. Allen", "Pvt. Jenkins", "Pvt. Summers",
     "Pvt. Pyle", "Pvt. Harding", "Pvt. Hudson", "Cpl. Baker", "Cpl. Hicks", "Cpl. Emerich",
     "Cpl. Dilan", "Cpl. Collins", "Cpl. Duncan", "Cpl. Farquaad", "Pvt. Parts", "Pvt Fuzz",
-    "Pvt Chapman", "Pvt Piggy"
+    "Pvt Chapman", "Pvt Piggy", "Col. Harkon",
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.ENGINEER, [

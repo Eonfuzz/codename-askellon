@@ -33,6 +33,7 @@ export class Shotgun extends Gun {
 
         const unit = caster.unit;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
+        const NUM_BULLETS = 6;
 
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
         const angleDeg = casterLoc.angle2Dto(targetLocation);
@@ -40,20 +41,25 @@ export class Shotgun extends Gun {
         const deltaLocs = getPointsInRangeWithSpread(
             angleDeg - 30,
             angleDeg + 30,
-            6,
+            NUM_BULLETS,
             this.bulletDistance,
             1.5
         );
 
+        let bulletsHit = 0;
         deltaLocs.forEach((loc, index) => {
             const nX = casterLoc.x + loc.x;
             const nY = casterLoc.y + loc.y;
             const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
-            this.fireProjectile(weaponModule, caster, targetLoc);
+            this.fireProjectile(weaponModule, caster, targetLoc)
+                .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => {
+                    this.onProjectileCollide(weaponModule, projectile, collidesWith);
+                    if (++bulletsHit == NUM_BULLETS) this.onCritDamage(weaponModule, collidesWith);
+                });
         });
     };
 
-    private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
+    private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): Projectile {
         const unit = caster.unit;
         // print("Target "+targetLocation.toString())
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
@@ -70,14 +76,11 @@ export class Shotgun extends Gun {
             deltaTarget.normalise(),
             1.4
         );
-        projectile
-            .setCollisionRadius(15)
-            .setVelocity(2400)
-            .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
-                this.onProjectileCollide(weaponModule, projectile, collidesWith)
-            );
 
         weaponModule.addProjectile(projectile);
+        return projectile
+            .setCollisionRadius(15)
+            .setVelocity(2400);
     }
     
     private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
@@ -89,6 +92,33 @@ export class Shotgun extends Gun {
                     projectile.source, 
                     collidesWith, 
                     this.getDamage(weaponModule, crewmember), 
+                    false, 
+                    true, 
+                    ATTACK_TYPE_PIERCE, 
+                    DAMAGE_TYPE_NORMAL, 
+                    WEAPON_TYPE_WOOD_MEDIUM_STAB
+                );
+            }
+        }
+    }
+
+    private onCritDamage(weaponModule: WeaponModule, collidesWith: unit) {
+        if (this.equippedTo) {
+            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
+            if (crewmember) {
+                const targetLoc = vectorFromUnit(collidesWith);
+                const text = CreateTextTag();
+                SetTextTagColor(text, 180, 50, 50, 100);
+                SetTextTagText(text, "CRIT!", 0);
+                SetTextTagPermanent(text, false);
+                SetTextTagPos(text, targetLoc.x, targetLoc.y, getZFromXY(targetLoc.x, targetLoc.y));
+                SetTextTagVelocity(text, 0, 100);
+                SetTextTagLifespan(text, 3);
+                SetTextTagFadepoint(text, 2);
+                UnitDamageTarget(
+                    crewmember.unit, 
+                    collidesWith, 
+                    this.getDamage(weaponModule, crewmember) * 6 * 0.25, 
                     false, 
                     true, 
                     ATTACK_TYPE_PIERCE, 
