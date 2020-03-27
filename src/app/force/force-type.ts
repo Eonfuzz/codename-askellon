@@ -67,7 +67,7 @@ export abstract class ForceType {
         // Just apply the xp earned
         SuspendHeroXP(whichUnit.unit, false);
         AddHeroXP(whichUnit.unit, MathRound(amount), true);
-        SuspendHeroXP(whichUnit.unit, false);
+        SuspendHeroXP(whichUnit.unit, true);
     }
 
     /**

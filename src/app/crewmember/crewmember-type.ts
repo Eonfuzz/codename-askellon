@@ -74,7 +74,7 @@ export class Crewmember extends ArmableUnit {
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {
             this.resolve.addInstance(game, this, new BuffInstanceCallback(() => {
-                return GetUnitLifePercent(this.unit) <= 0.3;
+                return GetUnitLifePercent(this.unit) <= 30;
             }));
         }
         
@@ -106,7 +106,7 @@ export class Crewmember extends ArmableUnit {
     testResolve(game: Game) {
         SetUnitLifePercentBJ(this.unit, 0.2);
         this.resolve.addInstance(game, this, new BuffInstanceCallback(() => {
-            return GetUnitLifePercent(this.unit) <= 0.3;
+            return GetUnitLifePercent(this.unit) <= 30;
         }));
     }
 
@@ -124,6 +124,7 @@ export class Crewmember extends ArmableUnit {
     }
 
     addExperience(game: Game, amount: number) {
+        const oldLevel = GetHeroLevel(this.unit);
         // temporarily re-enable xp gain
         SuspendHeroXP(this.unit, false);
 
@@ -131,6 +132,8 @@ export class Crewmember extends ArmableUnit {
 
         // now disable it
         SuspendHeroXP(this.unit, true);
+
+        if (GetHeroLevel(this.unit) !== oldLevel) this.updateTooltips(game.weaponModule);
     }
 
     getVisionType() {

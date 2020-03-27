@@ -1,8 +1,11 @@
-udg_ELEVATORS = {}
+udg_elevator_entrances = {}
 udg_LIGHTS = {}
 udg_fall_points = {}
 udg_fall_results = {}
 udg_fall_result_zone_names = __jarray("")
+udg_elevator_exits = {}
+udg_hatch_entrances = {}
+udg_hatch_exits = {}
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -17,18 +20,39 @@ gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
+gg_rct_FallZoneCargo = nil
+gg_rct_FallZoneCargoLand = nil
+gg_unit_n001_0045 = nil
 function InitGlobals()
     local i = 0
     i = 0
     while (true) do
         if ((i > 1)) then break end
-        udg_ELEVATORS[i] = nil
+        udg_elevator_entrances[i] = nil
         i = i + 1
     end
     i = 0
     while (true) do
         if ((i > 1)) then break end
         udg_fall_result_zone_names[i] = ""
+        i = i + 1
+    end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_elevator_exits[i] = nil
+        i = i + 1
+    end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_hatch_entrances[i] = nil
+        i = i + 1
+    end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_hatch_exits[i] = nil
         i = i + 1
     end
 end
@@ -55,6 +79,15 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("I003"), -265.1, 602.5, FourCC("I003"))
     BlzCreateItemWithSkin(FourCC("I004"), -340.6, 282.6, FourCC("I004"))
     BlzCreateItemWithSkin(FourCC("ISHO"), 203.0, 659.3, FourCC("ISHO"))
+end
+
+function CreateBuildingsForPlayer0()
+    local p = Player(0)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
 end
 
 function CreateUnitsForPlayer20()
@@ -99,16 +132,20 @@ function CreateNeutralPassiveBuildings()
     local life
     gg_unit_n001_0021 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
-    gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
-    gg_unit_n002_0034 = BlzCreateUnitWithSkin(p, FourCC("n002"), -28670.7, 26621.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -28670.7, 26621.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -26110.7, 26365.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
     u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -64.0, 960.0, 270.000, FourCC("nMED"))
     u = BlzCreateUnitWithSkin(p, FourCC("ncp2"), -1696.0, 288.0, 270.000, FourCC("ncp2"))
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -1472.0, 576.0, 270.000, FourCC("nGEN"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
+    gg_unit_n001_0045 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()
+    CreateBuildingsForPlayer0()
     CreateBuildingsForPlayer21()
 end
 
@@ -130,13 +167,17 @@ function CreateRegions()
     gg_rct_FallZone1 = Rect(-96.0, 1056.0, 480.0, 1248.0)
     gg_rct_FallZone1Land = Rect(-27488.0, 26816.0, -27168.0, 27168.0)
     gg_rct_GeneSplicer = Rect(-1792.0, 192.0, -1600.0, 384.0)
+    gg_rct_FallZoneCargo = Rect(-26432.0, -27136.0, -25760.0, -26880.0)
+    gg_rct_FallZoneCargoLand = Rect(-25600.0, 26016.0, -25344.0, 26496.0)
 end
 
 function Trig_Set_Actions()
-    udg_ELEVATORS[0] = gg_unit_n001_0032
-    udg_ELEVATORS[1] = gg_unit_n001_0021
-    udg_ELEVATORS[2] = gg_unit_n002_0033
-    udg_ELEVATORS[3] = gg_unit_n002_0034
+    udg_elevator_entrances[1] = gg_unit_n001_0032
+    udg_elevator_entrances[2] = gg_unit_n001_0021
+    udg_elevator_entrances[3] = gg_unit_n001_0045
+    udg_elevator_exits[1] = gg_unit_n001_0021
+    udg_elevator_exits[2] = gg_unit_n001_0032
+    udg_elevator_exits[3] = gg_unit_n001_0021
     udg_LIGHTS[0] = gg_dest_B002_0015
     udg_LIGHTS[1] = gg_dest_B002_0017
     udg_LIGHTS[2] = gg_dest_B002_0019
@@ -144,6 +185,9 @@ function Trig_Set_Actions()
     udg_fall_points[1] = gg_rct_FallZone1
     udg_fall_results[1] = gg_rct_FallZone1Land
     udg_fall_result_zone_names[1] = "Floor1"
+    udg_fall_points[2] = gg_rct_FallZoneCargo
+    udg_fall_results[2] = gg_rct_FallZoneCargoLand
+    udg_fall_result_zone_names[2] = "Floor2"
 end
 
 function InitTrig_Set()

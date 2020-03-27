@@ -53,8 +53,8 @@ export const SHOTGUN_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any
 `|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
-Fires a blast of 6 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
-If all 6 bullets hit the same target they take an additional |cff00ff00${damage*6*0.25}|r damage.
+Fires a blast of 12 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+If all 12 bullets hit the same target they take an additional |cff00ff00${damage*12*0.25}|r damage.
 `;
 
 export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 
@@ -64,11 +64,11 @@ Over the twenty years of his career, he had only one constant companion, and tha
 A close ranged shotgun that deals good damage
 ${COL_GOOD}- Fires a spread of shots
 - Unaffected by Accuracy
-- Can be heavily customised
-- Hitting a unit with all 6 shots crits|r
+- Hitting a unit with all 6 shots crits
+- Can be heavily customised|r
 
 ${!weapon.attachment
-    ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r attachments.|r` 
+    ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r${COL_INFO} attachments.|r` 
     : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
 }`;
 

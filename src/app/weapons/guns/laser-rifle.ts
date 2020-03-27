@@ -44,7 +44,7 @@ export class LaserRifle extends Gun {
         const unit = caster.unit;
         
         PlayNewSoundOnUnit(this.getSoundPath(), caster.unit, 127);
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 10);
+        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
 
@@ -54,7 +54,7 @@ export class LaserRifle extends Gun {
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
         const unit = caster.unit;
         // print("Target "+targetLocation.toString())
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
+        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         let strayTarget = this.getStrayLocation(targetLocation, caster)
         let deltaTarget = strayTarget.subtract(casterLoc);
 

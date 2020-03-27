@@ -32,13 +32,13 @@ export class Shotgun extends Gun {
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         super.onShoot(weaponModule, caster, targetLocation);
 
-        Log.Information("Shooting shotgun!"); 
+        // Log.Information("Shooting shotgun!"); 
 
         const unit = caster.unit;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
-        const NUM_BULLETS = 6;
+        const NUM_BULLETS = 12;
 
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
+        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         const angleDeg = casterLoc.angle2Dto(targetLocation);
 
         const deltaLocs = getPointsInRangeWithSpread(
@@ -49,12 +49,20 @@ export class Shotgun extends Gun {
             1.3
         );
 
+        const centerTargetLoc = casterLoc.projectTowards2D(angleDeg, this.bulletDistance*1.4);
+        centerTargetLoc.z = getZFromXY(centerTargetLoc.x, centerTargetLoc.y);
+
+        this.fireProjectile(weaponModule, caster, centerTargetLoc, true)
+            .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => {
+                this.onProjectileCollide(weaponModule, projectile, collidesWith);
+            });
+        
         let bulletsHit = 0;
         deltaLocs.forEach((loc, index) => {
             const nX = casterLoc.x + loc.x;
             const nY = casterLoc.y + loc.y;
             const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
-            this.fireProjectile(weaponModule, caster, targetLoc)
+            this.fireProjectile(weaponModule, caster, targetLoc, false)
                 .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => {
                     this.onProjectileCollide(weaponModule, projectile, collidesWith);
                     if (++bulletsHit == NUM_BULLETS) this.onCritDamage(weaponModule, collidesWith);
@@ -62,10 +70,10 @@ export class Shotgun extends Gun {
         });
     };
 
-    private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): Projectile {
+    private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3, isCentralProjectile: boolean): Projectile {
         const unit = caster.unit;
         // print("Target "+targetLocation.toString())
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)+50).projectTowards2D(GetUnitFacing(unit) * bj_DEGTORAD, 30);
+        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         let deltaTarget = targetLocation.subtract(casterLoc);
 
         let projectile = new Projectile(
@@ -74,10 +82,12 @@ export class Shotgun extends Gun {
             new ProjectileTargetStatic(deltaTarget)
         );
         projectile.addEffect(
-            "war3mapImported\\Bullet.mdx",
+            isCentralProjectile 
+                ? "Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdl" 
+                : "war3mapImported\\Bullet.mdx",
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
-            1.4
+            isCentralProjectile ? 0.6 : 1.4
         );
 
         weaponModule.addProjectile(projectile);
@@ -109,7 +119,6 @@ export class Shotgun extends Gun {
         if (this.equippedTo) {
             const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
             if (crewmember) {
-                Log.Information("CRIT!");
                 const targetLoc = vectorFromUnit(collidesWith);
                 const text = CreateTextTag();
                 SetTextTagColor(text, 180, 50, 50, 100);
@@ -117,12 +126,12 @@ export class Shotgun extends Gun {
                 SetTextTagPermanent(text, false);
                 SetTextTagPos(text, targetLoc.x, targetLoc.y, getZFromXY(targetLoc.x, targetLoc.y));
                 SetTextTagVelocity(text, 0, 100);
-                SetTextTagLifespan(text, 3);
-                SetTextTagFadepoint(text, 2);
+                // SetTextTagLifespan(text, 3);
+                // SetTextTagFadepoint(text, 2);
                 UnitDamageTarget(
                     crewmember.unit, 
                     collidesWith, 
-                    this.getDamage(weaponModule, crewmember) * 6 * 0.25, 
+                    this.getDamage(weaponModule, crewmember) * 12 * 0.25, 
                     false, 
                     true, 
                     ATTACK_TYPE_PIERCE, 

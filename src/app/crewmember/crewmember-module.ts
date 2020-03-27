@@ -11,6 +11,7 @@ import { OptResult } from "app/force/opt-selection";
 import { ForceType } from "app/force/force-type";
 import { PLAYER_COLOR } from "lib/translators";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
+import { TimedEvent } from "app/types/timed-event";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 const DELTA_CHECK = 0.25;
@@ -119,10 +120,6 @@ export class CrewModule {
         crewmember.setPlayer(player);
         this.playerCrewmembers.set(player, crewmember);
 
-        BlzShowUnitTeamGlow(crewmember.unit, false);
-        BlzSetUnitName(nUnit, crewmember.role);
-        BlzSetHeroProperName(nUnit, crewmember.name);
-        SuspendHeroXP(nUnit, true);
             
         this.CREW_MEMBERS.push(crewmember);
         this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
@@ -134,6 +131,7 @@ export class CrewModule {
         // Handle unique role bonuses
         // Captain starts at level 2
         if (crewmember.role === ROLE_TYPES.CAPTAIN) {
+            // Log.Information("CAPTAIN BONUS");
             SetHeroLevel(nUnit, 2, false);
         }
         // Sec guard starts with weapon damage 1 and have shotguns
@@ -146,12 +144,12 @@ export class CrewModule {
         }
         // Doctor begins with extra will and vigor
         else if (crewmember.role === ROLE_TYPES.DOCTOR) {
-            SetHeroStat(nUnit, 1, GetHeroStatBJ(1, nUnit, false)+2);
-            SetHeroStat(nUnit, 3, GetHeroStatBJ(3, nUnit, false)+4);
+            SetHeroStr(nUnit, GetHeroStr(nUnit, false)+2, true);
+            SetHeroInt(nUnit, GetHeroInt(nUnit, false)+4, true);
         }
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
-            SetHeroStat(nUnit, 2, GetHeroStatBJ(1, nUnit, false)+5);
+            SetHeroAgi(nUnit, GetHeroAgi(nUnit, false)+5, true);
         }
 
         if (!roleGaveWeapons) {
@@ -160,15 +158,20 @@ export class CrewModule {
             this.game.weaponModule.applyItemEquip(crewmember, item);
         }
 
+        BlzShowUnitTeamGlow(crewmember.unit, false);
+        BlzSetUnitName(nUnit, crewmember.role);
+        BlzSetHeroProperName(nUnit, crewmember.name);
+        SuspendHeroXP(nUnit, true);
+
         return crewmember;
     }
 
     calculateIncome(crew: Crewmember) {
         const crewModified = 1.0; // TODO
         const baseIncome = 200; // TODO
-        const incomePerLevel = 100; // TODO
+        const incomePerLevel = 50; // TODO
 
-        const crewLevel = GetHeroLevel(crew.unit);
+        const crewLevel = GetHeroLevel(crew.unit) - 1;
         const crewExperience = GetHeroXP(crew.unit);
         return baseIncome + incomePerLevel * crewLevel;
     }

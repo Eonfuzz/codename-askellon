@@ -279,7 +279,7 @@ export class ForceModule {
             hotkey: "a",
             type: OPT_TYPES.ANTAGONST,
             chanceToExist: 100,
-            count: 2
+            count: 1
         });
         // Now ask for opts
         optSelection.askPlayerOpts(this);
