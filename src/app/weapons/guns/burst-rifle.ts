@@ -63,17 +63,17 @@ export class BurstRifle extends Gun {
             casterLoc, 
             new ProjectileTargetStatic(deltaTarget)
         );
-        projectile.addEffect(
-            "war3mapImported\\Bullet.mdx",
-            new Vector3(0, 0, 0),
-            deltaTarget.normalise(),
-            1.4
-        );
         projectile
             .setCollisionRadius(15)
             .setVelocity(2400)
             .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(weaponModule, projectile, collidesWith)
+            )
+            .addEffect(
+                "war3mapImported\\Bullet.mdx",
+                new Vector3(0, 0, 0),
+                deltaTarget.normalise(),
+                1.4
             );
 
         weaponModule.addProjectile(projectile);
