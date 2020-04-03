@@ -54,7 +54,7 @@ export class InteractionModule {
         });
 
         initElevators();
-        initHatches();
+        initHatches(game);
         initWeaponsTerminals();
     }
 

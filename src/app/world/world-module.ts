@@ -3,7 +3,7 @@ import { Game } from "../game";
 import { Zone } from "./zone-type";
 import { Ship } from "../space/ship";
 import { TheAskellon } from "./the-askellon";
-import { ZONE_TYPE } from "./zone-id";
+import { ZONE_TYPE, STRING_TO_ZONE_TYPE } from "./zone-id";
 import { Trigger } from "../types/jass-overrides/trigger";
 import { Log } from "../../lib/serilog/serilog";
 import { EVENT_TYPE } from "app/events/event";
@@ -71,9 +71,14 @@ export class WorldModule {
             this.handleTravel(alienCrew.unit, to);
         }
         // Otherwise, check if the traversing unit is crewmember AND has an alien form
-        else if (isCrewmember && alien) {
+        else if (isCrewmember && alien && crew) {
             // If so travel that alien form
             this.handleTravel(alien, to);
+        }
+
+        if (isCrewmember  && crew) {
+            const newLoc = this.getZone(to);
+            newLoc && newLoc.displayEnteringMessage(crew.player);
         }
 
         // If the traversing unit was alien or crewmember, call the floor change event
@@ -98,16 +103,9 @@ export class WorldModule {
     }
 
     getZoneByName(whichZone: string) {
-        switch (whichZone) {
-            case "FLOOR 1":
-            case "Floor 1": 
-                return ZONE_TYPE.FLOOR_1;
-            case "FLOOR 2":
-            case "Floor 2": 
-                return ZONE_TYPE.FLOOR_2;
-            default:
-                return ZONE_TYPE.VENTRATION;
-        }
+        const result = STRING_TO_ZONE_TYPE.get(whichZone);
+        if (!result) Log.Error("FAILED TO GET ZONE FOR "+whichZone);
+        return result as ZONE_TYPE;
     }
 
     getPlayersInZone(whichZone: ZONE_TYPE): Array<player> {

@@ -16,6 +16,9 @@ declare const udg_fall_points: rect[];
 declare const udg_fall_results: rect[];
 declare const udg_fall_result_zone_names: string[];
 
+declare const udg_jump_pass_zones: rect[];
+declare const udg_jump_pass_zones_name: string[];
+
 export const LEAP_INTERVAL = 0.03;
 export class LeapEntry {
     unit: unit;
@@ -81,7 +84,7 @@ export class LeapEntry {
         // Update unit location
         SetUnitX(this.unit, unitLoc.x);
         SetUnitY(this.unit, unitLoc.y);
-        SetUnitFlyHeight(this.unit, unitLoc.z+this.initalLocation.z-terrainZ, 9999);
+        SetUnitFlyHeight(this.unit, unitLoc.z-terrainZ, 9999);
 
         // Lets update this again next time
         return true;
@@ -126,12 +129,19 @@ export class LeapModule {
                 if (i.onFinishCallback) i.onFinishCallback(i);
                 // Now get unit xyz
                 const unitLoc = i.location;
-                const insideRectIndex = this.findInsideRect(unitLoc);
+                const insideRectIndex = this.findInsideRect(udg_fall_points, unitLoc);
                 // If we are inside a fall rect...
                 // FALL!
                 if (insideRectIndex) {
                     const targetRect = udg_fall_results[insideRectIndex];
                     targetRect && this.makeUnitFall(i.unit, targetRect, udg_fall_result_zone_names[insideRectIndex]);
+                }
+                // Otherwise check to see if we landed in a new zone 
+                else {
+                    const newZone = this.findInsideRect(udg_jump_pass_zones, unitLoc);
+                    const resultZone = !!newZone && udg_jump_pass_zones_name[newZone];
+                    const z = resultZone && this.game.worldModule.getZoneByName(resultZone);
+                    z && this.game.worldModule.travel(i.unit, z);
                 }
             }
 
@@ -220,10 +230,10 @@ export class LeapModule {
         }, 5800));
     }
 
-    findInsideRect(loc: Vector3): number | void {
+    findInsideRect(rects: rect[], loc: Vector3): number | void {
         // Loop through the fall points
-        for (let i = 0; i < udg_fall_points.length; i++) {
-            const rect = udg_fall_points[i];
+        for (let i = 0; i < rects.length; i++) {
+            const rect = rects[i];
             if (rect && 
                 GetRectMinX(rect) < loc.x &&
                 GetRectMinY(rect) < loc.y &&

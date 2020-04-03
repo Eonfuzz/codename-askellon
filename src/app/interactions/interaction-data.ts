@@ -8,6 +8,7 @@ import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS, COL_MISC } from "../../resources/c
 import { Trigger } from "app/types/jass-overrides/trigger";
 import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
+import { Game } from "app/game";
 
 export let Interactables = new Map<number, InteractableData>();
 
@@ -95,30 +96,39 @@ export function initElevators() {
     Interactables.set(ELEVATOR_TYPE, elevatorTest);
 }
 
+declare const udg_hatch_entrances: unit[];
+declare const udg_hatch_exits: unit[];
+declare const udg_hatch_entrance_names: string[];
+declare const udg_hatch_exit_zones: string[];
+
 const hatchMap = new Map<number, Elevator>();
-export function initHatches() {
-    const HATCH_FLOOR_1 = new Elevator(
-        gg_unit_n002_0033,
-        ZONE_TYPE.FLOOR_1,
-        {x: 0, y: 0 }
-    );
-    const VENT_EXIT_FLOOR_1 = new Elevator(
-        gg_unit_n002_0034,
-        ZONE_TYPE.VENTRATION,
-        {x: 0, y: 0 }
-    );
-    
-    HATCH_FLOOR_1.to = VENT_EXIT_FLOOR_1;
-    VENT_EXIT_FLOOR_1.to = HATCH_FLOOR_1;
+export function initHatches(game: Game) {
 
-    BlzSetUnitName(HATCH_FLOOR_1.unit, `To ${COL_VENTS}Service Tunnels|r|n${COL_MISC}Right Click To Use|r`);
-    BlzSetUnitName(VENT_EXIT_FLOOR_1.unit, `Hatch to ${COL_FLOOR_1}Floor 1|r|n${COL_MISC}Right Click To Use|r`);
+    const hatches: Elevator[] = [];
 
-    hatchMap.set(GetHandleId(HATCH_FLOOR_1.unit), HATCH_FLOOR_1);
-    hatchMap.set(GetHandleId(VENT_EXIT_FLOOR_1.unit), VENT_EXIT_FLOOR_1);
-    
+    udg_hatch_entrances.forEach((entrance, i) => {
+        const entranceName = udg_hatch_entrance_names[i];
+        const hatchExitZone = game.worldModule.getZoneByName(udg_hatch_exit_zones[i]);
+
+        const elevator = new Elevator(
+            entrance,
+            hatchExitZone,
+            {x: 0, y: 0 }
+        );
+
+        BlzSetUnitName(entrance, `To ${entranceName}|n${COL_MISC}Right Click To Use|r`);
+        hatchMap.set(GetHandleId(entrance), elevator);
+        hatches.push(elevator);
+    });
+
+    hatches.forEach((hatch, i) => {
+        const exit = udg_hatch_exits[i];
+        hatch.to = hatchMap.get(GetHandleId(exit));
+        hatchMap.set(GetHandleId(hatch.unit), hatch);
+    })        
     const HATCH_TYPE = FourCC('n002');
-    const hatcInteractable: InteractableData = {
+    const LADDER_TYPE = FourCC('n004');
+    const hatchInteractable: InteractableData = {
         unitType: HATCH_TYPE,
         onStart: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => {
             const handleId = GetHandleId(targetUnit);    
@@ -126,11 +136,13 @@ export function initHatches() {
 
             SetUnitTimeScale(targetUnit, 1.4);
             SetUnitAnimationByIndex(targetUnit, 1);
-            KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp33", targetUnit, 40));
+            if (GetUnitTypeId(targetUnit) === HATCH_TYPE) 
+                KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp33", targetUnit, 40));
 
             if (targetElevator && targetElevator.to) {
                 SetUnitTimeScale(targetElevator.to.unit, 1.4);
-                PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 40);
+                if (GetUnitTypeId(targetElevator.to.unit) === HATCH_TYPE) 
+                    KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 40));
                 SetUnitAnimationByIndex(targetElevator.to.unit, 1);
             }
         },
@@ -160,7 +172,8 @@ export function initHatches() {
             }
         }
     }
-    Interactables.set(HATCH_TYPE, hatcInteractable);
+    Interactables.set(HATCH_TYPE, hatchInteractable);
+    Interactables.set(LADDER_TYPE, hatchInteractable);
 }
 
 export const initWeaponsTerminals = () => {

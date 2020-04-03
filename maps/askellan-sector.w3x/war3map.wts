@@ -1876,3 +1876,27 @@ STRING 387
 Purchase Harkon's Blitzer
 }
 
+STRING 388
+// Units: h004 (Power Generator), Name (Name)
+{
+Power Generator
+}
+
+STRING 390
+// Doodads: D00D (Wire 1), Name (Name)
+{
+Wire 1
+}
+
+STRING 391
+// Doodads: D00E (Wire 1 Small), Name (Name)
+{
+Wire 1 Small
+}
+
+STRING 392
+// Units: n004 (Ladder), Name (Name)
+{
+Ladder
+}
+

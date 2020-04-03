@@ -41,7 +41,9 @@ export class TheAskellon {
 
         this.floors.set(ZONE_TYPE.FLOOR_1, new ShipZone(ZONE_TYPE.FLOOR_1));
         this.floors.set(ZONE_TYPE.FLOOR_2, new ShipZone(ZONE_TYPE.FLOOR_2));
-        this.floors.set(ZONE_TYPE.VENTRATION, new ShipZone(ZONE_TYPE.VENTRATION));
+        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A));
+        this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
+        this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
 
         // Now apply lights to the zones
         const z1 = this.floors.get(ZONE_TYPE.FLOOR_1);
@@ -53,10 +55,15 @@ export class TheAskellon {
         }
         
         // Now apply lights to the zones
-        const vents = this.floors.get(ZONE_TYPE.VENTRATION);
-        if (vents) {
-            vents.updatePower(world, false);
-            vents.alwaysCauseFear = true;
+        const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
+        if (SERVICE_TUNNELS) {
+            SERVICE_TUNNELS.updatePower(world, false);
+            SERVICE_TUNNELS.alwaysCauseFear = true;
+        }
+        const CARGO_A_VENT = this.floors.get(ZONE_TYPE.CARGO_A_VENT);
+        if (CARGO_A_VENT) {
+            CARGO_A_VENT.updatePower(world, false);
+            CARGO_A_VENT.alwaysCauseFear = true;
         }
     }
 

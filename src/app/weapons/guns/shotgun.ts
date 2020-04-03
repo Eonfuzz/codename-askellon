@@ -36,7 +36,7 @@ export class Shotgun extends Gun {
 
         const unit = caster.unit;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
-        const NUM_BULLETS = 12;
+        const NUM_BULLETS = 30;
 
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         const angleDeg = casterLoc.angle2Dto(targetLocation);

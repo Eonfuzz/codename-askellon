@@ -6,23 +6,35 @@ udg_fall_result_zone_names = __jarray("")
 udg_elevator_exits = {}
 udg_hatch_entrances = {}
 udg_hatch_exits = {}
+udg_hatch_entrance_names = __jarray("")
+udg_hatch_exit_zones = __jarray("")
+udg_jump_pass_zones = {}
+udg_jump_pass_zones_name = __jarray("")
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
 gg_rct_FallZone1Land = nil
 gg_rct_GeneSplicer = nil
+gg_rct_FallZoneCargo = nil
+gg_rct_FallZoneCargoLand = nil
+gg_rct_JumpPassCargo = nil
+gg_rct_JumpPassCargoVent = nil
 gg_trg_Set = nil
+gg_trg_SetHatch = nil
+gg_trg_SetFall = nil
 gg_unit_n001_0032 = nil
 gg_unit_n001_0021 = nil
 gg_unit_n002_0033 = nil
-gg_unit_n002_0034 = nil
+gg_unit_n002_0047 = nil
+gg_unit_n002_0035 = nil
+gg_unit_n002_0043 = nil
+gg_unit_n002_0044 = nil
+gg_unit_n001_0045 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
-gg_rct_FallZoneCargo = nil
-gg_rct_FallZoneCargoLand = nil
-gg_unit_n001_0045 = nil
+gg_unit_n004_0034 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -55,6 +67,24 @@ function InitGlobals()
         udg_hatch_exits[i] = nil
         i = i + 1
     end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_hatch_entrance_names[i] = ""
+        i = i + 1
+    end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_hatch_exit_zones[i] = ""
+        i = i + 1
+    end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_jump_pass_zones_name[i] = ""
+        i = i + 1
+    end
 end
 
 function CreateAllDestructables()
@@ -81,15 +111,6 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("ISHO"), 203.0, 659.3, FourCC("ISHO"))
 end
 
-function CreateBuildingsForPlayer0()
-    local p = Player(0)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
-end
-
 function CreateUnitsForPlayer20()
     local p = Player(20)
     local u
@@ -114,6 +135,15 @@ function CreateBuildingsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("n003"), 640.0, 640.0, 270.000, FourCC("n003"))
 end
 
+function CreateNeutralHostileBuildings()
+    local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
+end
+
 function CreateNeutralHostile()
     local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
     local u
@@ -132,20 +162,28 @@ function CreateNeutralPassiveBuildings()
     local life
     gg_unit_n001_0021 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -28670.7, 26621.0, 270.000, FourCC("n002"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -26110.7, 26365.0, 270.000, FourCC("n002"))
+    gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
+    gg_unit_n002_0035 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26110.7, 26365.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
     u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -64.0, 960.0, 270.000, FourCC("nMED"))
     u = BlzCreateUnitWithSkin(p, FourCC("ncp2"), -1696.0, 288.0, 270.000, FourCC("ncp2"))
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -1472.0, 576.0, 270.000, FourCC("nGEN"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
+    gg_unit_n002_0043 = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
+    gg_unit_n002_0044 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
     gg_unit_n001_0045 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
+    gg_unit_n002_0047 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26686.7, 27069.0, 270.000, FourCC("n002"))
+end
+
+function CreateNeutralPassive()
+    local p = Player(PLAYER_NEUTRAL_PASSIVE)
+    local u
+    local unitID
+    local t
+    local life
+    gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
 end
 
 function CreatePlayerBuildings()
-    CreateBuildingsForPlayer0()
     CreateBuildingsForPlayer21()
 end
 
@@ -154,9 +192,11 @@ function CreatePlayerUnits()
 end
 
 function CreateAllUnits()
+    CreateNeutralHostileBuildings()
     CreateNeutralPassiveBuildings()
     CreatePlayerBuildings()
     CreateNeutralHostile()
+    CreateNeutralPassive()
     CreatePlayerUnits()
 end
 
@@ -169,6 +209,8 @@ function CreateRegions()
     gg_rct_GeneSplicer = Rect(-1792.0, 192.0, -1600.0, 384.0)
     gg_rct_FallZoneCargo = Rect(-26432.0, -27136.0, -25760.0, -26880.0)
     gg_rct_FallZoneCargoLand = Rect(-25600.0, 26016.0, -25344.0, 26496.0)
+    gg_rct_JumpPassCargo = Rect(-26816.0, -27936.0, -25696.0, -27104.0)
+    gg_rct_JumpPassCargoVent = Rect(-26496.0, -26944.0, -25728.0, -26080.0)
 end
 
 function Trig_Set_Actions()
@@ -182,12 +224,6 @@ function Trig_Set_Actions()
     udg_LIGHTS[1] = gg_dest_B002_0017
     udg_LIGHTS[2] = gg_dest_B002_0019
     udg_LIGHTS[3] = gg_dest_B002_0022
-    udg_fall_points[1] = gg_rct_FallZone1
-    udg_fall_results[1] = gg_rct_FallZone1Land
-    udg_fall_result_zone_names[1] = "Floor1"
-    udg_fall_points[2] = gg_rct_FallZoneCargo
-    udg_fall_results[2] = gg_rct_FallZoneCargoLand
-    udg_fall_result_zone_names[2] = "Floor2"
 end
 
 function InitTrig_Set()
@@ -195,12 +231,66 @@ function InitTrig_Set()
     TriggerAddAction(gg_trg_Set, Trig_Set_Actions)
 end
 
+function Trig_SetHatch_Actions()
+    udg_hatch_entrances[1] = gg_unit_n002_0033
+    udg_hatch_entrances[2] = gg_unit_n004_0034
+    udg_hatch_entrances[3] = gg_unit_n002_0035
+    udg_hatch_entrances[4] = gg_unit_n002_0043
+    udg_hatch_entrances[5] = gg_unit_n002_0047
+    udg_hatch_entrances[6] = gg_unit_n002_0044
+    udg_hatch_exits[1] = gg_unit_n004_0034
+    udg_hatch_exits[2] = gg_unit_n002_0033
+    udg_hatch_exits[3] = gg_unit_n002_0043
+    udg_hatch_exits[4] = gg_unit_n002_0035
+    udg_hatch_exits[5] = gg_unit_n002_0044
+    udg_hatch_exits[6] = gg_unit_n002_0047
+    udg_hatch_entrance_names[1] = "|cff666633Service Tunnels|r"
+    udg_hatch_entrance_names[2] = "|cfff5a742Floor 1|r"
+    udg_hatch_entrance_names[3] = "|cff008080Cargo|r"
+    udg_hatch_entrance_names[4] = "|cff666633Service Tunnels|r"
+    udg_hatch_entrance_names[5] = "|cff666633Cargo Vents|r"
+    udg_hatch_entrance_names[6] = "|cff666633Service Tunnels|r"
+    udg_hatch_exit_zones[1] = "FLOOR_1"
+    udg_hatch_exit_zones[2] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[3] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[4] = "CARGO_A"
+    udg_hatch_exit_zones[5] = "CARGO_A_VENT"
+    udg_hatch_exit_zones[6] = "SERVICE_TUNNELS"
+end
+
+function InitTrig_SetHatch()
+    gg_trg_SetHatch = CreateTrigger()
+    TriggerAddAction(gg_trg_SetHatch, Trig_SetHatch_Actions)
+end
+
+function Trig_SetFall_Actions()
+    udg_fall_points[1] = gg_rct_FallZone1
+    udg_fall_results[1] = gg_rct_FallZone1Land
+    udg_fall_result_zone_names[1] = "SERVICE_TUNNELS"
+    udg_fall_points[2] = gg_rct_FallZoneCargo
+    udg_fall_results[2] = gg_rct_FallZoneCargoLand
+    udg_fall_result_zone_names[2] = "SERVICE_TUNNELS"
+    udg_jump_pass_zones[1] = gg_rct_JumpPassCargoVent
+    udg_jump_pass_zones[2] = gg_rct_JumpPassCargo
+    udg_jump_pass_zones_name[1] = "CARGO_A_VENT"
+    udg_jump_pass_zones_name[2] = "CARGO_A"
+end
+
+function InitTrig_SetFall()
+    gg_trg_SetFall = CreateTrigger()
+    TriggerAddAction(gg_trg_SetFall, Trig_SetFall_Actions)
+end
+
 function InitCustomTriggers()
     InitTrig_Set()
+    InitTrig_SetHatch()
+    InitTrig_SetFall()
 end
 
 function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_Set)
+    ConditionalTriggerExecute(gg_trg_SetHatch)
+    ConditionalTriggerExecute(gg_trg_SetFall)
 end
 
 function InitCustomPlayerSlots()

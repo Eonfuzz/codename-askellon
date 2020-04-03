@@ -1,4 +1,4 @@
-import { ZONE_TYPE } from "./zone-id";
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "./zone-id";
 import { SoundRef } from "../types/sound-ref";
 import { WorldModule } from "./world-module";
 import { TimedEvent } from "../types/timed-event";
@@ -35,6 +35,10 @@ export class Zone {
      */
     public onEnter(world: WorldModule, unit: unit) {
         this.unitsInside.push(unit);
+    }
+
+    public displayEnteringMessage(player: player) {
+        DisplayTextToPlayer(player, 0, 0, `Entering ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}`);
     }
 
     /**
