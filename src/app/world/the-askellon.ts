@@ -12,6 +12,7 @@ import { Vector2 } from "app/types/vector2";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { VISION_TYPE } from "./vision-type";
 import { ABIL_NIGHTEYE } from "resources/ability-ids";
+import { EventListener, EVENT_TYPE } from "app/events/event";
 
 // Small damage
 // Will not cause damage to interior
@@ -65,6 +66,17 @@ export class TheAskellon {
             CARGO_A_VENT.updatePower(world, false);
             CARGO_A_VENT.alwaysCauseFear = true;
         }
+
+        // Register to and listen for security destruction
+        this.world.game.event.addListener(
+            new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, 
+            (self, data: any) => this.onSecurityDamage(data.unit, data.source))
+        );
+        // Register to and listen for security repair
+        this.world.game.event.addListener(
+            new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED,
+            (self, data: any) => this.onSecurityRepair(data.unit, data.source))
+        );
     }
 
     findZone(zone: ZONE_TYPE): ShipZone | undefined {
@@ -189,5 +201,13 @@ export class TheAskellon {
         const result: player[] = [];
         Array.from(this.floors).forEach(v => v[1].getPlayersInZone().forEach(p => result.push(p)));
         return result;
+    }
+
+    private onSecurityDamage(destroyedSecurity: unit, vandal: unit) {
+        Log.Information("Ship found security damage!");
+    }
+
+    private onSecurityRepair(repairedSecurity: unit, engineer: unit) {
+        Log.Information("Ship found security repair!");
     }
 }

@@ -122,11 +122,11 @@ export class Shotgun extends Gun {
                 const targetLoc = vectorFromUnit(collidesWith);
                 const text = CreateTextTag();
                 SetTextTagColor(text, 180, 50, 50, 100);
-                SetTextTagText(text, "CRIT!", 0);
+                SetTextTagText(text, "CRIT!", 0.023);
                 SetTextTagPermanent(text, false);
                 SetTextTagPos(text, targetLoc.x, targetLoc.y, getZFromXY(targetLoc.x, targetLoc.y));
                 SetTextTagVelocity(text, 0, 100);
-                // SetTextTagLifespan(text, 3);
+                SetTextTagLifespan(text, 3);
                 // SetTextTagFadepoint(text, 2);
                 UnitDamageTarget(
                     crewmember.unit, 
