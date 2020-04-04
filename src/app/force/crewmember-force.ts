@@ -6,6 +6,7 @@ import { ForceType } from "./force-type";
 import { ABIL_CREWMEMBER_INFO } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { RESOLVE_TOOLTIP } from "resources/ability-tooltips";
+import { MapPlayer, Unit } from "w3ts";
 
 
 export const CREW_FORCE_NAME = 'CREW';
@@ -23,12 +24,12 @@ export class CrewmemberForce extends ForceType {
     /**
      * TODO
      */
-    addPlayerMainUnit(game: Game, whichUnit: unit, player: player) {
-        UnitAddAbility(whichUnit, ABIL_CREWMEMBER_INFO);
+    addPlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
+        whichUnit.addAbility(ABIL_CREWMEMBER_INFO);
     }
 
-    removePlayerMainUnit(game: Game, whichUnit: unit, player: player) {
-        UnitRemoveAbility(whichUnit, ABIL_CREWMEMBER_INFO);
+    removePlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
+        whichUnit.removeAbility(ABIL_CREWMEMBER_INFO);
     }
     
     
@@ -42,7 +43,7 @@ export class CrewmemberForce extends ForceType {
     public updateForceTooltip(game: Game, whichCrew: Crewmember) {
         const income = game.crewModule.calculateIncome(whichCrew);
         const tooltip = RESOLVE_TOOLTIP(income, whichCrew.role);
-        if (GetLocalPlayer() === whichCrew.player) {
+        if (GetLocalPlayer() === whichCrew.player.handle) {
             BlzSetAbilityExtendedTooltip(ABIL_CREWMEMBER_INFO, tooltip, 0);
         }
     }

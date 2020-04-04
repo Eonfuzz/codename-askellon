@@ -1,14 +1,12 @@
 /** @noSelfInFile **/
 import { Game } from "../game";
 import { Ability } from "./ability-type";
-import { Trigger } from "../types/jass-overrides/trigger";
-import { Log } from "../../lib/serilog/serilog";
+import { Trigger, Unit } from "w3ts";
 import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
-import { SMART_ORDER_ID } from "../../lib/order-ids";
 import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_NIGHTEYE } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_NIGHTEYE, SMART_ORDER_ID } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
 import { SprintLeapAbility } from "./human/sprint-leap";
 import { NightVisionAbility } from "./human/night-vision";
@@ -33,16 +31,16 @@ export class AbilityModule {
 
         this.data = [];
         this.triggerIterator = new Trigger();
-        this.triggerIterator.RegisterTimerEventPeriodic(TIMEOUT);
-        this.triggerIterator.AddAction(() => this.process(TIMEOUT));
+        this.triggerIterator.registerTimerEvent(TIMEOUT, true);
+        this.triggerIterator.addAction(() => this.process(TIMEOUT));
 
         this.triggerAbilityCast = new Trigger();
-        this.triggerAbilityCast.RegisterAnyUnitEventBJ( EVENT_PLAYER_UNIT_SPELL_EFFECT );
-        this.triggerAbilityCast.AddAction(() => this.checkSpells())
+        this.triggerAbilityCast.registerAnyUnitEvent( EVENT_PLAYER_UNIT_SPELL_EFFECT );
+        this.triggerAbilityCast.addAction(() => this.checkSpells())
 
         this.unitIssuedCommand = new Trigger();
 
-        this.unitIssuedCommand.AddAction(() => this.onTrackUnitOrders())
+        this.unitIssuedCommand.addAction(() => this.onTrackUnitOrders())
     }
 
 
@@ -118,9 +116,9 @@ export class AbilityModule {
         }
     }
 
-    public trackUnitOrdersForAbilities(whichUnit: unit) {
-        // this.unitIssuedCommand.RegisterUnitIssuedOrder(whichUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
-        this.unitIssuedCommand.RegisterUnitIssuedOrder(whichUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
+    public trackUnitOrdersForAbilities(whichUnit: Unit) {
+        // this.unitIssuedCommand.registerUnitEvent(whichUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
+        this.unitIssuedCommand.registerUnitEvent(whichUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
     }
 
     process(delta: number) {

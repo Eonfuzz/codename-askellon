@@ -5,7 +5,7 @@ import { ForceType } from "./force-type";
 import { CrewmemberForce } from "./crewmember-force";
 import { AlienForce } from "./alien-force";
 import { ObserverForce } from "./observer-force";
-import { Trigger } from "app/types/jass-overrides/trigger";
+import { Trigger, MapPlayer, Dialog, DialogButton } from "w3ts";
 import { COL_GOOD, COL_BAD, COL_MISC, COL_ALIEN } from "resources/colours";
 import { ForceModule } from "./force-module";
 import { STR_OPT_HUMAN, STR_OPT_ALIEN, STR_OPT_MESSAGE } from "resources/strings";
@@ -46,22 +46,22 @@ export interface OptSelectOption {
     balanceCost?: { protag: number, antag: number, neutral: number};
 }
 
-export interface OptResult { player: player, role: OptSelectOption };
+export interface OptResult { player: MapPlayer, role: OptSelectOption };
 
 export class OptSelection {
 
-    dialog: dialog = DialogCreate();
+    dialog: Dialog = new Dialog();
     clickTrigger: Trigger = new Trigger();
 
-    private players: player[] = [];
+    private players: MapPlayer[] = [];
 
-    private optVsButton: Map<OptSelectOption, button> = new Map();
-    private buttonVsOpt: Map<button, OptSelectOption> = new Map();
+    private optVsButton: Map<OptSelectOption, DialogButton> = new Map();
+    private buttonVsOpt: Map<DialogButton, OptSelectOption> = new Map();
 
-    private playersInOpt: Map<OptSelectOption, player[]> = new Map();
-    private optsForPlayer: Map<player, OptSelectOption[]> = new Map();
+    private playersInOpt: Map<OptSelectOption, MapPlayer[]> = new Map();
+    private optsForPlayer: Map<MapPlayer, OptSelectOption[]> = new Map();
 
-    private playerOptPower: Map<player, number> = new Map();
+    private playerOptPower: Map<MapPlayer, number> = new Map();
 
     private optsPossible: OptSelectOption[] = [];
 
@@ -84,7 +84,7 @@ export class OptSelection {
      * Sets the player's opt power
      * @param optPower 
      */
-    public setOptPower(who: player, optPower: number) {
+    public setOptPower(who: MapPlayer, optPower: number) {
         this.playerOptPower.set(who, optPower);
     }
 
@@ -92,7 +92,7 @@ export class OptSelection {
      * Returns opt power if set, default is 10 otherwise
      * @param player 
      */
-    public getOptPower(player: player) {
+    public getOptPower(player: MapPlayer) {
         return this.playerOptPower.get(player) || 10;
     }
 
@@ -104,28 +104,28 @@ export class OptSelection {
         allOpts.push(this.defaultOpt);
 
         this.players = forces.getActivePlayers();
-        this.players.forEach(p => DialogDisplay(p, this.dialog, true));
+        this.players.forEach(p => this.dialog.display(p, true));
 
-        DialogSetMessage(this.dialog, STR_OPT_MESSAGE);
+        this.dialog.setMessage(STR_OPT_MESSAGE);
 
         allOpts.forEach((opt, i) => {
 
             const tooltip = opt.text;
-            const button = DialogAddButton(this.dialog, this.getTypePefix(opt.type)+tooltip, GetLocalizedHotkey(opt.hotkey));
+            const button = this.dialog.addButton(this.getTypePefix(opt.type)+tooltip, GetLocalizedHotkey(opt.hotkey));
 
             this.optVsButton.set(opt, button);
             this.buttonVsOpt.set(button, opt);
         });
 
-        this.clickTrigger.RegisterDialogEventBJ(this.dialog);
-        this.clickTrigger.AddAction(() => this.onDialogClick());
-        this.players.forEach(player => DialogDisplay(player, this.dialog, true));
+        this.clickTrigger.registerDialogEvent(this.dialog);
+        this.clickTrigger.addAction(() => this.onDialogClick());
+        this.players.forEach(player => this.dialog.display(player, true));
     }
 
     private onDialogClick() {        
-        const dialog = GetClickedDialog();
-        const button = GetClickedButton();
-        const player = GetTriggerPlayer();
+        const dialog = this.dialog;
+        const button = DialogButton.fromHandle(GetClickedButton());
+        const player = MapPlayer.fromHandle(GetTriggerPlayer());
 
         const optType = this.buttonVsOpt.get(button);
 
@@ -163,8 +163,8 @@ export class OptSelection {
         let allOpts = this.optsPossible.slice();
         allOpts.push(this.defaultOpt);
 
-        DialogClear(this.dialog);
-        DialogSetMessage(this.dialog, STR_OPT_MESSAGE);
+        this.dialog.clear();
+        this.dialog.setMessage(STR_OPT_MESSAGE);
 
         // Add variable opts
         allOpts.forEach(opt => {
@@ -183,7 +183,7 @@ export class OptSelection {
 
                     let localString = text + ` ${COL_GOOD}Opted In!|r`;
 
-                    if (p === GetLocalPlayer()) {
+                    if (p.handle === GetLocalPlayer()) {
                         text = localString;
                     }
                 })
@@ -194,13 +194,13 @@ export class OptSelection {
             // }
 
 
-            const button = DialogAddButton(this.dialog, text, GetLocalizedHotkey(opt.hotkey));
+            const button = this.dialog.addButton(text, GetLocalizedHotkey(opt.hotkey));
 
             this.optVsButton.set(opt, button);
             this.buttonVsOpt.set(button, opt);
         });
 
-        this.players.forEach(p => DialogDisplay(p, this.dialog, true));
+        this.players.forEach(p => this.dialog.display(p, true));
     }
 
 
@@ -218,7 +218,7 @@ export class OptSelection {
     public endOptSelection(force: ForceModule) {
         // Clear button cache
         this.buttonVsOpt.clear();
-        this.players.forEach(p => DialogDisplay(p, this.dialog, false));
+        this.players.forEach(p => this.dialog.display(p, false));
 
         // Time to roll for opts
         const playersNoRole = force.getActivePlayers();
@@ -241,7 +241,7 @@ export class OptSelection {
             }
             
             // Grab from srcPlayersAvailableForRole
-            let playersGettingRole: player[] = [];
+            let playersGettingRole: MapPlayer[] = [];
             while (playersGettingRole.length < (r.count || 1) && srcPlayersAvailableForRole.length > 0) {
                 let player = srcPlayersAvailableForRole.splice(GetRandomInt(0, srcPlayersAvailableForRole.length-1), 1)[0];
                 const idx = playersNoRole.indexOf(player);

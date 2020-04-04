@@ -7,13 +7,14 @@ import { SPRINT_BUFF_ID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
 import { VISION_TYPE } from "app/world/vision-type";
+import { Unit } from "w3ts/handles/unit";
 
 /** @noSelfInFile **/
 const NIGHT_VISION_DURATION = 30;
 
 export class NightVisionAbility implements Ability {
 
-    private unit: unit | undefined;
+    private unit: Unit | undefined;
     private timeElapsed: number = 0;
 
     private oldVis: VISION_TYPE = VISION_TYPE.NORMAL;
@@ -21,7 +22,7 @@ export class NightVisionAbility implements Ability {
     constructor() {}
 
     public initialise(abMod: AbilityModule) {
-        this.unit = GetTriggerUnit();
+        this.unit = Unit.fromHandle(GetTriggerUnit());
         // Re-enter the unit's current zone
         const z = abMod.game.worldModule.getUnitZone(this.unit);
         const crew = abMod.game.crewModule.getCrewmemberForUnit(this.unit);

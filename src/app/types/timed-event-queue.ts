@@ -1,4 +1,4 @@
-import { Trigger } from './jass-overrides/trigger';
+import { Trigger } from 'w3ts';
 import { TimedEvent } from './timed-event';
 import { Game } from '../game';
 import { Util } from '../../lib/translators';
@@ -14,8 +14,8 @@ export class TimedEventQueue {
 
     constructor(game: Game) {
         this.ticker = new Trigger();
-        this.ticker.RegisterTimerEventPeriodic(this.tickRate);
-        this.ticker.AddAction(() => {
+        this.ticker.registerTimerEvent(this.tickRate, true);
+        this.ticker.addAction(() => {
             this.tick = (this.tick + 1) % this.maxTick;
             this.HandleTick();
         });

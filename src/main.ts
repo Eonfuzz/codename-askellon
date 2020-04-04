@@ -1,26 +1,30 @@
 /** @noSelfInFile **/
 import { Game } from "./app/game";
-import * as TRANSLATORS from './lib/translators';
-import { Trigger } from "./app/types/jass-overrides/trigger";
-import { StringSink } from "./lib/serilog/string-sink";
-import { Log, LogLevel } from "./lib/serilog/serilog";
-import { addScriptHook } from "../node_modules/w3ts/src/hooks/index";
+import { addScriptHook, W3TS_HOOK } from "w3ts/hooks";
+import { Timer } from "w3ts/handles/timer";
+import { Trigger, Unit, MapPlayer } from "w3ts";
+import { StringSink } from "lib/serilog/string-sink";
+import { Log, LogLevel } from "lib/serilog/serilog";
+import { SendMessageUnlogged } from "lib/translators";
 
 function tsMain() {
-
     Log.Init([
-        new StringSink(LogLevel.Debug, TRANSLATORS.SendMessageUnlogged),
+        new StringSink(LogLevel.Debug, SendMessageUnlogged),
     ]);
 
     function Main(){
         const AksellonSector = new Game();
 
         const gameStartTimer = new Trigger();
-        gameStartTimer.RegisterTimerEventSingle(0.1);
-        gameStartTimer.AddAction(() => AksellonSector.startGame());
+        gameStartTimer.registerTimerEvent(0.1, false);
+        gameStartTimer.addAction(() => {
+            xpcall(() => AksellonSector.startGame(), (err: any) => {
+                Log.Error(err);
+            });
+        });
     }
 
     Main();
   }
   
-  addScriptHook("main::after", tsMain);
+  addScriptHook(W3TS_HOOK.MAIN_AFTER, tsMain);

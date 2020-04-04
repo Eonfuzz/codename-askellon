@@ -4,7 +4,7 @@ import { Zone } from "./zone-type";
 import { Ship } from "../space/ship";
 import { TheAskellon } from "./the-askellon";
 import { ZONE_TYPE, STRING_TO_ZONE_TYPE } from "./zone-id";
-import { Trigger } from "../types/jass-overrides/trigger";
+import { Trigger, Unit, MapPlayer } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
 import { EVENT_TYPE } from "app/events/event";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
@@ -27,8 +27,8 @@ export class WorldModule {
         this.askellon = new TheAskellon(this);
 
         const deathTrigger = new Trigger();
-        deathTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DEATH);
-        deathTrigger.AddAction(() => this.unitDeath());
+        deathTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
+        deathTrigger.addAction(() => this.unitDeath());
     }
 
     /**
@@ -36,8 +36,8 @@ export class WorldModule {
      * @param unit 
      * @param to 
      */
-    private handleTravel(unit: unit, to: ZONE_TYPE) {
-        const uHandle = GetHandleId(unit);
+    private handleTravel(unit: Unit, to: ZONE_TYPE) {
+        const uHandle = unit.id;
         const oldZone = this.unitLocation.get(uHandle);
         const newZone = this.getZone(to);        
 
@@ -52,7 +52,7 @@ export class WorldModule {
         // }
     }
 
-    travel(unit: unit, to: ZONE_TYPE) {
+    travel(unit: Unit, to: ZONE_TYPE) {
         const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
 
         // Does the travel work
@@ -61,13 +61,13 @@ export class WorldModule {
         // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
         // If this is a player we care about
         const crew = this.game.crewModule.getCrewmemberForUnit(unit);
-        const alien = alienForce.getAlienFormForPlayer(GetOwningPlayer(unit));
+        const alien = alienForce.getAlienFormForPlayer(unit.owner);
 
         const isCrewmember = crew && crew.unit === unit;
 
         // If it was the alien form, we need to travel the crewmember around
         if (alien == unit) {
-            const alienCrew = this.game.crewModule.getCrewmemberForPlayer(GetOwningPlayer(unit)) as Crewmember;
+            const alienCrew = this.game.crewModule.getCrewmemberForPlayer(unit.owner) as Crewmember;
             this.handleTravel(alienCrew.unit, to);
         }
         // Otherwise, check if the traversing unit is crewmember AND has an alien form
@@ -88,8 +88,8 @@ export class WorldModule {
     }
 
     unitDeath() {
-        const unit = GetTriggerUnit();
-        const handle = GetHandleId(unit);
+        const unit = Unit.fromHandle(GetTriggerUnit());
+        const handle = unit.id;
 
         if (this.unitLocation.has(handle)) {
             const zone = this.unitLocation.get(handle);
@@ -108,11 +108,11 @@ export class WorldModule {
         return result as ZONE_TYPE;
     }
 
-    getPlayersInZone(whichZone: ZONE_TYPE): Array<player> {
+    getPlayersInZone(whichZone: ZONE_TYPE): Array<MapPlayer> {
         return [];
     }
 
-    getUnitZone(whichUnit: unit): Zone | undefined {
-        return this.unitLocation.get(GetHandleId(whichUnit));
+    getUnitZone(whichUnit: Unit): Zone | undefined {
+        return this.unitLocation.get(whichUnit.id);
     }
 }

@@ -34,9 +34,9 @@ export class Shotgun extends Gun {
 
         // Log.Information("Shooting shotgun!"); 
 
-        const unit = caster.unit;
+        const unit = caster.unit.handle;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
-        const NUM_BULLETS = 30;
+        const NUM_BULLETS = 26;
 
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         const angleDeg = casterLoc.angle2Dto(targetLocation);
@@ -71,7 +71,7 @@ export class Shotgun extends Gun {
     };
 
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3, isCentralProjectile: boolean): Projectile {
-        const unit = caster.unit;
+        const unit = caster.unit.handle;
         // print("Target "+targetLocation.toString())
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         let deltaTarget = targetLocation.subtract(casterLoc);
@@ -81,14 +81,14 @@ export class Shotgun extends Gun {
             casterLoc, 
             new ProjectileTargetStatic(deltaTarget)
         );
-        projectile.addEffect(
+        BlzSetSpecialEffectAlpha(projectile.addEffect(
             isCentralProjectile 
                 ? "Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdl" 
                 : "war3mapImported\\Bullet.mdx",
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
             isCentralProjectile ? 0.6 : 1.4
-        );
+        ), 50);
 
         weaponModule.addProjectile(projectile);
         return projectile
@@ -129,7 +129,7 @@ export class Shotgun extends Gun {
                 SetTextTagLifespan(text, 3);
                 // SetTextTagFadepoint(text, 2);
                 UnitDamageTarget(
-                    crewmember.unit, 
+                    crewmember.unit.handle, 
                     collidesWith, 
                     this.getDamage(weaponModule, crewmember) * 12 * 0.25, 
                     false, 

@@ -7,11 +7,12 @@
 import { Game } from "app/game";
 import { Log } from "lib/serilog/serilog";
 import { SoundRef } from "app/types/sound-ref";
+import { MapPlayer } from "w3ts";
 
 export class ChatSystem {
     private game: Game;
 
-    private player: player;
+    private player: MapPlayer;
 
     private messageQueue: string[] = [];
 
@@ -20,7 +21,7 @@ export class ChatSystem {
     private timeSinceLastMessage: number = 0;
     private timestampLastMessage: number = 0;
 
-    constructor(game: Game, forWho: player) {
+    constructor(game: Game, forWho: MapPlayer) {
         this.game = game;
         this.player = forWho;
     }
@@ -76,7 +77,7 @@ export class ChatSystem {
      */
     private generateMessage(playerName: string, playerColor: string, message: string, messageTag?: string): string {
         // Append an empty string if this isn't the local player
-        if (GetLocalPlayer() === this.player) {
+        if (GetLocalPlayer() === this.player.handle) {
             return `${this.getChatTimeTag()} ${this.getChatUser(playerName, playerColor)}: ${message}`;
         }
         return ``;
@@ -118,7 +119,7 @@ export class ChatSystem {
      */
     public sendMessage(playerName: string, playerColor: string, message: string, messageTag?: string, sound?: SoundRef, ) {
         const timestamp = this.getGameTime();
-        if (GetLocalPlayer() === this.player) {
+        if (GetLocalPlayer() === this.player.handle) {
             if (this.messageIsValid(message)) {
                 const text = this.generateMessage(playerName, playerColor, message, messageTag);
                 this.addMessage(text);
@@ -135,7 +136,7 @@ export class ChatSystem {
         const alpha = Math.max(
             Math.min(255 - (this.timeSinceLastMessage - 6) / 3 * 255, 255), 
         0);
-        if (this.chatFrame && this.player === GetLocalPlayer()) {
+        if (this.chatFrame && this.player.handle === GetLocalPlayer()) {
             BlzFrameSetAlpha(this.chatFrame, MathRound(alpha));
         }
     }

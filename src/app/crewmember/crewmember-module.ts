@@ -1,8 +1,8 @@
 /** @noSelfInFile **/
 import { Crewmember } from "./crewmember-type";
-import { ROLE_NAMES, ROLE_TYPES } from "../../resources/crewmember-names";
+import { ROLE_NAMES, ROLE_TYPES, ROLE_DESCRIPTIONS } from "../../resources/crewmember-names";
 import { Game } from "../game";
-import { Trigger } from "../types/jass-overrides/trigger";
+import { Trigger, MapPlayer, Unit } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
 import { BURST_RIFLE_ITEM_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID } from "../weapons/weapon-constants";
 import { CREW_FORCE_NAME } from "../force/crewmember-force";
@@ -24,7 +24,7 @@ export class CrewModule {
     game: Game;
 
     CREW_MEMBERS: Array<Crewmember> = [];
-    playerCrewmembers = new Map<player, Crewmember>();
+    playerCrewmembers = new Map<MapPlayer, Crewmember>();
 
     allJobs: Array<ROLE_TYPES> = [];
 
@@ -35,13 +35,13 @@ export class CrewModule {
 
         // Create crew takes damage trigger
         this.crewmemberDamageTrigger = new Trigger();
-        this.crewmemberDamageTrigger.RegisterUnitTakesDamage();
-        this.crewmemberDamageTrigger.AddCondition(() => {
+        this.crewmemberDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
+        this.crewmemberDamageTrigger.addCondition(Condition(() => {
             const player = GetOwningPlayer(GetTriggerUnit());
             return (GetPlayerId(player) <= 22);
-        });
-        this.crewmemberDamageTrigger.AddAction(() => {
-            const unit = GetTriggerUnit();
+        }));
+        this.crewmemberDamageTrigger.addAction(() => {
+            const unit = Unit.fromHandle(GetTriggerUnit());
             const crew = this.getCrewmemberForUnit(unit);
 
             if (crew) {
@@ -50,8 +50,8 @@ export class CrewModule {
         });
 
         const updateCrewTrigger = new Trigger();
-        updateCrewTrigger.RegisterTimerEventPeriodic(DELTA_CHECK);
-        updateCrewTrigger.AddAction(() => this.processCrew(DELTA_CHECK));
+        updateCrewTrigger.registerTimerEvent(DELTA_CHECK, true);
+        updateCrewTrigger.addAction(() => this.processCrew(DELTA_CHECK));
     }
 
     initCrew(forces: ForceType[]) {
@@ -71,7 +71,6 @@ export class CrewModule {
         it = 0;
         while (it < forces.length) {
             const force = forces[it];
-            // Log.Information("Force:  "+force.name);
             const players = force.getPlayers();
             let y = 0;
 
@@ -99,9 +98,7 @@ export class CrewModule {
             this.timeSinceLastIncome = 0;
             const amount = INCOME_EVERY / 60;
             this.CREW_MEMBERS.forEach(crew => 
-                AdjustPlayerStateBJ(MathRound(amount * this.calculateIncome(crew)), 
-                    crew.player, PLAYER_STATE_RESOURCE_GOLD
-                )
+                crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, MathRound(amount * this.calculateIncome(crew)))
             );
         }
         else {
@@ -109,11 +106,10 @@ export class CrewModule {
         }
     }
 
-    createCrew(player: player, force: ForceType): Crewmember {   
+    createCrew(player: MapPlayer, force: ForceType): Crewmember {   
         const role = this.getCrewmemberRole();
         const name = this.getCrewmemberName(role);
-
-        let nUnit = CreateUnit(player, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING);
+        let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING));
         let crewmember = new Crewmember(this.game, player, nUnit, force, role);
 
         crewmember.setName(name);
@@ -132,36 +128,36 @@ export class CrewModule {
         // Captain starts at level 2
         if (crewmember.role === ROLE_TYPES.CAPTAIN) {
             // Log.Information("CAPTAIN BONUS");
-            SetHeroLevel(nUnit, 2, false);
+            nUnit.setHeroLevel(2, false);
         }
         // Sec guard starts with weapon damage 1 and have shotguns
         else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
-            SetPlayerTechResearched(player, TECH_WEP_DAMAGE, 1);
+            player.setTechResearched(TECH_WEP_DAMAGE, 1);
             const item = CreateItem(SHOTGUN_ITEM_ID, 0, 0);
-            UnitAddItem(crewmember.unit, item);
+            UnitAddItem(crewmember.unit.handle, item);
             this.game.weaponModule.applyItemEquip(crewmember, item);
             roleGaveWeapons = true;
         }
         // Doctor begins with extra will and vigor
         else if (crewmember.role === ROLE_TYPES.DOCTOR) {
-            SetHeroStr(nUnit, GetHeroStr(nUnit, false)+2, true);
-            SetHeroInt(nUnit, GetHeroInt(nUnit, false)+4, true);
+            SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+2, true);
+            SetHeroInt(nUnit.handle, GetHeroInt(nUnit.handle, false)+4, true);
         }
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
-            SetHeroAgi(nUnit, GetHeroAgi(nUnit, false)+5, true);
+            SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
         }
 
         if (!roleGaveWeapons) {
             const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
-            UnitAddItem(crewmember.unit, item);
+            UnitAddItem(crewmember.unit.handle, item);
             this.game.weaponModule.applyItemEquip(crewmember, item);
         }
 
-        BlzShowUnitTeamGlow(crewmember.unit, false);
-        BlzSetUnitName(nUnit, crewmember.role);
-        BlzSetHeroProperName(nUnit, crewmember.name);
-        SuspendHeroXP(nUnit, true);
+        BlzShowUnitTeamGlow(crewmember.unit.handle, false);
+        BlzSetUnitName(nUnit.handle, crewmember.role);
+        BlzSetHeroProperName(nUnit.handle, crewmember.name);
+        SuspendHeroXP(nUnit.handle, true);
 
         return crewmember;
     }
@@ -171,8 +167,8 @@ export class CrewModule {
         const baseIncome = 200; // TODO
         const incomePerLevel = 50; // TODO
 
-        const crewLevel = GetHeroLevel(crew.unit) - 1;
-        const crewExperience = GetHeroXP(crew.unit);
+        const crewLevel = crew.unit.getHeroLevel() - 1;
+        const crewExperience = crew.unit.experience;
         return baseIncome + incomePerLevel * crewLevel;
     }
     
@@ -185,11 +181,9 @@ export class CrewModule {
     }
     
     getCrewmemberName(role: ROLE_TYPES) {
-        let namesForRole;
-
         if (ROLE_NAMES.has(role)) {
-            namesForRole = ROLE_NAMES.get(role) as string[];
-            const i = Math.floor( Math.random() * namesForRole.length );
+            const namesForRole = ROLE_NAMES.get(role) as Array<string>;
+            const i = GetRandomInt(0, namesForRole.length - 1);
             const name = namesForRole[i];
             namesForRole.splice(i, 1);
             ROLE_NAMES.set(role, namesForRole);
@@ -198,11 +192,11 @@ export class CrewModule {
         return `NAME NOT FOUND ${role}`;
     }
 
-    getCrewmemberForPlayer(player: player) {
+    getCrewmemberForPlayer(player: MapPlayer) {
         return this.playerCrewmembers.get(player);
     }
 
-    getCrewmemberForUnit(unit: unit): Crewmember | void {
+    getCrewmemberForUnit(unit: Unit): Crewmember | void {
         for (let member of this.CREW_MEMBERS) {
             if (member.unit == unit) {
                 return member;

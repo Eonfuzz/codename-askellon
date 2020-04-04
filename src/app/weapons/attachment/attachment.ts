@@ -2,6 +2,7 @@ import { Crewmember } from "../../crewmember/crewmember-type";
 import { Gun } from "../guns/gun";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
+import { Item } from "w3ts/handles/item";
 
 /** @noSelfInFile **/
 
@@ -53,10 +54,10 @@ export abstract class Attachment {
         // If we are attached to a unit, try to create it in their inventory
         if (this.attachedTo && this.attachedTo.equippedTo) {
             const unit = this.attachedTo.equippedTo.unit;
-            const unitHasSpareItemSlot = UnitInventoryCount(unit) < UnitInventorySize(unit);
+            const unitHasSpareItemSlot = UnitInventoryCount(unit.handle) < UnitInventorySize(unit.handle);
 
-            const newItem = CreateItem(this.itemId, GetUnitX(unit), GetUnitY(unit));
-            if (unitHasSpareItemSlot) UnitAddItem(unit, newItem);
+            const newItem = CreateItem(this.itemId, unit.x, unit.y);
+            if (unitHasSpareItemSlot) unit.addItem(Item.fromHandle(newItem));
         }
 
         // Now remove this attached info

@@ -1,13 +1,14 @@
 import { Gun } from "./gun";
 import { WeaponModule } from "../weapon-module";
+import { Unit } from "w3ts/handles/unit";
 
 /** @noSelfInFile **/
 
 export abstract class ArmableUnit {
-    public unit: unit;
+    public unit: Unit;
     public weapon: Gun | undefined;
 
-    constructor(unit: unit) {
+    constructor(unit: Unit) {
         this.unit = unit;
     }
     

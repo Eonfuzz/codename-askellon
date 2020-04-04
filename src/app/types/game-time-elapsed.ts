@@ -1,4 +1,4 @@
-import { Trigger } from './jass-overrides/trigger';
+import { Trigger } from 'w3ts';
 import { TimedEvent } from './timed-event';
 import { Game } from '../game';
 import { Util } from '../../lib/translators';

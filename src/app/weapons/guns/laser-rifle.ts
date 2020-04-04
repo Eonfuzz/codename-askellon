@@ -41,7 +41,7 @@ export class LaserRifle extends Gun {
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         super.onShoot(weaponModule, caster, targetLocation);
 
-        const unit = caster.unit;
+        const unit = caster.unit.handle;
         
         PlayNewSoundOnUnit(this.getSoundPath(), caster.unit, 127);
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
@@ -52,7 +52,7 @@ export class LaserRifle extends Gun {
     };
 
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
-        const unit = caster.unit;
+        const unit = caster.unit.handle;
         // print("Target "+targetLocation.toString())
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         let strayTarget = this.getStrayLocation(targetLocation, caster)

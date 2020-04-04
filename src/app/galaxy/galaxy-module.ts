@@ -45,7 +45,7 @@ export class GalaxyModule {
         this.currentSector = new Vector2(this.currentSector.x + deltaX, this.currentSector.y + deltaY);
         Log.Information(`Entering ${nSector.name}`);
         if (pilot) {
-            DisplayText(GetPlayerId(GetOwningPlayer(pilot.unit)), `Entering ${nSector.name}`);
+            DisplayText(pilot.unit.owner.id, `Entering ${nSector.name}`);
         }
 
         // Now update the navigation grid

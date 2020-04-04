@@ -37,3 +37,6 @@ export const GENE_TECH_MOBILITY = FourCC('R001');
 
 export const GENE_INSTALL_PSIONIC_POTENCY = FourCC('AGPS');
 export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGPS');
+
+export const SMART_ORDER_ID = 851971;
+export const UNIT_IS_FLY = FourCC('A00C');

@@ -13,6 +13,7 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { VISION_TYPE } from "./vision-type";
 import { ABIL_NIGHTEYE } from "resources/ability-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
+import { MapPlayer } from "w3ts";
 
 // Small damage
 // Will not cause damage to interior
@@ -40,11 +41,11 @@ export class TheAskellon {
     constructor(world: WorldModule) {
         this.world = world;
 
-        this.floors.set(ZONE_TYPE.FLOOR_1, new ShipZone(ZONE_TYPE.FLOOR_1));
-        this.floors.set(ZONE_TYPE.FLOOR_2, new ShipZone(ZONE_TYPE.FLOOR_2));
-        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A));
-        this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
-        this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
+        this.floors.set(ZONE_TYPE.FLOOR_1, new ShipZone(world.game, ZONE_TYPE.FLOOR_1));
+        this.floors.set(ZONE_TYPE.FLOOR_2, new ShipZone(world.game, ZONE_TYPE.FLOOR_2));
+        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(world.game, ZONE_TYPE.CARGO_A));
+        this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(world.game, ZONE_TYPE.CARGO_A_VENT));
+        this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(world.game, ZONE_TYPE.SERVICE_TUNNELS));
 
         // Now apply lights to the zones
         const z1 = this.floors.get(ZONE_TYPE.FLOOR_1);
@@ -58,42 +59,31 @@ export class TheAskellon {
         // Now apply lights to the zones
         const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
         if (SERVICE_TUNNELS) {
-            SERVICE_TUNNELS.updatePower(world, false);
+            SERVICE_TUNNELS.updatePower(false);
             SERVICE_TUNNELS.alwaysCauseFear = true;
         }
         const CARGO_A_VENT = this.floors.get(ZONE_TYPE.CARGO_A_VENT);
         if (CARGO_A_VENT) {
-            CARGO_A_VENT.updatePower(world, false);
+            CARGO_A_VENT.updatePower(false);
             CARGO_A_VENT.alwaysCauseFear = true;
         }
-
-        // Register to and listen for security destruction
-        this.world.game.event.addListener(
-            new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, 
-            (self, data: any) => this.onSecurityDamage(data.unit, data.source))
-        );
-        // Register to and listen for security repair
-        this.world.game.event.addListener(
-            new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED,
-            (self, data: any) => this.onSecurityRepair(data.unit, data.source))
-        );
     }
 
     findZone(zone: ZONE_TYPE): ShipZone | undefined {
         return this.floors.get(zone);
     }
 
-    applyPowerChange(player: player, hasPower: boolean, justChanged: boolean) {
+    applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
         let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
         const crewmember = this.world.game.crewModule.getCrewmemberForPlayer(player);
         const vision = crewmember ? crewmember.getVisionType() : VISION_TYPE.NORMAL;
 
         if (hasPower && justChanged) {
-            if (GetLocalPlayer() === player) {
+            if (GetLocalPlayer() === player.handle) {
                 this.powerUpSound.playSound();
             }
             this.world.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-                if (GetLocalPlayer() === player) {
+                if (GetLocalPlayer() === player.handle) {
                     switch(vision) {
                         case VISION_TYPE.NIGHT_VISION:
                         case VISION_TYPE.ALIEN:
@@ -107,7 +97,7 @@ export class TheAskellon {
                 return true;
             }, 4000));
         }
-        else if (hasPower && !justChanged && player === GetLocalPlayer()) {
+        else if (hasPower && !justChanged && player.handle === GetLocalPlayer()) {
             switch(vision) {
                 case VISION_TYPE.NIGHT_VISION:
                 case VISION_TYPE.ALIEN:
@@ -118,7 +108,7 @@ export class TheAskellon {
                     );
             };
         }
-        else if (!hasPower && player === GetLocalPlayer()) {
+        else if (!hasPower && player.handle === GetLocalPlayer()) {
             // Play the sound effect only if the power has *just* changed
             if (justChanged) {
                 this.powerDownSound.playSound();
@@ -135,10 +125,10 @@ export class TheAskellon {
 
 
         // IF we dont have power add despair to the unit
-        if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit, ABIL_NIGHTEYE) === 0) {
+        if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_NIGHTEYE) === 0) {
             crewmember.addDespair(this.world.game, new BuffInstanceCallback(() => {
                 const z = this.world.getUnitZone(crewmember.unit);
-                const hasNighteye = GetUnitAbilityLevel(crewmember.unit, ABIL_NIGHTEYE);
+                const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_NIGHTEYE);
                 return (z && hasNighteye === 0) ? z.doCauseFear() : false;
             }));
         }
@@ -197,8 +187,8 @@ export class TheAskellon {
     /**
      * Gets a list of players currently on the Aksellon
      */
-    public getPlayers(): player[] {
-        const result: player[] = [];
+    public getPlayers(): MapPlayer[] {
+        const result: MapPlayer[] = [];
         Array.from(this.floors).forEach(v => v[1].getPlayersInZone().forEach(p => result.push(p)));
         return result;
     }

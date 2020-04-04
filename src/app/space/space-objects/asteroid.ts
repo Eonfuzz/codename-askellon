@@ -19,7 +19,7 @@ export class Asteroid extends SpaceObject {
         super.load(game);
 
         const location = this.getLocation();
-        this.unit = CreateUnit(game.forceModule.neutralPassive, ASTEROID_UNIT_ID, location.x, location.y, bj_UNIT_FACING);
+        this.unit = CreateUnit(game.forceModule.neutralPassive.handle, ASTEROID_UNIT_ID, location.x, location.y, bj_UNIT_FACING);
 
         SetUnitTimeScale(this.unit, 0.1);
         SetUnitScalePercent(this.unit, GetRandomReal(50, 300), GetRandomReal(50, 300), GetRandomReal(50, 300));

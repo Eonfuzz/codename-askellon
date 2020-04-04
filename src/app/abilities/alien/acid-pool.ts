@@ -6,6 +6,8 @@ import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
 import { FilterIsEnemyAndAlive } from "../../../resources/filters";
+import { Unit } from "w3ts/handles/unit";
+import { MapPlayer } from "w3ts";
 
 /** @noSelfInFile **/
 const DAMAGE_PER_SECOND = 100;
@@ -22,14 +24,14 @@ const POOL_AREA = 350;
 
 export class AcidPoolAbility implements Ability {
 
-    private casterUnit: unit | undefined;
+    private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
     private timeElapsed: number;
 
     private poolLocation: Vector3 | undefined;
     private sfx: effect | undefined;
 
-    private castingPlayer: player | undefined;
+    private castingPlayer: MapPlayer | undefined;
     private damageGroup = CreateGroup();
 
     // Used for optimisation
@@ -42,19 +44,20 @@ export class AcidPoolAbility implements Ability {
     }
 
     public initialise(module: AbilityModule) {
-        this.casterUnit = GetTriggerUnit();
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+        this.castingPlayer = this.casterUnit.owner;
+
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
         this.targetLoc.z = module.game.getZFromXY(this.targetLoc.x, this.targetLoc.y);
-        this.castingPlayer = GetOwningPlayer(this.casterUnit);
 
-        const polarPoint = vectorFromUnit(this.casterUnit).applyPolarOffset(GetUnitFacing(this.casterUnit), 80);
+        const polarPoint = vectorFromUnit(this.casterUnit.handle).applyPolarOffset(this.casterUnit.facing, 80);
         const startLoc = new Vector3(polarPoint.x, polarPoint.y, module.game.getZFromXY(polarPoint.x, polarPoint.y)+30);
 
         const deltaTarget = this.targetLoc.subtract(startLoc);
         
 
         const projectile = new Projectile(
-            this.casterUnit,
+            this.casterUnit.handle,
             startLoc,
             new ProjectileTargetStatic(deltaTarget),
             new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(GetRandomReal(30,70)))
@@ -107,7 +110,7 @@ export class AcidPoolAbility implements Ability {
     private damageUnit() {
         if (this.casterUnit) {
             const unit = GetEnumUnit();
-            UnitDamageTarget(this.casterUnit, 
+            UnitDamageTarget(this.casterUnit.handle, 
                 unit, 
                 DAMAGE_PER_SECOND * this.lastDelta, 
                 true, 

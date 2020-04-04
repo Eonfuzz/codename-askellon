@@ -28,7 +28,7 @@ export abstract class Gun {
         this.equippedTo = caster;
         this.equippedTo.onWeaponAdd(weaponModule, this);
 
-        UnitAddAbility(caster.unit, this.getAbilityId());
+        caster.unit.addAbility(this.getAbilityId());
         this.updateTooltip(weaponModule, caster);
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
@@ -46,8 +46,8 @@ export abstract class Gun {
 
     public onRemove(weaponModule: WeaponModule) {
         if (this.equippedTo) {
-            UnitRemoveAbility(this.equippedTo.unit, this.getAbilityId());
-            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit, this.getAbilityId());
+            this.equippedTo.unit.removeAbility(this.getAbilityId());
+            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
             this.equippedTo.onWeaponRemove(weaponModule, this);
             if (this.attachment) this.attachment.onUnequip(this);
             this.equippedTo = undefined;
@@ -60,11 +60,11 @@ export abstract class Gun {
         BlzSetItemExtendedTooltip(this.item, itemTooltip);
 
         if (this.equippedTo) {
-            const owner = GetOwningPlayer(this.equippedTo.unit);
+            const owner = this.equippedTo.unit.owner;
 
             // Update the equip tooltip
             const newTooltip = this.getTooltip(weaponModule, caster);
-            if (GetLocalPlayer() === owner) {
+            if (GetLocalPlayer() === owner.handle) {
                 BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
             }
         }
@@ -119,8 +119,8 @@ export abstract class Gun {
         const angleSpread = Math.min(30 + accuracyModifier / 40, 10);
 
         // Get the angle back towards the caster
-        const dX = GetUnitX(caster.unit) - originalLocation.x;
-        const dY = GetUnitY(caster.unit) - originalLocation.y;
+        const dX = caster.unit.x - originalLocation.x;
+        const dY = caster.unit.y - originalLocation.y;
         const thetaRadians = Atan2(dY, dX);
 
         // Project the point with a random distance

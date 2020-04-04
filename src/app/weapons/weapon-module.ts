@@ -8,7 +8,7 @@ import { Gun } from "./guns/gun";
 import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
-import { Trigger } from "../types/jass-overrides/trigger";
+import { Trigger, Unit } from "w3ts";
 import { SniperRifle, InitSniperRifle } from "./guns/sniper-rifle";
 import { Log } from "../../lib/serilog/serilog";
 import { HighQualityPolymer } from "./attachment/high-quality-polymer";
@@ -59,8 +59,8 @@ export class WeaponModule {
     projectileUpdateTimer = new Trigger();
     initProjectiles() {
         const WEAPON_UPDATE_PERIOD = 0.03;
-        this.projectileUpdateTimer.RegisterTimerEventPeriodic(WEAPON_UPDATE_PERIOD);
-        this.projectileUpdateTimer.AddAction(() => this.updateProjectiles(WEAPON_UPDATE_PERIOD))
+        this.projectileUpdateTimer.registerTimerEvent(WEAPON_UPDATE_PERIOD, true);
+        this.projectileUpdateTimer.addAction(() => this.updateProjectiles(WEAPON_UPDATE_PERIOD))
     }
 
     /**
@@ -106,7 +106,7 @@ export class WeaponModule {
         GroupClear(this.collisionCheckGroup);
 
         const centerPoint = from.add(to).multiplyN(0.5);
-        const checkDist = delta.getLength() + projectile.getCollisionRadius();
+        const checkDist = delta.getLength() + projectile.getCollisionRadius() + 200;
 
         // Grab all units in the rough area
         // Optimisation to not run an expensive check on many units
@@ -138,7 +138,7 @@ export class WeaponModule {
         return undefined;
     }
 
-    getGunForUnit(unit: unit): Gun | void {
+    getGunForUnit(unit: Unit): Gun | void {
         for (let gun of this.guns) {
             if (gun.equippedTo && gun.equippedTo.unit == unit) {
                 return gun;
@@ -153,18 +153,18 @@ export class WeaponModule {
     private equipWeaponAbilityId = FourCC('A004');
     weaponEquipTrigger = new Trigger();
     initialiseWeaponEquip() {
-        this.weaponEquipTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT);
-        this.weaponEquipTrigger.AddCondition(() => {
+        this.weaponEquipTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.weaponEquipTrigger.addCondition(Condition(() => {
             let spellId = GetSpellAbilityId();
             return spellId === this.equipWeaponAbilityId;
-        });
-        this.weaponEquipTrigger.AddAction(() => {
-            const unit = GetTriggerUnit();
+        }));
+        this.weaponEquipTrigger.addAction(() => {
+            const unit = Unit.fromHandle(GetTriggerUnit());
             // Because blizzard is smart and we can't detect if an item is being manipulated AND cast
             // Lets grab the order ID, subtract a magic number by it and the remaining number is the inventory slot used
-            const orderId = GetUnitCurrentOrder(unit);
+            const orderId = GetUnitCurrentOrder(unit.handle);
             const itemSlot = orderId - 852008;
-            const item = UnitItemInSlot(unit, itemSlot);
+            const item = UnitItemInSlot(unit.handle, itemSlot);
 
             // Phew, hope you have the water running, ready for your shower            
             let crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
@@ -214,10 +214,10 @@ export class WeaponModule {
 
     weaponShootTrigger = new Trigger();
     initaliseWeaponShooting() {
-        this.weaponShootTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT);
-        this.weaponShootTrigger.AddCondition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0)
-        this.weaponShootTrigger.AddAction(() => {
-            let unit = GetTriggerUnit();
+        this.weaponShootTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0))
+        this.weaponShootTrigger.addAction(() => {
+            let unit = Unit.fromHandle(GetTriggerUnit());
             let targetLocation = GetSpellTargetLoc();
             let targetLoc = new Vector3(
                 GetLocationX(targetLocation), 
@@ -232,7 +232,7 @@ export class WeaponModule {
                 // If we are targeting a unit pass the event over to the force module
                 const targetedUnit = GetSpellTargetUnit();
                 if (targetedUnit) {
-                    this.game.forceModule.aggressionBetweenTwoPlayers(GetOwningPlayer(unit), GetOwningPlayer(targetedUnit));
+                    this.game.forceModule.aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
                 }
                 
                 weapon.onShoot(
@@ -248,24 +248,24 @@ export class WeaponModule {
     weaponDropTrigger = new Trigger();
     weaponPickupTrigger = new Trigger();
     initialiseWeaponDropPickup() {
-        this.weaponDropTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DROP_ITEM);
-        this.weaponDropTrigger.AddCondition(() => {
+        this.weaponDropTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DROP_ITEM);
+        this.weaponDropTrigger.addCondition(Condition(() => {
             const gun = this.getGunForItem(GetManipulatedItem());
             if (gun) {
                 gun.onRemove(this);
             }
             return false;
-        });
+        }));
 
-        this.weaponPickupTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_PICKUP_ITEM);
-        this.weaponPickupTrigger.AddCondition(() => {
+        this.weaponPickupTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_PICKUP_ITEM);
+        this.weaponPickupTrigger.addCondition(Condition(() => {
             const gun = this.getGunForItem(GetManipulatedItem());
-            const crewmember = this.game.crewModule && this.game.crewModule.getCrewmemberForUnit(GetManipulatingUnit());
+            const crewmember = this.game.crewModule && this.game.crewModule.getCrewmemberForUnit(Unit.fromHandle(GetManipulatingUnit()));
             if (gun && crewmember) {
                 gun.updateTooltip(this, crewmember)
             }
             return false;
-        });
+        }));
     }
 
     itemIsWeapon(itemId: number) : boolean {

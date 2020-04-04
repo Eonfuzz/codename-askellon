@@ -2,15 +2,12 @@
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { FilterIsEnemyAndAlive } from "../../../resources/filters";
-import { PlayNewSoundOnUnit } from "../../../lib/translators";
-import { UNIT_IS_FLY, SMART_ORDER_ID } from "../../../lib/order-ids";
-import { Trigger } from "../../types/jass-overrides/trigger";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { SMART_ORDER_ID } from "resources/ability-ids";
+import { Trigger, Unit } from "w3ts";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -29,7 +26,7 @@ const DURATION_TO_HUMAN = 0.5;
 
 export class TransformAbility implements Ability {
 
-    private casterUnit: unit | undefined;
+    private casterUnit: Unit | undefined;
     private timeElapsed: number;
     private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
 
@@ -47,13 +44,13 @@ export class TransformAbility implements Ability {
     }
 
     public initialise(abMod: AbilityModule) {
-        this.casterUnit = GetTriggerUnit();
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         // Create order trigger to track last issued order
-        this.orderTrigger.RegisterUnitIssuedOrder(this.casterUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
-        // this.orderTrigger.RegisterUnitIssuedOrder(this.casterUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
-        this.orderTrigger.AddCondition(() => GetIssuedOrderId() === SMART_ORDER_ID);
-        this.orderTrigger.AddAction(() => {
+        this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
+        // this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
+        this.orderTrigger.addCondition(Condition(() => GetIssuedOrderId() === SMART_ORDER_ID));
+        this.orderTrigger.addAction(() => {
             this.previousOrder = GetIssuedOrderId();
             this.previousOrderTarget = new Vector2(GetOrderPointX(), GetOrderPointY());
         })
@@ -66,7 +63,7 @@ export class TransformAbility implements Ability {
 
         if (this.timeElapsedSinceSFX >= CREATE_SFX_EVERY && this.casterUnit) {
             this.timeElapsedSinceSFX = 0;
-            const tLoc = vectorFromUnit(this.casterUnit);
+            const tLoc = vectorFromUnit(this.casterUnit.handle);
 
             const unitHeight = abMod.game.getZFromXY(tLoc.x, tLoc.y);
             const startLoc = new Vector3(tLoc.x, tLoc.y, unitHeight + 80)
@@ -79,7 +76,7 @@ export class TransformAbility implements Ability {
 
             const projStartLoc = new Vector3(startLoc.x, startLoc.y, unitHeight + 20);
             const projectile = new Projectile(
-                this.casterUnit, 
+                this.casterUnit.handle, 
                 projStartLoc,
                 new ProjectileTargetStatic(newTarget.subtract(startLoc)),
                 new ProjectileMoverParabolic(projStartLoc, newTarget, Deg2Rad(GetRandomReal(60,85)))
@@ -126,11 +123,11 @@ export class TransformAbility implements Ability {
         if (this.casterUnit) {
 
             const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            const alien = alienForce.transform(abMod.game, GetOwningPlayer(this.casterUnit), this.toAlien);
+            const alien = alienForce.transform(abMod.game, this.casterUnit.owner, this.toAlien);
 
             // If we have an existing order send it to the new unit
             if (this.previousOrder && this.previousOrderTarget) {
-                IssuePointOrderById(alien, this.previousOrder, this.previousOrderTarget.x, this.previousOrderTarget.y);
+                IssuePointOrderById(alien.handle, this.previousOrder, this.previousOrderTarget.x, this.previousOrderTarget.y);
             }
             
             // Delete order trigger

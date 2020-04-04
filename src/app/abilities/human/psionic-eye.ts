@@ -9,6 +9,7 @@ import { getZFromXY } from "lib/utils";
 import { VISION_TYPE } from "app/world/vision-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { Unit } from "w3ts/handles/unit";
 
 /** @noSelfInFile **/
 const PSIONIC_EYE_DURATION = 5;
@@ -16,7 +17,7 @@ const PSIONIC_EYE_INTERVAL = 1;
 
 export class PsionicEyeAbility implements Ability {
 
-    private unit: unit | undefined;
+    private unit: Unit | undefined;
     private timeElapsed: number = 0;
     private timeSincePing: number = 0;
 
@@ -25,7 +26,7 @@ export class PsionicEyeAbility implements Ability {
     constructor() {}
 
     public initialise(abMod: AbilityModule) {
-        this.unit = GetTriggerUnit();
+        this.unit = Unit.fromHandle(GetTriggerUnit());
         return true;
     };
 
@@ -34,18 +35,18 @@ export class PsionicEyeAbility implements Ability {
 
         const pingFor: Crewmember[] = [];
         const alienForce = module.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-        const pingForplayer = GetOwningPlayer(this.unit as unit);
+        const pingForplayer = this.unit.owner;
 
         pingFor.forEach(crew => {
             const isAlien = alienForce.hasPlayer(crew.player);
-            let unitToPing: unit;
+            let unitToPing: Unit;
             if (isAlien) {
-                unitToPing = alienForce.getAlienFormForPlayer(crew.player) as unit;
+                unitToPing = alienForce.getAlienFormForPlayer(crew.player) as Unit;
             }
             else {
                 unitToPing = crew.unit;
             }
-            PingMinimapForPlayer(pingForplayer, GetUnitX(unitToPing), GetUnitY(unitToPing), 1);
+            PingMinimapForPlayer(pingForplayer.handle, unitToPing.x, unitToPing.y, 1);
         });
 
         return this.timeElapsed < PSIONIC_EYE_DURATION;

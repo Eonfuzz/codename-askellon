@@ -1,13 +1,12 @@
 import { Game } from "app/game";
-import { Trigger } from "app/types/jass-overrides/trigger";
+import { Trigger, Unit } from "w3ts";
 import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
-import { UNIT_IS_FLY } from "lib/order-ids";
 import { TimedEvent } from "app/types/timed-event";
 import { STUN_ID } from "app/interactions/interaction-event";
-import { Log } from "lib/serilog/serilog";
 import { SoundRef } from "app/types/sound-ref";
+import { UNIT_IS_FLY } from "resources/ability-ids";
 
 /**
  * These locations are declared by the world editor
@@ -116,8 +115,8 @@ export class LeapModule {
      * Creates a timer and begins looping through all leps
      */
     initialise() {
-        this.leapTrigger.RegisterTimerEventPeriodic(LEAP_INTERVAL);
-        this.leapTrigger.AddAction(() => this.updateLeaps());
+        this.leapTrigger.registerTimerEvent(LEAP_INTERVAL, true);
+        this.leapTrigger.addAction(() => this.updateLeaps());
     }
 
     updateLeaps() {
@@ -141,7 +140,7 @@ export class LeapModule {
                     const newZone = this.findInsideRect(udg_jump_pass_zones, unitLoc);
                     const resultZone = !!newZone && udg_jump_pass_zones_name[newZone];
                     const z = resultZone && this.game.worldModule.getZoneByName(resultZone);
-                    z && this.game.worldModule.travel(i.unit, z);
+                    z && this.game.worldModule.travel(Unit.fromHandle(i.unit), z);
                 }
             }
 
@@ -176,7 +175,7 @@ export class LeapModule {
         this.game.timedEventQueue.AddEvent(new TimedEvent(() => {
             // Move the player to the matching location
             const z = this.game.worldModule.getZoneByName(zoneName);
-            z && this.game.worldModule.travel(who, z);
+            z && this.game.worldModule.travel(Unit.fromHandle(who), z);
 
             PanCameraToTimedForPlayer(player, locX, locY, 0);
 

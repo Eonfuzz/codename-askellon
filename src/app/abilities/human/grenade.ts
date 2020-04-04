@@ -6,6 +6,7 @@ import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
 import { FilterIsEnemyAndAlive } from "../../../resources/filters";
+import { MapPlayer, Unit } from "w3ts";
 
 /** @noSelfInFile **/
 const EXPLOSION_BASE_DAMAGE = 100;
@@ -18,27 +19,28 @@ const MISSILE_SFX = 'Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissil
 
 export class GrenadeLaunchAbility implements Ability {
 
-    private casterUnit: unit | undefined;
+    private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
 
-    private castingPlayer: player | undefined;
+    private castingPlayer: MapPlayer | undefined;
     private damageGroup = CreateGroup();
 
     constructor() {}
 
     public initialise(module: AbilityModule) {
-        this.casterUnit = GetTriggerUnit();
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+        this.castingPlayer = this.casterUnit.owner;
+
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
         this.targetLoc.z = module.game.getZFromXY(this.targetLoc.x, this.targetLoc.y);
-        this.castingPlayer = GetOwningPlayer(this.casterUnit);
 
-        const polarPoint = vectorFromUnit(this.casterUnit).applyPolarOffset(GetUnitFacing(this.casterUnit), 80);
+        const polarPoint = vectorFromUnit(this.casterUnit.handle).applyPolarOffset(this.casterUnit.facing, 80);
         const startLoc = new Vector3(polarPoint.x, polarPoint.y, module.game.getZFromXY(polarPoint.x, polarPoint.y)+30);
 
         const deltaTarget = this.targetLoc.subtract(startLoc);       
 
         const projectile = new Projectile(
-            this.casterUnit,
+            this.casterUnit.handle,
             startLoc,
             new ProjectileTargetStatic(deltaTarget),
             new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(GetRandomReal(15,30)))
@@ -77,7 +79,7 @@ export class GrenadeLaunchAbility implements Ability {
     private damageUnit() {
         if (this.casterUnit) {
             const unit = GetEnumUnit();
-            UnitDamageTarget(this.casterUnit, 
+            UnitDamageTarget(this.casterUnit.handle, 
                 unit, 
                 EXPLOSION_BASE_DAMAGE, 
                 true, 

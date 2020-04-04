@@ -1,5 +1,5 @@
 import { Game } from "app/game";
-import { Trigger } from "app/types/jass-overrides/trigger";
+import { Trigger, Unit, MapPlayer } from "w3ts";
 import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 // import { STR_OPT_ALIEN } from "resources/strings";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
@@ -36,11 +36,13 @@ import { ROLE_TYPES } from "resources/crewmember-names";
      */
     trackCrewUpgrades() {
         const t = new Trigger();
-        t.RegisterAnyUnitEventBJ( EVENT_PLAYER_UNIT_RESEARCH_FINISH );
-        t.AddAction(() => {
-            const player = GetOwningPlayer(GetTriggerUnit());
+        t.registerAnyUnitEvent( EVENT_PLAYER_UNIT_RESEARCH_FINISH );
+        t.addAction(() => {
+            const unit = Unit.fromHandle(GetTriggerUnit());
+            const player = unit.owner;
             const techUnlocked = GetResearched();
-            const levelTech = GetPlayerTechCount(player, techUnlocked, true);
+            const levelTech = player.getTechCount(techUnlocked, true);
+
             /**
              * If tech researched is a global thing, alert and give the upgrade to all players
              */
@@ -58,7 +60,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
             // Otherwise just update it for a single player
             else {
                 const p = GetOwningPlayer(GetTriggerUnit());
-                const crew = this.game.crewModule.getCrewmemberForPlayer(p);
+                const crew = this.game.crewModule.getCrewmemberForPlayer(MapPlayer.fromHandle(p));
                 if (crew) {
                     crew.onPlayerFinishUpgrade();
                 }
@@ -79,23 +81,23 @@ import { ROLE_TYPES } from "resources/crewmember-names";
     /**
      * Grants upgrades, unlocks things and others!
      */
-    processMajorUpgrade(player: player, id: number, level: number) {
+    processMajorUpgrade(player: MapPlayer, id: number, level: number) {
         const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME);
         const isInfested = alienForce && alienForce.hasPlayer(player);
 
         // Go through all players and grant the tech at the tech at the same level
         const players = this.game.forceModule.getActivePlayers();
-        players.forEach(p => SetPlayerTechResearched(p, id, level));
+        players.forEach(p => p.setTechResearched(id, level));
         // Now send message to all players
         // Get all players on the ship
         // const pAlert = this.game.worldModule.askellon.getPlayers();
         const techName = this.getTechName(id, level);
 
         players.forEach(p => {
-            DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_HEADER());
-            DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_SUBTITLE(techName));
+            DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_HEADER());
+            DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_SUBTITLE(techName));
             if (alienForce && isInfested && alienForce.hasPlayer(p)) {
-                DisplayTextToPlayer(p, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
+                DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
                 // Play infestation complete sound
                 this.setUpgradeAsInfested(id, level, true);
             }
@@ -161,7 +163,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
         return this.majorUpgradeLevels.get(upgrade) || 0;
     }
     
-    private rewardResearchXP(force: ForceType, crewmember: Crewmember, player: player, techUnlocked: number) {
+    private rewardResearchXP(force: ForceType, crewmember: Crewmember, player: MapPlayer, techUnlocked: number) {
         let baseXp = 500 * this.getMajorUpgradeLevel(techUnlocked);
 
         // Increase xp by 50% if it is your role's research

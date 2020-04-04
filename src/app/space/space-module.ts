@@ -2,7 +2,7 @@
 
 import { Game } from "../game";
 import { Ship } from "./ship";
-import { Trigger } from "../types/jass-overrides/trigger";
+import { Trigger } from "w3ts";
 import { SpaceObject } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
 
@@ -78,8 +78,8 @@ export class SpaceModule {
     shipUpdateTimer = new Trigger();
     initShips() {
         const SHIP_UPDATE_PERIOD = 0.03;
-        this.shipUpdateTimer.RegisterTimerEventPeriodic(SHIP_UPDATE_PERIOD);
-        this.shipUpdateTimer.AddAction(() => this.updateShips(SHIP_UPDATE_PERIOD))
+        this.shipUpdateTimer.registerTimerEvent(SHIP_UPDATE_PERIOD, true);
+        this.shipUpdateTimer.addAction(() => this.updateShips(SHIP_UPDATE_PERIOD))
     }
 
     /**
@@ -136,14 +136,14 @@ export class SpaceModule {
     private shipDeaccelAbilityId    = FourCC('A000');
     private shipStopAbilityId       = FourCC('A006');
     initShipAbilities() {
-        this.shipAbilityTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT);
-        this.shipAbilityTrigger.AddCondition(() =>
+        this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.shipAbilityTrigger.addCondition(Condition(() =>
             GetSpellAbilityId() === this.shipAccelAbilityId     ||
             GetSpellAbilityId() === this.shipDeaccelAbilityId   ||
             GetSpellAbilityId() === this.shipStopAbilityId
-        );
+        ));
 
-        this.shipAbilityTrigger.AddAction(() => {
+        this.shipAbilityTrigger.addAction(() => {
             const unit = GetTriggerUnit();
             const castAbilityId = GetSpellAbilityId();
 

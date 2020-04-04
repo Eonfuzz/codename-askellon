@@ -10,10 +10,8 @@ const DEFAULT_FILTER = (projectile: Projectile) => {
         let unit = GetFilterUnit(); 
         
         return GetWidgetLife(unit) > 0.405 && 
-            !IsUnitAlly(unit, GetOwningPlayer(projectile.source)) && 
-            IsUnitType(unit, UNIT_TYPE_STRUCTURE) == false && 
+            !IsUnitAlly(unit, GetOwningPlayer(projectile.source)) &&
             IsUnitType(unit, UNIT_TYPE_MAGIC_IMMUNE) == false && 
-            IsUnitType(unit, UNIT_TYPE_MECHANICAL) == false &&
             GetUnitAbilityLevel(unit, AIRBORN_ABILITY_DUMMY) == 0;
     });
 };

@@ -30,7 +30,7 @@ export class Resolve extends DynamicBuff {
         this.resolveMusic = new SoundRef("Music\\KavinskyRampage.mp3", true);
 
         this.crewmember = crewmember;
-        this.prevUnitHealth = GetUnitState(this.crewmember.unit, UNIT_STATE_LIFE);
+        this.prevUnitHealth = this.crewmember.unit.getState(UNIT_STATE_LIFE);
     }
 
     public process(game: Game, delta: number): boolean {
@@ -43,12 +43,12 @@ export class Resolve extends DynamicBuff {
 
         if (this.checkForDespairBuffTicker >= 1) {
             this.checkForDespairBuffTicker = 0;
-            if (!UnitHasBuffBJ(this.crewmember.unit, RESOLVE_BUFF_ID)) {
+            if (!UnitHasBuffBJ(this.crewmember.unit.handle, RESOLVE_BUFF_ID)) {
                 // If we don't have another ticker apply the buff to the unit
                 game.useDummyFor((dummy: unit) => {
-                    SetUnitX(dummy, GetUnitX(this.crewmember.unit));
-                    SetUnitY(dummy, GetUnitY(this.crewmember.unit) + 50);
-                    IssueTargetOrder(dummy, "bloodlust", this.crewmember.unit);
+                    SetUnitX(dummy, this.crewmember.unit.x);
+                    SetUnitY(dummy, this.crewmember.unit.y + 50);
+                    IssueTargetOrder(dummy, "bloodlust", this.crewmember.unit.handle);
                 }, RESOLVE_ABILITY_ID);
             }
         }
@@ -57,32 +57,32 @@ export class Resolve extends DynamicBuff {
 
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
-            UnitAddAbility(this.crewmember.unit, ABIL_ACCURACY_BONUS_30);
+            this.crewmember.unit.addAbility(ABIL_ACCURACY_BONUS_30);
             this.resolveMusic.setVolume(15);
-            if (GetLocalPlayer() === this.crewmember.player) {
+            if (GetLocalPlayer() === this.crewmember.player.handle) {
                 StopMusic(true);
                 this.breathSound.playSound();
                 this.resolveMusic.playSound();
             }
 
             // If we dont got the buff cast that bad boi
-            if (!UnitHasBuffBJ(this.crewmember.unit, RESOLVE_BUFF_ID)) {
+            if (!UnitHasBuffBJ(this.crewmember.unit.handle, RESOLVE_BUFF_ID)) {
                 // If we don't have another ticker apply the buff to the unit
                 game.useDummyFor((dummy: unit) => {
-                    SetUnitX(dummy, GetUnitX(this.crewmember.unit));
-                    SetUnitY(dummy, GetUnitY(this.crewmember.unit) + 50);
-                    IssueTargetOrder(dummy, "bloodlust", this.crewmember.unit);
+                    SetUnitX(dummy, this.crewmember.unit.x);
+                    SetUnitY(dummy, this.crewmember.unit.y + 50);
+                    IssueTargetOrder(dummy, "bloodlust", this.crewmember.unit.handle);
                 }, RESOLVE_ABILITY_ID);
             }
         }
         else {
-            UnitRemoveAbility(this.crewmember.unit, ABIL_ACCURACY_BONUS_30);
+            this.crewmember.unit.removeAbility(ABIL_ACCURACY_BONUS_30);
             // Also remove resolve buff
-            UnitRemoveBuffBJ(RESOLVE_BUFF_ID, this.crewmember.unit);
+            UnitRemoveBuffBJ(RESOLVE_BUFF_ID, this.crewmember.unit.handle);
             this.onChangeCallbacks.forEach(cb => cb(this));
 
             // End music and sounds
-            if (GetLocalPlayer() === this.crewmember.player) {
+            if (GetLocalPlayer() === this.crewmember.player.handle) {
                 this.breathSound.stopSound();
                 this.resolveMusic.stopSound();
                 ResumeMusic();

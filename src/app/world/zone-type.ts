@@ -4,27 +4,34 @@ import { WorldModule } from "./world-module";
 import { TimedEvent } from "../types/timed-event";
 import { Log } from "../../lib/serilog/serilog";
 import { LIGHT_DEST_ID } from "../types/widget-id";
-
-/** @noSelfInFile **/
+import { Unit } from "w3ts/handles/unit";
+import { MapPlayer } from "w3ts";
+import { Game } from "app/game";
+import { EventListener, EVENT_TYPE } from "app/events/event";
+import { getZFromXY } from "lib/utils";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
+declare const udg_power_generators: Array<unit>;
+declare const udg_power_generator_zones: Array<string>;
 
 export class Zone {
     public id: ZONE_TYPE;
+    protected game: Game;
 
     // Adjacent zones UNUSED
     protected adjacent: Array<Zone> = [];
-    protected unitsInside: Array<unit> = [];
+    protected unitsInside: Array<Unit> = [];
 
-    constructor(id: ZONE_TYPE) {
+    constructor(game: Game, id: ZONE_TYPE) {
         this.id = id;
+        this.game = game;
     }
 
     /**
      * Unit enters the zone
      * @param unit 
      */
-    public onLeave(world: WorldModule, unit: unit) {
+    public onLeave(world: WorldModule, unit: Unit) {
         const idx = this.unitsInside.indexOf(unit);
         if (idx >= 0) this.unitsInside.splice(idx, 1);
     }
@@ -33,19 +40,19 @@ export class Zone {
      * Unit leaves the zone
      * @param unit 
      */
-    public onEnter(world: WorldModule, unit: unit) {
+    public onEnter(world: WorldModule, unit: Unit) {
         this.unitsInside.push(unit);
     }
 
-    public displayEnteringMessage(player: player) {
-        DisplayTextToPlayer(player, 0, 0, `Entering ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}`);
+    public displayEnteringMessage(player: MapPlayer) {
+        DisplayTextToPlayer(player.handle, 0, 0, `Entering ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}`);
     }
 
     /**
      * Returns all players present in a zone
      */
     public getPlayersInZone() {
-        let players = this.unitsInside.map(u => GetOwningPlayer(u));
+        let players = this.unitsInside.map(u => u.owner);
         return players.filter(function(elem, index, self) {
             return index === self.indexOf(elem);
         });
@@ -60,8 +67,47 @@ export class ShipZone extends Zone {
     private hasOxygen: boolean = true;
 
     public lightSources: Array<destructable> = [];
+    public powerGenerators: Array<Unit> = [];
 
-    public onLeave(world: WorldModule, unit: unit) {
+    constructor(game: Game, id: ZONE_TYPE) {
+        super(game, id);
+
+        // Get get light sources and power gens based on ID
+        const matchingIndexes = [];
+        udg_power_generator_zones.forEach((zone, index) => id === zone && matchingIndexes.push(index));
+        matchingIndexes.forEach(index => {
+            this.powerGenerators.push(Unit.fromHandle(udg_power_generators[index+1]));
+        });
+
+        // Hook into station destruction events
+        game.event.addListener(
+            new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, 
+            (self, data: any) => this.onGeneratorDestroy(data.unit, data.source))
+        );
+        // Register to and listen for security repair
+        game.event.addListener(
+            new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED,
+            (self, data: any) => this.onGeneratorRepair(data.unit, data.source))
+        );
+    }
+
+    private onGeneratorDestroy(generator: Unit, source: Unit) {
+        // Make sure we have generator in our array
+        if (this.powerGenerators.indexOf(generator) >= 0) {
+            Log.Information("Generator for "+this.id+" was destroyed!");
+            this.updatePower(false);
+        }
+    }
+
+    private onGeneratorRepair(generator: Unit, source: Unit) {
+        // Make sure we have generator in our array
+        if (this.powerGenerators.indexOf(generator) >= 0) {
+            Log.Information("Generator for "+this.id+" was repaired!!");
+            this.updatePower(true);
+        }
+    }
+
+    public onLeave(world: WorldModule, unit: Unit) {
         super.onLeave(world, unit);
 
         // If no oxy remove oxy loss
@@ -69,19 +115,19 @@ export class ShipZone extends Zone {
         // If no power remove power loss
     }
 
-    public onEnter(world: WorldModule, unit: unit) {
+    public onEnter(world: WorldModule, unit: Unit) {
         super.onEnter(world, unit);
 
         // If no oxy apply oxy loss
         // TODO
         // If no power apply power loss
-        world.askellon.applyPowerChange(GetOwningPlayer(unit), this.hasPower, false);
+        world.askellon.applyPowerChange(unit.owner, this.hasPower, false);
     }
 
-    public updatePower(worldModule: WorldModule, newState: boolean) {
+    public updatePower(newState: boolean) {
         if (this.hasPower != newState) {
             // Apply power change to all players
-            this.getPlayersInZone().map(p => worldModule.askellon.applyPowerChange(p, newState, true));
+            this.getPlayersInZone().map(p => this.game.worldModule.askellon.applyPowerChange(p, newState, true));
 
             if (!newState) {
                 this.lightSources.forEach((lightSource, i) => {
@@ -89,11 +135,11 @@ export class ShipZone extends Zone {
                     const r = GetRandomInt(2, 4);
                     const timer = 500 + r*r * 200;
 
-                    worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                    this.game.worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
                         const oldSource = this.lightSources[_i];
                         const oldX = GetDestructableX(oldSource);
                         const oldY = GetDestructableY(oldSource);
-                        const terrainZ = worldModule.game.getZFromXY(oldX, oldY);
+                        const terrainZ =  this.game.worldModule.game.getZFromXY(oldX, oldY);
 
                         const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
                         SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
@@ -121,11 +167,11 @@ export class ShipZone extends Zone {
                     const r = GetRandomInt(2, 4);
                     const timer = 500 + r*r * 200;
 
-                    worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                    this.game.timedEventQueue.AddEvent(new TimedEvent(() => {
                         const oldSource = this.lightSources[_i];
                         const oldX = GetDestructableX(oldSource);
                         const oldY = GetDestructableY(oldSource);
-                        const terrainZ = worldModule.game.getZFromXY(oldX, oldY);
+                        const terrainZ = getZFromXY(oldX, oldY);
 
                         const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
                         SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));

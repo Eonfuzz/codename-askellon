@@ -5,13 +5,14 @@ import { ForceModule } from "./force-module";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { PLAYER_COLOR } from "lib/translators";
 import { SoundRef } from "app/types/sound-ref";
+import { MapPlayer, Unit } from "w3ts";
 
 
 const GENERIC_CHAT_SOUND_REF = new SoundRef('Sound/ChatSound', false);
 export abstract class ForceType {
     // Keep track of players in force
-    protected players: Array<player> = [];
-    protected playerUnits: Map<player, unit> = new Map();
+    protected players: Array<MapPlayer> = [];
+    protected playerUnits: Map<MapPlayer, Unit> = new Map();
 
     protected forceModule: ForceModule;
     abstract name: string;
@@ -22,7 +23,7 @@ export abstract class ForceType {
         return this.name === name;
     }
 
-    hasPlayer(who: player): boolean {
+    hasPlayer(who: MapPlayer): boolean {
         return this.players.indexOf(who) >= 0;
     }
 
@@ -30,11 +31,11 @@ export abstract class ForceType {
         return this.players
     }
 
-    addPlayer(who: player) {
+    addPlayer(who: MapPlayer) {
         this.players.push(who);
     }
 
-    removePlayer(who: player) {
+    removePlayer(who: MapPlayer) {
         const idx = this.players.indexOf(who);
 
         if (idx >= 0) {
@@ -42,11 +43,11 @@ export abstract class ForceType {
         }
     }
 
-    public addPlayerMainUnit(game: Game, whichUnit: unit, player: player): void {
+    public addPlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer): void {
         this.playerUnits.set(player, whichUnit);
     };
 
-    public removePlayerMainUnit(game: Game, whichUnit: unit, player: player): void {
+    public removePlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer): void {
         this.playerUnits.delete(player);
     };
 
@@ -65,9 +66,9 @@ export abstract class ForceType {
      */
     public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
         // Just apply the xp earned
-        SuspendHeroXP(whichUnit.unit, false);
-        AddHeroXP(whichUnit.unit, MathRound(amount), true);
-        SuspendHeroXP(whichUnit.unit, true);
+        whichUnit.unit.suspendExperience(false);
+        whichUnit.unit.addExperience(MathRound(amount), true);
+        whichUnit.unit.suspendExperience(true);
     }
 
     /**
@@ -85,14 +86,14 @@ export abstract class ForceType {
      * Gets a list of who can see the chat messages
      * Unless overridden returns all the players
      */
-    public getChatRecipients(sendingPlayer: player) {
+    public getChatRecipients(sendingPlayer: MapPlayer) {
         return this.forceModule.getActivePlayers();
     }
 
     /**
      * Gets the player's visible chat name, by default shows role name
      */
-    public getChatName(who: player): string {
+    public getChatName(who: MapPlayer): string {
         const crew = this.forceModule.game.crewModule.getCrewmemberForPlayer(who);
         if (crew)
             return crew.name;
@@ -104,20 +105,20 @@ export abstract class ForceType {
      * Return's a players chat colour
      * @param who 
      */
-    public getChatColor(who: player): string {
-        return PLAYER_COLOR[GetPlayerId(who)];
+    public getChatColor(who: MapPlayer): string {
+        return PLAYER_COLOR[who.id];
     }
 
     /**
      * Returns the sound to be used on chat events
      * @param who
      */
-    public getChatSoundRef(who: player): SoundRef {
+    public getChatSoundRef(who: MapPlayer): SoundRef {
         return GENERIC_CHAT_SOUND_REF;
     }
 
     /**
      * Returns the chat tag, by default it will be null
      */
-    public getChatTag(who: player): string | undefined { return; }
+    public getChatTag(who: MapPlayer): string | undefined { return; }
 }

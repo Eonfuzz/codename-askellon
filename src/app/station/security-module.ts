@@ -1,10 +1,10 @@
 import { Game } from "app/game";
 import { EVENT_TYPE } from "app/events/event";
-import { Trigger } from "app/types/jass-overrides/trigger";
+import { Trigger, Unit } from "w3ts";
 import { Log } from "lib/serilog/serilog";
 
-const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
-const UNIT_ID_STATION_SECURITY_POWER = FourCC('');
+// const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
+const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
 
 export class SecurityModule {
 
@@ -17,11 +17,11 @@ export class SecurityModule {
 
         // Get all security units on the map
         const uGroup = CreateGroup();
-        GroupEnumUnitsOfPlayer(uGroup, this.game.forceModule.stationSecurity, Filter(() => {
+        GroupEnumUnitsOfPlayer(uGroup, this.game.forceModule.stationProperty.handle, Filter(() => {
             const u = GetFilterUnit();
             const uType = GetUnitTypeId(u);
             
-            if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
+            // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
             if (uType === UNIT_ID_STATION_SECURITY_POWER) return true;
             return false;
         }));
@@ -29,10 +29,10 @@ export class SecurityModule {
         // Now register that the chosen unit is damaged
         ForGroup(uGroup, () => {
             const u = GetEnumUnit();
-            securityDamageTrigger.RegisterUnitEvent(u, EVENT_UNIT_DAMAGED)  ;
+            securityDamageTrigger.registerUnitEvent(Unit.fromHandle(u), EVENT_UNIT_DAMAGED)  ;
         });
 
-        securityDamageTrigger.AddAction(() => this.onSecurityDamage(
+        securityDamageTrigger.addAction(() => this.onSecurityDamage(
             BlzGetEventDamageTarget(),
             GetEventDamageSource(),
             GetEventDamage()
@@ -44,20 +44,19 @@ export class SecurityModule {
      */
     onSecurityDamage(u: unit, source: unit, damage: number) {
         // Is this blow gonna kill the security item?
-        if (damage > GetUnitState(u, UNIT_STATE_LIFE)) {
+        const damageWithAllowance = damage + GetUnitState(u, UNIT_STATE_MAX_LIFE) * 0.1;
+        if (damageWithAllowance > GetUnitState(u, UNIT_STATE_LIFE)) {
             // Set the unit to 1 hp
             SetUnitState(u, UNIT_STATE_LIFE, 1);
             // Make the unit invulnerable
             SetUnitInvulnerable(u, true);
-            // Pause the unit
-            BlzPauseUnitEx(u, true);
             // Set the damage dealt to zero
             BlzSetEventDamage(0);
 
             // Publish event that a security object is damaged
             this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
-                unit: u,
-                source: source
+                unit: Unit.fromHandle(u),
+                source: Unit.fromHandle(source)
             });
         }
     }

@@ -1,5 +1,5 @@
 import { Game } from "app/game";
-import { Trigger } from "app/types/jass-overrides/trigger";
+import { Trigger, MapPlayer } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ChatSystem } from "./chat-system";
@@ -13,7 +13,7 @@ export enum PRIVS {
 export class ChatModule {
 
     game: Game;
-    chatHandlers = new Map<player, ChatSystem>();
+    chatHandlers = new Map<MapPlayer, ChatSystem>();
 
     constructor(game: Game) {
         this.game = game;
@@ -68,16 +68,16 @@ export class ChatModule {
         // Init chat events
         const messageTrigger = new Trigger();
         this.game.forceModule.getActivePlayers().forEach(player => {
-            messageTrigger.RegisterPlayerChatEvent(player, "", false);
+            messageTrigger.registerPlayerChatEvent(player, "", false);
         });
-        messageTrigger.AddAction(() => this.onChatMessage());
+        messageTrigger.addAction(() => this.onChatMessage());
 
         /**
          * Create a fade tracking trigger loop
          */
         const fadeTrig = new Trigger();
-        fadeTrig.RegisterTimerEventPeriodic(0.3);
-        fadeTrig.AddAction(() => this.updateFade(0.3));
+        fadeTrig.registerTimerEvent(0.3, true);
+        fadeTrig.addAction(() => this.updateFade(0.3));
     }
 
     updateFade(deltaTime: number) {
@@ -85,7 +85,7 @@ export class ChatModule {
     }
 
     onChatMessage() {
-        const player = GetTriggerPlayer();
+        const player = MapPlayer.fromHandle(GetTriggerPlayer());
         const message = GetEventPlayerChatString();
         const crew = this.game.crewModule.getCrewmemberForPlayer(player) as Crewmember;
 
@@ -94,7 +94,7 @@ export class ChatModule {
         else this.handleMessage(player, message, crew);
     }
 
-    handleCommand(player: player, message: string, crew: Crewmember) {
+    handleCommand(player: MapPlayer, message: string, crew: Crewmember) {
         const priv = this.getUserPrivs(player);
 
         // Priv 2 === DEVELOPER
@@ -107,11 +107,11 @@ export class ChatModule {
             }
             else if (message === "-p1off") {
                 const z = this.game.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
-                z && z.updatePower(this.game.worldModule, false);
+                z && z.updatePower(false);
             }
             else if (message === "-p1on") {
                 const z = this.game.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
-                z && z.updatePower(this.game.worldModule, true);
+                z && z.updatePower(true);
             }
             else if (message.indexOf("-m") === 0) {
                 const mSplit = message.split(" ");
@@ -130,7 +130,7 @@ export class ChatModule {
         }
     }
 
-    handleMessage(player: player, message: string, crew: Crewmember) {
+    handleMessage(player: MapPlayer, message: string, crew: Crewmember) {
         // Get list of players to send the message to by player force
         const force = this.game.forceModule.getPlayerForce(player);
         if (force) {
@@ -144,17 +144,17 @@ export class ChatModule {
         }
     }
 
-    public postMessageFor(players: player[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundRef) {
+    public postMessageFor(players: MapPlayer[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundRef) {
         players.forEach(p => {
             const cHandler = this.chatHandlers.get(p);
             if (cHandler) cHandler.sendMessage(fromName, color, message, messageTag, sound);
         });            
     }
 
-    getUserPrivs(who: player): PRIVS {
+    getUserPrivs(who: MapPlayer): PRIVS {
         // Log.Information("Player attempting commands: "+GetPlayerName(who));
-        if (GetPlayerName(who) === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
-        if (GetPlayerName(who) === 'Local Player') return PRIVS.DEVELOPER;
+        if (who.name === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
+        if (who.name === 'Local Player') return PRIVS.DEVELOPER;
         else if (this.game.forceModule.getActivePlayers().length === 1) return PRIVS.MODERATOR;
         return PRIVS.USER;
     }

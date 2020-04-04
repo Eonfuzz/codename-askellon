@@ -1,4 +1,5 @@
 import { Vector3 } from "../app/types/vector3";
+import { Unit } from "w3ts/handles/unit";
 
 export class console {
     public static log(input: string): void {
@@ -26,7 +27,7 @@ export function SendMessageUnlogged(this: void, msg: any): void {
     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `${msg}`);
 }
 
-export function PlayNewSoundOnUnit(soundPath: string, unit: unit, volume: number): sound {
+export function PlayNewSoundOnUnit(soundPath: string, unit: Unit, volume: number): sound {
     const result = CreateSound(soundPath, false, true, true, 10, 10, "" )
     SetSoundDuration(result, GetSoundFileDuration(soundPath));
     SetSoundChannel(result, 0);
@@ -34,7 +35,7 @@ export function PlayNewSoundOnUnit(soundPath: string, unit: unit, volume: number
     SetSoundPitch(result, 1.0);
     SetSoundDistances(result, 2000.0, 10000.0);
     SetSoundDistanceCutoff(result, 4500.0);
-    AttachSoundToUnit(result, unit);
+    AttachSoundToUnit(result, unit.handle);
     StartSound(result);
     KillSoundWhenDone(result);
     return result;

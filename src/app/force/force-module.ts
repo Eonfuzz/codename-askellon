@@ -5,7 +5,7 @@ import { ForceType } from "./force-type";
 import { CrewmemberForce, CREW_FORCE_NAME } from "./crewmember-force";
 import { AlienForce, ALIEN_FORCE_NAME } from "./alien-force";
 import { ObserverForce } from "./observer-force";
-import { Trigger } from "app/types/jass-overrides/trigger";
+import { Trigger, MapPlayer } from "w3ts";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
 import { OptSelection, OPT_TYPES, OptSelectOption, OptResult } from "./opt-selection";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
@@ -17,8 +17,8 @@ export interface playerDetails {
 export interface PlayerAggressionLog {
     // Unique identifier
     id: number,
-    aggressor: player;
-    defendant: player;
+    aggressor: MapPlayer;
+    defendant: MapPlayer;
     // Time stamp must be in seconds
     timeStamp: number;
     // Duration must be in seconds
@@ -31,8 +31,8 @@ export interface PlayerAggressionLog {
 export class ForceModule {
     private forces: Array<ForceType> = [];
 
-    private playerOriginalDetails = new Map<player, playerDetails>();
-    private playerForceDetails = new Map<player, ForceType>();
+    private playerOriginalDetails = new Map<MapPlayer, playerDetails>();
+    private playerForceDetails = new Map<MapPlayer, ForceType>();
 
     // new id for the next aggresison item
     private aggressionId = 0;
@@ -40,12 +40,13 @@ export class ForceModule {
     private aggressionLog = new Map<string, PlayerAggressionLog[]>();
     private allAggressionLogs: PlayerAggressionLog[] = [];
 
-    public neutralPassive: player;
-    public neutralHostile: player;
+    public neutralPassive: MapPlayer;
+    public neutralHostile: MapPlayer;
 
-    public stationSecurity: player;
-    public stationProperty: player;
-    public alienAIPlayer: player;
+    public stationSecurity: MapPlayer;
+    public stationProperty: MapPlayer;
+    public unknownPlayer: MapPlayer;
+    public alienAIPlayer: MapPlayer;
 
     public game: Game;
 
@@ -55,8 +56,8 @@ export class ForceModule {
         // set original player details
         this.getActivePlayers().forEach(p => {
             this.playerOriginalDetails.set(p, {
-                name: GetPlayerName(p),
-                colour: GetPlayerColor(p)
+                name: p.name,
+                colour: p.color
             });
         });
 
@@ -65,22 +66,24 @@ export class ForceModule {
         // Add observer to forces
         this.forces.push(new ObserverForce(this));
 
-        this.neutralPassive = Player(22);
-        this.neutralHostile = Player(23);
-        this.stationSecurity = Player(23);
-        this.stationProperty = Player(23);
-        this.alienAIPlayer = Player(23);
+        this.stationSecurity = MapPlayer.fromIndex(22);
+        this.stationProperty = MapPlayer.fromIndex(21);
+        this.alienAIPlayer = MapPlayer.fromIndex(20);
+        this.unknownPlayer = MapPlayer.fromIndex(23);
+
+        this.neutralHostile = MapPlayer.fromIndex(25);
+        this.neutralPassive = MapPlayer.fromIndex(26);
 
         // Start aggression log ticker
         const ticker = new Trigger();
         // Check every second  
-        ticker.RegisterTimerEventPeriodic(5);
+        ticker.registerTimerEvent(5, true);
         // Process the ticker
-        ticker.AddAction(() => this.onAggressionTick(5));
+        ticker.addAction(() => this.onAggressionTick(5));
     }
 
 
-    public getOriginalPlayerDetails(who: player) {
+    public getOriginalPlayerDetails(who: MapPlayer) {
         return this.playerOriginalDetails.get(who);
     }
     
@@ -90,10 +93,10 @@ export class ForceModule {
      * @param player1 
      * @param player2 
      */
-    public aggressionBetweenTwoPlayers(player1: player, player2: player) {
+    public aggressionBetweenTwoPlayers(player1: MapPlayer, player2: MapPlayer) {
         // Make them enemies
-        SetPlayerAllianceStateAllyBJ(player1, player2, false);
-        SetPlayerAllianceStateAllyBJ(player2, player1, false);
+        player1.setAlliance(player2, ALLIANCE_PASSIVE, false);
+        player2.setAlliance(player1, ALLIANCE_PASSIVE, false);
 
         // Add the log
         this.addAggressionLog(player1, player2);
@@ -105,7 +108,7 @@ export class ForceModule {
      * @param player1 
      * @param player2 
      */
-    private addAggressionLog(player1: player, player2: player) {
+    private addAggressionLog(player1: MapPlayer, player2: MapPlayer) {
         const newItem = {
             id: this.aggressionId++,
             aggressor: player1,
@@ -146,8 +149,8 @@ export class ForceModule {
                 if (logs.length === 0) {
                     // We have no more combat instances between these two players
                     // Ally them
-                    SetPlayerAllianceStateAllyBJ(instance.aggressor, instance.defendant, true);
-                    SetPlayerAllianceStateAllyBJ(instance.defendant, instance.aggressor, true);
+                    instance.aggressor.setAlliance(instance.defendant, ALLIANCE_PASSIVE, true);
+                    instance.defendant.setAlliance(instance.aggressor, ALLIANCE_PASSIVE, true);
                 }
                 return false;
             }
@@ -155,9 +158,9 @@ export class ForceModule {
         });
     }
 
-    private getLogKey(aggressor: player, defendant: player): string {
-        const p1Id = GetPlayerId(aggressor);
-        const p2Id = GetPlayerId(defendant);
+    private getLogKey(aggressor: MapPlayer, defendant: MapPlayer): string {
+        const p1Id = aggressor.id;
+        const p2Id = defendant.id;
 
         const sortP2First = p2Id < p1Id;
         return sortP2First ? `${p2Id}::${p1Id}` : `${p1Id}::${p2Id}`;
@@ -167,7 +170,7 @@ export class ForceModule {
      * Makes the player allied to everyone
      * @param forPlayer 
      */
-    public repairAllAlliances(forPlayer: player) {
+    public repairAllAlliances(forPlayer: MapPlayer) {
         // Clear aggression logs and repair all alliances
         let players = this.getActivePlayers();
         players.forEach(p => {
@@ -179,13 +182,13 @@ export class ForceModule {
                 // Filter it out of the aggression logs
                 this.allAggressionLogs = this.allAggressionLogs.filter(x => instances.indexOf(x) == -1);
 
-                SetPlayerAllianceStateAllyBJ(forPlayer, p, true);
-                SetPlayerAllianceStateAllyBJ(p, forPlayer, true);
+                forPlayer.setAlliance(p, ALLIANCE_PASSIVE, true);
+                p.setAlliance(forPlayer, ALLIANCE_PASSIVE, true);
             }
         });
 
         // TODO Security to maintain aggression state
-        SetPlayerAllianceStateAllyBJ(forPlayer, this.stationSecurity, true);
+        forPlayer.setAlliance(this.stationSecurity, ALLIANCE_PASSIVE, true);
     }
 
     /**
@@ -201,12 +204,12 @@ export class ForceModule {
     /**
      * Returns a list of active players
      */
-    public getActivePlayers(): Array<player> {
+    public getActivePlayers(): Array<MapPlayer> {
         const result = [];
         for (let i = 0; i < GetBJMaxPlayerSlots(); i ++) {
-            const currentPlayer = Player(i);
-            const isPlaying = GetPlayerSlotState(currentPlayer) == PLAYER_SLOT_STATE_PLAYING;
-            const isUser = GetPlayerController(currentPlayer) == MAP_CONTROL_USER;
+            const currentPlayer = MapPlayer.fromIndex(i);
+            const isPlaying = currentPlayer.slotState == PLAYER_SLOT_STATE_PLAYING;
+            const isUser = currentPlayer.controller == MAP_CONTROL_USER;
 
             if (isPlaying && isUser) {
                 result.push(currentPlayer);
@@ -293,8 +296,8 @@ export class ForceModule {
         const timerDialog = CreateTimerDialog(timer);
         TimerDialogDisplay(timerDialog, true);
 
-        timerTrig.RegisterTimerExpire(timer);
-        timerTrig.AddAction(() => {
+        timerTrig.registerTimerExpireEvent(timer);
+        timerTrig.addAction(() => {
             TimerDialogDisplay(timerDialog, false);
             const results = optSelection.endOptSelection(this);
             callback(results);
@@ -307,7 +310,7 @@ export class ForceModule {
      * @param player 
      * @param forceName 
      */
-    public addPlayerToForce(player: player, forceName: string) {
+    public addPlayerToForce(player: MapPlayer, forceName: string) {
         let force = this.getForce(forceName);
 
         if (!force) {
@@ -322,7 +325,7 @@ export class ForceModule {
     /**
      * Gets the player's force
      */
-    public getPlayerForce(player: player) {
+    public getPlayerForce(player: MapPlayer) {
         return this.playerForceDetails.get(player);
     }
 }

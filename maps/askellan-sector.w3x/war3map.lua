@@ -10,6 +10,8 @@ udg_hatch_entrance_names = __jarray("")
 udg_hatch_exit_zones = __jarray("")
 udg_jump_pass_zones = {}
 udg_jump_pass_zones_name = __jarray("")
+udg_power_generators = {}
+udg_power_generator_zones = __jarray("")
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -30,11 +32,14 @@ gg_unit_n002_0035 = nil
 gg_unit_n002_0043 = nil
 gg_unit_n002_0044 = nil
 gg_unit_n001_0045 = nil
+gg_unit_n004_0034 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
-gg_unit_n004_0034 = nil
+gg_trg_SetPowerGenerators = nil
+gg_unit_h004_0048 = nil
+gg_unit_h004_0046 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -85,6 +90,12 @@ function InitGlobals()
         udg_jump_pass_zones_name[i] = ""
         i = i + 1
     end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_power_generator_zones[i] = ""
+        i = i + 1
+    end
 end
 
 function CreateAllDestructables()
@@ -132,16 +143,9 @@ function CreateBuildingsForPlayer21()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("n003"), 640.0, 640.0, 270.000, FourCC("n003"))
-end
-
-function CreateNeutralHostileBuildings()
-    local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n003"), 1024.0, 896.0, 270.000, FourCC("n003"))
+    gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
+    gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 1600.0, -128.0, 270.000, FourCC("h004"))
 end
 
 function CreateNeutralHostile()
@@ -150,8 +154,8 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 2374.4, 260.4, 210.264, FourCC("ntrd"))
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 2251.3, 547.9, 215.074, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 3147.0, 399.4, 210.264, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 3024.0, 686.9, 215.074, FourCC("ntrd"))
 end
 
 function CreateNeutralPassiveBuildings()
@@ -163,6 +167,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0021 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
+    gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
     gg_unit_n002_0035 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26110.7, 26365.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
     u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -64.0, 960.0, 270.000, FourCC("nMED"))
@@ -174,15 +179,6 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n002_0047 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26686.7, 27069.0, 270.000, FourCC("n002"))
 end
 
-function CreateNeutralPassive()
-    local p = Player(PLAYER_NEUTRAL_PASSIVE)
-    local u
-    local unitID
-    local t
-    local life
-    gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
-end
-
 function CreatePlayerBuildings()
     CreateBuildingsForPlayer21()
 end
@@ -192,11 +188,9 @@ function CreatePlayerUnits()
 end
 
 function CreateAllUnits()
-    CreateNeutralHostileBuildings()
     CreateNeutralPassiveBuildings()
     CreatePlayerBuildings()
     CreateNeutralHostile()
-    CreateNeutralPassive()
     CreatePlayerUnits()
 end
 
@@ -281,16 +275,32 @@ function InitTrig_SetFall()
     TriggerAddAction(gg_trg_SetFall, Trig_SetFall_Actions)
 end
 
+function Trig_SetPowerGenerators_Actions()
+    udg_power_generators[1] = gg_unit_h004_0048
+    udg_power_generator_zones[1] = "FLOOR_1"
+    udg_power_generators[2] = gg_unit_h004_0046
+    udg_power_generators[3] = gg_unit_h004_0046
+    udg_power_generator_zones[2] = "CARGO_A"
+    udg_power_generator_zones[3] = "CARGO_A_VENT"
+end
+
+function InitTrig_SetPowerGenerators()
+    gg_trg_SetPowerGenerators = CreateTrigger()
+    TriggerAddAction(gg_trg_SetPowerGenerators, Trig_SetPowerGenerators_Actions)
+end
+
 function InitCustomTriggers()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()
+    InitTrig_SetPowerGenerators()
 end
 
 function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_Set)
     ConditionalTriggerExecute(gg_trg_SetHatch)
     ConditionalTriggerExecute(gg_trg_SetFall)
+    ConditionalTriggerExecute(gg_trg_SetPowerGenerators)
 end
 
 function InitCustomPlayerSlots()

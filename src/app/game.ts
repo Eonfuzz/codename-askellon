@@ -4,12 +4,11 @@ import { WeaponModule } from "./weapons/weapon-module";
 import { TimedEventQueue } from "./types/timed-event-queue";
 import { ForceModule } from "./force/force-module";
 import { SpaceModule } from "./space/space-module";
-import { Trigger } from "./types/jass-overrides/trigger";
+import { Trigger, MapPlayer } from "w3ts";
 import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { GeneModule } from "./shops/gene-modules";
 import { AbilityModule } from "./abilities/ability-module";
 import { InteractionModule } from "./interactions/interaction-module";
-import { Log } from "../lib/serilog/serilog";
 import { Vector2 } from "./types/vector2";
 import { WorldModule } from "./world/world-module";
 import { ZONE_TYPE } from "./world/zone-id";
@@ -18,6 +17,8 @@ import { LeapModule } from "./leap-engine/leap-module";
 import { ResearchModule } from "./research/research-module";
 import { ChatModule } from "./chat/chat-module";
 import { EventModule } from "./events/event-module";
+import { SecurityModule } from "./station/security-module";
+import { Log } from "lib/serilog/serilog";
 
 export class Game {
     // Helper objects
@@ -37,6 +38,7 @@ export class Game {
     public researchModule: ResearchModule;
     public chatModule: ChatModule;
     public event: EventModule;
+    public stationSecurity: SecurityModule;
 
     // public dummyUnit: unit;
 
@@ -75,6 +77,7 @@ export class Game {
 
         this.interactionsModule = new InteractionModule(this);
         this.chatModule         = new ChatModule(this);
+        this.stationSecurity    = new SecurityModule(this);
     }
 
     public startGame() {
@@ -92,6 +95,9 @@ export class Game {
 
         // Init chat
         this.chatModule.initialise();
+
+        // Init station
+        this.stationSecurity.initialise();
 
         // Start role selection
         this.forceModule.getOpts((optResults) => {
@@ -131,11 +137,11 @@ export class Game {
         return GetLocationZ(this.TEMP_LOCATION)
     }
 
-    private getCameraXY(whichPlayer: player, cb: Function) {
+    private getCameraXY(whichPlayer: MapPlayer, cb: Function) {
         const HANDLE = 'CAMERA';
         const syncTrigger = new Trigger();
-        BlzTriggerRegisterPlayerSyncEvent(syncTrigger.nativeTrigger, whichPlayer, HANDLE, false);
-        syncTrigger.AddAction(() => {
+        syncTrigger.registerPlayerSyncEvent(whichPlayer, HANDLE, false);
+        syncTrigger.addAction(() => {
             const data = BlzGetTriggerSyncData();
 
             const dataSplit = data.split(',');
@@ -149,7 +155,7 @@ export class Game {
             cb(result);
         });
 
-        if (GetLocalPlayer() === whichPlayer) {
+        if (GetLocalPlayer() === whichPlayer.handle) {
             const x = GetCameraTargetPositionX();
             const y = GetCameraTargetPositionY();
             BlzSendSyncData(HANDLE, `${x},${y}`);
@@ -163,11 +169,11 @@ export class Game {
     private noTurn: boolean = false;
     private makeUnitsTurnInstantly(): void {
         const unitTurnTrigger = new Trigger();
-        unitTurnTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
-        unitTurnTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER);
-        unitTurnTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER);
+        unitTurnTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
+        unitTurnTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER);
+        unitTurnTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER);
 
-        unitTurnTrigger.AddAction(() => {
+        unitTurnTrigger.addAction(() => {
             if (!this.noTurn) return;
 
             const triggerUnit = GetTriggerUnit();

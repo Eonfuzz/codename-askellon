@@ -10,7 +10,7 @@ import { TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
-import { Trigger } from "app/types/jass-overrides/trigger";
+import { Trigger, MapPlayer, Unit } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG } from "resources/strings";
@@ -26,10 +26,10 @@ export class AlienForce extends ForceType {
 
     public alienAIPlayer: player = Player(24);
 
-    private alienHost: player | undefined;
-    private playerAlienUnits: Map<player, unit> = new Map();
-    private playerIsTransformed: Map<player, boolean> = new Map();
-    private playerIsAlienAlliesOnly: Map<player, boolean> = new Map();
+    private alienHost: MapPlayer | undefined;
+    private playerAlienUnits: Map<MapPlayer, Unit> = new Map();
+    private playerIsTransformed: Map<MapPlayer, boolean> = new Map();
+    private playerIsAlienAlliesOnly: Map<MapPlayer, boolean> = new Map();
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
@@ -44,7 +44,7 @@ export class AlienForce extends ForceType {
             EVENT_TYPE.CREW_GAIN_DESPAIR, 
             (from: EventListener, data: any) => {
                 const crewmember = data.crewmember as Crewmember;
-                this.getPlayers().forEach(p => UnitShareVision(crewmember.unit, p, true));
+                this.getPlayers().forEach(p => crewmember.unit.shareVision(p, true));
             }))
         
         // Hide vision on despair gain
@@ -52,33 +52,33 @@ export class AlienForce extends ForceType {
             EVENT_TYPE.CREW_LOSE_DESPAIR, 
             (from: EventListener, data: any) => {
                 const crewmember = data.crewmember as Crewmember;
-                this.getPlayers().forEach(p => UnitShareVision(crewmember.unit, p, false));
+                this.getPlayers().forEach(p => crewmember.unit.shareVision(p, false));
             }))
 
-        this.alienTakesDamageTrigger.AddAction(() => this.onAlienTakesDamage());
-        this.alienDealsDamageTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_DAMAGED);
-        this.alienDealsDamageTrigger.AddAction(() => this.onAlienDealsDamage());
+        this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
+        this.alienDealsDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
+        this.alienDealsDamageTrigger.addAction(() => this.onAlienDealsDamage());
     }
     
-    makeAlien(game: Game, who: unit, owner: player): unit {
-        const unitLocation = vectorFromUnit(who);
+    makeAlien(game: Game, who: Unit, owner: MapPlayer): Unit {
+        const unitLocation = vectorFromUnit(who.handle);
         // const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
 
         let alien = this.playerAlienUnits.get(owner);
         // Is this unit being added to aliens for the first time
         if (!alien) {
             // Add the transform ability
-            UnitAddAbility(who, ABIL_TRANSFORM_HUMAN_ALIEN);
-            alien = CreateUnit(owner, 
+            who.addAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
+            alien = Unit.fromHandle(CreateUnit(owner.handle, 
                 this.currentAlienEvolution, 
                 unitLocation.x, 
                 unitLocation.y, 
-                GetUnitFacing(who)
-            );
-            SetUnitInvulnerable(alien, true);
-            BlzPauseUnitEx(alien, true);
-            ShowUnit(alien, false);
-            SuspendHeroXP(alien, true);
+                who.facing
+            ));
+            alien.invulnerable = true;
+            alien.pauseEx(true);
+            alien.show = false;
+            alien.suspendExperience(true);
 
             // Register it for damage event
             this.registerAlienTakesDamageExperience(alien);
@@ -89,14 +89,14 @@ export class AlienForce extends ForceType {
 
             const crewmember = game.crewModule.getCrewmemberForPlayer(owner);
             if (crewmember) crewmember.setVisionType(VISION_TYPE.ALIEN);
-
+            
             // Additionally force the transform ability to start on cooldown
-            BlzStartUnitAbilityCooldown(who, ABIL_TRANSFORM_HUMAN_ALIEN,
-                BlzGetAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
+            BlzStartUnitAbilityCooldown(who.handle, ABIL_TRANSFORM_HUMAN_ALIEN,
+                who.getAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
             );
 
             // Make brown
-            SetUnitColor(alien, PLAYER_COLOR_BROWN);
+            alien.color = PLAYER_COLOR_BROWN;
             // Track unit ability orders
             game.abilityModule.trackUnitOrdersForAbilities(alien);
 
@@ -115,11 +115,11 @@ export class AlienForce extends ForceType {
         return GetObjectName(this.currentAlienEvolution);
     }
 
-    setHost(who: player) {
+    setHost(who: MapPlayer) {
         this.alienHost = who;
     }
 
-    getHost(): player | undefined {
+    getHost(): MapPlayer | undefined {
         return this.alienHost;
     }
 
@@ -134,7 +134,7 @@ export class AlienForce extends ForceType {
     /**
      * TODO
      */
-    addPlayerMainUnit(game: Game, whichUnit: unit, player: player) {
+    addPlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
         super.addPlayerMainUnit(game, whichUnit, player);
 
         this.makeAlien(game, whichUnit, player);
@@ -143,11 +143,12 @@ export class AlienForce extends ForceType {
     }
 
 
-    removePlayerMainUnit(game: Game, whichUnit: unit, player: player) {
-        UnitRemoveAbility(whichUnit, ABIL_TRANSFORM_HUMAN_ALIEN);
+    removePlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
+        super.removePlayerMainUnit(game, whichUnit, player);
+        whichUnit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
     }
 
-    transform(game: Game, who: player, toAlien: boolean): unit {
+    transform(game: Game, who: MapPlayer, toAlien: boolean): Unit {
         this.playerIsTransformed.set(who, toAlien);
 
         const alien = this.playerAlienUnits.get(who);
@@ -161,36 +162,36 @@ export class AlienForce extends ForceType {
         const toShow = toAlien ? alien : unit;
 
         // get the hiding unit's location and facing
-        const facing = GetUnitFacing(toHide);
-        const pos = vectorFromUnit(toHide);
-        const unitWasSelected = IsUnitSelected(toHide, who);
-        const healthPercent = GetUnitLifePercent(toHide);
+        const facing = toHide.facing;
+        const pos = vectorFromUnit(toHide.handle);
+        const unitWasSelected = toHide.isSelected(who);
+        const healthPercent = GetUnitLifePercent(toHide.handle);
 
         // hide and make the unit invul
-        SetUnitInvulnerable(toHide, true);
-        BlzPauseUnitEx(toHide, true);
-        ShowUnit(toHide, false);
+        toHide.invulnerable = true;
+        toHide.pauseEx(true);
+        toHide.show = false;
         // Update location
-        SetUnitX(toShow, pos.x);
-        SetUnitY(toShow, pos.y);
+        toShow.x = pos.x;
+        toShow.y = pos.y;
         // Unpause and show
-        ShowUnit(toShow, true);
-        SetUnitInvulnerable(toShow, false);
-        BlzPauseUnitEx(toShow, false);
+        toShow.show = true;
+        toShow.invulnerable = false;
+        toShow.pauseEx(false);
         // Set shown unit life percent
-        SetUnitLifePercentBJ(toShow, healthPercent);
+        SetUnitLifePercentBJ(toShow.handle, healthPercent);
 
         // Update player name
         if (toAlien) {
             const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
 
-            BlzSetHeroProperName(toShow, unitName);
+            toShow.nameProper = unitName;
             // Repair alliances
             // Then make it an enemy of security
             this.forceModule.repairAllAlliances(who);
             // Make enemy of security
-            SetPlayerAllianceStateAllyBJ(who, this.forceModule.stationSecurity, false);
-            SetPlayerAllianceStateAllyBJ(this.forceModule.stationSecurity, who, false);
+            who.setAlliance(this.forceModule.stationSecurity, ALLIANCE_PASSIVE, true);
+            this.forceModule.stationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, alien: alien });
@@ -202,13 +203,13 @@ export class AlienForce extends ForceType {
             game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, alien: alien });
         }
 
-        if (unitWasSelected) SelectUnitAddForPlayer(toShow, who);
+        if (unitWasSelected) SelectUnitAddForPlayer(toShow.handle, who.handle);
 
 
         return toShow;
     }
 
-    isPlayerTransformed(who: player) {
+    isPlayerTransformed(who: MapPlayer) {
         return !!this.playerIsTransformed.get(who);
     }
 
@@ -234,7 +235,7 @@ export class AlienForce extends ForceType {
             this.getFormName(),
             whichCrew.role
         );
-        if (GetLocalPlayer() === whichCrew.player) {
+        if (GetLocalPlayer() === whichCrew.player.handle) {
             BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_HUMAN_ALIEN, tooltip, 0);
             BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_ALIEN_HUMAN, tfAlien, 0);
         }
@@ -256,29 +257,28 @@ export class AlienForce extends ForceType {
         if (!alien) return; // Do nothing if no alien for player
 
         // Apply XP gain to alien form
-        SuspendHeroXP(alien, false);
-        AddHeroXP(alien, MathRound(amount), true);
-        SuspendHeroXP(alien, false);
+        alien.suspendExperience(true);
+        alien.addExperience(MathRound(amount), true);
+        alien.suspendExperience(false);
     }
 
-    public getAlienFormForPlayer(who: player) {
+    public getAlienFormForPlayer(who: MapPlayer) {
         return this.playerAlienUnits.get(who);
     }
 
-    private registerAlienTakesDamageExperience(alien: unit) {
-        this.alienTakesDamageTrigger.RegisterUnitEvent(alien, EVENT_UNIT_DAMAGED);
+    private registerAlienTakesDamageExperience(alien: Unit) {
+        this.alienTakesDamageTrigger.registerUnitEvent(alien, EVENT_UNIT_DAMAGED);
     }
 
     private onAlienDealsDamage() {
-        const damageSource = GetEventDamageSource();
-        const damagingPlayer = GetOwningPlayer(damageSource);
+        const damageSource = Unit.fromHandle(GetEventDamageSource());
+        const damagedUnit = Unit.fromHandle(BlzGetEventDamageTarget());
+        const damagingPlayer = damageSource.owner;
+        const damagedPlayer = damagedUnit.owner;
 
         if (!this.playerAlienUnits.has(damagingPlayer)) return;
 
-        const damagedUnit = BlzGetEventDamageTarget();
         const damageAmount = GetEventDamage();
-
-        const damagedPlayer = GetOwningPlayer(damagedUnit);
 
         // Check to make sure you aren't damaging alien stuff
         if (damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagedPlayer)) {
@@ -299,12 +299,11 @@ export class AlienForce extends ForceType {
     }
 
     private onAlienTakesDamage() {
-        const damageSource = GetEventDamageSource();
-        const damagedUnit = BlzGetEventDamageTarget();
         const damageAmount = GetEventDamage();
-
-        const damagingPlayer = GetOwningPlayer(damageSource);
-        const damagedPlayer = GetOwningPlayer(damagedUnit);
+        const damageSource = Unit.fromHandle(GetEventDamageSource());
+        const damagedUnit = Unit.fromHandle(BlzGetEventDamageTarget());
+        const damagingPlayer = damageSource.owner;
+        const damagedPlayer = damagedUnit.owner;
 
         // Ensure that they are different owners
         // No farming xp on yourself!
@@ -328,7 +327,7 @@ export class AlienForce extends ForceType {
      * Gets a list of who can see the chat messages
      * Unless overridden returns all the players
      */
-    public getChatRecipients(sendingPlayer: player) {
+    public getChatRecipients(sendingPlayer: MapPlayer) {
         // If the player is transformed return a list of all alien players
         if (this.isPlayerTransformed(sendingPlayer) && this.playerIsAlienAlliesOnly.get(sendingPlayer)) {
             return this.players;
@@ -341,7 +340,7 @@ export class AlienForce extends ForceType {
     /**
      * Gets the player's visible chat name, by default shows role name
      */
-    public getChatName(who: player) {
+    public getChatName(who: MapPlayer) {
         // If player is transformed return an alien name
         if (this.isPlayerTransformed(who)) {
             return this.alienHost === who ? STR_CHAT_ALIEN_HOST : STR_CHAT_ALIEN_SPAWN;
@@ -355,7 +354,7 @@ export class AlienForce extends ForceType {
      * Return's a players chat colour
      * @param who 
      */
-    public getChatColor(who: player): string {
+    public getChatColor(who: MapPlayer): string {
         // If player is transformed return an alien name
         if (this.isPlayerTransformed(who)) {
             return ALIEN_CHAT_COLOR;
@@ -369,7 +368,7 @@ export class AlienForce extends ForceType {
      * Returns the sound to be used on chat events
      * @param who
      */
-    public getChatSoundRef(who: player): SoundRef {
+    public getChatSoundRef(who: MapPlayer): SoundRef {
         // If player is transformed return an alien name
         if (this.isPlayerTransformed(who)) {
             return ALIEN_CHAT_SOUND_REF;
@@ -382,7 +381,7 @@ export class AlienForce extends ForceType {
     /**
      * Returns the chat tag, by default it will be null
      */
-    public getChatTag(who: player): string | undefined { 
+    public getChatTag(who: MapPlayer): string | undefined { 
         // If player is transformed return an alien name
         if (this.playerIsAlienAlliesOnly.get(who)) {
             return STR_CHAT_ALIEN_TAG;

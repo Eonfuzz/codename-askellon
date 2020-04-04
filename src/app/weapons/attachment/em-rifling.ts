@@ -18,7 +18,7 @@ export class EmsRifling extends Attachment {
     protected onAttach(weapon: Gun): boolean {
         if (weapon.getAbilityId() === BURST_RIFLE_ABILITY_ID) {
             if (weapon.equippedTo) {
-                UnitAddAbility(weapon.equippedTo.unit, EMS_RIFLING_ABILITY_ID);
+                weapon.equippedTo.unit.addAbility(EMS_RIFLING_ABILITY_ID);
             }
             return true;
         }
@@ -30,21 +30,21 @@ export class EmsRifling extends Attachment {
      */
     protected onDeattach(): void {
         if (this.attachedTo &&  this.attachedTo.equippedTo) {
-            UnitRemoveAbility(this.attachedTo.equippedTo.unit, EMS_RIFLING_ABILITY_ID);
+            UnitRemoveAbility(this.attachedTo.equippedTo.unit.handle, EMS_RIFLING_ABILITY_ID);
         }
     };
 
     public onEquip(weapon: Gun) {
         Log.Information("Re-equiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
-            UnitAddAbility(weapon.equippedTo.unit, EMS_RIFLING_ABILITY_ID);
+            UnitAddAbility(weapon.equippedTo.unit.handle, EMS_RIFLING_ABILITY_ID);
         }
     }
 
     public onUnequip(weapon: Gun) {
         Log.Information("Unequiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
-            UnitRemoveAbility(weapon.equippedTo.unit, EMS_RIFLING_ABILITY_ID);
+            UnitRemoveAbility(weapon.equippedTo.unit.handle, EMS_RIFLING_ABILITY_ID);
         }
     }
 }

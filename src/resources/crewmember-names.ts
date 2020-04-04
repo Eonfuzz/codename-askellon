@@ -9,10 +9,10 @@ export enum ROLE_TYPES {
     MAJOR = 'Major',
     DOCTOR = 'Doctor',
 }
-export const ROLE_NAMES = new Map<string, string[]>();
+export const ROLE_NAMES = new Map<string, Array<string>>();
 
 ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
-    "Captain Keene", "Captain Kirk", "Captain Jack Sparrow", "Captain Creed", 
+    "Captain Keenest", "Captain Kirk", "Captain Jack Sparrow", "Captain Creed", 
     "Captain Coloma", "Captain Dallas", "Captain Cutter", "Captain Reynolds", 
     "Captain Willard", "Captain Fodder", "Captain Cookie", "Captain Kimstar",
     "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America",

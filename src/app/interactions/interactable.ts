@@ -1,4 +1,5 @@
 import { InteractionModule } from "./interaction-module";
+import { Unit } from "w3ts/handles/unit";
 
 /** @noSelfInFile **/
 export interface InteractableData {
@@ -12,10 +13,10 @@ export interface InteractableData {
    * Ran when the unit tries to interact, true allows the interactable effect to exist
    * Leave undefined for default allowed
    */
-  condition?: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => boolean;
+  condition?: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => boolean;
 
-  onStart?:  (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => void;
-  onCancel?:  (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => void;
+  onStart?:  (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => void;
+  onCancel?:  (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => void;
 
-  action: (iModule: InteractionModule, fromUnit: unit, targetUnit: unit) => void;
+  action: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => void;
 }

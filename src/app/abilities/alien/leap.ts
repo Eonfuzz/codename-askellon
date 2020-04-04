@@ -3,7 +3,7 @@ import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
 import { Vector3 } from "../../types/vector3";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
-import { UNIT_IS_FLY } from "../../../lib/order-ids";
+import { Unit } from "w3ts/handles/unit";
 
 
 const LEAP_ID = FourCC('LEAP');
@@ -91,7 +91,7 @@ export class LeapAbility implements Ability {
         BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
         DestroyEffect(sfx);
 
-        PlayNewSoundOnUnit(this.getRandomSound(), this.casterUnit, 100);
+        PlayNewSoundOnUnit(this.getRandomSound(), Unit.fromHandle(this.casterUnit), 100);
 
         const angle = Rad2Deg(Atan2(targetLoc.y-casterLoc.y, targetLoc.x-casterLoc.x));
         BlzSetUnitFacingEx(this.casterUnit, angle);

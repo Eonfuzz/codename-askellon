@@ -1,10 +1,9 @@
 /** @noSelfInFile **/
 import { Game } from "../game";
 import { InteractionEvent } from "./interaction-event";
-import { Trigger } from "../types/jass-overrides/trigger";
-import { Log } from "../../lib/serilog/serilog";
 import { Interactables, initElevators, initHatches, initWeaponsTerminals } from "./interaction-data";
-import { SMART_ORDER_ID } from "../../lib/order-ids";
+import { SMART_ORDER_ID } from "resources/ability-ids";
+import { Trigger, Unit } from "w3ts";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -20,21 +19,21 @@ export class InteractionModule {
         this.game = game;
 
         this.interactionUpdateTrigger = new Trigger();
-        this.interactionUpdateTrigger.RegisterTimerEventPeriodic(UPDATE_PERIODICAL_INTERACTION);
-        this.interactionUpdateTrigger.AddAction(() => this.processInteractions(UPDATE_PERIODICAL_INTERACTION));
+        this.interactionUpdateTrigger.registerTimerEvent(UPDATE_PERIODICAL_INTERACTION, true);
+        this.interactionUpdateTrigger.addAction(() => this.processInteractions(UPDATE_PERIODICAL_INTERACTION));
 
         // Now track when a user *might* start an interaction
         this.interactionBeginTrigger = new Trigger();
         // TODO This event *may* need to become specific in the future for optimisation
-        this.interactionBeginTrigger.RegisterAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
+        this.interactionBeginTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
         // TODO Do we care about this unit interaction?
-        this.interactionBeginTrigger.AddCondition(() => {
-            return GetIssuedOrderId() === SMART_ORDER_ID
-        });
-        this.interactionBeginTrigger.AddAction(() => {
-            const trigUnit = GetTriggerUnit();
-            const targetUnit = GetOrderTargetUnit();
-            const targetUnitType = GetUnitTypeId(targetUnit);
+        this.interactionBeginTrigger.addCondition(Condition(() => {
+            return GetIssuedOrderId() === SMART_ORDER_ID;
+        }));
+        this.interactionBeginTrigger.addAction(() => {
+            const trigUnit = Unit.fromHandle(GetTriggerUnit());
+            const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
+            const targetUnitType = targetUnit.typeId;
 
             // First of all make sure we don't have one already
             if (this.interactions.filter(i => i.unit === trigUnit && i.targetUnit === targetUnit).length > 0) return;

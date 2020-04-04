@@ -17,7 +17,7 @@ export class DiodeEjector extends Attachment {
     protected onAttach(weapon: Gun): boolean {
         if (weapon.getAbilityId() === LASER_ABILITY_ID) {
             if (weapon.equippedTo) {
-                UnitAddAbility(weapon.equippedTo.unit, ABIL_WEP_DIODE_EJ);
+                weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
             }
             return true;
         }
@@ -33,8 +33,8 @@ export class DiodeEjector extends Attachment {
 
     public onEquip(weapon: Gun) {
         if (weapon &&  weapon.equippedTo) {
-            UnitAddAbility(weapon.equippedTo.unit, ABIL_WEP_DIODE_EJ);
-            BlzSetUnitAbilityCooldown(weapon.equippedTo.unit, ABIL_WEP_DIODE_EJ, 0, 
+            weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
+            BlzSetUnitAbilityCooldown(weapon.equippedTo.unit.handle, ABIL_WEP_DIODE_EJ, 0, 
                 BlzGetAbilityCooldown(ABIL_WEP_DIODE_EJ, 0)    
             );
         }
@@ -42,7 +42,7 @@ export class DiodeEjector extends Attachment {
 
     public onUnequip(weapon: Gun) {
         if (weapon &&  weapon.equippedTo) {
-            UnitRemoveAbility(weapon.equippedTo.unit, ABIL_WEP_DIODE_EJ);
+            weapon.equippedTo.unit.removeAbility(ABIL_WEP_DIODE_EJ);
         }
     }
 }

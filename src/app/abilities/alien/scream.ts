@@ -1,14 +1,6 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
-import { Vector3 } from "../../types/vector3";
-import { Projectile } from "../../weapons/projectile/projectile";
-import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { FilterIsEnemyAndAlive } from "../../../resources/filters";
-import { PlayNewSoundOnUnit } from "../../../lib/translators";
-import { UNIT_IS_FLY } from "../../../lib/order-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance";
 import { SoundRef } from "app/types/sound-ref";
 
