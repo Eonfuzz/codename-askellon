@@ -10,6 +10,8 @@ export class SecurityModule {
 
     game: Game;
 
+    isDestroyedMap = new Map<Unit, boolean>();
+
     constructor(game: Game) { this.game = game; }
 
     initialise() {
@@ -39,13 +41,20 @@ export class SecurityModule {
         ));
     }
 
+    public isUnitDestroyed(u: Unit) {
+        return this.isDestroyedMap.get(u) || false;
+    }
+
     /**
      * Prevent security death
      */
-    onSecurityDamage(u: unit, source: unit, damage: number) {
+    public onSecurityDamage(u: unit, source: unit, damage: number) {
         // Is this blow gonna kill the security item?
         const damageWithAllowance = damage + GetUnitState(u, UNIT_STATE_MAX_LIFE) * 0.1;
         if (damageWithAllowance > GetUnitState(u, UNIT_STATE_LIFE)) {
+            const unit = Unit.fromHandle(u);
+            const unitIsDestroyed = this.isUnitDestroyed(unit);
+
             // Set the unit to 1 hp
             SetUnitState(u, UNIT_STATE_LIFE, 1);
             // Make the unit invulnerable
@@ -53,11 +62,16 @@ export class SecurityModule {
             // Set the damage dealt to zero
             BlzSetEventDamage(0);
 
-            // Publish event that a security object is damaged
-            this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
-                unit: Unit.fromHandle(u),
-                source: Unit.fromHandle(source)
-            });
+            if (!unitIsDestroyed) {
+                this.isDestroyedMap.set(unit, true);
+                // Pause the unit
+                unit.paused = true;
+                // Publish event that a security object is damaged
+                this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
+                    unit: Unit.fromHandle(u),
+                    source: Unit.fromHandle(source)
+                });
+            }
         }
     }
 
@@ -65,22 +79,26 @@ export class SecurityModule {
      * If the security unit is full hp re-enable it
      * @param u 
      */
-    onSecurityHeal(u: unit, source: unit) {
+    public onSecurityHeal(u: unit, source: unit) {
+
+        const unit = Unit.fromHandle(u);
+        const unitIsDestroyed = this.isUnitDestroyed(unit);
+
+        // Remove damage invulnerability
+        unit.invulnerable = false;
+
+        // Once a unit is healed remove its invulnerability
         // Allow some margin of error
-        if (GetUnitLifePercent(u) >= 99) {
+        if (unitIsDestroyed && GetUnitLifePercent(u) >= 99) {
+            this.isDestroyedMap.set(unit, false);
             // Set unit hp to full
             SetUnitLifePercentBJ(u, 100);
-            // Make the unit invulnerable
-            SetUnitInvulnerable(u, false);
             // Pause the unit
-            BlzPauseUnitEx(u, true);
-            // Set the damage dealt to zero
-            BlzSetEventDamage(0);
-
+            unit.paused = false;
             // Publish event that a security object is repaired
             this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_ENABLED, {
-                unit: u,
-                source: source
+                unit: unit,
+                source: Unit.fromHandle(source)
             });
         }
     }

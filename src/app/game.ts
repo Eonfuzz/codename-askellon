@@ -19,6 +19,7 @@ import { ChatModule } from "./chat/chat-module";
 import { EventModule } from "./events/event-module";
 import { SecurityModule } from "./station/security-module";
 import { Log } from "lib/serilog/serilog";
+import { DynamicBuffModule } from "./buff/dynamic-buff-module";
 
 export class Game {
     // Helper objects
@@ -39,6 +40,7 @@ export class Game {
     public chatModule: ChatModule;
     public event: EventModule;
     public stationSecurity: SecurityModule;
+    public buffModule: DynamicBuffModule;
 
     // public dummyUnit: unit;
 
@@ -63,6 +65,7 @@ export class Game {
         this.event              = new EventModule();
 
         // Load modules after all helper objects
+        this.buffModule         = new DynamicBuffModule(this);
         this.galaxyModule       = new GalaxyModule(this);
         this.forceModule        = new ForceModule(this);
         this.weaponModule       = new WeaponModule(this);
@@ -84,6 +87,7 @@ export class Game {
         // Misc
         this.makeUnitsTurnInstantly();
 
+        this.buffModule.init();
         this.researchModule.initialise();
         this.geneModule.initGenes();
         
@@ -166,7 +170,7 @@ export class Game {
     /**
      * Is this something we want?
      */
-    private noTurn: boolean = false;
+    public noTurn: boolean = false;
     private makeUnitsTurnInstantly(): void {
         const unitTurnTrigger = new Trigger();
         unitTurnTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);

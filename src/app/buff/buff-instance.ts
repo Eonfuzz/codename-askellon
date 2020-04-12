@@ -1,6 +1,8 @@
 import { Game } from "../game";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Log } from "lib/serilog/serilog";
+import { Unit } from "w3ts/index";
+import { BUFF_ID } from "resources/buff-ids";
 
 /** @noSelfInFile **/
 
@@ -36,13 +38,17 @@ export class BuffInstanceCallback extends BuffInstance {
 }
 
 export abstract class DynamicBuff {
+    public id: BUFF_ID;
+    public who: Unit;
     protected isActive: boolean = false;
     private instances: Array<BuffInstance> = [];
+    protected doesStack = true;
 
     protected onChangeCallbacks: Array<(self: DynamicBuff) => void> = [];
 
-    public addInstance(game: Game, crewmember: Crewmember, instance: BuffInstance) {
+    public addInstance(game: Game, unit: Unit, instance: BuffInstance) {
         const wasActive = this.isActive;
+        this.who = unit;
         this.isActive = true;
         this.instances.push(instance);
 
@@ -62,7 +68,7 @@ export abstract class DynamicBuff {
         const timestamp = game.getTimeStamp();
         const wasActive = this.instances.length > 0;
         this.instances = this.instances.filter(i => i.isActive(timestamp));
-        const isActive = this.instances.length > 0;
+        const isActive = this.instances.length > 0 && this.who.isAlive();
         
         if (wasActive != isActive) {
             this.isActive = false;
@@ -74,6 +80,8 @@ export abstract class DynamicBuff {
     public onChange(cb: (self: DynamicBuff) => void) {
         this.onChangeCallbacks.push(cb);
     }
+
+    public canStack() { return this.doesStack; }
 
     protected abstract onStatusChange(game: Game, newStatus: boolean): void;
 

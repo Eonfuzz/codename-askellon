@@ -12,14 +12,14 @@ import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
 import { Trigger, MapPlayer, Unit } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
-import { SoundRef } from "app/types/sound-ref";
+import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG } from "resources/strings";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
 export const DEFAULT_ALIEN_FORM = FourCC('ALI1');
 export const ALIEN_CHAT_COLOR = '6f2583';
-const ALIEN_CHAT_SOUND_REF = new SoundRef('Sound/ChatSound', false);
+const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(5, 'Sounds\\AlienChatSound.mp3');
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
@@ -257,9 +257,9 @@ export class AlienForce extends ForceType {
         if (!alien) return; // Do nothing if no alien for player
 
         // Apply XP gain to alien form
-        alien.suspendExperience(true);
-        alien.addExperience(MathRound(amount), true);
         alien.suspendExperience(false);
+        alien.addExperience(MathRound(amount), true);
+        alien.suspendExperience(true);
     }
 
     public getAlienFormForPlayer(who: MapPlayer) {

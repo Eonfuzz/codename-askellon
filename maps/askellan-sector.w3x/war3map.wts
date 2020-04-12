@@ -207,18 +207,6 @@ STRING 42
 [|cffffff00A|r] - SI Battle Rifle
 }
 
-STRING 44
-// Items: I001 (Sniper Rifle), Name (Name)
-{
-Sniper Rifle
-}
-
-STRING 45
-// Items: I001 (Sniper Rifle), Tip (Tooltip - Basic)
-{
-Sniper Rifle
-}
-
 STRING 46
 // Abilities: A004 (Equip Weapon), Name (Name)
 {
@@ -243,20 +231,14 @@ STRING 49
 [|cffffff00A|r] - SI Battle Rifle
 }
 
-STRING 50
-// Abilities: A005 (Attack - Sniper Rifle), Name (Name)
-{
-Attack - Sniper Rifle
-}
-
 STRING 51
-// Abilities: A005 (Attack - Sniper Rifle), Hotkey (Hotkey - Normal)
+// Abilities: A00H (Attack - Laser), Hotkey (Hotkey - Normal)
 {
 A
 }
 
 STRING 52
-// Abilities: A005 (Attack - Sniper Rifle), Tip (Tooltip - Normal)
+// Abilities: A00H (Attack - Laser), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - Particle Accelerator
 }
@@ -899,15 +881,9 @@ Attack - Laser
 }
 
 STRING 190
-// Abilities: A00H (Attack - Laser), Hotkey (Hotkey - Normal)
+// Abilities: ASHO (Attack - Harkon's Blitzer), Hotkey (Hotkey - Normal)
 {
 A
-}
-
-STRING 191
-// Abilities: A00H (Attack - Laser), Tip (Tooltip - Normal)
-{
-[|cffffff00A|r] - Particle Accelerator
 }
 
 STRING 192
@@ -1839,7 +1815,7 @@ Attack - Harkon's Blitzer
 }
 
 STRING 383
-// Abilities: ASHO (Attack - Harkon's Blitzer), Hotkey (Hotkey - Normal)
+// Abilities: A00J (Repair), Hotkey (Hotkey - Normal)
 {
 A
 }
@@ -1898,5 +1874,233 @@ STRING 392
 // Units: n004 (Ladder), Name (Name)
 {
 Ladder
+}
+
+STRING 393
+// Abilities: A00J (Repair), Name (Name)
+{
+Repair
+}
+
+STRING 395
+// Abilities: A00J (Repair), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Fluff TODO|r|n|nRepairs station property to |cff00ff00100%|r over |cff00ff005|r seconds.|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 396
+// Abilities: A00J (Repair), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - SI Battle Rifle
+}
+
+STRING 397
+// Items: I005 (Repair Kit), Name (Name)
+{
+Repair Kit
+}
+
+STRING 398
+// Items: I005 (Repair Kit), Tip (Tooltip - Basic)
+{
+Repair Kit
+}
+
+STRING 399
+// Items: I005 (Repair Kit), Description (Description)
+{
+Repairs buildings 100% over 5 seconds
+}
+
+STRING 401
+// Items: I005 (Repair Kit), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO|r|n|nRepairs station property by |cff00ff00500|r HP over |cff00ff005|r seconds.|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 402
+{
+Type: |Cffffcc00Energy|R
+}
+
+STRING 403
+{
+Type: |Cffffcc00Psionic|R
+}
+
+STRING 404
+{
+Type: |Cffffcc00Kinetic|R
+}
+
+STRING 408
+{
+|cff808080Standard issue combat armor; designed to reduce damage and impact from bullets.|r|n|n|cff00ff0075%|r Kinetic Damage|n|cffff0000125%|r Rending Damage
+}
+
+STRING 409
+{
+|cff808080Standard issue combat armor; designed to reduce damage and impact from bullets.|r|n|n|cff00ff0075%|r Kinetic Damage|n|cffff0000125%|r Rending Damage
+}
+
+STRING 410
+{
+|cff808080Standard issue combat armor; designed to reduce damage and impact from bullets.|r|n|n|cff00ff0075%|r Kinetic Damage|n|cffff0000125%|r Rending Damage
+}
+
+STRING 411
+{
+Type: |Cffffcc00Combat Armor|R
+}
+
+STRING 412
+{
+Type: |Cffffcc00Alien|R
+}
+
+STRING 413
+{
+Type: |Cffffcc00Rending|R
+}
+
+STRING 417
+{
+|cff808080The Jaws and Claws of the xenos beast these will rip and tear through standard combat armor.|r|n|n|cff00ff00125%|r Damage to Combat Armor|n|cffff000075%|r Damage to Xenos Mesh
+}
+
+STRING 418
+{
+|cff808080The Jaws and Claws of the xenos beast these will rip and tear through standard combat armor.|r|n|n|cff00ff00125%|r Damage to Combat Armor|n|cffff000075%|r Damage to Xenos Mesh
+}
+
+STRING 419
+{
+|cff808080The Jaws and Claws of the xenos beast these will rip and tear through standard combat armor.|r|n|n|cff00ff00125%|r Damage to Combat Armor|n|cffff000075%|r Damage to Xenos Mesh
+}
+
+STRING 420
+// Items: I006 (Nano-Med), Name (Name)
+{
+Nano-Med
+}
+
+STRING 421
+// Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO|r|n|nHeals the target for |cff00ff00400|r HP over |cff00ff005|r seconds.|n|n|cff80808035 Seconds Cooldown|r
+}
+
+STRING 422
+// Abilities: A00K (Nano-Med), Name (Name)
+{
+Nano-Med
+}
+
+STRING 424
+// Abilities: A005 (Underbarrel Rail-Rifle), Hotkey (Hotkey - Normal)
+{
+G
+}
+
+STRING 427
+// Abilities: A005 (Underbarrel Rail-Rifle), Name (Name)
+{
+Underbarrel Rail-Rifle
+}
+
+STRING 428
+// Abilities: A005 (Underbarrel Rail-Rifle), Tip (Tooltip - Normal)
+{
+Underbarrel Rail-Rifle
+}
+
+STRING 429
+// Abilities: A005 (Underbarrel Rail-Rifle), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nLaunches a single, long distance round. Dealing 150 damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown.|r
+}
+
+STRING 430
+// Items: I001 (Rail-Rifle), Name (Name)
+{
+Rail-Rifle
+}
+
+STRING 431
+// Items: I001 (Rail-Rifle), Tip (Tooltip - Basic)
+{
+Rail-Rifle
+}
+
+STRING 432
+// Items: I001 (Rail-Rifle), Ubertip (Tooltip - Extended)
+{
+|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nAn attachment for |cffc81e1eKinetic|r weapons.|n|nLaunches a single, long distance round. Dealing up to |cff00ff00500|r damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown.|r
+}
+
+STRING 433
+// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Crewmember Attack 1 Enabled
+}
+
+STRING 434
+// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Tier 1
+}
+
+STRING 435
+// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect1 (Effect 1)
+{
+renw
+}
+
+STRING 436
+// Abilities: ADGN (Dragonfire Blast), Name (Name)
+{
+Dragonfire Blast
+}
+
+STRING 437
+// Abilities: ADGN (Dragonfire Blast), Hotkey (Hotkey - Normal)
+{
+G
+}
+
+STRING 438
+// Abilities: ADGN (Dragonfire Blast), Tip (Tooltip - Normal)
+{
+Dragonfire Blast
+}
+
+STRING 439
+// Items: IDGN (Dragonfire Barrel), Name (Name)
+{
+Dragonfire Barrel
+}
+
+STRING 440
+// Items: IDGN (Dragonfire Barrel), Tip (Tooltip - Basic)
+{
+Dragonfire Barrel
+}
+
+STRING 441
+// Items: IDGN (Dragonfire Barrel), Ubertip (Tooltip - Extended)
+{
+|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nAn attachment for |cffc81e1eKinetic|r weapons.|n|nLaunches a single, long distance round. Dealing up to |cff00ff00500|r damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown.|r
+}
+
+STRING 442
+// Doodads: D00F (Wall Wires 1), Name (Name)
+{
+Wall Wires 1
+}
+
+STRING 443
+// Abilities: AFIR (Fire Armor Debuff), Name (Name)
+{
+Fire Armor Debuff
 }
 

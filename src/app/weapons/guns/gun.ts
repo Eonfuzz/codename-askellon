@@ -6,6 +6,7 @@ import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
+import { TECH_CREWMEMBER_ATTACK_ENABLE } from "../../../resources/ability-ids";
 
 export abstract class Gun {
     item: item;
@@ -28,8 +29,22 @@ export abstract class Gun {
         this.equippedTo = caster;
         this.equippedTo.onWeaponAdd(weaponModule, this);
 
-        caster.unit.addAbility(this.getAbilityId());
+        weaponModule.unitsWithWeapon.set(caster.unit.handle, this);
+
+
+        // Always update the tooltip
         this.updateTooltip(weaponModule, caster);
+        // Enable the attack UI
+        SetPlayerTechResearched(caster.player.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 1);
+
+        // Cast mode adds the ability
+        if (weaponModule.WEAPON_MODE === 'CAST') {
+            caster.unit.addAbility(this.getAbilityId());
+        }
+        // If we are in attack mode let the user attack
+        else {
+            UnitRemoveAbility(this.equippedTo.unit.handle, FourCC('Abun'));
+        }
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
 
@@ -46,8 +61,22 @@ export abstract class Gun {
 
     public onRemove(weaponModule: WeaponModule) {
         if (this.equippedTo) {
+
+            weaponModule.unitsWithWeapon.delete(this.equippedTo.unit.handle);
+
+            // Don't care about the mode, always remove cast ability
             this.equippedTo.unit.removeAbility(this.getAbilityId());
-            this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
+            // Don't care about mode, always disable attack ui
+            SetPlayerTechResearched(this.equippedTo.unit.owner.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 0);
+
+            // If we are cast mode set this remaning cooldown
+            if (weaponModule.WEAPON_MODE === 'CAST') {
+                this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
+            }
+            else {
+                UnitAddAbility(this.equippedTo.unit.handle, FourCC('Abun'));
+            }
+
             this.equippedTo.onWeaponRemove(weaponModule, this);
             if (this.attachment) this.attachment.onUnequip(this);
             this.equippedTo = undefined;
@@ -67,11 +96,15 @@ export abstract class Gun {
             if (GetLocalPlayer() === owner.handle) {
                 BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
             }
+
+            // Also update our weapon stats
+            this.applyWeaponAttackValues(weaponModule, caster);
         }
     }
 
     protected abstract getTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string;
     protected abstract getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string;
+    protected abstract applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember): void;
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         this.remainingCooldown = weaponModule.game.getTimeStamp();

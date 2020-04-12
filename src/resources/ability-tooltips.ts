@@ -26,3 +26,12 @@ ${ROLE_DESCRIPTIONS.get(role)}
 
 ${COL_MISC}Current Income: ${playerIncome} per minute|r
 `;
+
+
+export const DRAGONBREATH_BLAST = (damage: any, accuracyMin: any, accuracyMax: any) => 
+`${COL_MISC}Created and named by Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
+Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
+
+Fires a blast of 26 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+Every bullet after the first deals 50% less damage.
+`;

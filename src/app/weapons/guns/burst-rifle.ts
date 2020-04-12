@@ -29,6 +29,14 @@ export class BurstRifle extends Gun {
         this.spreadAOE = 240;
         this.bulletDistance = 1400;
     }
+
+    public applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember) {
+        caster.unit.setAttackCooldown(1, 1);
+        this.equippedTo.unit.setBaseDamage(this.getDamage(weaponModule, caster) - 1, 0);
+        caster.unit.acquireRange = this.bulletDistance * 0.8;
+        BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
+        BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
+    }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         super.onShoot(weaponModule, caster, targetLocation);

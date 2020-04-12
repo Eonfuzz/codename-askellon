@@ -109,6 +109,9 @@ export class ForceModule {
      * @param player2 
      */
     private addAggressionLog(player1: MapPlayer, player2: MapPlayer) {
+        // We can never have tracked aggression against aliens
+        if (player2 === this.alienAIPlayer) return;
+
         const newItem = {
             id: this.aggressionId++,
             aggressor: player1,

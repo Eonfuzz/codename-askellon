@@ -50,7 +50,7 @@ export class ChatModule {
         BlzFrameSetLevel(chatHandle, 8);
 
         BlzFrameSetTextAlignment(chatTextHandle, TEXT_JUSTIFY_BOTTOM, TEXT_JUSTIFY_LEFT);
-        BlzFrameSetFont(chatTextHandle, "UI\\Font\\" + font, 0.014, 1);
+        BlzFrameSetFont(chatTextHandle, "UI\\Font\\" + font, 0.011, 1);
 
         /**
          * Creates and prepare the chat handlers
@@ -113,11 +113,20 @@ export class ChatModule {
                 const z = this.game.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
                 z && z.updatePower(true);
             }
+            else if (message === '-nt') {
+                this.game.noTurn = !this.game.noTurn;
+            }
             else if (message.indexOf("-m") === 0) {
                 const mSplit = message.split(" ");
                 const dX = S2I(mSplit[1] || "0");
                 const dY = S2I(mSplit[2] || "0");
                 this.game.galaxyModule.navigateToSector(dX, dY);
+            }
+            else if (message.indexOf("-wa") === 0) {
+                this.game.weaponModule.changeWeaponModeTo('ATTACK');
+            }
+            else if (message.indexOf("-wc") === 0) {
+                this.game.weaponModule.changeWeaponModeTo('CAST');
             }
         }
         // Priv 1 === MODERATOR

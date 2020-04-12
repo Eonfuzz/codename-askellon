@@ -11,6 +11,7 @@ export class ProjectileSFX {
     private yaw: number;
 
     constructor(sfx: string, startingLoc: Vector3, offset: Vector3, facing: Vector3) {
+        // Rotate by facing
         this.offset = offset;
 
         const facingData = getYawPitchRollFromVector(facing);

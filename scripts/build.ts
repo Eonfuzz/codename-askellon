@@ -2,6 +2,7 @@ import * as fs from "fs-extra";
 import War3Map from "mdx-m3-viewer/src/parsers/w3x/map";
 import * as path from "path";
 import { compileMap, getFilesInDirectory, loadJsonFile, logger, toArrayBuffer } from "./utils";
+import { FILE_EXISTS } from "mdx-m3-viewer/src/parsers/mpq/constants";
 
 function main() {
   const config = loadJsonFile("config.json");
@@ -35,6 +36,15 @@ export function createMapFromDir(output: string, dir: string) {
     const contents = toArrayBuffer(fs.readFileSync(fileName));
     const archivePath = path.relative(dir, fileName);
     const imported = map.import(archivePath, contents);
+
+    if (fileName.indexOf(".blp") !== -1 || fileName.indexOf(".mp3") !== -1) {
+      const file = map.archive.files.find((e) => e.name === archivePath);
+      if (file) {
+        file.rawBuffer = contents;
+        file.block.compressedSize = contents.byteLength;
+        file.block.flags = FILE_EXISTS;
+      }
+    }
 
     if (!imported) {
       logger.warn("Failed to import " + archivePath);

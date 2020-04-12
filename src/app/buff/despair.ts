@@ -8,6 +8,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { ABIL_ACCURACY_PENALTY_30 } from "resources/ability-ids";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { EVENT_TYPE } from "app/events/event";
+import { BUFF_ID } from "resources/buff-ids";
 
 const DESPAIR_ABILITY_ID = FourCC('A00D');
 const DESPAIR_BUFF_ID = FourCC('B004');
@@ -17,7 +18,7 @@ const DESPAIR_BUFF_ID = FourCC('B004');
  * Can be applied multiple times and from multiple sources
  */
 export class Despair extends DynamicBuff {
-    
+    name = BUFF_ID.DESPAIR;
 
     private jumpScareSound: SoundWithCooldown;
     private despairMusic: SoundRef;

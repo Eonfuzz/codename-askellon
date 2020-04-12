@@ -18,7 +18,7 @@ Attached: ${weapon.attachment
 }|r
 
 The standard issue rifle; ideal for thinning hordes and can dish out serious damage up close.
-- 6 Shot Burst
+${COL_GOOD}- 6 Shot Burst
 - Each shot does ${damage} damage
 - Short Cooldown|r
 
@@ -53,8 +53,8 @@ export const SHOTGUN_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any
 `|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
-Fires a blast of 12 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
-If all 12 bullets hit the same target they take an additional |cff00ff00${damage*12*0.25}|r damage.
+Fires a blast of 26 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+Every bullet after the first deals 50% less damage.
 `;
 
 export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 
@@ -64,7 +64,8 @@ Over the twenty years of his career, he had only one constant companion, and tha
 A close ranged shotgun that deals good damage
 ${COL_GOOD}- Fires a spread of shots
 - Unaffected by Accuracy
-- Hitting a unit with all 6 shots crits
+- Fires 26 shots, each dealing |cff00ff00${damage}|r${COL_GOOD} damage
+- Additional hits deal half damage of the last
 - Can be heavily customised|r
 
 ${!weapon.attachment

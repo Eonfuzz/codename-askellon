@@ -184,7 +184,7 @@ export const initWeaponsTerminals = () => {
 
     const upgradeTerminalProcessing: InteractableData = {
         onStart: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => {
-            Log.Information("Using terminal");
+            // Log.Information("Using terminal");
         },
         onCancel: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => {
         },

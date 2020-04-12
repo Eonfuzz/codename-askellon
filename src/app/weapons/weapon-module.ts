@@ -9,17 +9,22 @@ import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
 import { Trigger, Unit } from "w3ts";
-import { SniperRifle, InitSniperRifle } from "./guns/sniper-rifle";
 import { Log } from "../../lib/serilog/serilog";
 import { HighQualityPolymer } from "./attachment/high-quality-polymer";
 import { Attachment } from "./attachment/attachment";
 import { ArmableUnit } from "./guns/unit-has-weapon";
 import { EmsRifling } from "./attachment/em-rifling";
-import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID } from "./weapon-constants";
+import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST } from "./weapon-constants";
 import { InitLaserRifle, LaserRifle } from "./guns/laser-rifle";
 import { Shotgun, InitShotgun } from "./guns/shotgun";
+import { RailRifle } from "./attachment/rail-rifle";
+import { vectorFromUnit } from "app/types/vector2";
+import { DragonfireBarrelAttachment } from "./attachment/dragonfire-barrel";
+
 
 export class WeaponModule {
+    WEAPON_MODE: 'CAST' | 'ATTACK' = 'CAST';
+    unitsWithWeapon = new Map<unit, Gun>();
     game: Game;
     
     weaponItemIds: Array<number> = [];
@@ -39,7 +44,6 @@ export class WeaponModule {
          * I tried to work out a better way of doing this, but sleep is hurting my thoughts
          */
         InitBurstRifle(this);
-        InitSniperRifle(this);
         InitLaserRifle(this);
         InitShotgun(this);
 
@@ -213,36 +217,77 @@ export class WeaponModule {
     }
 
     weaponShootTrigger = new Trigger();
+    weaponAttackTrigger = new Trigger();
     initaliseWeaponShooting() {
-        this.weaponShootTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
-        this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0))
-        this.weaponShootTrigger.addAction(() => {
-            let unit = Unit.fromHandle(GetTriggerUnit());
-            let targetLocation = GetSpellTargetLoc();
-            let targetLoc = new Vector3(
-                GetLocationX(targetLocation), 
-                GetLocationY(targetLocation), 
-                GetLocationZ(targetLocation)
-            );
-
-            // Get unit weapon instance
-            const crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
-            const weapon = this.getGunForUnit(unit);
-            if (weapon && crewmember) {
-                // If we are targeting a unit pass the event over to the force module
-                const targetedUnit = GetSpellTargetUnit();
-                if (targetedUnit) {
-                    this.game.forceModule.aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
-                }
-                
-                weapon.onShoot(
-                    this,
-                    crewmember, 
-                    targetLoc
+        // if (this.WEAPON_MODE === 'CAST') {
+            this.weaponShootTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+            this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0))
+            this.weaponShootTrigger.addAction(() => {
+                let unit = Unit.fromHandle(GetTriggerUnit());
+                let targetLocation = GetSpellTargetLoc();
+                let targetLoc = new Vector3(
+                    GetLocationX(targetLocation), 
+                    GetLocationY(targetLocation), 
+                    GetLocationZ(targetLocation)
                 );
-            }
-            RemoveLocation(targetLocation);
-        })
+
+                // Get unit weapon instance
+                const crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
+                const weapon = this.getGunForUnit(unit);
+                if (weapon && crewmember) {
+                    // If we are targeting a unit pass the event over to the force module
+                    const targetedUnit = GetSpellTargetUnit();
+                    if (targetedUnit) {
+                        this.game.forceModule.aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
+                    }
+                    
+                    weapon.onShoot(
+                        this,
+                        crewmember, 
+                        targetLoc
+                    );
+                }
+                RemoveLocation(targetLocation);
+            })
+        // }
+        // // Handle auto attack
+        // else {
+            this.weaponAttackTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
+            this.weaponAttackTrigger.addCondition(Condition(() => BlzGetEventIsAttack()));
+            this.weaponAttackTrigger.addAction(() => {
+                let unit = Unit.fromHandle(GetEventDamageSource());
+                let targetUnit = Unit.fromHandle(BlzGetEventDamageTarget())
+
+                this.game.forceModule.aggressionBetweenTwoPlayers(
+                    unit.owner, 
+                    targetUnit.owner
+                );
+
+                if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
+
+                let targetLocation = new Vector3(targetUnit.x, targetUnit.y, targetUnit.z);
+                
+                // Clear and remove all damage taken
+                BlzSetEventDamage(0);
+
+                // Get unit weapon instance
+                const crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
+                const weapon = this.getGunForUnit(unit);
+                if (weapon && crewmember) {
+                    // If we are targeting a unit pass the event over to the force module
+                    const targetedUnit = GetSpellTargetUnit();
+                    if (targetedUnit) {
+                        this.game.forceModule.aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
+                    }
+                    
+                    weapon.onShoot(
+                        this,
+                        crewmember, 
+                        targetLocation
+                    );
+                }
+            })
+        // }
     }
 
     weaponDropTrigger = new Trigger();
@@ -269,7 +314,6 @@ export class WeaponModule {
     }
 
     itemIsWeapon(itemId: number) : boolean {
-        if (itemId === SNIPER_ITEM_ID) return true;
         if (itemId === BURST_RIFLE_ITEM_ID) return true;
         if (itemId === LASER_ITEM_ID) return true;
         if (itemId === SHOTGUN_ITEM_ID) return true;
@@ -279,14 +323,14 @@ export class WeaponModule {
     itemIsAttachment(itemId: number) : boolean {
         if (itemId === HIGH_QUALITY_POLYMER_ITEM_ID) return true;
         if (itemId === EMS_RIFLING_ITEM_ID) return true;
+        if (itemId == SNIPER_ITEM_ID) return true;
+        if (itemId == AT_ITEM_DRAGONFIRE_BLAST) return true;
         return false;
     }
 
     createWeaponForId(item: item, unit: ArmableUnit) : Gun | undefined {
         let itemId = GetItemTypeId(item);
-        if (itemId == SNIPER_ITEM_ID)
-            return new SniperRifle(item, unit);
-        else if (itemId === BURST_RIFLE_ITEM_ID) 
+        if (itemId === BURST_RIFLE_ITEM_ID) 
             return new BurstRifle(item, unit);
         else if (itemId === LASER_ITEM_ID) 
             return new LaserRifle(item, unit);
@@ -301,6 +345,27 @@ export class WeaponModule {
             return new HighQualityPolymer(item);
         if (itemId == EMS_RIFLING_ITEM_ID)
             return new EmsRifling(item);
+        if (itemId == SNIPER_ITEM_ID)
+            return new RailRifle(item);
+        if (itemId == AT_ITEM_DRAGONFIRE_BLAST)
+            return new DragonfireBarrelAttachment(item);
         return undefined;
+    }
+
+    changeWeaponModeTo(weaponType: 'CAST' | 'ATTACK') {
+        // Unequip all weapons
+        const unitsToRequip = [];
+        const gunsToReEquip = this.guns.filter(gun => {
+            if (gun.equippedTo) {
+                unitsToRequip.push(gun.equippedTo.unit);
+                gun.onRemove(this);
+                return true;
+            }
+        });
+
+        this.WEAPON_MODE = weaponType;
+
+        // Requip them
+        gunsToReEquip.forEach((g, i) => g.onAdd(this, unitsToRequip[i]));
     }
 }

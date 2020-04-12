@@ -9,7 +9,6 @@ import { getZFromXY } from "lib/utils";
 import { VISION_TYPE } from "app/world/vision-type";
 import { Unit } from "w3ts/handles/unit";
 
-/** @noSelfInFile **/
 const NIGHT_VISION_DURATION = 30;
 
 export class NightVisionAbility implements Ability {

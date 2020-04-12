@@ -9,9 +9,12 @@ export const ABIL_WEP_GRENADE = FourCC('GREN');
 export const ABIL_WEP_DIODE_EJ = FourCC('DIOJ');
 
 export const ABIL_ALIEN_SCREAM = FourCC('A00G');
+export const ABIL_ITEM_REPAIR = FourCC('A00J');
 
 export const ABIL_ACCURACY_PENALTY_30 = FourCC('A00E');
 export const ABIL_ACCURACY_BONUS_30 = FourCC('A00F');
+
+export const FIRE_ARMOR_REDUCTION = FourCC('AFIR');
 
 export const SPRINT_BUFF_ID = FourCC('B000');
 export const TECH_WEP_DAMAGE = FourCC('RDAM');
@@ -40,3 +43,5 @@ export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGPS');
 
 export const SMART_ORDER_ID = 851971;
 export const UNIT_IS_FLY = FourCC('A00C');
+
+export const TECH_CREWMEMBER_ATTACK_ENABLE = FourCC('RATK');

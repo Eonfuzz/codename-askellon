@@ -77,7 +77,6 @@ export class CrewModule {
             while (y < players.length) {
                 let player = players[y];
                 let crew = this.createCrew(player, force);
-                this.game.worldModule.travel(crew.unit, ZONE_TYPE.FLOOR_1);
                 crew.updateTooltips(this.game.weaponModule);
                 y++;
             }
@@ -97,9 +96,10 @@ export class CrewModule {
         if (doIncome) {
             this.timeSinceLastIncome = 0;
             const amount = INCOME_EVERY / 60;
-            this.CREW_MEMBERS.forEach(crew => 
-                crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, MathRound(amount * this.calculateIncome(crew)))
-            );
+            this.CREW_MEMBERS.forEach(crew => {
+                const calculatedIncome = MathRound(amount * this.calculateIncome(crew));
+                crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome);
+            });
         }
         else {
             this.timeSinceLastIncome += time;
@@ -122,7 +122,9 @@ export class CrewModule {
 
         // Add the unit to its force
         force.addPlayerMainUnit(this.game, nUnit, player);
-
+        SelectUnitAddForPlayer(crewmember.unit.handle, player.handle);
+        PanCameraToTimedForPlayer(player.handle, nUnit.x, nUnit.y, 0);
+        
         let roleGaveWeapons = false;
         // Handle unique role bonuses
         // Captain starts at level 2

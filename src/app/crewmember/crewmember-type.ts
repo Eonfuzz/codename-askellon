@@ -74,7 +74,7 @@ export class Crewmember extends ArmableUnit {
 
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {
-            this.resolve.addInstance(game, this, new BuffInstanceCallback(() => {
+            this.resolve.addInstance(game, this.unit, new BuffInstanceCallback(() => {
                 return GetUnitLifePercent(this.unit.handle) <= 30;
             }));
         }
@@ -101,12 +101,12 @@ export class Crewmember extends ArmableUnit {
      * @param onCheckToRemove 
      */
     addDespair(game: Game, instance: BuffInstance) {
-        this.despair.addInstance(game, this, instance);
+        this.despair.addInstance(game, this.unit, instance);
     }
 
     testResolve(game: Game) {
         SetUnitLifePercentBJ(this.unit.handle, 0.2);
-        this.resolve.addInstance(game, this, new BuffInstanceCallback(() => {
+        this.resolve.addInstance(game, this.unit, new BuffInstanceCallback(() => {
             return GetUnitLifePercent(this.unit.handle) <= 30;
         }));
     }

@@ -25,10 +25,12 @@ export class CrewmemberForce extends ForceType {
      * TODO
      */
     addPlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
+        super.addPlayerMainUnit(game, whichUnit, player);
         whichUnit.addAbility(ABIL_CREWMEMBER_INFO);
     }
 
     removePlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
+        super.removePlayerMainUnit(game, whichUnit, player);
         whichUnit.removeAbility(ABIL_CREWMEMBER_INFO);
     }
     

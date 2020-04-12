@@ -37,6 +37,15 @@ export class LaserRifle extends Gun {
         this.bulletDistance = 2100;
         this.attachment = new DiodeEjector(item);
     }
+
+    public applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember) {
+        caster.unit.setAttackCooldown(1.5, 1);
+        this.equippedTo.unit.setBaseDamage(this.getDamage(weaponModule, caster) - 1, 0);
+        caster.unit.acquireRange = this.bulletDistance * 0.8;
+        BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 5);
+        BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
+        BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED, 0, 2);
+    }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         super.onShoot(weaponModule, caster, targetLocation);

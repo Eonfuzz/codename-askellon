@@ -61,9 +61,8 @@ export class LeapAbility implements Ability {
         }
         // Handle incoming from self cast
         else {
-            targetLoc.x = GetUnitX(this.casterUnit);
-            targetLoc.y = GetUnitY(this.casterUnit);
-            targetLoc = targetLoc.projectTowards2D(Rad2Deg(GetUnitFacing(this.casterUnit)), 150);
+            targetLoc.x = GetSpellTargetX();
+            targetLoc.y = GetSpellTargetY();
             targetLoc.z = abMod.game.getZFromXY(targetLoc.x, targetLoc.y) + 10;
         }
         
@@ -102,7 +101,7 @@ export class LeapAbility implements Ability {
         abMod.game.leapModule.newLeap(
             this.casterUnit,
             targetLoc,
-            isSelfCast ? 82 : 45,
+            45,
             3
         ).onFinish((leapEntry) => {
             this.leapExpired = true;

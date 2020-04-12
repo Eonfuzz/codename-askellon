@@ -24,22 +24,22 @@ gg_rct_JumpPassCargoVent = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
 gg_trg_SetFall = nil
+gg_trg_SetPowerGenerators = nil
 gg_unit_n001_0032 = nil
+gg_unit_h004_0048 = nil
+gg_unit_n004_0034 = nil
 gg_unit_n001_0021 = nil
 gg_unit_n002_0033 = nil
-gg_unit_n002_0047 = nil
-gg_unit_n002_0035 = nil
+gg_unit_n004_0047 = nil
 gg_unit_n002_0043 = nil
 gg_unit_n002_0044 = nil
 gg_unit_n001_0045 = nil
-gg_unit_n004_0034 = nil
+gg_unit_h004_0046 = nil
+gg_unit_n004_0035 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
-gg_trg_SetPowerGenerators = nil
-gg_unit_h004_0048 = nil
-gg_unit_h004_0046 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -114,11 +114,15 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("I000"), 60.4, -160.3, FourCC("I000"))
     BlzCreateItemWithSkin(FourCC("I000"), -167.3, -284.7, FourCC("I000"))
     BlzCreateItemWithSkin(FourCC("I000"), 93.2, 55.7, FourCC("I000"))
-    BlzCreateItemWithSkin(FourCC("I001"), -252.0, 37.1, FourCC("I001"))
     BlzCreateItemWithSkin(FourCC("I001"), -407.0, 80.9, FourCC("I001"))
+    BlzCreateItemWithSkin(FourCC("I001"), -252.0, 37.1, FourCC("I001"))
     BlzCreateItemWithSkin(FourCC("I002"), -361.7, 571.7, FourCC("I002"))
     BlzCreateItemWithSkin(FourCC("I003"), -265.1, 602.5, FourCC("I003"))
     BlzCreateItemWithSkin(FourCC("I004"), -340.6, 282.6, FourCC("I004"))
+    BlzCreateItemWithSkin(FourCC("I005"), 665.8, 418.3, FourCC("I005"))
+    BlzCreateItemWithSkin(FourCC("IDGN"), 117.5, 675.8, FourCC("IDGN"))
+    BlzCreateItemWithSkin(FourCC("IDGN"), 45.4, 670.9, FourCC("IDGN"))
+    BlzCreateItemWithSkin(FourCC("ISHO"), 335.0, 639.4, FourCC("ISHO"))
     BlzCreateItemWithSkin(FourCC("ISHO"), 203.0, 659.3, FourCC("ISHO"))
 end
 
@@ -145,7 +149,7 @@ function CreateBuildingsForPlayer21()
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("n003"), 1024.0, 896.0, 270.000, FourCC("n003"))
     gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
-    gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 1600.0, -128.0, 270.000, FourCC("h004"))
+    gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 640.0, 768.0, 270.000, FourCC("h004"))
 end
 
 function CreateNeutralHostile()
@@ -168,7 +172,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
     gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
-    gg_unit_n002_0035 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26110.7, 26365.0, 270.000, FourCC("n002"))
+    gg_unit_n004_0035 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26113.3, 26361.4, 89.562, FourCC("n004"))
     u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
     u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -64.0, 960.0, 270.000, FourCC("nMED"))
     u = BlzCreateUnitWithSkin(p, FourCC("ncp2"), -1696.0, 288.0, 270.000, FourCC("ncp2"))
@@ -176,7 +180,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n002_0043 = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
     gg_unit_n002_0044 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
     gg_unit_n001_0045 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
-    gg_unit_n002_0047 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26686.7, 27069.0, 270.000, FourCC("n002"))
+    gg_unit_n004_0047 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26689.3, 27065.4, 89.562, FourCC("n004"))
 end
 
 function CreatePlayerBuildings()
@@ -228,16 +232,16 @@ end
 function Trig_SetHatch_Actions()
     udg_hatch_entrances[1] = gg_unit_n002_0033
     udg_hatch_entrances[2] = gg_unit_n004_0034
-    udg_hatch_entrances[3] = gg_unit_n002_0035
+    udg_hatch_entrances[3] = gg_unit_n004_0035
     udg_hatch_entrances[4] = gg_unit_n002_0043
-    udg_hatch_entrances[5] = gg_unit_n002_0047
+    udg_hatch_entrances[5] = gg_unit_n004_0047
     udg_hatch_entrances[6] = gg_unit_n002_0044
     udg_hatch_exits[1] = gg_unit_n004_0034
     udg_hatch_exits[2] = gg_unit_n002_0033
     udg_hatch_exits[3] = gg_unit_n002_0043
-    udg_hatch_exits[4] = gg_unit_n002_0035
+    udg_hatch_exits[4] = gg_unit_n004_0035
     udg_hatch_exits[5] = gg_unit_n002_0044
-    udg_hatch_exits[6] = gg_unit_n002_0047
+    udg_hatch_exits[6] = gg_unit_n004_0047
     udg_hatch_entrance_names[1] = "|cff666633Service Tunnels|r"
     udg_hatch_entrance_names[2] = "|cfff5a742Floor 1|r"
     udg_hatch_entrance_names[3] = "|cff008080Cargo|r"

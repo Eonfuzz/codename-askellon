@@ -22,17 +22,29 @@ export const InitShotgun = (weaponModule: WeaponModule) => {
     weaponModule.weaponAbilityIds.push(SHOTGUN_ABILITY_ID);
 }
 export class Shotgun extends Gun {
+
+    private unitsHit = new Map<unit, number>();
+
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 240;
         this.bulletDistance = 300;
     }
+
+    public applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember) {
+        caster.unit.setAttackCooldown(1.5, 1);
+        this.equippedTo.unit.setBaseDamage(this.getDamage(weaponModule, caster) - 1, 0);
+        caster.unit.acquireRange = 450;
+        BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, ConvertUnitWeaponIntegerField(FourCC('ua1t')), 0, 2);
+        BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 400);
+    }
     
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
         super.onShoot(weaponModule, caster, targetLocation);
 
-        // Log.Information("Shooting shotgun!"); 
+        // Clear units hit
+        this.unitsHit.clear();
 
         const unit = caster.unit.handle;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
@@ -65,7 +77,6 @@ export class Shotgun extends Gun {
             this.fireProjectile(weaponModule, caster, targetLoc, false)
                 .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => {
                     this.onProjectileCollide(weaponModule, projectile, collidesWith);
-                    if (++bulletsHit == NUM_BULLETS) this.onCritDamage(weaponModule, collidesWith);
                 });
         });
     };
@@ -88,7 +99,7 @@ export class Shotgun extends Gun {
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
             isCentralProjectile ? 0.6 : 1.4
-        ), 50);
+        ), 250);
 
         weaponModule.addProjectile(projectile);
         return projectile
@@ -100,38 +111,15 @@ export class Shotgun extends Gun {
         projectile.setDestroy(true);
         if (this.equippedTo) {
             const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
+            const timesUnitHit = this.unitsHit.get(collidesWith) || 0;
+            this.unitsHit.set(collidesWith, timesUnitHit + 1);
+
             if (crewmember) {
+                const damage = this.getDamage(weaponModule, crewmember) / Pow(2, timesUnitHit);
                 UnitDamageTarget(
                     projectile.source, 
                     collidesWith, 
-                    this.getDamage(weaponModule, crewmember), 
-                    false, 
-                    true, 
-                    ATTACK_TYPE_PIERCE, 
-                    DAMAGE_TYPE_NORMAL, 
-                    WEAPON_TYPE_WOOD_MEDIUM_STAB
-                );
-            }
-        }
-    }
-
-    private onCritDamage(weaponModule: WeaponModule, collidesWith: unit) {
-        if (this.equippedTo) {
-            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
-            if (crewmember) {
-                const targetLoc = vectorFromUnit(collidesWith);
-                const text = CreateTextTag();
-                SetTextTagColor(text, 180, 50, 50, 100);
-                SetTextTagText(text, "CRIT!", 0.023);
-                SetTextTagPermanent(text, false);
-                SetTextTagPos(text, targetLoc.x, targetLoc.y, getZFromXY(targetLoc.x, targetLoc.y));
-                SetTextTagVelocity(text, 0, 100);
-                SetTextTagLifespan(text, 3);
-                // SetTextTagFadepoint(text, 2);
-                UnitDamageTarget(
-                    crewmember.unit.handle, 
-                    collidesWith, 
-                    this.getDamage(weaponModule, crewmember) * 12 * 0.25, 
+                    damage, 
                     false, 
                     true, 
                     ATTACK_TYPE_PIERCE, 
@@ -159,7 +147,7 @@ export class Shotgun extends Gun {
 
 
     public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
-        return MathRound( 10 * caster.getDamageBonusMult());
+        return MathRound(35 * caster.getDamageBonusMult());
     }
 
     public getAbilityId() { return SHOTGUN_ABILITY_ID; }

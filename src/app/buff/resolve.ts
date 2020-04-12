@@ -15,6 +15,8 @@ const RESOLVE_BUFF_ID = FourCC('B001');
  * Can be applied multiple times and from multiple sources
  */
 export class Resolve extends DynamicBuff {
+    name = 'resolve';
+
     private breathSound: SoundWithCooldown;
     private resolveMusic: SoundRef;
 
