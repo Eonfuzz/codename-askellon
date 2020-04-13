@@ -4,6 +4,7 @@ import { Log } from "../../../lib/serilog/serilog";
 import { BURST_RIFLE_ABILITY_ID, EMS_RIFLING_ABILITY_ID, LASER_ABILITY_ID } from "../weapon-constants";
 import { ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { diodeEjectTooltip } from "resources/ability-tooltips";
 
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
@@ -19,6 +20,8 @@ export class DiodeEjector extends Attachment {
         if (weapon.getAbilityId() === LASER_ABILITY_ID) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
+                this.game.tooltips.registerTooltip(crewmember, diodeEjectTooltip);
+                BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, ABIL_WEP_DIODE_EJ, BlzGetAbilityCooldown(ABIL_WEP_DIODE_EJ, 0));
             }
             return true;
         }
@@ -35,15 +38,15 @@ export class DiodeEjector extends Attachment {
     public onEquip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
-            BlzSetUnitAbilityCooldown(weapon.equippedTo.unit.handle, ABIL_WEP_DIODE_EJ, 0, 
-                BlzGetAbilityCooldown(ABIL_WEP_DIODE_EJ, 0)    
-            );
+            this.game.tooltips.registerTooltip(crewmember, diodeEjectTooltip);
+            BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, ABIL_WEP_DIODE_EJ, BlzGetAbilityCooldown(ABIL_WEP_DIODE_EJ, 0));
         }
     }
 
     public onUnequip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             weapon.equippedTo.unit.removeAbility(ABIL_WEP_DIODE_EJ);
+            this.game.tooltips.unregisterTooltip(crewmember, diodeEjectTooltip);
         }
     }
 }

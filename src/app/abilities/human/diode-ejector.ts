@@ -9,7 +9,7 @@ import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { LaserRifle } from "app/weapons/guns/laser-rifle";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { getZFromXY } from "lib/utils";
+import { getZFromXY, getPointsInRangeWithSpread } from "lib/utils";
 import { Unit } from "w3ts/handles/unit";
 
 // How many projectiles are fired inside the cone
@@ -94,23 +94,30 @@ export class DiodeEjectAbility implements Ability {
 
         // Damage numbers
         const weaponBaseDamage = this.weapon.getDamage(abMod.game.weaponModule, this.crew);
-        const diodeDamage = (50 + weaponBaseDamage * 3) / NUM_PROJECTILES;
+        const diodeDamage = (50 + weaponBaseDamage * 4) / NUM_PROJECTILES;
 
-        const endAngle = angleToTarget + spread;
-        let currentAngle = angleToTarget - spread;
-        const incrementBy = (endAngle - currentAngle) / NUM_PROJECTILES;
 
-        PlayNewSoundOnUnit(this.weapon.getSoundPath(), this.casterUnit, 127);
+        const deltaLocs = getPointsInRangeWithSpread(
+            angleToTarget - spread,
+            angleToTarget + spread,
+            30,
+            projectileRange,
+            0.9
+        );
 
-        while (currentAngle <= endAngle) {    
-            const endLoc = projStartLoc.projectTowards2D(currentAngle, projectileRange);
-            endLoc.z = abMod.game.getZFromXY(endLoc.x, endLoc.y);
+        const centerTargetLoc = casterLoc.projectTowards2D(angleToTarget, projectileRange*1.4);
+        centerTargetLoc.z = getZFromXY(centerTargetLoc.x, centerTargetLoc.y);
+
+        deltaLocs.forEach((loc, index) => {
+            const nX = casterLoc.x + loc.x;
+            const nY = casterLoc.y + loc.y;
+            const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
 
             const projectile = new Projectile(
                 this.casterUnit.handle,
                 new Vector3(projStartLoc.x, projStartLoc.y, projStartLoc.z),
                 new ProjectileTargetStatic(
-                    endLoc.subtract(projStartLoc),
+                    targetLoc.subtract(projStartLoc),
                 ),
                 new ProjectileMoverLinear()
             )
@@ -132,10 +139,7 @@ export class DiodeEjectAbility implements Ability {
     
             projectile.addEffect(sfxModel, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
             abMod.game.weaponModule.addProjectile(projectile);
-
-            // Increment current angle
-            currentAngle += incrementBy;
-        }
+        });
         this.weapon.setIntensity(0);
     }
 

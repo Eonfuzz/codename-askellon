@@ -20,6 +20,7 @@ export class DragonfireBarrelAttachment extends Attachment {
         ) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(AT_ABILITY_DRAGONFIRE_BLAST);
+                BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST, BlzGetAbilityCooldown(AT_ABILITY_DRAGONFIRE_BLAST, 0));
 
                 this.game.tooltips.registerTooltip(
                     crewmember, 
@@ -48,6 +49,8 @@ export class DragonfireBarrelAttachment extends Attachment {
     public onEquip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             UnitAddAbility(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST);
+            BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST, BlzGetAbilityCooldown(AT_ABILITY_DRAGONFIRE_BLAST, 0));
+
             // Add ability tooltip
             this.game.tooltips.registerTooltip(crewmember, dragonBreathBlastTooltip);
         }

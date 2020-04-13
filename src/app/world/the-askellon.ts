@@ -126,7 +126,7 @@ export class TheAskellon {
 
         // IF we dont have power add despair to the unit
         if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_NIGHTEYE) === 0) {
-            crewmember.addDespair(this.world.game, new BuffInstanceCallback(() => {
+            crewmember.addDespair(this.world.game, new BuffInstanceCallback(crewmember.unit, () => {
                 const z = this.world.getUnitZone(crewmember.unit);
                 const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_NIGHTEYE);
                 return (z && hasNighteye === 0) ? z.doCauseFear() : false;

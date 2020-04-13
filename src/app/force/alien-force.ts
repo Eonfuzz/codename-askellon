@@ -6,7 +6,7 @@ import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { TRANSFORM_TOOLTIP, alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
+import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";

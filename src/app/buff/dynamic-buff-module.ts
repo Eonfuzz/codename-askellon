@@ -23,7 +23,7 @@ export class DynamicBuffModule {
         buffUpdateTrigger.addAction(() => this.process(0.1));
     }
 
-    addBuff(buffId: BUFF_ID, who: Unit,  instance: BuffInstance) {
+    addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance) {
         let buffsForUnit = this.buffsByUnit.get(who) || [];
         let matchingBuff = buffsForUnit.filter(b => b.id === buffId)[0];
 

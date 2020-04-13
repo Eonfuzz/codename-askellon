@@ -20,6 +20,8 @@ export class RailRifle extends Attachment {
         ) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(SNIPER_ABILITY_ID);
+                BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, SNIPER_ABILITY_ID, BlzGetAbilityCooldown(SNIPER_ABILITY_ID, 0));
+
             }
             return true;
         }
@@ -38,6 +40,7 @@ export class RailRifle extends Attachment {
     public onEquip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             UnitAddAbility(weapon.equippedTo.unit.handle, SNIPER_ABILITY_ID);
+            BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, SNIPER_ABILITY_ID, BlzGetAbilityCooldown(SNIPER_ABILITY_ID, 0));
         }
     }
 

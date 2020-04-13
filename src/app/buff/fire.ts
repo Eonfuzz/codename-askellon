@@ -15,7 +15,7 @@ const FIRE_SFX = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl
  * Can be applied multiple times and from multiple sources
  */
 export class onFire extends DynamicBuff {
-    name = BUFF_ID.FIRE;
+    id = BUFF_ID.FIRE;
 
     private fireDamageTicker: number = 0;
     private fireSfx = [];
@@ -38,10 +38,12 @@ export class onFire extends DynamicBuff {
 
         if (this.fireDamageTicker >= 1) {
             this.fireDamageTicker = 0;
+            const damageSource = this.instances[this.instances.length - 1].source;
+
             UnitDamageTarget(
+                damageSource.handle, 
                 this.who.handle, 
-                this.who.handle, 
-                1,
+                5,
                 false, 
                 false, 
                 ATTACK_TYPE_HERO, 

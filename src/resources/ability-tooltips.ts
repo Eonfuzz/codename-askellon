@@ -1,8 +1,8 @@
-import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO } from "./colours";
+import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH } from "./colours";
 import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN } from "./ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ } from "./ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { AT_ABILITY_DRAGONFIRE_BLAST } from "app/weapons/weapon-constants";
 
@@ -108,17 +108,16 @@ Units hit take |cff00ff00${20*who.getDamageBonusMult()}|r and sets them on fire.
 ${COL_MISC}15 Second Cooldown`
 );
 
+export const diodeEjectTooltip = new DynamicAbilityTooltip(
+    ABIL_WEP_DIODE_EJ,
+    undefined,
+    (who: Crewmember, abilLevel: number, data: any) => 
+    `${COL_MISC}Prismatic Accelerator rounds use highly unstable plas infusion, only made into stable bullets by precise machining. When a bullet is inproperly machined, it quickly explodes into a hail of molten shards, not unlike a shotgun. After a few grizly accidents during testing, this reaction was turned into a secondary firing mode, making sure to only let the rounds rupture once a safe distance from the operator.|r
 
-export const TRANSFORM_TOOLTIP = (playerIncome: number, toAlien: boolean, alienFormName: string, role: ROLE_TYPES) => `${COL_MISC}This form is weak. Hunt. Consume. Evolve.|r
+Fires ${COL_GOOD}20|r short ranged plas blasts, dealing up to ${COL_GOOD}${
+    50 + MathRound(25 * Pow(1.5, (who.weapon as any).getIntensity()) * who.getDamageBonusMult()) * 4
+    }|r  damage; ${COL_ATTATCH}divided|r amongst each beam of light.
+${COL_INFO}Firing this at full power causes you to be sent flying back.|r
 
-You are the ${COL_ALIEN}Alien.|r Destroy or devour the lesser beings aboard this vessel.
-You can ${COL_INFO}transform|r into your ${
-    toAlien ? `${COL_ALIEN}${alienFormName}|r` : `${COL_INFO}Human|r`
-} form at will.
-
-When critically injured you gain ${COL_RESOLVE}Resolve|r, this ability is lost at the ${COL_ALIEN}third evolution|r.
-
-${ROLE_DESCRIPTIONS.get(role)}
-
-${COL_MISC}Current Income: ${playerIncome} per minute|r
-`;
+${COL_MISC}45 Second Cooldown|r`
+);

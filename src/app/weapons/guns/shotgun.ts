@@ -48,7 +48,7 @@ export class Shotgun extends Gun {
 
         const unit = caster.unit.handle;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
-        const NUM_BULLETS = 26;
+        const NUM_BULLETS = 10;
 
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         const angleDeg = casterLoc.angle2Dto(targetLocation);
@@ -115,7 +115,7 @@ export class Shotgun extends Gun {
             this.unitsHit.set(collidesWith, timesUnitHit + 1);
 
             if (crewmember) {
-                const damage = this.getDamage(weaponModule, crewmember) / Pow(2, timesUnitHit);
+                const damage = this.getDamage(weaponModule, crewmember) / Pow(1.7, timesUnitHit);
                 UnitDamageTarget(
                     projectile.source, 
                     collidesWith, 

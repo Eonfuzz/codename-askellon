@@ -3,12 +3,16 @@ import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
 import { BuffInstanceDuration } from "app/buff/buff-instance";
 import { SoundRef } from "app/types/sound-ref";
+import { Unit } from "w3ts/index";
 
 
 export class ScreamAbility implements Ability {
+    casterUnit: Unit;
+
     constructor() {}
 
     public initialise(abMod: AbilityModule) {
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         return true;
     };
 
@@ -18,7 +22,7 @@ export class ScreamAbility implements Ability {
         KillSoundWhenDone(screamSound.sound);
 
         abMod.game.crewModule.CREW_MEMBERS.forEach(c => {
-            c.addDespair(abMod.game, new BuffInstanceDuration(abMod.game.getTimeStamp(), 30));
+            c.addDespair(abMod.game, new BuffInstanceDuration(this.casterUnit, abMod.game.getTimeStamp(), 30));
         });
         return false;
     };

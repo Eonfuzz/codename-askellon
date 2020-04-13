@@ -134,7 +134,7 @@ export class DragonFireBlastAbility implements Ability {
         // Add fire debuff to unit
         weaponModule.game.buffModule.addBuff(BUFF_ID.FIRE, 
             Unit.fromHandle(collidesWith), 
-            new BuffInstanceDuration(weaponModule.game.getTimeStamp(), 10)
+            new BuffInstanceDuration(this.casterUnit, weaponModule.game.getTimeStamp(), 10)
         );
         if (crewmember) {
             const damage = (20 * crewmember.getDamageBonusMult()) / Pow(2, timesUnitHit);

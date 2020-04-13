@@ -7,14 +7,20 @@ import { BUFF_ID } from "resources/buff-ids";
 /** @noSelfInFile **/
 
 export abstract class BuffInstance {
+    public source: Unit;
+    
+    constructor(source: Unit) {
+        this.source = source;
+    }
+
     public abstract isActive(currentTimeStamp: number): boolean; 
 }
 
 export class BuffInstanceDuration extends BuffInstance {
     endTimestamp: number;
     
-    constructor(when: number, dur: number) {
-        super();
+    constructor(source: Unit, when: number, dur: number) {
+        super(source);
 
         this.endTimestamp = when + dur;
     }
@@ -27,8 +33,8 @@ export class BuffInstanceDuration extends BuffInstance {
 export class BuffInstanceCallback extends BuffInstance {
     cb: () => boolean;
     
-    constructor(cb: () => boolean) {
-        super();
+    constructor(source: Unit, cb: () => boolean) {
+        super(source);
         this.cb = () => cb();
     }
 
@@ -40,8 +46,9 @@ export class BuffInstanceCallback extends BuffInstance {
 export abstract class DynamicBuff {
     public id: BUFF_ID;
     public who: Unit;
+
     protected isActive: boolean = false;
-    private instances: Array<BuffInstance> = [];
+    protected instances: Array<BuffInstance> = [];
     protected doesStack = true;
 
     protected onChangeCallbacks: Array<(self: DynamicBuff) => void> = [];
@@ -49,6 +56,7 @@ export abstract class DynamicBuff {
     public addInstance(game: Game, unit: Unit, instance: BuffInstance) {
         const wasActive = this.isActive;
         this.who = unit;
+
         this.isActive = true;
         this.instances.push(instance);
 

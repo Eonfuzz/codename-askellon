@@ -340,7 +340,7 @@ STRING 78
 }
 
 STRING 79
-// Abilities: A008 (Interact and Resolve), Hotkey (Hotkey - Normal)
+// Abilities: A005 (Underbarrel Rail-Rifle), Hotkey (Hotkey - Normal)
 {
 F
 }
@@ -902,12 +902,6 @@ STRING 194
 // Items: I004 (Prismatic Accelerator), Ubertip (Tooltip - Extended)
 {
 |cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r
-}
-
-STRING 195
-// Abilities: DIOJ (Diode Eject), Name (Name)
-{
-Diode Eject
 }
 
 STRING 198
@@ -1546,7 +1540,7 @@ STRING 322
 }
 
 STRING 323
-// Abilities: DIOJ (Diode Eject), Hotkey (Hotkey - Normal)
+// Abilities: A008 (Interact and Resolve), Hotkey (Hotkey - Normal)
 {
 F
 }
@@ -1720,15 +1714,9 @@ STRING 361
 }
 
 STRING 363
-// Abilities: DIOJ (Diode Eject), Ubertip (Tooltip - Normal - Extended)
+// Abilities: DIOJ (Fracture Round), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Constant use causes large, crystal like structures build around the all important prismatic diodes. These morst efficient way to clear these is blasting them with focused light.|r|n|nFires |cff00ff0020|r short ranged beams of light, dealing up to |cff00ff00300%|r of your normal damage; |cffc81e1edivided|r amongst each beam of light.|n|cff00ffffFiring this at full power causes you to be sent flying back.|r|n|n|cff80808045 Second Cooldown|r
-}
-
-STRING 364
-// Abilities: DIOJ (Diode Eject), Tip (Tooltip - Normal)
-{
-Diode Cleanse
 }
 
 STRING 369
@@ -1996,12 +1984,6 @@ STRING 422
 Nano-Med
 }
 
-STRING 424
-// Abilities: A005 (Underbarrel Rail-Rifle), Hotkey (Hotkey - Normal)
-{
-G
-}
-
 STRING 427
 // Abilities: A005 (Underbarrel Rail-Rifle), Name (Name)
 {
@@ -2062,12 +2044,6 @@ STRING 436
 Dragonfire Blast
 }
 
-STRING 437
-// Abilities: ADGN (Dragonfire Blast), Hotkey (Hotkey - Normal)
-{
-G
-}
-
 STRING 438
 // Abilities: ADGN (Dragonfire Blast), Tip (Tooltip - Normal)
 {
@@ -2102,5 +2078,29 @@ STRING 443
 // Abilities: AFIR (Fire Armor Debuff), Name (Name)
 {
 Fire Armor Debuff
+}
+
+STRING 444
+// Abilities: DIOJ (Fracture Round), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 445
+// Abilities: ADGN (Dragonfire Blast), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 446
+// Abilities: DIOJ (Fracture Round), Name (Name)
+{
+Fracture Round
+}
+
+STRING 447
+// Abilities: DIOJ (Fracture Round), Tip (Tooltip - Normal)
+{
+Fracture Round
 }
 

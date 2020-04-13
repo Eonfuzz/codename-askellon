@@ -13,7 +13,6 @@ export abstract class Gun {
     equippedTo: ArmableUnit | undefined;
 
     attachment: Attachment | undefined;
-    remainingCooldown: number | undefined;
 
     protected spreadAOE: number = 0;
     protected bulletDistance = 1200;
@@ -40,6 +39,11 @@ export abstract class Gun {
         // Cast mode adds the ability
         if (weaponModule.WEAPON_MODE === 'CAST') {
             caster.unit.addAbility(this.getAbilityId());
+            BlzStartUnitAbilityCooldown(
+                this.equippedTo.unit.handle, 
+                this.getAbilityId(), 
+                BlzGetAbilityCooldown(this.getAbilityId(), 0)
+            );
         }
         // If we are in attack mode let the user attack
         else {
@@ -51,11 +55,6 @@ export abstract class Gun {
         // If we have an attachment make sure it's added to the unit
         if (this.attachment) {
             this.attachment.onEquip(this, caster);
-        }
-        
-        if (this.remainingCooldown && this.remainingCooldown > 0) {
-            // SetAbilityCooldown
-            print("Reforged better add a way to set cooldowns remaining");
         }
     }
 
@@ -71,7 +70,7 @@ export abstract class Gun {
 
             // If we are cast mode set this remaning cooldown
             if (weaponModule.WEAPON_MODE === 'CAST') {
-                this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
+                // this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
             }
             else {
                 UnitAddAbility(this.equippedTo.unit.handle, FourCC('Abun'));
@@ -108,7 +107,7 @@ export abstract class Gun {
     protected abstract applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember): void;
 
     public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
-        this.remainingCooldown = weaponModule.game.getTimeStamp();
+        // this.remainingCooldown = weaponModule.game.getTimeStamp();
     }
 
     abstract getDamage(weaponModule: WeaponModule, caster: Crewmember): number;

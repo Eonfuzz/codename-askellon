@@ -28,33 +28,34 @@ ${!weapon.attachment
 }`;
 
 export const LASER_EXTENDED = (damage: number, currentCharges: number, accuracyMin: number, accuracyMax: number) => `
-${COL_MISC}Fluff TODO|r
+${COL_MISC}The Prismatic Accelerator is a work of engineering art, flash-forging plas rounds to shatter enemy armour, collecting impact data from each shot to enhance the next round. The sheer amount of data being collected means that storage is all but impossible, so an accurate operator and a continual stream of telemetry is vital for good results.|r
 
-Discharges a focused pulse of prismatic energy, dealing ${COL_GOOD}${damage} damage|r.
-The inbuilt A.I recalculates pulse intensity on impact; successive hits increase this weapon's damage by ${COL_GOOD}50%|r.
+Hurls a plas bolt dealing ${COL_GOOD}${damage} energy damage|r.
+The inbuilt A.I recalculates design efficiency on impact; successive hits increase this weapon's damage by ${COL_GOOD}50%|r.
 
+${COL_ATTATCH}Missing a bolt ruins previous calculations and resets damage bonus|r
 ${COL_MISC}2 second cooldown|r
 `;
 
 export const LASER_ITEM = (weapon: Gun, damage: any) => 
-`${COL_MISC}Fluff todo|r
+`${COL_MISC}The Prismatic Accelerator is a work of engineering art, flash-forging plas rounds to shatter enemy armour, collecting impact data from each shot to enhance the next round. The sheer amount of data being collected means that storage is all but impossible, so an accurate operator and a continual stream of telemetry is vital for good results.|r
 
-Attached: ${COL_ATTATCH}Diode Ejector|r
+Attached: ${COL_ATTATCH}Fracture Round|r
 
 Self amplifying rifle that increases in damage with each successive hit.
 ${COL_GOOD}- Bad base damage 
 - Missing a shot resets intensity
-- |r${COL_ATTATCH}Diode Ejector|r ${COL_GOOD}can deal massive damage|r
+- |r${COL_ATTATCH}Fracture Round|r ${COL_GOOD}can deal massive damage|r
 
-${COL_ATTATCH}Diode Ejector|r ${COL_GOLD}cannot be removed.|r
+${COL_ATTATCH}Fracture Round|r ${COL_GOLD}cannot be removed.|r
 `;
 
 export const SHOTGUN_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
 `|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
-Fires a blast of 26 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
-Every bullet after the first deals 50% less damage.
+Fires a blast of 10 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+Every bullet after the first deals 25% less damage.
 `;
 
 export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 

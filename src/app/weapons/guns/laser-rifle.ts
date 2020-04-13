@@ -17,6 +17,7 @@ import { Log } from "../../../lib/serilog/serilog";
 import { LASER_ITEM_ID, LASER_ABILITY_ID } from "../weapon-constants";
 import { DiodeEjector } from "../attachment/diode-ejector";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
+import { EVENT_TYPE } from "app/events/event";
 
 const INTENSITY_MAX = 4;
 
@@ -96,6 +97,11 @@ export class LaserRifle extends Gun {
                     PlayNewSoundOnUnit("Sounds\\LaserConfirmedHit.mp3", caster.unit, 80);
                 }
                 this.updateTooltip(weaponModule, caster);
+
+                // Broadcast item equip event
+                weaponModule.game.event.sendEvent(EVENT_TYPE.MINOR_UPGRADE_RESEARCHED, { 
+                    source: this.equippedTo.unit, crewmember: caster
+                });
             })
 
         weaponModule.addProjectile(projectile);
