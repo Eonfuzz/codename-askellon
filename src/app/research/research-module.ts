@@ -8,6 +8,7 @@ import { Log } from "lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/force-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
+import { EVENT_TYPE } from "app/events/event";
 
 /**
  * Handles research and upgrades
@@ -56,6 +57,11 @@ import { ROLE_TYPES } from "resources/crewmember-names";
                 const crewmember = this.game.crewModule.getCrewmemberForPlayer(player);
 
                 if (pForce && crewmember) this.rewardResearchXP(pForce, crewmember, player, techUnlocked);
+
+                // Broadcast item equip event
+                this.game.event.sendEvent(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { 
+                    source: unit, data: { researched: techUnlocked }
+                });
             }
             // Otherwise just update it for a single player
             else {
@@ -63,6 +69,11 @@ import { ROLE_TYPES } from "resources/crewmember-names";
                 const crew = this.game.crewModule.getCrewmemberForPlayer(MapPlayer.fromHandle(p));
                 if (crew) {
                     crew.onPlayerFinishUpgrade();
+
+                    // Broadcast item equip event
+                    this.game.event.sendEvent(EVENT_TYPE.MINOR_UPGRADE_RESEARCHED, { 
+                        source: unit, crewmember: crew, data: { researched: techUnlocked }
+                    });
                 }
             }
         })

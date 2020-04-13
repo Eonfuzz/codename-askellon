@@ -20,6 +20,7 @@ import { EventModule } from "./events/event-module";
 import { SecurityModule } from "./station/security-module";
 import { Log } from "lib/serilog/serilog";
 import { DynamicBuffModule } from "./buff/dynamic-buff-module";
+import { TooltipModule } from "./tooltip/tooltip-module";
 
 export class Game {
     // Helper objects
@@ -39,6 +40,8 @@ export class Game {
     public researchModule: ResearchModule;
     public chatModule: ChatModule;
     public event: EventModule;
+    public tooltips: TooltipModule;
+
     public stationSecurity: SecurityModule;
     public buffModule: DynamicBuffModule;
 
@@ -63,6 +66,7 @@ export class Game {
         this.timedEventQueue    = new TimedEventQueue(this);
         this.gameTimeElapsed    = new GameTimeElapsed();
         this.event              = new EventModule();
+        this.tooltips           = new TooltipModule(this);
 
         // Load modules after all helper objects
         this.buffModule         = new DynamicBuffModule(this);
@@ -90,6 +94,7 @@ export class Game {
         this.buffModule.init();
         this.researchModule.initialise();
         this.geneModule.initGenes();
+        this.tooltips.initialise();
         
         // Here be dragons, old code is below and needs update
         this.galaxyModule.initSectors();

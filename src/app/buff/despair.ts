@@ -86,7 +86,10 @@ export class Despair extends DynamicBuff {
             }
 
             // Publish events
-            game.event.sendEvent(EVENT_TYPE.CREW_GAIN_DESPAIR, { crewmember: this.crewmember, instance: this });
+            game.event.sendEvent(EVENT_TYPE.CREW_GAIN_DESPAIR, { 
+                source: this.crewmember.unit, 
+                crewmember: this.crewmember, data: { instance: this }
+            });
         }
         else {
             this.crewmember.unit.removeAbility(ABIL_ACCURACY_PENALTY_30);
@@ -102,7 +105,7 @@ export class Despair extends DynamicBuff {
                 ResumeMusic();
             }
             
-            game.event.sendEvent(EVENT_TYPE.CREW_LOSE_DESPAIR, { crewmember: this.crewmember, instance: this });
+            game.event.sendEvent(EVENT_TYPE.CREW_LOSE_DESPAIR, { source: this.crewmember.unit, crewmember: this.crewmember, data: { instance: this } });
         }
     }
 }

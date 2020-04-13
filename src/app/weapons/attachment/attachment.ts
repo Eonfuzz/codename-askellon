@@ -3,6 +3,7 @@ import { Gun } from "../guns/gun";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
 import { Item } from "w3ts/handles/item";
+import { Game } from "app/game";
 
 /** @noSelfInFile **/
 
@@ -10,28 +11,31 @@ import { Item } from "w3ts/handles/item";
  * It attaches to a gun, generally supplies an ability to the weapon
  */
 export abstract class Attachment {
+    public game: Game;
 
     protected attachedTo: Gun | undefined;
     protected item: item | undefined;
     protected itemId: number;
     public name: string = '';
 
-    constructor(item: item) {
+    constructor(game: Game, item: item) {
         this.item = item;
         this.itemId = GetItemTypeId(item);
+        this.game = game;
     }
 
     /**
      * Returns true if it successfully equiped
      * @param weapon 
      */
-    public attachTo(weapon: Gun): boolean {
-        const canAttach = this.onAttach(weapon);
+    public attachTo(weapon: Gun, crewmember: Crewmember): boolean {
+        const canAttach = this.onAttach(weapon, crewmember);
         if (canAttach) {
             if (weapon.equippedTo) {
                 const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", weapon.equippedTo.unit, 50);
             }
             const didAttach = weapon.attach(this);
+
             // Remove the item instance
             if (didAttach) {
                 this.item && RemoveItem(this.item);
@@ -67,7 +71,7 @@ export abstract class Attachment {
     /**
      * Returns true if we did attach successfully
      */
-    protected abstract onAttach(weapon: Gun): boolean;
+    protected abstract onAttach(weapon: Gun, crewmember: Crewmember): boolean;
 
     /**
      * Removes this from the attached wepaon
@@ -78,11 +82,11 @@ export abstract class Attachment {
      * We are re-eqiupping a weapon with this attachment
      * @param weapon 
      */
-    public abstract onEquip(weapon: Gun): void;
+    public abstract onEquip(weapon: Gun, crewmember: Crewmember): void;
 
     /**
      * We are re-removing a weapon with this attachment
      * @param weapon 
      */
-    public abstract onUnequip(weapon: Gun): void;
+    public abstract onUnequip(weapon: Gun, crewmember: Crewmember): void;
 }

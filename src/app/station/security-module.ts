@@ -68,8 +68,8 @@ export class SecurityModule {
                 unit.paused = true;
                 // Publish event that a security object is damaged
                 this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
-                    unit: Unit.fromHandle(u),
-                    source: Unit.fromHandle(source)
+                    source: Unit.fromHandle(source),
+                    data: { damaged:Unit.fromHandle(u) }
                 });
             }
         }
@@ -97,8 +97,8 @@ export class SecurityModule {
             unit.paused = false;
             // Publish event that a security object is repaired
             this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_ENABLED, {
-                unit: unit,
-                source: Unit.fromHandle(source)
+                source: Unit.fromHandle(source),
+                data: { damaged:Unit.fromHandle(u) }
             });
         }
     }

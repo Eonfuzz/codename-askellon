@@ -1,6 +1,8 @@
 import { Gun } from "./gun";
 import { WeaponModule } from "../weapon-module";
 import { Unit } from "w3ts/handles/unit";
+import { Crewmember } from "app/crewmember/crewmember-type";
+import { CrewModule } from "app/crewmember/crewmember-module";
 
 /** @noSelfInFile **/
 

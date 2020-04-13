@@ -119,9 +119,6 @@ export class Crewmember extends ArmableUnit {
 
     updateTooltips(weaponModule: WeaponModule) {
         if (this.weapon) this.weapon.updateTooltip(weaponModule, this);
-        
-        // Update our tooltips via our force
-        this.force.updateForceTooltip(weaponModule.game, this);
     }
 
     addExperience(game: Game, amount: number) {
@@ -143,6 +140,16 @@ export class Crewmember extends ArmableUnit {
 
     setVisionType(type: VISION_TYPE) {
         this.visionType = type;
+    }
+
+    getIncome() {
+        const crewModified = 1.0; // TODO
+        const baseIncome = 200; // TODO
+        const incomePerLevel = 50; // TODO
+
+        const crewLevel = this.unit.getHeroLevel() - 1;
+        const crewExperience = this.unit.experience;
+        return baseIncome + incomePerLevel * crewLevel;        
     }
 
     /**

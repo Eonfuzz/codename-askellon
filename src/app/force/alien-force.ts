@@ -6,7 +6,7 @@ import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { TRANSFORM_TOOLTIP } from "resources/ability-tooltips";
+import { TRANSFORM_TOOLTIP, alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
@@ -60,20 +60,20 @@ export class AlienForce extends ForceType {
         this.alienDealsDamageTrigger.addAction(() => this.onAlienDealsDamage());
     }
     
-    makeAlien(game: Game, who: Unit, owner: MapPlayer): Unit {
-        const unitLocation = vectorFromUnit(who.handle);
+    makeAlien(game: Game, who: Crewmember, owner: MapPlayer): Unit {
+        const unitLocation = vectorFromUnit(who.unit.handle);
         // const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
 
         let alien = this.playerAlienUnits.get(owner);
         // Is this unit being added to aliens for the first time
         if (!alien) {
             // Add the transform ability
-            who.addAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
+            who.unit.addAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
             alien = Unit.fromHandle(CreateUnit(owner.handle, 
                 this.currentAlienEvolution, 
                 unitLocation.x, 
                 unitLocation.y, 
-                who.facing
+                who.unit.facing
             ));
             alien.invulnerable = true;
             alien.pauseEx(true);
@@ -82,6 +82,7 @@ export class AlienForce extends ForceType {
 
             // Register it for damage event
             this.registerAlienTakesDamageExperience(alien);
+            game.tooltips.registerTooltip(alien, alienTooltipToHuman);
             // this.registerAlienDealsDamage(alien);
             // Also register the crewmember for the event
             // this.registerAlienDealsDamage(who);
@@ -91,9 +92,11 @@ export class AlienForce extends ForceType {
             if (crewmember) crewmember.setVisionType(VISION_TYPE.ALIEN);
             
             // Additionally force the transform ability to start on cooldown
-            BlzStartUnitAbilityCooldown(who.handle, ABIL_TRANSFORM_HUMAN_ALIEN,
-                who.getAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
+            BlzStartUnitAbilityCooldown(who.unit.handle, ABIL_TRANSFORM_HUMAN_ALIEN,
+                who.unit.getAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
             );
+            // Add ability tooltip
+            game.tooltips.registerTooltip(who, alienTooltipToAlien);
 
             // Make brown
             alien.color = PLAYER_COLOR_BROWN;
@@ -104,7 +107,7 @@ export class AlienForce extends ForceType {
             this.playerAlienUnits.set(owner, alien);
 
             // Post event
-            game.event.sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { crewmember: crewmember, alien: alien });
+            game.event.sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { source: alien, crewmember: crewmember });
             return alien;
         }
         
@@ -134,7 +137,7 @@ export class AlienForce extends ForceType {
     /**
      * TODO
      */
-    addPlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
+    addPlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer) {
         super.addPlayerMainUnit(game, whichUnit, player);
 
         this.makeAlien(game, whichUnit, player);
@@ -143,9 +146,13 @@ export class AlienForce extends ForceType {
     }
 
 
-    removePlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer) {
+    removePlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer) {
         super.removePlayerMainUnit(game, whichUnit, player);
-        whichUnit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
+        whichUnit.unit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
+
+        // Remove ability tooltip
+        game.tooltips.unregisterTooltip(whichUnit, alienTooltipToHuman);
+        game.tooltips.unregisterTooltip(this.getAlienFormForPlayer(player), alienTooltipToHuman);
     }
 
     transform(game: Game, who: MapPlayer, toAlien: boolean): Unit {
@@ -158,8 +165,8 @@ export class AlienForce extends ForceType {
         if (!alien) throw new Error("AlienForce::transform No alien for player!");
         if (!unit) throw new Error("AlienForce::transform No human for player!");
 
-        const toHide = toAlien ? unit : alien;
-        const toShow = toAlien ? alien : unit;
+        const toHide = toAlien ? unit.unit : alien;
+        const toShow = toAlien ? alien : unit.unit;
 
         // get the hiding unit's location and facing
         const facing = toHide.facing;
@@ -194,13 +201,13 @@ export class AlienForce extends ForceType {
             this.forceModule.stationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
 
             // Post event
-            game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, alien: alien });
+            game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
         }
         else {
             this.forceModule.repairAllAlliances(who);
 
             // Post event
-            game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, alien: alien });
+            game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
         }
 
         if (unitWasSelected) SelectUnitAddForPlayer(toShow.handle, who.handle);
@@ -211,34 +218,6 @@ export class AlienForce extends ForceType {
 
     isPlayerTransformed(who: MapPlayer) {
         return !!this.playerIsTransformed.get(who);
-    }
-
-    /**
-     * Updates the forces tooltip
-     * does nothing by default
-     * @param game 
-     * @param whichUnit 
-     * @param whichPlayer 
-     */
-    public updateForceTooltip(game: Game, whichCrew: Crewmember) {
-        const income = game.crewModule.calculateIncome(whichCrew);
-
-        const tooltip = TRANSFORM_TOOLTIP(
-            income, 
-            true, 
-            this.getFormName(),
-            whichCrew.role
-        );
-        const tfAlien = TRANSFORM_TOOLTIP(
-            income, 
-            false, 
-            this.getFormName(),
-            whichCrew.role
-        );
-        if (GetLocalPlayer() === whichCrew.player.handle) {
-            BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_HUMAN_ALIEN, tooltip, 0);
-            BlzSetAbilityExtendedTooltip(ABIL_TRANSFORM_ALIEN_HUMAN, tfAlien, 0);
-        }
     }
 
     /**

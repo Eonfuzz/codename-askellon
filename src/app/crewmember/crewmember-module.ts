@@ -97,7 +97,7 @@ export class CrewModule {
             this.timeSinceLastIncome = 0;
             const amount = INCOME_EVERY / 60;
             this.CREW_MEMBERS.forEach(crew => {
-                const calculatedIncome = MathRound(amount * this.calculateIncome(crew));
+                const calculatedIncome = MathRound(amount * crew.getIncome());
                 crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome);
             });
         }
@@ -115,13 +115,12 @@ export class CrewModule {
         crewmember.setName(name);
         crewmember.setPlayer(player);
         this.playerCrewmembers.set(player, crewmember);
-
             
         this.CREW_MEMBERS.push(crewmember);
         this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         // Add the unit to its force
-        force.addPlayerMainUnit(this.game, nUnit, player);
+        force.addPlayerMainUnit(this.game, crewmember, player);
         SelectUnitAddForPlayer(crewmember.unit.handle, player.handle);
         PanCameraToTimedForPlayer(player.handle, nUnit.x, nUnit.y, 0);
         
@@ -163,17 +162,7 @@ export class CrewModule {
 
         return crewmember;
     }
-
-    calculateIncome(crew: Crewmember) {
-        const crewModified = 1.0; // TODO
-        const baseIncome = 200; // TODO
-        const incomePerLevel = 50; // TODO
-
-        const crewLevel = crew.unit.getHeroLevel() - 1;
-        const crewExperience = crew.unit.experience;
-        return baseIncome + incomePerLevel * crewLevel;
-    }
-    
+   
 
     getCrewmemberRole() {
         const i = Math.floor( Math.random() * this.allJobs.length );

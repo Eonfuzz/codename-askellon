@@ -83,7 +83,7 @@ export class WorldModule {
 
         // If the traversing unit was alien or crewmember, call the floor change event
         if ((crew && crew.unit === unit) || alien == unit) 
-            this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { crewmember: crew });
+            this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { source: unit, crewmember: crew as Crewmember });
         
     }
 

@@ -3,6 +3,7 @@ import { Attachment } from "./attachment";
 import { Log } from "../../../lib/serilog/serilog";
 import { BURST_RIFLE_ABILITY_ID, EMS_RIFLING_ABILITY_ID, LASER_ABILITY_ID } from "../weapon-constants";
 import { ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
+import { Crewmember } from "app/crewmember/crewmember-type";
 
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
@@ -14,7 +15,7 @@ export class DiodeEjector extends Attachment {
     /**
      * Returns true if we did attach successfully
      */
-    protected onAttach(weapon: Gun): boolean {
+    protected onAttach(weapon: Gun, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === LASER_ABILITY_ID) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
@@ -31,7 +32,7 @@ export class DiodeEjector extends Attachment {
         // Should never be de-attached
     };
 
-    public onEquip(weapon: Gun) {
+    public onEquip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
             BlzSetUnitAbilityCooldown(weapon.equippedTo.unit.handle, ABIL_WEP_DIODE_EJ, 0, 
@@ -40,7 +41,7 @@ export class DiodeEjector extends Attachment {
         }
     }
 
-    public onUnequip(weapon: Gun) {
+    public onUnequip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             weapon.equippedTo.unit.removeAbility(ABIL_WEP_DIODE_EJ);
         }

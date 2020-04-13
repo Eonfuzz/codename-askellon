@@ -2,6 +2,7 @@ import { Gun } from "../guns/gun";
 import { Attachment } from "./attachment";
 import { Log } from "../../../lib/serilog/serilog";
 import { BURST_RIFLE_ABILITY_ID, EMS_RIFLING_ABILITY_ID, SNIPER_ABILITY_ID, SHOTGUN_ABILITY_ID } from "../weapon-constants";
+import { Crewmember } from "app/crewmember/crewmember-type";
 
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
@@ -13,7 +14,7 @@ export class RailRifle extends Attachment {
     /**
      * Returns true if we did attach successfully
      */
-    protected onAttach(weapon: Gun): boolean {
+    protected onAttach(weapon: Gun, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === BURST_RIFLE_ABILITY_ID || 
             weapon.getAbilityId() === SHOTGUN_ABILITY_ID
         ) {
@@ -34,13 +35,13 @@ export class RailRifle extends Attachment {
         }
     };
 
-    public onEquip(weapon: Gun) {
+    public onEquip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             UnitAddAbility(weapon.equippedTo.unit.handle, SNIPER_ABILITY_ID);
         }
     }
 
-    public onUnequip(weapon: Gun) {
+    public onUnequip(weapon: Gun, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             UnitRemoveAbility(weapon.equippedTo.unit.handle, SNIPER_ABILITY_ID);
         }

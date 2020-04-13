@@ -50,7 +50,7 @@ export abstract class Gun {
 
         // If we have an attachment make sure it's added to the unit
         if (this.attachment) {
-            this.attachment.onEquip(this);
+            this.attachment.onEquip(this, caster);
         }
         
         if (this.remainingCooldown && this.remainingCooldown > 0) {
@@ -78,7 +78,8 @@ export abstract class Gun {
             }
 
             this.equippedTo.onWeaponRemove(weaponModule, this);
-            if (this.attachment) this.attachment.onUnequip(this);
+            // Handle no crewmember?
+            if (this.attachment) this.attachment.onUnequip(this, weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit) as Crewmember);
             this.equippedTo = undefined;
         }
     }

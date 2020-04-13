@@ -20,6 +20,7 @@ import { Shotgun, InitShotgun } from "./guns/shotgun";
 import { RailRifle } from "./attachment/rail-rifle";
 import { vectorFromUnit } from "app/types/vector2";
 import { DragonfireBarrelAttachment } from "./attachment/dragonfire-barrel";
+import { EVENT_TYPE } from "app/events/event";
 
 
 export class WeaponModule {
@@ -196,6 +197,11 @@ export class WeaponModule {
             if (weaponForItem) {
                 this.guns.push(weaponForItem);
                 weaponForItem.onAdd(this, unit);
+
+                // Broadcast item equip event
+                this.game.event.sendEvent(EVENT_TYPE.WEAPON_EQUIP, { 
+                    source: unit.unit, crewmember: unit, data: { weapon: weaponForItem }
+                });
             }
         }
 
@@ -204,9 +210,14 @@ export class WeaponModule {
             if (unit.weapon) {
                 const attachment = this.createAttachmentForId(item);
                 if (attachment) {
-                    attachment.attachTo(unit.weapon);
+                    attachment.attachTo(unit.weapon, unit);
                     unit.updateTooltips(this);
-                }
+                    
+                    // Broadcast item equip event
+                    this.game.event.sendEvent(EVENT_TYPE.WEAPON_EQUIP, { 
+                        source: unit.unit, crewmember: unit, data: { attachment: attachment }
+                    });
+                }                
             }
         }
 
@@ -333,7 +344,7 @@ export class WeaponModule {
         if (itemId === BURST_RIFLE_ITEM_ID) 
             return new BurstRifle(item, unit);
         else if (itemId === LASER_ITEM_ID) 
-            return new LaserRifle(item, unit);
+            return new LaserRifle(this.game, item, unit);
         else if (itemId === SHOTGUN_ITEM_ID) 
             return new Shotgun(item, unit);
         return undefined;
@@ -342,13 +353,13 @@ export class WeaponModule {
     createAttachmentForId(item: item) : Attachment | undefined {
         let itemId = GetItemTypeId(item);
         if (itemId == HIGH_QUALITY_POLYMER_ITEM_ID)
-            return new HighQualityPolymer(item);
+            return new HighQualityPolymer(this.game, item);
         if (itemId == EMS_RIFLING_ITEM_ID)
-            return new EmsRifling(item);
+            return new EmsRifling(this.game, item);
         if (itemId == SNIPER_ITEM_ID)
-            return new RailRifle(item);
+            return new RailRifle(this.game, item);
         if (itemId == AT_ITEM_DRAGONFIRE_BLAST)
-            return new DragonfireBarrelAttachment(item);
+            return new DragonfireBarrelAttachment(this.game, item);
         return undefined;
     }
 

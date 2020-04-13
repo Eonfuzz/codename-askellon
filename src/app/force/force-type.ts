@@ -12,7 +12,7 @@ const GENERIC_CHAT_SOUND_REF = new SoundRef('Sound/ChatSound', false);
 export abstract class ForceType {
     // Keep track of players in force
     protected players: Array<MapPlayer> = [];
-    protected playerUnits: Map<MapPlayer, Unit> = new Map();
+    protected playerUnits: Map<MapPlayer, Crewmember> = new Map();
 
     protected forceModule: ForceModule;
     abstract name: string;
@@ -43,11 +43,11 @@ export abstract class ForceType {
         }
     }
 
-    public addPlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer): void {
+    public addPlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer): void {
         this.playerUnits.set(player, whichUnit);
     };
 
-    public removePlayerMainUnit(game: Game, whichUnit: Unit, player: MapPlayer): void {
+    public removePlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer): void {
         this.playerUnits.delete(player);
     };
 
@@ -69,17 +69,6 @@ export abstract class ForceType {
         whichUnit.unit.suspendExperience(false);
         whichUnit.unit.addExperience(MathRound(amount), true);
         whichUnit.unit.suspendExperience(true);
-    }
-
-    /**
-     * Updates the forces tooltip
-     * does nothing by default
-     * @param game 
-     * @param whichUnit 
-     * @param whichPlayer 
-     */
-    public updateForceTooltip(game: Game, whichUnit: Crewmember) {
-
     }
 
     /**

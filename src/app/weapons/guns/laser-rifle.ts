@@ -30,12 +30,12 @@ export class LaserRifle extends Gun {
     private intensity = 0;
     private collideDict = new Map<number, boolean>();
 
-    constructor(item: item, equippedTo: ArmableUnit) {
+    constructor(game: Game, item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 100;
         this.bulletDistance = 2100;
-        this.attachment = new DiodeEjector(item);
+        this.attachment = new DiodeEjector(game, item);
     }
 
     public applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember) {

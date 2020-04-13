@@ -17,7 +17,7 @@ export class HighQualityPolymer extends Attachment {
     /**
      * Returns true if we did attach successfully
      */
-    protected onAttach(weapon: Gun): boolean {
+    protected onAttach(weapon: Gun, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === BURST_RIFLE_ABILITY_ID) {
             if (weapon.equippedTo) {
                 UnitAddAbility(weapon.equippedTo.unit.handle, HIGH_QUALITY_POLYMER_ABILITY_ID);
@@ -36,14 +36,14 @@ export class HighQualityPolymer extends Attachment {
         }
     };
 
-    public onEquip(weapon: Gun) {
+    public onEquip(weapon: Gun, crewmember: Crewmember) {
         Log.Information("Re-equiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
             UnitAddAbility(weapon.equippedTo.unit.handle, HIGH_QUALITY_POLYMER_ABILITY_ID);
         }
     }
 
-    public onUnequip(weapon: Gun) {
+    public onUnequip(weapon: Gun, crewmember: Crewmember) {
         Log.Information("Unequiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
             UnitRemoveAbility(weapon.equippedTo.unit.handle, HIGH_QUALITY_POLYMER_ABILITY_ID);

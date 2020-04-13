@@ -1,3 +1,6 @@
+import { Unit } from "w3ts/index";
+import { Crewmember } from "app/crewmember/crewmember-type";
+
 /**
  * List of all the possible event types
  */
@@ -22,17 +25,30 @@ export enum EVENT_TYPE {
     STATION_SECURITY_ENABLED,
     // STATION_WARP,
     // STATION_ZONE_POWER_OUT,
+
+    MAJOR_UPGRADE_RESEARCHED,
+    MINOR_UPGRADE_RESEARCHED,
+
+    HERO_LEVEL_UP,
+    WEAPON_EQUIP,
+    WEAPON_UNEQUIP
 }
 
 export interface Event<dataType> {
     data: dataType;
 }
 
+export interface EventData {
+    source: Unit,
+    crewmember?: Crewmember,
+    data?: any
+}
+
 export class EventListener {
     eventType: EVENT_TYPE;
-    onEvent: (data: object) => void;
+    onEvent: (data: EventData) => void;
 
-    constructor(type: EVENT_TYPE, onEvent: (self: EventListener, data: object) => void) {
+    constructor(type: EVENT_TYPE, onEvent: (self: EventListener, data: EventData) => void) {
         this.eventType = type;
         this.onEvent = (data) => onEvent(this, data);
     }
