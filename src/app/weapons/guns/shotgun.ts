@@ -48,26 +48,24 @@ export class Shotgun extends Gun {
 
         const unit = caster.unit.handle;
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
-        const NUM_BULLETS = 10;
+        const NUM_BULLETS = 6;
 
         let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
         const angleDeg = casterLoc.angle2Dto(targetLocation);
 
         const deltaLocs = getPointsInRangeWithSpread(
-            angleDeg - 15,
-            angleDeg + 15,
+            angleDeg - 18,
+            angleDeg + 18,
             NUM_BULLETS,
             this.bulletDistance,
             1.3
         );
 
-        const centerTargetLoc = casterLoc.projectTowards2D(angleDeg, this.bulletDistance*1.4);
+        const centerTargetLoc = casterLoc.projectTowards2D(angleDeg, this.bulletDistance*1.9);
         centerTargetLoc.z = getZFromXY(centerTargetLoc.x, centerTargetLoc.y);
 
-        this.fireProjectile(weaponModule, caster, centerTargetLoc, true)
-            .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => {
-                this.onProjectileCollide(weaponModule, projectile, collidesWith);
-            });
+        // Do nothing if the central projectile hits
+        this.fireProjectile(weaponModule, caster, centerTargetLoc, true);
         
         let bulletsHit = 0;
         deltaLocs.forEach((loc, index) => {
@@ -99,12 +97,12 @@ export class Shotgun extends Gun {
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),
             isCentralProjectile ? 0.6 : 1.4
-        ), 250);
+        ), 100);
 
         weaponModule.addProjectile(projectile);
         return projectile
-            .setCollisionRadius(15)
-            .setVelocity(2400);
+            .setCollisionRadius(20)
+            .setVelocity(isCentralProjectile ? 2400 : 2250);
     }
     
     private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
@@ -115,7 +113,7 @@ export class Shotgun extends Gun {
             this.unitsHit.set(collidesWith, timesUnitHit + 1);
 
             if (crewmember) {
-                const damage = this.getDamage(weaponModule, crewmember) / Pow(1.7, timesUnitHit);
+                const damage = this.getDamage(weaponModule, crewmember) / Pow(1.25, timesUnitHit);
                 UnitDamageTarget(
                     projectile.source, 
                     collidesWith, 

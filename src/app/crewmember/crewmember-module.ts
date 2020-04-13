@@ -114,9 +114,10 @@ export class CrewModule {
 
         crewmember.setName(name);
         crewmember.setPlayer(player);
+
         this.playerCrewmembers.set(player, crewmember);
-            
         this.CREW_MEMBERS.push(crewmember);
+        
         this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         // Add the unit to its force

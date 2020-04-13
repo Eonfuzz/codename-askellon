@@ -21,6 +21,7 @@ import { SecurityModule } from "./station/security-module";
 import { Log } from "lib/serilog/serilog";
 import { DynamicBuffModule } from "./buff/dynamic-buff-module";
 import { TooltipModule } from "./tooltip/tooltip-module";
+import { OptResult } from "./force/opt-selection";
 
 export class Game {
     // Helper objects
@@ -109,13 +110,20 @@ export class Game {
         this.stationSecurity.initialise();
 
         // Start role selection
-        this.forceModule.getOpts((optResults) => {
+        this.forceModule.getOpts((optResults) => this.postOptResults(optResults));
+    }
+
+    postOptResults(optResults: OptResult[]) {
+        try {
             // Init forces
             this.forceModule.initForcesFor(optResults);
 
             // Init crew
             this.crewModule.initCrew(this.forceModule.getForces());
-        });
+        }
+        catch (e) {
+            Log.Error(e);
+        }
     }
 
     /**

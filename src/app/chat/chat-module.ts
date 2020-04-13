@@ -76,8 +76,8 @@ export class ChatModule {
          * Create a fade tracking trigger loop
          */
         const fadeTrig = new Trigger();
-        fadeTrig.registerTimerEvent(0.3, true);
-        fadeTrig.addAction(() => this.updateFade(0.3));
+        fadeTrig.registerTimerEvent(0.1, true);
+        fadeTrig.addAction(() => this.updateFade(0.1));
     }
 
     updateFade(deltaTime: number) {

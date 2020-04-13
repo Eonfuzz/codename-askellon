@@ -27,6 +27,10 @@ export class TooltipModule {
             new EventListener(EVENT_TYPE.HERO_LEVEL_UP, (self, data) => this.updateTooltips(data)),
             // Update a tooltip for a single unit on a minor upgrade
             new EventListener(EVENT_TYPE.MINOR_UPGRADE_RESEARCHED, (self, data) => this.updateTooltips(data)),
+            // Update a tooltip on alien transform
+            new EventListener(EVENT_TYPE.CREW_BECOMES_ALIEN, (self, data) => this.updateTooltips(data)),
+            // Update a tooltip on alien transform
+            new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, (self, data) => this.updateTooltips(data)),
             // Update a tooltip for all units on major upgrade
             new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => this.updateAllTooltip(data))
         ]);

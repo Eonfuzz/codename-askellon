@@ -54,8 +54,8 @@ export const SHOTGUN_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any
 `|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
-Fires a blast of 10 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
-Every bullet after the first deals 25% less damage.
+Fires a blast of 6 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+Every bullet after the first deals 20% less damage.
 `;
 
 export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 

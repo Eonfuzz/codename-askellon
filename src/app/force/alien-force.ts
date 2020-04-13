@@ -82,7 +82,7 @@ export class AlienForce extends ForceType {
 
             // Register it for damage event
             this.registerAlienTakesDamageExperience(alien);
-            game.tooltips.registerTooltip(alien, alienTooltipToHuman);
+            game.tooltips.registerTooltip(who, alienTooltipToHuman);
             // this.registerAlienDealsDamage(alien);
             // Also register the crewmember for the event
             // this.registerAlienDealsDamage(who);
@@ -107,7 +107,8 @@ export class AlienForce extends ForceType {
             this.playerAlienUnits.set(owner, alien);
 
             // Post event
-            game.event.sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { source: alien, crewmember: crewmember });
+            if (crewmember)
+                game.event.sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { source: alien, crewmember: crewmember });
             return alien;
         }
         
@@ -235,10 +236,16 @@ export class AlienForce extends ForceType {
         const alien = this.playerAlienUnits.get(whichUnit.player);
         if (!alien) return; // Do nothing if no alien for player
 
+        let levelBefore = alien.level;
+        
         // Apply XP gain to alien form
         alien.suspendExperience(false);
         alien.addExperience(MathRound(amount), true);
         alien.suspendExperience(true);
+    
+        if (levelBefore !== alien.level) {
+            game.event.sendEvent(EVENT_TYPE.HERO_LEVEL_UP, { source: alien });
+        }
     }
 
     public getAlienFormForPlayer(who: MapPlayer) {

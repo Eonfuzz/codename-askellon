@@ -6,6 +6,7 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { PLAYER_COLOR } from "lib/translators";
 import { SoundRef } from "app/types/sound-ref";
 import { MapPlayer, Unit, Trigger } from "w3ts";
+import { EVENT_TYPE } from "app/events/event";
 
 
 const GENERIC_CHAT_SOUND_REF = new SoundRef('Sound/ChatSound', false);
@@ -65,10 +66,16 @@ export abstract class ForceType {
      * @param amount 
      */
     public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
+        let levelBefore = whichUnit.unit.level;
+
         // Just apply the xp earned
         whichUnit.unit.suspendExperience(false);
         whichUnit.unit.addExperience(MathRound(amount), true);
         whichUnit.unit.suspendExperience(true);
+
+        if (levelBefore !== whichUnit.unit.level) {
+            game.event.sendEvent(EVENT_TYPE.HERO_LEVEL_UP, { source: whichUnit.unit, crewmember: whichUnit });
+        }
     }
 
     /**

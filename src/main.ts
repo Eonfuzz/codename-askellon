@@ -18,9 +18,12 @@ function tsMain() {
         const gameStartTimer = new Trigger();
         gameStartTimer.registerTimerEvent(0.1, false);
         gameStartTimer.addAction(() => {
-            xpcall(() => AksellonSector.startGame(), (err: any) => {
-                Log.Error(err);
-            });
+            try {
+                AksellonSector.startGame()
+            }
+            catch (e) {
+                Log.Error(e)
+            }
         });
     }
 

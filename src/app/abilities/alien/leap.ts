@@ -7,7 +7,7 @@ import { Unit } from "w3ts/handles/unit";
 
 
 const LEAP_ID = FourCC('LEAP');
-const LEAP_DISTANCE_MAX = 400;
+const LEAP_DISTANCE_MAX = 600;
 
 export class LeapAbility implements Ability {
 
@@ -63,7 +63,7 @@ export class LeapAbility implements Ability {
         else {
             targetLoc.x = GetSpellTargetX();
             targetLoc.y = GetSpellTargetY();
-            targetLoc.z = abMod.game.getZFromXY(targetLoc.x, targetLoc.y) + 10;
+            targetLoc.z = casterLoc.z + 10;
         }
         
         let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", casterLoc.x, casterLoc.y);
@@ -94,7 +94,6 @@ export class LeapAbility implements Ability {
 
         const angle = Rad2Deg(Atan2(targetLoc.y-casterLoc.y, targetLoc.x-casterLoc.x));
         BlzSetUnitFacingEx(this.casterUnit, angle);
-        SetUnitAnimation(this.casterUnit, "attack");
         SetUnitTimeScale(this.casterUnit, 0.3);
 
         // Register the leap and its callback
@@ -102,7 +101,7 @@ export class LeapAbility implements Ability {
             this.casterUnit,
             targetLoc,
             45,
-            3
+            4
         ).onFinish((leapEntry) => {
             this.leapExpired = true;
         });
@@ -121,6 +120,11 @@ export class LeapAbility implements Ability {
     }
 
     public process(abMod: AbilityModule, delta: number) {
+        // Bug fix, play this here to avoid animation locking
+        if (this.timeElapsed == 0) {
+            SetUnitAnimation(this.casterUnit, "attack");
+        }
+        this.timeElapsed += delta;
         return !this.leapExpired;
     };
 
