@@ -7,7 +7,7 @@ import { LIGHT_DEST_ID } from "../types/widget-id";
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer } from "w3ts";
 import { Game } from "app/game";
-import { EventListener, EVENT_TYPE } from "app/events/event";
+import { EventListener, EVENT_TYPE, EventData } from "app/events/event";
 import { getZFromXY } from "lib/utils";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
@@ -82,12 +82,12 @@ export class ShipZone extends Zone {
         // Hook into station destruction events
         game.event.addListener(
             new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, 
-            (self, data: any) => this.onGeneratorDestroy(data.unit, data.source))
+            (self, data: EventData) => this.onGeneratorDestroy(data.data.unit, data.source))
         );
         // Register to and listen for security repair
         game.event.addListener(
             new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED,
-            (self, data: any) => this.onGeneratorRepair(data.unit, data.source))
+            (self, data: EventData) => this.onGeneratorRepair(data.data.unit, data.source))
         );
     }
 

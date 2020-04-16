@@ -69,7 +69,10 @@ export class SecurityModule {
                 // Publish event that a security object is damaged
                 this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
                     source: Unit.fromHandle(source),
-                    data: { damaged:Unit.fromHandle(u) }
+                    data: { 
+                        unit: unit,
+                        damaged: Unit.fromHandle(u)
+                    }
                 });
             }
         }
@@ -98,7 +101,10 @@ export class SecurityModule {
             // Publish event that a security object is repaired
             this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_ENABLED, {
                 source: Unit.fromHandle(source),
-                data: { damaged:Unit.fromHandle(u) }
+                data: { 
+                    unit: unit,
+                    damaged: Unit.fromHandle(u)
+                }
             });
         }
     }
