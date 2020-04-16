@@ -1479,12 +1479,6 @@ STRING 315
 R
 }
 
-STRING 316
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
-{
-|cff808080Fluff TODO.|r|n|nUnlocks Medkits and Emotion Inhibitors
-}
-
 STRING 317
 // Units: nWEP (|cffb40000Weapons |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
 {
@@ -1948,12 +1942,6 @@ STRING 420
 Nano-Med
 }
 
-STRING 421
-// Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
-{
-|cff808080Fluff TODO|r|n|nHeals the target for |cff00ff00400|r HP over |cff00ff005|r seconds.|n|n|cff80808035 Seconds Cooldown|r
-}
-
 STRING 422
 // Abilities: A00K (Nano-Med), Name (Name)
 {
@@ -2102,5 +2090,95 @@ STRING 451
 // Abilities: TF02 (Revert), Tip (Tooltip - Normal)
 {
 Revert
+}
+
+STRING 452
+// Items: I006 (Nano-Med), Tip (Tooltip - Basic)
+{
+Purchase Nano-Med
+}
+
+STRING 453
+// Abilities: A00L (Emotion Inhibitors), Name (Name)
+{
+Emotion Inhibitors
+}
+
+STRING 454
+// Abilities: A00L (Emotion Inhibitors), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 455
+// Abilities: A00L (Emotion Inhibitors), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Fluff TODO|r|n|nRepairs station property to |cff00ff00100%|r over |cff00ff005|r seconds.|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 456
+// Abilities: A00L (Emotion Inhibitors), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - SI Battle Rifle
+}
+
+STRING 461
+// Items: I007 (Emotion Inhibitor), Description (Description)
+{
+Prevents emotion for 15 seconds
+}
+
+STRING 463
+// Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
+{
+|cff808080This industrial bottle contains a thick yellow grease that suspends a simple nano solution; when applied to the skin the machines activate and begin repairing tissue damage. While expensive, this salve is one of the only fool proof methods of re-entering a fight after only a short period of downtime.|r|n|nHeals the target for |cff00ff00400|r HP over |cff00ff005|r seconds.|n|n|cff80808035 Seconds Cooldown|r
+}
+
+STRING 465
+// Items: I007 (Emotion Inhibitor), Tip (Tooltip - Basic)
+{
+Purchase Emotion Inhibitor
+}
+
+STRING 468
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Reboot Healthcare [|cffffcc001/4|r]
+}
+
+STRING 469
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [1/4]|r|nReboots medical vendors and durg production.|n|cff00ff00- Nano-Meds now purchasable|r|n|cff00ff00- Emotion Inhibitors now Purchasable|r|n|n|cff6f2583Infested|n- Despair still grants vision while under Emotion Inhibitors|r
+}
+
+STRING 470
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Reboot Gene Splicer [|cffffcc002/4|r]
+}
+
+STRING 471
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [2/4]|r|nReboots the Gene Splicer.|n|cff00ff00- Gene Splicer is now online|r|n|cff00ff00- Tier 1 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Gene Splicing now grants bonus XP to both patient and sugeon|r|n|n|cff6f2583Infested|n- Any Splicing grants the Alien Host bonus XP|r
+}
+
+STRING 473
+// Items: I007 (Emotion Inhibitor), Ubertip (Tooltip - Extended)
+{
+|cff808080These stimulants are used to keep low ranking soldiers in line without the need for a commander of lieutenant. This injector comes with a label saying "PROLONGED USED MAY HAVE PERMANENT SIDE EFFECTS" and several more things in dot points. Nothing to really care about... Except maybe that warning about reproduction problems thing.|r|n|nInject yourself with a cocktail of chemicals, hormones and drugs; temporarily removing the ability to feel emotions.|nYou become immmune to |cffffff00Resolve |rand |cff6f2583Despair |rfor the next |cff00ff0015|r seconds.|n|n|cff80808030 Seconds Cooldown|r
+}
+
+STRING 474
+// Items: I007 (Emotion Inhibitor), Name (Name)
+{
+Emotion Inhibitor
+}
+
+STRING 475
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [3/4]|r|nReboots the Gene Splicer.|n|cff00ff00- Tier 2 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Emotion Inhibitor no longer prevents Resolve|r|n|n|cff6f2583Infested|n- Any Splicing grants the Alien Host bonus XP|r
 }
 

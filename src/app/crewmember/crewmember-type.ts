@@ -100,8 +100,18 @@ export class Crewmember extends ArmableUnit {
      * @param initialDuration 
      * @param onCheckToRemove 
      */
-    addDespair(game: Game, instance: BuffInstance) {
-        this.despair.addInstance(game, this.unit, instance);
+    addDespair(game: Game, instance: BuffInstance, isNegative?: boolean) {
+        this.despair.addInstance(game, this.unit, instance, isNegative);
+    }
+
+    /**
+     * adds resolve to the effected unit
+     * if onCheckToRemove returns true this will stay active
+     * @param initialDuration 
+     * @param onCheckToRemove 
+     */
+    addResolve(game: Game, instance: BuffInstance, isNegative?: boolean) {
+        this.resolve.addInstance(game, this.unit, instance, isNegative);
     }
 
     testResolve(game: Game) {

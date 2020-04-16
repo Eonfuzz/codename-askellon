@@ -174,7 +174,6 @@ export class GeneModule {
                     (event: EventListener, data: any) => {
                         const zone = this.game.worldModule.getUnitZone(data.alien);
                         const ourZone = this.game.worldModule.getUnitZone(target.unit);
-                        Log.Information("Game transform event post listener");
                         if (zone && ourZone && zone.id == ourZone.id) {
                             DisplayTextToPlayer(target.player.handle, 0, 0, `TRANSFORM DETECTED`);
                         }

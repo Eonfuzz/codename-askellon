@@ -23,7 +23,7 @@ export class DynamicBuffModule {
         buffUpdateTrigger.addAction(() => this.process(0.1));
     }
 
-    addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance) {
+    addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
         let buffsForUnit = this.buffsByUnit.get(who) || [];
         let matchingBuff = buffsForUnit.filter(b => b.id === buffId)[0];
 
@@ -34,7 +34,7 @@ export class DynamicBuffModule {
             this.buffsByUnit.set(who, buffsForUnit);
         }
 
-        matchingBuff.addInstance(this.game, who, instance);
+        matchingBuff.addInstance(this.game, who, instance, isNegativeInstance);
     }
 
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {

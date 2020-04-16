@@ -48,22 +48,33 @@ export abstract class DynamicBuff {
     public who: Unit;
 
     protected isActive: boolean = false;
+
+    // These make the buff active
     protected instances: Array<BuffInstance> = [];
+
+    // These prevent the buff from being active
+    protected negativeinstances: Array<BuffInstance> = [];
     protected doesStack = true;
 
     protected onChangeCallbacks: Array<(self: DynamicBuff) => void> = [];
 
-    public addInstance(game: Game, unit: Unit, instance: BuffInstance) {
+    public addInstance(game: Game, unit: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
         const wasActive = this.isActive;
         this.who = unit;
 
-        this.isActive = true;
-        this.instances.push(instance);
+        if (isNegativeInstance) {
+            this.isActive = false;
+            this.negativeinstances.push(instance);
+        }
+        else {
+            this.isActive = true;
+            this.instances.push(instance);
+        }
 
         // Assume buff instances are only added if it's active        
         if (wasActive !== this.isActive) {
             this.onChangeCallbacks.forEach(cb => cb(this));
-            this.onStatusChange(game, true);
+            this.onStatusChange(game, this.isActive);
         }
     }
 
@@ -74,13 +85,27 @@ export abstract class DynamicBuff {
      */
     public process(game: Game, delta: number): boolean {
         const timestamp = game.getTimeStamp();
-        const wasActive = this.instances.length > 0;
+
+        const hadPositive = this.instances.length > 0 && this.who.isAlive();
+        const hadNegative = this.negativeinstances.length > 0;
+
         this.instances = this.instances.filter(i => i.isActive(timestamp));
-        const isActive = this.instances.length > 0 && this.who.isAlive();
-        
+        this.negativeinstances = this.negativeinstances.filter(i => i.isActive(timestamp));
+
+        const hasPositive = this.instances.length > 0 && this.who.isAlive();
+        const hasNegative = this.negativeinstances.length > 0;
+
+        const wasActive = hadPositive && !hadNegative;
+        const isActive = hasPositive && !hasNegative;
+
         if (wasActive != isActive) {
-            this.isActive = false;
-            this.onStatusChange(game, false);
+            this.isActive = !this.isActive;
+            this.onStatusChange(game, this.isActive);
+        }
+        // Otherwise we still broadcast changes even when there isn't a status chnage
+        // this is to allow infestation of medical research
+        else if (hasPositive !== hadPositive || hasNegative !== hadNegative) {
+            this.onStatusChange(game, this.isActive);
         }
         return isActive;
     }
@@ -94,4 +119,7 @@ export abstract class DynamicBuff {
     protected abstract onStatusChange(game: Game, newStatus: boolean): void;
 
     public getIsActive() { return this.isActive; }
+
+    public getInstanceCount() { return this.instances.length; }
+    public getNegativeinstanceCount() { return this.negativeinstances.length; }
 }

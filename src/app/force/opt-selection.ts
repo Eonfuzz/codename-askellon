@@ -56,7 +56,7 @@ export class OptSelection {
     private players: MapPlayer[] = [];
 
     private optVsButton: Map<OptSelectOption, DialogButton> = new Map();
-    private buttonVsOpt: Map<DialogButton, OptSelectOption> = new Map();
+    private buttonVsOpt: Map<button, OptSelectOption> = new Map();
 
     private playersInOpt: Map<OptSelectOption, MapPlayer[]> = new Map();
     private optsForPlayer: Map<MapPlayer, OptSelectOption[]> = new Map();
@@ -109,12 +109,14 @@ export class OptSelection {
         this.dialog.setMessage(STR_OPT_MESSAGE);
 
         allOpts.forEach((opt, i) => {
-
             const tooltip = opt.text;
-            const button = this.dialog.addButton(this.getTypePefix(opt.type)+tooltip, GetLocalizedHotkey(opt.hotkey));
+            const button = this.dialog.addButton(
+                this.getTypePefix(opt.type)+tooltip, 
+                GetLocalizedHotkey(opt.hotkey)
+            );
 
             this.optVsButton.set(opt, button);
-            this.buttonVsOpt.set(button, opt);
+            this.buttonVsOpt.set(button.handle, opt);
         });
 
         this.clickTrigger.registerDialogEvent(this.dialog);
@@ -127,7 +129,8 @@ export class OptSelection {
         const button = DialogButton.fromHandle(GetClickedButton());
         const player = MapPlayer.fromHandle(GetTriggerPlayer());
 
-        const optType = this.buttonVsOpt.get(button);
+        const optType = this.buttonVsOpt.get(button.handle);
+
 
         // Back out if the selected button has no variables
         if (!optType) return Log.Warning("Opt selected with variables");
@@ -197,7 +200,7 @@ export class OptSelection {
             const button = this.dialog.addButton(text, GetLocalizedHotkey(opt.hotkey));
 
             this.optVsButton.set(opt, button);
-            this.buttonVsOpt.set(button, opt);
+            this.buttonVsOpt.set(button.handle, opt);
         });
 
         this.players.forEach(p => this.dialog.display(p, true));

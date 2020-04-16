@@ -163,7 +163,7 @@ export class RailRifleAbility implements Ability {
             UnitDamageTarget(
                 projectile.source, 
                 collidesWith, 
-                (50 + (chargeFactor*200) )*crewmember.getDamageBonusMult(),
+                (50 + (chargeFactor*125) )*crewmember.getDamageBonusMult(),
                 false, 
                 true, 
                 ATTACK_TYPE_PIERCE, 

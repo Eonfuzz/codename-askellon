@@ -4,7 +4,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN } from "resources/ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
@@ -54,6 +54,17 @@ export class AlienForce extends ForceType {
             EVENT_TYPE.CREW_LOSE_DESPAIR, 
             (from: EventListener, data: any) => {
                 const crewmember = data.crewmember as Crewmember;
+
+                // If healthcare 1 is infested we may still have vision
+                if (this.forceModule.game.researchModule.isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 1)) {
+                    const negInstances = crewmember.despair.getNegativeinstanceCount();
+                    const posInstances = crewmember.despair.getInstanceCount();
+
+                    if (posInstances > 0 && negInstances > 0) {
+                        return;
+                    }
+                }
+
                 this.getPlayers().forEach(p => crewmember.unit.shareVision(p, false));
             }))
 
