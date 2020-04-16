@@ -5,7 +5,7 @@ import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { MapPlayer } from "w3ts/index";
-import { SoundRef } from "app/types/sound-ref";
+import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 
 export const OBSERVER_FORCE_NAME = 'OBS';
 export class ObserverForce extends ForceType {
@@ -23,7 +23,6 @@ export class ObserverForce extends ForceType {
      * TODO
      */
     addPlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer) {
-        Log.Information("Player joining Observer force");
         // Give vision of everything
         const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
         FogModifierStart(modifier);
@@ -59,7 +58,7 @@ export class ObserverForce extends ForceType {
     * Returns the sound to be used on chat events
     * @param who
     */
-   public getChatSoundRef(who: MapPlayer): SoundRef {
+   public getChatSoundRef(who: MapPlayer): SoundWithCooldown {
        // Otherwise return default behaviour
        return super.getChatSoundRef(who);
    }

@@ -20,7 +20,7 @@ import { OBSERVER_FORCE_NAME } from "./observer-force";
 export const ALIEN_FORCE_NAME = 'ALIEN';
 export const DEFAULT_ALIEN_FORM = FourCC('ALI1');
 export const ALIEN_CHAT_COLOR = '6f2583';
-const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(5, 'Sounds\\AlienChatSound.mp3');
+const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(8, 'Sounds\\AlienChatSound.mp3');
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
@@ -201,6 +201,12 @@ export class AlienForce extends ForceType {
         obsForce.addPlayerMainUnit(game, whichUnit, player);
         this.forceModule.addPlayerToForce(player, OBSERVER_FORCE_NAME);
         this.removePlayer(player);
+
+        // Check victory conds
+        this.forceModule.game.event.sendEvent(EVENT_TYPE.CHECK_VICTORY_CONDS, {
+            source: whichUnit.unit,
+            crewmember: whichUnit
+        });
     }
 
     removePlayerAlienUnit(whichUnit: Unit) {
@@ -416,7 +422,7 @@ export class AlienForce extends ForceType {
      * Returns the sound to be used on chat events
      * @param who
      */
-    public getChatSoundRef(who: MapPlayer): SoundRef {
+    public getChatSoundRef(who: MapPlayer): SoundWithCooldown {
         // If player is transformed return an alien name
         if (this.isPlayerTransformed(who)) {
             return ALIEN_CHAT_SOUND_REF;

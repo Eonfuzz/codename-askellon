@@ -9,6 +9,8 @@ import { Trigger, MapPlayer } from "w3ts";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
 import { OptSelection, OPT_TYPES, OptSelectOption, OptResult } from "./opt-selection";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
+import { EventListener, EVENT_TYPE } from "app/events/event";
+import { SoundRef } from "app/types/sound-ref";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -80,6 +82,12 @@ export class ForceModule {
         ticker.registerTimerEvent(5, true);
         // Process the ticker
         ticker.addAction(() => this.onAggressionTick(5));
+
+
+        // Init and listen for cond checks
+        this.game.event.addListener(new EventListener(EVENT_TYPE.CHECK_VICTORY_CONDS, () => {
+            this.checkVictoryConditions();
+        }));
     }
 
 
@@ -201,6 +209,32 @@ export class ForceModule {
     public checkVictoryConditions(): ForceType | undefined {
         // has only one force one?
         const winningForces = this.forces.filter(f => f.checkVictoryConditions(this));
+
+        if (winningForces.length === 1) {
+            const winningSound = new SoundRef("Sound\\Interface\\NewTournament.flac", false);
+            const losingSound = new SoundRef("Sound\\Dialogue\\UndeadExpCamp\\Undead02x\\L02Balnazzar06.flac", false);
+
+            const winner = winningForces[0];
+            const winningPlayers = winner.getPlayers();
+            
+
+            if (winningPlayers.indexOf(MapPlayer.fromLocal()) >= 0) {
+                winningSound.playSound();
+            }
+            else {
+                losingSound.playSound();
+            }
+
+            // TODO
+            Log.Information("The "+winner.name+" wins but I haven't finished coding it");
+        }
+        else if (winningForces.length === 0) { 
+            const drawSound = new SoundRef("Sound\\Dialogue\\Extra\\KelThuzadDeath1.flac", false);
+            drawSound.playSound();
+
+            // TODO
+            Log.Information("Game is a draw but I haven't finished coding it");
+        }
         return winningForces.length === 1 ? winningForces[0] : undefined;
     }
 

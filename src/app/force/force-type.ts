@@ -4,12 +4,12 @@ import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { PLAYER_COLOR } from "lib/translators";
-import { SoundRef } from "app/types/sound-ref";
+import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer, Unit, Trigger } from "w3ts";
 import { EVENT_TYPE } from "app/events/event";
 
 
-const GENERIC_CHAT_SOUND_REF = new SoundRef('Sound/ChatSound', false);
+const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3');
 export abstract class ForceType {
     // Keep track of players in force
     protected players: Array<MapPlayer> = [];
@@ -120,7 +120,7 @@ export abstract class ForceType {
      * Returns the sound to be used on chat events
      * @param who
      */
-    public getChatSoundRef(who: MapPlayer): SoundRef {
+    public getChatSoundRef(who: MapPlayer): SoundWithCooldown {
         return GENERIC_CHAT_SOUND_REF;
     }
 

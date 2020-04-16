@@ -4,7 +4,7 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
-import { SoundRef } from "app/types/sound-ref";
+import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 
 export enum PRIVS {
     USER, MODERATOR, DEVELOPER
@@ -34,6 +34,7 @@ export class ChatModule {
 
         BlzFrameSetVisible(BlzGetFrameByName("ChatDialog", 0), false);
         BlzFrameSetEnable(BlzGetFrameByName("ChatDialog", 0), false);
+        BlzFrameSetScale(BlzGetFrameByName("ChatDialog", 0), 0.1);
 
         BlzFrameSetVisible(BlzGetFrameByName("UpperButtonBarAlliesButton", 0), false);
         BlzFrameSetEnable(BlzGetFrameByName("UpperButtonBarAlliesButton", 0), false);
@@ -154,7 +155,7 @@ export class ChatModule {
         }
     }
 
-    public postMessageFor(players: MapPlayer[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundRef) {
+    public postMessageFor(players: MapPlayer[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundWithCooldown) {
         players.forEach(p => {
             const cHandler = this.chatHandlers.get(p);
             if (cHandler) cHandler.sendMessage(fromName, color, message, messageTag, sound);

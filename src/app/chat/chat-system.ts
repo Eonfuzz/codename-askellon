@@ -6,7 +6,7 @@
 
 import { Game } from "app/game";
 import { Log } from "lib/serilog/serilog";
-import { SoundRef } from "app/types/sound-ref";
+import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer } from "w3ts";
 
 export class ChatSystem {
@@ -50,7 +50,7 @@ export class ChatSystem {
         if (minutes.length < 2) minutes = `0${minutes}`;
         if (seconds.length < 2) seconds = `0${seconds}`;
 
-        return `[${minutes}:${seconds}]`;
+        return `${minutes}:${seconds}`;
     }
 
     /**
@@ -78,7 +78,7 @@ export class ChatSystem {
     private generateMessage(playerName: string, playerColor: string, message: string, messageTag?: string): string {
         // Append an empty string if this isn't the local player
         if (GetLocalPlayer() === this.player.handle) {
-            return `${this.getChatTimeTag()} ${this.getChatUser(playerName, playerColor)}: ${message}`;
+            return `[${this.getChatTimeTag()}${messageTag ? `::${messageTag}` : ''}] ${this.getChatUser(playerName, playerColor)}: ${message}`;
         }
         return ``;
     }
@@ -117,14 +117,14 @@ export class ChatSystem {
      * @param playerId 
      * @param message 
      */
-    public sendMessage(playerName: string, playerColor: string, message: string, messageTag?: string, sound?: SoundRef, ) {
+    public sendMessage(playerName: string, playerColor: string, message: string, messageTag?: string, sound?: SoundWithCooldown, ) {
         const timestamp = this.getGameTime();
         if (GetLocalPlayer() === this.player.handle) {
             if (this.messageIsValid(message)) {
                 const text = this.generateMessage(playerName, playerColor, message, messageTag);
                 this.addMessage(text);
                 this.update();
-                if (sound) sound.playSound();
+                if (sound && sound.canPlaySound(this.game.getTimeStamp())) sound.playSound();
                 this.timestampLastMessage = timestamp;
                 this.timeSinceLastMessage = 0;
             }

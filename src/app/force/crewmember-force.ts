@@ -9,6 +9,7 @@ import { MapPlayer, Unit } from "w3ts";
 import { resolveTooltip } from "resources/ability-tooltips";
 import { OBSERVER_FORCE_NAME } from "./observer-force";
 import { ALIEN_FORCE_NAME, AlienForce } from "./alien-force";
+import { EVENT_TYPE } from "app/events/event";
 
 
 export const CREW_FORCE_NAME = 'CREW';
@@ -69,5 +70,11 @@ export class CrewmemberForce extends ForceType {
             this.forceModule.addPlayerToForce(player, OBSERVER_FORCE_NAME);
         }
         this.removePlayer(player);
+
+        // Check victory conds
+        this.forceModule.game.event.sendEvent(EVENT_TYPE.CHECK_VICTORY_CONDS, {
+            source: whichUnit.unit,
+            crewmember: whichUnit
+        });
     }
 }
