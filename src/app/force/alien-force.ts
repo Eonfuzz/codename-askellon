@@ -13,7 +13,8 @@ import { PLAYER_COLOR } from "lib/translators";
 import { Trigger, MapPlayer, Unit } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
-import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG } from "resources/strings";
+import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
+import { OBSERVER_FORCE_NAME } from "./observer-force";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -33,6 +34,7 @@ export class AlienForce extends ForceType {
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
+    private alienDeathTrigs = new Map<Unit, Trigger>();
     private alienTakesDamageTrigger = new Trigger();
     private alienDealsDamageTrigger = new Trigger();
 
@@ -78,12 +80,14 @@ export class AlienForce extends ForceType {
             alien.invulnerable = true;
             alien.pauseEx(true);
             alien.show = false;
+            alien.experience = who.unit.experience;
             alien.suspendExperience(true);
 
             // Register it for damage event
             this.registerAlienTakesDamageExperience(alien);
             game.tooltips.registerTooltip(who, alienTooltipToHuman);
-            // this.registerAlienDealsDamage(alien);
+
+            this.registerAlienDeath(alien);
             // Also register the crewmember for the event
             // this.registerAlienDealsDamage(who);
 
@@ -115,6 +119,14 @@ export class AlienForce extends ForceType {
         return alien;
     }
 
+    public registerAlienDeath(who: Unit) {
+        const trig = new Trigger();
+
+        this.alienDeathTrigs.set(who, trig);
+        trig.registerUnitEvent(who, EVENT_UNIT_DEATH);
+        trig.addAction(() => this.removePlayerAlienUnit(who))
+    }
+
     getFormName() {
         return GetObjectName(this.currentAlienEvolution);
     }
@@ -142,8 +154,15 @@ export class AlienForce extends ForceType {
         super.addPlayerMainUnit(game, whichUnit, player);
 
         this.makeAlien(game, whichUnit, player);
+
         // mark this unit as the alien host
-        this.setHost(player);
+        if (!this.alienHost) this.setHost(player);
+        
+        // If the added player is dead we need to revive if
+        if (!whichUnit.unit.isAlive()) {
+            whichUnit.unit.revive(whichUnit.unit.x, whichUnit.unit.y, false);
+            this.transform(game, player, true);
+        }
     }
 
 
@@ -154,6 +173,45 @@ export class AlienForce extends ForceType {
         // Remove ability tooltip
         game.tooltips.unregisterTooltip(whichUnit, alienTooltipToHuman);
         game.tooltips.unregisterTooltip(this.getAlienFormForPlayer(player), alienTooltipToHuman);
+
+        // As this can be called on alien death we need to make sure both alien and human is dead
+        const alienUnit = this.getAlienFormForPlayer(player);
+
+        whichUnit.unit.kill();
+        alienUnit.kill();
+
+        // Ensure player name reverts
+        const oldData = this.forceModule.getOriginalPlayerDetails(player);
+        player.name = oldData.name;
+        player.color = oldData.colour;
+
+        
+        const players = game.forceModule.getActivePlayers();
+        players.forEach(p => {
+            DisplayTextToPlayer(p.handle, 0, 0, STR_ALIEN_DEATH(
+                player,
+                PLAYER_COLOR[player.id],
+                whichUnit, 
+                alienUnit, 
+                this.getHost() === player)
+            );
+        });
+
+        const obsForce = this.forceModule.getForce(OBSERVER_FORCE_NAME);
+        obsForce.addPlayerMainUnit(game, whichUnit, player);
+        this.forceModule.addPlayerToForce(player, OBSERVER_FORCE_NAME);
+        this.removePlayer(player);
+    }
+
+    removePlayerAlienUnit(whichUnit: Unit) {
+        // Remove tracking trigger
+        this.alienDeathTrigs.delete(whichUnit);
+
+        this.removePlayerMainUnit(
+            this.forceModule.game, 
+            this.forceModule.game.crewModule.getCrewmemberForPlayer(whichUnit.owner), 
+            whichUnit.owner
+        );
     }
 
     transform(game: Game, who: MapPlayer, toAlien: boolean): Unit {
@@ -200,12 +258,15 @@ export class AlienForce extends ForceType {
             // Make enemy of security
             who.setAlliance(this.forceModule.stationSecurity, ALLIANCE_PASSIVE, true);
             this.forceModule.stationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
+            who.name = unitName;
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
         }
         else {
             this.forceModule.repairAllAlliances(who);
+            const oldData = this.forceModule.getOriginalPlayerDetails(who);
+            who.name = oldData.name;
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
@@ -327,6 +388,7 @@ export class AlienForce extends ForceType {
      * Gets the player's visible chat name, by default shows role name
      */
     public getChatName(who: MapPlayer) {
+        // Log.Information("Alien is chatting? "+this.isPlayerTransformed(who));
         // If player is transformed return an alien name
         if (this.isPlayerTransformed(who)) {
             return this.alienHost === who ? STR_CHAT_ALIEN_HOST : STR_CHAT_ALIEN_SPAWN;

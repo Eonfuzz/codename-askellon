@@ -30,6 +30,7 @@ export class ChatModule {
         // Hide alliance UI
         BlzFrameSetVisible(BlzGetFrameByName("AllianceDialog", 0), false);
         BlzFrameSetEnable(BlzGetFrameByName("AllianceDialog", 0), false);
+        BlzFrameSetScale(BlzGetFrameByName("AllianceDialog", 0), 0.1);
 
         BlzFrameSetVisible(BlzGetFrameByName("ChatDialog", 0), false);
         BlzFrameSetEnable(BlzGetFrameByName("ChatDialog", 0), false);

@@ -14,11 +14,14 @@ export abstract class ForceType {
     // Keep track of players in force
     protected players: Array<MapPlayer> = [];
     protected playerUnits: Map<MapPlayer, Crewmember> = new Map();
+    protected playerDeathTriggers: Map<MapPlayer, Trigger> = new Map();
 
     protected forceModule: ForceModule;
     abstract name: string;
     
-    constructor(fModule: ForceModule) { this.forceModule = fModule; }
+    constructor(fModule: ForceModule) { 
+        this.forceModule = fModule;
+    }
 
     is(name: string): boolean {
         return this.name === name;
@@ -45,10 +48,18 @@ export abstract class ForceType {
     }
 
     public addPlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer): void {
+        const trig = new Trigger();
+        trig.registerUnitEvent(whichUnit.unit, EVENT_UNIT_DEATH);
+        trig.addAction(() => this.removePlayerMainUnit(game, whichUnit, player, Unit.fromHandle(GetKillingUnit())));
+
         this.playerUnits.set(player, whichUnit);
+        this.playerDeathTriggers.set(player, trig);
     };
 
-    public removePlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer): void {
+    public removePlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer, killer?: Unit): void {
+        this.playerDeathTriggers.get(player).destroy();
+        this.playerDeathTriggers.delete(player);
+
         this.playerUnits.delete(player);
     };
 

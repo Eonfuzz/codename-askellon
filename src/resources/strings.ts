@@ -1,4 +1,6 @@
 import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, } from "./colours";
+import { MapPlayer, Unit } from "w3ts/index";
+import { Crewmember } from "app/crewmember/crewmember-type";
 
 export const STR_OPT_MESSAGE = `${COL_BAD}Role Preference|r`;
 export const STR_OPT_HUMAN = `Human`;
@@ -20,3 +22,7 @@ export const STR_UPGRADE_COMPLETE_INFESTATION = () => `${COL_ALIEN}INFESTATION C
 
 export const STR_GENE_SUCCESSFUL = () => `${COL_INFO}Gene Splicing:|r ${COL_GOOD}SUCCESSFUL|r`
 export const STR_GENE_ALIEN_SUCCESSFUL = () => `${COL_ALIEN}Alien Epidermis Mimicking Gene Install|r`
+
+export const STR_ALIEN_DEATH = (who: MapPlayer, whoColor: string, crew: Crewmember, alien: Unit, isAlienHost: boolean) => `
+${COL_ALIEN}An Alien has been slain!|r
+|cff${whoColor}${crew.name}|r${COL_ALIEN} was ${isAlienHost ? 'the Alien Host' : 'an Alien Spawn'}|r`;
