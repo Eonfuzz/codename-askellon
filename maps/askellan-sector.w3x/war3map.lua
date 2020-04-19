@@ -12,6 +12,8 @@ udg_jump_pass_zones = {}
 udg_jump_pass_zones_name = __jarray("")
 udg_power_generators = {}
 udg_power_generator_zones = __jarray("")
+udg_elevator_entrance_names = __jarray("")
+udg_elevator_exit_zones = __jarray("")
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -28,12 +30,11 @@ gg_trg_SetPowerGenerators = nil
 gg_unit_n001_0032 = nil
 gg_unit_h004_0048 = nil
 gg_unit_n004_0034 = nil
-gg_unit_n001_0021 = nil
+gg_unit_n001_0055 = nil
 gg_unit_n002_0033 = nil
 gg_unit_n004_0047 = nil
 gg_unit_n002_0043 = nil
 gg_unit_n002_0044 = nil
-gg_unit_n001_0045 = nil
 gg_unit_h004_0046 = nil
 gg_unit_n004_0035 = nil
 gg_dest_B002_0015 = nil
@@ -96,6 +97,18 @@ function InitGlobals()
         udg_power_generator_zones[i] = ""
         i = i + 1
     end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_elevator_entrance_names[i] = ""
+        i = i + 1
+    end
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_elevator_exit_zones[i] = ""
+        i = i + 1
+    end
 end
 
 function CreateAllDestructables()
@@ -106,26 +119,6 @@ function CreateAllDestructables()
     gg_dest_B002_0019 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.0, -62.8, 134.4, 117.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0022 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.8, 542.7, 134.4, 210.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0015 = BlzCreateDestructableZWithSkin(FourCC("B002"), -121.9, 576.3, 134.4, 358.000, 1.000, 0, FourCC("B002"))
-end
-
-function CreateAllItems()
-    local itemID
-    BlzCreateItemWithSkin(FourCC("I000"), -155.3, -90.6, FourCC("I000"))
-    BlzCreateItemWithSkin(FourCC("I000"), 60.4, -160.3, FourCC("I000"))
-    BlzCreateItemWithSkin(FourCC("I000"), -167.3, -284.7, FourCC("I000"))
-    BlzCreateItemWithSkin(FourCC("I000"), 93.2, 55.7, FourCC("I000"))
-    BlzCreateItemWithSkin(FourCC("I001"), -407.0, 80.9, FourCC("I001"))
-    BlzCreateItemWithSkin(FourCC("I001"), -252.0, 37.1, FourCC("I001"))
-    BlzCreateItemWithSkin(FourCC("I002"), -361.7, 571.7, FourCC("I002"))
-    BlzCreateItemWithSkin(FourCC("I003"), -265.1, 602.5, FourCC("I003"))
-    BlzCreateItemWithSkin(FourCC("I004"), -340.6, 282.6, FourCC("I004"))
-    BlzCreateItemWithSkin(FourCC("I005"), 665.8, 418.3, FourCC("I005"))
-    BlzCreateItemWithSkin(FourCC("I007"), -65.8, 657.5, FourCC("I007"))
-    BlzCreateItemWithSkin(FourCC("I007"), -144.3, 617.8, FourCC("I007"))
-    BlzCreateItemWithSkin(FourCC("IDGN"), 45.4, 670.9, FourCC("IDGN"))
-    BlzCreateItemWithSkin(FourCC("IDGN"), 117.5, 675.8, FourCC("IDGN"))
-    BlzCreateItemWithSkin(FourCC("ISHO"), 335.0, 639.4, FourCC("ISHO"))
-    BlzCreateItemWithSkin(FourCC("ISHO"), 203.0, 659.3, FourCC("ISHO"))
 end
 
 function CreateUnitsForPlayer20()
@@ -149,9 +142,43 @@ function CreateBuildingsForPlayer21()
     local unitID
     local t
     local life
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22048.0, -25120.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("n003"), 1024.0, 896.0, 270.000, FourCC("n003"))
     gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
     gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 640.0, 768.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -28000.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23904.0, -28064.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -25056.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -25120.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -25184.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22560.0, -24992.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22496.0, -24992.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23520.0, -25056.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23712.0, -24992.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23776.0, -24992.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23904.0, -24992.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24032.0, -24992.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24096.0, -24992.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24096.0, -25184.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -26592.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -26464.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -26464.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24032.0, -26592.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24096.0, -26464.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24096.0, -26976.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24032.0, -26976.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -26976.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -27296.0, 25952.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -27168.0, 25952.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -26976.0, 26080.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -27296.0, 26144.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -25440.0, 26400.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -25504.0, 26272.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -25504.0, 26208.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24928.0, 27040.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -25056.0, 27040.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -25184.0, 27040.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24928.0, 26912.0, 270.000, FourCC("h005"))
 end
 
 function CreateNeutralHostile()
@@ -170,7 +197,6 @@ function CreateNeutralPassiveBuildings()
     local unitID
     local t
     local life
-    gg_unit_n001_0021 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n001_0032 = BlzCreateUnitWithSkin(p, FourCC("n001"), -448.0, 960.0, 270.000, FourCC("n001"))
     gg_unit_n002_0033 = BlzCreateUnitWithSkin(p, FourCC("n002"), 1024.0, 0.0, 270.000, FourCC("n002"))
     gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
@@ -181,8 +207,9 @@ function CreateNeutralPassiveBuildings()
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -1472.0, 576.0, 270.000, FourCC("nGEN"))
     gg_unit_n002_0043 = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
     gg_unit_n002_0044 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
-    gg_unit_n001_0045 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
     gg_unit_n004_0047 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26689.3, 27065.4, 89.562, FourCC("n004"))
+    gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()
@@ -215,11 +242,13 @@ end
 
 function Trig_Set_Actions()
     udg_elevator_entrances[1] = gg_unit_n001_0032
-    udg_elevator_entrances[2] = gg_unit_n001_0021
-    udg_elevator_entrances[3] = gg_unit_n001_0045
-    udg_elevator_exits[1] = gg_unit_n001_0021
+    udg_elevator_entrances[2] = gg_unit_n001_0055
+    udg_elevator_exits[1] = gg_unit_n001_0055
     udg_elevator_exits[2] = gg_unit_n001_0032
-    udg_elevator_exits[3] = gg_unit_n001_0021
+    udg_elevator_entrance_names[1] = "|cffffcc00Cathederal|r"
+    udg_elevator_entrance_names[2] = "|cfff5a742Floor 1|r"
+    udg_elevator_exit_zones[1] = "FLOOR_1"
+    udg_elevator_exit_zones[2] = "CHURCH"
     udg_LIGHTS[0] = gg_dest_B002_0015
     udg_LIGHTS[1] = gg_dest_B002_0017
     udg_LIGHTS[2] = gg_dest_B002_0019
@@ -632,7 +661,6 @@ function main()
     SetMapMusic("Music", true, 0)
     CreateRegions()
     CreateAllDestructables()
-    CreateAllItems()
     CreateAllUnits()
     InitBlizzard()
     InitGlobals()

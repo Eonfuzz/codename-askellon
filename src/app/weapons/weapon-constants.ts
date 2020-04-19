@@ -16,3 +16,8 @@ export const HIGH_QUALITY_POLYMER_ITEM_ID = FourCC('I002');
 
 export const AT_ITEM_DRAGONFIRE_BLAST = FourCC('IDGN');
 export const AT_ABILITY_DRAGONFIRE_BLAST = FourCC('ADGN');
+
+export const ITEM_ID_NANOMED = FourCC('I006');
+export const ITEM_ID_REPAIR = FourCC('I005');
+export const ITEM_ID_EMO_INHIB = FourCC('I007');
+export const ITEM_ID_25_COINS = FourCC('I008');

@@ -6,6 +6,8 @@ export const BURST_RIFLE_EXTENDED = (damage: any, accuracyMin: any, accuracyMax:
 Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
 
 Fires a short burst of six bullets with |cff00ffff${accuracyMin}|r to |cff00ffff${accuracyMax}|r range, with each bullet dealing |cff00ff00${damage} damage|r.
+
+${COL_MISC}1 Second Cooldown|r
 `;
 
 export const BURST_RIFLE_ITEM = (weapon: Gun, damage: any) => 
@@ -23,7 +25,7 @@ ${COL_GOOD}- 6 Shot Burst
 - Short Cooldown|r
 
 ${!weapon.attachment
-     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r attachments.|r` 
+     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r${COL_INFO} attachments.|r` 
      : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
 }`;
 
@@ -34,7 +36,8 @@ Hurls a plas bolt dealing ${COL_GOOD}${damage} energy damage|r.
 The inbuilt A.I recalculates design efficiency on impact; successive hits increase this weapon's damage by ${COL_GOOD}50%|r.
 
 ${COL_ATTATCH}Missing a bolt ruins previous calculations and resets damage bonus|r
-${COL_MISC}2 second cooldown|r
+
+${COL_MISC}2 Seconds Cooldown|r
 `;
 
 export const LASER_ITEM = (weapon: Gun, damage: any) => 
@@ -56,7 +59,8 @@ Over the twenty years of his career, he had only one constant companion, and tha
 
 Fires a blast of 6 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
 Every bullet after the first deals 20% less damage.
-`;
+
+${COL_MISC}2 Seconds Cooldown|r`;
 
 export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 
 `|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
@@ -65,8 +69,7 @@ Over the twenty years of his career, he had only one constant companion, and tha
 A close ranged shotgun that deals good damage
 ${COL_GOOD}- Fires a spread of shots
 - Unaffected by Accuracy
-- Fires 26 shots, each dealing |cff00ff00${damage}|r${COL_GOOD} damage
-- Additional hits deal half damage of the last
+- Fires 6 shots, each dealing up to |cff00ff00${damage}|r${COL_GOOD} damage
 - Can be heavily customised|r
 
 ${!weapon.attachment

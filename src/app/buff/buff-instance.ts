@@ -63,11 +63,11 @@ export abstract class DynamicBuff {
         this.who = unit;
 
         if (isNegativeInstance) {
-            this.isActive = false;
+            // this.isActive = false;
             this.negativeinstances.push(instance);
         }
         else {
-            this.isActive = true;
+            // this.isActive = true;
             this.instances.push(instance);
         }
 
@@ -95,11 +95,11 @@ export abstract class DynamicBuff {
         const hasPositive = this.instances.length > 0 && this.who.isAlive();
         const hasNegative = this.negativeinstances.length > 0;
 
-        const wasActive = hadPositive && !hadNegative;
+        const wasActive = this.isActive;
         const isActive = hasPositive && !hasNegative;
 
         if (wasActive != isActive) {
-            this.isActive = !this.isActive;
+            this.isActive = isActive;
             this.onStatusChange(game, this.isActive);
         }
         // Otherwise we still broadcast changes even when there isn't a status chnage

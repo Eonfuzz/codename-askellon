@@ -1978,12 +1978,6 @@ STRING 431
 Rail-Rifle
 }
 
-STRING 432
-// Items: I001 (Rail-Rifle), Ubertip (Tooltip - Extended)
-{
-|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nAn attachment for |cffc81e1eKinetic|r weapons.|n|nLaunches a single, long distance round. Dealing up to |cff00ff00500|r damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown.|r
-}
-
 STRING 433
 // Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
@@ -2024,12 +2018,6 @@ STRING 440
 // Items: IDGN (Dragonfire Barrel), Tip (Tooltip - Basic)
 {
 Dragonfire Barrel
-}
-
-STRING 441
-// Items: IDGN (Dragonfire Barrel), Ubertip (Tooltip - Extended)
-{
-|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nAn attachment for |cffc81e1eKinetic|r weapons.|n|nLaunches a single, long distance round. Dealing up to |cff00ff00500|r damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown.|r
 }
 
 STRING 442
@@ -2180,5 +2168,47 @@ STRING 475
 // Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
 {
 |cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [3/4]|r|nReboots the Gene Splicer.|n|cff00ff00- Tier 2 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Emotion Inhibitor no longer prevents Resolve|r|n|n|cff6f2583Infested|n- Any Splicing grants the Alien Host bonus XP|r
+}
+
+STRING 476
+// Items: I001 (Rail-Rifle), Ubertip (Tooltip - Extended)
+{
+|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nAn attachment for |cffc81e1eKinetic|r weapons.|n|nLaunches a single, long distance round. Dealing up to |cff00ff00500|r damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown|r
+}
+
+STRING 477
+// Items: IDGN (Dragonfire Barrel), Ubertip (Tooltip - Extended)
+{
+|cff808080The dragonfire barrel can trace its origins to an age burried far under terran history, and was originaly used as weaponised fireworks by eastern terrans. In the modern age the weapon has been repurposed and outfitted with a slow burning napalm; useful for burning through armor and sowing confusing.|r|n|n|cffffcc00Attchment for |cffc81e1eKinetic|r|cffffcc00 weapons.|r|n|nDetontes a shrapnel charge laced with napalm; firing |cff00ff0026|r |cffd45e19burning|r shards within a wide but short range. Each shard does |cff00ff0020|r damage and sets the target on|cffd45e19 fire|r.|n|N|cff80808015 Seconds Cooldown|r
+}
+
+STRING 478
+// Items: IDGN (Dragonfire Barrel), Description (Description)
+{
+Attachment: Shoots a wave of burning bullets
+}
+
+STRING 479
+// Doodads: D00G (Window), Name (Name)
+{
+Window
+}
+
+STRING 480
+// Doodads: D00H (Church Support Column), Name (Name)
+{
+Church Support Column
+}
+
+STRING 481
+// Units: h005 (Crate), Name (Name)
+{
+Crate
+}
+
+STRING 483
+// Items: I008 (25 Credits), Name (Name)
+{
+25 Credits
 }
 

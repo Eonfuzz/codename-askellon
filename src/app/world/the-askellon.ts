@@ -14,6 +14,7 @@ import { VISION_TYPE } from "./vision-type";
 import { ABIL_NIGHTEYE } from "resources/ability-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { MapPlayer } from "w3ts";
+import { ChurchZone } from "./zones/church";
 
 // Small damage
 // Will not cause damage to interior
@@ -46,6 +47,7 @@ export class TheAskellon {
         this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(world.game, ZONE_TYPE.CARGO_A));
         this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(world.game, ZONE_TYPE.CARGO_A_VENT));
         this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(world.game, ZONE_TYPE.SERVICE_TUNNELS));
+        this.floors.set(ZONE_TYPE.CHURCH, new ChurchZone(world.game, ZONE_TYPE.CHURCH));
 
         // Now apply lights to the zones
         const z1 = this.floors.get(ZONE_TYPE.FLOOR_1);

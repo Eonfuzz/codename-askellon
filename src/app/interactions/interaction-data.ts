@@ -31,26 +31,35 @@ class Elevator {
 
 const elevatorMap = new Map<number, Elevator>();
 
-export function initElevators() {
-    const TEST_ELEVATOR_FLOOR_1 = new Elevator(
-        Unit.fromHandle(gg_unit_n001_0032),
-        ZONE_TYPE.FLOOR_1,
-        {x: 0, y: -180 }
-    );
-    const TEST_ELEVATOR_FLOOR_2 = new Elevator(
-        Unit.fromHandle(gg_unit_n001_0021),
-        ZONE_TYPE.FLOOR_2,
-        {x: 0, y: -180 }
-    );
+declare const udg_elevator_entrances: unit[];
+declare const udg_elevator_exits: unit[];
+declare const udg_elevator_entrance_names: string[];
+declare const udg_elevator_exit_zones: string[];
+
+export function initElevators(game: Game) {
     
-    TEST_ELEVATOR_FLOOR_1.to = TEST_ELEVATOR_FLOOR_2;
-    TEST_ELEVATOR_FLOOR_2.to = TEST_ELEVATOR_FLOOR_1;
+    const elevators: Elevator[] = [];
 
-    TEST_ELEVATOR_FLOOR_1.unit.name = `Elevator to ${COL_FLOOR_2}Floor 2|r|n${COL_MISC}Right Click To Use|r`;
-    TEST_ELEVATOR_FLOOR_2.unit.name = `Elevator to ${COL_FLOOR_1}Floor 1|r|n${COL_MISC}Right Click To Use|r`;
+    udg_elevator_entrances.forEach((entrance, i) => {
+        const entranceName = udg_elevator_entrance_names[i];
+        const elevatorExitZone = game.worldModule.getZoneByName(udg_elevator_exit_zones[i]);
 
-    elevatorMap.set(TEST_ELEVATOR_FLOOR_1.unit.typeId, TEST_ELEVATOR_FLOOR_1);
-    elevatorMap.set(TEST_ELEVATOR_FLOOR_2.unit.typeId, TEST_ELEVATOR_FLOOR_2);
+        const elevator = new Elevator(
+            Unit.fromHandle(entrance),
+            elevatorExitZone,
+            {x: 0, y: -110 }
+        );
+
+        BlzSetUnitName(entrance, `To ${entranceName}|n${COL_MISC}Right Click To Use|r`);
+        elevatorMap.set(GetHandleId(entrance), elevator);
+        elevators.push(elevator);
+    });
+
+    elevators.forEach((elevator, i) => {
+        const exit = udg_elevator_exits[i];
+        elevator.to = elevatorMap.get(GetHandleId(exit));
+        elevatorMap.set(elevator.unit.typeId, elevator);
+    });
 
     const ELEVATOR_TYPE = FourCC('n001');
     const elevatorTest: InteractableData = {
@@ -82,7 +91,6 @@ export function initElevators() {
             const targetElevator = elevatorMap.get(handleId);
             
             if (targetElevator && targetElevator.to) {
-
                 fromUnit.x = targetElevator.to.unit.x + targetElevator.to.exit_offset.x;
                 fromUnit.y = targetElevator.to.unit.y + targetElevator.to.exit_offset.y;
 

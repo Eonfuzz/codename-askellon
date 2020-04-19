@@ -48,7 +48,7 @@ export class ChatModule {
         const chatTextHandle = BlzGetFrameByName("Chat Text", 0);
         BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_CHAT_MSG, 0), false);
 
-        BlzFrameSetAbsPoint(chatHandle, FRAMEPOINT_BOTTOMLEFT, -0.1, 0.17);
+        BlzFrameSetAbsPoint(chatHandle, FRAMEPOINT_BOTTOMLEFT, (0.6 * BlzGetLocalClientWidth() / BlzGetLocalClientHeight() - 0.8) / -2, 0.17);
         BlzFrameSetLevel(chatHandle, 8);
 
         BlzFrameSetTextAlignment(chatTextHandle, TEXT_JUSTIFY_BOTTOM, TEXT_JUSTIFY_LEFT);
@@ -101,13 +101,7 @@ export class ChatModule {
 
         // Priv 2 === DEVELOPER
         if (priv >= 2) {
-            if (message === "-u" && crew) {
-                if (crew.weapon) {
-                    crew.weapon.detach();
-                }
-                crew.updateTooltips(this.game.weaponModule);
-            }
-            else if (message === "-p1off") {
+            if (message === "-p1off") {
                 const z = this.game.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
                 z && z.updatePower(false);
             }
@@ -137,7 +131,12 @@ export class ChatModule {
         }
         // Priv 0 === NORMIE
         if (priv >= 0) {
-            
+            if (message === "-u" && crew) {
+                if (crew.weapon) {
+                    crew.weapon.detach();
+                }
+                crew.updateTooltips(this.game.weaponModule);
+            }
         }
     }
 

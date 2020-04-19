@@ -8,6 +8,7 @@ export enum ROLE_TYPES {
     SEC_GUARD = 'Security Guard',
     MAJOR = 'Major',
     DOCTOR = 'Doctor',
+    INQUISITOR = 'Inquisitor',
 }
 export const ROLE_NAMES = new Map<string, Array<string>>();
 
@@ -44,11 +45,16 @@ ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
     "Doctor Dimento", "Doctor Quack", "Dr. Diggus Bickus", "Dr. Who"
 ]);
 
+ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
+    "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus"
+]);
+
 
 export const ROLE_DESCRIPTIONS = new Map<ROLE_TYPES, string>();
 
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `The ${COL_GOLD}Captain|r controls station security targeting and pilots the Askellon through deep space.|nIt is your job to ensure your crew survive the trip.`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_VENTS}Navigator|r you must scan deep space and lead your ${COL_GOLD}Captain|r through deep space.|nYou are also in charge of the Cargo Bay's ships.`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `As ${COL_TEAL}Doctor|r research and upgrade Healthcare while using the Gene Splicer to upgrade your comrades.`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_GOLD}Navigator|r you must scan deep space and lead your ${COL_GOLD}Captain|r through deep space.|nYou are also in charge of the Cargo Bay's ships.`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `As ${COL_GOLD}Doctor|r research and upgrade Healthcare while using the Gene Splicer to upgrade your comrades.`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_ATTATCH}Security Guards|r gain 30% bonus experience when damaging Alien Hosts`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOLD}Security Guards|r gain 30% bonus experience when damaging Alien Hosts`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `${COL_GOLD}Inquisitor|r is WIP`);

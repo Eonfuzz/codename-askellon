@@ -1,4 +1,4 @@
-import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH } from "./colours";
+import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_GOLD, COL_ORANGE } from "./colours";
 import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
@@ -102,12 +102,13 @@ export const dragonBreathBlastTooltip = new DynamicAbilityTooltip(
     AT_ABILITY_DRAGONFIRE_BLAST,
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => 
-    `${COL_MISC}LORE TODO|r
+    `${COL_MISC}The dragonfire barrel can trace its origins to an age burried far under terran history, and was originaly used as weaponised fireworks by eastern terrans. In the modern age the weapon has been repurposed and outfitted with a slow burning napalm; useful for burning through armor and sowing confusing.|r
     
-Fires a blast of 26 shots in a cone.
-Units hit take |cff00ff00${20*who.getDamageBonusMult()}|r and sets them on fire.
-    
-${COL_MISC}15 Second Cooldown`
+${COL_GOLD}Attchment for ${COL_ATTATCH}Kinetic|r ${COL_GOLD}weapons.|r
+
+Detontes a shrapnel charge laced with napalm; firing ${COL_GOOD}26|r ${COL_ORANGE}burning|r shards within a wide but short range. Each shard does ${COL_GOOD}${20*who.getDamageBonusMult()}|r damage and sets the target on ${COL_ORANGE}fire|r.
+
+${COL_MISC}15 Seconds Cooldown|r`
 );
 
 export const diodeEjectTooltip = new DynamicAbilityTooltip(

@@ -126,7 +126,7 @@ export class BurstRifle extends Gun {
         if (this.attachment && this.attachment.name === "Ems Rifling") {
             return MathRound( 20 * caster.getDamageBonusMult());
         }
-        return MathRound( 15 * caster.getDamageBonusMult());
+        return MathRound( 18 * caster.getDamageBonusMult());
     }
 
     public getAbilityId() { return BURST_RIFLE_ABILITY_ID; }

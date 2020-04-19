@@ -106,6 +106,20 @@ export class AlienForce extends ForceType {
             const crewmember = game.crewModule.getCrewmemberForPlayer(owner);
             if (crewmember) crewmember.setVisionType(VISION_TYPE.ALIEN);
             
+
+            // mark this unit as the alien host
+            if (!this.alienHost) {
+                this.setHost(owner);
+            }
+            // Otherwise this is not the host, weaken it.
+            else {
+                // alien.maxLife = MathRound(alien.maxLife * 0.75);
+                // alien.strength = MathRound(alien.strength * 0.75);
+                // alien.intelligence = MathRound(alien.intelligence * 0.75);
+                // alien.setBaseDamage( MathRound(alien.getBaseDamage(1) * 0.9), 1);
+                // alien.setScale(0.8, 0.8, 0.8);
+            }
+
             // Additionally force the transform ability to start on cooldown
             BlzStartUnitAbilityCooldown(who.unit.handle, ABIL_TRANSFORM_HUMAN_ALIEN,
                 who.unit.getAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
@@ -120,6 +134,9 @@ export class AlienForce extends ForceType {
 
             // Now create an alien for player
             this.playerAlienUnits.set(owner, alien);
+
+            // Hiding life bars
+            alien.addAbility(FourCC('Aloc'));
 
             // Post event
             if (crewmember)
@@ -165,9 +182,6 @@ export class AlienForce extends ForceType {
         super.addPlayerMainUnit(game, whichUnit, player);
 
         this.makeAlien(game, whichUnit, player);
-
-        // mark this unit as the alien host
-        if (!this.alienHost) this.setHost(player);
         
         // If the added player is dead we need to revive if
         if (!whichUnit.unit.isAlive()) {
@@ -250,6 +264,11 @@ export class AlienForce extends ForceType {
         const unitWasSelected = toHide.isSelected(who);
         const healthPercent = GetUnitLifePercent(toHide.handle);
 
+        // If we are turning into human, add aloc to the hiding unit
+        // This is to remove highlighting info
+        if (!toAlien) {
+            toHide.addAbility(FourCC('Aloc'));
+        }
         // hide and make the unit invul
         toHide.invulnerable = true;
         toHide.pauseEx(true);
@@ -257,6 +276,11 @@ export class AlienForce extends ForceType {
         // Update location
         toShow.x = pos.x;
         toShow.y = pos.y;
+
+        // Hides tooltip info if iti s alien
+        // ORDER IS IMPORTANT
+        if (toAlien) toShow.removeAbility(FourCC('Aloc'));
+
         // Unpause and show
         toShow.show = true;
         toShow.invulnerable = false;
@@ -276,6 +300,7 @@ export class AlienForce extends ForceType {
             who.setAlliance(this.forceModule.stationSecurity, ALLIANCE_PASSIVE, true);
             this.forceModule.stationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
             who.name = unitName;
+            who.color = PLAYER_COLOR_PURPLE;
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
@@ -284,6 +309,7 @@ export class AlienForce extends ForceType {
             this.forceModule.repairAllAlliances(who);
             const oldData = this.forceModule.getOriginalPlayerDetails(who);
             who.name = oldData.name;
+            who.color = oldData.colour;
 
             // Post event
             game.event.sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });

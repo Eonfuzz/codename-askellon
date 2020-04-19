@@ -61,7 +61,8 @@ export class CrewModule {
 
         let it = 0;
         while (it < totalPlayers) {
-            if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
+            if (it === 0) this.allJobs.push(ROLE_TYPES.INQUISITOR);
+            else if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
             else if (it === 1) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
             else if (it === 2) this.allJobs.push(ROLE_TYPES.DOCTOR);
             else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
