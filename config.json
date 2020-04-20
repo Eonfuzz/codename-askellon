@@ -1,7 +1,8 @@
 {
     "mapFolder": "askellan-sector.w3x",
     "gameExecutable": "E:\\Warcraft III\\x86_64\\Warcraft III.exe",
-    "outputFolder": "./dist/bin",
+    "outputFolder": "C:\\Users\\Travis\\Documents\\Warcraft III\\Maps\\Askellon",
+    "version": "0.0.1",
     "minifyScript": false,
     "launchArgs": [
       "-launch",

@@ -176,8 +176,8 @@ export class SecurityModule {
         // Otherwise misc stuff
         else {
             if (secondarySeed >= 800) CreateItem(ITEM_ID_EMO_INHIB, x, y);
-            if (secondarySeed >= 600) CreateItem(ITEM_ID_REPAIR, x, y);
-            if (secondarySeed >= 0) CreateItem(ITEM_ID_NANOMED, x, y);
+            else if (secondarySeed >= 600) CreateItem(ITEM_ID_REPAIR, x, y);
+            else if (secondarySeed >= 0) CreateItem(ITEM_ID_NANOMED, x, y);
         }
 
         // Also reward 10 XP

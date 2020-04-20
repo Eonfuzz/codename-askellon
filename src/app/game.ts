@@ -61,6 +61,8 @@ export class Game {
             Log.Error("Failed to load TOC");
         }
 
+        BlzChangeMinimapTerrainTex("war3mapGenerated.blp")
+
         this.initUI();
 
         // Load order is important

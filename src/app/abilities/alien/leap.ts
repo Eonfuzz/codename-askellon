@@ -4,6 +4,7 @@ import { AbilityModule } from "../ability-module";
 import { Vector3 } from "../../types/vector3";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Unit } from "w3ts/handles/unit";
+import { Log } from "lib/serilog/serilog";
 
 
 const LEAP_ID = FourCC('LEAP');
@@ -22,6 +23,8 @@ export class LeapAbility implements Ability {
 
     public initialise(abMod: AbilityModule) {
         this.casterUnit = GetTriggerUnit();
+
+        Log.Information("Movement speed: "+GetUnitMoveSpeed(this.casterUnit));
 
         const cdRemaining = BlzGetUnitAbilityCooldownRemaining(this.casterUnit, LEAP_ID);
 
@@ -103,7 +106,10 @@ export class LeapAbility implements Ability {
             45,
             4
         ).onFinish((leapEntry) => {
+            let caster = this.casterUnit;
             this.leapExpired = true;
+
+            Log.Information("Post speed: "+GetUnitMoveSpeed(caster));
         });
 
         return true;

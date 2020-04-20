@@ -183,6 +183,7 @@ export class LeapModule {
             UnitAddAbility(who, UNIT_IS_FLY);
             BlzUnitDisableAbility(who, UNIT_IS_FLY, true, true);
             SetUnitFlyHeight(who, 800, 9999);
+            SetUnitPathing(who, false);
             return true;
         }, 250));
 
@@ -224,6 +225,7 @@ export class LeapModule {
         this.game.timedEventQueue.AddEvent(new TimedEvent(() => {
             BlzPauseUnitEx(who, false);
             UnitRemoveAbility(who, UNIT_IS_FLY);
+            SetUnitPathing(who, true);
             SetUnitFlyHeight(who, 0, 9999);
             return true;
         }, 5800));
