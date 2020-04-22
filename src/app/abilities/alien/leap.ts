@@ -24,8 +24,6 @@ export class LeapAbility implements Ability {
     public initialise(abMod: AbilityModule) {
         this.casterUnit = GetTriggerUnit();
 
-        Log.Information("Movement speed: "+GetUnitMoveSpeed(this.casterUnit));
-
         const cdRemaining = BlzGetUnitAbilityCooldownRemaining(this.casterUnit, LEAP_ID);
 
         if (cdRemaining > 0) return false;
@@ -108,8 +106,6 @@ export class LeapAbility implements Ability {
         ).onFinish((leapEntry) => {
             let caster = this.casterUnit;
             this.leapExpired = true;
-
-            Log.Information("Post speed: "+GetUnitMoveSpeed(caster));
         });
 
         return true;

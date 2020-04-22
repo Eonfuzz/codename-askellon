@@ -20,6 +20,8 @@ import { OBSERVER_FORCE_NAME } from "./observer-force";
 export const ALIEN_FORCE_NAME = 'ALIEN';
 export const DEFAULT_ALIEN_FORM = FourCC('ALI1');
 export const ALIEN_CHAT_COLOR = '6f2583';
+export const MAKE_UNCLICKABLE = false;
+
 const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(8, 'Sounds\\AlienChatSound.mp3');
 
 export class AlienForce extends ForceType {
@@ -113,11 +115,11 @@ export class AlienForce extends ForceType {
             }
             // Otherwise this is not the host, weaken it.
             else {
-                // alien.maxLife = MathRound(alien.maxLife * 0.75);
-                // alien.strength = MathRound(alien.strength * 0.75);
-                // alien.intelligence = MathRound(alien.intelligence * 0.75);
-                // alien.setBaseDamage( MathRound(alien.getBaseDamage(1) * 0.9), 1);
-                // alien.setScale(0.8, 0.8, 0.8);
+                alien.maxLife = MathRound(alien.maxLife * 0.75);
+                alien.strength = MathRound(alien.strength * 0.75);
+                alien.intelligence = MathRound(alien.intelligence * 0.75);
+                alien.setBaseDamage( MathRound(alien.getBaseDamage(1) * 0.9), 1);
+                alien.setScale(100, 100, 100);
             }
 
             // Additionally force the transform ability to start on cooldown
@@ -136,7 +138,7 @@ export class AlienForce extends ForceType {
             this.playerAlienUnits.set(owner, alien);
 
             // Hiding life bars
-            alien.addAbility(FourCC('Aloc'));
+            if (MAKE_UNCLICKABLE) alien.addAbility(FourCC('Aloc'));
 
             // Post event
             if (crewmember)
@@ -266,7 +268,7 @@ export class AlienForce extends ForceType {
 
         // If we are turning into human, add aloc to the hiding unit
         // This is to remove highlighting info
-        if (!toAlien) {
+        if (!toAlien && MAKE_UNCLICKABLE) {
             toHide.addAbility(FourCC('Aloc'));
         }
         // hide and make the unit invul
@@ -279,7 +281,7 @@ export class AlienForce extends ForceType {
 
         // Hides tooltip info if iti s alien
         // ORDER IS IMPORTANT
-        if (toAlien) toShow.removeAbility(FourCC('Aloc'));
+        if (toAlien && MAKE_UNCLICKABLE) toShow.removeAbility(FourCC('Aloc'));
 
         // Unpause and show
         toShow.show = true;
@@ -379,7 +381,7 @@ export class AlienForce extends ForceType {
             const damagingSecurity = damagedPlayer == this.forceModule.stationProperty || damagedPlayer == this.forceModule.stationSecurity;
             const isAlienForm = this.playerIsTransformed.get(damagingPlayer);
             // Reward slightly less xp for being in human form
-            xpGained = damagingSecurity ? damageAmount * 0.3 : (isAlienForm ? damageAmount * 1 : damageAmount * 0.4);
+            xpGained = damagingSecurity ? 0 : (isAlienForm ? damageAmount * 1 : damageAmount * 0.4);
 
             const crewmember = this.forceModule.game.crewModule.getCrewmemberForPlayer(damagingPlayer);
             if (crewmember) {

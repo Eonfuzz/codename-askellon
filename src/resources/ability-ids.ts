@@ -46,3 +46,4 @@ export const UNIT_IS_FLY = FourCC('A00C');
 
 export const TECH_CREWMEMBER_ATTACK_ENABLE = FourCC('RATK');
 export const ABIL_ITEM_EMOTIONAL_DAMP = FourCC('A00L');
+export const ABIL_ITEM_CRYO_GRENADE = FourCC('A00M');

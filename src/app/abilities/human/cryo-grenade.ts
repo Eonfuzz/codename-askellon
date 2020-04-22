@@ -7,17 +7,18 @@ import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
 import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { MapPlayer, Unit } from "w3ts";
+import { getZFromXY } from "lib/utils";
+import { BUFF_ID } from "resources/buff-ids";
+import { BuffInstanceDuration } from "app/buff/buff-instance";
 
 /** @noSelfInFile **/
-const EXPLOSION_BASE_DAMAGE = 100;
-const EXPLOSION_AOE = 200;
-const ABILITY_GRENADE_LAUNCH = FourCC('A00B');
-
-const MISSILE_LAUNCH_SFX = 'Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilSpecialArt.mdl';
-const MISSILE_SFX = 'Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdl';
+const EXPLOSION_BASE_DAMAGE = 20;
+const EXPLOSION_AOE = 300;
+const MISSILE_LAND_SFX = 'Abilities\\Spells\\Undead\\FrostNova\\FrostNovaTarget.mdl'
+const MISSILE_SFX = 'war3mapImported\\Chain Grenade Blue.mdx';
 
 
-export class GrenadeLaunchAbility implements Ability {
+export class CryoGrenadeAbility implements Ability {
 
     private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
@@ -43,23 +44,23 @@ export class GrenadeLaunchAbility implements Ability {
             this.casterUnit.handle,
             startLoc,
             new ProjectileTargetStatic(deltaTarget),
-            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(GetRandomReal(15,30)))
+            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(45))
         )
-        .onDeath((proj: Projectile) => { this.explode(proj.getPosition()); })
+        .onDeath((proj: Projectile) => { this.explode(module, proj.getPosition()); })
         .onCollide(() => true);
 
         projectile.addEffect(MISSILE_SFX, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
-
-        const sfx = AddSpecialEffect(MISSILE_LAUNCH_SFX, polarPoint.x, polarPoint.y);
-        BlzSetSpecialEffectHeight(sfx, -30);
-        DestroyEffect(sfx);
 
         module.game.weaponModule.addProjectile(projectile);
 
         return true;
     };
 
-    private explode(atWhere: Vector3) {
+    private explode(module: AbilityModule, atWhere: Vector3) {
+        let sfx = AddSpecialEffect(MISSILE_LAND_SFX, atWhere.x, atWhere.y);
+        BlzSetSpecialEffectZ(sfx, getZFromXY(atWhere.x, atWhere.y));
+        DestroyEffect(sfx);
+
         if (this.castingPlayer) {
             GroupEnumUnitsInRange(
                 this.damageGroup, 
@@ -68,7 +69,7 @@ export class GrenadeLaunchAbility implements Ability {
                 EXPLOSION_AOE,
                 FilterIsEnemyAndAlive(this.castingPlayer)
             );
-            ForGroup(this.damageGroup, () => this.damageUnit());
+            ForGroup(this.damageGroup, () => this.damageUnit(module));
         }
     }
 
@@ -76,12 +77,22 @@ export class GrenadeLaunchAbility implements Ability {
         return true;
     };
 
-    private damageUnit() {
+    private damageUnit(module: AbilityModule) {
         if (this.casterUnit) {
             const unit = GetEnumUnit();
+            const crew = module.game.crewModule.getCrewmemberForUnit(Unit.fromHandle(unit));
+            let damageMult = 1;
+            if (crew) damageMult = crew.getDamageBonusMult();
+
+            module.game.buffModule.addBuff(
+                BUFF_ID.FLASH_FREEZE, 
+                Unit.fromHandle(unit), 
+                new BuffInstanceDuration(Unit.fromHandle(unit), module.game.getTimeStamp(), 10)
+            );
+            
             UnitDamageTarget(this.casterUnit.handle, 
                 unit, 
-                EXPLOSION_BASE_DAMAGE, 
+                EXPLOSION_BASE_DAMAGE * damageMult, 
                 true, 
                 true, 
                 ATTACK_TYPE_MAGIC, 

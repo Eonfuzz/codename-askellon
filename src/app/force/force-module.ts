@@ -11,6 +11,7 @@ import { OptSelection, OPT_TYPES, OptSelectOption, OptResult } from "./opt-selec
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { SoundRef } from "app/types/sound-ref";
+import { PLAYER_COLOR } from "lib/translators";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -88,6 +89,15 @@ export class ForceModule {
         this.game.event.addListener(new EventListener(EVENT_TYPE.CHECK_VICTORY_CONDS, () => {
             this.checkVictoryConditions();
         }));
+
+
+        const players = this.getActivePlayers();
+        // Set up player leaves events
+        
+
+        const playerLeavesGameTrigger = new Trigger();
+        players.forEach(player => playerLeavesGameTrigger.registerPlayerEvent(player, EVENT_PLAYER_LEAVE));
+        playerLeavesGameTrigger.addAction(() => this.playerLeavesGame(MapPlayer.fromHandle(GetTriggerPlayer())))
     }
 
 
@@ -102,12 +112,14 @@ export class ForceModule {
      * @param player2 
      */
     public aggressionBetweenTwoPlayers(player1: MapPlayer, player2: MapPlayer) {
-        // Make them enemies
-        player1.setAlliance(player2, ALLIANCE_PASSIVE, false);
-        player2.setAlliance(player1, ALLIANCE_PASSIVE, false);
-
+        const validAggression = this.addAggressionLog(player1, player2)
         // Add the log
-        this.addAggressionLog(player1, player2);
+        if (validAggression) {
+            // Make them enemies
+            player1.setAlliance(player2, ALLIANCE_PASSIVE, false);
+            player2.setAlliance(player1, ALLIANCE_PASSIVE, false);
+        }
+        return validAggression;
     }
 
     /**
@@ -115,10 +127,21 @@ export class ForceModule {
      * If they have no aggression between the two after the duration, they become allies again
      * @param player1 
      * @param player2 
+     * @returns boolean if aggression was allowed
      */
-    private addAggressionLog(player1: MapPlayer, player2: MapPlayer) {
+    private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
         // We can never have tracked aggression against aliens
-        if (player2 === this.alienAIPlayer) return;
+        if (player2 === this.alienAIPlayer) return false;
+        // You cannot be aggressive against yourself
+        if (player1 === player2) return false;
+
+        // If alien spawn is attacking host we cannot have agression
+        // If alien host attacks spawn allow aggression
+        const alienForce = this.getForceFromName(ALIEN_FORCE_NAME) as AlienForce;
+        if (alienForce.hasPlayer(player1) && alienForce.hasPlayer(player2) && player1 !== alienForce.getHost())
+            return false;
+
+        // Becoming alien needs to make you hostile to all
 
         const newItem = {
             id: this.aggressionId++,
@@ -134,6 +157,8 @@ export class ForceModule {
         logs.push(newItem);
         this.aggressionLog.set(newItem.key, logs);
         this.allAggressionLogs.push(newItem);
+
+        return true;
     }
 
     /**
@@ -364,5 +389,22 @@ export class ForceModule {
      */
     public getPlayerForce(player: MapPlayer) {
         return this.playerForceDetails.get(player);
+    }
+    
+    /**
+     * When player leaves the game
+     * @param who 
+     */
+    private playerLeavesGame(who: MapPlayer) {
+        const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false);
+        playerLeaveSound.playSound();
+
+        const playerforce = this.getPlayerForce(who);
+        const playerCrew = this.game.crewModule.getCrewmemberForPlayer(who);
+
+        this.getActivePlayers().forEach(player => {
+            DisplayTextToPlayer(player.handle, 0, 0, `|cff${PLAYER_COLOR[who.id]}${this.getOriginalPlayerDetails(who).name}|r has left the game!`);
+        });
+        playerCrew.unit.kill();
     }
 }

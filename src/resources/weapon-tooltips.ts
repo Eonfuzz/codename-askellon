@@ -20,7 +20,7 @@ Attached: ${weapon.attachment
 }|r
 
 The standard issue rifle; ideal for thinning hordes and can dish out serious damage up close.
-${COL_GOOD}- 6 Shot Burst
+${COL_GOOD}- 6 shot burst
 - Each shot does ${damage} damage
 - Short Cooldown|r
 

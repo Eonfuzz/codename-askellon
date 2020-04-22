@@ -369,12 +369,6 @@ STRING 83
 - Gene Upgrade
 }
 
-STRING 84
-// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect1 (Effect 1)
-{
-rmov
-}
-
 STRING 86
 // Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
@@ -893,7 +887,7 @@ STRING 199
 }
 
 STRING 201
-// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect2 (Effect 2)
+// Upgrades: R001 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect1 (Effect 1)
 {
 rlev
 }
@@ -2210,5 +2204,72 @@ STRING 483
 // Items: I008 (25 Credits), Name (Name)
 {
 25 Credits
+}
+
+STRING 484
+// Items: I000 (Burst Rifle), Tip (Tooltip - Basic)
+{
+Purchase Burst Rifle
+}
+
+STRING 485
+// Items: I000 (Burst Rifle), Ubertip (Tooltip - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
+Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
+
+The standard issue rifle; ideal for thinning hordes and can dish out serious damage up close.
+|cff00ff00- 6 shot burst
+- Each shot does 18 damage
+- Short cooldown|r
+|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
+}
+
+STRING 486
+// Items: I009 (Cryo Grenade), Name (Name)
+{
+Cryo Grenade
+}
+
+STRING 487
+// Abilities: A00M (Cryo Grenade), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 488
+// Abilities: A00M (Cryo Grenade), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nLaunches a single, long distance round. Dealing 150 damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown.|r
+}
+
+STRING 489
+// Abilities: A00M (Cryo Grenade), Tip (Tooltip - Normal)
+{
+Underbarrel Rail-Rifle
+}
+
+STRING 491
+// Items: I009 (Cryo Grenade), Tip (Tooltip - Basic)
+{
+Purchase Cryo Grenade
+}
+
+STRING 492
+// Items: I009 (Cryo Grenade), Description (Description)
+{
+Prevents emotion for 15 seconds
+}
+
+STRING 493
+// Abilities: A00M (Cryo Grenade), Name (Name)
+{
+Cryo Grenade
+}
+
+STRING 496
+// Items: I009 (Cryo Grenade), Ubertip (Tooltip - Extended)
+{
+|cff808080A solid isotope of LN2 developed on board the Askellon, originally designed to flash freeze specimens for study further study.|n|r|nThrows a Cryo Grenade to target point, dealing |cff00ff0020 damage|r and applying |cff00ffffFlash Freeze|r to all units hit.|n|n|cff00ffffFlash Freeze:|r Massively slows move speed and turn rate over|cff00ff00 7 seconds|r.|n|n|cff80808020 Seconds Cooldown|r
 }
 

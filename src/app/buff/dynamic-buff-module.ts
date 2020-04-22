@@ -4,6 +4,7 @@ import { Unit, Trigger } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { onFire } from "./fire";
 import { Log } from "lib/serilog/serilog";
+import { flashFreeze } from "./flash-freeze";
 
 /** @noSelfInFile **/
 export class DynamicBuffModule {
@@ -38,7 +39,8 @@ export class DynamicBuffModule {
     }
 
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {
-        if (id = BUFF_ID.FIRE) return new onFire();
+        if (id === BUFF_ID.FIRE) return new onFire();
+        if (id === BUFF_ID.FLASH_FREEZE) return new flashFreeze();
         Log.Error("Creating new buff no instance for ID "+id);
     }
 

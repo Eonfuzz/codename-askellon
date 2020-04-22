@@ -269,10 +269,12 @@ export class WeaponModule {
                 let unit = Unit.fromHandle(GetEventDamageSource());
                 let targetUnit = Unit.fromHandle(BlzGetEventDamageTarget())
 
-                this.game.forceModule.aggressionBetweenTwoPlayers(
+                const validAggression = this.game.forceModule.aggressionBetweenTwoPlayers(
                     unit.owner, 
                     targetUnit.owner
                 );
+
+                if (!validAggression) IssueImmediateOrder(unit.handle, "stop");
 
                 if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
 

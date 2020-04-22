@@ -6,7 +6,7 @@ import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
 import { SprintLeapAbility } from "./human/sprint-leap";
 import { NightVisionAbility } from "./human/night-vision";
@@ -16,6 +16,7 @@ import { RailRifleAbility } from "./human/rail-rifle";
 import { Log } from "lib/serilog/serilog";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
 import { EmotionalDampenerAbility } from "./human/emotional-dampener";
+import { CryoGrenadeAbility } from "./human/cryo-grenade";
 
 
 const TIMEOUT = 0.03;
@@ -115,6 +116,12 @@ export class AbilityModule {
                 break;
             case ABIL_ITEM_EMOTIONAL_DAMP:
                 instance = new EmotionalDampenerAbility();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_ITEM_CRYO_GRENADE:
+                instance = new CryoGrenadeAbility();
                 if (instance.initialise(this)) {
                     this.data.push(instance);
                 }
