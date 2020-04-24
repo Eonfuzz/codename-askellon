@@ -119,7 +119,7 @@ export class AlienForce extends ForceType {
                 alien.strength = MathRound(alien.strength * 0.75);
                 alien.intelligence = MathRound(alien.intelligence * 0.75);
                 alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
-                alien.setScale(0.4, 0.4, 0.4);
+                alien.setScale(0.6, 0.6, 0.6);
             }
 
             // Additionally force the transform ability to start on cooldown

@@ -5,7 +5,7 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
-import { COL_GOD, COL_ATTATCH, COL_SYS } from "resources/colours";
+import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE } from "resources/colours";
 
 export enum PRIVS {
     USER, MODERATOR, DEVELOPER
@@ -205,8 +205,12 @@ export class ChatModule {
         });            
     }
 
-    private postSystemMessage(player: MapPlayer, message: string) {
+    public postSystemMessage(player: MapPlayer, message: string) {
         this.postMessageFor([player], "SYSTEM", COL_SYS, `${COL_ATTATCH}${message}|r`);
+    }
+
+    public postMessage(player: MapPlayer, name: string, message: string) {
+        this.postMessageFor([player], name, COL_MISC_MESSAGE, `${message}|r`);
     }
 
     getUserPrivs(who: MapPlayer): PRIVS {

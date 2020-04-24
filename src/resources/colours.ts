@@ -21,3 +21,4 @@ export const COL_VENTS = `|cff666633`;
 
 export const COL_GOD = 'ffcc00';
 export const COL_SYS = 'c81e1e';
+export const COL_MISC_MESSAGE = '00ffff';

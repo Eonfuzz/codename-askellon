@@ -176,7 +176,14 @@ export class GeneModule {
                 // Do stuff
                 this.game.event.addListener(new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, 
                     (event: EventListener, data: any) => {
-                        DisplayTextToPlayer(target.player.handle, 0, 0, `TRANSFORM DETECTED`);
+                        let text: string;
+                        const rNumber = GetRandomInt(0,4);
+                        if (rNumber === 0) text = "You feel sick";
+                        else if (rNumber === 1) text = "Visions flash; creatures changing form";
+                        else if (rNumber === 2) text = "You feel a howl of tearing flesh";
+                        else if (rNumber === 3) text = "Something is out there, perverse and twisted";
+                        else if (rNumber === 4) text = "Its out there, pretending to be one of us";
+                        this.game.chatModule.postMessage(instance.unitInGeneZone.player, "COSMIC", text);
                     })
                 );
             }
@@ -191,14 +198,19 @@ export class GeneModule {
             installerForce.onUnitGainsXp(this.game, instance.source, 100);
             targetForce.onUnitGainsXp(this.game, instance.unitInGeneZone, 100);
         }
-
         // INFESTED ugprade
         // Grant XP for HOST
-        if (bonusXpInfested) {
+        else if (bonusXpInfested) {
             const host = alienForce.getHost();
             if (host) {
                 const hostCrewmember = this.game.crewModule.getCrewmemberForPlayer(host);
                 hostCrewmember && alienForce.onUnitGainsXp(this.game, hostCrewmember, 100);
+                
+                let text: string;
+                const rNumber = GetRandomInt(0,1);
+                if (rNumber === 0) text = "The humans alter their bodies";
+                else if (rNumber === 1) text = "Inspecting infested gene splicing";
+                this.game.chatModule.postMessage(hostCrewmember.player, "INFEST", text);
             }
         }
 
