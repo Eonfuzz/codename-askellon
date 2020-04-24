@@ -9,6 +9,8 @@ import { Log } from "lib/serilog/serilog";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer } from "w3ts";
 
+const MAX_CHAT_MESSAGES = 15;
+
 export class ChatSystem {
     private game: Game;
 
@@ -107,7 +109,7 @@ export class ChatSystem {
      */
     private addMessage(message: string) {
         this.messageQueue.push(message);
-        if (this.messageQueue.length > 10) {
+        if (this.messageQueue.length > MAX_CHAT_MESSAGES) {
             this.messageQueue.shift();
         }
     }

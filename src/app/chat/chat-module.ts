@@ -5,6 +5,7 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
+import { COL_GOD, COL_ATTATCH, COL_SYS } from "resources/colours";
 
 export enum PRIVS {
     USER, MODERATOR, DEVELOPER
@@ -14,6 +15,8 @@ export class ChatModule {
 
     game: Game;
     chatHandlers = new Map<MapPlayer, ChatSystem>();
+    usersInGodChat = [];
+    usersInListen = [];
 
     constructor(game: Game) {
         this.game = game;
@@ -124,6 +127,34 @@ export class ChatModule {
             else if (message.indexOf("-wc") === 0) {
                 this.game.weaponModule.changeWeaponModeTo('CAST');
             }
+            else if (message.indexOf("-god") === 0) {
+                const idx = this.usersInGodChat.indexOf(player);
+                if (idx >= 0) {
+                    this.postMessageFor(this.usersInGodChat, "GAME", COL_GOD, player.name+" exiting god chat");
+                    this.usersInGodChat.splice(idx, 1);
+                }
+                else {
+                    this.usersInGodChat.push(player);
+                    this.postMessageFor(this.usersInGodChat, "GAME", COL_GOD, player.name+" entering god chat");
+                }
+            }
+            else if (message.indexOf("-listen") === 0) {
+                const idx = this.usersInListen.indexOf(player);
+                if (idx >= 0) {
+                    this.postSystemMessage(player, "Disabled Listen Mode");
+                    this.usersInListen.splice(idx, 1);
+                }
+                else {
+                    this.postSystemMessage(player, "Enabled Listen Mode");
+                    this.usersInListen.push(player);
+                }
+            }
+            else if (message.indexOf("-cheat") === 0) {
+                player.setState(PLAYER_STATE_RESOURCE_GOLD, 999999);
+            }
+            else if (message.indexOf("-help") === 0) {
+                this.postSystemMessage(player, "Commands: -god, -listen, -nt, -wa, -wc, -cheat");
+            }
         }
         // Priv 1 === MODERATOR
         if (priv >= 1) {
@@ -141,16 +172,29 @@ export class ChatModule {
     }
 
     handleMessage(player: MapPlayer, message: string, crew: Crewmember) {
-        // Get list of players to send the message to by player force
-        const force = this.game.forceModule.getPlayerForce(player);
-        if (force) {
-            const recipients = force.getChatRecipients(player);
-            const playername = force.getChatName(player);
-            const color      = force.getChatColor(player);
-            const sound      = force.getChatSoundRef(player);
-            const messageTag = force.getChatTag(player);
+        // We might handle this differently for admins.
+        // Is the user in god chat?
+        if (this.usersInGodChat.indexOf(player) >= 0) {
+            const players = this.game.forceModule.getActivePlayers();
+            this.postMessageFor(players, player.name, COL_GOD, message, "ADMIN");
+        }
+        else {
+            // Get list of players to send the message to by player force
+            const force = this.game.forceModule.getPlayerForce(player);
+            if (force) {
+                const recipients = force.getChatRecipients(player).slice();
+                const playername = force.getChatName(player);
+                const color      = force.getChatColor(player);
+                const sound      = force.getChatSoundRef(player);
+                const messageTag = force.getChatTag(player);
 
-            this.postMessageFor(recipients, playername, color, message, messageTag, sound);
+                // Handle listen mode
+                this.usersInListen.forEach(u => {
+                    if (recipients.indexOf(u) === -1) recipients.push(u);
+                })
+
+                this.postMessageFor(recipients, playername, color, message, messageTag, sound);
+            }
         }
     }
 
@@ -159,6 +203,10 @@ export class ChatModule {
             const cHandler = this.chatHandlers.get(p);
             if (cHandler) cHandler.sendMessage(fromName, color, message, messageTag, sound);
         });            
+    }
+
+    private postSystemMessage(player: MapPlayer, message: string) {
+        this.postMessageFor([player], "SYSTEM", COL_SYS, `${COL_ATTATCH}${message}|r`);
     }
 
     getUserPrivs(who: MapPlayer): PRIVS {

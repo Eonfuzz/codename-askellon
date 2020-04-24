@@ -5,7 +5,7 @@ import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { FilterIsEnemyAndAlive } from "../../../resources/filters";
+import { FilterIsEnemyAndAlive, FilterIsAlive } from "../../../resources/filters";
 import { MapPlayer, Unit } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { BUFF_ID } from "resources/buff-ids";
@@ -67,7 +67,7 @@ export class CryoGrenadeAbility implements Ability {
                 atWhere.x, 
                 atWhere.y,
                 EXPLOSION_AOE,
-                FilterIsEnemyAndAlive(this.castingPlayer)
+                FilterIsAlive(this.castingPlayer)
             );
             ForGroup(this.damageGroup, () => this.damageUnit(module));
         }
@@ -79,26 +79,40 @@ export class CryoGrenadeAbility implements Ability {
 
     private damageUnit(module: AbilityModule) {
         if (this.casterUnit) {
-            const unit = GetEnumUnit();
-            const crew = module.game.crewModule.getCrewmemberForUnit(Unit.fromHandle(unit));
+            const unit = Unit.fromHandle(GetEnumUnit());
+
+            // Check to make sure we are allowed aggression between the two teams
+            const aggressionAllowed = this.casterUnit.owner === unit.owner 
+                || module.game.forceModule.aggressionBetweenTwoPlayers(
+                    this.casterUnit.owner, 
+                    unit.owner
+                );
+
+            // If we aren't allowed aggression we stop
+            // Prevents griefing etc
+            if (!aggressionAllowed) return;
+
+            // Otherwise continue onwards
+            const crew = module.game.crewModule.getCrewmemberForUnit(unit);
             let damageMult = 1;
             if (crew) damageMult = crew.getDamageBonusMult();
 
             module.game.buffModule.addBuff(
                 BUFF_ID.FLASH_FREEZE, 
-                Unit.fromHandle(unit), 
-                new BuffInstanceDuration(Unit.fromHandle(unit), module.game.getTimeStamp(), 7)
+                unit,
+                new BuffInstanceDuration(unit, module.game.getTimeStamp(), 7)
             );
             
-            UnitDamageTarget(this.casterUnit.handle, 
-                unit, 
+            this.casterUnit.damageTarget(
+                unit.handle, 
                 EXPLOSION_BASE_DAMAGE * damageMult, 
+                0,
                 true, 
                 true, 
                 ATTACK_TYPE_MAGIC, 
                 DAMAGE_TYPE_ACID, 
                 WEAPON_TYPE_WHOKNOWS
-            );
+            )
         }
     }
 

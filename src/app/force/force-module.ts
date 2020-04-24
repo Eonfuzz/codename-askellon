@@ -131,7 +131,7 @@ export class ForceModule {
      */
     private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
         // We can never have tracked aggression against aliens
-        if (player2 === this.alienAIPlayer) return false;
+        if (player2 === this.alienAIPlayer) return true;
         // You cannot be aggressive against yourself
         if (player1 === player2) return false;
 
@@ -152,9 +152,8 @@ export class ForceModule {
             defendant: player2,
             timeStamp: this.game.getTimeStamp(),
             remainingDuration: 30,
-            key: '',
+            key: aggressionKey
         };
-        newItem.key = aggressionKey;
 
         const logs = this.aggressionLog.get(newItem.key) || [];
         logs.push(newItem);

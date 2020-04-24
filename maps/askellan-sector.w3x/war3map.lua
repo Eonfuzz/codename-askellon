@@ -130,8 +130,8 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("I009"), 862.0, 347.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 800.3, 427.5, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 740.6, 438.7, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 691.4, 455.7, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 717.6, 362.1, FourCC("I009"))
 end
 

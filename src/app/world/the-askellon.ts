@@ -11,7 +11,7 @@ import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { Vector2 } from "app/types/vector2";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { VISION_TYPE } from "./vision-type";
-import { ABIL_NIGHTEYE } from "resources/ability-ids";
+import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { MapPlayer } from "w3ts";
 import { ChurchZone } from "./zones/church";
@@ -127,10 +127,10 @@ export class TheAskellon {
 
 
         // IF we dont have power add despair to the unit
-        if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_NIGHTEYE) === 0) {
+        if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
             crewmember.addDespair(this.world.game, new BuffInstanceCallback(crewmember.unit, () => {
                 const z = this.world.getUnitZone(crewmember.unit);
-                const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_NIGHTEYE);
+                const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
                 return (z && hasNighteye === 0) ? z.doCauseFear() : false;
             }));
         }

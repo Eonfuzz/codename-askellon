@@ -33,13 +33,14 @@ export const TECH_HAS_GENES_TIER_2 = FourCC('RPG1');
 export const TECH_HAS_GENES_TIER_3 = FourCC('RPG1');
 
 export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
-export const ABIL_NIGHTEYE = FourCC('ANEG');
+export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');
+export const ABIL_GENE_COSMIC = FourCC('ACSM');
 
 export const GENE_INSTALL_MOBILITY = FourCC('AGJP');
 export const GENE_TECH_MOBILITY = FourCC('R001');
 
 export const GENE_INSTALL_PSIONIC_POTENCY = FourCC('AGPS');
-export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGPS');
+export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGCM');
 
 export const SMART_ORDER_ID = 851971;
 export const UNIT_IS_FLY = FourCC('A00C');

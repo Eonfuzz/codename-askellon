@@ -1,16 +1,12 @@
 /** @noSelfInFile **/
 import { Game } from "../game";
 import { BuffInstance, DynamicBuff, BuffInstanceDuration } from "./buff-instance";
-import { Crewmember } from "../crewmember/crewmember-type";
-import { TimedEvent } from "../types/timed-event";
 import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
-import { Log } from "../../lib/serilog/serilog";
-import { ABIL_ACCURACY_BONUS_30, FIRE_ARMOR_REDUCTION } from "resources/ability-ids";
 import { BUFF_ID } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 
-const FIRE_SFX = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl;';
 const FREEZE_SOUND = new SoundRef('Sounds\\CryoGrenade.wav', false);
+FREEZE_SOUND.setVolume(50);
 
 /**
  * Sets movement speed to zero

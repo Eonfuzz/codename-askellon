@@ -1653,12 +1653,6 @@ STRING 351
 |cff808080A revolutionay mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nWhen used, gain |cffd45e19night vision|r for |cffd45e1930 seconds|r. You are |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
 }
 
-STRING 354
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A revolutionay mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|n|cff00ffffSplices|r the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cffd45e19night vision|r for |cffd45e1930 seconds|r. You are |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
-}
-
 STRING 358
 // Abilities: AGJP (Enhanced Mobility), Tip (Tooltip - Normal)
 {
@@ -1684,7 +1678,7 @@ STRING 363
 }
 
 STRING 369
-// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Abilities: AGCM (Cosmic Sensitivity), EditorSuffix (Editor Suffix)
 {
 - GENE
 }
@@ -1802,12 +1796,6 @@ STRING 387
 // Items: ISHO (Harkons Blitzer), Tip (Tooltip - Basic)
 {
 Purchase Harkon's Blitzer
-}
-
-STRING 388
-// Units: h004 (Power Generator), Name (Name)
-{
-Power Generator
 }
 
 STRING 390
@@ -2271,5 +2259,77 @@ STRING 496
 // Items: I009 (Cryo Grenade), Ubertip (Tooltip - Extended)
 {
 |cff808080A solid isotope of LN2 developed on board the Askellon, originally designed to flash freeze specimens for study further study.|n|r|nThrows a Cryo Grenade to target point, dealing |cff00ff0020 damage|r and applying |cff00ffffFlash Freeze|r to all units hit.|n|n|cff00ffffFlash Freeze:|r Massively slows move speed and turn rate over|cff00ff00 7 seconds|r.|n|n|cff80808020 Seconds Cooldown|r
+}
+
+STRING 497
+// Abilities: AGCM (Cosmic Sensitivity), Name (Name)
+{
+Cosmic Sensitivity
+}
+
+STRING 498
+// Abilities: AGCM (Cosmic Sensitivity), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 500
+// Abilities: AGCM (Cosmic Sensitivity), Tip (Tooltip - Normal)
+{
+Cosmic Sensitivity
+}
+
+STRING 501
+// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 502
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|n|cff00ffffSplices|r the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cffd45e19night vision|r for |cffd45e1930 seconds|r. You are |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
+}
+
+STRING 505
+// Abilities: ACSM (Embrace the Cosmos), Name (Name)
+{
+Embrace the Cosmos
+}
+
+STRING 506
+// Abilities: ACSM (Embrace the Cosmos), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 508
+// Abilities: ACSM (Embrace the Cosmos), Tip (Tooltip - Normal)
+{
+Embrace the Cosmos
+}
+
+STRING 509
+// Abilities: ACSM (Embrace the Cosmos), EditorSuffix (Editor Suffix)
+{
+- Ability
+}
+
+STRING 514
+// Abilities: ACSM (Embrace the Cosmos), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Stretching unfamiliar muscles you reach out, and feel an entity far away. Its many folded gaze stares deep into your soul; the chill you feel is an understanding of a truth you should never have known.|r|n|nTransmit the colossal amounts of information your augmented mind collects to those around you, inflicting |cff00ffffFlash Freeze|r to all nearby units and deals WILL*3+20 damage.|n|n|cffc81e1eTheir mundane brains buckle under your mental transmissions, but beware, for entities that can handle them may take them as an invitation...|r|n|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 515
+// Units: h004 (Power Generator|n|cff808080If destroyed a floor will lose power|r), Name (Name)
+{
+Power Generator|n|cff808080If destroyed a floor will lose power|r
+}
+
+STRING 516
+// Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events effect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability
 }
 

@@ -8,12 +8,14 @@ import { TECH_NO_GENES_TIER_1,
     TECH_HAS_GENES_TIER_2, 
     TECH_HAS_GENES_TIER_3,
     GENE_INSTALL_NIGHTEYE,
-    ABIL_NIGHTEYE,
+    ABIL_GENE_NIGHTEYE,
     GENE_INSTALL_MOBILITY,
     GENE_TECH_MOBILITY,
     GENE_INSTALL_COSMIC_SENSITIVITY,
-    TECH_MAJOR_HEALTHCARE
+    TECH_MAJOR_HEALTHCARE,
+    ABIL_GENE_COSMIC
 } from "resources/ability-ids";
+import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Log } from "lib/serilog/serilog";
@@ -157,7 +159,7 @@ export class GeneModule {
         if (castAbil === GENE_INSTALL_NIGHTEYE) {
             SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1,  1);
             if (!targetIsAlien) {
-                UnitAddAbility(instance.unitInGeneZone.unit.handle, ABIL_NIGHTEYE);
+                UnitAddAbility(instance.unitInGeneZone.unit.handle, ABIL_GENE_NIGHTEYE);
             }
         }
         else if (castAbil === GENE_INSTALL_MOBILITY) {
@@ -169,15 +171,14 @@ export class GeneModule {
         else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
             SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_2,  1);
             if (!targetIsAlien) {
+                UnitAddAbility(instance.unitInGeneZone.unit.handle, ABIL_GENE_COSMIC);
+                this.game.tooltips.registerTooltip(instance.unitInGeneZone, TOOLTIP_EMBRACE_COSMOS);
                 // Do stuff
                 this.game.event.addListener(new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, 
                     (event: EventListener, data: any) => {
-                        const zone = this.game.worldModule.getUnitZone(data.alien);
-                        const ourZone = this.game.worldModule.getUnitZone(target.unit);
-                        if (zone && ourZone && zone.id == ourZone.id) {
-                            DisplayTextToPlayer(target.player.handle, 0, 0, `TRANSFORM DETECTED`);
-                        }
-                    }));
+                        DisplayTextToPlayer(target.player.handle, 0, 0, `TRANSFORM DETECTED`);
+                    })
+                );
             }
         }
         

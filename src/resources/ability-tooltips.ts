@@ -1,8 +1,8 @@
-import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_GOLD, COL_ORANGE } from "./colours";
+import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_GOLD, COL_ORANGE, COL_TEAL } from "./colours";
 import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ } from "./ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ, ABIL_GENE_COSMIC } from "./ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { AT_ABILITY_DRAGONFIRE_BLAST } from "app/weapons/weapon-constants";
 
@@ -123,4 +123,17 @@ Fires ${COL_GOOD}20|r short ranged plas blasts, dealing up to ${COL_GOOD}${
 ${COL_INFO}Firing this at full power causes you to be sent flying back.|r
 
 ${COL_MISC}45 Second Cooldown|r`
+);
+
+
+export const TOOLTIP_EMBRACE_COSMOS = new DynamicAbilityTooltip(
+    ABIL_GENE_COSMIC,
+    undefined,
+    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Stretching unfamiliar muscles you reach out, and feel an entity far away. Its many folded gaze stares deep into your soul; the chill you feel is an understanding of a truth you should never have known.|r
+    
+Transmit the colossal amounts of information your augmented mind collects to those around you, inflicting ${COL_TEAL}Flash Freeze|r to all nearby units and deals ${COL_GOOD}${who.unit.getIntelligence(true) * 5 + 50}|r${COL_MISC}(Will Based)|r${COL_GOOD} damage|r.
+
+${COL_ATTATCH}Their mundane brains buckle under your mental transmissions, but beware, for entities that can handle them may take them as an invitation...|r
+
+${COL_MISC}80 Seconds Cooldown|r`
 );
