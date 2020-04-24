@@ -118,8 +118,8 @@ export class AlienForce extends ForceType {
                 alien.maxLife = MathRound(alien.maxLife * 0.75);
                 alien.strength = MathRound(alien.strength * 0.75);
                 alien.intelligence = MathRound(alien.intelligence * 0.75);
-                alien.setBaseDamage( MathRound(alien.getBaseDamage(1) * 0.9), 1);
-                alien.setScale(100, 100, 100);
+                alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
+                alien.setScale(0.4, 0.4, 0.4);
             }
 
             // Additionally force the transform ability to start on cooldown
@@ -482,5 +482,23 @@ export class AlienForce extends ForceType {
         
         // Otherwise return default behaviour
         return super.getChatTag(who);
+    }
+
+    /**
+     * Returns true if the aggression is valid
+     * used by force
+     * Only host can start aggression between players
+     * @param aggressor 
+     * @param defendant 
+     */
+    public aggressionIsValid(aggressor: MapPlayer, defendant: MapPlayer): boolean {
+        const defendantIsAlien = this.hasPlayer(defendant);
+
+        // If this is alien v alien, only the host can start combat
+        if (defendantIsAlien) {
+            return this.getHost() === aggressor;
+        }
+
+        return true;
     }
 }

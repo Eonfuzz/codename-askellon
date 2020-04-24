@@ -135,13 +135,16 @@ export class ForceModule {
         // You cannot be aggressive against yourself
         if (player1 === player2) return false;
 
-        // If alien spawn is attacking host we cannot have agression
-        // If alien host attacks spawn allow aggression
-        const alienForce = this.getForceFromName(ALIEN_FORCE_NAME) as AlienForce;
-        if (alienForce.hasPlayer(player1) && alienForce.hasPlayer(player2) && player1 !== alienForce.getHost())
-            return false;
-
-        // Becoming alien needs to make you hostile to all
+        const aggressionKey = this.getLogKey(player1, player2);
+        
+        // Only care about force logic if we aren't already hostiles
+        if (!this.aggressionLog.has(aggressionKey)) {
+            // Now check force logic
+            const attackerForce = this.getPlayerForce(player1);
+            const aggressionValid = attackerForce.aggressionIsValid(player1, player2);
+            // If the force says this aint valid, well it aint valid
+            if (!aggressionValid) return false;
+        }
 
         const newItem = {
             id: this.aggressionId++,
@@ -151,7 +154,7 @@ export class ForceModule {
             remainingDuration: 30,
             key: '',
         };
-        newItem.key = this.getLogKey(player1, player2);
+        newItem.key = aggressionKey;
 
         const logs = this.aggressionLog.get(newItem.key) || [];
         logs.push(newItem);
@@ -187,6 +190,8 @@ export class ForceModule {
                     // Ally them
                     instance.aggressor.setAlliance(instance.defendant, ALLIANCE_PASSIVE, true);
                     instance.defendant.setAlliance(instance.aggressor, ALLIANCE_PASSIVE, true);
+                    // Delete it from aggression log
+                    this.aggressionLog.delete(key);
                 }
                 return false;
             }

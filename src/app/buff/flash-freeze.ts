@@ -10,7 +10,7 @@ import { BUFF_ID } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 
 const FIRE_SFX = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl;';
-const FREEZE_SOUND = new SoundRef('', false);
+const FREEZE_SOUND = new SoundRef('Sounds\\CryoGrenade.wav', false);
 
 /**
  * Sets movement speed to zero

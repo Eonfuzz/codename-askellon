@@ -274,7 +274,7 @@ export class WeaponModule {
                     targetUnit.owner
                 );
 
-                if (!validAggression) IssueImmediateOrder(unit.handle, "stop");
+                if (!validAggression) IssueImmediateOrder(targetUnit.handle, "stop");
 
                 if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
 

@@ -128,4 +128,16 @@ export abstract class ForceType {
      * Returns the chat tag, by default it will be null
      */
     public getChatTag(who: MapPlayer): string | undefined { return; }
+
+
+    /**
+     * Returns true if the aggression is valid
+     * used by force
+     * by default returns true
+     * @param aggressor 
+     * @param defendant 
+     */
+    public aggressionIsValid(aggressor: MapPlayer, defendant: MapPlayer): boolean {
+        return true;
+    }
 }

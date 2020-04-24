@@ -87,7 +87,7 @@ export class CryoGrenadeAbility implements Ability {
             module.game.buffModule.addBuff(
                 BUFF_ID.FLASH_FREEZE, 
                 Unit.fromHandle(unit), 
-                new BuffInstanceDuration(Unit.fromHandle(unit), module.game.getTimeStamp(), 10)
+                new BuffInstanceDuration(Unit.fromHandle(unit), module.game.getTimeStamp(), 7)
             );
             
             UnitDamageTarget(this.casterUnit.handle, 
