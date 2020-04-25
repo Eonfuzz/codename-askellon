@@ -43,6 +43,14 @@ gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
+gg_rct_Kill_Zone = nil
+gg_trg_DEATH = nil
+gg_rct_Kill_Zone_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_2 = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy = nil
+gg_rct_ShipAirWaveZone = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -349,6 +357,10 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28640.0, -27808.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28704.0, -27744.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28640.0, -27744.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -28726.4, -28273.7, 270.000, FourCC("h006"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -27831.4, -28262.0, 270.000, FourCC("h006"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -26949.8, -28277.1, 270.000, FourCC("h006"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -26052.4, -28293.4, 270.000, FourCC("h006"))
 end
 
 function CreateNeutralHostile()
@@ -410,6 +422,28 @@ function CreateRegions()
     gg_rct_FallZoneCargoLand = Rect(-25600.0, 26016.0, -25344.0, 26496.0)
     gg_rct_JumpPassCargo = Rect(-26816.0, -27936.0, -25696.0, -27104.0)
     gg_rct_JumpPassCargoVent = Rect(-26496.0, -26944.0, -25728.0, -26080.0)
+    gg_rct_Kill_Zone = Rect(-27008.0, 27168.0, -26016.0, 28160.0)
+    gg_rct_Kill_Zone_Copy = Rect(-24768.0, -24800.0, -21216.0, -23360.0)
+    gg_rct_Kill_Zone_Copy_Copy = Rect(-21792.0, -26624.0, -21216.0, -24768.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy = Rect(-21792.0, -28480.0, -21216.0, -26624.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_2 = Rect(-24896.0, -26592.0, -24256.0, -24736.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy = Rect(-24864.0, -28416.0, -24288.0, -26560.0)
+    gg_rct_ShipAirWaveZone = Rect(-29056.0, -28672.0, -25696.0, -27104.0)
+end
+
+function Trig_DEATH_Actions()
+    KillUnit(GetTriggerUnit())
+end
+
+function InitTrig_DEATH()
+    gg_trg_DEATH = CreateTrigger()
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_2)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy)
+    TriggerAddAction(gg_trg_DEATH, Trig_DEATH_Actions)
 end
 
 function Trig_Set_Actions()
@@ -505,6 +539,7 @@ function InitTrig_SetPowerGenerators()
 end
 
 function InitCustomTriggers()
+    InitTrig_DEATH()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()

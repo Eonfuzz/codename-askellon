@@ -62,6 +62,9 @@ export class Game {
         }
 
         BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
+        SetAmbientDaySound('');
+        SetAmbientNightSound('');
+        PlayMusic("Music\\MechanicusLostCivilization.mp3");
 
         this.initUI();
 

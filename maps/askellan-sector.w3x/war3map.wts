@@ -2333,3 +2333,15 @@ STRING 516
 |cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events effect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability
 }
 
+STRING 517
+// Units: h006 (Voyager|n|cff808080Right Click to Interact|r), Name (Name)
+{
+Voyager|n|cff808080Right Click to Interact|r
+}
+
+STRING 518
+// Doodads: D00I (Korhal Wall Large), Name (Name)
+{
+Korhal Wall Large
+}
+

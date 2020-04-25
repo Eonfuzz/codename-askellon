@@ -217,5 +217,12 @@ export class GeneModule {
         if (targetIsAlien) {
             DisplayTextToPlayer(target.player.handle, 0, 0, messageAlien);
         }
+
+        // Send gene upgrade event
+        this.game.event.sendEvent(EVENT_TYPE.GENE_UPGRADE_INSTALLED, { 
+            source: instance.unitInGeneZone.unit, 
+            crewmember: instance.unitInGeneZone, 
+            data: { gene: castAbil}
+        });
     }
 }

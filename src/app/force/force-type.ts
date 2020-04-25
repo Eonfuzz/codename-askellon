@@ -76,12 +76,12 @@ export abstract class ForceType {
      * @param whichPlayer 
      * @param amount 
      */
-    public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
+    public onUnitGainsXp(game: Game, whichUnit: Crewmember, newTotal: number) {
         let levelBefore = whichUnit.unit.level;
 
         // Just apply the xp earned
         whichUnit.unit.suspendExperience(false);
-        whichUnit.unit.addExperience(MathRound(amount), true);
+        whichUnit.unit.setExperience(MathRound(newTotal), true);
         whichUnit.unit.suspendExperience(true);
 
         if (levelBefore !== whichUnit.unit.level) {

@@ -74,7 +74,7 @@ export const alienTooltipToAlien = new DynamicAbilityTooltip(
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
 
 You are the ${COL_ALIEN}Alien.|r Destroy or devour the lesser beings aboard this vessel.
-You can ${COL_INFO}transform|r into your ${COL_ALIEN}${data.alienFormName}|r form at will.
+You can ${COL_INFO}transform|r into your ${COL_ALIEN}Alien|r form at will.
         
 When critically injured you gain ${COL_RESOLVE}Resolve|r, this ability is lost at the ${COL_ALIEN}third evolution|r.
     

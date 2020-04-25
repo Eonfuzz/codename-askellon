@@ -334,9 +334,9 @@ export class AlienForce extends ForceType {
      * @param whichPlayer 
      * @param amount 
      */
-    public onUnitGainsXp(game: Game, whichUnit: Crewmember, amount: number) {
+    public onUnitGainsXp(game: Game, whichUnit: Crewmember, newTotal: number) {
         // Apply it as per normal to the crewmember
-        super.onUnitGainsXp(game, whichUnit, amount);
+        super.onUnitGainsXp(game, whichUnit, newTotal);
 
         // Do the same to the alien
         const alien = this.playerAlienUnits.get(whichUnit.player);
@@ -346,7 +346,7 @@ export class AlienForce extends ForceType {
         
         // Apply XP gain to alien form
         alien.suspendExperience(false);
-        alien.addExperience(MathRound(amount), true);
+        alien.setExperience(MathRound(newTotal), true);
         alien.suspendExperience(true);
     
         if (levelBefore !== alien.level) {

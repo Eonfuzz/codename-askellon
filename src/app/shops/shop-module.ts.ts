@@ -12,8 +12,7 @@ class SharedShop {
 }
 
 
-export class ShopModule {   
-
+export class ShopModule {
     constructor(game: Game) {
     }
 }

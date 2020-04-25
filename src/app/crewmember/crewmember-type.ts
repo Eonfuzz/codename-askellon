@@ -21,6 +21,11 @@ export class Crewmember extends ArmableUnit {
 
     public resolve: Resolve;
     public despair: Despair;
+
+    // The total amount of experience points gained
+    // Used for emulating xp gain
+    public totalExperience: number = 0;
+
     private force: ForceType;
     private visionType: VISION_TYPE = VISION_TYPE.NORMAL;
 
@@ -133,10 +138,14 @@ export class Crewmember extends ArmableUnit {
 
     addExperience(game: Game, amount: number) {
         const oldLevel = GetHeroLevel(this.unit.handle);
+
+        // Add to the total XP
+        this.totalExperience += amount;
+
         // temporarily re-enable xp gain
         SuspendHeroXP(this.unit.handle, false);
 
-        this.force.onUnitGainsXp(game, this, amount);
+        this.force.onUnitGainsXp(game, this, this.totalExperience);
 
         // now disable it
         SuspendHeroXP(this.unit.handle, true);

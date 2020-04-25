@@ -1,4 +1,4 @@
-import { COL_GOLD, COL_VENTS, COL_TEAL, COL_ATTATCH } from "./colours";
+import { COL_GOLD, COL_VENTS, COL_TEAL, COL_ATTATCH, COL_GOOD } from "./colours";
 
 /** @noSelfInFile **/
 export enum ROLE_TYPES {
@@ -52,7 +52,9 @@ ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
 
 export const ROLE_DESCRIPTIONS = new Map<ROLE_TYPES, string>();
 
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `The ${COL_GOLD}Captain|r controls station security targeting and pilots the Askellon through deep space.|nIt is your job to ensure your crew survive the trip.`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `The ${COL_GOLD}Captain|r pilots the Askellon through deep space.
+${COL_GOOD}- Start the game at level 2 and have bonus Will
+- Gain bonus experience points while on the bridge|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_GOLD}Navigator|r you must scan deep space and lead your ${COL_GOLD}Captain|r through deep space.|nYou are also in charge of the Cargo Bay's ships.`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `As ${COL_GOLD}Doctor|r research and upgrade Healthcare while using the Gene Splicer to upgrade your comrades.`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);

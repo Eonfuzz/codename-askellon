@@ -61,8 +61,9 @@ export class CrewModule {
 
         let it = 0;
         while (it < totalPlayers) {
-            if (it === 0) this.allJobs.push(ROLE_TYPES.INQUISITOR);
-            else if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
+            // if (it === 0) this.allJobs.push(ROLE_TYPES.INQUISITOR);
+            // else 
+            if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
             else if (it === 1) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
             else if (it === 2) this.allJobs.push(ROLE_TYPES.DOCTOR);
             else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
@@ -130,8 +131,13 @@ export class CrewModule {
         // Handle unique role bonuses
         // Captain starts at level 2
         if (crewmember.role === ROLE_TYPES.CAPTAIN) {
-            // Log.Information("CAPTAIN BONUS");
-            nUnit.setHeroLevel(2, false);
+            // Captain bonus is additional XP
+            crewmember.addExperience(this.game, 500);
+            // And slightly higher will
+            crewmember.unit.setIntelligence(
+                crewmember.unit.getIntelligence(false) + 2, 
+                true
+            );
         }
         // Sec guard starts with weapon damage 1 and have shotguns
         else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
