@@ -1,4 +1,4 @@
-import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_GOLD, COL_ORANGE, COL_TEAL } from "./colours";
+import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_GOLD, COL_ORANGE, COL_TEAL, COL_BAD } from "./colours";
 import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
@@ -82,7 +82,6 @@ ${ROLE_DESCRIPTIONS.get(who.role)}
 
 ${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
 );
-
 export const alienTooltipToHuman = new DynamicAbilityTooltip(
     ABIL_TRANSFORM_ALIEN_HUMAN,
     undefined,
@@ -131,9 +130,10 @@ export const TOOLTIP_EMBRACE_COSMOS = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Stretching unfamiliar muscles you reach out, and feel an entity far away. Its many folded gaze stares deep into your soul; the chill you feel is an understanding of a truth you should never have known.|r
     
-Transmit the colossal amounts of information your augmented mind collects to those around you, inflicting ${COL_TEAL}Flash Freeze|r to all nearby units and deals ${COL_GOOD}${who.unit.getIntelligence(true) * 5 + 50}|r${COL_MISC}(Will Based)|r${COL_GOOD} damage|r.
+Transmit the colossal amounts of information your augmented mind collects to those around you, inflicting ${COL_TEAL}Flash Freeze|r to all nearby units and deals ${COL_GOOD}${who.unit.getIntelligence(true) * 5 + 50}|r${COL_MISC} (Will Based)|r${COL_GOOD} Psionic damage|r.
+This takes a massive toll on your mind, causing ${COL_ATTATCH}${MathRound((who.unit.getIntelligence(true) * 5 + 50) / 2)}|r damage to yourself.
 
-${COL_ATTATCH}Their mundane brains buckle under your mental transmissions, but beware, for entities that can handle them may take them as an invitation...|r
+${COL_ATTATCH}Their mundane brains buckle under your mental transmissions, but beware, for entities that can handle them may take this as an invitation...|r
 
 ${COL_MISC}80 Seconds Cooldown|r`
 );

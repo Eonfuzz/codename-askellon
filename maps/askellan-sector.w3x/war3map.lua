@@ -14,6 +14,7 @@ udg_power_generators = {}
 udg_power_generator_zones = __jarray("")
 udg_elevator_entrance_names = __jarray("")
 udg_elevator_exit_zones = __jarray("")
+udg_ship_zones = {}
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -23,10 +24,23 @@ gg_rct_FallZoneCargo = nil
 gg_rct_FallZoneCargoLand = nil
 gg_rct_JumpPassCargo = nil
 gg_rct_JumpPassCargoVent = nil
+gg_rct_Kill_Zone = nil
+gg_rct_Kill_Zone_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_2 = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy = nil
+gg_rct_ShipAirWaveZone = nil
+gg_rct_ShipBay01 = nil
+gg_rct_ShipBay02 = nil
+gg_rct_ShipBay03 = nil
+gg_rct_ShipBay04 = nil
+gg_trg_DEATH = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
 gg_trg_SetFall = nil
 gg_trg_SetPowerGenerators = nil
+gg_trg_SetShipZones = nil
 gg_unit_n001_0032 = nil
 gg_unit_h004_0048 = nil
 gg_unit_n004_0034 = nil
@@ -43,14 +57,6 @@ gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
-gg_rct_Kill_Zone = nil
-gg_trg_DEATH = nil
-gg_rct_Kill_Zone_Copy = nil
-gg_rct_Kill_Zone_Copy_Copy = nil
-gg_rct_Kill_Zone_Copy_Copy_Copy = nil
-gg_rct_Kill_Zone_Copy_Copy_Copy_2 = nil
-gg_rct_Kill_Zone_Copy_Copy_Copy_Copy = nil
-gg_rct_ShipAirWaveZone = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -133,14 +139,14 @@ end
 
 function CreateAllItems()
     local itemID
+    BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 717.6, 362.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 819.5, 355.5, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 766.3, 368.8, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 862.0, 347.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 800.3, 427.5, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 717.6, 362.1, FourCC("I009"))
 end
 
 function CreateUnitsForPlayer20()
@@ -357,10 +363,6 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28640.0, -27808.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28704.0, -27744.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28640.0, -27744.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -28726.4, -28273.7, 270.000, FourCC("h006"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -27831.4, -28262.0, 270.000, FourCC("h006"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -26949.8, -28277.1, 270.000, FourCC("h006"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h006"), -26052.4, -28293.4, 270.000, FourCC("h006"))
 end
 
 function CreateNeutralHostile()
@@ -429,6 +431,10 @@ function CreateRegions()
     gg_rct_Kill_Zone_Copy_Copy_Copy_2 = Rect(-24896.0, -26592.0, -24256.0, -24736.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy = Rect(-24864.0, -28416.0, -24288.0, -26560.0)
     gg_rct_ShipAirWaveZone = Rect(-29056.0, -28672.0, -25696.0, -27104.0)
+    gg_rct_ShipBay01 = Rect(-28832.0, -28448.0, -28640.0, -28032.0)
+    gg_rct_ShipBay02 = Rect(-27936.0, -28448.0, -27744.0, -28032.0)
+    gg_rct_ShipBay03 = Rect(-27040.0, -28448.0, -26848.0, -28032.0)
+    gg_rct_ShipBay04 = Rect(-26144.0, -28448.0, -25952.0, -28032.0)
 end
 
 function Trig_DEATH_Actions()
@@ -538,12 +544,25 @@ function InitTrig_SetPowerGenerators()
     TriggerAddAction(gg_trg_SetPowerGenerators, Trig_SetPowerGenerators_Actions)
 end
 
+function Trig_SetShipZones_Actions()
+    udg_ship_zones[1] = gg_rct_ShipBay01
+    udg_ship_zones[2] = gg_rct_ShipBay02
+    udg_ship_zones[3] = gg_rct_ShipBay03
+    udg_ship_zones[4] = gg_rct_ShipBay04
+end
+
+function InitTrig_SetShipZones()
+    gg_trg_SetShipZones = CreateTrigger()
+    TriggerAddAction(gg_trg_SetShipZones, Trig_SetShipZones_Actions)
+end
+
 function InitCustomTriggers()
     InitTrig_DEATH()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()
     InitTrig_SetPowerGenerators()
+    InitTrig_SetShipZones()
 end
 
 function RunInitializationTriggers()
@@ -551,6 +570,7 @@ function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetHatch)
     ConditionalTriggerExecute(gg_trg_SetFall)
     ConditionalTriggerExecute(gg_trg_SetPowerGenerators)
+    ConditionalTriggerExecute(gg_trg_SetShipZones)
 end
 
 function InitCustomPlayerSlots()

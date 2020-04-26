@@ -2,14 +2,20 @@
 
 import { Game } from "../game";
 import { Ship } from "./ship";
-import { Trigger } from "w3ts";
+import { Trigger, Region, Rectangle, Unit } from "w3ts";
 import { SpaceObject } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
+import { Log } from "lib/serilog/serilog";
+import { ShipBay } from "./ship-bay";
+import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
+
+// For ship bay instansiation
+declare const udg_ship_zones: rect[];
+declare const gg_rct_Space: rect;
 
 export class SpaceModule {
     private game: Game;
 
-    //@ts-ignore
     public spaceRect: rect = gg_rct_Space;
 
     // These are things like minerals, asteroids
@@ -21,11 +27,14 @@ export class SpaceModule {
     // An array of ships
     public ships: Ship[];
 
+    public shipBays: ShipBay[];
+
     constructor(game: Game) {
         this.game = game;
 
         this.ships          = [];
         this.spaceObjects   = [];
+        this.shipBays       = [];
 
 
         const spaceX = GetRectCenterX(this.spaceRect);
@@ -34,43 +43,9 @@ export class SpaceModule {
         this.mainShip = new Ship(spaceX, spaceY);
         this.mainShip.unit = CreateUnit(Player(0), FourCC('h003'), spaceX, spaceY, bj_UNIT_FACING);
 
-        this.createTestShip();
-        let i = 0;
-        while (i < 400) {
-            i ++;
-            this.createTestAsteroid();
-        }
-
         this.initShips();
         this.initShipAbilities();
     }
-
-    createTestShip() {
-        const unitId = FourCC('h000');
-
-        const spaceX = GetRectCenterX(this.spaceRect);
-        const spaceY = GetRectCenterY(this.spaceRect);
-
-        const ship = new Ship(spaceX, spaceY);
-        ship.unit = CreateUnit(Player(0), unitId, spaceX, spaceY, bj_UNIT_FACING);
-
-        // Add to our ship array
-        this.ships.push(ship);
-    }
-
-    createTestAsteroid() {
-        if (!this.mainShip.unit) return;
-
-        const x = GetUnitX(this.mainShip.unit) + GetRandomReal(-5000, 5000);
-        const y = GetUnitY(this.mainShip.unit) + GetRandomReal(-5000, 5000);
-
-        const newAsteroid = new Asteroid(x, y);
-        this.spaceObjects.push(newAsteroid);
-
-        // Now load it in
-        newAsteroid.load(this.game);
-    }
-
     
     /**
      * Registers are repeating timer that updates projectiles
@@ -79,7 +54,25 @@ export class SpaceModule {
     initShips() {
         const SHIP_UPDATE_PERIOD = 0.03;
         this.shipUpdateTimer.registerTimerEvent(SHIP_UPDATE_PERIOD, true);
-        this.shipUpdateTimer.addAction(() => this.updateShips(SHIP_UPDATE_PERIOD))
+        this.shipUpdateTimer.addAction(() => this.updateShips(SHIP_UPDATE_PERIOD));
+
+        /**
+         * Also insansiate ships
+         */
+        udg_ship_zones.forEach(rect => {
+            const bay = new ShipBay(rect)
+            this.shipBays.push(bay);
+
+            // Also for now create a ship to sit in the dock
+            const ship = new Unit(
+                this.game.forceModule.stationProperty, 
+                SHIP_VOYAGER_UNIT,
+                bay.RECT.centerX,
+                bay.RECT.centerY,
+                bj_UNIT_FACING);
+        })
+
+        SetSkyModel
     }
 
     /**

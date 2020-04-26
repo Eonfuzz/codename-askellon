@@ -53,13 +53,13 @@ export class EmbraceCosmosAbility implements Ability {
                 this.embraceCosmosExplode(module);
             }
             if (this.timeCast >= SFXEnd && this.sfx) {
-                Log.Information("Destroy effect");
+                // Log.Information("Destroy effect");
                 this.sfx.destroy();
                 return false;
             }
         }
         else if (this.timeCast < EmbraceCosmosCastTime) {
-            Log.Information("Ending animation")
+            // Log.Information("Ending animation")
             return false;
         }
 
@@ -98,8 +98,9 @@ export class EmbraceCosmosAbility implements Ability {
             // Prevents griefing etc
             if (!aggressionAllowed) return;
 
+            const isSelfUnit = this.unit === unit;
             // Only freeze not-self
-            if (this.unit !== unit) {
+            if (!isSelfUnit) {
                 module.game.buffModule.addBuff(
                     BUFF_ID.FLASH_FREEZE, 
                     unit,
@@ -109,7 +110,9 @@ export class EmbraceCosmosAbility implements Ability {
             
             this.unit.damageTarget(
                 unit.handle, 
-                this.unit.getIntelligence(true) * 5 + 50, 
+                isSelfUnit 
+                    ? this.unit.getIntelligence(true) * 2.5 + 25
+                    : this.unit.getIntelligence(true) * 5 + 50, 
                 0,
                 true, 
                 true, 
@@ -121,7 +124,7 @@ export class EmbraceCosmosAbility implements Ability {
     }
 
     public destroy(aMod: AbilityModule) {
-        Log.Information("Destroy");
+        // Log.Information("Destroy");
         this.soundEffect.stopSound();
         return false;
     };

@@ -1,8 +1,6 @@
 import { Vector3 } from "../types/vector3";
 import { Vector2 } from "../types/vector2";
 
-/** @noSelfInFile **/
-
 export class Ship {
 
     public unit: unit | undefined;

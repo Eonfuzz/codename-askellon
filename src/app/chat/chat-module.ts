@@ -155,6 +155,10 @@ export class ChatModule {
             else if (message.indexOf("-help") === 0) {
                 this.postSystemMessage(player, "Commands: -god, -listen, -nt, -wa, -wc, -cheat");
             }
+            else if (message.indexOf("-ns") === 0) {
+                BlzShowTerrain(false);
+                SetSkyModel("war3mapImported\\Skybox3r.mdx");
+            }
         }
         // Priv 1 === MODERATOR
         if (priv >= 1) {
@@ -217,6 +221,8 @@ export class ChatModule {
         // Log.Information("Player attempting commands: "+GetPlayerName(who));
         if (who.name === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
         if (who.name === 'Local Player') return PRIVS.DEVELOPER;
+        // No # means this is a local game
+        if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
         else if (this.game.forceModule.getActivePlayers().length === 1) return PRIVS.MODERATOR;
         return PRIVS.USER;
     }

@@ -47,7 +47,7 @@ export function initElevators(game: Game) {
         const elevator = new Elevator(
             Unit.fromHandle(entrance),
             elevatorExitZone,
-            {x: 0, y: -110 }
+            {x: 0, y: -165 }
         );
 
         BlzSetUnitName(entrance, `To ${entranceName}|n${COL_MISC}Right Click To Use|r`);
@@ -93,6 +93,8 @@ export function initElevators(game: Game) {
             if (targetElevator && targetElevator.to) {
                 fromUnit.x = targetElevator.to.unit.x + targetElevator.to.exit_offset.x;
                 fromUnit.y = targetElevator.to.unit.y + targetElevator.to.exit_offset.y;
+                // fromUnit.facing = bj_UNIT_FACING;
+                BlzSetUnitFacingEx(fromUnit.handle, bj_UNIT_FACING);
 
                 if (IsUnitSelected(fromUnit.handle, fromUnit.owner.handle)) {
                     PanCameraToTimedForPlayer(fromUnit.owner.handle, fromUnit.x, fromUnit.y, 0);
