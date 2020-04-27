@@ -43,6 +43,7 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     verNum
   );
 
+  // logger.info("Resizing hashtable");
   map.archive.resizeHashtable(files.length);
 
   for (const fileName of files) {
@@ -65,16 +66,20 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     }
   }
 
+  // logger.info("Saving archive...");
   const result = map.save();
 
   if (!result) {
     logger.error("Failed to save archive.");
     return;
   }
+  else {
+    // logger.info("Saved archive");
+  }
 
   fs.writeFileSync(output, new Uint8Array(result));
 
-  logger.info("Finished!");
+  // logger.info("Finished!");
 }
 
 export function prepDirForCreate(output: string, dir: string, verNum: string) {
@@ -114,17 +119,25 @@ function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
   if (!wtsDir) throw Error("wts not found");
   if (!w3iDir) throw Error("w3i not found");
 
-  let w3iBuffer = toArrayBuffer(fs.readFileSync(w3iDir));
+  const buffer = fs.readFileSync(w3iDir);
+  if (!buffer) throw Error("w3i buffer not found");
+
+  let w3iBuffer = toArrayBuffer(buffer);
   let wtsBuffer = fs.readFileSync(wtsDir, "utf8");
 
+  logger.info("Pre w3i");
   const w3i = new War3MapW3i.File(w3iBuffer);
+  logger.info("Pre wts");
   const wts = new War3MapWts.File(wtsBuffer);
 
   const w3iNameString = getStringNumberFromString(w3i.name);
   w3i.name = `${wts.stringMap.get(w3iNameString)} v${verNum}`;
 
+  logger.info("Saving w3i");
   w3iBuffer = w3i.save();
+  logger.info("Writing w3i");
   fs.writeFileSync(w3iDir, toBuffer(w3iBuffer));
+  logger.info("Posting writing w3i");
 }
 
 // export function alterW3i(fileDir: string, versionNumber: string) {

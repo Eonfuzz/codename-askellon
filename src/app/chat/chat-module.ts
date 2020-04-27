@@ -157,7 +157,6 @@ export class ChatModule {
             }
             else if (message.indexOf("-ns") === 0) {
                 BlzShowTerrain(false);
-                SetSkyModel("war3mapImported\\Skybox3r.mdx");
             }
         }
         // Priv 1 === MODERATOR

@@ -71,8 +71,6 @@ export class SpaceModule {
                 bay.RECT.centerY,
                 bj_UNIT_FACING);
         })
-
-        SetSkyModel
     }
 
     /**
