@@ -4,6 +4,7 @@ import { InteractionEvent } from "./interaction-event";
 import { Interactables, initElevators, initHatches, initWeaponsTerminals } from "./interaction-data";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit } from "w3ts";
+import { initShipInteractions } from "./ship-interactions";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -55,6 +56,7 @@ export class InteractionModule {
         initElevators(game);
         initHatches(game);
         initWeaponsTerminals();
+        initShipInteractions(game);
     }
 
     processInteractions(delta: number) {

@@ -51,14 +51,14 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     const archivePath = path.relative(dir, fileName);
     const imported = map.import(archivePath, contents);
 
-    if (fileName.indexOf(".blp") !== -1 || fileName.indexOf(".mp3") !== -1) {
+    // if (fileName.indexOf(".blp") !== -1 || fileName.indexOf(".mp3") !== -1) {
       const file = map.archive.files.find((e) => e.name === archivePath);
       if (file) {
         file.rawBuffer = contents;
         file.block.compressedSize = contents.byteLength;
         file.block.flags = FILE_EXISTS;
       }
-    }
+    // }
 
     if (!imported) {
       logger.warn("Failed to import " + archivePath);

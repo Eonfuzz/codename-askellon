@@ -36,6 +36,10 @@ export enum EVENT_TYPE {
 
     // Special event just to check for victory conds
     CHECK_VICTORY_CONDS,
+
+    // Ships
+    ENTER_SHIP,
+    LEAVE_SHIP
 }
 
 export interface Event<dataType> {
