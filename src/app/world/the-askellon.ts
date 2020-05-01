@@ -144,29 +144,29 @@ export class TheAskellon {
      */
     damageShip(damage: number, zone?: ZONE_TYPE) {
         const damagedZone = zone ? this.findZone(zone) : this.getRandomZone()[1];
-        const askellonUnit = this.world.game.spaceModule.mainShip.unit;
+        // const askellonUnit = this.world.game.spaceModule.mainShip.unit;
 
-        // Damage the ship
-        if (askellonUnit) {
-            UnitDamageTarget(askellonUnit, askellonUnit, damage, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
-        }
+        // // Damage the ship
+        // if (askellonUnit) {
+        //     askellonUnit.damageTarget(askellonUnit.handle, damage, 0, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+        // }
 
-        if (damage > SMALL_DAMAGE_THRESHOLD) {
-            // Play ship groan sfx
-            // Shake screen for all inside ship
-        }
-        else if (damage > MODREATE_DAMAGE_THRESHOLD) {
-            // Play ship bang sfx
-            // Moderate Shake screen for all inside ship
-            // Cause temporary power out in effected zone
-        }
-        else if (damage > EXTREME_DAMAGE_THRESHOLD) {
-            // Play ship bang sfx
-            // Heavy screen shake
-            // Damage all players and units in zone
-            // Cause permanent power out in effected zone
-            // Damage all modules in effected zone
-        }
+        // if (damage > SMALL_DAMAGE_THRESHOLD) {
+        //     // Play ship groan sfx
+        //     // Shake screen for all inside ship
+        // }
+        // else if (damage > MODREATE_DAMAGE_THRESHOLD) {
+        //     // Play ship bang sfx
+        //     // Moderate Shake screen for all inside ship
+        //     // Cause temporary power out in effected zone
+        // }
+        // else if (damage > EXTREME_DAMAGE_THRESHOLD) {
+        //     // Play ship bang sfx
+        //     // Heavy screen shake
+        //     // Damage all players and units in zone
+        //     // Cause permanent power out in effected zone
+        //     // Damage all modules in effected zone
+        // }
     }
 
     private getRandomZone() {

@@ -115,7 +115,6 @@ function getStringNumberFromString(whichString: string) {
 }
 
 function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
-  logger.info("Updating strings in w3x");
   if (!wtsDir) throw Error("wts not found");
   if (!w3iDir) throw Error("w3i not found");
 
@@ -125,19 +124,14 @@ function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
   let w3iBuffer = toArrayBuffer(buffer);
   let wtsBuffer = fs.readFileSync(wtsDir, "utf8");
 
-  logger.info("Pre w3i");
   const w3i = new War3MapW3i.File(w3iBuffer);
-  logger.info("Pre wts");
   const wts = new War3MapWts.File(wtsBuffer);
 
   const w3iNameString = getStringNumberFromString(w3i.name);
   w3i.name = `${wts.stringMap.get(w3iNameString)} v${verNum}`;
 
-  logger.info("Saving w3i");
   w3iBuffer = w3i.save();
-  logger.info("Writing w3i");
   fs.writeFileSync(w3iDir, toBuffer(w3iBuffer));
-  logger.info("Posting writing w3i");
 }
 
 // export function alterW3i(fileDir: string, versionNumber: string) {

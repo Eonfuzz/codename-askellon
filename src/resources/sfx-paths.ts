@@ -1,0 +1,1 @@
+export const SFX_WINDWAVE = "war3mapImported\\DustWave.mdx";

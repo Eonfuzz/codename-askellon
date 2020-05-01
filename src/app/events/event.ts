@@ -39,7 +39,9 @@ export enum EVENT_TYPE {
 
     // Ships
     ENTER_SHIP,
-    LEAVE_SHIP
+    LEAVE_SHIP,
+
+    SHIP_ENTERS_SPACE,
 }
 
 export interface Event<dataType> {

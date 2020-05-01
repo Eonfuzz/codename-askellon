@@ -1,8 +1,10 @@
 import { ZONE_TYPE } from "app/world/zone-id";
-import { Ship } from "./ship";
 import { Log } from "lib/serilog/serilog";
 import { ShipAnimation, ShipAnimationExitStationDock } from "./ship-animations/ship-animations";
-import { Rectangle, Region } from "w3ts/index";
+import { Rectangle, Region, Unit } from "w3ts/index";
+import { Ship } from "./ship";
+import { Game } from "app/game";
+import { EVENT_TYPE } from "app/events/event";
 
 
 /**
@@ -32,22 +34,42 @@ export class ShipBay {
     hasDockedShip(): boolean { return !!this.dockedShip; }
     getDockedShip(): Ship | undefined { return this.dockedShip; }
 
-    dockShip(ship: Ship) {
+    dockShip(ship: Ship, showAnimation?: boolean) {
         // Check for ship dock status
         if (this.dockedShip) return Log.Error("Trying to dock into bay that already has a ship!");
         if (this.animating) return Log.Error("Trying to dock into a bay that is animating!");
 
         // Set docking animation state
+        if (!showAnimation) {
+            ship.unit.x = this.RECT.centerX;
+            ship.unit.y = this.RECT.centerY;
+            // Halt all animations
+            ship.unit.setTimeScale(0);
+        }
+        else {
+            this.animating = true;
+        }
         this.dockedShip = ship;
-        this.animating = true;
     }
 
-    launchShip() {
+    launchShip(game: Game, forWho: Unit) {
         // Check for dock status
         if (!this.dockedShip) return Log.Error("Trying to launch ship from dock but no ship exists");
         if (this.animating) return Log.Error("Trying to launch from bay that is already animating!");
 
         this.animating = true;
+        this.dockedShip.onEnterShip(forWho);
         this.animation = new ShipAnimationExitStationDock(this.dockedShip, this);
+        this.animation.onDoneCallback(() => this.shipLaunched(game, forWho));
+    }
+
+    shipLaunched(game: Game, forWho: Unit) {
+        const ship = this.dockedShip;
+        this.animating = false;
+        this.dockedShip = undefined;
+
+        game.event.sendEvent(EVENT_TYPE.SHIP_ENTERS_SPACE, {
+            source: forWho, data: { ship: ship }
+        });
     }
 }

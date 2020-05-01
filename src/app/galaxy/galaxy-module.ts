@@ -62,6 +62,6 @@ export class GalaxyModule {
 
         this.galaxyMap.setCenter(centerX, centerY, this.game.getZFromXY(centerX, centerY));
         this.galaxyMap.getNewDisplay(this.currentSector.x, this.currentSector.y, this.spaceGrid.sectors);
-        this.galaxyMap.renderForOffset(this.game.spaceModule.getAskellonPosition());
+        // this.galaxyMap.renderForOffset(this.game.spaceModule.getAskellonPosition());
     }
 }

@@ -1,7 +1,6 @@
 /** @noSelfInFile **/
 import { Game } from "../game";
 import { Zone } from "./zone-type";
-import { Ship } from "../space/ship";
 import { TheAskellon } from "./the-askellon";
 import { ZONE_TYPE, STRING_TO_ZONE_TYPE } from "./zone-id";
 import { Trigger, Unit, MapPlayer } from "w3ts";
