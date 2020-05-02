@@ -158,6 +158,10 @@ export class ChatModule {
             else if (message.indexOf("-ns") === 0) {
                 BlzShowTerrain(false);
             }
+            else if (message.indexOf("-vision") === 0) {
+                const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
+                FogModifierStart(modifier);
+            }
         }
         // Priv 1 === MODERATOR
         if (priv >= 1) {

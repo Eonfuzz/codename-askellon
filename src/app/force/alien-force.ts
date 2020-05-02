@@ -385,7 +385,8 @@ export class AlienForce extends ForceType {
 
             const crewmember = this.forceModule.game.crewModule.getCrewmemberForPlayer(damagingPlayer);
             if (crewmember) {
-                this.onUnitGainsXp(this.forceModule.game, crewmember, xpGained);
+                crewmember.addExperience(this.forceModule.game, xpGained);
+                // this.onUnitGainsXp(this.forceModule.game, crewmember, xpGained);
             }
         }
     }
@@ -409,7 +410,7 @@ export class AlienForce extends ForceType {
                 // Do I make it proportional to level as a catchup mechanic?
                 // Increase XP gained for damaging host by Sec Guard
                 const xpAmount = crewmember.role === ROLE_TYPES.SEC_GUARD ? damageAmount * 1.3 : 1;
-                damageSourceForce.onUnitGainsXp(this.forceModule.game, crewmember, xpAmount);
+                crewmember.addExperience(this.forceModule.game, xpAmount);
             }
         }
     }

@@ -415,7 +415,7 @@ end
 
 function CreateRegions()
     local we
-    gg_rct_Space = Rect(14528.0, -19520.0, 29984.0, 864.0)
+    gg_rct_Space = Rect(6336.0, -30176.0, 29920.0, 1216.0)
     gg_rct_Galaxy_Map = Rect(-3520.0, 1856.0, -2656.0, 2720.0)
     gg_rct_FallZone1 = Rect(-96.0, 1056.0, 480.0, 1248.0)
     gg_rct_FallZone1Land = Rect(-27488.0, 26816.0, -27168.0, 27168.0)

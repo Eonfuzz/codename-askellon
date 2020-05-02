@@ -1731,9 +1731,9 @@ STRING 377
 
 STRING 378
 {
-|cff455D68The crew onboard the Askellon wake to blaring alarms and a damaged ship. Some of your comrades are either dead, missing or just as dazed as you are.|r
+|cff839299The crew onboard the Askellon wake to blaring alarms and a damaged ship. Some of your comrades are either dead, missing or just as dazed as you are.|r
 
-|cff839299Travel through deep space, repair the broken subsystems of your Ship and escape...|r
+|cff455D68Travel through deep space, repair the broken subsystems of your Ship and escape...|r
 |n|n
 }
 
@@ -2343,5 +2343,29 @@ STRING 519
 // Units: h006 (Voyager|n|cff808080Right Click to Enter|r), Name (Name)
 {
 Voyager|n|cff808080Right Click to Enter|r
+}
+
+STRING 520
+// Abilities: A00N (Dock), Name (Name)
+{
+Dock
+}
+
+STRING 521
+// Abilities: A00N (Dock), Hotkey (Hotkey - Normal)
+{
+D
+}
+
+STRING 522
+// Abilities: A00N (Dock), Ubertip (Tooltip - Normal - Extended)
+{
+For testing only, causes you to reenter station
+}
+
+STRING 523
+// Abilities: A00N (Dock), Tip (Tooltip - Normal)
+{
+Dock
 }
 

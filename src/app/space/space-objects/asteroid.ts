@@ -3,6 +3,7 @@ import { SpaceObject } from "./space-object";
 import { Vector2 } from "../../types/vector2";
 import { ForceModule } from "../../force/force-module";
 import { Game } from "../../game";
+import { Log } from "lib/serilog/serilog";
 
 
 export const ASTEROID_UNIT_ID = FourCC('h002');
@@ -21,8 +22,26 @@ export class Asteroid extends SpaceObject {
         const location = this.getLocation();
         this.unit = CreateUnit(game.forceModule.neutralPassive.handle, ASTEROID_UNIT_ID, location.x, location.y, bj_UNIT_FACING);
 
-        SetUnitTimeScale(this.unit, 0.1);
-        SetUnitScalePercent(this.unit, GetRandomReal(50, 300), GetRandomReal(50, 300), GetRandomReal(50, 300));
+        try {
+            const rng = GetRandomInt(0, 4);
+            let skin;
+            switch (rng) {
+                case 0: skin = FourCC('Ast0'); break;
+                case 1: skin = FourCC('Ast1'); break;
+                case 2: skin = FourCC('Ast2'); break;
+                case 3: skin = FourCC('Ast3'); break;
+                case 4: skin = FourCC('Ast4'); break;
+            }
+            BlzSetUnitSkin(this.unit, skin);
+        }
+        catch (e) {
+            Log.Error("ERR"+e);
+        }
+        
+        const scaleFactor = GetRandomReal(50, 300);
+
+        SetUnitTimeScale(this.unit, GetRandomReal(0.01, 0.1));
+        SetUnitScalePercent(this.unit, scaleFactor, scaleFactor, scaleFactor);
         SetUnitFacing(this.unit, GetRandomReal(0, 360));
     }
 

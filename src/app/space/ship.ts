@@ -3,6 +3,7 @@ import { Unit } from "w3ts/index";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { Game } from "app/game";
 import { SpaceMovementEngine } from "./ship-movement-engine";
+import { Log } from "lib/serilog/serilog";
 
 export enum ShipState {
     inBay, inSpace
@@ -19,6 +20,7 @@ export class Ship {
     public state: ShipState;
     // Magic number for starting fuel. Upgrades to apply maybe?
     public shipFuel: number = 100;
+    public maxFuel: number = 100;
 
     // Ship engine
     public engine: SpaceMovementEngine;
@@ -33,11 +35,12 @@ export class Ship {
         this.state = state;
         const u = Unit.fromHandle(CreateUnit(game.forceModule.stationProperty.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING));
         this.unit = u;
+        this.unit.maxMana = this.maxFuel;
         this.unit.paused = true;
     }
 
     process(game: Game, deltaTime: number) {
-        if (this.state = ShipState.inSpace) {
+        if (this.state === ShipState.inSpace) {
             this.engine.updateThrust(this.unit.facing, deltaTime)
                 .applyThrust(deltaTime)
                 .updatePosition(deltaTime);
@@ -48,11 +51,16 @@ export class Ship {
             const enginePos = this.engine.getPosition();
             this.unit.x = enginePos.x;
             this.unit.y = enginePos.y;
+
+            // We also force player cam to the ship
+            const p = this.unit.owner;
+            PanCameraToTimedForPlayer(p.handle, this.unit.x, this.unit.y, 0);
         }
         // Otherwise update fuel
         else if (this.state = ShipState.inBay) {
             this.shipFuel = Math.min(this.shipFuel + 5 * deltaTime, 100);
         }
+        this.unit.mana = this.shipFuel;
     }
 
     onEnterShip(who: Unit) {
@@ -66,5 +74,15 @@ export class Ship {
         // Hide entering unit
         this.inShip.push(who);
         who.show = false;
+    }
+
+    onEnterSpace() {
+        this.state = ShipState.inSpace;
+        this.engine = new SpaceMovementEngine(this.unit.x, this.unit.y);
+
+        this.unit.setflyHeight(0, 0);
+        this.unit.paused = false;
+        this.unit.selectionScale = 0.5;
+        this.unit.setScale(0.5, 0.5, 0.5);
     }
 }

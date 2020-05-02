@@ -9,6 +9,7 @@ import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { Ship, ShipState } from "./ship";
+import { ABIL_DOCK_TEST } from "resources/ability-ids";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -17,7 +18,7 @@ declare const gg_rct_Space: rect;
 export class SpaceModule {
     private game: Game;
 
-    public spaceRect: rect = gg_rct_Space;
+    public spaceRect: Rectangle = Rectangle.fromHandle(gg_rct_Space);
 
     // These are things like minerals, asteroids
     // These will not move normally
@@ -37,11 +38,18 @@ export class SpaceModule {
         this.shipBays       = [];
 
 
-        const spaceX = GetRectCenterX(this.spaceRect);
-        const spaceY = GetRectCenterY(this.spaceRect);
+        const spaceX = this.spaceRect.centerX;
+        const spaceY = this.spaceRect.centerY;
 
         this.initShips();
-        // this.initShipAbilities();
+        this.initShipAbilities();
+
+        for (let index = 0; index < 400; index++) {
+            const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
+            const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
+            const asteroid = new Asteroid(rX, rY);
+            asteroid.load(game);
+        }
 
         this.game.event.addListener( new EventListener(EVENT_TYPE.ENTER_SHIP, (self, data) => 
             this.unitEntersShip(
@@ -51,6 +59,7 @@ export class SpaceModule {
         );
         this.game.event.addListener( new EventListener(EVENT_TYPE.LEAVE_SHIP, () => {}) );
         this.game.event.addListener( new EventListener(EVENT_TYPE.SHIP_ENTERS_SPACE, (self, data) => this.onShipEntersSpace(data.source, data.data.ship)) );
+        this.game.event.addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.ship)) );
     }
     
     /**
@@ -72,6 +81,7 @@ export class SpaceModule {
             // Also for now create a ship to sit in the dock
             const ship = new Ship(this.game, ShipState.inBay);
             this.shipsForUnit.set(ship.unit, ship);
+            this.ships.push(ship);
 
             bay.dockShip(ship);
         });
@@ -83,16 +93,33 @@ export class SpaceModule {
 
         ship.unit.x = rect.centerX;
         ship.unit.y = rect.centerY;
-        ship.unit.setflyHeight(0, 0);
-        ship.unit.paused = false;
-        ship.unit.selectionScale = 0.5;
 
-        ship.unit.setScale(0.5, 0.5, 0.5);
+        ship.onEnterSpace();
         PanCameraToTimedForPlayer(who.owner.handle, ship.unit.x, ship.unit.y, 0);
         if (who.owner.handle === GetLocalPlayer()) {
             BlzShowTerrain(false);
+        }        
+    }
+
+    /**
+     * The ship is leaving space and entering station... Somewhere?
+     * TODO Take into account multiple landing locations
+     * @param whichShip 
+     * @param whichTarget 
+     */
+    onShipLeavesSpace(whichUnit: Unit, whichShip: Ship) {
+        // We need to find a "free" dock
+        const freeBay = this.shipBays.find(bay => !bay.hasDockedShip());
+        if (!freeBay) {
+            // Display the warning to the pilot
+            return DisplayTextToPlayer(whichUnit.owner.handle, 0, 0, `No free ship bays`);
         }
-        
+        // Now we need to dock
+        freeBay.dockShip(whichShip, true);
+        PanCameraToTimedForPlayer(whichUnit.owner.handle, whichUnit.x, whichUnit.y, 0);
+        if (whichUnit.owner.handle === GetLocalPlayer()) {
+            BlzShowTerrain(true);
+        }        
     }
 
     /**
@@ -135,36 +162,46 @@ export class SpaceModule {
         }
     }
 
-    // /**
-    //  * Ship abilities
-    //  */
-    // private shipAbilityTrigger      = new Trigger();
-    // private shipAccelAbilityId      = FourCC('A001');
-    // private shipDeaccelAbilityId    = FourCC('A000');
-    // private shipStopAbilityId       = FourCC('A006');
-    // initShipAbilities() {
-    //     this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
-    //     this.shipAbilityTrigger.addCondition(Condition(() =>
-    //         GetSpellAbilityId() === this.shipAccelAbilityId     ||
-    //         GetSpellAbilityId() === this.shipDeaccelAbilityId   ||
-    //         GetSpellAbilityId() === this.shipStopAbilityId
-    //     ));
+    /**
+     * Ship abilities
+     */
+    private shipAbilityTrigger      = new Trigger();
+    private shipAccelAbilityId      = FourCC('A001');
+    private shipDeaccelAbilityId    = FourCC('A000');
+    private shipStopAbilityId       = FourCC('A006');
+    initShipAbilities() {
+        this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.shipAbilityTrigger.addCondition(Condition(() =>
+            GetSpellAbilityId() === this.shipAccelAbilityId     ||
+            GetSpellAbilityId() === this.shipDeaccelAbilityId   ||
+            GetSpellAbilityId() === this.shipStopAbilityId      ||
+            GetSpellAbilityId() === ABIL_DOCK_TEST
+        ));
 
-    //     this.shipAbilityTrigger.addAction(() => {
-    //         const unit = GetTriggerUnit();
-    //         const castAbilityId = GetSpellAbilityId();
+        this.shipAbilityTrigger.addAction(() => {
+            const unit = GetTriggerUnit();
+            const castAbilityId = GetSpellAbilityId();
 
-    //         // Phew, hope you have the water running, ready for your shower            
-    //         let ship = this.getShipForUnit(Unit.fromHandle(unit));
-    //         if (ship && castAbilityId === this.shipAccelAbilityId) {
-    //             ship.increaseVelocity();
-    //         }
-    //         else if (ship && castAbilityId === this.shipDeaccelAbilityId) {
-    //             ship.decreaseVelocity();
-    //         }
-    //         else if (ship) {
-    //             ship.goToAStop();
-    //         }
-    //     })
-    // }
+            // Phew, hope you have the water running, ready for your shower  
+            const u = Unit.fromHandle(unit);           
+            let ship = this.shipsForUnit.get(u);
+
+            if (!ship) Log.Error("Ship casting movement but no ship?!");
+            else if (castAbilityId === this.shipAccelAbilityId) {
+                ship.engine.increaseVelocity();
+            }
+            else if (castAbilityId === this.shipDeaccelAbilityId) {
+                ship.engine.decreaseVelocity();
+            }
+            else if (castAbilityId === ABIL_DOCK_TEST) {
+                this.game.event.sendEvent(EVENT_TYPE.SHIP_LEAVES_SPACE, {
+                    source: u,
+                    data: { ship: ship }
+                })
+            }
+            else {
+                ship.engine.goToAStop();
+            }
+        })
+    }
 }

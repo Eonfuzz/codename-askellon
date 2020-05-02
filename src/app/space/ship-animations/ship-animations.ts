@@ -85,8 +85,10 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
             DestroyEffect(sfx);
         }
 
-        if (this.totalTime >= 4.5) {
-            const vec = this.movementVector.multiplyN(delta).multiplyN(Math.min((this.totalTime - 5) / 3, 1));
+        if (this.totalTime >= 4.5 && this.totalTime < 10) {
+            const vec = this.movementVector
+                .multiplyN(delta)
+                .multiplyN(Math.min((this.totalTime - 5) / 3, 1));
 
             this.ship.unit.x += vec.x;
             this.ship.unit.y += vec.y;
@@ -101,6 +103,25 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
             this.shipFlySound.stopSound();
             return false;
         }
+        return true;
+    };
+}
+
+export class ShipAnimationEnterStationDock extends ShipAnimation {
+
+    private shipFlySound = new SoundRef("Sounds\\EngineFadeInSound1.mp3", false);
+
+    public process(delta: number) {
+        this.totalTime += delta;
+
+        /**
+         * We're doing the first phase of animations
+         */
+        if (this.totalTime == delta) {
+            this.ship.unit.setTimeScale(1);
+            this.shipFlySound.playSoundOnUnit(this.ship.unit.handle, 127);
+        }
+        
         return true;
     };
 }
