@@ -1,5 +1,5 @@
 import { Game } from "app/game";
-import { Trigger, MapPlayer } from "w3ts";
+import { Trigger, MapPlayer, Timer } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ChatSystem } from "./chat-system";
@@ -80,9 +80,10 @@ export class ChatModule {
         /**
          * Create a fade tracking trigger loop
          */
-        const fadeTrig = new Trigger();
-        fadeTrig.registerTimerEvent(0.1, true);
-        fadeTrig.addAction(() => this.updateFade(0.1));
+        new Timer().start(0.1, true, () => this.updateFade(0.1));
+        // const fadeTrig = new Trigger();
+        // fadeTrig.registerTimerEvent(0.1, true);
+        // fadeTrig.addAction(() => this.updateFade(0.1));
     }
 
     updateFade(deltaTime: number) {

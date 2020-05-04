@@ -1,8 +1,8 @@
 /** @noSelfInFile **/
 
 import { Game } from "../game";
-import { Trigger, Region, Rectangle, Unit } from "w3ts";
-import { SpaceObject } from "./space-objects/space-object";
+import { Trigger, Region, Rectangle, Unit, Timer } from "w3ts";
+import { SpaceObject, SpaceObjectType } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
 import { Log } from "lib/serilog/serilog";
 import { ShipBay } from "./ship-bay";
@@ -44,13 +44,32 @@ export class SpaceModule {
         this.initShips();
         this.initShipAbilities();
 
-        for (let index = 0; index < 400; index++) {
-            const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
-            const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
-            const asteroid = new Asteroid(rX, rY);
-            asteroid.load(game);
+        try {
+            // Create 300 midground asteroids
+            for (let index = 0; index < 300; index++) {
+                const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
+                const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
+                const asteroid = new Asteroid(rX, rY, SpaceObjectType.midground);
+                asteroid.load(game);
+            }
+            // Create 400 background asteroids
+            for (let index = 0; index < 400; index++) {
+                const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
+                const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
+                const asteroid = new Asteroid(rX, rY, SpaceObjectType.background);
+                asteroid.load(game);
+            }
+            // Create 100 foreground asteroids
+            for (let index = 0; index < 400; index++) {
+                const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
+                const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
+                const asteroid = new Asteroid(rX, rY, SpaceObjectType.foreground);
+                asteroid.load(game);
+            }
         }
-
+        catch (e) {
+            Log.Error(e);
+        }
         this.game.event.addListener( new EventListener(EVENT_TYPE.ENTER_SHIP, (self, data) => 
             this.unitEntersShip(
                 data.source, 
@@ -65,11 +84,15 @@ export class SpaceModule {
     /**
      * Registers are repeating timer that updates projectiles
      */
-    shipUpdateTimer = new Trigger();
+    // shipUpdateTimer = new Trigger();
     initShips() {
         const SHIP_UPDATE_PERIOD = 0.03;
-        this.shipUpdateTimer.registerTimerEvent(SHIP_UPDATE_PERIOD, true);
-        this.shipUpdateTimer.addAction(() => this.updateShips(SHIP_UPDATE_PERIOD));
+
+        // Start gene check trigger
+        new Timer().start(SHIP_UPDATE_PERIOD, true, () => this.updateShips(SHIP_UPDATE_PERIOD));
+        
+        // this.shipUpdateTimer.registerTimerEvent(SHIP_UPDATE_PERIOD, true);
+        // this.shipUpdateTimer.addAction(() => this.updateShips(SHIP_UPDATE_PERIOD));
 
         /**
          * Also insansiate ships
@@ -83,7 +106,7 @@ export class SpaceModule {
             this.shipsForUnit.set(ship.unit, ship);
             this.ships.push(ship);
 
-            bay.dockShip(ship);
+            bay.dockShip(this.game, ship);
         });
     }
 
@@ -108,18 +131,24 @@ export class SpaceModule {
      * @param whichTarget 
      */
     onShipLeavesSpace(whichUnit: Unit, whichShip: Ship) {
-        // We need to find a "free" dock
-        const freeBay = this.shipBays.find(bay => !bay.hasDockedShip());
-        if (!freeBay) {
-            // Display the warning to the pilot
-            return DisplayTextToPlayer(whichUnit.owner.handle, 0, 0, `No free ship bays`);
+        try {
+            // We need to find a "free" dock
+            const freeBay = this.shipBays.find(bay => bay.canDockShip());
+            if (!freeBay) {
+                // Display the warning to the pilot
+                return DisplayTextToPlayer(whichUnit.owner.handle, 0, 0, `No free ship bays`);
+            }
+            // Now we need to dock
+            whichShip.onLeaveSpace();
+            freeBay.dockShip(this.game, whichShip, true);
+            PanCameraToTimedForPlayer(whichUnit.owner.handle, whichUnit.x, whichUnit.y, 0);
+            if (whichUnit.owner.handle === GetLocalPlayer()) {
+                BlzShowTerrain(true);
+            }       
+        } 
+        catch (e) {
+            Log.Error(e);
         }
-        // Now we need to dock
-        freeBay.dockShip(whichShip, true);
-        PanCameraToTimedForPlayer(whichUnit.owner.handle, whichUnit.x, whichUnit.y, 0);
-        if (whichUnit.owner.handle === GetLocalPlayer()) {
-            BlzShowTerrain(true);
-        }        
     }
 
     /**

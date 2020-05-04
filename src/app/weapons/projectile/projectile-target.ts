@@ -1,6 +1,7 @@
 import { Vector3 } from "../../types/vector3";
 import { Log } from "../../../lib/serilog/serilog";
 import { Vector2 } from "../../types/vector2";
+import { getZFromXY } from "lib/utils";
 
 /** @noSelfInFile **/
 
@@ -37,7 +38,7 @@ export class ProjectileTargetUnit implements ProjectileTarget {
     getTargetY(): number { return GetUnitY(this.target); };
     getTargetZ(): number { return BlzGetUnitZ(this.target); };
     getTargetVector(): Vector3 {
-        return new Vector3(this.getTargetX(), this.getTargetY(), this.getTargetZ());
+        return new Vector3(this.getTargetX(), this.getTargetY(), getZFromXY(this.getTargetX(), this.getTargetY()));
     }
 }
 

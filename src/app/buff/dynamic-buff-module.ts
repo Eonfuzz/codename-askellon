@@ -1,6 +1,6 @@
 import { Game } from "app/game";
 import { DynamicBuff, BuffInstance } from "./buff-instance";
-import { Unit, Trigger } from "w3ts/index";
+import { Unit, Trigger, Timer } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { onFire } from "./fire";
 import { Log } from "lib/serilog/serilog";
@@ -19,9 +19,11 @@ export class DynamicBuffModule {
     }
 
     init() {
-        const buffUpdateTrigger = new Trigger();
-        buffUpdateTrigger.registerTimerEvent(0.1, true);
-        buffUpdateTrigger.addAction(() => this.process(0.1));
+        // const buffUpdateTrigger = new Trigger();
+
+        new Timer().start(0.1, true, () => this.process(0.1));
+        // buffUpdateTrigger.registerTimerEvent(0.1, true);
+        // buffUpdateTrigger.addAction(() => this.process(0.1));
     }
 
     addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {

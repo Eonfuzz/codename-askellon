@@ -1,10 +1,10 @@
-import { Trigger } from 'w3ts';
+import { Trigger, Timer } from 'w3ts';
 import { TimedEvent } from './timed-event';
 import { Game } from '../game';
 import { Util } from '../../lib/translators';
 
 export class TimedEventQueue {
-    private ticker: Trigger;
+    private ticker: Timer;
     private tick: number = 0;
     private maxTick: number = 100000;
     private events: Map<string, TimedEvent> = new Map<string, TimedEvent>();
@@ -13,13 +13,13 @@ export class TimedEventQueue {
     private tickRate = 0.05;
 
     constructor(game: Game) {
-        this.ticker = new Trigger();
-        this.ticker.registerTimerEvent(this.tickRate, true);
-        this.ticker.addAction(() => {
+
+        
+        this.ticker = new Timer();
+        this.ticker.start(this.tickRate, true, () =>  {
             this.tick = (this.tick + 1) % this.maxTick;
             this.HandleTick();
         });
-        this.game = game;
     }
 
     private HandleTick(): void {

@@ -8,7 +8,7 @@ import { Gun } from "./guns/gun";
 import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
-import { Trigger, Unit } from "w3ts";
+import { Trigger, Unit, Timer } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
 import { HighQualityPolymer } from "./attachment/high-quality-polymer";
 import { Attachment } from "./attachment/attachment";
@@ -61,11 +61,10 @@ export class WeaponModule {
     /**
      * Registers are repeating timer that updates projectiles
      */
-    projectileUpdateTimer = new Trigger();
+    projectileUpdateTimer = new Timer();
     initProjectiles() {
         const WEAPON_UPDATE_PERIOD = 0.03;
-        this.projectileUpdateTimer.registerTimerEvent(WEAPON_UPDATE_PERIOD, true);
-        this.projectileUpdateTimer.addAction(() => this.updateProjectiles(WEAPON_UPDATE_PERIOD))
+        new Timer().start(WEAPON_UPDATE_PERIOD, true, () => this.updateProjectiles(WEAPON_UPDATE_PERIOD));
     }
 
     /**

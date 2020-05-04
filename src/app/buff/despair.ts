@@ -70,7 +70,7 @@ export class Despair extends DynamicBuff {
             this.crewmember.unit.addAbility(ABIL_ACCURACY_PENALTY_30);
             this.despairMusic.setVolume(127);
             if (GetLocalPlayer() === this.crewmember.player.handle) {
-                StopMusic(true);
+                SetMusicVolume(0);
                 this.despairMusic.playSound();
                 this.jumpScareSound.playSound();
             }
@@ -102,7 +102,7 @@ export class Despair extends DynamicBuff {
             if (GetLocalPlayer() === this.crewmember.player.handle) {
                 this.despairMusic.stopSound();
                 this.jumpScareSound.stopSound();
-                ResumeMusic();
+                SetMusicVolume(30);
             }
             
             game.event.sendEvent(EVENT_TYPE.CREW_LOSE_DESPAIR, { source: this.crewmember.unit, crewmember: this.crewmember, data: { instance: this } });

@@ -88,7 +88,7 @@ export class DragonFireBlastAbility implements Ability {
     private fireProjectile(weaponModule: WeaponModule, caster: Unit, targetLocation: Vector3, isCentralProjectile: boolean): Projectile {
         const unit = caster.handle;
         // print("Target "+targetLocation.toString())
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(caster.x, caster.y, getZFromXY(caster.x, caster.y)).projectTowardsGunModel(unit);
         let deltaTarget = targetLocation.subtract(casterLoc);
 
         let projectile = new Projectile(

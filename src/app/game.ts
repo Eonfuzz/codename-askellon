@@ -65,9 +65,9 @@ export class Game {
         SetAmbientDaySound('');
         SetAmbientNightSound('');
         SetMapMusic("Music\\MechanicusLostCivilization.mp3", false, 0);
-        SetMusicVolume(30);
+        SetMusicVolume(20);
         PlayMusic("Music\\MechanicusLostCivilization.mp3");
-        SetMusicVolume(30);
+        SetMusicVolume(20);
         SetSkyModel("war3mapImported\\Skybox3rAlt.mdx");
 
         this.initUI();
@@ -162,32 +162,6 @@ export class Game {
         MoveLocation(this.TEMP_LOCATION, x, y);
         return GetLocationZ(this.TEMP_LOCATION)
     }
-
-    private getCameraXY(whichPlayer: MapPlayer, cb: Function) {
-        const HANDLE = 'CAMERA';
-        const syncTrigger = new Trigger();
-        syncTrigger.registerPlayerSyncEvent(whichPlayer, HANDLE, false);
-        syncTrigger.addAction(() => {
-            const data = BlzGetTriggerSyncData();
-
-            const dataSplit = data.split(',');
-            const result = new Vector2(
-                S2R(dataSplit[0]), 
-                S2R(dataSplit[1])
-            );
-
-            // Erase this trigger
-            syncTrigger.destroy();
-            cb(result);
-        });
-
-        if (GetLocalPlayer() === whichPlayer.handle) {
-            const x = GetCameraTargetPositionX();
-            const y = GetCameraTargetPositionY();
-            BlzSendSyncData(HANDLE, `${x},${y}`);
-        }
-    }
-
     
     /**
      * Is this something we want?

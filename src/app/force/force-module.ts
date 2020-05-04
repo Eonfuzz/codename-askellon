@@ -5,7 +5,7 @@ import { ForceType } from "./force-type";
 import { CrewmemberForce, CREW_FORCE_NAME } from "./crewmember-force";
 import { AlienForce, ALIEN_FORCE_NAME } from "./alien-force";
 import { ObserverForce } from "./observer-force";
-import { Trigger, MapPlayer } from "w3ts";
+import { Trigger, MapPlayer, Timer } from "w3ts";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
 import { OptSelection, OPT_TYPES, OptSelectOption, OptResult } from "./opt-selection";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
@@ -78,11 +78,13 @@ export class ForceModule {
         this.neutralPassive = MapPlayer.fromIndex(27);
 
         // Start aggression log ticker
-        const ticker = new Trigger();
-        // Check every second  
-        ticker.registerTimerEvent(5, true);
-        // Process the ticker
-        ticker.addAction(() => this.onAggressionTick(5));
+        
+        new Timer().start(5, true, () => this.onAggressionTick(5));
+        // const ticker = new Trigger();
+        // // Check every second  
+        // ticker.registerTimerEvent(5, true);
+        // // Process the ticker
+        // ticker.addAction(() => this.onAggressionTick(5));
 
 
         // Init and listen for cond checks

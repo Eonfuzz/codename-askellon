@@ -3,7 +3,7 @@ import { Game } from "../game";
 import { InteractionEvent } from "./interaction-event";
 import { Interactables, initElevators, initHatches, initWeaponsTerminals } from "./interaction-data";
 import { SMART_ORDER_ID } from "resources/ability-ids";
-import { Trigger, Unit } from "w3ts";
+import { Trigger, Unit, Timer } from "w3ts";
 import { initShipInteractions } from "./ship-interactions";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
@@ -13,15 +13,16 @@ export class InteractionModule {
 
     interactionBeginTrigger: Trigger;
     
-    interactionUpdateTrigger: Trigger;
+    // interactionUpdateTrigger: Trigger;
     interactions: Array<InteractionEvent> = [];
 
     constructor(game: Game) {
         this.game = game;
 
-        this.interactionUpdateTrigger = new Trigger();
-        this.interactionUpdateTrigger.registerTimerEvent(UPDATE_PERIODICAL_INTERACTION, true);
-        this.interactionUpdateTrigger.addAction(() => this.processInteractions(UPDATE_PERIODICAL_INTERACTION));
+        new Timer().start(UPDATE_PERIODICAL_INTERACTION, true, () => this.processInteractions(UPDATE_PERIODICAL_INTERACTION));
+        // this.interactionUpdateTrigger = new Trigger();
+        // this.interactionUpdateTrigger.registerTimerEvent(UPDATE_PERIODICAL_INTERACTION, true);
+        // this.interactionUpdateTrigger.addAction(() => this.processInteractions(UPDATE_PERIODICAL_INTERACTION));
 
         // Now track when a user *might* start an interaction
         this.interactionBeginTrigger = new Trigger();

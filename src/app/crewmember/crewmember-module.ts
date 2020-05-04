@@ -2,7 +2,7 @@
 import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES, ROLE_TYPES, ROLE_DESCRIPTIONS } from "../../resources/crewmember-names";
 import { Game } from "../game";
-import { Trigger, MapPlayer, Unit } from "w3ts";
+import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
 import { BURST_RIFLE_ITEM_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID } from "../weapons/weapon-constants";
 import { CREW_FORCE_NAME } from "../force/crewmember-force";
@@ -49,9 +49,10 @@ export class CrewModule {
             }
         });
 
-        const updateCrewTrigger = new Trigger();
-        updateCrewTrigger.registerTimerEvent(DELTA_CHECK, true);
-        updateCrewTrigger.addAction(() => this.processCrew(DELTA_CHECK));
+        new Timer().start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
+        // const updateCrewTrigger = new Trigger();
+        // updateCrewTrigger.registerTimerEvent(DELTA_CHECK, true);
+        // updateCrewTrigger.addAction(() => this.processCrew(DELTA_CHECK));
     }
 
     initCrew(forces: ForceType[]) {

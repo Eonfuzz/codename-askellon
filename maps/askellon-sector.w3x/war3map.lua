@@ -15,6 +15,8 @@ udg_power_generator_zones = __jarray("")
 udg_elevator_entrance_names = __jarray("")
 udg_elevator_exit_zones = __jarray("")
 udg_ship_zones = {}
+udg_collision_rect = nil
+udg_collision_item = nil
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -35,12 +37,14 @@ gg_rct_ShipBay01 = nil
 gg_rct_ShipBay02 = nil
 gg_rct_ShipBay03 = nil
 gg_rct_ShipBay04 = nil
+gg_rct_CollisionCheckZone = nil
 gg_trg_DEATH = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
 gg_trg_SetFall = nil
 gg_trg_SetPowerGenerators = nil
 gg_trg_SetShipZones = nil
+gg_trg_SetCollisionData = nil
 gg_unit_n001_0032 = nil
 gg_unit_h004_0048 = nil
 gg_unit_n004_0034 = nil
@@ -53,6 +57,7 @@ gg_unit_n001_0045 = nil
 gg_unit_h004_0046 = nil
 gg_unit_n004_0035 = nil
 gg_unit_n001_0199 = nil
+gg_item_ratf_0230 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
@@ -139,6 +144,7 @@ end
 
 function CreateAllItems()
     local itemID
+    BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 717.6, 362.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 819.5, 355.5, FourCC("I009"))
@@ -146,7 +152,7 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("I009"), 862.0, 347.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 800.3, 427.5, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
+    gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), 450.0, 159.3, FourCC("ratf"))
 end
 
 function CreateUnitsForPlayer20()
@@ -435,6 +441,7 @@ function CreateRegions()
     gg_rct_ShipBay02 = Rect(-27936.0, -28448.0, -27744.0, -28032.0)
     gg_rct_ShipBay03 = Rect(-27040.0, -28448.0, -26848.0, -28032.0)
     gg_rct_ShipBay04 = Rect(-26144.0, -28448.0, -25952.0, -28032.0)
+    gg_rct_CollisionCheckZone = Rect(416.0, 96.0, 480.0, 160.0)
 end
 
 function Trig_DEATH_Actions()
@@ -556,6 +563,17 @@ function InitTrig_SetShipZones()
     TriggerAddAction(gg_trg_SetShipZones, Trig_SetShipZones_Actions)
 end
 
+function Trig_SetCollisionData_Actions()
+    udg_collision_item = gg_item_ratf_0230
+    udg_collision_rect = gg_rct_CollisionCheckZone
+    SetItemVisibleBJ(false, udg_collision_item)
+end
+
+function InitTrig_SetCollisionData()
+    gg_trg_SetCollisionData = CreateTrigger()
+    TriggerAddAction(gg_trg_SetCollisionData, Trig_SetCollisionData_Actions)
+end
+
 function InitCustomTriggers()
     InitTrig_DEATH()
     InitTrig_Set()
@@ -563,6 +581,7 @@ function InitCustomTriggers()
     InitTrig_SetFall()
     InitTrig_SetPowerGenerators()
     InitTrig_SetShipZones()
+    InitTrig_SetCollisionData()
 end
 
 function RunInitializationTriggers()
@@ -571,6 +590,7 @@ function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetFall)
     ConditionalTriggerExecute(gg_trg_SetPowerGenerators)
     ConditionalTriggerExecute(gg_trg_SetShipZones)
+    ConditionalTriggerExecute(gg_trg_SetCollisionData)
 end
 
 function InitCustomPlayerSlots()

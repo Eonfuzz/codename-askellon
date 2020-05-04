@@ -50,7 +50,7 @@ export class Shotgun extends Gun {
         const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
         const NUM_BULLETS = 6;
 
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
         const angleDeg = casterLoc.angle2Dto(targetLocation);
 
         const deltaLocs = getPointsInRangeWithSpread(
@@ -82,7 +82,7 @@ export class Shotgun extends Gun {
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3, isCentralProjectile: boolean): Projectile {
         const unit = caster.unit.handle;
         // print("Target "+targetLocation.toString())
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
         let deltaTarget = targetLocation.subtract(casterLoc);
 
         let projectile = new Projectile(

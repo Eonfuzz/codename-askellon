@@ -16,7 +16,7 @@ import { TECH_NO_GENES_TIER_1,
     ABIL_GENE_COSMIC
 } from "resources/ability-ids";
 import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
-import { Trigger, Unit } from "w3ts";
+import { Trigger, Unit, Timer } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Log } from "lib/serilog/serilog";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
@@ -54,9 +54,10 @@ export class GeneModule {
         });
 
         // Start gene check trigger
-        const checkTrig = new Trigger();
-        checkTrig.registerTimerEvent(0.5, true);
-        checkTrig.addAction(() => this.checkGeneRequirements());
+        new Timer().start(0.5, true, () => this.checkGeneRequirements());
+        // const checkTrig = new Trigger();
+        // checkTrig.registerTimerEvent(0.5, true);
+        // checkTrig.addAction(() => this.checkGeneRequirements());
     }
 
     addNewGeneInstance(who: Unit, geneUiUnit: Unit) {

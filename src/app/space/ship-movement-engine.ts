@@ -1,6 +1,16 @@
 import { Vector3 } from "../types/vector3";
 import { Vector2 } from "../types/vector2";
-import { Unit } from "w3ts/index";
+import { Unit, Effect } from "w3ts/index";
+import { SMOKE_TRAIL_SFX } from "resources/sfx-paths";
+import { Log } from "lib/serilog/serilog";
+import { fastPointInterp } from "lib/utils";
+
+interface ShipChemTrail {
+    effect: Effect;
+    life: number;
+}
+
+const CHEM_TRAIL_LIFETIME = 1;
 
 export class SpaceMovementEngine {
 
@@ -25,6 +35,8 @@ export class SpaceMovementEngine {
     // Are we trying to go to a stop?
     private isGoingToStop = false;
 
+    private chemTrails: ShipChemTrail[] = [];
+
     constructor(startX: number, startY: number) {
         this.position   = new Vector2(startX, startY);
         this.momentum   = new Vector2(0, 0);
@@ -33,6 +45,19 @@ export class SpaceMovementEngine {
 
     public updateThrust(towardsDegree: number, deltaTime: number) {
         const shipFacing = towardsDegree;
+
+        // Update chem trails
+        this.chemTrails = this.chemTrails.filter(c => {
+            c.life -= deltaTime;
+            if (c.life <= 0) {
+                c.effect.destroy();
+                c.effect = undefined;
+                return false;
+            }
+            c.effect.setAlpha(MathRound(255 * (c.life / CHEM_TRAIL_LIFETIME)));
+            return true;
+        })
+
         // Go to a stop if possible
         if (this.isGoingToStop) {
             const changeBy = this.isMovingBackwards ? this.acceleration : this.accelerationBackwards;
@@ -60,7 +85,7 @@ export class SpaceMovementEngine {
         return this;
     }
 
-    public applyThrust(deltaTime: number) {
+    public applyThrust(towardsDegree: number, deltaTime: number) {
         const maximum = this.isMovingBackwards ? this.velocityForwardMax : this.velocityBackwardsMax;
         this.momentum = this.momentum.add(this.thrust.multiplyN(deltaTime));
         const length = this.momentum.getLength();
@@ -73,13 +98,42 @@ export class SpaceMovementEngine {
         return this;
     }
 
-    public updatePosition(deltaTime: number, mainShipDelta?: Vector2 | undefined) {
+    public updatePosition(towardsDegree: number, deltaTime: number) {
+        const oldPosition = this.position;
         // Apply momentum and velocity
-        this.position = this.position.add(this.momentum.multiplyN(deltaTime));
+        const delta = this.momentum.multiplyN(deltaTime);
+        this.position = this.position.add(delta);
 
-        if (mainShipDelta) {
-            this.position = this.position.subtract(mainShipDelta);
-        }
+        const dLen = delta.getLength();
+
+        const d1 = (towardsDegree + 160) * bj_DEGTORAD;
+        const d2 = (towardsDegree - 160) * bj_DEGTORAD
+
+        fastPointInterp(oldPosition, this.position, 1 + dLen/15).forEach((p: Vector2) => {
+            const sfx1 = new Effect(
+                SMOKE_TRAIL_SFX, 
+                p.x + Cos(d1) * 70, 
+                p.y + Sin(d1) * 70
+            );
+            // sfx1.setTime(0.1);
+            const sfx2 = new Effect(SMOKE_TRAIL_SFX, 
+                p.x + Cos(d2) * 70, 
+                p.y + Sin(d2) * 70
+            );
+            // sfx2.setTime(0.1);
+            sfx1.z = 100;
+            sfx2.z = 100;
+    
+            this.chemTrails.push({
+                effect: sfx1,
+                life: CHEM_TRAIL_LIFETIME
+            });
+            this.chemTrails.push({
+                effect: sfx2,
+                life: CHEM_TRAIL_LIFETIME
+            });
+        });
+
         return this;
     }
 
@@ -161,5 +215,9 @@ export class SpaceMovementEngine {
 
     public setPosition(pos: Vector2) {
         this.position = pos;
+    }
+
+    public destroy() {
+        this.chemTrails.forEach(c => c.effect.destroy());
     }
 }

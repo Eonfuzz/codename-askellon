@@ -15,9 +15,10 @@ function tsMain() {
     function Main(){
         const AksellonSector = new Game();
 
-        const gameStartTimer = new Trigger();
-        gameStartTimer.registerTimerEvent(0.1, false);
-        gameStartTimer.addAction(() => {
+        // Fuck sake, apparently periodical events are broken
+        // FIXME LATER YO
+        const timer = new Timer();
+        timer.start(0.1, false, () => {
             try {
                 AksellonSector.startGame()
             }

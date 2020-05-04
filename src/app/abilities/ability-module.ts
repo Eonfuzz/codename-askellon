@@ -1,7 +1,7 @@
 /** @noSelfInFile **/
 import { Game } from "../game";
 import { Ability } from "./ability-type";
-import { Trigger, Unit } from "w3ts";
+import { Trigger, Unit, Timer } from "w3ts";
 import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { TransformAbility } from "./alien/transform";
@@ -30,7 +30,6 @@ export class AbilityModule {
 
     private data: Array<Ability>;
 
-    private triggerIterator: Trigger;
     private triggerAbilityCast: Trigger;
     private unitIssuedCommand: Trigger;
 
@@ -38,9 +37,12 @@ export class AbilityModule {
         this.game = game;
 
         this.data = [];
-        this.triggerIterator = new Trigger();
-        this.triggerIterator.registerTimerEvent(TIMEOUT, true);
-        this.triggerIterator.addAction(() => this.process(TIMEOUT));
+
+        new Timer().start(TIMEOUT, true, () => this.process(TIMEOUT));
+
+        // this.triggerIterator = new Trigger();
+        // this.triggerIterator.registerTimerEvent(TIMEOUT, true);
+        // this.triggerIterator.addAction(() => this.process(TIMEOUT));
 
         this.triggerAbilityCast = new Trigger();
         this.triggerAbilityCast.registerAnyUnitEvent( EVENT_PLAYER_UNIT_SPELL_EFFECT );

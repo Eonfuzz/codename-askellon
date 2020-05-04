@@ -9,6 +9,7 @@ import { Trigger, MapPlayer, Unit } from "w3ts";
 import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
 import { Game } from "app/game";
+import { syncData } from "lib/utils";
 
 export let Interactables = new Map<number, InteractableData>();
 
@@ -191,6 +192,7 @@ export const initWeaponsTerminals = () => {
     const WEAPONS_UPGRADE_TERMINAL = FourCC('nWEP');
     const MEDICAL_UPGRADE_TERMINAL = FourCC('nMED');
     const GENE_SPLICER_TERMINAL = FourCC('nGEN');
+    let i = 0;
 
     const upgradeTerminalProcessing: InteractableData = {
         onStart: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => {
@@ -228,16 +230,28 @@ export const initWeaponsTerminals = () => {
             const nUnit = CreateUnit(player.handle, unitType, uX, uY, bj_UNIT_FACING);
             SelectUnitForPlayerSingle(nUnit, player.handle);
 
-            const trackUnselectEvent = new Trigger();
-            trackUnselectEvent.registerPlayerUnitEvent(player, EVENT_PLAYER_UNIT_DESELECTED, Condition(() => GetTriggerUnit() === nUnit));
-            trackUnselectEvent.addAction(() => {
-                UnitApplyTimedLife(nUnit, FourCC('b001'), 3);
-                trackUnselectEvent.destroy();
-            })
+            try {
+                // Select events are async
+                const syncher = syncData("TEST", player, (self, data: string) => {
+                    UnitApplyTimedLife(nUnit, FourCC('b001'), 3);
+                });
 
-            // Handle gene splicer interact
-            if (targetUType === GENE_SPLICER_TERMINAL) {
-                iModule.game.geneModule.addNewGeneInstance(fromUnit, Unit.fromHandle(nUnit));
+                const trackUnselectEvent = new Trigger();
+                trackUnselectEvent.registerPlayerUnitEvent(player, EVENT_PLAYER_UNIT_DESELECTED, null);
+                trackUnselectEvent.addAction(() => {
+                    const u = GetTriggerUnit();
+                    if (u === nUnit) {
+                        syncher("Data");
+                    }
+                });
+
+                // Handle gene splicer interact
+                if (targetUType === GENE_SPLICER_TERMINAL) {
+                    iModule.game.geneModule.addNewGeneInstance(fromUnit, Unit.fromHandle(nUnit));
+                }
+            }
+            catch (e) {
+                Log.Error(e);
             }
         }
     }

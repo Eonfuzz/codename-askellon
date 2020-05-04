@@ -52,12 +52,12 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     const imported = map.import(archivePath, contents);
 
     // if (fileName.indexOf(".blp") !== -1 || fileName.indexOf(".mp3") !== -1) {
-      const file = map.archive.files.find((e) => e.name === archivePath);
-      if (file) {
-        file.rawBuffer = contents;
-        file.block.compressedSize = contents.byteLength;
-        file.block.flags = FILE_EXISTS;
-      }
+      // const file = map.archive.files.find((e) => e.name === archivePath);
+      // if (file) {
+      //   file.rawBuffer = contents;
+      //   file.block.compressedSize = contents.byteLength;
+      //   file.block.flags = FILE_EXISTS;
+      // }
     // }
 
     if (!imported) {
@@ -87,27 +87,21 @@ export function prepDirForCreate(output: string, dir: string, verNum: string) {
   const mmpDir = path.join(__dirname, "..", dir, "war3map.mmp");
   if (fs.existsSync(mmpDir)) {
     fs.unlinkSync(mmpDir);
-    logger.info("Prep: Removed preview overlay file");
   }
-  else logger.warn("Prep: Could not find overlay file");
 
   // Duplicate the generated minimap blp
   const blpDir = path.join(__dirname, "..", dir, "war3mapMap.blp");
   if (fs.existsSync(blpDir)) {
     const copyDest = path.join(__dirname, "..", dir, "war3mapGenerated.blp");
     fs.renameSync(blpDir, copyDest);
-    logger.info("Prep: Renamed minimap file");
   }
-  else logger.warn("Prep: Could not find blp minimap file");
 
   // Duplicate the generated minimap blp
   const ddsDir = path.join(__dirname, "..", dir, "war3mapPreview.dds");
   if (fs.existsSync(ddsDir)) {
     const copyDest = path.join(__dirname, "..", dir, "war3mapMap.dds");
     fs.renameSync(ddsDir, copyDest);
-    logger.info("Prep: Renamed dds minimap file");
   }
-  else logger.warn("Prep: Could not find dds minimap file");
 }
 
 function getStringNumberFromString(whichString: string) {

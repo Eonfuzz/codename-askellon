@@ -16,6 +16,7 @@ import { ArmableUnit } from "./unit-has-weapon";
 import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
 import { Log } from "../../../lib/serilog/serilog";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
+import { getZFromXY } from "lib/utils";
 
 
 export const InitBurstRifle = (weaponModule: WeaponModule) => {
@@ -43,7 +44,7 @@ export class BurstRifle extends Gun {
 
         const unit = caster.unit.handle;
         const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", caster.unit, 50);
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
 
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
@@ -61,7 +62,7 @@ export class BurstRifle extends Gun {
     private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
         const unit = caster.unit.handle;
         // print("Target "+targetLocation.toString())
-        let casterLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), BlzGetUnitZ(unit)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
         let strayTarget = this.getStrayLocation(targetLocation, caster)
         let deltaTarget = strayTarget.subtract(casterLoc);
 

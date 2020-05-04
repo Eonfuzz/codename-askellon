@@ -1,5 +1,5 @@
 import { Game } from "app/game";
-import { Trigger, Unit } from "w3ts";
+import { Trigger, Unit, Timer } from "w3ts";
 import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
@@ -96,7 +96,7 @@ export class LeapEntry {
  */
 export class LeapModule {
     game: Game;
-    leapTrigger: Trigger;
+    leapTrigger: Timer;
 
     instances: LeapEntry[] = [];
 
@@ -108,15 +108,17 @@ export class LeapModule {
 
     constructor(game: Game) {
         this.game = game;
-        this.leapTrigger = new Trigger();
+        // this.leapTrigger = new Trigger();
     }
 
     /**
      * Creates a timer and begins looping through all leps
      */
     initialise() {
-        this.leapTrigger.registerTimerEvent(LEAP_INTERVAL, true);
-        this.leapTrigger.addAction(() => this.updateLeaps());
+        this.leapTrigger = new Timer();
+        this.leapTrigger.start(LEAP_INTERVAL, true, () => this.updateLeaps());
+        // this.leapTrigger.registerTimerEvent(LEAP_INTERVAL, true);
+        // this.leapTrigger.addAction(() => this.updateLeaps());
     }
 
     updateLeaps() {
