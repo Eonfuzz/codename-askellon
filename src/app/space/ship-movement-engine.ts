@@ -1,15 +1,17 @@
 import { Vector3 } from "../types/vector3";
 import { Vector2 } from "../types/vector2";
-import { Unit, Effect } from "w3ts/index";
+import { Unit, Effect, Timer, MapPlayer } from "w3ts/index";
 import { SMOKE_TRAIL_SFX } from "resources/sfx-paths";
 import { Log } from "lib/serilog/serilog";
 import { fastPointInterp } from "lib/utils";
+import { SoundRef } from "app/types/sound-ref";
 
 interface ShipChemTrail {
     effect: Effect;
     life: number;
 }
 
+const afterburnerSound = new SoundRef("Sounds\\AfterburnerSound.mp3", false);
 const CHEM_TRAIL_LIFETIME = 1;
 
 export class SpaceMovementEngine {
@@ -25,8 +27,11 @@ export class SpaceMovementEngine {
     protected acceleration = 200.0;
     protected accelerationBackwards = 25.0;
 
+    private isUsingAfterburner = false;
+    private afterburnerTimer = 0;
+
     private velocity = 0.0;
-    private velocityForwardMax = 1200.0;
+    private velocityForwardMax = 450.0;
     // Only used when moving backwards
     private velocityBackwardsMax = 500.0;
 
@@ -101,7 +106,12 @@ export class SpaceMovementEngine {
     public updatePosition(towardsDegree: number, deltaTime: number) {
         const oldPosition = this.position;
         // Apply momentum and velocity
-        const delta = this.momentum.multiplyN(deltaTime);
+        let delta = this.momentum.multiplyN(deltaTime);
+        // Afterburner makes you 3x as fast
+        if (this.isUsingAfterburner) {
+            this.afterburnerTimer += deltaTime;
+            delta = delta.multiplyN(1 + this.afterburnerTimer/2);
+        }
         this.position = this.position.add(delta);
 
         const dLen = delta.getLength();
@@ -123,6 +133,13 @@ export class SpaceMovementEngine {
             // sfx2.setTime(0.1);
             sfx1.z = 100;
             sfx2.z = 100;
+
+            if (this.isUsingAfterburner) {
+                sfx1.setColor(255, 150, 150);
+                sfx1.scale = 3;
+                sfx2.setColor(255, 150, 150);
+                sfx2.scale = 3;
+            }
     
             this.chemTrails.push({
                 effect: sfx1,
@@ -201,7 +218,12 @@ export class SpaceMovementEngine {
      * Ship tries to go to a complete stop
      */
     public goToAStop() {
-        this.isGoingToStop = true;
+        if (this.isGoingToStop) {
+            this.decreaseVelocity();
+        }
+        else {
+            this.isGoingToStop = true;
+        }
         return this;
     }
 
@@ -217,7 +239,26 @@ export class SpaceMovementEngine {
         this.position = pos;
     }
 
+    public engageAfterburner(forWho: MapPlayer) {
+        this.isUsingAfterburner = true;
+        this.afterburnerTimer = 0;
+
+        // Start shaking screen
+        CameraSetSourceNoiseForPlayer(forWho.handle, 10, 50);
+        if (GetLocalPlayer() == forWho.handle) {
+            afterburnerSound.playSound();
+        }
+
+        const t = new Timer();
+        t.start(6, false, () => {
+            this.isUsingAfterburner = false;
+            t.destroy();
+            CameraClearNoiseForPlayer(forWho.handle);
+        });
+    }
+
     public destroy() {
         this.chemTrails.forEach(c => c.effect.destroy());
     }
+    
 }

@@ -74,8 +74,8 @@ export class ForceModule {
         this.alienAIPlayer = MapPlayer.fromIndex(20);
         this.unknownPlayer = MapPlayer.fromIndex(23);
 
-        this.neutralHostile = MapPlayer.fromIndex(24);
-        this.neutralPassive = MapPlayer.fromIndex(27);
+        this.neutralHostile = MapPlayer.fromIndex(PLAYER_NEUTRAL_AGGRESSIVE);
+        this.neutralPassive = MapPlayer.fromIndex(PLAYER_NEUTRAL_PASSIVE);
 
         // Start aggression log ticker
         

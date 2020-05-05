@@ -38,3 +38,6 @@ And a special thanks to my awesome testers:
 - Aedus
 - Pipski
 - Redaxe13
+- Zielregent
+- Evilmad666
+- Iansdoor

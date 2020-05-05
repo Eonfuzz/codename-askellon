@@ -196,13 +196,13 @@ export class SpaceModule {
      */
     private shipAbilityTrigger      = new Trigger();
     private shipAccelAbilityId      = FourCC('A001');
-    private shipDeaccelAbilityId    = FourCC('A000');
+    private shipAfterburnerAbilityId    = FourCC('A000');
     private shipStopAbilityId       = FourCC('A006');
     initShipAbilities() {
         this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
         this.shipAbilityTrigger.addCondition(Condition(() =>
             GetSpellAbilityId() === this.shipAccelAbilityId     ||
-            GetSpellAbilityId() === this.shipDeaccelAbilityId   ||
+            GetSpellAbilityId() === this.shipAfterburnerAbilityId   ||
             GetSpellAbilityId() === this.shipStopAbilityId      ||
             GetSpellAbilityId() === ABIL_DOCK_TEST
         ));
@@ -219,8 +219,8 @@ export class SpaceModule {
             else if (castAbilityId === this.shipAccelAbilityId) {
                 ship.engine.increaseVelocity();
             }
-            else if (castAbilityId === this.shipDeaccelAbilityId) {
-                ship.engine.decreaseVelocity();
+            else if (castAbilityId === this.shipAfterburnerAbilityId) {
+                ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
             }
             else if (castAbilityId === ABIL_DOCK_TEST) {
                 this.game.event.sendEvent(EVENT_TYPE.SHIP_LEAVES_SPACE, {

@@ -9,20 +9,8 @@ STRING 3
 Wraith
 }
 
-STRING 4
-// Abilities: A000 (Decrease Speed S), Name (Name)
-{
-Decrease Speed S
-}
-
-STRING 5
-// Abilities: A000 (Decrease Speed S), Hotkey (Hotkey - Normal)
-{
-S
-}
-
 STRING 6
-// Abilities: A000 (Decrease Speed S), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A001 (Increase Speed W), Ubertip (Tooltip - Normal - Extended)
 {
 Increases Ship Speed
 }
@@ -43,12 +31,6 @@ STRING 9
 // Abilities: A001 (Increase Speed W), Hotkey (Hotkey - Normal)
 {
 W
-}
-
-STRING 10
-// Abilities: A001 (Increase Speed W), Ubertip (Tooltip - Normal - Extended)
-{
-Increases Ship Speed
 }
 
 STRING 12
@@ -267,12 +249,6 @@ STRING 62
 X - Stop Ship
 }
 
-STRING 63
-// Abilities: A000 (Decrease Speed S), Tip (Tooltip - Normal)
-{
-S - Decrease Speed
-}
-
 STRING 64
 // Abilities: A006 (Stop Ship), Hotkey (Hotkey - Normal)
 {
@@ -454,7 +430,7 @@ STRING 104
 }
 
 STRING 105
-// Abilities: A009 (High Quality Polymer), Hotkey (Hotkey - Normal)
+// Abilities: A000 (Afterburner), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -1456,7 +1432,7 @@ STRING 312
 }
 
 STRING 313
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A009 (High Quality Polymer), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2367,5 +2343,44 @@ STRING 523
 // Abilities: A00N (Dock), Tip (Tooltip - Normal)
 {
 Dock
+}
+
+STRING 524
+{
+|cff808080Kinetic weapons are effective against every other than engineered kevlar armor.|r|n|n|cffff000075%|r Damage versus Combat Armor|n|cff00ff00100%|r Damage versus Other
+}
+
+STRING 525
+{
+|cff808080Kinetic weapons are effective against every other than engineered kevlar armor.|r|n|n|cffff000075%|r Damage versus Combat Armor|n|cff00ff00100%|r Damage versus Other
+}
+
+STRING 526
+{
+|cff808080Kinetic weapons are effective against every other than engineered kevlar armor.|r|n|n|cffff000075%|r Damage versus Combat Armor|n|cff00ff00100%|r Damage versus Other
+}
+
+STRING 527
+// Abilities: A000 (Afterburner), Name (Name)
+{
+Afterburner
+}
+
+STRING 528
+// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
+{
+Massively increases ship speed for 4 secpmds
+}
+
+STRING 529
+// Abilities: A000 (Afterburner), Tip (Tooltip - Normal)
+{
+Engage Afterburners
+}
+
+STRING 530
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
 }
 

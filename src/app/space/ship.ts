@@ -5,6 +5,7 @@ import { Game } from "app/game";
 import { SpaceMovementEngine } from "./ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit } from "app/types/vector2";
+import { UNIT_IS_FLY } from "resources/ability-ids";
 
 export enum ShipState {
     inBay, inSpace
@@ -38,6 +39,10 @@ export class Ship {
         this.unit = u;
         this.unit.maxMana = this.maxFuel;
         this.unit.paused = true;
+
+        // Add and remove fly modifier to the unit
+        this.unit.addAbility(UNIT_IS_FLY);
+        this.unit.removeAbility(UNIT_IS_FLY);
     }
 
     process(game: Game, deltaTime: number) {
@@ -48,7 +53,7 @@ export class Ship {
                 .updatePosition(facing, deltaTime);
 
             // TODO
-            const getFuelCost = this.engine.getMomentum();
+            // const getFuelCost = this.engine.getMomentum();
             // Set pos
             const enginePos = this.engine.getPosition();
             this.unit.x = enginePos.x;
@@ -60,7 +65,7 @@ export class Ship {
         }
         // Otherwise update fuel
         else if (this.state = ShipState.inBay) {
-            this.shipFuel = Math.min(this.shipFuel + 5 * deltaTime, 100);
+            // this.shipFuel = Math.min(this.shipFuel + 5 * deltaTime, 100);
         }
         this.unit.mana = this.shipFuel;
     }
