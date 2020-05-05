@@ -25,7 +25,7 @@ export class SpaceMovementEngine {
 
     private mass = 1.0;
     protected acceleration = 200.0;
-    protected accelerationBackwards = 25.0;
+    protected accelerationBackwards = 100.0;
 
     private isUsingAfterburner = false;
     private afterburnerTimer = 0;
@@ -33,7 +33,7 @@ export class SpaceMovementEngine {
     private velocity = 0.0;
     private velocityForwardMax = 450.0;
     // Only used when moving backwards
-    private velocityBackwardsMax = 500.0;
+    private velocityBackwardsMax = 200.0;
 
     // Are we moving backwards?
     private isMovingBackwards = false;
@@ -103,21 +103,26 @@ export class SpaceMovementEngine {
         return this;
     }
 
-    public updatePosition(towardsDegree: number, deltaTime: number) {
+    public updatePosition(towardsDegree: number, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
         const oldPosition = this.position;
         // Apply momentum and velocity
         let delta = this.momentum.multiplyN(deltaTime);
         // Afterburner makes you 3x as fast
         if (this.isUsingAfterburner) {
             this.afterburnerTimer += deltaTime;
-            delta = delta.multiplyN(1 + this.afterburnerTimer/2);
+            delta = delta.multiplyN(1 + this.afterburnerTimer*1.1);
         }
         this.position = this.position.add(delta);
+
+        if (this.position.x < minX) this.position.x = minX;
+        else if (this.position.x > maxX) this.position.x = maxX;
+        if (this.position.y < minY) this.position.y = minY;
+        else if (this.position.y > maxY) this.position.y = maxY;
 
         const dLen = delta.getLength();
 
         const d1 = (towardsDegree + 160) * bj_DEGTORAD;
-        const d2 = (towardsDegree - 160) * bj_DEGTORAD
+        const d2 = (towardsDegree - 160) * bj_DEGTORAD;
 
         fastPointInterp(oldPosition, this.position, 1 + dLen/15).forEach((p: Vector2) => {
             const sfx1 = new Effect(
@@ -218,12 +223,16 @@ export class SpaceMovementEngine {
      * Ship tries to go to a complete stop
      */
     public goToAStop() {
-        if (this.isGoingToStop) {
-            this.decreaseVelocity();
-        }
-        else {
+        // if (!this.isGoingToStop) {
+        // }
+        // else {
+        if (!this.isMovingBackwards && this.velocity > 0) {
             this.isGoingToStop = true;
         }
+        else {
+            this.decreaseVelocity();
+        }
+        // }
         return this;
     }
 

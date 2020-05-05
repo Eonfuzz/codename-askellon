@@ -45,12 +45,12 @@ export class Ship {
         this.unit.removeAbility(UNIT_IS_FLY);
     }
 
-    process(game: Game, deltaTime: number) {
+    process(game: Game, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
         if (this.state === ShipState.inSpace) {
             const facing = this.unit.facing;
             this.engine.updateThrust(facing, deltaTime)
                 .applyThrust(facing, deltaTime)
-                .updatePosition(facing, deltaTime);
+                .updatePosition(facing, deltaTime, minX, maxX, minY, maxY);
 
             // TODO
             // const getFuelCost = this.engine.getMomentum();

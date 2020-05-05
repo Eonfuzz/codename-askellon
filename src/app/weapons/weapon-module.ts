@@ -72,7 +72,11 @@ export class WeaponModule {
      * @param DELTA_TIME The time passed since last loop, used to get real time value of velocity
      */
     updateProjectiles(DELTA_TIME: number) {
-        this.projectiles = this.projectiles.filter((projectile: Projectile) => {
+
+        let result = [];
+        for (let index = 0; index < this.projectiles.length; index++) {
+            const projectile = this.projectiles[index];
+            
             const startPosition = projectile.getPosition();
             const delta = projectile.update(this, DELTA_TIME);
 
@@ -83,12 +87,9 @@ export class WeaponModule {
             }
 
             // Destroy projectile if it asks nicely
-            if (projectile.willDestroy()) {
-                // Destroy is a callback, it may not actually destroy itself
-                return !projectile.destroy(this);
-            }
-            return true;
-        });
+            if (!(projectile.willDestroy() && projectile.destroy(this))) result.push(projectile);
+        }
+        this.projectiles = result;
     }
 
     /**

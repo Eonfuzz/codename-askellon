@@ -169,14 +169,19 @@ export class AbilityModule {
 
     process(delta: number) {
         // Go through all abilities cast
-        this.data = this.data.filter( ability => {
+        let result = [];
+        for (let index = 0; index < this.data.length; index++) {
+            const ability = this.data[index];
             const doDestroy = !ability.process(this, delta);
             // Destroy the ability if needed
             if (doDestroy) {
                 ability.destroy(this);
             }
-            return !doDestroy;
-        });
+            else {
+                result.push(ability);
+            }
+        }
+        this.data = result;
     }
 
 }

@@ -156,22 +156,12 @@ export class SpaceModule {
      * @param updatePeriod 
      */
     updateShips(updatePeriod: number) {
-        // Update mothership
-        // this.mainShip.updateThrust(updatePeriod);
-        // this.mainShip.applyThrust(updatePeriod);
-        
-        // const oldShipPos = this.mainShip.getPosition();
-
-        // // Dont call update position
-        // const shipDelta = this.mainShip.getMomentum().multiplyN(updatePeriod);
-
-        // // update space object
-        // this.spaceObjects.forEach(o => 
-        //     o.updateLocation(shipDelta)
-        //      .onUpdate());
-
-        // Now update smol ships
-        this.ships.forEach(ship => ship.process(this.game, updatePeriod));
+        // Ships:
+        const minX = this.spaceRect.minX;
+        const maxX = this.spaceRect.maxX;
+        const minY = this.spaceRect.minY;
+        const maxY = this.spaceRect.maxY;
+        this.ships.forEach(ship => ship.process(this.game, updatePeriod, minX, maxX, minY, maxY));
     }
 
     unitEntersShip(who: Unit, whichShip: Unit) {
