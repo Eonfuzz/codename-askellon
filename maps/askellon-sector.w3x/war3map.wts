@@ -2384,3 +2384,27 @@ STRING 530
 R
 }
 
+STRING 531
+// Abilities: A00O (Auto-cannon), Name (Name)
+{
+Auto-cannon
+}
+
+STRING 532
+// Abilities: A00O (Auto-cannon), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 533
+// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+{
+Fires autocannon yo
+}
+
+STRING 534
+// Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
+{
+Fire Autocannon
+}
+

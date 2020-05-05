@@ -6,7 +6,7 @@ import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC, ABIL_SHIP_CHAINGUN } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
 import { SprintLeapAbility } from "./human/sprint-leap";
 import { NightVisionAbility } from "./human/night-vision";
@@ -18,6 +18,7 @@ import { DragonFireBlastAbility } from "./human/dragonfire-blast";
 import { EmotionalDampenerAbility } from "./human/emotional-dampener";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
+import { ShipChaingunAbility } from "./human/ship-chaingun";
 
 
 const TIMEOUT = 0.03;
@@ -131,6 +132,12 @@ export class AbilityModule {
                 break;
             case ABIL_GENE_COSMIC:
                 instance = new EmbraceCosmosAbility();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_SHIP_CHAINGUN:
+                instance = new ShipChaingunAbility();
                 if (instance.initialise(this)) {
                     this.data.push(instance);
                 }

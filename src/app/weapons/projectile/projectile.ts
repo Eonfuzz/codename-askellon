@@ -104,7 +104,7 @@ export class Projectile {
         return this;
     }
 
-    public overrideFilter(newFunc: Function): Projectile {
+    public overrideFilter(newFunc: (projectile: Projectile) => boolean): Projectile {
         this.filter = Filter(<any>newFunc);
         return this;
     }
