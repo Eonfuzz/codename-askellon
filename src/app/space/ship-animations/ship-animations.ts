@@ -132,7 +132,7 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
         const projectedY = dock.RECT.centerY - height * 5;
 
 
-        let isRight = GetRandomInt(0, 1) === 1 && terrainIsPathable(projectedX, projectedY);
+        let isRight = GetRandomInt(0, 1) === 1 || !terrainIsPathable(dock.RECT.centerX - width * 2, projectedY);
 
 
         // If we are not pathable reverse the projected vals pathable

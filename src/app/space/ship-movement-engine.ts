@@ -124,7 +124,7 @@ export class SpaceMovementEngine {
         const d1 = (towardsDegree + 160) * bj_DEGTORAD;
         const d2 = (towardsDegree - 160) * bj_DEGTORAD;
 
-        fastPointInterp(oldPosition, this.position, 1 + dLen/15).forEach((p: Vector2) => {
+        fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
             const sfx1 = new Effect(
                 SMOKE_TRAIL_SFX, 
                 p.x + Cos(d1) * 70, 

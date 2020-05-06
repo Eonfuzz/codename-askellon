@@ -17,6 +17,7 @@ import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } f
 import { Log } from "../../../lib/serilog/serilog";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { getZFromXY } from "lib/utils";
+import { MapPlayer } from "w3ts/index";
 
 
 export const InitBurstRifle = (weaponModule: WeaponModule) => {
@@ -103,6 +104,7 @@ export class BurstRifle extends Gun {
                     DAMAGE_TYPE_NORMAL, 
                     WEAPON_TYPE_WOOD_MEDIUM_STAB
                 );
+                weaponModule.game.forceModule.aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
             }
         }
     }

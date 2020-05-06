@@ -7,6 +7,7 @@ import { TimedEvent } from "app/types/timed-event";
 import { STUN_ID } from "app/interactions/interaction-event";
 import { SoundRef } from "app/types/sound-ref";
 import { UNIT_IS_FLY } from "resources/ability-ids";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * These locations are declared by the world editor
@@ -77,6 +78,15 @@ export class LeapEntry {
             BlzPauseUnitEx(this.unit, false);
             UnitRemoveAbility(this.unit, UNIT_IS_FLY);
             SetUnitFlyHeight(this.unit, 0, 9999);
+
+            // If we are in a cliff move back
+            if (IsTerrainPathable(unitLoc.x, unitLoc.y, PATHING_TYPE_WALKABILITY)) {
+                // Shunt us back
+                let newLoc = unitLoc.subtract(posDelta.multiplyN(5));
+                SetUnitX(this.unit, newLoc.x);
+                SetUnitY(this.unit, newLoc.y);
+            }
+            
             return false;
         }
 

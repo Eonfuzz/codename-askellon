@@ -15,6 +15,7 @@ import { ArmableUnit } from "./unit-has-weapon";
 import { SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
 import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
 import { Log } from "lib/serilog/serilog";
+import { MapPlayer } from "w3ts/index";
 
 
 export const InitShotgun = (weaponModule: WeaponModule) => {
@@ -124,6 +125,7 @@ export class Shotgun extends Gun {
                     DAMAGE_TYPE_NORMAL, 
                     WEAPON_TYPE_WOOD_MEDIUM_STAB
                 );
+                weaponModule.game.forceModule.aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
             }
         }
     }

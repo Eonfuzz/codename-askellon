@@ -19,6 +19,7 @@ import { DiodeEjector } from "../attachment/diode-ejector";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { EVENT_TYPE } from "app/events/event";
 import { getZFromXY } from "lib/utils";
+import { MapPlayer } from "w3ts/index";
 
 const INTENSITY_MAX = 4;
 
@@ -131,6 +132,7 @@ export class LaserRifle extends Gun {
                     DAMAGE_TYPE_NORMAL, 
                     WEAPON_TYPE_WOOD_MEDIUM_STAB
                 );
+                weaponModule.game.forceModule.aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
             }
         }
     }
