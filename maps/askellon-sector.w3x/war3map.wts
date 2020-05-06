@@ -844,12 +844,6 @@ STRING 193
 Prismatic Accelerator
 }
 
-STRING 194
-// Items: I004 (Prismatic Accelerator), Ubertip (Tooltip - Extended)
-{
-|cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r
-}
-
 STRING 198
 // Doodads: D00B (Ventilator Large), Name (Name)
 {
@@ -2406,5 +2400,40 @@ STRING 536
 // Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 base|r damage.|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 537
+// Items: I000 (Burst Rifle), Description (Description)
+{
+Weapon: Fires a burst of 6 shots
+}
+
+STRING 538
+// Items: I001 (Rail-Rifle), Description (Description)
+{
+Attachment: Charges up and fires a high powered shot
+}
+
+STRING 539
+// Items: I004 (Prismatic Accelerator), Description (Description)
+{
+Weapon: Laser that gets stronger with successive shots
+}
+
+STRING 540
+// Items: ISHO (Harkons Blitzer), Description (Description)
+{
+Weapon: Fires a powerful but short range blast
+}
+
+STRING 541
+// Items: I004 (Prismatic Accelerator), Ubertip (Tooltip - Extended)
+{
+|cff808080The Prismatic Accelerator is a work of engineering art, flash-forging plas rounds to shatter enemy armour, collecting impact data from each shot to enhance the next round. The sheer amount of data being collected means that storage is all but impossible, so an accurate operator and a continual stream of telemetry is vital for good results.|r
+
+Self amplifying rifle that increases in damage with each successive hit.
+|cff00ff00- Bad base damage 
+- Missing a shot resets intensity|n- |cffc81e1eFracture Round|r|cff00ff00 can deal massive damage|r|n
+|cffc81e1eFracture Round|r|cffffcc00 Cannot be removed.|r
 }
 
