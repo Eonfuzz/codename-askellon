@@ -33,14 +33,16 @@ export class AbilityModule {
 
     private triggerAbilityCast: Trigger;
     private unitIssuedCommand: Trigger;
+    
+
+    private abilityTimer: Timer;
 
     constructor(game: Game) {
         this.game = game;
 
         this.data = [];
 
-        new Timer().start(TIMEOUT, true, () => this.process(TIMEOUT));
-
+        this.abilityTimer = new Timer();
         // this.triggerIterator = new Trigger();
         // this.triggerIterator.registerTimerEvent(TIMEOUT, true);
         // this.triggerIterator.addAction(() => this.process(TIMEOUT));
@@ -150,6 +152,11 @@ export class AbilityModule {
                 }
                 break;
         }
+
+        // restart timer if it is down
+        if (instance && this.data.length === 1) {
+            this.abilityTimer.start(TIMEOUT, true, () => this.process(TIMEOUT));
+        } 
     }
 
     /**
@@ -189,6 +196,11 @@ export class AbilityModule {
             }
         }
         this.data = result;
+
+        // If we have no data left pause the timer
+        if (this.data.length === 0) {
+            this.abilityTimer.pause();
+        }
     }
 
 }

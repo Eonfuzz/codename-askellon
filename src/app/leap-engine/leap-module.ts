@@ -116,7 +116,6 @@ export class LeapModule {
      */
     initialise() {
         this.leapTrigger = new Timer();
-        this.leapTrigger.start(LEAP_INTERVAL, true, () => this.updateLeaps());
         // this.leapTrigger.registerTimerEvent(LEAP_INTERVAL, true);
         // this.leapTrigger.addAction(() => this.updateLeaps());
     }
@@ -148,6 +147,10 @@ export class LeapModule {
 
             return !doDestroy;
         });
+
+        if (this.instances.length === 0) {
+            this.leapTrigger.pause();
+        }
     }
 
     makeUnitFall(who: unit, targetRect: rect, zoneName: string) {
@@ -248,6 +251,9 @@ export class LeapModule {
     newLeap(who: unit, toWhere: Vector3, angle: number, timescale?: number): LeapEntry {
         const leapInstance = new LeapEntry(who, toWhere, angle, timescale);
         this.instances.push(leapInstance);
+        if (this.instances.length === 1) {
+            this.leapTrigger.start(LEAP_INTERVAL, true, () => this.updateLeaps());
+        }
         return leapInstance;
     }
 }

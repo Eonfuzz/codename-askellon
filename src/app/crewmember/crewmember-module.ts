@@ -30,6 +30,7 @@ export class CrewModule {
 
     crewmemberDamageTrigger: Trigger;
 
+    private crewTimer = new Timer();
     constructor(game: Game) {
         this.game = game;
 
@@ -38,7 +39,7 @@ export class CrewModule {
         this.crewmemberDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
         this.crewmemberDamageTrigger.addCondition(Condition(() => {
             const player = GetOwningPlayer(GetTriggerUnit());
-            return (GetPlayerId(player) <= 22);
+            return (GetPlayerId(player) < this.game.forceModule.alienAIPlayer.id);
         }));
         this.crewmemberDamageTrigger.addAction(() => {
             const unit = Unit.fromHandle(GetTriggerUnit());
@@ -49,7 +50,7 @@ export class CrewModule {
             }
         });
 
-        new Timer().start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
+        this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
         // const updateCrewTrigger = new Trigger();
         // updateCrewTrigger.registerTimerEvent(DELTA_CHECK, true);
         // updateCrewTrigger.addAction(() => this.processCrew(DELTA_CHECK));

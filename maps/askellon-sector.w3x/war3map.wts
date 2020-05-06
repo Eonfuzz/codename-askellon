@@ -2366,12 +2366,6 @@ STRING 527
 Afterburner
 }
 
-STRING 528
-// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
-{
-Massively increases ship speed for 4 secpmds
-}
-
 STRING 529
 // Abilities: A000 (Afterburner), Tip (Tooltip - Normal)
 {
@@ -2396,15 +2390,21 @@ STRING 532
 E
 }
 
-STRING 533
-// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
-{
-Fires autocannon yo
-}
-
 STRING 534
 // Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
 {
 Fire Autocannon
+}
+
+STRING 535
+// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Voyager's patented Hex Pattern "Riot" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19Hex corp stipulates that any damages gained while using Riot Boosters can not be claimed under insurance.|r |n|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 536
+// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 base|r damage.|n|n|cff80808010 Seconds Cooldown|r
 }
 

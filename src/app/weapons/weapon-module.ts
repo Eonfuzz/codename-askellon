@@ -23,6 +23,8 @@ import { DragonfireBarrelAttachment } from "./attachment/dragonfire-barrel";
 import { EVENT_TYPE } from "app/events/event";
 
 
+const WEAPON_UPDATE_PERIOD = 0.03;
+
 export class WeaponModule {
     WEAPON_MODE: 'CAST' | 'ATTACK' = 'CAST';
     unitsWithWeapon = new Map<unit, Gun>();
@@ -54,18 +56,12 @@ export class WeaponModule {
         this.initialiseWeaponEquip();
         this.initaliseWeaponShooting();
         this.initialiseWeaponDropPickup();
-
-        this.initProjectiles();
     }
 
     /**
      * Registers are repeating timer that updates projectiles
      */
     projectileUpdateTimer = new Timer();
-    initProjectiles() {
-        const WEAPON_UPDATE_PERIOD = 0.03;
-        new Timer().start(WEAPON_UPDATE_PERIOD, true, () => this.updateProjectiles(WEAPON_UPDATE_PERIOD));
-    }
 
     /**
      * Loops through and updates all projectiles
@@ -90,6 +86,10 @@ export class WeaponModule {
             if (!(projectile.willDestroy() && projectile.destroy(this))) result.push(projectile);
         }
         this.projectiles = result;
+
+        if (this.projectiles.length === 0) {
+            this.projectileUpdateTimer.pause();
+        }
     }
 
     /**
@@ -132,6 +132,11 @@ export class WeaponModule {
     addProjectile(projectile: Projectile): void {
         projectile.setId(this.projectileIdCounter);
         this.projectiles.push(projectile);
+
+        // IF we just added our first projectile we need to start the timer
+        if (this.projectiles.length === 1) {
+            this.projectileUpdateTimer.start(WEAPON_UPDATE_PERIOD, true, () => this.updateProjectiles(WEAPON_UPDATE_PERIOD));
+        }
     }
     
     getGunForItem(item: item): Gun | void {

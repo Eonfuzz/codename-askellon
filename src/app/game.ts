@@ -98,9 +98,6 @@ export class Game {
     }
 
     public startGame() {
-        // Misc
-        this.makeUnitsTurnInstantly();
-
         this.buffModule.init();
         this.researchModule.initialise();
         this.geneModule.initGenes();
@@ -163,39 +160,6 @@ export class Game {
         return GetLocationZ(this.TEMP_LOCATION)
     }
     
-    /**
-     * Is this something we want?
-     */
-    public noTurn: boolean = false;
-    private makeUnitsTurnInstantly(): void {
-        const unitTurnTrigger = new Trigger();
-        unitTurnTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
-        unitTurnTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER);
-        unitTurnTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER);
-
-        unitTurnTrigger.addAction(() => {
-            if (!this.noTurn) return;
-
-            const triggerUnit = GetTriggerUnit();
-
-            const oX = GetUnitX(triggerUnit);
-            const oY = GetUnitY(triggerUnit);
-
-            let targetLocationX = GetOrderPointX();
-            let targetLocationY = GetOrderPointY();
-
-            // Loc is undefined, must be a unit target order
-            if (targetLocationX === undefined) {
-                const u = GetOrderTargetUnit();
-                targetLocationX = GetUnitX(u);
-                targetLocationY = GetUnitY(u);
-            }
-            
-            const angle = Rad2Deg(Atan2(targetLocationY-oY, targetLocationX-oX));
-            BlzSetUnitFacingEx(triggerUnit, angle);
-        })
-    }
-
     public initUI() {
         // BlzHideOriginFrames(true);
     }

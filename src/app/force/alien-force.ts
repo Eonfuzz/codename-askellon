@@ -37,7 +37,7 @@ export class AlienForce extends ForceType {
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
     private alienDeathTrigs = new Map<Unit, Trigger>();
-    private alienTakesDamageTrigger = new Trigger();
+    // private alienTakesDamageTrigger = new Trigger();
     private alienDealsDamageTrigger = new Trigger();
 
     constructor(forceModule: ForceModule) {
@@ -70,7 +70,7 @@ export class AlienForce extends ForceType {
                 this.getPlayers().forEach(p => crewmember.unit.shareVision(p, false));
             }))
 
-        this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
+        // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
         this.alienDealsDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
         this.alienDealsDamageTrigger.addAction(() => this.onAlienDealsDamage());
     }
@@ -97,7 +97,7 @@ export class AlienForce extends ForceType {
             alien.suspendExperience(true);
 
             // Register it for damage event
-            this.registerAlienTakesDamageExperience(alien);
+            // this.registerAlienTakesDamageExperience(alien);
             game.tooltips.registerTooltip(who, alienTooltipToHuman);
 
             this.registerAlienDeath(alien);
@@ -358,9 +358,9 @@ export class AlienForce extends ForceType {
         return this.playerAlienUnits.get(who);
     }
 
-    private registerAlienTakesDamageExperience(alien: Unit) {
-        this.alienTakesDamageTrigger.registerUnitEvent(alien, EVENT_UNIT_DAMAGED);
-    }
+    // private registerAlienTakesDamageExperience(alien: Unit) {
+    //     this.alienTakesDamageTrigger.registerUnitEvent(alien, EVENT_UNIT_DAMAGED);
+    // }
 
     private onAlienDealsDamage() {
         const damageSource = Unit.fromHandle(GetEventDamageSource());
@@ -368,7 +368,7 @@ export class AlienForce extends ForceType {
         const damagingPlayer = damageSource.owner;
         const damagedPlayer = damagedUnit.owner;
 
-        if (!this.playerAlienUnits.has(damagingPlayer)) return;
+        if (!this.playerAlienUnits.has(damagingPlayer)) this.onAlienTakesDamage();
 
         const damageAmount = GetEventDamage();
 
@@ -398,10 +398,15 @@ export class AlienForce extends ForceType {
         const damagingPlayer = damageSource.owner;
         const damagedPlayer = damagedUnit.owner;
 
+        // Hitting alien player
+        const damagedUnitIsAlien = damagedPlayer === this.forceModule.alienAIPlayer || 
+        // OR hitting alien form
+            this.playerAlienUnits.has(damagedPlayer)  && this.playerAlienUnits.get(damagedPlayer) === damagedUnit;
+
         // Ensure that they are different owners
         // No farming xp on yourself!
         // Also check to make sure they aren't both alien players
-        if (damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagingPlayer)) {
+        if (damagedUnitIsAlien && damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagingPlayer)) {
             // Okay good, now reward exp based on damage done
             const damageSourceForce = this.forceModule.getPlayerForce(damagingPlayer);
             const crewmember = this.forceModule.game.crewModule.getCrewmemberForPlayer(damagingPlayer);

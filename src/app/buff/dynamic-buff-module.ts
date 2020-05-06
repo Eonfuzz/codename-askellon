@@ -14,6 +14,8 @@ export class DynamicBuffModule {
     buffs: DynamicBuff[] = [];
     buffsByUnit = new Map<Unit, DynamicBuff[]>();
 
+    dynamicBuffTimer: Timer;
+
     constructor(game: Game) {
         this.game = game;
     }
@@ -21,7 +23,7 @@ export class DynamicBuffModule {
     init() {
         // const buffUpdateTrigger = new Trigger();
 
-        new Timer().start(0.1, true, () => this.process(0.1));
+        this.dynamicBuffTimer = new Timer();
         // buffUpdateTrigger.registerTimerEvent(0.1, true);
         // buffUpdateTrigger.addAction(() => this.process(0.1));
     }
@@ -38,6 +40,10 @@ export class DynamicBuffModule {
         }
 
         matchingBuff.addInstance(this.game, who, instance, isNegativeInstance);
+        
+        if (this.buffs.length === 1) {
+            this.dynamicBuffTimer.start(0.1, true, () => this.process(0.1));
+        }
     }
 
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {
@@ -56,5 +62,9 @@ export class DynamicBuffModule {
             }
             return !doDestroy;
         })
+
+        if (this.buffs.length === 0) {
+            this.dynamicBuffTimer.pause();
+        }
     }
 }

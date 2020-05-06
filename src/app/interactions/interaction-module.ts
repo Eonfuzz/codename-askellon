@@ -15,49 +15,58 @@ export class InteractionModule {
     
     // interactionUpdateTrigger: Trigger;
     interactions: Array<InteractionEvent> = [];
+    interactionTimer: Timer;
 
     constructor(game: Game) {
         this.game = game;
 
-        new Timer().start(UPDATE_PERIODICAL_INTERACTION, true, () => this.processInteractions(UPDATE_PERIODICAL_INTERACTION));
+        this.interactionTimer = new Timer();
+
         // this.interactionUpdateTrigger = new Trigger();
         // this.interactionUpdateTrigger.registerTimerEvent(UPDATE_PERIODICAL_INTERACTION, true);
         // this.interactionUpdateTrigger.addAction(() => this.processInteractions(UPDATE_PERIODICAL_INTERACTION));
 
         // Now track when a user *might* start an interaction
         this.interactionBeginTrigger = new Trigger();
-        // TODO This event *may* need to become specific in the future for optimisation
         this.interactionBeginTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
-        // TODO Do we care about this unit interaction?
-        this.interactionBeginTrigger.addCondition(Condition(() => {
-            return GetIssuedOrderId() === SMART_ORDER_ID;
-        }));
-        this.interactionBeginTrigger.addAction(() => {
-            const trigUnit = Unit.fromHandle(GetTriggerUnit());
-            const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
-            const targetUnitType = targetUnit.typeId;
-
-            // First of all make sure we don't have one already
-            if (this.interactions.filter(i => i.unit === trigUnit && i.targetUnit === targetUnit).length > 0) return;
-
-            // Check to see if we have it in our interactable data
-            const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
-
-            if (interact && (!interact.condition || interact.condition(this, trigUnit, targetUnit))) {
-                const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, 
-                    () => interact.action(this, trigUnit, targetUnit),
-                    () => interact.onStart && interact.onStart(this, trigUnit, targetUnit),
-                    () => interact.onCancel && interact.onCancel(this, trigUnit, targetUnit)
-                );
-                newInteraction.startInteraction();
-                this.interactions.push(newInteraction);
-            }
-        });
+        this.interactionBeginTrigger.addCondition(Condition(() => GetIssuedOrderId() === SMART_ORDER_ID));
+        this.interactionBeginTrigger.addAction(() => this.beginInteraction());
 
         initElevators(game);
         initHatches(game);
         initWeaponsTerminals();
         initShipInteractions(game);
+    }
+
+    beginInteraction() {
+        const trigUnit = Unit.fromHandle(GetTriggerUnit());
+        const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
+        const targetUnitType = targetUnit.typeId;
+
+        // First of all make sure we don't have one already
+        const foundMatch = this.interactions.find(i => i.unit === trigUnit && i.targetUnit === targetUnit);
+        if (foundMatch) return;
+
+        // Check to see if we have it in our interactable data
+        const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
+
+        if (interact && (!interact.condition || interact.condition(this, trigUnit, targetUnit))) {
+            const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, 
+                () => interact.action(this, trigUnit, targetUnit),
+                () => interact.onStart && interact.onStart(this, trigUnit, targetUnit),
+                () => interact.onCancel && interact.onCancel(this, trigUnit, targetUnit)
+            );
+            newInteraction.startInteraction();
+            this.interactions.push(newInteraction);
+
+            if (this.interactions.length === 1) {
+                this.interactionTimer.start(
+                    UPDATE_PERIODICAL_INTERACTION, 
+                    true, 
+                    () => this.processInteractions(UPDATE_PERIODICAL_INTERACTION)
+                );
+            }
+        }
     }
 
     processInteractions(delta: number) {
@@ -67,5 +76,8 @@ export class InteractionModule {
                 if (doDestroy) interaction.destroy();
                 return !doDestroy;
             });
+        if (this.interactions.length === 0) {
+            this.interactionTimer.pause();
+        }
     }
 }

@@ -155,13 +155,13 @@ export class SpaceModule {
      * Updates all ship movement
      * @param updatePeriod 
      */
+    // Ships:
+    minX = this.spaceRect.minX;
+    maxX = this.spaceRect.maxX;
+    minY = this.spaceRect.minY;
+    maxY = this.spaceRect.maxY;
     updateShips(updatePeriod: number) {
-        // Ships:
-        const minX = this.spaceRect.minX;
-        const maxX = this.spaceRect.maxX;
-        const minY = this.spaceRect.minY;
-        const maxY = this.spaceRect.maxY;
-        this.ships.forEach(ship => ship.process(this.game, updatePeriod, minX, maxX, minY, maxY));
+        this.ships.forEach(ship => ship.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY));
     }
 
     unitEntersShip(who: Unit, whichShip: Unit) {

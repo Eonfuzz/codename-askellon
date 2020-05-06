@@ -113,9 +113,6 @@ export class ChatModule {
                 const z = this.game.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
                 z && z.updatePower(true);
             }
-            else if (message === '-nt') {
-                this.game.noTurn = !this.game.noTurn;
-            }
             else if (message.indexOf("-m") === 0) {
                 const mSplit = message.split(" ");
                 const dX = S2I(mSplit[1] || "0");
@@ -154,7 +151,7 @@ export class ChatModule {
                 player.setState(PLAYER_STATE_RESOURCE_GOLD, 999999);
             }
             else if (message.indexOf("-help") === 0) {
-                this.postSystemMessage(player, "Commands: -god, -listen, -nt, -wa, -wc, -cheat");
+                this.postSystemMessage(player, "Commands: -god, -listen, -wa, -wc, -cheat");
             }
             else if (message.indexOf("-ns") === 0) {
                 BlzShowTerrain(false);

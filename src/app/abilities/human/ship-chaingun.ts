@@ -14,6 +14,7 @@ import { WeaponModule } from "app/weapons/weapon-module";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 
 /** @noSelfInFile **/
+const bulletModel = "war3mapImported\\Bullet.mdx";
 export class ShipChaingunAbility implements Ability {
 
     private unit: Unit;
@@ -43,9 +44,9 @@ export class ShipChaingunAbility implements Ability {
             let temp =  casterLoc.applyPolarOffset(this.unit.facing, 50);
 
             const z = getZFromXY(temp.x, temp.y);
-            const bulletLoc = new Vector3(temp.x, temp.y, z+65);
+            const bulletLoc = new Vector3(temp.x, temp.y, z+90);
             temp = temp.applyPolarOffset(this.unit.facing, 3000);
-            const targetLoc = new Vector3(temp.x+GetRandomReal(-250,250), temp.y+GetRandomReal(-250,250), z);
+            const targetLoc = new Vector3(temp.x+GetRandomReal(-200,200), temp.y+GetRandomReal(-200,200), z);
 
             const deltaTarget = targetLoc.subtract(bulletLoc);       
 
@@ -56,7 +57,6 @@ export class ShipChaingunAbility implements Ability {
                 new ProjectileMoverLinear()
             )
             .setVelocity(1800)
-            .onDeath((proj: Projectile) => { })
             .overrideFilter((projectile: Projectile) => {
                 let unit = GetFilterUnit(); 
                 return GetWidgetLife(unit) > 0.405 && GetUnitTypeId(unit) === SHIP_VOYAGER_UNIT 
@@ -65,7 +65,7 @@ export class ShipChaingunAbility implements Ability {
             })
             .onCollide((wepModule, projectile, withWho) => this.onCollide(wepModule, projectile, withWho));
 
-            projectile.addEffect("war3mapImported\\Bullet.mdx", new Vector3(0, 0, 0), deltaTarget.normalise(), 1.2);
+            projectile.addEffect(bulletModel, new Vector3(0, 0, 0), deltaTarget.normalise(), 1.2);
 
             module.game.weaponModule.addProjectile(projectile);
         }
@@ -95,8 +95,6 @@ export class ShipChaingunAbility implements Ability {
             DAMAGE_TYPE_NORMAL, 
             WEAPON_TYPE_WOOD_MEDIUM_STAB
         );
-
-        return false;
     }
 
 

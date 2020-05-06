@@ -110,7 +110,7 @@ export class SpaceMovementEngine {
         // Afterburner makes you 3x as fast
         if (this.isUsingAfterburner) {
             this.afterburnerTimer += deltaTime;
-            delta = delta.multiplyN(1 + this.afterburnerTimer*1.1);
+            delta = delta.multiplyN(1 + (this.afterburnerTimer+1)/2);
         }
         this.position = this.position.add(delta);
 
