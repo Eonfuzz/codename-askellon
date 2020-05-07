@@ -2390,12 +2390,6 @@ STRING 534
 Fire Autocannon
 }
 
-STRING 535
-// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Voyager's patented Hex Pattern "Riot" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19Hex corp stipulates that any damages gained while using Riot Boosters can not be claimed under insurance.|r |n|n|cff80808080 Seconds Cooldown|r
-}
-
 STRING 536
 // Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
 {
@@ -2435,5 +2429,11 @@ Self amplifying rifle that increases in damage with each successive hit.
 |cff00ff00- Bad base damage 
 - Missing a shot resets intensity|n- |cffc81e1eFracture Round|r|cff00ff00 can deal massive damage|r|n
 |cffc81e1eFracture Round|r|cffffcc00 Cannot be removed.|r
+}
+
+STRING 542
+// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Voyager's patented Hex Pattern "Riot" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19Hex corp stipulates that any damages incurred while using Riot Boosters can not be claimed under insurance.|r |n|n|cff80808080 Seconds Cooldown|r
 }
 

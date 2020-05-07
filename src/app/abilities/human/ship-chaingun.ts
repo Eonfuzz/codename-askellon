@@ -35,8 +35,8 @@ export class ShipChaingunAbility implements Ability {
         this.timeElapsed += delta;
         this.timeSinceBullet += delta;
 
-        if (this.timeElapsed >= 1 && this.timeSinceBullet >= 0.05) {
-            this.timeSinceBullet = 0;
+        if (this.timeElapsed >= 1 && this.timeSinceBullet >= 0.1) {
+            this.timeSinceBullet -= 0.1;
 
             const casterLoc = vectorFromUnit(this.unit.handle);
 

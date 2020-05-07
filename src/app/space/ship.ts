@@ -93,6 +93,7 @@ export class Ship {
         this.unit.paused = false;
         this.unit.selectionScale = 0.5;
         this.unit.setScale(0.5, 0.5, 0.5);
+        this.unit.setPathing(false);
     }
 
     onLeaveSpace() {
@@ -104,6 +105,7 @@ export class Ship {
         this.unit.paused = true;
         this.unit.selectionScale = 2.5;
         this.unit.setScale(1.5, 1.5, 1.5);
+        this.unit.setPathing(true);
     }
 
     onLeaveShip(game: Game) {

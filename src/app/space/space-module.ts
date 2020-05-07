@@ -89,7 +89,7 @@ export class SpaceModule {
     shipDeathEvent = new Trigger();
     shipMoveEvent = new Trigger();
     initShips() {
-        const SHIP_UPDATE_PERIOD = 0.03;
+        const SHIP_UPDATE_PERIOD = 0.03
 
         // Start gene check trigger
         new Timer().start(SHIP_UPDATE_PERIOD, true, () => this.updateShips(SHIP_UPDATE_PERIOD));
@@ -128,7 +128,7 @@ export class SpaceModule {
             const bay = this.shipBays.find(b => b.getDockedShip() === matchingShip);
 
             // Now remove the ship from the bay
-            bay.onDockedShipDeath();
+            if (bay) bay.onDockedShipDeath();
             // Now kill the ship
             matchingShip.onDeath(this.game, k);
             // Now clear it from ships for unit

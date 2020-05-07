@@ -24,7 +24,7 @@ export class SpaceMovementEngine {
     private thrust: Vector2;
 
     private mass = 200;
-    private airBreakMass = 500;
+    private airBreakMass = 750;
 
     protected acceleration = 400.0;
     protected accelerationBackwards = 100.0;
@@ -33,9 +33,8 @@ export class SpaceMovementEngine {
     private afterburnerTimer = 0;
 
     private velocity = 0.0;
-    private velocityForwardMax = 400.0;
+    private velocityForwardMax = 750.0;
     // Only used when moving backwards
-    private velocityBackwardsMax = 200.0;
 
     // Are we moving backwards?
     private isMovingBackwards = false;
@@ -81,7 +80,7 @@ export class SpaceMovementEngine {
     }
 
     public applyThrust(deltaTime: number) {
-        const maximum = this.isMovingBackwards ? this.velocityForwardMax : this.velocityBackwardsMax;
+        const maximum = this.velocityForwardMax;
         
         // Reduce by mass
         const mLen = this.momentum.getLength();
@@ -96,7 +95,7 @@ export class SpaceMovementEngine {
 
         // Ensure we don't go beyond our maximum movement speed
         if (length > maximum) {
-            this.momentum.setLengthN(maximum);
+            this.momentum = this.momentum.setLengthN(maximum);
         }
 
         // Update facing angle from momentum
@@ -113,7 +112,8 @@ export class SpaceMovementEngine {
         // Afterburner makes you 3x as fast
         if (this.isUsingAfterburner) {
             this.afterburnerTimer += deltaTime;
-            delta = delta.multiplyN(1 + (this.afterburnerTimer+1)/2);
+            const modifier = 1 + (this.afterburnerTimer+1)/2;
+            delta = delta.multiplyN(modifier);
         }
         this.position = this.position.add(delta);
 
@@ -173,59 +173,8 @@ export class SpaceMovementEngine {
      */
     public increaseVelocity() {
         this.isGoingToStop = false;
-        // Allow us to go backwards
-        if (this.isMovingBackwards) {
-            this.velocity -= this.acceleration;
-            if (this.velocity < 0) {
-                this.isMovingBackwards = false;
-                this.velocity = this.acceleration + this.velocity;
-            }
-        }
-        // Otherwise increase velocity
-        else {
-            this.velocity += this.acceleration;
-        }
-
-        this.applyVelocityCap();
+        this.velocity = this.acceleration;
         return this;
-    }
-
-    /**
-     * Decreases velocity
-     * May cause the ship to go backwards
-     */
-    public decreaseVelocity() {
-        this.isGoingToStop = false;
-        // Allow us to go backwards
-        if (!this.isMovingBackwards) {
-            this.velocity -= this.accelerationBackwards;
-            if (this.velocity < 0) {
-                this.isMovingBackwards = true;
-                this.velocity = this.accelerationBackwards + this.velocity;
-            }
-        }
-        // Otherwise increase velocity
-        else {
-            this.velocity += this.accelerationBackwards;
-        }
-
-        this.applyVelocityCap();
-        return this;
-    }
-
-    private applyVelocityCap() {
-        if (this.isMovingBackwards) {
-            // Make sure we haven't gone over the cap
-            if (this.velocity > this.velocityBackwardsMax) {
-                this.velocity = this.velocityBackwardsMax;
-            }
-        }
-        else {
-            // Make sure we haven't gone over the cap
-            if (this.velocity > this.velocityForwardMax) {
-                this.velocity = this.velocityForwardMax;
-            }            
-        }
     }
 
     /**
@@ -237,10 +186,7 @@ export class SpaceMovementEngine {
         // else {
         if (!this.isMovingBackwards && this.velocity > 0) {
             this.isGoingToStop = true;
-            this.velocity = 0;
-        }
-        else {
-            this.decreaseVelocity();
+            // this.velocity = 0;
         }
         // }
         return this;
