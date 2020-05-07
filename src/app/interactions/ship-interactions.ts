@@ -35,6 +35,10 @@ export function initShipInteractions(game: Game) {
     const ships: ShipInteraction[] = [];
     const interaction: InteractableData = {
         unitType: SHIP_VOYAGER_UNIT,
+        condition:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
+            // Make sure ships can't fly ships, lol.
+            return source.typeId !== SHIP_VOYAGER_UNIT;
+        },
         onStart: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
         },
         onCancel: (iModule: InteractionModule, source: Unit, interactable: Unit) => {

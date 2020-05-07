@@ -5,6 +5,7 @@ import { Rectangle, Region, Unit } from "w3ts/index";
 import { Ship } from "./ship";
 import { Game } from "app/game";
 import { EVENT_TYPE } from "app/events/event";
+import { Vector2 } from "app/types/vector2";
 
 
 /**
@@ -83,5 +84,14 @@ export class ShipBay {
         whichShip.unit.facing = 270;
 
         whichShip.onLeaveShip(game);
+    }
+
+    onDockedShipDeath() {
+        this.animating = false;
+        this.dockedShip = undefined;
+        // Force destroy of the animation if we have one
+        if (this.animation) {
+            this.animation.destroy(true);
+        }
     }
 }

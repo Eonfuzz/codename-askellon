@@ -27,11 +27,12 @@ export abstract class ShipAnimation {
 
     abstract process(delta: number): boolean;
 
-    public destroy() {
+    public destroy(skipCallbacks?: boolean) {
         try {
-            this.onDoneCallbacks.forEach(cb => cb());
+            if (!skipCallbacks) {
+                this.onDoneCallbacks.forEach(cb => cb());
+            }
             this.onDoneCallbacks = undefined;
-
             this.ship = undefined;
             this.dock = undefined;
             this.animationTimer.destroy();
@@ -216,6 +217,7 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
             // If we are approaching the center point we need to slow down even further
             if (totalD <= 300) {
                 simulatedDelta = simulatedDelta * Math.max(totalD/300, 0.2)
+                this.ship.unit.setflyHeight(100, 20);
             }
             const nPos = this.mover.move(undefined, undefined, undefined, simulatedDelta );
     

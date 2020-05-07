@@ -9,7 +9,8 @@ import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { Ship, ShipState } from "./ship";
-import { ABIL_DOCK_TEST } from "resources/ability-ids";
+import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID } from "resources/ability-ids";
+import { Vector2 } from "app/types/vector2";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -85,6 +86,8 @@ export class SpaceModule {
      * Registers are repeating timer that updates projectiles
      */
     // shipUpdateTimer = new Trigger();
+    shipDeathEvent = new Trigger();
+    shipMoveEvent = new Trigger();
     initShips() {
         const SHIP_UPDATE_PERIOD = 0.03;
 
@@ -107,7 +110,48 @@ export class SpaceModule {
             this.ships.push(ship);
 
             bay.dockShip(this.game, ship);
+
+            this.shipDeathEvent.registerUnitEvent(ship.unit, EVENT_UNIT_DEATH);
+            this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_ORDER);
+            this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
+            this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
         });
+
+        // Hook into ship death event
+        this.shipDeathEvent.addAction(() => {
+            const u = Unit.fromHandle(GetDyingUnit());
+            const k = Unit.fromHandle(GetKillingUnit());
+
+            const matchingShip = this.shipsForUnit.get(u);
+
+            // Was the ship in a bay
+            const bay = this.shipBays.find(b => b.getDockedShip() === matchingShip);
+
+            // Now remove the ship from the bay
+            bay.onDockedShipDeath();
+            // Now kill the ship
+            matchingShip.onDeath(this.game, k);
+            // Now clear it from ships for unit
+            this.shipsForUnit.delete(u);
+            this.ships.splice(this.ships.indexOf(matchingShip), 1);
+        });
+
+        this.shipMoveEvent.addAction(() => {
+            const order = GetIssuedOrderId();
+
+            const isSmart = order === SMART_ORDER_ID;
+            const isMove = order === MOVE_ORDER_ID;
+
+            if (!isSmart && !isMove) return;
+            let targetLoc;
+
+            if (GetOrderTargetUnit()) targetLoc = new Vector2(GetUnitX(GetOrderTargetUnit()), GetUnitY(GetOrderTargetUnit()));
+            else targetLoc = new Vector2(GetOrderPointX(), GetOrderPointY());
+
+            const u = Unit.fromHandle(GetOrderedUnit());
+            const ship = this.shipsForUnit.get(u);
+            ship.onMoveOrder(targetLoc);
+        })
     }
 
     onShipEntersSpace(who: Unit, ship: Ship) {

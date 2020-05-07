@@ -56,8 +56,8 @@ gg_unit_n002_0044 = nil
 gg_unit_n001_0045 = nil
 gg_unit_h004_0046 = nil
 gg_unit_n004_0035 = nil
-gg_unit_n001_0199 = nil
 gg_item_ratf_0230 = nil
+gg_unit_n001_0199 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
@@ -144,14 +144,14 @@ end
 
 function CreateAllItems()
     local itemID
-    BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 800.3, 427.5, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 862.0, 347.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 717.6, 362.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 819.5, 355.5, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 766.3, 368.8, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 862.0, 347.4, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 800.3, 427.5, FourCC("I009"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), 450.0, 159.3, FourCC("ratf"))
 end
 
@@ -200,16 +200,12 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1248.0, 160.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1760.0, 480.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1888.0, 480.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1824.0, 288.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1824.0, 32.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1952.0, 96.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 2016.0, 288.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -28000.0, 27.736, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23904.0, -28064.0, 264.949, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 2016.0, -160.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1632.0, -160.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1568.0, 96.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -32.0, -928.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -25056.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -25120.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -25184.0, 270.000, FourCC("h005"))

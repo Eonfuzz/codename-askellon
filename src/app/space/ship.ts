@@ -1,10 +1,10 @@
 import { ShipBay } from "./ship-bay";
-import { Unit } from "w3ts/index";
+import { Unit, Effect } from "w3ts/index";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { Game } from "app/game";
 import { SpaceMovementEngine } from "./ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
-import { vectorFromUnit } from "app/types/vector2";
+import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { UNIT_IS_FLY } from "resources/ability-ids";
 
 export enum ShipState {
@@ -47,10 +47,12 @@ export class Ship {
 
     process(game: Game, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
         if (this.state === ShipState.inSpace) {
-            const facing = this.unit.facing;
-            this.engine.updateThrust(facing, deltaTime)
-                .applyThrust(facing, deltaTime)
-                .updatePosition(facing, deltaTime, minX, maxX, minY, maxY);
+            this.engine.updateThrust(deltaTime)
+                .applyThrust(deltaTime)
+                .updatePosition(deltaTime, minX, maxX, minY, maxY);
+
+            const facing = this.engine.getFacingAngle();
+            BlzSetUnitFacingEx(this.unit.handle, facing);
 
             // TODO
             // const getFuelCost = this.engine.getMomentum();
@@ -85,7 +87,7 @@ export class Ship {
 
     onEnterSpace() {
         this.state = ShipState.inSpace;
-        this.engine = new SpaceMovementEngine(this.unit.x, this.unit.y);
+        this.engine = new SpaceMovementEngine(this.unit.x, this.unit.y, vectorFromUnit(this.unit.handle).applyPolarOffset(this.unit.facing, 30));
 
         this.unit.setflyHeight(0, 0);
         this.unit.paused = false;
@@ -111,7 +113,7 @@ export class Ship {
         const shipPos = vectorFromUnit(this.unit.handle);
 
         this.inShip.forEach(u => {
-            const rPos = shipPos.applyPolarOffset(GetRandomReal(0, 360), 200);
+            const rPos = shipPos.applyPolarOffset(GetRandomReal(0, 360), 350);
             u.x = rPos.x;
             u.y = rPos.y;
             u.show = true;
@@ -122,5 +124,72 @@ export class Ship {
         });
         
         this.inShip = [];
+    }
+
+    onMoveOrder(targetLoc: Vector2) {
+        if (this.engine) {
+            this.engine.setGoal(targetLoc);
+            this.engine.increaseVelocity();
+        }
+        else {
+            Log.Error("Ship is receiving orders while not piloted WTF");
+        }
+    }
+
+    onDeath(game: Game, killer: Unit) {
+        // first of all eject all our units
+        const allUnits = this.inShip.slice();
+        this.onLeaveShip(game);
+
+        // Make killer damage them for 400 damage as they were inside the ship
+        allUnits.forEach(u => 
+            killer.damageTarget(
+                u.handle, 
+                this.state === ShipState.inSpace ? 99999 : 400,
+                undefined, 
+                false, 
+                false, 
+                ATTACK_TYPE_SIEGE, 
+                DAMAGE_TYPE_FIRE, 
+                WEAPON_TYPE_WHOKNOWS
+        ));
+
+        // Kill the ship
+        const cX = this.unit.x;
+        const cY = this.unit.y;
+
+        // Create explosive SFX!
+        let sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
+        sfx.scale = this.state === ShipState.inSpace ? 1 : 5;
+        sfx.destroy();
+
+        sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
+        sfx.scale = this.state === ShipState.inSpace ? 0.5 : 1;
+        sfx.destroy();
+
+        sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
+        sfx.scale = this.state === ShipState.inSpace ? 0.75 : 3;
+        sfx.destroy();
+
+        this.unit.destroy();
+
+        // Now we get the ship to explode!
+        // Deal another 400 damage
+        killer.damageAt(
+            0.2, 
+            this.state === ShipState.inSpace ? 250 : 500, 
+            cX, 
+            cY, 
+            400, 
+            false, 
+            false,
+            ATTACK_TYPE_SIEGE, 
+            DAMAGE_TYPE_FIRE, 
+            WEAPON_TYPE_WHOKNOWS
+        );
+
+        // Null some data
+        this.unit = undefined;
+        this.engine = undefined;
     }
 }

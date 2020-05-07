@@ -23,15 +23,17 @@ export class SpaceMovementEngine {
     // Where we're being pushed
     private thrust: Vector2;
 
-    private mass = 1.0;
-    protected acceleration = 200.0;
+    private mass = 200;
+    private airBreakMass = 500;
+
+    protected acceleration = 400.0;
     protected accelerationBackwards = 100.0;
 
     private isUsingAfterburner = false;
     private afterburnerTimer = 0;
 
     private velocity = 0.0;
-    private velocityForwardMax = 450.0;
+    private velocityForwardMax = 400.0;
     // Only used when moving backwards
     private velocityBackwardsMax = 200.0;
 
@@ -40,17 +42,20 @@ export class SpaceMovementEngine {
     // Are we trying to go to a stop?
     private isGoingToStop = false;
 
+    private facingAngleLastIteration = 0;
+    private goal: Vector2 = new Vector2(0, 0);
+
     private chemTrails: ShipChemTrail[] = [];
 
-    constructor(startX: number, startY: number) {
+    constructor(startX: number, startY: number, initialGoal: Vector2) {
         this.position   = new Vector2(startX, startY);
         this.momentum   = new Vector2(0, 0);
         this.thrust     = new Vector2(0, 0);
+
+        this.goal = initialGoal;
     }
 
-    public updateThrust(towardsDegree: number, deltaTime: number) {
-        const shipFacing = towardsDegree;
-
+    public updateThrust(deltaTime: number) {
         // Update chem trails
         this.chemTrails = this.chemTrails.filter(c => {
             c.life -= deltaTime;
@@ -62,36 +67,30 @@ export class SpaceMovementEngine {
             c.effect.setAlpha(MathRound(255 * (c.life / CHEM_TRAIL_LIFETIME)));
             return true;
         })
-
-        // Go to a stop if possible
-        if (this.isGoingToStop) {
-            const changeBy = this.isMovingBackwards ? this.acceleration : this.accelerationBackwards;
-            if (this.velocity < changeBy) {
-                this.velocity = 0;
-                this.isGoingToStop = false;
-            }
-            else {
-                this.velocity = this.velocity - changeBy;
-            }
-        }
         
         // Convert its facing into a normalised vector
-        const thrust = new Vector2(
-            Cos(shipFacing * bj_DEGTORAD),
-            Sin(shipFacing * bj_DEGTORAD)
-        );
+        const thrust = this.goal.normalise();
 
         // Now apply velocity
-        this.momentum = thrust.multiplyN( this.velocity );
+        this.thrust = thrust.multiplyN( this.velocity );
 
         if (this.isMovingBackwards) {
-            this.momentum = new Vector2(-this.momentum.x, -this.momentum.y)
+            this.thrust = this.thrust.multiplyN(-1);
         }
         return this;
     }
 
-    public applyThrust(towardsDegree: number, deltaTime: number) {
+    public applyThrust(deltaTime: number) {
         const maximum = this.isMovingBackwards ? this.velocityForwardMax : this.velocityBackwardsMax;
+        
+        // Reduce by mass
+        const mLen = this.momentum.getLength();
+        const mass = this.isGoingToStop ? this.airBreakMass : this.mass;
+
+        // Reduce it by mass
+        this.momentum = this.momentum.setLengthN( Math.max(0, mLen - mass*deltaTime) );
+
+        // Now add thrust
         this.momentum = this.momentum.add(this.thrust.multiplyN(deltaTime));
         const length = this.momentum.getLength();
 
@@ -100,10 +99,14 @@ export class SpaceMovementEngine {
             this.momentum.setLengthN(maximum);
         }
 
+        // Update facing angle from momentum
+        if (length > 1) this.updateFacingAngle();
+
         return this;
     }
 
-    public updatePosition(towardsDegree: number, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
+    public updatePosition(deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
+
         const oldPosition = this.position;
         // Apply momentum and velocity
         let delta = this.momentum.multiplyN(deltaTime);
@@ -119,10 +122,17 @@ export class SpaceMovementEngine {
         if (this.position.y < minY) this.position.y = minY;
         else if (this.position.y > maxY) this.position.y = maxY;
 
+        this.updateChemTrails(delta, oldPosition);
+
+        return this;
+    }
+
+    private updateChemTrails(delta: Vector2, oldPosition: Vector2) {
+        
         const dLen = delta.getLength();
 
-        const d1 = (towardsDegree + 160) * bj_DEGTORAD;
-        const d2 = (towardsDegree - 160) * bj_DEGTORAD;
+        const d1 = (this.facingAngleLastIteration + 160) * bj_DEGTORAD;
+        const d2 = (this.facingAngleLastIteration - 160) * bj_DEGTORAD;
 
         fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
             const sfx1 = new Effect(
@@ -156,7 +166,6 @@ export class SpaceMovementEngine {
             });
         });
 
-        return this;
     }
 
     /**
@@ -228,6 +237,7 @@ export class SpaceMovementEngine {
         // else {
         if (!this.isMovingBackwards && this.velocity > 0) {
             this.isGoingToStop = true;
+            this.velocity = 0;
         }
         else {
             this.decreaseVelocity();
@@ -269,5 +279,24 @@ export class SpaceMovementEngine {
     public destroy() {
         this.chemTrails.forEach(c => c.effect.destroy());
     }
-    
+
+    /**
+     * 
+     * @param newGoal 
+     */
+    setGoal(newGoal: Vector2) {
+        this.goal = newGoal.subtract(this.getPosition());
+    }
+
+
+    /**
+     * Converts momentum into facing angle
+     */
+    private updateFacingAngle() {
+        return this.facingAngleLastIteration = Rad2Deg(Atan2(this.momentum.y, this.momentum.x));        
+    }
+
+    public getFacingAngle() {
+        return this.facingAngleLastIteration;
+    }
 }
