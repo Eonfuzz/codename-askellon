@@ -26,6 +26,7 @@ export class ChatModule {
     /**
      * Must be called after force init
      */
+    fadeHandler = new Timer();
     initialise() {
         const players = this.game.forceModule.getActivePlayers();
         const font = 'LVCMono.otf';
@@ -80,7 +81,7 @@ export class ChatModule {
         /**
          * Create a fade tracking trigger loop
          */
-        new Timer().start(0.1, true, () => this.updateFade(0.1));
+        this.fadeHandler.start(0.1, true, () => this.updateFade(0.1));
         // const fadeTrig = new Trigger();
         // fadeTrig.registerTimerEvent(0.1, true);
         // fadeTrig.addAction(() => this.updateFade(0.1));
@@ -155,6 +156,11 @@ export class ChatModule {
             }
             else if (message.indexOf("-ns") === 0) {
                 BlzShowTerrain(false);
+            }
+            else if (message == "-kill") {
+                EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    KillUnit(GetEnumUnit());
+                })
             }
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);

@@ -91,7 +91,7 @@ export class AcidPoolAbility implements Ability {
         );
         EnumItemsInRect(rect, Filter(() => true), () => {
             const item = GetEnumItem();
-            Log.Information("Destroying Item "+GetItemName(item));
+            // Log.Information("Destroying Item "+GetItemName(item));
             RemoveItem(item);
         });
     }

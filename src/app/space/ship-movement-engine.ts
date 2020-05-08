@@ -7,7 +7,7 @@ import { fastPointInterp } from "lib/utils";
 import { SoundRef } from "app/types/sound-ref";
 
 interface ShipChemTrail {
-    effect: Effect;
+    effect: effect;
     life: number;
 }
 
@@ -23,7 +23,7 @@ export class SpaceMovementEngine {
     // Where we're being pushed
     private thrust: Vector2;
 
-    private mass = 200;
+    public mass = 200;
     private airBreakMass = 750;
 
     protected acceleration = 400.0;
@@ -33,7 +33,7 @@ export class SpaceMovementEngine {
     private afterburnerTimer = 0;
 
     private velocity = 0.0;
-    private velocityForwardMax = 750.0;
+    public velocityForwardMax = 750.0;
     // Only used when moving backwards
 
     // Are we moving backwards?
@@ -45,6 +45,7 @@ export class SpaceMovementEngine {
     private goal: Vector2 = new Vector2(0, 0);
 
     private chemTrails: ShipChemTrail[] = [];
+    public doCreateTrails = true;
 
     constructor(startX: number, startY: number, initialGoal: Vector2) {
         this.position   = new Vector2(startX, startY);
@@ -56,16 +57,18 @@ export class SpaceMovementEngine {
 
     public updateThrust(deltaTime: number) {
         // Update chem trails
-        this.chemTrails = this.chemTrails.filter(c => {
-            c.life -= deltaTime;
-            if (c.life <= 0) {
-                c.effect.destroy();
-                c.effect = undefined;
-                return false;
-            }
-            c.effect.setAlpha(MathRound(255 * (c.life / CHEM_TRAIL_LIFETIME)));
-            return true;
-        })
+        if (this.doCreateTrails) {
+            this.chemTrails = this.chemTrails.filter(c => {
+                c.life -= deltaTime;
+                if (c.life <= 0) {
+                    DestroyEffect(c.effect);
+                    c.effect = undefined;
+                    return false;
+                }
+                BlzSetSpecialEffectAlpha(c.effect, MathRound(255 * (c.life / CHEM_TRAIL_LIFETIME)));
+                return true;
+            })
+        }
         
         // Convert its facing into a normalised vector
         const thrust = this.goal.normalise();
@@ -122,7 +125,7 @@ export class SpaceMovementEngine {
         if (this.position.y < minY) this.position.y = minY;
         else if (this.position.y > maxY) this.position.y = maxY;
 
-        this.updateChemTrails(delta, oldPosition);
+        if (this.doCreateTrails) this.updateChemTrails(delta, oldPosition);
 
         return this;
     }
@@ -135,25 +138,28 @@ export class SpaceMovementEngine {
         const d2 = (this.facingAngleLastIteration - 160) * bj_DEGTORAD;
 
         fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
-            const sfx1 = new Effect(
+            const sfx1 = AddSpecialEffect(
                 SMOKE_TRAIL_SFX, 
                 p.x + Cos(d1) * 70, 
                 p.y + Sin(d1) * 70
             );
+                
             // sfx1.setTime(0.1);
-            const sfx2 = new Effect(SMOKE_TRAIL_SFX, 
+            const sfx2 = AddSpecialEffect(
+                SMOKE_TRAIL_SFX, 
                 p.x + Cos(d2) * 70, 
                 p.y + Sin(d2) * 70
             );
+                
             // sfx2.setTime(0.1);
-            sfx1.z = 100;
-            sfx2.z = 100;
+            BlzSetSpecialEffectZ(sfx1, 100);
+            BlzSetSpecialEffectZ(sfx2, 100);
 
             if (this.isUsingAfterburner) {
-                sfx1.setColor(255, 150, 150);
-                sfx1.scale = 3;
-                sfx2.setColor(255, 150, 150);
-                sfx2.scale = 3;
+                BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
+                BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
+                BlzSetSpecialEffectScale(sfx1, 3);
+                BlzSetSpecialEffectScale(sfx2, 3);
             }
     
             this.chemTrails.push({
@@ -223,7 +229,7 @@ export class SpaceMovementEngine {
     }
 
     public destroy() {
-        this.chemTrails.forEach(c => c.effect.destroy());
+        this.chemTrails.forEach(c => DestroyEffect(c.effect));
     }
 
     /**

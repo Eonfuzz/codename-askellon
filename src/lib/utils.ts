@@ -78,9 +78,9 @@ export function syncData(handle: string, listenFor: MapPlayer, taker: Function):
     });
 
     return (self, toSend) => {
-        if (GetLocalPlayer() === listenFor.handle) {
+        // if (GetLocalPlayer() === listenFor.handle) {
             BlzSendSyncData(handle, toSend);
-        } 
+        // } 
     }
 }
 

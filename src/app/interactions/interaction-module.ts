@@ -4,7 +4,7 @@ import { InteractionEvent } from "./interaction-event";
 import { Interactables, initElevators, initHatches, initWeaponsTerminals } from "./interaction-data";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
-import { initShipInteractions } from "./ship-interactions";
+import { initShipInteractions, initAskellonInteractions } from "./ship-interactions";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -36,6 +36,7 @@ export class InteractionModule {
         initHatches(game);
         initWeaponsTerminals();
         initShipInteractions(game);
+        initAskellonInteractions(game);
     }
 
     beginInteraction() {

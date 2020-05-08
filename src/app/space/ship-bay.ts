@@ -21,6 +21,9 @@ export class ShipBay {
 
     private animation: ShipAnimation | undefined;
 
+    // SpaceSource, where is this shipbay located
+    private location: Unit;
+
     constructor(whichRect: rect) {
         this.RECT = Rectangle.fromHandle(whichRect);
     }

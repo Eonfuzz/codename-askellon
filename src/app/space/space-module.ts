@@ -6,7 +6,7 @@ import { SpaceObject, SpaceObjectType } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
 import { Log } from "lib/serilog/serilog";
 import { ShipBay } from "./ship-bay";
-import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
+import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { Ship, ShipState } from "./ship";
 import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID } from "resources/ability-ids";
@@ -29,6 +29,8 @@ export class SpaceModule {
     public ships: Ship[];
     private shipsForUnit = new Map<Unit, Ship>();
 
+    public mainShip: Ship;
+
     public shipBays: ShipBay[];
 
     constructor(game: Game) {
@@ -39,8 +41,6 @@ export class SpaceModule {
         this.shipBays       = [];
 
 
-        const spaceX = this.spaceRect.centerX;
-        const spaceY = this.spaceRect.centerY;
 
         this.initShips();
         this.initShipAbilities();
@@ -79,23 +79,30 @@ export class SpaceModule {
         );
         this.game.event.addListener( new EventListener(EVENT_TYPE.LEAVE_SHIP, () => {}) );
         this.game.event.addListener( new EventListener(EVENT_TYPE.SHIP_ENTERS_SPACE, (self, data) => this.onShipEntersSpace(data.source, data.data.ship)) );
-        this.game.event.addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.ship)) );
+        this.game.event.addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.goal)) );
     }
     
     /**
      * Registers are repeating timer that updates projectiles
      */
-    // shipUpdateTimer = new Trigger();
+    shipUpdateTimer = new Timer();
     shipDeathEvent = new Trigger();
     shipMoveEvent = new Trigger();
     initShips() {
         const SHIP_UPDATE_PERIOD = 0.03
 
         // Start gene check trigger
-        new Timer().start(SHIP_UPDATE_PERIOD, true, () => this.updateShips(SHIP_UPDATE_PERIOD));
+        this.shipUpdateTimer.start(SHIP_UPDATE_PERIOD, true, () => this.updateShips(SHIP_UPDATE_PERIOD));
         
-        // this.shipUpdateTimer.registerTimerEvent(SHIP_UPDATE_PERIOD, true);
-        // this.shipUpdateTimer.addAction(() => this.updateShips(SHIP_UPDATE_PERIOD));
+        const spaceX = this.spaceRect.centerX;
+        const spaceY = this.spaceRect.centerY;
+
+        const ship = new Ship(this.game, ShipState.inSpace, Unit.fromHandle(
+            CreateUnit(this.game.forceModule.stationProperty.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
+        );
+        ship.engine.doCreateTrails = false;
+        ship.unit.setTimeScale(0.1);
+        this.mainShip = ship;
 
         /**
          * Also insansiate ships
@@ -105,7 +112,9 @@ export class SpaceModule {
             this.shipBays.push(bay);
 
             // Also for now create a ship to sit in the dock
-            const ship = new Ship(this.game, ShipState.inBay);
+            const ship = new Ship(this.game, ShipState.inBay, Unit.fromHandle(
+                CreateUnit(this.game.forceModule.stationProperty.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
+            );
             this.shipsForUnit.set(ship.unit, ship);
             this.ships.push(ship);
 
@@ -120,7 +129,7 @@ export class SpaceModule {
         // Hook into ship death event
         this.shipDeathEvent.addAction(() => {
             const u = Unit.fromHandle(GetDyingUnit());
-            const k = Unit.fromHandle(GetKillingUnit());
+            const k = Unit.fromHandle(GetKillingUnit() || GetDyingUnit());
 
             const matchingShip = this.shipsForUnit.get(u);
 
@@ -156,10 +165,11 @@ export class SpaceModule {
 
     onShipEntersSpace(who: Unit, ship: Ship) {
         ship.state = ShipState.inSpace;
-        const rect = Rectangle.fromHandle(gg_rct_Space);
+        // const rect = Rectangle.fromHandle(gg_rct_Space);
 
-        ship.unit.x = rect.centerX;
-        ship.unit.y = rect.centerY;
+        // Get mainship x,y
+        ship.unit.x = this.mainShip.unit.x;
+        ship.unit.y = this.mainShip.unit.y;
 
         ship.onEnterSpace();
         PanCameraToTimedForPlayer(who.owner.handle, ship.unit.x, ship.unit.y, 0);
@@ -174,19 +184,26 @@ export class SpaceModule {
      * @param whichShip 
      * @param whichTarget 
      */
-    onShipLeavesSpace(whichUnit: Unit, whichShip: Ship) {
+    onShipLeavesSpace(unit: Unit, goal: Unit) {
         try {
+            const ship = this.shipsForUnit.get(unit);
+            if (!ship) return Log.Error("No ship for unit!");
+
+            let bays: ShipBay[];
+
+            if (goal.typeId == SHIP_MAIN_ASKELLON) bays = this.shipBays;
+
             // We need to find a "free" dock
             const freeBay = this.shipBays.find(bay => bay.canDockShip());
             if (!freeBay) {
                 // Display the warning to the pilot
-                return DisplayTextToPlayer(whichUnit.owner.handle, 0, 0, `No free ship bays`);
+                return DisplayTextToPlayer(unit.owner.handle, 0, 0, `No free ship bays`);
             }
             // Now we need to dock
-            whichShip.onLeaveSpace();
-            freeBay.dockShip(this.game, whichShip, true);
-            PanCameraToTimedForPlayer(whichUnit.owner.handle, whichUnit.x, whichUnit.y, 0);
-            if (whichUnit.owner.handle === GetLocalPlayer()) {
+            ship.onLeaveSpace();
+            freeBay.dockShip(this.game, ship, true);
+            PanCameraToTimedForPlayer(unit.owner.handle, unit.x, unit.y, 0);
+            if (unit.owner.handle === GetLocalPlayer()) {
                 BlzShowTerrain(true);
             }       
         } 
@@ -205,6 +222,7 @@ export class SpaceModule {
     minY = this.spaceRect.minY;
     maxY = this.spaceRect.maxY;
     updateShips(updatePeriod: number) {
+        this.mainShip.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY);
         this.ships.forEach(ship => ship.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY));
     }
 
@@ -223,6 +241,10 @@ export class SpaceModule {
         catch(e) {
             Log.Error(e);
         }
+    }
+
+    public getShipForUnit(who: Unit) {
+        return this.shipsForUnit.get(who);
     }
 
     /**
@@ -255,12 +277,6 @@ export class SpaceModule {
             }
             else if (castAbilityId === this.shipAfterburnerAbilityId) {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
-            }
-            else if (castAbilityId === ABIL_DOCK_TEST) {
-                this.game.event.sendEvent(EVENT_TYPE.SHIP_LEAVES_SPACE, {
-                    source: u,
-                    data: { ship: ship }
-                })
             }
             else {
                 ship.engine.goToAStop();

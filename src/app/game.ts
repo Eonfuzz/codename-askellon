@@ -68,7 +68,7 @@ export class Game {
         SetMusicVolume(20);
         PlayMusic("Music\\MechanicusLostCivilization.mp3");
         SetMusicVolume(20);
-        SetSkyModel("war3mapImported\\SkyboxAnimated.mdx");
+        SetSkyModel("war3mapImported\\Skybox3rAlt.mdx");
 
         this.initUI();
 

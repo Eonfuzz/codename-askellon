@@ -33,9 +33,8 @@ export class Ship {
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
-    constructor(game: Game, state: ShipState) {
+    constructor(game: Game, state: ShipState, u: Unit) {
         this.state = state;
-        const u = Unit.fromHandle(CreateUnit(game.forceModule.stationProperty.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING));
         this.unit = u;
         this.unit.maxMana = this.maxFuel;
         this.unit.paused = true;
@@ -43,6 +42,11 @@ export class Ship {
         // Add and remove fly modifier to the unit
         this.unit.addAbility(UNIT_IS_FLY);
         this.unit.removeAbility(UNIT_IS_FLY);
+
+        // Add engine if we are in space
+        if (state === ShipState.inSpace) {
+            this.engine = new SpaceMovementEngine(this.unit.x, this.unit.y, vectorFromUnit(this.unit.handle).applyPolarOffset(this.unit.facing, 30));
+        }
     }
 
     process(game: Game, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
@@ -144,7 +148,16 @@ export class Ship {
         this.onLeaveShip(game);
 
         // Make killer damage them for 400 damage as they were inside the ship
-        allUnits.forEach(u => 
+        allUnits.forEach(u => {
+            // If we're in space we need to destoy the unit's items so they don't stop
+            if (ShipState.inSpace) {
+                for (let index = 0; index < 6; index++) {
+                    const item = u.getItemInSlot(index);
+                    if (item) {
+                        RemoveItem(item);
+                    }
+                }
+            }
             killer.damageTarget(
                 u.handle, 
                 this.state === ShipState.inSpace ? 99999 : 400,
@@ -154,7 +167,8 @@ export class Ship {
                 ATTACK_TYPE_SIEGE, 
                 DAMAGE_TYPE_FIRE, 
                 WEAPON_TYPE_WHOKNOWS
-        ));
+            )
+        });
 
         // Kill the ship
         const cX = this.unit.x;
@@ -192,6 +206,7 @@ export class Ship {
 
         // Null some data
         this.unit = undefined;
+        this.engine.destroy();
         this.engine = undefined;
     }
 }

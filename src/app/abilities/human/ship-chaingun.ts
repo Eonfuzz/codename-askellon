@@ -12,12 +12,15 @@ import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverLinear } from "app/weapons/projectile/projectile-target";
 import { WeaponModule } from "app/weapons/weapon-module";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
+import { Ship, ShipState } from "app/space/ship";
 
 /** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";
 export class ShipChaingunAbility implements Ability {
 
     private unit: Unit;
+    private shootingShip: Ship;
+
     private timeElapsed = 0;
     private timeSinceBullet = 0;
     private sound = new SoundRef("sounds\\chaingunSound.mp3", false);
@@ -25,6 +28,8 @@ export class ShipChaingunAbility implements Ability {
 
     public initialise(module: AbilityModule) {
         this.unit = Unit.fromHandle(GetTriggerUnit());
+        this.shootingShip = module.game.spaceModule.getShipForUnit(this.unit);
+        if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass += this.shootingShip.engine.velocityForwardMax / 4;
 
         this.sound.playSoundOnUnit(this.unit.handle, 127);
 
@@ -34,6 +39,9 @@ export class ShipChaingunAbility implements Ability {
     public process(module: AbilityModule, delta: number) {
         this.timeElapsed += delta;
         this.timeSinceBullet += delta;
+
+        // End if we are leaving space
+        if (this.shootingShip.state === ShipState.inBay) return false;
 
         if (this.timeElapsed >= 1 && this.timeSinceBullet >= 0.1) {
             this.timeSinceBullet -= 0.1;
@@ -74,6 +82,7 @@ export class ShipChaingunAbility implements Ability {
     };
 
     private onCollide(wepModule: WeaponModule, projectile: Projectile, withWho: unit) {
+        projectile.setDestroy(true);
         const targetUnit = Unit.fromHandle(withWho);
         wepModule.game.forceModule.aggressionBetweenTwoPlayers(this.unit.owner, targetUnit.owner);
 
@@ -95,10 +104,12 @@ export class ShipChaingunAbility implements Ability {
             DAMAGE_TYPE_NORMAL, 
             WEAPON_TYPE_WOOD_MEDIUM_STAB
         );
+        return false;
     }
 
 
     public destroy(aMod: AbilityModule) {
+        if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass -= this.shootingShip.engine.velocityForwardMax / 4;
         return true;
     };
 }

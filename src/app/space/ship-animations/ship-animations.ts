@@ -8,6 +8,7 @@ import { Vector2 } from "app/types/vector2";
 import { terrainIsPathable } from "lib/utils";
 import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { Vector3 } from "app/types/vector3";
+import { PlayNewSoundOnUnit } from "lib/translators";
 
 export abstract class ShipAnimation {
     protected totalTime: number = 0;
@@ -51,8 +52,6 @@ export abstract class ShipAnimation {
 
 export class ShipAnimationExitStationDock extends ShipAnimation {
 
-    private shipFlySound = new SoundRef("Sounds\\EngineFadeInSound1.mp3", false);
-
     private timeCounterForDustWave = 0;
 
     private movementVector = new Vector2(0, -600);
@@ -67,7 +66,8 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
          */
         if (this.totalTime == delta && !this.beganLift) {
             this.ship.unit.setTimeScale(1);
-            this.shipFlySound.playSoundOnUnit(this.ship.unit.handle, 127);
+            const sound = PlayNewSoundOnUnit("Sounds\\EngineFadeInSound1.mp3", this.ship.unit, 50);
+            // this.shipFlySound.playSoundOnUnit(this.ship.unit.handle, 127);
         }
 
         if (this.totalTime >= 0.5 && !this.beganLift) {
@@ -105,7 +105,7 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
         }
         
         if (this.totalTime > 10) {
-            this.shipFlySound.stopSound();
+            // this.shipFlySound.stopSound();
             return false;
         }
 
