@@ -81,6 +81,19 @@ export class AcidPoolAbility implements Ability {
         this.sfx = AddSpecialEffect(POOL_SFX, atWhere.x, atWhere.y);
         BlzSetSpecialEffectTimeScale(this.sfx, 0.01);
         BlzSetSpecialEffectScale(this.sfx, 1.3);
+
+        // Also pick all nearby items
+        const rect = Rect(
+            atWhere.x - POOL_AREA/2, 
+            atWhere.y - POOL_AREA/2, 
+            atWhere.x + POOL_AREA/2,
+            atWhere.y + POOL_AREA/2
+        );
+        EnumItemsInRect(rect, Filter(() => true), () => {
+            const item = GetEnumItem();
+            Log.Information("Destroying Item "+GetItemName(item));
+            RemoveItem(item);
+        });
     }
 
     public process(abMod: AbilityModule, delta: number) {
