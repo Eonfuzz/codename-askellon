@@ -2455,3 +2455,21 @@ STRING 548
 Bridge Terminal
 }
 
+STRING 549
+// Doodads: D00M (Chair), Name (Name)
+{
+Chair
+}
+
+STRING 550
+// Doodads: D00N (Carpet Long), Name (Name)
+{
+Carpet Long
+}
+
+STRING 551
+// Doodads: D00O (Carpet End), Name (Name)
+{
+Carpet End
+}
+
