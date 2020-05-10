@@ -48,6 +48,8 @@ gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = nil
 gg_trg_DEATH = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -68,6 +70,8 @@ gg_unit_h004_0046 = nil
 gg_unit_n004_0035 = nil
 gg_item_ratf_0230 = nil
 gg_unit_n001_0199 = nil
+gg_unit_n001_0051 = nil
+gg_unit_n001_0240 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
@@ -415,12 +419,12 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n002_0044 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
     gg_unit_n001_0045 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
     gg_unit_n004_0047 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26689.3, 27065.4, 89.562, FourCC("n004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -19008.0, -27904.0, 270.000, FourCC("n001"))
+    gg_unit_n001_0051 = BlzCreateUnitWithSkin(p, FourCC("n001"), -19008.0, -27904.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19712.0, -27264.0, 270.000, FourCC("n002"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19520.0, -27840.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19584.0, -27904.0, 270.000, FourCC("n002"))
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
+    gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()
@@ -465,13 +469,15 @@ function CreateRegions()
     gg_rct_FallZoneBridge = Rect(-17888.0, -28096.0, -17056.0, -27776.0)
     gg_rct_JumpPassBridgeVents = Rect(-17984.0, -28896.0, -16864.0, -28064.0)
     gg_rct_JumpBassBridge = Rect(-18016.0, -27808.0, -16896.0, -26976.0)
-    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2 = Rect(-18240.0, -27488.0, -17568.0, -26560.0)
-    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy = Rect(-19264.0, -27488.0, -18592.0, -26560.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2 = Rect(-18240.0, -27296.0, -17568.0, -26720.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy = Rect(-19264.0, -27392.0, -18592.0, -26656.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2 = Rect(-20064.0, -25024.0, -16896.0, -24192.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy = Rect(-20064.0, -25152.0, -19200.0, -24992.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy = Rect(-20000.0, -25344.0, -19424.0, -25120.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy = Rect(-17472.0, -25344.0, -16896.0, -25120.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = Rect(-17760.0, -25152.0, -16896.0, -24992.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = Rect(-19200.0, -27520.0, -18720.0, -26560.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = Rect(-18144.0, -27456.0, -17664.0, -26496.0)
 end
 
 function Trig_DEATH_Actions()
@@ -493,6 +499,8 @@ function InitTrig_DEATH()
     TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2)
     TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2)
     TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy)
     TriggerAddAction(gg_trg_DEATH, Trig_DEATH_Actions)
 end
 
@@ -501,18 +509,26 @@ function Trig_Set_Actions()
     udg_elevator_entrances[2] = gg_unit_n001_0055
     udg_elevator_entrances[3] = gg_unit_n001_0045
     udg_elevator_entrances[4] = gg_unit_n001_0199
+    udg_elevator_entrances[5] = gg_unit_n001_0240
+    udg_elevator_entrances[6] = gg_unit_n001_0051
     udg_elevator_exits[1] = gg_unit_n001_0055
     udg_elevator_exits[2] = gg_unit_n001_0032
     udg_elevator_exits[3] = gg_unit_n001_0199
     udg_elevator_exits[4] = gg_unit_n001_0045
+    udg_elevator_exits[5] = gg_unit_n001_0051
+    udg_elevator_exits[6] = gg_unit_n001_0240
     udg_elevator_entrance_names[1] = "|cffffcc00Cathederal|r"
     udg_elevator_entrance_names[2] = "|cfff5a742Floor 1|r"
     udg_elevator_entrance_names[3] = "|cffffcc00Cathederal|r"
     udg_elevator_entrance_names[4] = "|cff008080Cargo|r"
+    udg_elevator_entrance_names[5] = "|cffffff00Bridge|r"
+    udg_elevator_entrance_names[6] = "|cfff5a742Floor 1|r"
     udg_elevator_exit_zones[1] = "FLOOR_1"
     udg_elevator_exit_zones[2] = "CHURCH"
     udg_elevator_exit_zones[3] = "CARGO_A"
     udg_elevator_exit_zones[4] = "CHURCH"
+    udg_elevator_exit_zones[5] = "FLOOR_1"
+    udg_elevator_exit_zones[6] = "BRIDGE"
     udg_LIGHTS[0] = gg_dest_B002_0015
     udg_LIGHTS[1] = gg_dest_B002_0017
     udg_LIGHTS[2] = gg_dest_B002_0019

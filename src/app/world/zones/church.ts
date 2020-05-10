@@ -32,7 +32,7 @@ export class ChurchZone extends ShipZone {
         if (GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
             this.musicIsActive = true;
             // Play music
-            this.churchMusic.setVolume(15);
+            this.churchMusic.setVolume(30);
             this.churchMusic.playSound();
 
             // // Also make it darker.. for ambience

@@ -2473,3 +2473,9 @@ STRING 551
 Carpet End
 }
 
+STRING 552
+// Doodads: D00P (Terminal), Name (Name)
+{
+Terminal
+}
+
