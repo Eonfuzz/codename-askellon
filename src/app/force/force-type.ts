@@ -50,7 +50,7 @@ export abstract class ForceType {
     public addPlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer): void {
         const trig = new Trigger();
         trig.registerUnitEvent(whichUnit.unit, EVENT_UNIT_DEATH);
-        trig.addAction(() => this.removePlayerMainUnit(game, whichUnit, player, Unit.fromHandle(GetKillingUnit())));
+        trig.addAction(() => this.removePlayerMainUnit(game, whichUnit, player, Unit.fromHandle(GetKillingUnit() || GetDyingUnit())));
 
         this.playerUnits.set(player, whichUnit);
         this.playerDeathTriggers.set(player, trig);

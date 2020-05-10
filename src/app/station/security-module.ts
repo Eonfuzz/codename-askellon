@@ -181,7 +181,7 @@ export class SecurityModule {
         }
 
         // Also reward 10 XP
-        const crew = this.game.crewModule.getCrewmemberForUnit(Unit.fromHandle(GetKillingUnit()));
+        const crew = this.game.crewModule.getCrewmemberForUnit(Unit.fromHandle(GetKillingUnit() || GetDyingUnit()));
         if (crew) {
             crew.addExperience(this.game, 25);
         }

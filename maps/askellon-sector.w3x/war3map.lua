@@ -38,6 +38,16 @@ gg_rct_ShipBay02 = nil
 gg_rct_ShipBay03 = nil
 gg_rct_ShipBay04 = nil
 gg_rct_CollisionCheckZone = nil
+gg_rct_FallZoneBridge = nil
+gg_rct_JumpPassBridgeVents = nil
+gg_rct_JumpBassBridge = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2 = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2 = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy = nil
+gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = nil
 gg_trg_DEATH = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -179,6 +189,7 @@ function CreateBuildingsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("n003"), 1024.0, 896.0, 270.000, FourCC("n003"))
     gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
     gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 640.0, 768.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -17856.0, -28800.0, 270.000, FourCC("h004"))
 end
 
 function CreateUnitsForPlayer21()
@@ -365,6 +376,15 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28640.0, -27808.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28704.0, -27744.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28640.0, -27744.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -17472.0, -28736.0, 247.305, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -17216.0, -29216.0, 76.603, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -17600.0, -28768.0, 293.891, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18112.0, -28960.0, 258.650, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18272.0, -28960.0, 290.986, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18880.0, -28448.0, 90.777, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18976.0, -28448.0, 90.777, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18784.0, -28448.0, 90.777, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18688.0, -28448.0, 90.777, FourCC("h005"))
 end
 
 function CreateNeutralHostile()
@@ -395,6 +415,9 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n002_0044 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
     gg_unit_n001_0045 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
     gg_unit_n004_0047 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26689.3, 27065.4, 89.562, FourCC("n004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -19008.0, -27904.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19712.0, -27264.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19520.0, -27840.0, 270.000, FourCC("n002"))
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
 end
@@ -419,7 +442,7 @@ function CreateRegions()
     local we
     gg_rct_Space = Rect(6336.0, -30176.0, 29920.0, 1216.0)
     gg_rct_Galaxy_Map = Rect(-3520.0, 1856.0, -2656.0, 2720.0)
-    gg_rct_FallZone1 = Rect(-96.0, 1056.0, 480.0, 1248.0)
+    gg_rct_FallZone1 = Rect(-96.0, 1024.0, 480.0, 1248.0)
     gg_rct_FallZone1Land = Rect(-27488.0, 26816.0, -27168.0, 27168.0)
     gg_rct_GeneSplicer = Rect(-1792.0, 192.0, -1600.0, 384.0)
     gg_rct_FallZoneCargo = Rect(-26432.0, -27136.0, -25760.0, -26880.0)
@@ -438,6 +461,16 @@ function CreateRegions()
     gg_rct_ShipBay03 = Rect(-27040.0, -28448.0, -26848.0, -28032.0)
     gg_rct_ShipBay04 = Rect(-26144.0, -28448.0, -25952.0, -28032.0)
     gg_rct_CollisionCheckZone = Rect(416.0, 96.0, 480.0, 160.0)
+    gg_rct_FallZoneBridge = Rect(-17888.0, -28096.0, -17056.0, -27776.0)
+    gg_rct_JumpPassBridgeVents = Rect(-17984.0, -28896.0, -16864.0, -28064.0)
+    gg_rct_JumpBassBridge = Rect(-18016.0, -27808.0, -16896.0, -26976.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2 = Rect(-18240.0, -27488.0, -17568.0, -26560.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy = Rect(-19264.0, -27488.0, -18592.0, -26560.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2 = Rect(-20064.0, -25024.0, -16896.0, -24192.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy = Rect(-20064.0, -25152.0, -19200.0, -24992.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy = Rect(-20000.0, -25344.0, -19424.0, -25120.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy = Rect(-17472.0, -25344.0, -16896.0, -25120.0)
+    gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = Rect(-17760.0, -25152.0, -16896.0, -24992.0)
 end
 
 function Trig_DEATH_Actions()
@@ -452,6 +485,13 @@ function InitTrig_DEATH()
     TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy)
     TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy)
     TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2)
+    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy)
     TriggerAddAction(gg_trg_DEATH, Trig_DEATH_Actions)
 end
 

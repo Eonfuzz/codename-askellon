@@ -429,12 +429,6 @@ STRING 105
 R
 }
 
-STRING 107
-// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r. |cffffff00Resolve:|r Casting Sprint now dashes |cff00ff00330|r forwards|n|n|cff80808020 Second Cooldown|r
-}
-
 STRING 108
 {
  
@@ -2435,5 +2429,29 @@ STRING 544
 // Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 base|r damage.|n|n|cffc81e1eThe sheer amount of recoil this weapon outputs plays haywire with your ship's inertial dampeners, massively reducing acceleration.|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 545
+// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n|n|cff80808020 Second Cooldown|r
+}
+
+STRING 546
+// Doodads: D00J (Window Large), Name (Name)
+{
+Window Large
+}
+
+STRING 547
+// Doodads: D00K (Power Core), Name (Name)
+{
+Power Core
+}
+
+STRING 548
+// Doodads: D00L (Bridge Terminal), Name (Name)
+{
+Bridge Terminal
 }
 
