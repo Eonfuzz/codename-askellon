@@ -225,8 +225,12 @@ export class ChatModule {
     }
 
     getUserPrivs(who: MapPlayer): PRIVS {
+
+        Filter
+
         // Log.Information("Player attempting commands: "+GetPlayerName(who));
         if (who.name === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
+        if (who.name === 'maddeem#1693') return PRIVS.DEVELOPER;
         if (who.name === 'Local Player') return PRIVS.DEVELOPER;
         // No # means this is a local game
         if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;

@@ -16,6 +16,7 @@ export class ChurchZone extends ShipZone {
             this.musicIsActive = false;
             // Stop Play music
             this.churchMusic.stopSound();
+            SetMusicVolume(20);
             // SetDayNightModels(
             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
@@ -34,6 +35,7 @@ export class ChurchZone extends ShipZone {
             // Play music
             this.churchMusic.setVolume(30);
             this.churchMusic.playSound();
+            SetMusicVolume(5);
 
             // // Also make it darker.. for ambience
             // SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\war3mapImported\\NiteVisionModelRed.mdx");

@@ -17,6 +17,7 @@ udg_elevator_exit_zones = __jarray("")
 udg_ship_zones = {}
 udg_collision_rect = nil
 udg_collision_item = nil
+udg_pathing_rect = nil
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -50,6 +51,7 @@ gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = nil
+gg_rct_pathingRect = nil
 gg_trg_DEATH = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -425,6 +427,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n005"), -18435.9, -25586.1, 0.220, FourCC("n005"))
 end
 
 function CreatePlayerBuildings()
@@ -478,6 +481,7 @@ function CreateRegions()
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = Rect(-17760.0, -25152.0, -16896.0, -24992.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = Rect(-19200.0, -27520.0, -18720.0, -26560.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = Rect(-18144.0, -27456.0, -17664.0, -26496.0)
+    gg_rct_pathingRect = Rect(0.0, 0.0, 256.0, 256.0)
 end
 
 function Trig_DEATH_Actions()
@@ -619,6 +623,7 @@ end
 function Trig_SetCollisionData_Actions()
     udg_collision_item = gg_item_ratf_0230
     udg_collision_rect = gg_rct_CollisionCheckZone
+    udg_pathing_rect = gg_rct_pathingRect
     SetItemVisibleBJ(false, udg_collision_item)
 end
 

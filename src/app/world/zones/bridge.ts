@@ -16,7 +16,7 @@ export class BridgeZone extends ShipZone {
             this.musicIsActive = false;
             // Stop Play music
             this.operaMusic.stopSound();
-            SetMusicVolume(30);
+            SetMusicVolume(20);
             // SetDayNightModels(
             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
@@ -33,9 +33,9 @@ export class BridgeZone extends ShipZone {
         if (GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
             this.musicIsActive = true;
             // Play music
-            this.operaMusic.setVolume(100);
+            this.operaMusic.setVolume(127);
             this.operaMusic.playSound();
-            SetMusicVolume(10);
+            SetMusicVolume(5);
 
             // // Also make it darker.. for ambience
             // SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\war3mapImported\\NiteVisionModelRed.mdx");

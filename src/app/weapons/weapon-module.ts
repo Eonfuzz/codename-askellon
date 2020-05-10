@@ -21,7 +21,7 @@ import { RailRifle } from "./attachment/rail-rifle";
 import { vectorFromUnit } from "app/types/vector2";
 import { DragonfireBarrelAttachment } from "./attachment/dragonfire-barrel";
 import { EVENT_TYPE } from "app/events/event";
-
+import { getGroundBlockers } from "lib/utils";
 
 const WEAPON_UPDATE_PERIOD = 0.03;
 
@@ -79,7 +79,19 @@ export class WeaponModule {
             // If the projectile collides check to see if it hits anything
             if (projectile.doesCollide()) {
                 const nextPosition = projectile.getPosition();
-                this.checkCollisionsForProjectile(projectile, startPosition, nextPosition, delta);
+                
+                this.checkCollisionsForProjectile(
+                    projectile, 
+                    startPosition, 
+                    nextPosition, 
+                    delta,
+                    getGroundBlockers(
+                        (startPosition.x < nextPosition.x ? startPosition.x : nextPosition.x) - projectile.getCollisionRadius(), 
+                        (startPosition.y < nextPosition.y ? startPosition.y : nextPosition.y) - projectile.getCollisionRadius(), 
+                        (startPosition.x < nextPosition.x ? nextPosition.x : startPosition.x) + projectile.getCollisionRadius(), 
+                        (startPosition.y < nextPosition.y ? nextPosition.y : startPosition.y) + projectile.getCollisionRadius(),
+                    )
+                );
             }
 
             // Destroy projectile if it asks nicely
@@ -104,7 +116,7 @@ export class WeaponModule {
      * @param to 
      * @param delta 
      */
-    checkCollisionsForProjectile(projectile: Projectile, from: Vector3, to: Vector3, delta: Vector3) {
+    checkCollisionsForProjectile(projectile: Projectile, from: Vector3, to: Vector3, delta: Vector3, pbLockers: destructable[]) {
         if (!projectile.filter) return;
 
         // Clear existing group units
@@ -127,6 +139,18 @@ export class WeaponModule {
                 projectile.collide(this, unit);
             }
         });
+
+        // After all this is done, check for pathing blockers
+        if (!projectile.willDestroy()) {
+            const blocker = pbLockers.find(b => {
+                const dLoc = new Vector3( GetDestructableX(b), GetDestructableY(b), 0);
+                // Calculates the distance away from the dot product
+                const distance = dLoc.distanceToLine(from, to);
+                if (distance < (projectile.getCollisionRadius() + 32)) {
+                    projectile.setDestroy(true);
+                }
+            })
+        }
     }
 
     addProjectile(projectile: Projectile): void {

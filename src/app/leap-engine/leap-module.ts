@@ -2,7 +2,7 @@ import { Game } from "app/game";
 import { Trigger, Unit, Timer } from "w3ts";
 import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { Vector3 } from "app/types/vector3";
-import { getZFromXY } from "lib/utils";
+import { getZFromXY, getAirBlockers } from "lib/utils";
 import { TimedEvent } from "app/types/timed-event";
 import { STUN_ID } from "app/interactions/interaction-event";
 import { SoundRef } from "app/types/sound-ref";
@@ -64,11 +64,28 @@ export class LeapEntry {
             delta
         );
 
+        const uX = GetUnitX(this.unit);
+        const uY = GetUnitY(this.unit);
+
         const unitLoc = new Vector3(
-            GetUnitX(this.unit) + posDelta.x,
-            GetUnitY(this.unit) + posDelta.y,
+            uX + posDelta.x,
+            uY + posDelta.y,
             this.location.z + posDelta.z
         );
+
+        const airBlockers = getAirBlockers(
+            uX < unitLoc.x ? uX : unitLoc.x,
+            uY < unitLoc.y ? uY : unitLoc.y,
+            uX >= unitLoc.x ? uX : unitLoc.x,
+            uX >= unitLoc.y ? uY : unitLoc.y,
+        );
+        if (airBlockers.length > 0) {
+            Log.Information("Collision!");
+            unitLoc.x = uX;
+            unitLoc.y = uY;
+        }
+
+
         this.location = unitLoc;
         const terrainZ = getZFromXY(unitLoc.x, unitLoc.y);
 

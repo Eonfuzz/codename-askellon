@@ -33,7 +33,7 @@ export class SpaceMovementEngine {
     private afterburnerTimer = 0;
 
     private velocity = 0.0;
-    public velocityForwardMax = 750.0;
+    public velocityForwardMax = 550.0;
     // Only used when moving backwards
 
     // Are we moving backwards?

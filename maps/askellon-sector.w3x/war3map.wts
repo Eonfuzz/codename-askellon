@@ -2479,3 +2479,9 @@ STRING 552
 Terminal
 }
 
+STRING 553
+// Units: n005 (|cffffff00Command|r Terminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cffffff00Command|r Terminal|n|cff808080Right Click to Use|r
+}
+
