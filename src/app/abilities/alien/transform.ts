@@ -8,6 +8,7 @@ import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit } from "w3ts";
+import { Log } from "lib/serilog/serilog";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -45,6 +46,8 @@ export class TransformAbility implements Ability {
 
     public initialise(abMod: AbilityModule) {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+
+        Log.Information("Casting transform!");
 
         // Create order trigger to track last issued order
         this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_POINT_ORDER);

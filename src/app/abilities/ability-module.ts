@@ -154,7 +154,7 @@ export class AbilityModule {
         }
 
         // restart timer if it is down
-        if (instance && this.data.length === 1) {
+        if (this.data.length === 1) {
             this.abilityTimer.start(TIMEOUT, true, () => this.process(TIMEOUT));
         } 
     }
@@ -174,6 +174,11 @@ export class AbilityModule {
                 this.data.push(instance);
             }
         }
+
+        // restart timer if it is down
+        if (this.data.length === 1) {
+            this.abilityTimer.start(TIMEOUT, true, () => this.process(TIMEOUT));
+        } 
     }
 
     public trackUnitOrdersForAbilities(whichUnit: Unit) {
@@ -188,10 +193,7 @@ export class AbilityModule {
             const ability = this.data[index];
             const doDestroy = !ability.process(this, delta);
             // Destroy the ability if needed
-            if (doDestroy) {
-                ability.destroy(this);
-            }
-            else {
+            if (!doDestroy || !ability.destroy(this)) {
                 result.push(ability);
             }
         }

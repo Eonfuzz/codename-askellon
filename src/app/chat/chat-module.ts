@@ -162,6 +162,11 @@ export class ChatModule {
                     KillUnit(GetEnumUnit());
                 })
             }
+            else if (message == "-cd") {
+                EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    UnitResetCooldown(GetEnumUnit());
+                })
+            }
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
                 FogModifierStart(modifier);

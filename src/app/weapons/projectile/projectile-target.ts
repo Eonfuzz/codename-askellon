@@ -1,7 +1,7 @@
 import { Vector3 } from "../../types/vector3";
 import { Log } from "../../../lib/serilog/serilog";
 import { Vector2 } from "../../types/vector2";
-import { getZFromXY } from "lib/utils";
+import { getZFromXY, getGroundBlockers, getAirBlockers } from "lib/utils";
 
 /** @noSelfInFile **/
 
@@ -44,12 +44,16 @@ export class ProjectileTargetUnit implements ProjectileTarget {
 
 export interface ProjectileMover {
     move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3
+    getDoodadChecker(): Function;
 }
 
 export class ProjectileMoverLinear implements ProjectileMover {
     move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3 {
         let velocityVector = goal.normalise().multiplyN(velocity * delta);
         return velocityVector;
+    }
+    getDoodadChecker() {
+        return getGroundBlockers;
     }
 }
 
@@ -109,5 +113,8 @@ export class ProjectileMoverParabolic implements ProjectileMover {
             direction.y * xyDelta,
             0 + zDelta
         );
+    }
+    getDoodadChecker() {
+        return getAirBlockers;
     }
 }

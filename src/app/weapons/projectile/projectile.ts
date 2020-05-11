@@ -164,4 +164,8 @@ export class Projectile {
         this.sfx = [];
         return true;
     }
+
+    public getDoodadChecker() {
+        return this.mover.getDoodadChecker();
+    }
 }

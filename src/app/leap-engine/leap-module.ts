@@ -52,11 +52,11 @@ export class LeapEntry {
     }
 
     onFinish(cb: (entry: LeapEntry) => void) {
+        Log.Information("Calling leap callbacks");
         this.onFinishCallback = (entry) => cb(entry);
     }
 
     update(delta: number) {
-
         const posDelta = this.mover.move(
             this.mover.originalPos, 
             this.mover.originalDelta, 
@@ -80,11 +80,9 @@ export class LeapEntry {
             uX >= unitLoc.y ? uY : unitLoc.y,
         );
         if (airBlockers.length > 0) {
-            Log.Information("Collision!");
             unitLoc.x = uX;
             unitLoc.y = uY;
         }
-
 
         this.location = unitLoc;
         const terrainZ = getZFromXY(unitLoc.x, unitLoc.y);
@@ -174,7 +172,7 @@ export class LeapModule {
 
             return !doDestroy;
         });
-
+        
         if (this.instances.length === 0) {
             this.leapTrigger.pause();
         }

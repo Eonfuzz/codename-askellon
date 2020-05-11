@@ -63,12 +63,15 @@ export class ShipBay {
         this.animating = true;
         this.dockedShip.onEnterShip(forWho);
         this.animation = new ShipAnimationExitStationDock(this.dockedShip, this);
-        this.animation.onDoneCallback(() => this.shipLaunched(game, forWho));
+        this.animation.onDoneCallback(() => {
+            this.shipLaunched(game, forWho);
+        });
     }
 
     shipLaunched(game: Game, forWho: Unit) {
         const ship = this.dockedShip;
         this.animating = false;
+        this.animation = undefined;
         this.dockedShip = undefined;
 
         game.event.sendEvent(EVENT_TYPE.SHIP_ENTERS_SPACE, {
@@ -78,6 +81,7 @@ export class ShipBay {
 
     shipDocked(game: Game, whichShip: Ship) {
         this.animating = false;
+        this.animation = undefined;
         this.dockedShip = whichShip;
 
         whichShip.unit.x = this.RECT.centerX;

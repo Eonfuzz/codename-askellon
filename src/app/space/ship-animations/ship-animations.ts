@@ -36,8 +36,10 @@ export abstract class ShipAnimation {
             this.onDoneCallbacks = undefined;
             this.ship = undefined;
             this.dock = undefined;
-            this.animationTimer.destroy();
-            this.animationTimer = undefined;
+            if (this.animationTimer) {
+                this.animationTimer.destroy();
+                this.animationTimer = undefined;
+            }
         }
         catch (e) {
             Log.Error(e);
