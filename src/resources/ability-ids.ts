@@ -7,6 +7,9 @@ export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 export const ABIL_DOCK_TEST = FourCC('A00N');
 export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
 
+export const ABIL_SHIP_BARREL_ROLL_RIGHT = FourCC('A001');
+export const ABIL_SHIP_BARREL_ROLL_LEFT = FourCC('A006');
+
 export const ABIL_WEP_GRENADE = FourCC('GREN');
 export const ABIL_WEP_DIODE_EJ = FourCC('DIOJ');
 
@@ -45,7 +48,10 @@ export const GENE_INSTALL_PSIONIC_POTENCY = FourCC('AGPS');
 export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGCM');
 
 export const SMART_ORDER_ID = 851971;
-export const MOVE_ORDER_ID = 851972;
+export const MOVE_ORDER_ID = 851986;
+export const STOP_ORDER_ID = 851972;
+export const HOLD_ORDER_ID = 851993;
+
 export const UNIT_IS_FLY = FourCC('A00C');
 
 export const TECH_CREWMEMBER_ATTACK_ENABLE = FourCC('RATK');

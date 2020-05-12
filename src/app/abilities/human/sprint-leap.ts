@@ -28,7 +28,7 @@ export class SprintLeapAbility implements Ability {
         const hasUpgrade = GetPlayerTechCount(GetOwningPlayer(this.unit), TECH_UPGRADE_SPRINT_LEAP, true) > 0;
         if (!hasUpgrade) return false;
 
-        Log.Information("Movement speed: "+GetUnitMoveSpeed(this.unit));
+        // Log.Information("Movement speed: "+GetUnitMoveSpeed(this.unit));
         this.unitLastLoc = vectorFromUnit(this.unit);
 
         // Play crew effort sound
@@ -83,6 +83,6 @@ export class SprintLeapAbility implements Ability {
                 Log.Information("Post speed: "+GetUnitMoveSpeed(unit));
             });
         }
-        return false;
+        return true;
     };
 }

@@ -1,10 +1,11 @@
 /** @NoSelfInFile **/
+
 import { CrewModule } from "./crewmember/crewmember-module";
 import { WeaponModule } from "./weapons/weapon-module";
 import { TimedEventQueue } from "./types/timed-event-queue";
 import { ForceModule } from "./force/force-module";
 import { SpaceModule } from "./space/space-module";
-import { Trigger, MapPlayer } from "w3ts";
+import { Trigger, MapPlayer, Timer } from "w3ts";
 import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { GeneModule } from "./shops/gene-modules";
 import { AbilityModule } from "./abilities/ability-module";
@@ -53,7 +54,7 @@ export class Game {
      * Used for measuring Z heights
      */
     public TEMP_LOCATION = Location(0, 0);
-
+    private syncedTimer = new Timer();
 
     constructor() {
         // Load the UI
@@ -95,6 +96,7 @@ export class Game {
         this.interactionsModule = new InteractionModule(this);
         this.chatModule         = new ChatModule(this);
         this.stationSecurity    = new SecurityModule(this);
+
     }
 
     public startGame() {
@@ -126,10 +128,23 @@ export class Game {
 
             // Init crew
             this.crewModule.initCrew(this.forceModule.getForces());
+
+            this.syncedTimer.start(0.03, true, () => this.processActions());
         }
         catch (e) {
             Log.Error(e);
         }
+    }
+
+    public processActions() {
+        // try {
+            this.abilityModule.process(0.03);
+            this.weaponModule.updateProjectiles(0.03);
+            this.spaceModule.updateShips(0.03);
+        // }
+        // catch (e) {
+        //     Log.Error(e);
+        // }
     }
 
     /**

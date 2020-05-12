@@ -3,12 +3,14 @@ import { Game } from "../game";
 import { Trigger, Unit } from "w3ts";
 import { vectorFromUnit } from "../types/vector2";
 import { ProgressBar } from "../types/progress-bar";
-import { SMART_ORDER_ID } from "resources/ability-ids";
+import { SMART_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { Log } from "lib/serilog/serilog";
+import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 
 export const INTERACT_MAXIMUM_DISTANCE = 350;
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
+
 
 export class InteractionEvent {
   public unit: Unit;
@@ -42,7 +44,11 @@ export class InteractionEvent {
     this.interactionTrigger.addAction(() => {
       // Only destroy if it isn't targeting the same unit
       // Stops double click from cancelling the event
-      if (GetIssuedOrderId() != SMART_ORDER_ID  || (GetIssuedOrderId() === SMART_ORDER_ID && GetOrderTargetUnit() != this.targetUnit.handle)) {
+      const o = GetIssuedOrderId();
+      // Ignore this if trigger unit is ship and stop is issued
+      if (o === HOLD_ORDER_ID) return;
+
+      if (o != SMART_ORDER_ID  || (o === SMART_ORDER_ID && GetOrderTargetUnit() != this.targetUnit.handle)) {
         this.destroy();
       }
     });

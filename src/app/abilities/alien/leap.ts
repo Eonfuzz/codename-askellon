@@ -101,8 +101,8 @@ export class LeapAbility implements Ability {
         abMod.game.leapModule.newLeap(
             this.casterUnit,
             targetLoc,
-            45,
-            4
+            55,
+            5
         ).onFinish((leapEntry) => {
             let caster = this.casterUnit;
             this.leapExpired = true;

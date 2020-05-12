@@ -58,6 +58,6 @@ export class EmotionalDampenerAbility implements Ability {
     };
 
     public destroy(aMod: AbilityModule) {
-        return false;
+        return true;
     };
 }

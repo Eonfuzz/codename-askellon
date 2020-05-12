@@ -9,26 +9,8 @@ STRING 3
 Wraith
 }
 
-STRING 6
-// Abilities: A001 (Increase Speed W), Ubertip (Tooltip - Normal - Extended)
-{
-Increases Ship Speed
-}
-
-STRING 7
-// Abilities: A001 (Increase Speed W), Tip (Tooltip - Normal)
-{
-W - Increase Speed
-}
-
-STRING 8
-// Abilities: A001 (Increase Speed W), Name (Name)
-{
-Increase Speed W
-}
-
 STRING 9
-// Abilities: A001 (Increase Speed W), Hotkey (Hotkey - Normal)
+// Abilities: A000 (Afterburner), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -231,30 +213,6 @@ STRING 53
 Forest Tree
 }
 
-STRING 59
-// Abilities: A006 (Stop Ship), Name (Name)
-{
-Stop Ship
-}
-
-STRING 61
-// Abilities: A006 (Stop Ship), Ubertip (Tooltip - Normal - Extended)
-{
-Stops ship movement
-}
-
-STRING 62
-// Abilities: A006 (Stop Ship), Tip (Tooltip - Normal)
-{
-X - Stop Ship
-}
-
-STRING 64
-// Abilities: A006 (Stop Ship), Hotkey (Hotkey - Normal)
-{
-X
-}
-
 STRING 65
 // Units: h002 (Asteroid), Name (Name)
 {
@@ -424,7 +382,7 @@ STRING 104
 }
 
 STRING 105
-// Abilities: A000 (Afterburner), Hotkey (Hotkey - Normal)
+// Abilities: A009 (High Quality Polymer), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -1414,7 +1372,7 @@ STRING 312
 }
 
 STRING 313
-// Abilities: A009 (High Quality Polymer), Hotkey (Hotkey - Normal)
+// Abilities: A00O (Auto-cannon), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -1657,12 +1615,6 @@ STRING 372
 // Abilities: AGPS (Unlock Psionic Potential), Hotkey (Hotkey - Normal)
 {
 E
-}
-
-STRING 373
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
 }
 
 STRING 374
@@ -2297,12 +2249,6 @@ STRING 518
 Korhal Wall Large
 }
 
-STRING 519
-// Units: h006 (Voyager|n|cff808080Right Click to Enter|r), Name (Name)
-{
-Voyager|n|cff808080Right Click to Enter|r
-}
-
 STRING 520
 // Abilities: A00N (Dock), Name (Name)
 {
@@ -2354,12 +2300,6 @@ STRING 529
 Engage Afterburners
 }
 
-STRING 530
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
-{
-R
-}
-
 STRING 531
 // Abilities: A00O (Auto-cannon), Name (Name)
 {
@@ -2367,15 +2307,9 @@ Auto-cannon
 }
 
 STRING 532
-// Abilities: A00O (Auto-cannon), Hotkey (Hotkey - Normal)
+// Abilities: A006 (Dodge Roll Right), Hotkey (Hotkey - Normal)
 {
 E
-}
-
-STRING 534
-// Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
-{
-Fire Autocannon
 }
 
 STRING 537
@@ -2413,22 +2347,10 @@ Self amplifying rifle that increases in damage with each successive hit.
 |cffc81e1eFracture Round|r|cffffcc00 Cannot be removed.|r
 }
 
-STRING 542
-// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Voyager's patented Hex Pattern "Riot" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19Hex corp stipulates that any damages incurred while using Riot Boosters can not be claimed under insurance.|r |n|n|cff80808080 Seconds Cooldown|r
-}
-
 STRING 543
 // Units: h003 (Askellon), Name (Name)
 {
 Askellon
-}
-
-STRING 544
-// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 base|r damage.|n|n|cffc81e1eThe sheer amount of recoil this weapon outputs plays haywire with your ship's inertial dampeners, massively reducing acceleration.|r|n|n|cff80808010 Seconds Cooldown|r
 }
 
 STRING 545
@@ -2483,5 +2405,83 @@ STRING 553
 // Units: n005 (|cffffff00Command|r Terminal|n|cff808080Right Click to Use|r), Name (Name)
 {
 |cffffff00Command|r Terminal|n|cff808080Right Click to Use|r
+}
+
+STRING 554
+// Abilities: A001 (Dodge Roll Left), Name (Name)
+{
+Dodge Roll Left
+}
+
+STRING 555
+// Abilities: A001 (Dodge Roll Left), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 557
+// Abilities: A001 (Dodge Roll Left), Tip (Tooltip - Normal)
+{
+Dodge Roll Left
+}
+
+STRING 558
+// Abilities: A006 (Dodge Roll Right), Name (Name)
+{
+Dodge Roll Right
+}
+
+STRING 561
+// Abilities: A006 (Dodge Roll Right), Tip (Tooltip - Normal)
+{
+Dodge Roll Right
+}
+
+STRING 562
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 563
+// Units: h006 (Perseus), Name (Name)
+{
+Perseus
+}
+
+STRING 566
+// Abilities: A001 (Dodge Roll Left), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080TODO.|r|n|nPerforms a barrel roll to the left.|n|n|cff80808015 Seconds Cooldown|r
+}
+
+STRING 567
+// Abilities: A006 (Dodge Roll Right), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080TODO.|r|n|nPerforms a barrel roll to the right.|n|n|cff80808015 Seconds Cooldown|r
+}
+
+STRING 569
+// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Perseus's patented Hex Pattern "Zeus" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19"In response to pilot requests for improved mobility options in high-pressure situations, we at Hexcorp has refitted our entire Purseus fleet with Afterburner technology. Hexcorp would like to remind you that the cost of any fuel consumed by Afterburner usage will be deducted from the pilot's next salary."|r |n|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 570
+// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 base|r damage. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 571
+// Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 572
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
 }
 

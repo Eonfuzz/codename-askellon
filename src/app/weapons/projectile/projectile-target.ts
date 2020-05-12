@@ -44,7 +44,7 @@ export class ProjectileTargetUnit implements ProjectileTarget {
 
 export interface ProjectileMover {
     move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3
-    getDoodadChecker(): Function;
+    getDoodadChecker(): (minX: number, minY: number, maxX: number, maxY: number) => destructable[];
 }
 
 export class ProjectileMoverLinear implements ProjectileMover {

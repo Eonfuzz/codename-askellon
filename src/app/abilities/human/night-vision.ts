@@ -47,6 +47,6 @@ export class NightVisionAbility implements Ability {
                 z.onEnter(aMod.game.worldModule, this.unit);
             }
         }
-        return false;
+        return true;
     };
 }

@@ -19,6 +19,8 @@ declare const udg_fall_result_zone_names: string[];
 declare const udg_jump_pass_zones: rect[];
 declare const udg_jump_pass_zones_name: string[];
 
+declare const udg_killzones: rect[];
+
 export const LEAP_INTERVAL = 0.03;
 export class LeapEntry {
     unit: unit;
@@ -52,7 +54,7 @@ export class LeapEntry {
     }
 
     onFinish(cb: (entry: LeapEntry) => void) {
-        Log.Information("Calling leap callbacks");
+        // Log.Information("Calling leap callbacks");
         this.onFinishCallback = (entry) => cb(entry);
     }
 
@@ -155,6 +157,13 @@ export class LeapModule {
                 // Now get unit xyz
                 const unitLoc = i.location;
                 const insideRectIndex = this.findInsideRect(udg_fall_points, unitLoc);
+                const insideKillZone = this.findInsideRect(udg_killzones, unitLoc);
+
+                if (insideKillZone) {
+                    KillUnit(i.unit);
+                    return false;
+                }
+
                 // If we are inside a fall rect...
                 // FALL!
                 if (insideRectIndex) {

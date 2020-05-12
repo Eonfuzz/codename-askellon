@@ -6,7 +6,7 @@ import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC, ABIL_SHIP_CHAINGUN } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC, ABIL_SHIP_CHAINGUN, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
 import { SprintLeapAbility } from "./human/sprint-leap";
 import { NightVisionAbility } from "./human/night-vision";
@@ -19,6 +19,7 @@ import { EmotionalDampenerAbility } from "./human/emotional-dampener";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
 import { ShipChaingunAbility } from "./human/ship-chaingun";
+import { ShipBarrelRoll } from "./human/ship-barrel-roll";
 
 
 const TIMEOUT = 0.03;
@@ -33,16 +34,12 @@ export class AbilityModule {
 
     private triggerAbilityCast: Trigger;
     private unitIssuedCommand: Trigger;
-    
-
-    private abilityTimer: Timer;
 
     constructor(game: Game) {
         this.game = game;
 
         this.data = [];
 
-        this.abilityTimer = new Timer();
         // this.triggerIterator = new Trigger();
         // this.triggerIterator.registerTimerEvent(TIMEOUT, true);
         // this.triggerIterator.addAction(() => this.process(TIMEOUT));
@@ -144,6 +141,13 @@ export class AbilityModule {
                     this.data.push(instance);
                 }
                 break;
+            case ABIL_SHIP_BARREL_ROLL_LEFT:
+            case ABIL_SHIP_BARREL_ROLL_RIGHT:
+                instance = new ShipBarrelRoll();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
             case ABIL_TRANSFORM_HUMAN_ALIEN:
             case ABIL_TRANSFORM_ALIEN_HUMAN:
                 instance = new TransformAbility(id === ABIL_TRANSFORM_HUMAN_ALIEN);
@@ -152,11 +156,6 @@ export class AbilityModule {
                 }
                 break;
         }
-
-        // restart timer if it is down
-        if (this.data.length === 1) {
-            this.abilityTimer.start(TIMEOUT, true, () => this.process(TIMEOUT));
-        } 
     }
 
     /**
@@ -167,18 +166,15 @@ export class AbilityModule {
         const triggerUnit = GetTriggerUnit();
         const orderId = GetIssuedOrderId();
 
-        // Leap ability
-        if (orderId == SMART_ORDER_ID && GetUnitAbilityLevel(triggerUnit, FourCC('LEAP')) >= 1) {
-            const instance = new LeapAbility();
-            if (instance.initialise(this)) {
-                this.data.push(instance);
-            }
-        }
+        // // Leap ability
+        // if (orderId == SMART_ORDER_ID && GetUnitAbilityLevel(triggerUnit, FourCC('LEAP')) >= 1) {
+        //     const instance = new LeapAbility();
+        //     if (instance.initialise(this)) {
+        //         this.data.push(instance);
+        //     }
+        // }
 
         // restart timer if it is down
-        if (this.data.length === 1) {
-            this.abilityTimer.start(TIMEOUT, true, () => this.process(TIMEOUT));
-        } 
     }
 
     public trackUnitOrdersForAbilities(whichUnit: Unit) {
@@ -198,11 +194,6 @@ export class AbilityModule {
             }
         }
         this.data = result;
-
-        // If we have no data left pause the timer
-        if (this.data.length === 0) {
-            this.abilityTimer.pause();
-        }
     }
 
 }

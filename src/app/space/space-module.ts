@@ -9,7 +9,7 @@ import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { Ship, ShipState } from "./ship";
-import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID } from "resources/ability-ids";
+import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 
 // For ship bay instansiation
@@ -85,15 +85,11 @@ export class SpaceModule {
     /**
      * Registers are repeating timer that updates projectiles
      */
-    shipUpdateTimer = new Timer();
     shipDeathEvent = new Trigger();
     shipMoveEvent = new Trigger();
     initShips() {
         const SHIP_UPDATE_PERIOD = 0.03
 
-        // Start gene check trigger
-        this.shipUpdateTimer.start(SHIP_UPDATE_PERIOD, true, () => this.updateShips(SHIP_UPDATE_PERIOD));
-        
         const spaceX = this.spaceRect.centerX;
         const spaceY = this.spaceRect.centerY;
 
@@ -150,15 +146,23 @@ export class SpaceModule {
 
             const isSmart = order === SMART_ORDER_ID;
             const isMove = order === MOVE_ORDER_ID;
+            const isStop = order === STOP_ORDER_ID;
+            const isHold = order === HOLD_ORDER_ID;
 
-            if (!isSmart && !isMove) return;
-            let targetLoc;
-
-            if (GetOrderTargetUnit()) targetLoc = new Vector2(GetUnitX(GetOrderTargetUnit()), GetUnitY(GetOrderTargetUnit()));
-            else targetLoc = new Vector2(GetOrderPointX(), GetOrderPointY());
+            if (!isSmart && !isMove && !isStop && !isHold) return;
 
             const u = Unit.fromHandle(GetOrderedUnit());
             const ship = this.shipsForUnit.get(u);
+
+            let targetLoc;
+
+            // If we are stopping, just get ship to stop
+            if (isStop || isHold) {
+                return ship.engine.goToAStop();
+            }
+            if (GetOrderTargetUnit()) targetLoc = new Vector2(GetUnitX(GetOrderTargetUnit()), GetUnitY(GetOrderTargetUnit()));
+            else targetLoc = new Vector2(GetOrderPointX(), GetOrderPointY());
+
             ship.onMoveOrder(targetLoc);
         })
     }
@@ -251,15 +255,11 @@ export class SpaceModule {
      * Ship abilities
      */
     private shipAbilityTrigger      = new Trigger();
-    private shipAccelAbilityId      = FourCC('A001');
     private shipAfterburnerAbilityId    = FourCC('A000');
-    private shipStopAbilityId       = FourCC('A006');
     initShipAbilities() {
         this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
         this.shipAbilityTrigger.addCondition(Condition(() =>
-            GetSpellAbilityId() === this.shipAccelAbilityId     ||
             GetSpellAbilityId() === this.shipAfterburnerAbilityId   ||
-            GetSpellAbilityId() === this.shipStopAbilityId      ||
             GetSpellAbilityId() === ABIL_DOCK_TEST
         ));
 
@@ -272,14 +272,8 @@ export class SpaceModule {
             let ship = this.shipsForUnit.get(u);
 
             if (!ship) Log.Error("Ship casting movement but no ship?!");
-            else if (castAbilityId === this.shipAccelAbilityId) {
-                ship.engine.increaseVelocity();
-            }
             else if (castAbilityId === this.shipAfterburnerAbilityId) {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
-            }
-            else {
-                ship.engine.goToAStop();
             }
         })
     }

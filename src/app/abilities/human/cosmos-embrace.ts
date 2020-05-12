@@ -126,6 +126,6 @@ export class EmbraceCosmosAbility implements Ability {
     public destroy(aMod: AbilityModule) {
         // Log.Information("Destroy");
         this.soundEffect.stopSound();
-        return false;
+        return true;
     };
 }

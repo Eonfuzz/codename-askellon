@@ -34,14 +34,14 @@ export class EmsRifling extends Attachment {
     };
 
     public onEquip(weapon: Gun, crewmember: Crewmember) {
-        Log.Information("Re-equiping gun with hqp attachment");
+        // Log.Information("Re-equiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
             UnitAddAbility(weapon.equippedTo.unit.handle, EMS_RIFLING_ABILITY_ID);
         }
     }
 
     public onUnequip(weapon: Gun, crewmember: Crewmember) {
-        Log.Information("Unequiping gun with hqp attachment");
+        // Log.Information("Unequiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
             UnitRemoveAbility(weapon.equippedTo.unit.handle, EMS_RIFLING_ABILITY_ID);
         }

@@ -1,3 +1,5 @@
+/** @noSelfInFile **/
+
 import { Vector2 } from "app/types/vector2";
 import { Rectangle, Item, Trigger, MapPlayer } from "w3ts/index";
 import { Log } from "./serilog/serilog";

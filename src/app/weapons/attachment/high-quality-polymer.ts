@@ -37,14 +37,14 @@ export class HighQualityPolymer extends Attachment {
     };
 
     public onEquip(weapon: Gun, crewmember: Crewmember) {
-        Log.Information("Re-equiping gun with hqp attachment");
+        // Log.Information("Re-equiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
             UnitAddAbility(weapon.equippedTo.unit.handle, HIGH_QUALITY_POLYMER_ABILITY_ID);
         }
     }
 
     public onUnequip(weapon: Gun, crewmember: Crewmember) {
-        Log.Information("Unequiping gun with hqp attachment");
+        // Log.Information("Unequiping gun with hqp attachment");
         if (weapon &&  weapon.equippedTo) {
             UnitRemoveAbility(weapon.equippedTo.unit.handle, HIGH_QUALITY_POLYMER_ABILITY_ID);
         }

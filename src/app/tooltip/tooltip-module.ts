@@ -43,7 +43,7 @@ export class TooltipModule {
      * Updates all tooltips
      */
     updateAllTooltip(data: EventData) {
-        Log.Information("Updating all tooltips");
+        // Log.Information("Updating all tooltips");
         this.tooltips.forEach((tooltips, u) => {
             tooltips.forEach(t => t.update(u, data));
         });
@@ -57,7 +57,7 @@ export class TooltipModule {
         const unitTooltips = data.source ? this.tooltips.get(data.source) : undefined;
         const crewTooltips = data.crewmember ? this.tooltips.get(data.crewmember) : undefined;
 
-        Log.Information("Updating a tooltip for unit");
+        // Log.Information("Updating a tooltip for unit");
         // Now go through and update them
         if (unitTooltips) unitTooltips.forEach(t => t.update(data.source, data));
         if (crewTooltips) crewTooltips.forEach(t => t.update(data.crewmember, data));

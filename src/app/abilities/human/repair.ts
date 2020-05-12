@@ -68,6 +68,6 @@ export class ItemRepairAbility implements Ability {
     public destroy(aMod: AbilityModule) { 
         this.targetUnit.setVertexColor(255, 255, 255, 255);
         this.unit.setVertexColor(255, 255 , 255, 255);
-        return false;
+        return true;
     };
 }

@@ -47,7 +47,7 @@ export class TransformAbility implements Ability {
     public initialise(abMod: AbilityModule) {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
-        Log.Information("Casting transform!");
+        // Log.Information("Casting transform!");
 
         // Create order trigger to track last issued order
         this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
@@ -56,7 +56,7 @@ export class TransformAbility implements Ability {
         this.orderTrigger.addAction(() => {
             this.previousOrder = GetIssuedOrderId();
             this.previousOrderTarget = new Vector2(GetOrderPointX(), GetOrderPointY());
-        })
+        });
         return true;
     };
 

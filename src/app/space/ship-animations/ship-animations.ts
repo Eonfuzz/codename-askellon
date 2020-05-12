@@ -175,13 +175,6 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
     public process(delta: number) {
         this.totalTime += delta;
 
-        /**
-         * We're doing the first phase of animations
-         */
-        if (this.totalTime == delta) {
-            Log.Information(`loc.x = ${this.ship.unit.x} loc.y = ${this.ship.unit.y}`);
-        }
-
         this.moveShip(delta);
 
         PanCameraToTimedForPlayer(this.ship.unit.owner.handle, this.ship.unit.x, this.ship.unit.y, 0);

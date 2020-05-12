@@ -18,6 +18,7 @@ udg_ship_zones = {}
 udg_collision_rect = nil
 udg_collision_item = nil
 udg_pathing_rect = nil
+udg_killzones = {}
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -52,7 +53,7 @@ gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = nil
 gg_rct_pathingRect = nil
-gg_trg_DEATH = nil
+gg_trg_SetKillzones = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
 gg_trg_SetFall = nil
@@ -388,9 +389,10 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18112.0, -28960.0, 258.650, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18272.0, -28960.0, 290.986, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18880.0, -28448.0, 90.777, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18976.0, -28448.0, 90.777, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -17568.0, -25888.0, 90.777, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18784.0, -28448.0, 90.777, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18688.0, -28448.0, 90.777, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19296.0, -25888.0, 90.777, FourCC("h005"))
 end
 
 function CreateNeutralHostile()
@@ -484,28 +486,27 @@ function CreateRegions()
     gg_rct_pathingRect = Rect(0.0, 0.0, 256.0, 256.0)
 end
 
-function Trig_DEATH_Actions()
-    KillUnit(GetTriggerUnit())
+function Trig_SetKillzones_Actions()
+    udg_killzones[1] = gg_rct_Kill_Zone
+    udg_killzones[2] = gg_rct_Kill_Zone_Copy
+    udg_killzones[3] = gg_rct_Kill_Zone_Copy_Copy_Copy_2
+    udg_killzones[4] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy
+    udg_killzones[5] = gg_rct_Kill_Zone_Copy_Copy
+    udg_killzones[6] = gg_rct_Kill_Zone_Copy_Copy_Copy
+    udg_killzones[7] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy
+    udg_killzones[8] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy
+    udg_killzones[9] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2
+    udg_killzones[10] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy
+    udg_killzones[11] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2
+    udg_killzones[12] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2
+    udg_killzones[13] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy
+    udg_killzones[14] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy
+    udg_killzones[15] = gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy
 end
 
-function InitTrig_DEATH()
-    gg_trg_DEATH = CreateTrigger()
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_2)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy)
-    TriggerRegisterEnterRectSimple(gg_trg_DEATH, gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy)
-    TriggerAddAction(gg_trg_DEATH, Trig_DEATH_Actions)
+function InitTrig_SetKillzones()
+    gg_trg_SetKillzones = CreateTrigger()
+    TriggerAddAction(gg_trg_SetKillzones, Trig_SetKillzones_Actions)
 end
 
 function Trig_Set_Actions()
@@ -633,7 +634,7 @@ function InitTrig_SetCollisionData()
 end
 
 function InitCustomTriggers()
-    InitTrig_DEATH()
+    InitTrig_SetKillzones()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()
@@ -643,6 +644,7 @@ function InitCustomTriggers()
 end
 
 function RunInitializationTriggers()
+    ConditionalTriggerExecute(gg_trg_SetKillzones)
     ConditionalTriggerExecute(gg_trg_Set)
     ConditionalTriggerExecute(gg_trg_SetHatch)
     ConditionalTriggerExecute(gg_trg_SetFall)

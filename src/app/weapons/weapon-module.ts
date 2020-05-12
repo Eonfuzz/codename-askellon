@@ -2,8 +2,6 @@
 
 import { Projectile } from "./projectile/projectile";
 import { Vector3 } from "../types/vector3";
-import { ProjectileTargetStatic } from "./projectile/projectile-target";
-import { ProjectileSFX } from "./projectile/projectile-sfx";
 import { Gun } from "./guns/gun";
 import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
@@ -21,7 +19,6 @@ import { RailRifle } from "./attachment/rail-rifle";
 import { vectorFromUnit } from "app/types/vector2";
 import { DragonfireBarrelAttachment } from "./attachment/dragonfire-barrel";
 import { EVENT_TYPE } from "app/events/event";
-import { getGroundBlockers } from "lib/utils";
 
 const WEAPON_UPDATE_PERIOD = 0.03;
 
@@ -58,10 +55,6 @@ export class WeaponModule {
         this.initialiseWeaponDropPickup();
     }
 
-    /**
-     * Registers are repeating timer that updates projectiles
-     */
-    projectileUpdateTimer = new Timer();
 
     /**
      * Loops through and updates all projectiles
@@ -80,12 +73,13 @@ export class WeaponModule {
             if (projectile.doesCollide()) {
                 const nextPosition = projectile.getPosition();
                 
+                const checker = projectile.getDoodadChecker();
                 this.checkCollisionsForProjectile(
                     projectile, 
                     startPosition, 
                     nextPosition, 
                     delta,
-                    getGroundBlockers(
+                    checker(
                         (startPosition.x < nextPosition.x ? startPosition.x : nextPosition.x) - projectile.getCollisionRadius(), 
                         (startPosition.y < nextPosition.y ? startPosition.y : nextPosition.y) - projectile.getCollisionRadius(), 
                         (startPosition.x < nextPosition.x ? nextPosition.x : startPosition.x) + projectile.getCollisionRadius(), 
@@ -98,10 +92,6 @@ export class WeaponModule {
             if (!(projectile.willDestroy() && projectile.destroy(this))) result.push(projectile);
         }
         this.projectiles = result;
-
-        if (this.projectiles.length === 0) {
-            this.projectileUpdateTimer.pause();
-        }
     }
 
     /**
@@ -156,11 +146,6 @@ export class WeaponModule {
     addProjectile(projectile: Projectile): void {
         projectile.setId(this.projectileIdCounter);
         this.projectiles.push(projectile);
-
-        // IF we just added our first projectile we need to start the timer
-        if (this.projectiles.length === 1) {
-            this.projectileUpdateTimer.start(WEAPON_UPDATE_PERIOD, true, () => this.updateProjectiles(WEAPON_UPDATE_PERIOD));
-        }
     }
     
     getGunForItem(item: item): Gun | void {

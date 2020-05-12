@@ -53,6 +53,6 @@ export class PsionicEyeAbility implements Ability {
     };
 
     public destroy(aMod: AbilityModule) {
-        return false;
+        return true;
     };
 }
