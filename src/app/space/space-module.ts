@@ -88,8 +88,6 @@ export class SpaceModule {
     shipDeathEvent = new Trigger();
     shipMoveEvent = new Trigger();
     initShips() {
-        const SHIP_UPDATE_PERIOD = 0.03
-
         const spaceX = this.spaceRect.centerX;
         const spaceY = this.spaceRect.centerY;
 
@@ -174,6 +172,7 @@ export class SpaceModule {
         // Get mainship x,y
         ship.unit.x = this.mainShip.unit.x;
         ship.unit.y = this.mainShip.unit.y;
+        who.setTimeScale(0.1);
 
         ship.onEnterSpace();
         PanCameraToTimedForPlayer(who.owner.handle, ship.unit.x, ship.unit.y, 0);
@@ -226,7 +225,7 @@ export class SpaceModule {
     minY = this.spaceRect.minY;
     maxY = this.spaceRect.maxY;
     updateShips(updatePeriod: number) {
-        this.mainShip.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY);
+        // this.mainShip.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY);
         this.ships.forEach(ship => ship.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY));
     }
 

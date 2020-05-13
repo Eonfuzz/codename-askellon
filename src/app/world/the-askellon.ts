@@ -15,7 +15,7 @@ import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { MapPlayer } from "w3ts";
 import { ChurchZone } from "./zones/church";
-import { BridgeZone } from "./zones/bridge";
+import { BridgeZone, BridgeZoneVent } from "./zones/bridge";
 
 // Small damage
 // Will not cause damage to interior
@@ -30,6 +30,10 @@ const MODREATE_DAMAGE_THRESHOLD = 900;
 // Will cause damage to interior and other ship systems
 const EXTREME_DAMAGE_THRESHOLD = 1800;
 
+declare const udg_Lights_Floor_1: destructable[];
+declare const udg_Lights_Cargo: destructable[];
+declare const udg_Lights_Bridge: destructable[];
+
 export class TheAskellon {
     
     powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false);
@@ -43,23 +47,15 @@ export class TheAskellon {
     constructor(world: WorldModule) {
         this.world = world;
 
-        this.floors.set(ZONE_TYPE.FLOOR_1, new ShipZone(world.game, ZONE_TYPE.FLOOR_1));
+        this.floors.set(ZONE_TYPE.FLOOR_1, new ShipZone(world.game, ZONE_TYPE.FLOOR_1, udg_Lights_Floor_1));
         this.floors.set(ZONE_TYPE.FLOOR_2, new ShipZone(world.game, ZONE_TYPE.FLOOR_2));
-        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(world.game, ZONE_TYPE.CARGO_A));
+        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(world.game, ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
         this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(world.game, ZONE_TYPE.CARGO_A_VENT));
         this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(world.game, ZONE_TYPE.SERVICE_TUNNELS));
-        this.floors.set(ZONE_TYPE.BRIDGE, new BridgeZone(world.game, ZONE_TYPE.BRIDGE));
+        this.floors.set(ZONE_TYPE.BRIDGE, new BridgeZone(world.game, ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
+        this.floors.set(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(world.game, ZONE_TYPE.BRIDGE_VENT));
         this.floors.set(ZONE_TYPE.CHURCH, new ChurchZone(world.game, ZONE_TYPE.CHURCH));
 
-        // Now apply lights to the zones
-        const z1 = this.floors.get(ZONE_TYPE.FLOOR_1);
-        if (z1) {
-            z1.lightSources.push(gg_dest_B002_0015);
-            z1.lightSources.push(gg_dest_B002_0017);
-            z1.lightSources.push(gg_dest_B002_0019);
-            z1.lightSources.push(gg_dest_B002_0022);
-        }
-        
         // Now apply lights to the zones
         const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
         if (SERVICE_TUNNELS) {
@@ -70,6 +66,11 @@ export class TheAskellon {
         if (CARGO_A_VENT) {
             CARGO_A_VENT.updatePower(false);
             CARGO_A_VENT.alwaysCauseFear = true;
+        }
+        const BRIDGE_VENT = this.floors.get(ZONE_TYPE.CARGO_A_VENT);
+        if (BRIDGE_VENT) {
+            BRIDGE_VENT.updatePower(false);
+            BRIDGE_VENT.alwaysCauseFear = true;
         }
     }
 

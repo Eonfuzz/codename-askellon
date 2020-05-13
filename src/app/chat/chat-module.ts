@@ -159,7 +159,8 @@ export class ChatModule {
             }
             else if (message == "-kill") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    KillUnit(GetEnumUnit());
+                    // KillUnit(GetEnumUnit());
+                    UnitDamageTarget(GetEnumUnit(), GetEnumUnit(), 9999999, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS);
                 })
             }
             else if (message == "-cd") {

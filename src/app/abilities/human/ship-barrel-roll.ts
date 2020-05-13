@@ -26,7 +26,10 @@ export class ShipBarrelRoll implements Ability {
     private isRollRight: boolean = false;
     private shipMaxSpeed: number;
     private movementVector: Vector2;
-    private rollDuration: number = 0.5;
+    private rollDuration: number = 0.25;
+    private rollSlowDown: number = 0.5;
+    private rollDistance: number = 200;
+    private rollLength: number;
 
     constructor() {}
 
@@ -36,11 +39,12 @@ export class ShipBarrelRoll implements Ability {
 
         this.isRollRight = GetSpellAbilityId() === ABIL_SHIP_BARREL_ROLL_RIGHT;
 
+        this.rollLength = this.rollDistance/this.rollDuration;
 
         this.shipMaxSpeed = this.ship.engine.velocityForwardMax;
         this.movementVector = new Vector2(0, 0).applyPolarOffset(
             this.ship.unit.facing + (this.isRollRight ? 90 : - 90),
-            600/this.rollDuration
+            this.rollLength
         );
         return true;
     }
@@ -53,13 +57,24 @@ export class ShipBarrelRoll implements Ability {
         const pos = this.ship.engine.getPosition().add(this.movementVector.multiplyN(delta));
         this.ship.engine.setPosition(pos);
 
-        // this.ship.unit.setField(UNIT_RF_MAXIMUM_PITCH_ANGLE_DEGREES, -90);
+        let angle;
+        if (this.isRollRight) 
+            angle = -360 * (this.timeElapsed / this.rollDuration);
+        else
+            angle = -360 + 360 * (this.timeElapsed / this.rollDuration);
+        this.ship.unit.setField(UNIT_RF_MAXIMUM_PITCH_ANGLE_DEGREES, angle);
 
-        return this.timeElapsed <= this.rollDuration;
+        if (this.timeElapsed >= this.rollDuration) {
+            let nTime = this.timeElapsed - this.rollDuration;
+
+            this.movementVector = this.movementVector.setLengthN(this.rollLength - this.rollLength * (nTime / this.rollSlowDown));
+        }
+
+        return this.timeElapsed <= (this.rollDuration + this.rollSlowDown);
     }
 
     public destroy(aMod: AbilityModule) {
-        // this.ship.unit.setField(UNIT_RF_MAXIMUM_PITCH_ANGLE_DEGREES, 45);
+        this.ship.unit.setField(UNIT_RF_MAXIMUM_PITCH_ANGLE_DEGREES, 45);
         return true;
     }
 }

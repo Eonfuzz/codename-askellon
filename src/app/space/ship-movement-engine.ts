@@ -3,7 +3,7 @@ import { Vector2 } from "../types/vector2";
 import { Unit, Effect, Timer, MapPlayer } from "w3ts/index";
 import { SMOKE_TRAIL_SFX } from "resources/sfx-paths";
 import { Log } from "lib/serilog/serilog";
-import { fastPointInterp } from "lib/utils";
+import { fastPointInterp, normaliseAngle } from "lib/utils";
 import { SoundRef } from "app/types/sound-ref";
 
 interface ShipChemTrail {
@@ -12,7 +12,7 @@ interface ShipChemTrail {
 }
 
 const afterburnerSound = new SoundRef("Sounds\\AfterburnerSound.mp3", false);
-const CHEM_TRAIL_LIFETIME = 1;
+const CHEM_TRAIL_LIFETIME = 2;
 
 export class SpaceMovementEngine {
 
@@ -34,6 +34,8 @@ export class SpaceMovementEngine {
 
     private velocity = 0.0;
     public velocityForwardMax = 550.0;
+
+    public maxTurningArc = 60;
     // Only used when moving backwards
 
     // Are we moving backwards?
@@ -42,7 +44,8 @@ export class SpaceMovementEngine {
     private isGoingToStop = false;
 
     private facingAngleLastIteration = 0;
-    private goal: Vector2 = new Vector2(0, 0);
+    private goal: Vector2;
+    private angleToGoal: number;
 
     private chemTrails: ShipChemTrail[] = [];
     public doCreateTrails = true;
@@ -52,7 +55,7 @@ export class SpaceMovementEngine {
         this.momentum   = new Vector2(0, 0);
         this.thrust     = new Vector2(0, 0);
 
-        this.goal = initialGoal;
+        this.setGoal(initialGoal);
     }
 
     public updateThrust(deltaTime: number) {
@@ -65,13 +68,40 @@ export class SpaceMovementEngine {
                     c.effect = undefined;
                     return false;
                 }
-                BlzSetSpecialEffectAlpha(c.effect, MathRound(255 * (c.life / CHEM_TRAIL_LIFETIME)));
+                // BlzSetSpecialEffectAlpha(c.effect, MathRound(255 * (c.life / CHEM_TRAIL_LIFETIME)));
                 return true;
             })
         }
         
-        // Convert its facing into a normalised vector
-        const thrust = this.goal.normalise();
+        // // Plot the goal towards our turning arc
+        // let deltaAngle = (this.angleToGoal - this.facingAngleLastIteration + 180) % 360 - 180;
+        let thrust;
+
+        // if (this.momentum.getLength() <= 50) {
+        //     thrust = new Vector2(
+        //         Cos(this.facingAngleLastIteration * bj_DEGTORAD),
+        //         Sin(this.facingAngleLastIteration * bj_DEGTORAD)
+        //     );
+            // thrust = this.momentum.normalise();
+        // }
+
+        // if (deltaAngle > this.maxTurningArc) {
+        //     Log.Information(`Sharp ${deltaAngle} degs`);
+        //     let fAngle = this.facingAngleLastIteration + this.maxTurningArc;
+        //     thrust = new Vector2(
+        //         Cos(fAngle * bj_DEGTORAD),
+        //         Sin(fAngle * bj_DEGTORAD)
+        //     );
+        // }
+        // else if (deltaAngle < -this.maxTurningArc) {
+        //     Log.Information(`Sharp ${deltaAngle} degs`);
+        //     let fAngle = this.facingAngleLastIteration - this.maxTurningArc;
+        // }
+        // else {
+            // Convert its facing into a normalised vector
+            thrust = this.goal.normalise();
+        // }
+
 
         // Now apply velocity
         this.thrust = thrust.multiplyN( this.velocity );
@@ -137,41 +167,42 @@ export class SpaceMovementEngine {
         const d1 = (this.facingAngleLastIteration + 160) * bj_DEGTORAD;
         const d2 = (this.facingAngleLastIteration - 160) * bj_DEGTORAD;
 
+        // Log.Information("Dlen: "+dLen);
+
         fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
-            const sfx1 = AddSpecialEffect(
-                SMOKE_TRAIL_SFX, 
-                p.x + Cos(d1) * 70, 
-                p.y + Sin(d1) * 70
-            );
+            // const sfx1 = AddSpecialEffect(
+            //     SMOKE_TRAIL_SFX, 
+            //     p.x + Cos(d1) * 70, 
+            //     p.y + Sin(d1) * 70
+            // );
                 
-            // sfx1.setTime(0.1);
-            const sfx2 = AddSpecialEffect(
-                SMOKE_TRAIL_SFX, 
-                p.x + Cos(d2) * 70, 
-                p.y + Sin(d2) * 70
-            );
+            // // sfx1.setTime(0.1);
+            // const sfx2 = AddSpecialEffect(
+            //     SMOKE_TRAIL_SFX, 
+            //     p.x + Cos(d2) * 70, 
+            //     p.y + Sin(d2) * 70
+            // );
                 
-            // sfx2.setTime(0.1);
-            BlzSetSpecialEffectZ(sfx1, 100);
-            BlzSetSpecialEffectZ(sfx2, 100);
+            // // sfx2.setTime(0.1);
+            // BlzSetSpecialEffectZ(sfx1, 100);
+            // BlzSetSpecialEffectZ(sfx2, 100);
 
-            if (this.isUsingAfterburner) {
-                BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
-                BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
-                BlzSetSpecialEffectScale(sfx1, 3);
-                BlzSetSpecialEffectScale(sfx2, 3);
-            }
+            // if (this.isUsingAfterburner) {
+            //     BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
+            //     BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
+            //     BlzSetSpecialEffectScale(sfx1, 3);
+            //     BlzSetSpecialEffectScale(sfx2, 3);
+            // }
     
-            this.chemTrails.push({
-                effect: sfx1,
-                life: CHEM_TRAIL_LIFETIME
-            });
-            this.chemTrails.push({
-                effect: sfx2,
-                life: CHEM_TRAIL_LIFETIME
-            });
+            // this.chemTrails.push({
+            //     effect: sfx1,
+            //     life: CHEM_TRAIL_LIFETIME
+            // });
+            // this.chemTrails.push({
+            //     effect: sfx2,
+            //     life: CHEM_TRAIL_LIFETIME
+            // });
         });
-
     }
 
     /**
@@ -238,6 +269,7 @@ export class SpaceMovementEngine {
      */
     setGoal(newGoal: Vector2) {
         this.goal = newGoal.subtract(this.getPosition());
+        this.angleToGoal = Rad2Deg(Atan2(this.goal.y, this.goal.x));
     }
 
 

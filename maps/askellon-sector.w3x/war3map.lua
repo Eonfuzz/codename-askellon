@@ -1,5 +1,5 @@
 udg_elevator_entrances = {}
-udg_LIGHTS = {}
+udg_Lights_Floor_1 = {}
 udg_fall_points = {}
 udg_fall_results = {}
 udg_fall_result_zone_names = __jarray("")
@@ -19,6 +19,8 @@ udg_collision_rect = nil
 udg_collision_item = nil
 udg_pathing_rect = nil
 udg_killzones = {}
+udg_Lights_Cargo = {}
+udg_Lights_Bridge = {}
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -79,6 +81,27 @@ gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
+gg_unit_h004_0061 = nil
+gg_trg_LightsPerFloor = nil
+gg_dest_B002_0096 = nil
+gg_dest_B002_0097 = nil
+gg_dest_B002_0098 = nil
+gg_dest_B002_0099 = nil
+gg_dest_B002_0100 = nil
+gg_dest_B002_0101 = nil
+gg_dest_B002_0102 = nil
+gg_dest_B002_0103 = nil
+gg_dest_B002_0104 = nil
+gg_dest_B002_0105 = nil
+gg_dest_YTfb_0384 = nil
+gg_dest_B002_0415 = nil
+gg_dest_B002_0267 = nil
+gg_dest_B002_0265 = nil
+gg_dest_B002_0266 = nil
+gg_dest_B002_0338 = nil
+gg_dest_B002_0262 = nil
+gg_dest_B002_0337 = nil
+gg_dest_B002_0269 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -153,10 +176,28 @@ function CreateAllDestructables()
     local d
     local t
     local life
+    gg_dest_B002_0015 = BlzCreateDestructableZWithSkin(FourCC("B002"), -121.9, 576.3, 134.4, 358.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0017 = BlzCreateDestructableZWithSkin(FourCC("B002"), -104.7, -37.8, 134.4, 217.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0019 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.0, -62.8, 134.4, 117.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0022 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.8, 542.7, 134.4, 210.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0015 = BlzCreateDestructableZWithSkin(FourCC("B002"), -121.9, 576.3, 134.4, 358.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0096 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28730.8, -27410.6, 201.0, 73.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0097 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28713.7, -28208.7, 201.0, 98.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0098 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28060.4, -27407.3, 201.0, 73.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0099 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28043.3, -28205.4, 201.0, 98.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0100 = BlzCreateDestructableZWithSkin(FourCC("B002"), -27390.6, -27404.7, 201.0, 73.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0101 = BlzCreateDestructableZWithSkin(FourCC("B002"), -27373.5, -28202.8, 201.0, 98.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0105 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26010.6, -28187.3, 201.0, 98.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0104 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26027.7, -27389.2, 201.0, 73.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0103 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26673.7, -28213.1, 201.0, 98.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0102 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26690.8, -27415.0, 201.0, 73.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0266 = BlzCreateDestructableZWithSkin(FourCC("B002"), -17920.8, -26258.0, 371.2, 268.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0269 = BlzCreateDestructableZWithSkin(FourCC("B002"), -19703.4, -27262.1, 243.2, 313.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0262 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18839.8, -28247.6, 339.2, 43.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0265 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18948.5, -26241.1, 371.2, 206.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0337 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18427.3, -27110.6, 339.2, 139.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0338 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18431.9, -27871.1, 339.2, 95.182, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0267 = BlzCreateDestructableZWithSkin(FourCC("B002"), -17804.3, -25225.6, 140.8, 132.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0415 = BlzCreateDestructableZWithSkin(FourCC("B002"), -19069.5, -25223.1, 140.8, 132.000, 1.000, 0, FourCC("B002"))
 end
 
 function CreateAllItems()
@@ -196,7 +237,7 @@ function CreateBuildingsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("n003"), 1024.0, 896.0, 270.000, FourCC("n003"))
     gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
     gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 640.0, 768.0, 270.000, FourCC("h004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -17856.0, -28800.0, 270.000, FourCC("h004"))
+    gg_unit_h004_0061 = BlzCreateUnitWithSkin(p, FourCC("h004"), -17856.0, -28800.0, 270.000, FourCC("h004"))
 end
 
 function CreateUnitsForPlayer21()
@@ -430,6 +471,8 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n005"), -18435.9, -25586.1, 0.220, FourCC("n005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24569.4, 89.562, FourCC("n004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24057.4, 89.562, FourCC("n004"))
 end
 
 function CreatePlayerBuildings()
@@ -509,6 +552,36 @@ function InitTrig_SetKillzones()
     TriggerAddAction(gg_trg_SetKillzones, Trig_SetKillzones_Actions)
 end
 
+function Trig_LightsPerFloor_Actions()
+    udg_Lights_Floor_1[1] = gg_dest_B002_0017
+    udg_Lights_Floor_1[2] = gg_dest_B002_0019
+    udg_Lights_Floor_1[3] = gg_dest_B002_0022
+    udg_Lights_Floor_1[4] = gg_dest_B002_0015
+    udg_Lights_Cargo[1] = gg_dest_B002_0097
+    udg_Lights_Cargo[2] = gg_dest_B002_0098
+    udg_Lights_Cargo[3] = gg_dest_B002_0099
+    udg_Lights_Cargo[4] = gg_dest_B002_0100
+    udg_Lights_Cargo[5] = gg_dest_B002_0101
+    udg_Lights_Cargo[6] = gg_dest_B002_0102
+    udg_Lights_Cargo[7] = gg_dest_B002_0103
+    udg_Lights_Cargo[8] = gg_dest_B002_0104
+    udg_Lights_Cargo[9] = gg_dest_B002_0105
+    udg_Lights_Cargo[10] = gg_dest_B002_0096
+    udg_Lights_Bridge[1] = gg_dest_B002_0267
+    udg_Lights_Bridge[2] = gg_dest_B002_0265
+    udg_Lights_Bridge[3] = gg_dest_B002_0266
+    udg_Lights_Bridge[4] = gg_dest_B002_0338
+    udg_Lights_Bridge[5] = gg_dest_B002_0262
+    udg_Lights_Bridge[6] = gg_dest_B002_0337
+    udg_Lights_Bridge[7] = gg_dest_B002_0269
+    udg_Lights_Bridge[8] = gg_dest_B002_0415
+end
+
+function InitTrig_LightsPerFloor()
+    gg_trg_LightsPerFloor = CreateTrigger()
+    TriggerAddAction(gg_trg_LightsPerFloor, Trig_LightsPerFloor_Actions)
+end
+
 function Trig_Set_Actions()
     udg_elevator_entrances[1] = gg_unit_n001_0032
     udg_elevator_entrances[2] = gg_unit_n001_0055
@@ -534,10 +607,6 @@ function Trig_Set_Actions()
     udg_elevator_exit_zones[4] = "CHURCH"
     udg_elevator_exit_zones[5] = "FLOOR_1"
     udg_elevator_exit_zones[6] = "BRIDGE"
-    udg_LIGHTS[0] = gg_dest_B002_0015
-    udg_LIGHTS[1] = gg_dest_B002_0017
-    udg_LIGHTS[2] = gg_dest_B002_0019
-    udg_LIGHTS[3] = gg_dest_B002_0022
 end
 
 function InitTrig_Set()
@@ -588,6 +657,10 @@ function Trig_SetFall_Actions()
     udg_jump_pass_zones[2] = gg_rct_JumpPassCargo
     udg_jump_pass_zones_name[1] = "CARGO_A_VENT"
     udg_jump_pass_zones_name[2] = "CARGO_A"
+    udg_jump_pass_zones[3] = gg_rct_JumpPassBridgeVents
+    udg_jump_pass_zones[4] = gg_rct_JumpBassBridge
+    udg_jump_pass_zones_name[3] = "BRIDGE_VENT"
+    udg_jump_pass_zones_name[4] = "BRIDGE"
 end
 
 function InitTrig_SetFall()
@@ -602,6 +675,10 @@ function Trig_SetPowerGenerators_Actions()
     udg_power_generators[3] = gg_unit_h004_0046
     udg_power_generator_zones[2] = "CARGO_A"
     udg_power_generator_zones[3] = "CARGO_A_VENT"
+    udg_power_generators[4] = gg_unit_h004_0061
+    udg_power_generators[5] = gg_unit_h004_0061
+    udg_power_generator_zones[4] = "BRIDGE"
+    udg_power_generator_zones[5] = "BRIDGE_VENT"
 end
 
 function InitTrig_SetPowerGenerators()
@@ -635,6 +712,7 @@ end
 
 function InitCustomTriggers()
     InitTrig_SetKillzones()
+    InitTrig_LightsPerFloor()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()
@@ -645,6 +723,7 @@ end
 
 function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetKillzones)
+    ConditionalTriggerExecute(gg_trg_LightsPerFloor)
     ConditionalTriggerExecute(gg_trg_Set)
     ConditionalTriggerExecute(gg_trg_SetHatch)
     ConditionalTriggerExecute(gg_trg_SetFall)

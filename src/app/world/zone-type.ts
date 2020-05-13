@@ -69,7 +69,7 @@ export class ShipZone extends Zone {
     public lightSources: Array<destructable> = [];
     public powerGenerators: Array<Unit> = [];
 
-    constructor(game: Game, id: ZONE_TYPE) {
+    constructor(game: Game, id: ZONE_TYPE, lights?: destructable[]) {
         super(game, id);
 
         // Get get light sources and power gens based on ID
@@ -89,13 +89,20 @@ export class ShipZone extends Zone {
             new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED,
             (self, data: EventData) => this.onGeneratorRepair(data.data.unit, data.source))
         );
+
+        if (lights) this.lightSources = lights;
     }
 
     private onGeneratorDestroy(generator: Unit, source: Unit) {
         // Make sure we have generator in our array
         if (this.powerGenerators.indexOf(generator) >= 0) {
             Log.Information("Generator for "+this.id+" was destroyed!");
-            this.updatePower(false);
+            try {
+                this.updatePower(false);
+            }
+            catch (e) {
+                Log.Error(e);
+            }
         }
     }
 

@@ -99,7 +99,7 @@ export function fastPointInterp(p1: Vector2, p2: Vector2, numInterps: number): V
     const results = [];
 
     for (let index = 0; index < numInterps; index++) {
-        results.push(new Vector2(p1x + dx * index/numInterps, p1y + dy * index/numInterps))
+        results[index] = new Vector2(p1x + dx * index/numInterps, p1y + dy * index/numInterps);
     }
     return results;
 }
@@ -136,5 +136,11 @@ export function getAirBlockers(minX: number, minY: number, maxX: number, maxY: n
         if (id === pathingBlockerBoth) result.push(d);
         else if (id === pathingBlockerAir) result.push(d);
     });
+    return result;
+}
+
+export function normaliseAngle(angle: number) {
+    let result = angle % 360;
+    if (result < 0) result += 360;
     return result;
 }

@@ -62,6 +62,7 @@ export class WeaponModule {
      */
     updateProjectiles(DELTA_TIME: number) {
 
+        let inc = 0;
         let result = [];
         for (let index = 0; index < this.projectiles.length; index++) {
             const projectile = this.projectiles[index];
@@ -89,7 +90,7 @@ export class WeaponModule {
             }
 
             // Destroy projectile if it asks nicely
-            if (!(projectile.willDestroy() && projectile.destroy(this))) result.push(projectile);
+            if (!(projectile.willDestroy() && projectile.destroy(this))) result[inc++] = projectile;
         }
         this.projectiles = result;
     }

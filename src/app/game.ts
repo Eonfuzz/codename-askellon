@@ -24,6 +24,7 @@ import { DynamicBuffModule } from "./buff/dynamic-buff-module";
 import { TooltipModule } from "./tooltip/tooltip-module";
 import { OptResult } from "./force/opt-selection";
 
+const PROCESS_TIMER = 0.03;
 export class Game {
     // Helper objects
     public timedEventQueue: TimedEventQueue;
@@ -129,18 +130,18 @@ export class Game {
             // Init crew
             this.crewModule.initCrew(this.forceModule.getForces());
 
-            this.syncedTimer.start(0.03, true, () => this.processActions());
         }
         catch (e) {
             Log.Error(e);
         }
+        this.syncedTimer.start(PROCESS_TIMER, true, () => this.processActions());
     }
 
     public processActions() {
         // try {
-            this.abilityModule.process(0.03);
-            this.weaponModule.updateProjectiles(0.03);
-            this.spaceModule.updateShips(0.03);
+            this.spaceModule.updateShips(PROCESS_TIMER);
+            this.weaponModule.updateProjectiles(PROCESS_TIMER);
+            this.abilityModule.process(PROCESS_TIMER);
         // }
         // catch (e) {
         //     Log.Error(e);
