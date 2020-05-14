@@ -2485,3 +2485,27 @@ STRING 572
 R
 }
 
+STRING 573
+// Doodads: D00Q (Gene Sequencer), Name (Name)
+{
+Gene Sequencer
+}
+
+STRING 574
+// Doodads: D00R (Cabinet Empty), Name (Name)
+{
+Cabinet Empty
+}
+
+STRING 575
+// Doodads: D00S (Cabinet Drugs), Name (Name)
+{
+Cabinet Drugs
+}
+
+STRING 576
+// Doodads: D00T (Cabinet Closed), Name (Name)
+{
+Cabinet Closed
+}
+

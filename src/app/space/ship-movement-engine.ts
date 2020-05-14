@@ -60,18 +60,17 @@ export class SpaceMovementEngine {
 
     public updateThrust(deltaTime: number) {
         // Update chem trails
-        if (this.doCreateTrails) {
-            this.chemTrails = this.chemTrails.filter(c => {
-                c.life -= deltaTime;
-                if (c.life <= 0) {
-                    DestroyEffect(c.effect);
-                    c.effect = undefined;
-                    return false;
-                }
-                // BlzSetSpecialEffectAlpha(c.effect, MathRound(255 * (c.life / CHEM_TRAIL_LIFETIME)));
-                return true;
-            })
-        }
+        // if (this.doCreateTrails) {
+        //     this.chemTrails = this.chemTrails.filter(c => {
+        //         c.life -= deltaTime;
+        //         if (c.life <= 0) {
+        //             DestroyEffect(c.effect);
+        //             c.effect = undefined;
+        //             return false;
+        //         }
+        //         return true;
+        //     })
+        // }
         
         // // Plot the goal towards our turning arc
         // let deltaAngle = (this.angleToGoal - this.facingAngleLastIteration + 180) % 360 - 180;
@@ -155,7 +154,7 @@ export class SpaceMovementEngine {
         if (this.position.y < minY) this.position.y = minY;
         else if (this.position.y > maxY) this.position.y = maxY;
 
-        if (this.doCreateTrails) this.updateChemTrails(delta, oldPosition);
+        // if (this.doCreateTrails) this.updateChemTrails(delta, oldPosition);
 
         return this;
     }
@@ -170,38 +169,36 @@ export class SpaceMovementEngine {
         // Log.Information("Dlen: "+dLen);
 
         fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
-            // const sfx1 = AddSpecialEffect(
-            //     SMOKE_TRAIL_SFX, 
-            //     p.x + Cos(d1) * 70, 
-            //     p.y + Sin(d1) * 70
-            // );
+            const sfx1 = AddSpecialEffect(
+                SMOKE_TRAIL_SFX, 
+                p.x + Cos(d1) * 70, 
+                p.y + Sin(d1) * 70
+            );
                 
-            // // sfx1.setTime(0.1);
-            // const sfx2 = AddSpecialEffect(
-            //     SMOKE_TRAIL_SFX, 
-            //     p.x + Cos(d2) * 70, 
-            //     p.y + Sin(d2) * 70
-            // );
+            const sfx2 = AddSpecialEffect(
+                SMOKE_TRAIL_SFX, 
+                p.x + Cos(d2) * 70, 
+                p.y + Sin(d2) * 70
+            );
                 
-            // // sfx2.setTime(0.1);
-            // BlzSetSpecialEffectZ(sfx1, 100);
-            // BlzSetSpecialEffectZ(sfx2, 100);
+            BlzSetSpecialEffectZ(sfx1, 100);
+            BlzSetSpecialEffectZ(sfx2, 100);
 
-            // if (this.isUsingAfterburner) {
-            //     BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
-            //     BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
-            //     BlzSetSpecialEffectScale(sfx1, 3);
-            //     BlzSetSpecialEffectScale(sfx2, 3);
-            // }
+            if (this.isUsingAfterburner) {
+                BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
+                BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
+                BlzSetSpecialEffectScale(sfx1, 3);
+                BlzSetSpecialEffectScale(sfx2, 3);
+            }
     
-            // this.chemTrails.push({
-            //     effect: sfx1,
-            //     life: CHEM_TRAIL_LIFETIME
-            // });
-            // this.chemTrails.push({
-            //     effect: sfx2,
-            //     life: CHEM_TRAIL_LIFETIME
-            // });
+            this.chemTrails.push({
+                effect: sfx1,
+                life: CHEM_TRAIL_LIFETIME
+            });
+            this.chemTrails.push({
+                effect: sfx2,
+                life: CHEM_TRAIL_LIFETIME
+            });
         });
     }
 

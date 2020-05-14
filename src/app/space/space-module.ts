@@ -172,7 +172,7 @@ export class SpaceModule {
         // Get mainship x,y
         ship.unit.x = this.mainShip.unit.x;
         ship.unit.y = this.mainShip.unit.y;
-        who.setTimeScale(0.1);
+        // who.setTimeScale(0.1);
 
         ship.onEnterSpace();
         PanCameraToTimedForPlayer(who.owner.handle, ship.unit.x, ship.unit.y, 0);

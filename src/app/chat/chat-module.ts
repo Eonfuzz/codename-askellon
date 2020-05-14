@@ -152,7 +152,7 @@ export class ChatModule {
                 player.setState(PLAYER_STATE_RESOURCE_GOLD, 999999);
             }
             else if (message.indexOf("-help") === 0) {
-                this.postSystemMessage(player, "Commands: -god, -listen, -wa, -wc, -cheat");
+                this.postSystemMessage(player, "Commands: -god, -listen, -wa, -wc, -cheat, -kill, -cd, -vision");
             }
             else if (message.indexOf("-ns") === 0) {
                 BlzShowTerrain(false);
