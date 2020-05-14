@@ -101,6 +101,8 @@ gg_dest_B002_0337 = nil
 gg_dest_B002_0338 = nil
 gg_dest_B002_0267 = nil
 gg_dest_B002_0415 = nil
+gg_unit_n004_0267 = nil
+gg_unit_n002_0245 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -477,7 +479,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n004_0035 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26113.3, 26361.4, 89.562, FourCC("n004"))
     u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
     u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -64.0, 960.0, 270.000, FourCC("nMED"))
-    u = BlzCreateUnitWithSkin(p, FourCC("ncp2"), -14688.0, -25120.0, 270.000, FourCC("ncp2"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n007"), -14688.0, -25120.0, 270.000, FourCC("n007"))
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -13696.0, -24832.0, 270.000, FourCC("nGEN"))
     gg_unit_n002_0043 = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
     gg_unit_n002_0044 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
@@ -492,7 +494,9 @@ function CreateNeutralPassiveBuildings()
     u = BlzCreateUnitWithSkin(p, FourCC("n005"), -18435.9, -25586.1, 0.220, FourCC("n005"))
     u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24569.4, 89.562, FourCC("n004"))
     u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24057.4, 89.562, FourCC("n004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -14080.0, -27456.0, 270.000, FourCC("n002"))
+    gg_unit_n002_0245 = BlzCreateUnitWithSkin(p, FourCC("n002"), -14080.0, -27456.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n006"), -11856.6, -26533.3, 224.634, FourCC("n006"))
+    gg_unit_n004_0267 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26497.3, 25081.4, 89.562, FourCC("n004"))
 end
 
 function CreatePlayerBuildings()
@@ -641,24 +645,32 @@ function Trig_SetHatch_Actions()
     udg_hatch_entrances[4] = gg_unit_n002_0043
     udg_hatch_entrances[5] = gg_unit_n004_0047
     udg_hatch_entrances[6] = gg_unit_n002_0044
+    udg_hatch_entrances[7] = gg_unit_n004_0267
+    udg_hatch_entrances[8] = gg_unit_n002_0245
     udg_hatch_exits[1] = gg_unit_n004_0034
     udg_hatch_exits[2] = gg_unit_n002_0033
     udg_hatch_exits[3] = gg_unit_n002_0043
     udg_hatch_exits[4] = gg_unit_n004_0035
     udg_hatch_exits[5] = gg_unit_n002_0044
     udg_hatch_exits[6] = gg_unit_n004_0047
+    udg_hatch_exits[7] = gg_unit_n002_0245
+    udg_hatch_exits[8] = gg_unit_n004_0267
     udg_hatch_entrance_names[1] = "|cff666633Service Tunnels|r"
     udg_hatch_entrance_names[2] = "|cfff5a742Floor 1|r"
     udg_hatch_entrance_names[3] = "|cff008080Cargo|r"
     udg_hatch_entrance_names[4] = "|cff666633Service Tunnels|r"
     udg_hatch_entrance_names[5] = "|cff666633Cargo Vents|r"
     udg_hatch_entrance_names[6] = "|cff666633Service Tunnels|r"
+    udg_hatch_entrance_names[7] = "|cff00ffffBiology and Chemistry|r"
+    udg_hatch_entrance_names[8] = "|cff666633Service Tunnels|r"
     udg_hatch_exit_zones[1] = "FLOOR_1"
     udg_hatch_exit_zones[2] = "SERVICE_TUNNELS"
     udg_hatch_exit_zones[3] = "SERVICE_TUNNELS"
     udg_hatch_exit_zones[4] = "CARGO_A"
     udg_hatch_exit_zones[5] = "CARGO_A_VENT"
     udg_hatch_exit_zones[6] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[7] = "BIOLOGY"
+    udg_hatch_exit_zones[8] = "SERVICE_TUNNELS"
 end
 
 function InitTrig_SetHatch()

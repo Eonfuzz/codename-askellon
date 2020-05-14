@@ -2443,12 +2443,6 @@ STRING 562
 W
 }
 
-STRING 563
-// Units: h006 (Perseus), Name (Name)
-{
-Perseus
-}
-
 STRING 566
 // Abilities: A001 (Dodge Roll Left), Ubertip (Tooltip - Normal - Extended)
 {
@@ -2507,5 +2501,41 @@ STRING 576
 // Doodads: D00T (Cabinet Closed), Name (Name)
 {
 Cabinet Closed
+}
+
+STRING 577
+// Doodads: D00U (Plant Pot), Name (Name)
+{
+Plant Pot
+}
+
+STRING 578
+// Units: h006 (Perseus|n|cff808080Right Click to enter ship|r), Name (Name)
+{
+Perseus|n|cff808080Right Click to enter ship|r
+}
+
+STRING 579
+// Doodads: D00V (Pot Plant Plant), Name (Name)
+{
+Pot Plant Plant
+}
+
+STRING 580
+// Units: n006 (|cff00ff00T|r|cff00ea00r|r|cff00d400i|r|cff00bf00w|r|cff00aa00e|r|cff009500e|r|), Name (Name)
+{
+|cff00ff00T|r|cff00ea00r|r|cff00d400i|r|cff00bf00w|r|cff00aa00e|r|cff009500e|r|cff008000d|r Vendor|n|cff808080Right Click to Use|r
+}
+
+STRING 581
+// Destructibles: B005 (Light Green), Name (Name)
+{
+Light Green
+}
+
+STRING 582
+// Units: n007 (|cff00ffffGene Splicer|r|n|cff808080Stand inside and wait for a doctor|r), Name (Name)
+{
+|cff00ffffGene Splicer|r|n|cff808080Stand inside and wait for a doctor|r
 }
 
