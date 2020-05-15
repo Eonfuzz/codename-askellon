@@ -7,6 +7,14 @@ import { Log } from "lib/serilog/serilog";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE } from "resources/colours";
 
+export interface ChatHook {
+    who: MapPlayer, 
+    recipients: MapPlayer[], 
+    name: string, 
+    color: string, 
+    message: string
+} 
+
 export enum PRIVS {
     USER, MODERATOR, DEVELOPER
 }
@@ -17,6 +25,8 @@ export class ChatModule {
     chatHandlers = new Map<MapPlayer, ChatSystem>();
     usersInGodChat = [];
     usersInListen = [];
+
+    private onChatHooks: Array<(data: ChatHook) => ChatHook> = []; 
 
     constructor(game: Game) {
         this.game = game;
@@ -204,14 +214,62 @@ export class ChatModule {
                 const color      = force.getChatColor(player);
                 const sound      = force.getChatSoundRef(player);
                 const messageTag = force.getChatTag(player);
+                const messageString = force.getChatMessage(player, message);
+
+                
+                const postHookData = this.applyChatHooks(player, playername, recipients, color, message);
 
                 // Handle listen mode
                 this.usersInListen.forEach(u => {
                     if (recipients.indexOf(u) === -1) recipients.push(u);
-                })
+                });
 
-                this.postMessageFor(recipients, playername, color, message, messageTag, sound);
+                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, messageTag, sound);
             }
+        }
+    }
+
+    private applyChatHooks(player: MapPlayer, playerName: string, recipients: MapPlayer[], color: string, message: string) {
+        let idx = 0;
+        let data: ChatHook = {
+            who: player, 
+            name: playerName, 
+            recipients, color, message
+        };
+
+        while (idx < this.onChatHooks.length) {
+            data = this.onChatHooks[idx](data);
+            idx++;
+        }
+        return data;
+    }
+
+    /**
+     * A hook that messages must first pass through
+     * @param hook 
+     */
+    private hooksForIds = new Map<number, (data: ChatHook) => ChatHook>();
+    private hookIdCounter = 0;
+    public addHook(hook: (data: ChatHook) => ChatHook): number {
+        this.onChatHooks.push(hook);
+        this.hooksForIds.set(this.hookIdCounter, hook);
+        return this.hookIdCounter++;
+    }
+
+    /**
+     * Removes a hook if it is in the array
+     * @param hookHandle 
+     */
+    public removeHook(hookHandle: number) {
+        const hook = this.hooksForIds.get(hookHandle);
+
+        const idx = this.onChatHooks.indexOf(hook);
+        if (idx >= 0) {
+            this.onChatHooks.splice(idx, 1);
+            this.hooksForIds.delete(hookHandle);
+        }
+        else {
+            Log.Error("Failed to delete hook for handle "+hookHandle);
         }
     }
 

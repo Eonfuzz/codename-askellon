@@ -15,6 +15,7 @@ export const ABIL_WEP_DIODE_EJ = FourCC('DIOJ');
 
 export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 export const ABIL_ITEM_REPAIR = FourCC('A00J');
+export const ABIL_ITEM_TRIFEX = FourCC('A00P');
 
 export const ABIL_ACCURACY_PENALTY_30 = FourCC('A00E');
 export const ABIL_ACCURACY_BONUS_30 = FourCC('A00F');

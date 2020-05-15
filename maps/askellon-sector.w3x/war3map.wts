@@ -2521,12 +2521,6 @@ STRING 579
 Pot Plant Plant
 }
 
-STRING 580
-// Units: n006 (|cff00ff00T|r|cff00ea00r|r|cff00d400i|r|cff00bf00w|r|cff00aa00e|r|cff009500e|r|), Name (Name)
-{
-|cff00ff00T|r|cff00ea00r|r|cff00d400i|r|cff00bf00w|r|cff00aa00e|r|cff009500e|r|cff008000d|r Vendor|n|cff808080Right Click to Use|r
-}
-
 STRING 581
 // Destructibles: B005 (Light Green), Name (Name)
 {
@@ -2537,5 +2531,53 @@ STRING 582
 // Units: n007 (|cff00ffffGene Splicer|r|n|cff808080Stand inside and wait for a doctor|r), Name (Name)
 {
 |cff00ffffGene Splicer|r|n|cff808080Stand inside and wait for a doctor|r
+}
+
+STRING 584
+// Items: I00A (Trifex), Name (Name)
+{
+Trifex
+}
+
+STRING 587
+// Items: I00A (Trifex), Description (Description)
+{
+Repairs buildings 100% over 5 seconds
+}
+
+STRING 588
+// Abilities: A00P (Trifex), Name (Name)
+{
+Trifex
+}
+
+STRING 589
+// Buffs/Effects: B005 (Trifex), EditorName (Name (Editor Only))
+{
+Trifex
+}
+
+STRING 590
+// Items: I00A (Trifex), Tip (Tooltip - Basic)
+{
+|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r
+}
+
+STRING 592
+// Items: I00A (Trifex), Ubertip (Tooltip - Extended)
+{
+|cff808080We all remember the tragic fall of Fexarian IV to the rapidly-growing infestation of Triweed. That's why we at Ebanor Enterprises are releasing Trifex, the only beverage made entirely from distilled Triweed*. Take a sip, take your revenge against the plant menace! Buy Trifex today!|r|n|nSlowly regain |cff00ff0020 HP|r and |cff00ff00Mana |rover 30 seconds. May have other |cff00ff00u|r|cff00ff18n|r|cff00ff32i|r|cff00ff4bn|r|cff00ff65t|r|cff00ff7ee|r|cff00ff98n|r|cff00ffb1d|r|cff00ffcbe|r|cff00ffe4d|r|cff00fffe |rside effects.|n|n|cffd45e19Our vision is to craft the brands and choice of drinks that people love, to refresh them in body & spirit. And done in ways that create a more sustainable business and better shared future that makes a difference in people's lives, communities and our planet.|r|n|n|cff80808060 Seconds Cooldown|r
+}
+
+STRING 593
+// Buffs/Effects: B005 (Trifex), Bufftip (Tooltip)
+{
+|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r
+}
+
+STRING 594
+// Buffs/Effects: B005 (Trifex), Buffubertip (Tooltip - Extended)
+{
+|cff00ff00L|r|cff00ff06i|r|cff00ff0ek|r|cff00ff16e|r|cff00ff1d |r|cff00ff25I|r|cff00ff2d |r|cff00ff35t|r|cff00ff3ch|r|cff00ff44i|r|cff00ff4cn|r|cff00ff54k|r|cff00ff5b |r|cff00ff63s|r|cff00ff6bo|r|cff00ff72m|r|cff00ff7ae|r|cff00ff82t|r|cff00ff8ah|r|cff00ff91i|r|cff00ff99n|r|cff00ffa1g|r|cff00ffa9'|r|cff00ffb0s|r|cff00ffb8 |r|cff00ffc0w|r|cff00ffc7r|r|cff00ffcfo|r|cff00ffd7n|r|cff00ffdfg|r|cff00ffe6 |r|cff00ffeeb|r|cff00fff6r|r|cff00fffeo|r
 }
 

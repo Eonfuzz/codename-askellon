@@ -79,6 +79,8 @@ gg_unit_n001_0199 = nil
 gg_unit_n001_0051 = nil
 gg_unit_h004_0061 = nil
 gg_unit_n001_0240 = nil
+gg_unit_n004_0267 = nil
+gg_unit_n002_0245 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
@@ -101,8 +103,6 @@ gg_dest_B002_0337 = nil
 gg_dest_B002_0338 = nil
 gg_dest_B002_0267 = nil
 gg_dest_B002_0415 = nil
-gg_unit_n004_0267 = nil
-gg_unit_n002_0245 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -203,14 +203,18 @@ end
 
 function CreateAllItems()
     local itemID
-    BlzCreateItemWithSkin(FourCC("I009"), 819.5, 355.5, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 800.3, 427.5, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 862.0, 347.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 766.3, 368.8, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 819.5, 355.5, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 717.6, 362.1, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I00A"), 80.3, 588.3, FourCC("I00A"))
+    BlzCreateItemWithSkin(FourCC("I00A"), 358.6, 561.5, FourCC("I00A"))
+    BlzCreateItemWithSkin(FourCC("I00A"), 282.8, 565.9, FourCC("I00A"))
+    BlzCreateItemWithSkin(FourCC("I00A"), 188.9, 570.4, FourCC("I00A"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), 450.0, 159.3, FourCC("ratf"))
 end
 

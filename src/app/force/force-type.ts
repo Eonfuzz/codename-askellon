@@ -89,6 +89,10 @@ export abstract class ForceType {
         }
     }
 
+    public getChatMessage(who: MapPlayer, oldString: string): string {
+        return oldString;
+    }
+
     /**
      * Gets a list of who can see the chat messages
      * Unless overridden returns all the players

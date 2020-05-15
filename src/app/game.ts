@@ -68,7 +68,7 @@ export class Game {
         SetAmbientNightSound('');
         SetMapMusic("Music\\MechanicusLostCivilization.mp3", false, 0);
         SetMusicVolume(20);
-        PlayMusic("Music\\MechanicusLostCivilization.mp3");
+        // PlayMusic("Music\\MechanicusLostCivilization.mp3");
         SetMusicVolume(20);
         SetSkyModel("war3mapImported\\Skybox3rAlt.mdx");
 

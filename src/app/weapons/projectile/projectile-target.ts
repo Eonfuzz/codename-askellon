@@ -89,9 +89,6 @@ export class ProjectileMoverParabolic implements ProjectileMover {
 
         this.angle = radians;
         this.velocity = velocity;
-
-        // Log.Information(`Velocity ${this.velocity} at ${this.angle} degs`);
-        // Log.Information(`Delta: ${this.originalDelta.x}, ${this.originalDelta.y}, ${this.originalDelta.z}`)
     }
     
     move(currentPostion: Vector3, goal: Vector3, velocity: number, deltaTime: number): Vector3 {
