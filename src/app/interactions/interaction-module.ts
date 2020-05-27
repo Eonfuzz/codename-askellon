@@ -6,6 +6,7 @@ import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
 import { initShipInteractions, initAskellonInteractions } from "./ship-interactions";
 import { initVendingInteraction } from "./vendor-interaction";
+import { initCommandTerminal } from "./command-terminal";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -39,6 +40,7 @@ export class InteractionModule {
         initShipInteractions(game);
         initAskellonInteractions(game);
         initVendingInteraction(game);
+        initCommandTerminal(game);
     }
 
     beginInteraction() {
