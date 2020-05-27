@@ -93,6 +93,7 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
         }
 
         if (this.totalTime >= 4.5 && this.totalTime < 10) {
+            SetUnitAnimationByIndex(this.ship.unit.handle, 4);
             const vec = this.movementVector
                 .multiplyN(delta)
                 .multiplyN(Math.min((this.totalTime - 5) / 3, 1));
@@ -151,6 +152,7 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
         this.ship.unit.y = this.offsetVector.y;
         this.ship.unit.setflyHeight(180, 120);
         BlzSetUnitFacingEx(this.ship.unit.handle, 90);
+        SetUnitAnimationByIndex(this.ship.unit.handle, 4);
 
         // huh, we could use the parabolic mover here
         // Flip the axis

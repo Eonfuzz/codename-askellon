@@ -736,18 +736,6 @@ STRING 180
 Accuracy Bonus +30
 }
 
-STRING 181
-// Units: gMap (Galaxy Map Tile), Name (Name)
-{
-Galaxy Map Tile
-}
-
-STRING 182
-// Units: gMap (Galaxy Map Tile), EditorSuffix (Name - Editor Suffix)
-{
-Dummy
-}
-
 STRING 184
 // Abilities: A00G (Roar), Hotkey (Hotkey - Normal)
 {

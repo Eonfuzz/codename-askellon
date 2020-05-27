@@ -23,6 +23,7 @@ export class Ship {
     // Magic number for starting fuel. Upgrades to apply maybe?
     public shipFuel: number = 100;
     public maxFuel: number = 100;
+    private outOfFuelDotTicker = 1;
 
     // Ship engine
     public engine: SpaceMovementEngine;
@@ -58,8 +59,8 @@ export class Ship {
             const facing = this.engine.getFacingAngle();
             BlzSetUnitFacingEx(this.unit.handle, facing);
 
-            // TODO
-            // const getFuelCost = this.engine.getMomentum();
+            const fuelCost = (0.5 + this.engine.getMomentum().getLength() / 5000) * deltaTime;
+            this.shipFuel -= fuelCost;
             // Set pos
             const enginePos = this.engine.getPosition();
             this.unit.x = enginePos.x;
@@ -68,6 +69,22 @@ export class Ship {
             // We also force player cam to the ship
             const p = this.unit.owner;
             PanCameraToTimedForPlayer(p.handle, this.unit.x, this.unit.y, 0);
+            // Set animation
+            SetUnitAnimationByIndex(this.unit.handle, 4);
+
+            if (this.shipFuel <= 0) {
+                this.outOfFuelDotTicker += deltaTime;
+                if (this.outOfFuelDotTicker >= 1) {
+                    this.outOfFuelDotTicker -= 1;
+                    this.unit.damageTarget(this.unit.handle, 
+                        50, 0, 
+                        false, false, 
+                        ATTACK_TYPE_HERO, 
+                        DAMAGE_TYPE_DIVINE, 
+                        WEAPON_TYPE_WHOKNOWS
+                    );
+                }
+            }
         }
         // Otherwise update fuel
         else if (this.state = ShipState.inBay) {
@@ -115,6 +132,7 @@ export class Ship {
     onLeaveShip(game: Game) {
         const newOwner = game.forceModule.stationProperty;
         this.unit.owner = newOwner;
+        SetUnitAnimationByIndex(this.unit.handle, 3);
 
         const shipPos = vectorFromUnit(this.unit.handle);
 

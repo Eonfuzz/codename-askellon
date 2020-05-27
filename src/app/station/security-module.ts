@@ -3,7 +3,8 @@ import { EVENT_TYPE } from "app/events/event";
 import { Trigger, Unit, Group, Rectangle } from "w3ts";
 import { Log } from "lib/serilog/serilog";
 import { getZFromXY } from "lib/utils";
-import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS } from "app/weapons/weapon-constants";
+import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS, ITEM_ID_CRYO_GRENADE } from "app/weapons/weapon-constants";
+import { ITEM_TRIFEX_ID } from "resources/item-ids";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -177,7 +178,9 @@ export class SecurityModule {
         else {
             if (secondarySeed >= 800) CreateItem(ITEM_ID_EMO_INHIB, x, y);
             else if (secondarySeed >= 600) CreateItem(ITEM_ID_REPAIR, x, y);
-            else if (secondarySeed >= 0) CreateItem(ITEM_ID_NANOMED, x, y);
+            else if (secondarySeed >= 250) CreateItem(ITEM_ID_NANOMED, x, y);
+            else if (secondarySeed >= 150) CreateItem(ITEM_TRIFEX_ID, x, y);
+            else if (secondarySeed >= 0) CreateItem(ITEM_ID_CRYO_GRENADE, x, y);
         }
 
         // Also reward 10 XP
