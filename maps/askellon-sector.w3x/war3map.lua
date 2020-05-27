@@ -203,18 +203,20 @@ end
 
 function CreateAllItems()
     local itemID
-    BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
     BlzCreateItemWithSkin(FourCC("I009"), 800.3, 427.5, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 862.0, 347.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 766.3, 368.8, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 819.5, 355.5, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 717.6, 362.1, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I00A"), 80.3, 588.3, FourCC("I00A"))
+    BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
+    BlzCreateItemWithSkin(FourCC("I00A"), -14166.9, -27317.0, FourCC("I00A"))
     BlzCreateItemWithSkin(FourCC("I00A"), 358.6, 561.5, FourCC("I00A"))
     BlzCreateItemWithSkin(FourCC("I00A"), 282.8, 565.9, FourCC("I00A"))
     BlzCreateItemWithSkin(FourCC("I00A"), 188.9, 570.4, FourCC("I00A"))
+    BlzCreateItemWithSkin(FourCC("I00A"), 80.3, 588.3, FourCC("I00A"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), 450.0, 159.3, FourCC("ratf"))
 end
 
@@ -673,8 +675,8 @@ function Trig_SetHatch_Actions()
     udg_hatch_exit_zones[4] = "CARGO_A"
     udg_hatch_exit_zones[5] = "CARGO_A_VENT"
     udg_hatch_exit_zones[6] = "SERVICE_TUNNELS"
-    udg_hatch_exit_zones[7] = "BIOLOGY"
-    udg_hatch_exit_zones[8] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[7] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[8] = "BIOLOGY"
 end
 
 function InitTrig_SetHatch()

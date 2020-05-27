@@ -13,23 +13,6 @@ import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 import { Interactables } from "./interaction-data";
 import { EVENT_TYPE } from "app/events/event";
 
-
-class ShipInteraction {
-    unit: Unit;
-    to: undefined;
-    inside_zone: ZONE_TYPE
-    exit_offset: {
-        x: number,
-        y: number
-    };
-
-    constructor(u: Unit, zone: ZONE_TYPE, offset: {x: number, y: number}) {
-        this.unit = u;
-        this.inside_zone = zone;
-        this.exit_offset = offset;
-    }
-};
-
 export function initShipInteractions(game: Game) {
     const interaction: InteractableData = {
         unitType: SHIP_VOYAGER_UNIT,

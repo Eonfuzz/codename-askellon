@@ -36,9 +36,18 @@ export class Trifex extends DynamicBuff {
                 return chat;
             }
 
+            if (GetRandomInt(0, 10) > 8) {
+                chat.message = "like "+chat.message;
+            }
+
             chat.message = chat.message.toLowerCase();
 
             // Now replace words
+            chat.message = chat.message.replace("me", 'my person');
+            chat.message = chat.message.replace("coming", 'heading');
+            chat.message = chat.message.replace("back", 'zoinks');
+            chat.message = chat.message.replace("ask", 'enter his like mind');
+            chat.message = chat.message.replace("attack", 'peace');
             chat.message = chat.message.replace("research", 'like thingy');
             chat.message = chat.message.replace("upgrade", 'thingy');
             chat.message = chat.message.replace("upgr", 'thingy');
@@ -50,12 +59,12 @@ export class Trifex extends DynamicBuff {
             chat.message = chat.message.replace(", ", ' like ');
             chat.message = chat.message.replace("help", 'bruh');
             chat.message = chat.message.replace("job", 'actually nah just chill');
-            chat.message = chat.message.replace("floor", 'brain space');
-            chat.message = chat.message.replace("there", ' dude ');
+            chat.message = chat.message.replace("floor", 'brainspace');
+            chat.message = chat.message.replace("there", ' dude');
             chat.message = chat.message.replace(" so ", ' so like ');
             chat.message = chat.message.replace(" i ", ' i like ');
             chat.message = chat.message.replace("where", 'huh');
-            chat.message = chat.message.replace("what", 'huh');
+            chat.message = chat.message.replace("what", 'nani');
             chat.message = chat.message.replace("this", 'like this');
             chat.message = chat.message.replace("alien", 'dude');
             chat.message = chat.message.replace("evil", 'not a cool dude');
@@ -92,7 +101,7 @@ export class Trifex extends DynamicBuff {
                 case 3: chat.message += " homie"; break;
                 case 4: chat.message += " like im totally cool with that..."; break;
                 case 5: chat.message += " yeah?"; break;
-                case 6: chat.message += " man dude bro. like yeah."; break;
+                case 6: chat.message += " like yeah."; break;
                 case 7: chat.message += " okay?"; break;
                 case 8: chat.message += " like what's so bad about that?"; break;
                 case 9: chat.message += " yeah."; break;
@@ -101,6 +110,12 @@ export class Trifex extends DynamicBuff {
 
             if (GetRandomInt(0, 10) > 7) {
                 chat.message = chat.message.replace("dude", "man");
+            }
+            if (GetRandomInt(0, 10) > 7) {
+                chat.message = chat.message.replace("dude", "bro");
+            }
+            if (GetRandomInt(0, 10) > 7) {
+                chat.message = chat.message.replace("like", "like totally");
             }
         }
         return chat;

@@ -24,6 +24,7 @@ export class WorldModule {
     constructor(game: Game) {
         this.game = game;
         this.askellon = new TheAskellon(this);
+        this.worldZones.set(ZONE_TYPE.SPACE, new Zone(game, ZONE_TYPE.SPACE));
 
         const deathTrigger = new Trigger();
         deathTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);

@@ -5,6 +5,7 @@ import { Interactables, initElevators, initHatches, initWeaponsTerminals } from 
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
 import { initShipInteractions, initAskellonInteractions } from "./ship-interactions";
+import { initVendingInteraction } from "./vendor-interaction";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -37,6 +38,7 @@ export class InteractionModule {
         initWeaponsTerminals();
         initShipInteractions(game);
         initAskellonInteractions(game);
+        initVendingInteraction(game);
     }
 
     beginInteraction() {

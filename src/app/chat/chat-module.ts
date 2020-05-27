@@ -6,6 +6,7 @@ import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE } from "resources/colours";
+import { syncData } from "lib/utils";
 
 export interface ChatHook {
     who: MapPlayer, 
@@ -181,6 +182,28 @@ export class ChatModule {
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
                 FogModifierStart(modifier);
+            }
+            else if (message == "-tp") {
+                const syncher = syncData('-tp', player, (self, data: string) => {
+                    // Log.Information(data);
+                    const x = S2R(data.split(',')[0]);
+                    const y = S2R(data.split(',')[1]);
+
+                    Log.Information(`x: ${x}, y: ${y}`)
+
+                
+                    EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                        const u = GetEnumUnit();
+                        SetUnitX(u, x);
+                        SetUnitY(u, y);
+                    })
+                });
+
+                if (GetLocalPlayer() == player.handle) {
+                    const x = GetCameraTargetPositionX();
+                    const y = GetCameraTargetPositionY();
+                    syncher(`${x},${y}`);
+                }
             }
         }
         // Priv 1 === MODERATOR

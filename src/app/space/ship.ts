@@ -28,7 +28,7 @@ export class Ship {
     public engine: SpaceMovementEngine;
 
     // Units in the ship
-    private inShip: Unit[] = [];
+    public inShip: Unit[] = [];
 
     /**
      * Automatically creates a new unit, adds it to bay if possible

@@ -11,6 +11,7 @@ import { EventListener, EVENT_TYPE } from "app/events/event";
 import { Ship, ShipState } from "./ship";
 import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
+import { ZONE_TYPE } from "app/world/zone-id";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -104,6 +105,7 @@ export class SpaceModule {
         udg_ship_zones.forEach(rect => {
             const bay = new ShipBay(rect)
             this.shipBays.push(bay);
+            bay.ZONE = ZONE_TYPE.CARGO_A;
 
             // Also for now create a ship to sit in the dock
             const ship = new Ship(this.game, ShipState.inBay, Unit.fromHandle(
@@ -176,6 +178,9 @@ export class SpaceModule {
 
         ship.onEnterSpace();
         PanCameraToTimedForPlayer(who.owner.handle, ship.unit.x, ship.unit.y, 0);
+
+        this.game.worldModule.travel(who, ZONE_TYPE.SPACE);
+
         if (who.owner.handle === GetLocalPlayer()) {
             BlzShowTerrain(false);
         }        
@@ -202,13 +207,19 @@ export class SpaceModule {
                 // Display the warning to the pilot
                 return DisplayTextToPlayer(unit.owner.handle, 0, 0, `No free ship bays`);
             }
+            // iterate units
+            ship.inShip.forEach(u => {
+                this.game.worldModule.travel(u, freeBay.ZONE);
+            });
+
             // Now we need to dock
             ship.onLeaveSpace();
             freeBay.dockShip(this.game, ship, true);
             PanCameraToTimedForPlayer(unit.owner.handle, unit.x, unit.y, 0);
             if (unit.owner.handle === GetLocalPlayer()) {
                 BlzShowTerrain(true);
-            }       
+            }      
+            
         } 
         catch (e) {
             Log.Error(e);
@@ -219,7 +230,6 @@ export class SpaceModule {
      * Updates all ship movement
      * @param updatePeriod 
      */
-    // Ships:
     minX = this.spaceRect.minX;
     maxX = this.spaceRect.maxX;
     minY = this.spaceRect.minY;
