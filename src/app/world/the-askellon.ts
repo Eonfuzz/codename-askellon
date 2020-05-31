@@ -33,6 +33,8 @@ const EXTREME_DAMAGE_THRESHOLD = 1800;
 declare const udg_Lights_Floor_1: destructable[];
 declare const udg_Lights_Cargo: destructable[];
 declare const udg_Lights_Bridge: destructable[];
+declare const udg_Lights_Biology: destructable[];
+
 
 export class TheAskellon {
     
@@ -52,7 +54,7 @@ export class TheAskellon {
         this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(world.game, ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
         this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(world.game, ZONE_TYPE.CARGO_A_VENT));
         this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(world.game, ZONE_TYPE.SERVICE_TUNNELS));
-        this.floors.set(ZONE_TYPE.BIOLOGY, new ShipZone(world.game, ZONE_TYPE.BIOLOGY));
+        this.floors.set(ZONE_TYPE.BIOLOGY, new ShipZone(world.game, ZONE_TYPE.BIOLOGY,udg_Lights_Biology ));
         this.floors.set(ZONE_TYPE.BRIDGE, new BridgeZone(world.game, ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
         this.floors.set(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(world.game, ZONE_TYPE.BRIDGE_VENT));
         this.floors.set(ZONE_TYPE.CHURCH, new ChurchZone(world.game, ZONE_TYPE.CHURCH));
@@ -68,7 +70,7 @@ export class TheAskellon {
             CARGO_A_VENT.updatePower(false);
             CARGO_A_VENT.alwaysCauseFear = true;
         }
-        const BRIDGE_VENT = this.floors.get(ZONE_TYPE.CARGO_A_VENT);
+        const BRIDGE_VENT = this.floors.get(ZONE_TYPE.BRIDGE_VENT);
         if (BRIDGE_VENT) {
             BRIDGE_VENT.updatePower(false);
             BRIDGE_VENT.alwaysCauseFear = true;

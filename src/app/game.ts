@@ -124,6 +124,8 @@ export class Game {
 
     postOptResults(optResults: OptResult[]) {
         try {
+            this.spaceModule.initShips();
+            
             // Init forces
             this.forceModule.initForcesFor(optResults);
 

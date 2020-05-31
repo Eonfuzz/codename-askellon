@@ -42,8 +42,6 @@ export class SpaceModule {
         this.shipBays       = [];
 
 
-
-        this.initShips();
         this.initShipAbilities();
 
         try {
@@ -93,7 +91,7 @@ export class SpaceModule {
         const spaceY = this.spaceRect.centerY;
 
         const ship = new Ship(this.game, ShipState.inSpace, Unit.fromHandle(
-            CreateUnit(this.game.forceModule.stationProperty.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
+            CreateUnit(this.game.forceModule.neutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
         );
         ship.engine.doCreateTrails = false;
         ship.unit.setTimeScale(0.1);
@@ -109,10 +107,11 @@ export class SpaceModule {
 
             // Also for now create a ship to sit in the dock
             const ship = new Ship(this.game, ShipState.inBay, Unit.fromHandle(
-                CreateUnit(this.game.forceModule.stationProperty.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
+                CreateUnit(this.game.forceModule.neutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
             );
             this.shipsForUnit.set(ship.unit, ship);
             this.ships.push(ship);
+            this.game.worldModule.travel(ship.unit, bay.ZONE);
 
             bay.dockShip(this.game, ship);
 
@@ -180,6 +179,7 @@ export class SpaceModule {
         PanCameraToTimedForPlayer(who.owner.handle, ship.unit.x, ship.unit.y, 0);
 
         this.game.worldModule.travel(who, ZONE_TYPE.SPACE);
+        this.game.worldModule.travel(ship.unit, ZONE_TYPE.SPACE);
 
         if (who.owner.handle === GetLocalPlayer()) {
             BlzShowTerrain(false);
@@ -211,6 +211,7 @@ export class SpaceModule {
             ship.inShip.forEach(u => {
                 this.game.worldModule.travel(u, freeBay.ZONE);
             });
+            this.game.worldModule.travel(ship.unit, freeBay.ZONE);
 
             // Now we need to dock
             ship.onLeaveSpace();
@@ -269,7 +270,8 @@ export class SpaceModule {
         this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
         this.shipAbilityTrigger.addCondition(Condition(() =>
             GetSpellAbilityId() === this.shipAfterburnerAbilityId   ||
-            GetSpellAbilityId() === ABIL_DOCK_TEST
+            GetSpellAbilityId() === ABIL_DOCK_TEST ||
+            GetUnitTypeId(GetTriggerUnit()) === SHIP_VOYAGER_UNIT
         ));
 
         this.shipAbilityTrigger.addAction(() => {
@@ -284,6 +286,9 @@ export class SpaceModule {
             else if (castAbilityId === this.shipAfterburnerAbilityId) {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
             }
+
+            const manaCost = BlzGetAbilityManaCost(castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
+            ship.shipFuel -= manaCost;
         })
     }
 }

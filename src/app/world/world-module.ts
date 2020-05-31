@@ -61,7 +61,7 @@ export class WorldModule {
         // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
         // If this is a player we care about
         const crew = this.game.crewModule.getCrewmemberForUnit(unit);
-        const alien = alienForce.getAlienFormForPlayer(unit.owner);
+        const alien = alienForce && alienForce.getAlienFormForPlayer(unit.owner);
 
         const isCrewmember = crew && crew.unit === unit;
 
@@ -84,7 +84,6 @@ export class WorldModule {
         // If the traversing unit was alien or crewmember, call the floor change event
         if ((crew && crew.unit === unit) || alien == unit) 
             this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { source: unit, crewmember: crew as Crewmember });
-        
     }
 
     unitDeath() {

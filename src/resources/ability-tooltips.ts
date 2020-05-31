@@ -73,11 +73,12 @@ export const alienTooltipToAlien = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
 
-You are the ${COL_ALIEN}Alien.|r Destroy or devour the lesser beings aboard this vessel.
-You can ${COL_INFO}transform|r into your ${COL_ALIEN}Alien|r form at will.
+You are the ${COL_ATTATCH}Alien.|r Win the game by destroying or assimilating all other life onboard this ship.
+Cast this ability to ${COL_INFO}transform|r, revealing your true form.
         
-When critically injured you gain ${COL_RESOLVE}Resolve|r, this ability is lost at the ${COL_ALIEN}third evolution|r.
-    
+${COL_MISC}60 Second Cooldown|r
+
+-= ASKELLON ROLE =-    
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
 ${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
@@ -87,14 +88,15 @@ export const alienTooltipToHuman = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
 
-You are the ${COL_ALIEN}Alien.|r Destroy or devour the lesser beings aboard this vessel.
-You can ${COL_INFO}transform|r into your ${COL_INFO}Human|r form at will.
-        
-When critically injured you gain ${COL_RESOLVE}Resolve|r, this ability is lost at the ${COL_ALIEN}third evolution|r.
+    You are the ${COL_ATTATCH}Alien.|r Win the game by destroying or assimilating all other life onboard this ship.
+    Cast this ability to ${COL_INFO}transform|r, disguising as a human.
+            
+    ${COL_MISC}60 Second Cooldown|r
     
-${ROLE_DESCRIPTIONS.get(who.role)}
-
-${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
+    -= ASKELLON ROLE =-    
+    ${ROLE_DESCRIPTIONS.get(who.role)}
+    
+    ${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
 );
 
 export const dragonBreathBlastTooltip = new DynamicAbilityTooltip(

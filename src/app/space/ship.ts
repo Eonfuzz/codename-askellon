@@ -5,7 +5,8 @@ import { Game } from "app/game";
 import { SpaceMovementEngine } from "./ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { UNIT_IS_FLY } from "resources/ability-ids";
+import { UNIT_IS_FLY, TECH_MAJOR_VOID } from "resources/ability-ids";
+import { EventListener, EVENT_TYPE } from "app/events/event";
 
 export enum ShipState {
     inBay, inSpace
@@ -48,6 +49,13 @@ export class Ship {
         if (state === ShipState.inSpace) {
             this.engine = new SpaceMovementEngine(this.unit.x, this.unit.y, vectorFromUnit(this.unit.handle).applyPolarOffset(this.unit.facing, 30));
         }
+
+        // Listen to ugprade events
+        game.event.addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+            if (data.data.researched === TECH_MAJOR_VOID) {
+                // TODO Do stuff
+            }
+        }));
     }
 
     process(game: Game, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
@@ -59,7 +67,9 @@ export class Ship {
             const facing = this.engine.getFacingAngle();
             BlzSetUnitFacingEx(this.unit.handle, facing);
 
-            const fuelCost = (0.5 + this.engine.getMomentum().getLength() / 5000) * deltaTime;
+            const momentumLen = this.engine.getMomentum().getLength();
+
+            const fuelCost = (0.5 + momentumLen / 4000) * deltaTime;
             this.shipFuel -= fuelCost;
             // Set pos
             const enginePos = this.engine.getPosition();
@@ -69,15 +79,22 @@ export class Ship {
             // We also force player cam to the ship
             const p = this.unit.owner;
             PanCameraToTimedForPlayer(p.handle, this.unit.x, this.unit.y, 0);
-            // Set animation
-            SetUnitAnimationByIndex(this.unit.handle, 4);
+
+            if (momentumLen >= 100) {
+                // Set animation
+                SetUnitAnimationByIndex(this.unit.handle, 4);
+            }
+            else {
+                // Set animation
+                SetUnitAnimationByIndex(this.unit.handle, 3);
+            }
 
             if (this.shipFuel <= 0) {
                 this.outOfFuelDotTicker += deltaTime;
-                if (this.outOfFuelDotTicker >= 1) {
-                    this.outOfFuelDotTicker -= 1;
+                if (this.outOfFuelDotTicker >= 0.5) {
+                    this.outOfFuelDotTicker -= 0.5;
                     this.unit.damageTarget(this.unit.handle, 
-                        50, 0, 
+                        25, 0, 
                         false, false, 
                         ATTACK_TYPE_HERO, 
                         DAMAGE_TYPE_DIVINE, 
@@ -88,7 +105,7 @@ export class Ship {
         }
         // Otherwise update fuel
         else if (this.state = ShipState.inBay) {
-            // this.shipFuel = Math.min(this.shipFuel + 5 * deltaTime, 100);
+            this.shipFuel = Math.min(this.shipFuel + 0.5 * deltaTime, 100);
         }
         this.unit.mana = this.shipFuel;
     }
@@ -112,8 +129,8 @@ export class Ship {
 
         this.unit.setflyHeight(0, 0);
         this.unit.paused = false;
-        this.unit.selectionScale = 0.5;
-        this.unit.setScale(0.5, 0.5, 0.5);
+        this.unit.selectionScale = 0.4;
+        this.unit.setScale(0.4, 0.4, 0.4);
         this.unit.setPathing(false);
     }
 
@@ -130,14 +147,14 @@ export class Ship {
     }
 
     onLeaveShip(game: Game) {
-        const newOwner = game.forceModule.stationProperty;
+        const newOwner = game.forceModule.neutralHostile;
         this.unit.owner = newOwner;
         SetUnitAnimationByIndex(this.unit.handle, 3);
 
         const shipPos = vectorFromUnit(this.unit.handle);
 
         this.inShip.forEach(u => {
-            const rPos = shipPos.applyPolarOffset(GetRandomReal(0, 360), 350);
+            const rPos = shipPos.applyPolarOffset(GetRandomReal(0, 360), 150);
             u.x = rPos.x;
             u.y = rPos.y;
             u.show = true;
@@ -145,6 +162,7 @@ export class Ship {
 
             // If we have the entering unit was selected, select the ship too
             SelectUnitForPlayerSingle(u.handle, u.owner.handle);
+            PanCameraToTimedForPlayer(u.owner.handle, u.x, u.y, 0);
         });
         
         this.inShip = [];

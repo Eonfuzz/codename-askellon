@@ -18,7 +18,6 @@ export const COL_FLOOR_2 = `|cff41dee0`;
 export const COL_CARGO_A = `|cff008080`;
 export const COL_BRIDGE = COL_GOLD;
 
-
 export const COL_VENTS = `|cff666633`;
 
 export const COL_GOD = 'ffcc00';

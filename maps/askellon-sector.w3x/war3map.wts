@@ -2497,12 +2497,6 @@ STRING 577
 Plant Pot
 }
 
-STRING 578
-// Units: h006 (Perseus|n|cff808080Right Click to enter ship|r), Name (Name)
-{
-Perseus|n|cff808080Right Click to enter ship|r
-}
-
 STRING 579
 // Doodads: D00V (Pot Plant Plant), Name (Name)
 {
@@ -2513,12 +2507,6 @@ STRING 581
 // Destructibles: B005 (Light Green), Name (Name)
 {
 Light Green
-}
-
-STRING 582
-// Units: n007 (|cff00ffffGene Splicer|r|n|cff808080Stand inside and wait for a doctor|r), Name (Name)
-{
-|cff00ffffGene Splicer|r|n|cff808080Stand inside and wait for a doctor|r
 }
 
 STRING 584
@@ -2563,15 +2551,285 @@ STRING 594
 |cff00ff00L|r|cff00ff06i|r|cff00ff0ek|r|cff00ff16e|r|cff00ff1d |r|cff00ff25I|r|cff00ff2d |r|cff00ff35t|r|cff00ff3ch|r|cff00ff44i|r|cff00ff4cn|r|cff00ff54k|r|cff00ff5b |r|cff00ff63s|r|cff00ff6bo|r|cff00ff72m|r|cff00ff7ae|r|cff00ff82t|r|cff00ff8ah|r|cff00ff91i|r|cff00ff99n|r|cff00ffa1g|r|cff00ffa9'|r|cff00ffb0s|r|cff00ffb8 |r|cff00ffc0w|r|cff00ffc7r|r|cff00ffcfo|r|cff00ffd7n|r|cff00ffdfg|r|cff00ffe6 |r|cff00ffeeb|r|cff00fff6r|r|cff00fffeo|r
 }
 
-STRING 595
-// Units: n006 (|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98h|r|cff00ffcbe|r|cff00fffex|r ), Name (Name)
-{
-|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98h|r|cff00ffcbe|r|cff00fffex|r Vendor|n|cff808080Right Click to use|r
-}
-
 STRING 596
 // Buffs/Effects: B005 (Trifex), EditorName (Name (Editor Only))
 {
 Trifex
+}
+
+STRING 597
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Void Delving
+}
+
+STRING 599
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 603
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 61%|r|n|cffd45e19New Damage Bonus: 77%|r
+}
+
+STRING 604
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 77%|r|n|cffd45e19New Damage Bonus: 94%|r
+}
+
+STRING 605
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 94%|r|n|cffd45e19New Damage Bonus: 115%|r
+}
+
+STRING 606
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 115%|r|n|cffd45e19New Damage Bonus: 136%|r
+}
+
+STRING 607
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
+}
+
+STRING 608
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 609
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 610
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 611
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 612
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 613
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 614
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 615
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 616
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 617
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 618
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Void Delving
+}
+
+STRING 619
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Void Delving
+}
+
+STRING 620
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 621
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Void Delving
+}
+
+STRING 622
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 623
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 624
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 625
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 626
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 627
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 628
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 629
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 630
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 631
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 632
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 633
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 634
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 635
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 636
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 637
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
+{
+ranged
+}
+
+STRING 638
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nRecalibrates Void Engines|n|cff00ff00- Space Ships can now be entered|n- Asteroids may now be mined|r|n
+}
+
+STRING 639
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Fuel cost of Afterburner reduced to 10|n- Increased range of mining beam by 33%|n- Maximum fuel increased by 20|n- Ships may now land on satellites and planets|r|n|n|cff6f2583Infested|n- Humans not on the Askellon are revealed|r
+}
+
+STRING 640
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser now speed increased by 300%|n- Drones now ferry mined ore back to the Askellon|n|n|cff6f2583Infested|n- Chat messages have a chance to not appear for people off the Askellon|n- Ore creates infesation upon delivery|r
+}
+
+STRING 641
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 90%|n|n|cff6f2583Infested|n- Heavy Ordinance will always lock onto the Askellon|n- Heavy Ordinance fired at the Askellon now cause infestation|n- Disables oxygen production on ships
+}
+
+STRING 642
+// Units: n006 (|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r ), Name (Name)
+{
+|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r Vendor|n|cff808080Right Click to use|r
+}
+
+STRING 643
+// Units: n008 (Medical Supplies), Name (Name)
+{
+Medical Supplies
+}
+
+STRING 644
+// Units: n009 (Everyday Store), Name (Name)
+{
+Everyday Store
+}
+
+STRING 646
+// Units: h006 (|cffd45e19Perseus|r|n|cff808080Right Click To Enter|r), Name (Name)
+{
+|cffd45e19Perseus|r|n|cff808080Right Click To Enter|r
+}
+
+STRING 647
+// Units: n007 (|cff00ffffGene Splicer|r|n|cff808080Stand inside and await a Doctor|r), Name (Name)
+{
+|cff00ffffGene Splicer|r|n|cff808080Stand inside and await a Doctor|r
 }
 

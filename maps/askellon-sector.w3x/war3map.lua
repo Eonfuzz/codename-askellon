@@ -21,6 +21,7 @@ udg_pathing_rect = nil
 udg_killzones = {}
 udg_Lights_Cargo = {}
 udg_Lights_Bridge = {}
+udg_Lights_Biology = {}
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -69,6 +70,7 @@ gg_unit_n004_0034 = nil
 gg_unit_n001_0055 = nil
 gg_unit_n002_0033 = nil
 gg_unit_n004_0047 = nil
+gg_unit_n004_0244 = nil
 gg_unit_n002_0043 = nil
 gg_unit_n002_0044 = nil
 gg_unit_n001_0045 = nil
@@ -77,14 +79,17 @@ gg_unit_n004_0035 = nil
 gg_item_ratf_0230 = nil
 gg_unit_n001_0199 = nil
 gg_unit_n001_0051 = nil
+gg_unit_n002_0053 = nil
 gg_unit_h004_0061 = nil
 gg_unit_n001_0240 = nil
 gg_unit_n004_0267 = nil
 gg_unit_n002_0245 = nil
+gg_unit_h004_0268 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
 gg_dest_B002_0022 = nil
+gg_dest_B002_0340 = nil
 gg_dest_B002_0096 = nil
 gg_dest_B002_0097 = nil
 gg_dest_B002_0098 = nil
@@ -103,6 +108,20 @@ gg_dest_B002_0337 = nil
 gg_dest_B002_0338 = nil
 gg_dest_B002_0267 = nil
 gg_dest_B002_0415 = nil
+gg_dest_B002_0632 = nil
+gg_dest_B002_0628 = nil
+gg_dest_B002_0629 = nil
+gg_dest_B002_0631 = nil
+gg_dest_B002_1337 = nil
+gg_dest_B002_1336 = nil
+gg_dest_B002_1299 = nil
+gg_dest_B002_1300 = nil
+gg_dest_B002_0614 = nil
+gg_dest_B002_1461 = nil
+gg_dest_B002_1453 = nil
+gg_dest_B002_1454 = nil
+gg_dest_B002_1452 = nil
+gg_dest_B002_1457 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -181,6 +200,7 @@ function CreateAllDestructables()
     gg_dest_B002_0017 = BlzCreateDestructableZWithSkin(FourCC("B002"), -104.7, -37.8, 134.4, 217.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0019 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.0, -62.8, 134.4, 117.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0022 = BlzCreateDestructableZWithSkin(FourCC("B002"), 828.8, 542.7, 134.4, 210.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0340 = BlzCreateDestructableZWithSkin(FourCC("B002"), -14268.8, -25659.7, -25.6, 224.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0096 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28730.8, -27410.6, 201.0, 73.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0097 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28713.7, -28208.7, 201.0, 98.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0098 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28060.4, -27407.3, 201.0, 73.000, 1.000, 0, FourCC("B002"))
@@ -195,10 +215,24 @@ function CreateAllDestructables()
     gg_dest_B002_0269 = BlzCreateDestructableZWithSkin(FourCC("B002"), -19703.4, -27262.1, 243.2, 313.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0262 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18839.8, -28247.6, 339.2, 43.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0265 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18948.5, -26241.1, 371.2, 206.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0337 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18427.3, -27110.6, 339.2, 139.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0337 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18427.3, -27110.6, 345.6, 139.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0338 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18431.9, -27871.1, 339.2, 95.182, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0267 = BlzCreateDestructableZWithSkin(FourCC("B002"), -17804.3, -25225.6, 140.8, 132.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_0415 = BlzCreateDestructableZWithSkin(FourCC("B002"), -19069.5, -25223.1, 140.8, 132.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0632 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13685.6, -24978.7, 44.8, 75.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0628 = BlzCreateDestructableZWithSkin(FourCC("B002"), -14207.3, -26747.7, 172.8, 343.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0629 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13845.0, -26757.1, 172.8, 49.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0631 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13354.9, -25991.3, 172.8, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1337 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12672.7, -25981.5, 153.6, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1336 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11389.6, -25967.9, 153.6, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1299 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12347.5, -26827.2, 89.6, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1300 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11678.2, -26832.3, 89.6, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_0614 = BlzCreateDestructableZWithSkin(FourCC("B002"), -14323.9, -24773.1, 64.0, 224.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1461 = BlzCreateDestructableZWithSkin(FourCC("B002"), -10501.3, -26520.9, 44.8, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1453 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11905.0, -24118.8, 128.0, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1454 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11905.9, -22313.1, 128.0, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1452 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11910.7, -25205.8, 128.0, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_1457 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12794.8, -24648.2, 147.2, 118.000, 1.000, 0, FourCC("B002"))
 end
 
 function CreateAllItems()
@@ -212,7 +246,7 @@ function CreateAllItems()
     BlzCreateItemWithSkin(FourCC("I009"), 712.9, 426.1, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 758.8, 424.4, FourCC("I009"))
     BlzCreateItemWithSkin(FourCC("I009"), 852.4, 420.0, FourCC("I009"))
-    BlzCreateItemWithSkin(FourCC("I00A"), -14166.9, -27317.0, FourCC("I00A"))
+    BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), 450.0, 159.3, FourCC("ratf"))
 end
 
@@ -241,6 +275,13 @@ function CreateBuildingsForPlayer21()
     gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
     gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 640.0, 768.0, 270.000, FourCC("h004"))
     gg_unit_h004_0061 = BlzCreateUnitWithSkin(p, FourCC("h004"), -17856.0, -28800.0, 270.000, FourCC("h004"))
+    gg_unit_h004_0268 = BlzCreateUnitWithSkin(p, FourCC("h004"), -11136.0, -24704.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n003"), -12736.0, -22272.0, 270.000, FourCC("n003"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n003"), -26944.0, -27200.0, 270.000, FourCC("n003"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n008"), -13120.0, -24512.0, 270.000, FourCC("n008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n008"), -22144.0, -27008.0, 270.000, FourCC("n008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n009"), -23872.0, -27008.0, 270.000, FourCC("n009"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n009"), -10176.0, -25792.0, 270.000, FourCC("n009"))
 end
 
 function CreateUnitsForPlayer21()
@@ -457,6 +498,27 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14912.0, -25440.0, 90.777, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14816.0, -25440.0, 90.777, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14720.0, -25440.0, 90.777, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10624.0, -25120.0, 78.867, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10560.0, -24928.0, 149.770, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10496.0, -25088.0, 64.070, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10464.0, -25024.0, 203.987, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10656.0, -25024.0, 59.921, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10496.0, -24640.0, 276.818, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10880.0, -24704.0, 149.770, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11232.0, -24928.0, 60.312, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11072.0, -25344.0, 149.972, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10976.0, -25024.0, 262.230, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11200.0, -25120.0, 288.093, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10784.0, -24832.0, 213.502, FourCC("h005"))
+end
+
+function CreateNeutralHostileBuildings()
+    local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("n007"), -14688.0, -25120.0, 270.000, FourCC("n007"))
 end
 
 function CreateNeutralHostile()
@@ -480,25 +542,25 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
     gg_unit_n004_0035 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26113.3, 26361.4, 89.562, FourCC("n004"))
     u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
-    u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -64.0, 960.0, 270.000, FourCC("nMED"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n007"), -14688.0, -25120.0, 270.000, FourCC("n007"))
-    u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -13696.0, -24832.0, 270.000, FourCC("nGEN"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -12803.1, -24508.2, 270.000, FourCC("nMED"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -13696.0, -24896.0, 270.000, FourCC("nGEN"))
     gg_unit_n002_0043 = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
     gg_unit_n002_0044 = BlzCreateUnitWithSkin(p, FourCC("n002"), -26496.0, -25344.0, 270.000, FourCC("n002"))
     gg_unit_n001_0045 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28864.0, -26944.0, 270.000, FourCC("n001"))
     gg_unit_n004_0047 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26689.3, 27065.4, 89.562, FourCC("n004"))
     gg_unit_n001_0051 = BlzCreateUnitWithSkin(p, FourCC("n001"), -19008.0, -27904.0, 270.000, FourCC("n001"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19712.0, -27264.0, 270.000, FourCC("n002"))
+    gg_unit_n002_0053 = BlzCreateUnitWithSkin(p, FourCC("n002"), -19712.0, -27264.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19584.0, -27904.0, 270.000, FourCC("n002"))
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
-    gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -832.0, 960.0, 270.000, FourCC("n001"))
+    gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -10560.0, -25536.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n005"), -18435.9, -25586.1, 0.220, FourCC("n005"))
     u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24569.4, 89.562, FourCC("n004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24057.4, 89.562, FourCC("n004"))
+    gg_unit_n004_0244 = BlzCreateUnitWithSkin(p, FourCC("n004"), -10689.3, -22854.6, 89.562, FourCC("n004"))
     gg_unit_n002_0245 = BlzCreateUnitWithSkin(p, FourCC("n002"), -14080.0, -27456.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("n006"), -11856.6, -26533.3, 224.634, FourCC("n006"))
     gg_unit_n004_0267 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26497.3, 25081.4, 89.562, FourCC("n004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -10432.0, -21824.0, 270.000, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()
@@ -511,6 +573,7 @@ function CreatePlayerUnits()
 end
 
 function CreateAllUnits()
+    CreateNeutralHostileBuildings()
     CreateNeutralPassiveBuildings()
     CreatePlayerBuildings()
     CreateNeutralHostile()
@@ -541,8 +604,8 @@ function CreateRegions()
     gg_rct_ShipBay04 = Rect(-26144.0, -28448.0, -25952.0, -28032.0)
     gg_rct_CollisionCheckZone = Rect(416.0, 96.0, 480.0, 160.0)
     gg_rct_FallZoneBridge = Rect(-17888.0, -28096.0, -17056.0, -27776.0)
-    gg_rct_JumpPassBridgeVents = Rect(-17984.0, -28896.0, -16864.0, -28064.0)
-    gg_rct_JumpBassBridge = Rect(-18016.0, -27808.0, -16896.0, -26976.0)
+    gg_rct_JumpPassBridgeVents = Rect(-17984.0, -29088.0, -16864.0, -28064.0)
+    gg_rct_JumpBassBridge = Rect(-18016.0, -27808.0, -16896.0, -26688.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2 = Rect(-18240.0, -27296.0, -17568.0, -26720.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy = Rect(-19264.0, -27392.0, -18592.0, -26656.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2 = Rect(-20064.0, -25024.0, -16896.0, -24192.0)
@@ -601,6 +664,21 @@ function Trig_LightsPerFloor_Actions()
     udg_Lights_Bridge[6] = gg_dest_B002_0337
     udg_Lights_Bridge[7] = gg_dest_B002_0269
     udg_Lights_Bridge[8] = gg_dest_B002_0415
+    udg_Lights_Biology[1] = gg_dest_B002_0340
+    udg_Lights_Biology[2] = gg_dest_B002_0614
+    udg_Lights_Biology[3] = gg_dest_B002_0631
+    udg_Lights_Biology[4] = gg_dest_B002_1337
+    udg_Lights_Biology[5] = gg_dest_B002_1457
+    udg_Lights_Biology[6] = gg_dest_B002_1299
+    udg_Lights_Biology[7] = gg_dest_B002_1300
+    udg_Lights_Biology[8] = gg_dest_B002_1336
+    udg_Lights_Biology[9] = gg_dest_B002_1461
+    udg_Lights_Biology[10] = gg_dest_B002_1452
+    udg_Lights_Biology[11] = gg_dest_B002_1453
+    udg_Lights_Biology[12] = gg_dest_B002_1454
+    udg_Lights_Biology[13] = gg_dest_B002_0632
+    udg_Lights_Biology[14] = gg_dest_B002_0629
+    udg_Lights_Biology[15] = gg_dest_B002_0628
 end
 
 function InitTrig_LightsPerFloor()
@@ -649,6 +727,8 @@ function Trig_SetHatch_Actions()
     udg_hatch_entrances[6] = gg_unit_n002_0044
     udg_hatch_entrances[7] = gg_unit_n004_0267
     udg_hatch_entrances[8] = gg_unit_n002_0245
+    udg_hatch_entrances[9] = gg_unit_n002_0053
+    udg_hatch_entrances[10] = gg_unit_n004_0244
     udg_hatch_exits[1] = gg_unit_n004_0034
     udg_hatch_exits[2] = gg_unit_n002_0033
     udg_hatch_exits[3] = gg_unit_n002_0043
@@ -657,6 +737,8 @@ function Trig_SetHatch_Actions()
     udg_hatch_exits[6] = gg_unit_n004_0047
     udg_hatch_exits[7] = gg_unit_n002_0245
     udg_hatch_exits[8] = gg_unit_n004_0267
+    udg_hatch_exits[9] = gg_unit_n004_0244
+    udg_hatch_exits[10] = gg_unit_n002_0053
     udg_hatch_entrance_names[1] = "|cff666633Service Tunnels|r"
     udg_hatch_entrance_names[2] = "|cfff5a742Floor 1|r"
     udg_hatch_entrance_names[3] = "|cff008080Cargo|r"
@@ -665,6 +747,8 @@ function Trig_SetHatch_Actions()
     udg_hatch_entrance_names[6] = "|cff666633Service Tunnels|r"
     udg_hatch_entrance_names[7] = "|cff00ffffBiology and Chemistry|r"
     udg_hatch_entrance_names[8] = "|cff666633Service Tunnels|r"
+    udg_hatch_entrance_names[9] = "|cff666633Service Tunnels|r"
+    udg_hatch_entrance_names[10] = "|cffffff00Bridge|r"
     udg_hatch_exit_zones[1] = "FLOOR_1"
     udg_hatch_exit_zones[2] = "SERVICE_TUNNELS"
     udg_hatch_exit_zones[3] = "SERVICE_TUNNELS"
@@ -673,6 +757,8 @@ function Trig_SetHatch_Actions()
     udg_hatch_exit_zones[6] = "SERVICE_TUNNELS"
     udg_hatch_exit_zones[7] = "SERVICE_TUNNELS"
     udg_hatch_exit_zones[8] = "BIOLOGY"
+    udg_hatch_exit_zones[9] = "BRIDGE"
+    udg_hatch_exit_zones[10] = "BRIDGE_VENT"
 end
 
 function InitTrig_SetHatch()
@@ -713,6 +799,8 @@ function Trig_SetPowerGenerators_Actions()
     udg_power_generators[5] = gg_unit_h004_0061
     udg_power_generator_zones[4] = "BRIDGE"
     udg_power_generator_zones[5] = "BRIDGE_VENT"
+    udg_power_generators[6] = gg_unit_h004_0268
+    udg_power_generator_zones[6] = "BIOLOGY"
 end
 
 function InitTrig_SetPowerGenerators()

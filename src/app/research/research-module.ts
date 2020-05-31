@@ -1,6 +1,6 @@
 import { Game } from "app/game";
 import { Trigger, Unit, MapPlayer } from "w3ts";
-import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
+import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID } from "resources/ability-ids";
 // import { STR_OPT_ALIEN } from "resources/strings";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
 import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE } from "resources/strings";
@@ -9,6 +9,9 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/force-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { EVENT_TYPE } from "app/events/event";
+import { SoundRef } from "app/types/sound-ref";
+
+const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false);
 
 /**
  * Handles research and upgrades
@@ -58,6 +61,7 @@ import { EVENT_TYPE } from "app/events/event";
 
                 if (pForce && crewmember) this.rewardResearchXP(pForce, crewmember, player, techUnlocked);
 
+                majorResarchSound.playSound();
                 // Broadcast item equip event
                 this.game.event.sendEvent(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { 
                     source: unit, data: { researched: techUnlocked }
@@ -86,6 +90,7 @@ import { EVENT_TYPE } from "app/events/event";
     techIsMajor(id: number): boolean {
         if (id === TECH_MAJOR_WEAPONS_PRODUCTION) return true;
         if (id === TECH_MAJOR_HEALTHCARE) return true;
+        if (id === TECH_MAJOR_VOID) return true;
         return false;
     }
 
@@ -110,7 +115,6 @@ import { EVENT_TYPE } from "app/events/event";
             if (alienForce && isInfested && alienForce.hasPlayer(p)) {
                 DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
                 // Play infestation complete sound
-                this.setUpgradeAsInfested(id, level, true);
             }
             else {
                 // Play upgrade complete sound
@@ -131,6 +135,8 @@ import { EVENT_TYPE } from "app/events/event";
         if (id === TECH_MAJOR_WEAPONS_PRODUCTION)
             return STR_UPGRADE_NAME_WEAPONS(level);
         if (id === TECH_MAJOR_HEALTHCARE)
+            return STR_UPGRADE_NAME_HEALTHCARE(level);
+        if (id === TECH_MAJOR_VOID)
             return STR_UPGRADE_NAME_HEALTHCARE(level);
         return '';
     }

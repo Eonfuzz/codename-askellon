@@ -400,7 +400,7 @@ export class AlienForce extends ForceType {
 
         // Hitting alien player
         const damagedUnitIsAlien = damagedPlayer === this.forceModule.alienAIPlayer || 
-        // OR hitting alien form
+            // OR hitting alien form
             this.playerAlienUnits.has(damagedPlayer)  && this.playerAlienUnits.get(damagedPlayer) === damagedUnit;
 
         // Ensure that they are different owners
