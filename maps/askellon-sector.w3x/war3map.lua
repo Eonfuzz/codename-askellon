@@ -705,12 +705,12 @@ function Trig_Set_Actions()
     udg_elevator_entrance_names[3] = "|cffffcc00Cathederal|r"
     udg_elevator_entrance_names[4] = "|cff008080Cargo|r"
     udg_elevator_entrance_names[5] = "|cffffff00Bridge|r"
-    udg_elevator_entrance_names[6] = "|cfff5a742Floor 1|r"
+    udg_elevator_entrance_names[6] = "|cff00ffffGene Labs|r"
     udg_elevator_exit_zones[1] = "FLOOR_1"
     udg_elevator_exit_zones[2] = "CHURCH"
     udg_elevator_exit_zones[3] = "CARGO_A"
     udg_elevator_exit_zones[4] = "CHURCH"
-    udg_elevator_exit_zones[5] = "FLOOR_1"
+    udg_elevator_exit_zones[5] = "BIOLOGY"
     udg_elevator_exit_zones[6] = "BRIDGE"
 end
 

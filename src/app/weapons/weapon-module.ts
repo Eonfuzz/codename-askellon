@@ -278,6 +278,21 @@ export class WeaponModule {
         // }
         // // Handle auto attack
         // else {
+
+        // Handle start of the attack
+        const attackTrigger = new Trigger();
+        attackTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED);
+        attackTrigger.addAction(() => {
+            let unit = Unit.fromHandle(GetAttacker());
+            let targetUnit = Unit.fromHandle(GetAttackedUnitBJ())
+
+            const validAggression = this.game.forceModule.aggressionBetweenTwoPlayers(
+                unit.owner, 
+                targetUnit.owner
+            );
+            if (!validAggression) IssueImmediateOrder(unit.handle, "stop");
+        });
+
             this.weaponAttackTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
             this.weaponAttackTrigger.addCondition(Condition(() => BlzGetEventIsAttack()));
             this.weaponAttackTrigger.addAction(() => {
@@ -288,8 +303,6 @@ export class WeaponModule {
                     unit.owner, 
                     targetUnit.owner
                 );
-
-                if (!validAggression) IssueImmediateOrder(targetUnit.handle, "stop");
 
                 if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
 

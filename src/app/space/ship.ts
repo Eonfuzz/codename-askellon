@@ -240,7 +240,10 @@ export class Ship {
 
         // Null some data
         this.unit = undefined;
-        this.engine.destroy();
-        this.engine = undefined;
+
+        if (this.engine) {
+            this.engine.destroy();
+            this.engine = undefined;
+        }
     }
 }

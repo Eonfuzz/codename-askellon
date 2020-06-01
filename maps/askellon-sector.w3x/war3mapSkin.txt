@@ -3,6 +3,7 @@ InfoPanelIconArmorMedium=Buttons\combat_armor_btn_upgrades.dds
 InfoPanelIconArmorMediumNeutral=Buttons\combat_armor_btn.dds
 InfoPanelIconDamageSiege=Buttons\alien_claws_btn_upgrades.dds
 InfoPanelIconDamageSiegeNeutral=Buttons\alien_claws_btn.dds
+MinimapNeutralTexture=UI\Minimap\minimap-neutralbuilding.dds
 
 [FrameDef]
 AGILITY=TRIGSTR_162

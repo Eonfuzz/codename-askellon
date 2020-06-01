@@ -12,6 +12,7 @@ import { Ship, ShipState } from "./ship";
 import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
+import { ALIEN_FORCE_NAME } from "app/force/alien-force";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -126,18 +127,26 @@ export class SpaceModule {
             const u = Unit.fromHandle(GetDyingUnit());
             const k = Unit.fromHandle(GetKillingUnit() || GetDyingUnit());
 
+            // Log.Information("Ship death!");
+
             const matchingShip = this.shipsForUnit.get(u);
 
-            // Was the ship in a bay
-            const bay = this.shipBays.find(b => b.getDockedShip() === matchingShip);
+            try {
+                // Was the ship in a bay
+                const bay = this.shipBays.find(b => b.getDockedShip() === matchingShip);
 
-            // Now remove the ship from the bay
-            if (bay) bay.onDockedShipDeath();
-            // Now kill the ship
-            matchingShip.onDeath(this.game, k);
-            // Now clear it from ships for unit
-            this.shipsForUnit.delete(u);
-            this.ships.splice(this.ships.indexOf(matchingShip), 1);
+                // Now remove the ship from the bay
+                if (bay) bay.onDockedShipDeath();
+                // Now kill the ship
+                matchingShip.onDeath(this.game, k);
+                // Now clear it from ships for unit
+                this.shipsForUnit.delete(u);
+                this.ships.splice(this.ships.indexOf(matchingShip), 1);
+                // Log.Information("Finished ship Death!");
+            }
+            catch (e) {
+                Log.Error(e);
+            }
         });
 
         this.shipMoveEvent.addAction(() => {
@@ -214,6 +223,14 @@ export class SpaceModule {
         if (who.owner.handle === GetLocalPlayer()) {
             BlzShowTerrain(false);
         }        
+
+        // Alien infestation
+        // Grant vision of the ship if it is infested
+        const t2IsInfested = this.game.researchModule.isUpgradeInfested(TECH_MAJOR_VOID, 2);
+        if (t2IsInfested) {
+            const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME);
+            alienForce.getPlayers().forEach(p => ship.unit.shareVision(p, true));
+        }
     }
 
     /**
@@ -223,37 +240,39 @@ export class SpaceModule {
      * @param whichTarget 
      */
     onShipLeavesSpace(unit: Unit, goal: Unit) {
-        try {
-            const ship = this.shipsForUnit.get(unit);
-            if (!ship) return Log.Error("No ship for unit!");
+        const ship = this.shipsForUnit.get(unit);
+        if (!ship) return Log.Error("No ship for unit!");
 
-            let bays: ShipBay[];
+        let bays: ShipBay[];
 
-            if (goal.typeId == SHIP_MAIN_ASKELLON) bays = this.shipBays;
+        if (goal.typeId == SHIP_MAIN_ASKELLON) bays = this.shipBays;
 
-            // We need to find a "free" dock
-            const freeBay = this.shipBays.find(bay => bay.canDockShip());
-            if (!freeBay) {
-                // Display the warning to the pilot
-                return DisplayTextToPlayer(unit.owner.handle, 0, 0, `No free ship bays`);
-            }
-            // iterate units
-            ship.inShip.forEach(u => {
-                this.game.worldModule.travel(u, freeBay.ZONE);
-            });
-            this.game.worldModule.travel(ship.unit, freeBay.ZONE);
+        // We need to find a "free" dock
+        const freeBay = this.shipBays.find(bay => bay.canDockShip());
+        if (!freeBay) {
+            // Display the warning to the pilot
+            return DisplayTextToPlayer(unit.owner.handle, 0, 0, `No free ship bays`);
+        }
+        // iterate units
+        ship.inShip.forEach(u => {
+            this.game.worldModule.travel(u, freeBay.ZONE);
+        });
+        this.game.worldModule.travel(ship.unit, freeBay.ZONE);
 
-            // Now we need to dock
-            ship.onLeaveSpace();
-            freeBay.dockShip(this.game, ship, true);
-            PanCameraToTimedForPlayer(unit.owner.handle, unit.x, unit.y, 0);
-            if (unit.owner.handle === GetLocalPlayer()) {
-                BlzShowTerrain(true);
-            }      
-            
-        } 
-        catch (e) {
-            Log.Error(e);
+        // Now we need to dock
+        ship.onLeaveSpace();
+        freeBay.dockShip(this.game, ship, true);
+        PanCameraToTimedForPlayer(unit.owner.handle, unit.x, unit.y, 0);
+        if (unit.owner.handle === GetLocalPlayer()) {
+            BlzShowTerrain(true);
+        }
+
+        // Alien infestation
+        // Remove vision of the ship if it is infested
+        const t2IsInfested = this.game.researchModule.isUpgradeInfested(TECH_MAJOR_VOID, 2);
+        if (t2IsInfested) {
+            const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME);
+            alienForce.getPlayers().forEach(p => ship.unit.shareVision(p, false));
         }
     }
 
