@@ -561,6 +561,7 @@ function CreateNeutralPassiveBuildings()
     u = BlzCreateUnitWithSkin(p, FourCC("n006"), -11856.6, -26533.3, 224.634, FourCC("n006"))
     gg_unit_n004_0267 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26497.3, 25081.4, 89.562, FourCC("n004"))
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), -10432.0, -21824.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nVOI"), -26496.5, -27213.2, 270.000, FourCC("nVOI"))
 end
 
 function CreatePlayerBuildings()

@@ -45,6 +45,11 @@ export function initAskellonInteractions(game: Game) {
             return source.typeId === SHIP_VOYAGER_UNIT;
         },
         onStart: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
+            // Issue unit "Hold" order
+            const ship = game.spaceModule.getShipForUnit(source);
+            if (ship) {
+                ship.engine.goToAStop();
+            }
         },
         onCancel: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
         },

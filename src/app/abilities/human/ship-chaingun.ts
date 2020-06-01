@@ -23,6 +23,7 @@ export class ShipChaingunAbility implements Ability {
 
     private timeElapsed = 0;
     private timeSinceBullet = 0;
+    private bulletDamage = 20;
     private sound = new SoundRef("sounds\\chaingunSound.mp3", false);
     constructor() {}
 
@@ -31,7 +32,10 @@ export class ShipChaingunAbility implements Ability {
         this.shootingShip = module.game.spaceModule.getShipForUnit(this.unit);
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass += this.shootingShip.engine.velocityForwardMax / 4;
 
+        const abilLevel = GetUnitAbilityLevel(this.unit.handle, GetSpellAbilityId());
+
         this.sound.playSoundOnUnit(this.unit.handle, 127);
+        this.bulletDamage = 20 + 10 * abilLevel;
 
         return true;
     };
@@ -89,7 +93,7 @@ export class ShipChaingunAbility implements Ability {
         // Now deal damage
 
         const crewmember = wepModule.game.crewModule.getCrewmemberForUnit(this.unit);
-        let damage = 20;
+        let damage = this.bulletDamage;
 
         if (crewmember) {
             damage *= crewmember.getDamageBonusMult();

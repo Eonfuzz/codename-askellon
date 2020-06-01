@@ -2785,24 +2785,6 @@ STRING 638
 |cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nRecalibrates Void Engines|n|cff00ff00- Space Ships can now be entered|n- Asteroids may now be mined|r|n
 }
 
-STRING 639
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Fuel cost of Afterburner reduced to 10|n- Increased range of mining beam by 33%|n- Maximum fuel increased by 20|n- Ships may now land on satellites and planets|r|n|n|cff6f2583Infested|n- Humans not on the Askellon are revealed|r
-}
-
-STRING 640
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser now speed increased by 300%|n- Drones now ferry mined ore back to the Askellon|n|n|cff6f2583Infested|n- Chat messages have a chance to not appear for people off the Askellon|n- Ore creates infesation upon delivery|r
-}
-
-STRING 641
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 90%|n|n|cff6f2583Infested|n- Heavy Ordinance will always lock onto the Askellon|n- Heavy Ordinance fired at the Askellon now cause infestation|n- Disables oxygen production on ships
-}
-
 STRING 642
 // Units: n006 (|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r ), Name (Name)
 {
@@ -2845,12 +2827,6 @@ STRING 649
 T
 }
 
-STRING 650
-// Abilities: A00Q ("Widower" Missile), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Nick named after the first test run, these torpedos have rudimentary intelligence, causing them to detonate slightly after impact or when nearby their targets. Miniature reactors propel these 1 tonne hate filled warheads directly at the things you want dead.|r|n|nFires a Voidburst Torpedo which quickly homes onto a target ahead of your ship. Missile speed and turn rate increases exponentially after firing. Deals |cff00ff001000 damage|r on hit and may cause |cff00ff00internal |rdamage.|n|n|cffd45e19"Whatever you do, don't shoot this at us" - Tech|r|N|n|cff80808080 Seconds Cooldown|r
-}
-
 STRING 651
 // Abilities: A00Q ("Widower" Missile), Tip (Tooltip - Normal)
 {
@@ -2881,15 +2857,81 @@ STRING 655
 X
 }
 
-STRING 656
-// Abilities: A00R (Scan), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Nick named after the first test run, these torpedos have rudimentary intelligence, causing them to detonate slightly after impact or when nearby their targets. Miniature reactors propel these 1 tonne hate filled warheads directly at the things you want dead.|r|n|nFires a Voidburst Torpedo which quickly homes onto a target ahead of your ship. Missile speed and turn rate increases exponentially after firing. Deals |cff00ff001000 damage|r on hit and may cause |cff00ff00internal |rdamage.|n|n|cffd45e19"Whatever you do, don't shoot this at us" - Tech|r|N|n|cff80808080 Seconds Cooldown|r
-}
-
 STRING 657
 // Abilities: A00R (Scan), Tip (Tooltip - Normal)
 {
 Deep Scan
+}
+
+STRING 658
+// Units: nVOI (|cffff8080Void |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cffff8080Void |rTerminal|n|cff808080Right Click to Use|r
+}
+
+STRING 659
+// Units: hVOI (|cffff8080Void |rTerminal), Name (Name)
+{
+|cffff8080Void |rTerminal
+}
+
+STRING 660
+// Units: hVOI (|cffff8080Void |rTerminal), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 665
+// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Perseus's patented Hex Pattern "Zeus" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19"In response to pilot requests for improved mobility options in high-pressure situations, we at Hexcorp has refitted our entire Purseus fleet with Afterburner technology. Hexcorp would like to remind you that the cost of any fuel consumed by Afterburner usage will be deducted from the pilot's next salary."|r |n|n|cffd45e1950|r|cff808080 Seconds Cooldown|r
+}
+
+STRING 666
+// Abilities: A000 (Afterburner), Tip (Tooltip - Normal)
+{
+Engage Afterburners
+}
+
+STRING 667
+// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cffd45e1930|r |cff00ff00base|r damage. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 668
+// Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 671
+// Abilities: A00Q ("Widower" Missile), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Named after the first test run, these torpedos have rudimentary AI, causing them to detonate slightly after impact or when nearby their targets. Miniature reactors propel these 1 tonne hate filled warheads directly at the things you want dead.|r|n|nFires a Voidburst Torpedo that quickly homes onto a target ahead of your ship. Missile speed and turn rate increases exponentially after firing. Deals |cff00ff001000 damage|r on hit and may cause |cff00ff00internal |rdamage.|n|n|cffd45e19"Whatever you do, don't shoot this at us" - Tech|r|N|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 672
+// Abilities: A00R (Scan), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 677
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Cooldown of Afterburner reduced by 20 seconds|n- Increased range of mining beam by 33%|n- Maximum fuel increased by 20|n- Unlocks |cffd45e19Deep Scanning|r|r|n|n|cff8a6df2Upgrade Infestation|n- Crew in space or on planet are revealed|r
+}
+
+STRING 678
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser now speed increased by 300%|n- Drones now ferry mined ore back to the Askellon|n|n|cff8a6df2Upgrade Infestation|n- Chatter may not reach those in space|n- Ore creates infesation upon delivery|r
+}
+
+STRING 680
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 60%|n|n|cff8a6df2Upgrade Infestation|n- Ordinance will always lock onto the Askellon|n- Internal damage causes infestation|n- Disables oxygen production on ships|r
 }
 

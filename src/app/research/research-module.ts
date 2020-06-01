@@ -3,7 +3,7 @@ import { Trigger, Unit, MapPlayer } from "w3ts";
 import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID } from "resources/ability-ids";
 // import { STR_OPT_ALIEN } from "resources/strings";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
-import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE } from "resources/strings";
+import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID } from "resources/strings";
 import { Log } from "lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/force-type";
@@ -64,7 +64,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
                 majorResarchSound.playSound();
                 // Broadcast item equip event
                 this.game.event.sendEvent(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { 
-                    source: unit, data: { researched: techUnlocked }
+                    source: unit, data: { researched: techUnlocked, level: levelTech }
                 });
             }
             // Otherwise just update it for a single player
@@ -137,7 +137,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         if (id === TECH_MAJOR_HEALTHCARE)
             return STR_UPGRADE_NAME_HEALTHCARE(level);
         if (id === TECH_MAJOR_VOID)
-            return STR_UPGRADE_NAME_HEALTHCARE(level);
+            return STR_UPGRADE_NAME_VOID(level);
         return '';
     }
 

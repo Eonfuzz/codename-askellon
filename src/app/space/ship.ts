@@ -25,6 +25,7 @@ export class Ship {
     public shipFuel: number = 100;
     public maxFuel: number = 100;
     private outOfFuelDotTicker = 1;
+    private fuelUsagePercent = 1;
 
     // Ship engine
     public engine: SpaceMovementEngine;
@@ -49,13 +50,6 @@ export class Ship {
         if (state === ShipState.inSpace) {
             this.engine = new SpaceMovementEngine(this.unit.x, this.unit.y, vectorFromUnit(this.unit.handle).applyPolarOffset(this.unit.facing, 30));
         }
-
-        // Listen to ugprade events
-        game.event.addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
-            if (data.data.researched === TECH_MAJOR_VOID) {
-                // TODO Do stuff
-            }
-        }));
     }
 
     process(game: Game, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
@@ -70,7 +64,7 @@ export class Ship {
             const momentumLen = this.engine.getMomentum().getLength();
 
             const fuelCost = (0.5 + momentumLen / 4000) * deltaTime;
-            this.shipFuel -= fuelCost;
+            this.shipFuel -= fuelCost * this.fuelUsagePercent;
             // Set pos
             const enginePos = this.engine.getPosition();
             this.unit.x = enginePos.x;
@@ -105,9 +99,13 @@ export class Ship {
         }
         // Otherwise update fuel
         else if (this.state = ShipState.inBay) {
-            this.shipFuel = Math.min(this.shipFuel + 0.5 * deltaTime, 100);
+            this.shipFuel = Math.min(this.shipFuel + 0.5 * deltaTime, this.maxFuel);
         }
         this.unit.mana = this.shipFuel;
+    }
+
+    public setFuelUsagePercent(newVal: number) {
+        this.fuelUsagePercent = newVal;
     }
 
     onEnterShip(who: Unit) {

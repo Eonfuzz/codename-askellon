@@ -9,7 +9,7 @@ import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { Ship, ShipState } from "./ship";
-import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
+import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
 
@@ -164,6 +164,36 @@ export class SpaceModule {
 
             ship.onMoveOrder(targetLoc);
         })
+
+        // Hook into the space upgrades
+        
+        // Listen to ugprade events
+        this.game.event.addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+            if (data.data.researched === TECH_MAJOR_VOID) {
+                const techLevel = data.data.level;
+                if (techLevel === 2) {
+                    this.ships.forEach(ship => {
+                        ship.maxFuel += 20;
+                        if (ship.unit && ship.unit.isAlive()) {
+                            ship.unit.maxMana = ship.maxFuel;
+                            SetUnitAbilityLevel(ship.unit.handle, this.shipAfterburnerAbilityId, 2);
+                        }
+                    })
+                }
+                if (techLevel === 3) {
+                    this.ships.forEach(ship => {
+                        if (ship.unit && ship.unit.isAlive()) {
+                            SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_CHAINGUN, 2);
+                            BlzSetUnitAbilityManaCost(ship.unit.handle, ABIL_SHIP_BARREL_ROLL_LEFT, 0, 0);
+                            BlzSetUnitAbilityManaCost(ship.unit.handle, ABIL_SHIP_BARREL_ROLL_RIGHT, 0, 0);
+                        }
+                    })
+                }
+                if (techLevel === 4) {
+                    this.ships.forEach(ship => ship.setFuelUsagePercent(0.4))
+                }
+            }
+        }));
     }
 
     onShipEntersSpace(who: Unit, ship: Ship) {
@@ -287,7 +317,7 @@ export class SpaceModule {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
             }
 
-            const manaCost = BlzGetAbilityManaCost(castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
+            const manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
             ship.shipFuel -= manaCost;
         })
     }

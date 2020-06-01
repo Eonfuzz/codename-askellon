@@ -192,6 +192,7 @@ export const initWeaponsTerminals = () => {
     const WEAPONS_UPGRADE_TERMINAL = FourCC('nWEP');
     const MEDICAL_UPGRADE_TERMINAL = FourCC('nMED');
     const GENE_SPLICER_TERMINAL = FourCC('nGEN');
+    const VOID_UPGRADE_TERMINAL = FourCC('nVOI');
     let i = 0;
 
     const upgradeTerminalProcessing: InteractableData = {
@@ -213,6 +214,9 @@ export const initWeaponsTerminals = () => {
             }
             else if (targetUType === MEDICAL_UPGRADE_TERMINAL) {
                 unitType = FourCC('hMED');
+            }
+            else if (targetUType === VOID_UPGRADE_TERMINAL) {
+                unitType = FourCC('hVOI');
             }
             else if (targetUType === GENE_SPLICER_TERMINAL) {
                 // If we haven't got HC 2
@@ -258,4 +262,5 @@ export const initWeaponsTerminals = () => {
     Interactables.set(WEAPONS_UPGRADE_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(MEDICAL_UPGRADE_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(GENE_SPLICER_TERMINAL, upgradeTerminalProcessing);
+    Interactables.set(VOID_UPGRADE_TERMINAL, upgradeTerminalProcessing);
 }

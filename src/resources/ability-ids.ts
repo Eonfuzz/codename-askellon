@@ -5,8 +5,9 @@ export const ABIL_HUMAN_SPRINT = FourCC('A003');
 export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
 export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 export const ABIL_DOCK_TEST = FourCC('A00N');
-export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
 
+export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
+export const ABIL_SHIP_DEEP_SCAN = FourCC('A00R');
 export const ABIL_SHIP_BARREL_ROLL_RIGHT = FourCC('A001');
 export const ABIL_SHIP_BARREL_ROLL_LEFT = FourCC('A006');
 
@@ -27,7 +28,7 @@ export const TECH_WEP_DAMAGE = FourCC('RDAM');
 
 export const TECH_MAJOR_WEAPONS_PRODUCTION = FourCC('RWEP');
 export const TECH_MAJOR_HEALTHCARE = FourCC('RMED');
-export const TECH_MAJOR_VOID = FourCC('RPSC');
+export const TECH_MAJOR_VOID = FourCC('RSPC');
 
 
 export const TECH_NO_UNIT_IN_SPLICER = FourCC('RGEN');
