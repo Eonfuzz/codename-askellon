@@ -73,8 +73,8 @@ export class ShipChaingunAbility implements Ability {
             })
             .onCollide((wepModule, projectile, withWho) => this.onCollide(wepModule, projectile, withWho));
 
-            projectile.addEffect(bulletModel, new Vector3(0, 0, 0), deltaTarget.normalise(), 1.2);
-
+            const effect = projectile.addEffect(bulletModel, new Vector3(0, 0, 0), deltaTarget.normalise(), 1.2);
+            BlzSetSpecialEffectColor(effect, 160, 140, 255);
             module.game.weaponModule.addProjectile(projectile);
         }
 

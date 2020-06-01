@@ -2833,3 +2833,63 @@ STRING 647
 |cff00ffffGene Splicer|r|n|cff808080Stand inside and await a Doctor|r
 }
 
+STRING 648
+// Abilities: A00Q ("Widower" Missile), Name (Name)
+{
+"Widower" Missile
+}
+
+STRING 649
+// Abilities: A00Q ("Widower" Missile), Hotkey (Hotkey - Normal)
+{
+T
+}
+
+STRING 650
+// Abilities: A00Q ("Widower" Missile), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Nick named after the first test run, these torpedos have rudimentary intelligence, causing them to detonate slightly after impact or when nearby their targets. Miniature reactors propel these 1 tonne hate filled warheads directly at the things you want dead.|r|n|nFires a Voidburst Torpedo which quickly homes onto a target ahead of your ship. Missile speed and turn rate increases exponentially after firing. Deals |cff00ff001000 damage|r on hit and may cause |cff00ff00internal |rdamage.|n|n|cffd45e19"Whatever you do, don't shoot this at us" - Tech|r|N|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 651
+// Abilities: A00Q ("Widower" Missile), Tip (Tooltip - Normal)
+{
+"Widower" Voidburst Torpedo
+}
+
+STRING 652
+// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Work In Progress
+}
+
+STRING 653
+// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Tier 1
+}
+
+STRING 654
+// Abilities: A00R (Scan), Name (Name)
+{
+Scan
+}
+
+STRING 655
+// Abilities: A00R (Scan), Hotkey (Hotkey - Normal)
+{
+X
+}
+
+STRING 656
+// Abilities: A00R (Scan), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Nick named after the first test run, these torpedos have rudimentary intelligence, causing them to detonate slightly after impact or when nearby their targets. Miniature reactors propel these 1 tonne hate filled warheads directly at the things you want dead.|r|n|nFires a Voidburst Torpedo which quickly homes onto a target ahead of your ship. Missile speed and turn rate increases exponentially after firing. Deals |cff00ff001000 damage|r on hit and may cause |cff00ff00internal |rdamage.|n|n|cffd45e19"Whatever you do, don't shoot this at us" - Tech|r|N|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 657
+// Abilities: A00R (Scan), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
