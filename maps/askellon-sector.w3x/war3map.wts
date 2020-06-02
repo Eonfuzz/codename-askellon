@@ -2449,12 +2449,6 @@ STRING 569
 |cff808080The Perseus's patented Hex Pattern "Zeus" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19"In response to pilot requests for improved mobility options in high-pressure situations, we at Hexcorp has refitted our entire Purseus fleet with Afterburner technology. Hexcorp would like to remind you that the cost of any fuel consumed by Afterburner usage will be deducted from the pilot's next salary."|r |n|n|cff80808080 Seconds Cooldown|r
 }
 
-STRING 570
-// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 base|r damage. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
-}
-
 STRING 571
 // Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
 {
@@ -2881,22 +2875,10 @@ STRING 660
 - Invisible
 }
 
-STRING 665
-// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Perseus's patented Hex Pattern "Zeus" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19"In response to pilot requests for improved mobility options in high-pressure situations, we at Hexcorp has refitted our entire Purseus fleet with Afterburner technology. Hexcorp would like to remind you that the cost of any fuel consumed by Afterburner usage will be deducted from the pilot's next salary."|r |n|n|cffd45e1950|r|cff808080 Seconds Cooldown|r
-}
-
 STRING 666
 // Abilities: A000 (Afterburner), Tip (Tooltip - Normal)
 {
 Engage Afterburners
-}
-
-STRING 667
-// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cffd45e1930|r |cff00ff00base|r damage. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
 }
 
 STRING 668
@@ -2933,5 +2915,23 @@ STRING 680
 // Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
 |cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 60%|n|n|cff8a6df2Upgrade Infestation|n- Ordinance will always lock onto the Askellon|n- Internal damage causes infestation|n- Disables oxygen production on ships|r
+}
+
+STRING 681
+// Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Perseus's patented Hex Pattern "Zeus" boosters can temporarily accelerate to insane speeds by burning excessive amounts of fuel. Missiles use a similar boosting mechanism propel themselves.|r|n|nMassively increases speed by up to |cff00ff00600%|r over the next |cff00ff006 seconds|r.|N|n|cffd45e19"In response to pilot requests for improved mobility options in high-pressure situations, we at Hexcorp has refitted our entire Purseus fleet with Afterburner technology. Hexcorp would like to remind you that the cost of any fuel consumed by Afterburner usage will be deducted from the pilot's next salary."|r |n|n|cff80808040 Seconds Cooldown|r
+}
+
+STRING 682
+// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 683
+// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
 }
 
