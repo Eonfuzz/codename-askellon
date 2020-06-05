@@ -14,6 +14,7 @@ import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
 import { ROLE_TYPES } from "resources/crewmember-names";
+import { ITEM_MINERALS_SHIP_ID } from "resources/item-ids";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -114,6 +115,7 @@ export class SpaceModule {
             this.shipsForUnit.set(ship.unit, ship);
             this.ships.push(ship);
             this.game.worldModule.travel(ship.unit, bay.ZONE);
+            ship.unit.addItemById(ITEM_MINERALS_SHIP_ID);
 
             bay.dockShip(this.game, ship);
 

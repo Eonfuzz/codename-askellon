@@ -68,6 +68,7 @@ export class CrewModule {
             if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
             else if (it === 1) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
             else if (it === 2) this.allJobs.push(ROLE_TYPES.DOCTOR);
+            else if (it < 4) this.allJobs.push(ROLE_TYPES.PILOT);
             else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
             it++;
         }      

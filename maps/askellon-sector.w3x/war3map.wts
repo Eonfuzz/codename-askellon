@@ -2971,12 +2971,6 @@ STRING 697
 |cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Cooldown of Afterburner reduced by 20 seconds|n- Increased range of mining beam by 33%|n- Maximum fuel increased by 20|n- Unlocks |cffd45e19Deep Scanning|r|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Scan fuel cost reduced by 50%|n- Scan cooldown reduced by 5 seconds|r|n|n|cff8a6df2Infestation [ALIEN]|n- Crew in space or on planet are revealed|r
 }
 
-STRING 698
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser now speed increased by 300%|n- Drones now ferry mined ore back to the Askellon|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r|n|n|cff8a6df2Infestation [ALIEN]|n- Chatter may not reach those in space|n- Ore creates infesation upon delivery|r
-}
-
 STRING 699
 // Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
@@ -2993,5 +2987,35 @@ STRING 701
 // Abilities: A00R (Scan), Tip (Tooltip - Normal)
 {
 Deep Scan
+}
+
+STRING 702
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser speed increased by 50%|n- Drones now ferry mined ore back to the Askellon|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r|n|n|cff8a6df2Infestation [ALIEN]|n- Chatter may not reach those in space|n- Ore creates infesation upon delivery|r
+}
+
+STRING 703
+// Items: I00B (Minerals), Name (Name)
+{
+Minerals
+}
+
+STRING 704
+// Items: I00B (Minerals), Description (Description)
+{
+You should not be seeing this
+}
+
+STRING 706
+// Abilities: A00T (Inventory), EditorSuffix (Editor Suffix)
+{
+ (1 slot)
+}
+
+STRING 707
+// Items: I00B (Minerals), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|n|r|nReturn to the Askellon to complete delivery; Each mineral is worth |cff00ff005 credits|r; |cff00ff007 credits|r if you are a pilot.|n|n|cffd45e19Stacks up to 250|r
 }
 

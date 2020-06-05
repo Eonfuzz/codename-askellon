@@ -7,6 +7,8 @@ import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { UNIT_IS_FLY, TECH_MAJOR_VOID } from "resources/ability-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
+import { ZONE_TYPE } from "app/world/zone-id";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 export enum ShipState {
     inBay, inSpace
@@ -142,6 +144,7 @@ export class Ship {
         this.unit.selectionScale = 2.5;
         this.unit.setScale(1.5, 1.5, 1.5);
         this.unit.setPathing(true);
+
     }
 
     onLeaveShip(game: Game) {
@@ -150,6 +153,8 @@ export class Ship {
         SetUnitAnimationByIndex(this.unit.handle, 3);
 
         const shipPos = vectorFromUnit(this.unit.handle);
+
+        
 
         this.inShip.forEach(u => {
             const rPos = shipPos.applyPolarOffset(GetRandomReal(0, 360), 150);
@@ -162,6 +167,35 @@ export class Ship {
             SelectUnitForPlayerSingle(u.handle, u.owner.handle);
             PanCameraToTimedForPlayer(u.owner.handle, u.x, u.y, 0);
         });
+        
+        // We're leaving space, can we dump off minerals?
+        if (game.worldModule.getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
+            const owningUnit = this.inShip[0];
+    
+            const mineralItem = this.unit.getItemInSlot(0);
+            const stacks = GetItemCharges(mineralItem);
+            SetItemCharges(mineralItem, 0);
+
+            // Reward money
+            if (owningUnit) {
+                const crew = game.crewModule.getCrewmemberForUnit(owningUnit);
+                if (crew) {
+                    const hasRoleOccupationBonus = crew.role === ROLE_TYPES.PILOT;
+                    if (hasRoleOccupationBonus) {
+                        crew.addExperience(game, stacks * 5);
+                        crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
+                            crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
+                        );
+                    }
+                    else {
+                        crew.addExperience(game, stacks * 3);
+                        crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
+                            crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 5
+                        );
+                    }
+                }
+            } 
+        }
         
         this.inShip = [];
     }

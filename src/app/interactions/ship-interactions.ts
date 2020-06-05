@@ -14,6 +14,8 @@ import { Interactables } from "./interaction-data";
 import { EVENT_TYPE } from "app/events/event";
 import { vectorFromUnit } from "app/types/vector2";
 import { getZFromXY } from "lib/utils";
+import { ITEM_MINERALS_SHIP_ID } from "resources/item-ids";
+import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
 
 export function initShipInteractions(game: Game) {
     const interaction: InteractableData = {
@@ -40,7 +42,7 @@ export function initShipInteractions(game: Game) {
 
     // Interacting with asteroids
     
-    
+    const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false);
     const asteroidTimers = new Map<Unit, Timer>();
     const asteroidInteraction: InteractableData = {
         condition:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
@@ -92,6 +94,16 @@ export function initShipInteractions(game: Game) {
                     tVec.y
                 );
 
+                const minerals = source.getItemInSlot(0);
+                const charges = GetItemCharges(minerals);
+                if (charges < 250) {
+                    SetItemCharges(minerals, charges + 1);
+                    
+                }
+                else if (GetLocalPlayer() == ship.unit.owner.handle) {
+                    noInventorySpace.playSound();
+                }
+
                 BlzSetSpecialEffectZ(sfx, vecZ);
                 
                 kL.start(0.1, false, () => {
@@ -99,7 +111,6 @@ export function initShipInteractions(game: Game) {
                     DestroyLightning(lightning);
                     kL.destroy()
                 });
-
             });
             asteroidTimers.set(source, timer);
         },
