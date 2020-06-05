@@ -21,6 +21,7 @@ export const STR_UPGRADE_NAME_VOID = (researchLevel: number) => `${COL_PINK}VOID
 export const STR_UPGRADE_COMPLETE_HEADER = () => `${COL_GOLD}-= STATION FUNCTIONALITY RESTORED =-|r`;
 export const STR_UPGRADE_COMPLETE_SUBTITLE = (upgradeName: string) => `${COL_GOLD}RESEARCH:|r ${upgradeName}`;
 export const STR_UPGRADE_COMPLETE_INFESTATION = () => `${COL_ALIEN}INFESTATION COMPLETE|r`;
+export const STR_OCCUPATION_BONUS = () => `${COL_ATTATCH}OCCUPATION BONUS UNLOCKED|r`;
 
 export const STR_GENE_SUCCESSFUL = () => `${COL_INFO}Gene Splicing:|r ${COL_GOOD}SUCCESSFUL|r`
 export const STR_GENE_ALIEN_SUCCESSFUL = () => `${COL_ALIEN}Mimicking human genome response|r`

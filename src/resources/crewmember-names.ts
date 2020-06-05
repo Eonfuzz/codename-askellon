@@ -9,6 +9,7 @@ export enum ROLE_TYPES {
     MAJOR = 'Major',
     DOCTOR = 'Doctor',
     INQUISITOR = 'Inquisitor',
+    PILOT = 'Pilot'
 }
 export const ROLE_NAMES = new Map<string, Array<string>>();
 
@@ -49,6 +50,10 @@ ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
     "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus"
 ]);
 
+ROLE_NAMES.set(ROLE_TYPES.PILOT, [
+    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane"
+]);
+
 
 export const ROLE_DESCRIPTIONS = new Map<ROLE_TYPES, string>();
 
@@ -60,3 +65,8 @@ ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `As ${COL_GOLD}Doctor|r research and up
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOLD}Security Guards|r gain 30% bonus experience when damaging Alien Hosts`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `${COL_GOLD}Inquisitor|r is WIP`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.PILOT, `The ${COL_GOLD}Pilot|r patrols the void and mines minerals.
+${COL_GOOD}- Receive bonus experience from mining
+- Receive bonus experience for fighting in space
+- All ship abilities cost 1 less mana
+- Ships lose 10% less fuel|r`);

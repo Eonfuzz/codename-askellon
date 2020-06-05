@@ -72,6 +72,7 @@ export class Game {
         SetMusicVolume(20);
         SetSkyModel("war3mapImported\\Skybox3rAlt.mdx");
 
+        // EnablePreSelect(true, false);
         this.initUI();
 
         // Load order is important
@@ -144,6 +145,8 @@ export class Game {
             this.spaceModule.updateShips(PROCESS_TIMER);
             this.weaponModule.updateProjectiles(PROCESS_TIMER);
             this.abilityModule.process(PROCESS_TIMER);
+            this.interactionsModule.processInteractions(PROCESS_TIMER);
+            this.buffModule.process(PROCESS_TIMER);
         // }
         // catch (e) {
         //     Log.Error(e);

@@ -57,7 +57,7 @@ export class ShipChaingunAbility implements Ability {
 
             const z = getZFromXY(temp.x, temp.y);
             const bulletLoc = new Vector3(temp.x, temp.y, z+90);
-            temp = temp.applyPolarOffset(this.unit.facing, 3000);
+            temp = temp.applyPolarOffset(this.unit.facing, 2000);
             const targetLoc = new Vector3(temp.x+GetRandomReal(-200,200), temp.y+GetRandomReal(-200,200), z);
 
             const deltaTarget = targetLoc.subtract(bulletLoc);       
@@ -68,7 +68,7 @@ export class ShipChaingunAbility implements Ability {
                 new ProjectileTargetStatic(deltaTarget),
                 new ProjectileMoverLinear()
             )
-            .setVelocity(1800)
+            .setVelocity(1500)
             .overrideFilter((projectile: Projectile) => {
                 let unit = GetFilterUnit(); 
                 return GetWidgetLife(unit) > 0.405 && GetUnitTypeId(unit) === SHIP_VOYAGER_UNIT 

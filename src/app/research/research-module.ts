@@ -3,7 +3,7 @@ import { Trigger, Unit, MapPlayer } from "w3ts";
 import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID } from "resources/ability-ids";
 // import { STR_OPT_ALIEN } from "resources/strings";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
-import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID } from "resources/strings";
+import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID, STR_OCCUPATION_BONUS } from "resources/strings";
 import { Log } from "lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/force-type";
@@ -21,7 +21,10 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
 
     // STRING is `${UpgradeId}::${UpgradeLevel}`, isInfested
     private infestedUpgrades = new Map<string, boolean>();
-    private upgradeSource = new Map<string, ROLE_TYPES>();
+    // Has the role got the occupation bonus
+    private hasOccupationBonus = new Map<string, boolean>();
+    // Which roles gran occupation bonus for x upgrade
+    private grantsOccupationBonus = new Map<number, ROLE_TYPES[]>();
     private majorUpgradeLevels = new Map<number, number>();
 
     constructor(game: Game) {
@@ -33,6 +36,10 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
      */
     initialise() {
         this.trackCrewUpgrades();
+
+
+        this.grantsOccupationBonus.set(TECH_MAJOR_VOID, [ROLE_TYPES.NAVIGATOR, ROLE_TYPES.PILOT, ROLE_TYPES.CAPTAIN]);
+        this.grantsOccupationBonus.set(TECH_MAJOR_HEALTHCARE, [ROLE_TYPES.DOCTOR]);
     }
 
     /**
@@ -108,24 +115,28 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         // Get all players on the ship
         // const pAlert = this.game.worldModule.askellon.getPlayers();
         const techName = this.getTechName(id, level);
+        this.majorUpgradeLevels.set(id, level);
+
+        const crewmember = this.game.crewModule.getCrewmemberForPlayer(player);
+        if (isInfested) this.setUpgradeAsInfested(id, level, true);
+
+        // Handle occupation bonuses
+        const roles = this.grantsOccupationBonus.get(id);
+        const hasOccupationBonus = crewmember && roles && roles.indexOf(crewmember.role) >= 0;
+        this.setHasOccupationBonus(id, level, hasOccupationBonus);
 
         players.forEach(p => {
             DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_HEADER());
             DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_SUBTITLE(techName));
+            if (hasOccupationBonus) {
+                // Play upgrade complete sound
+                DisplayTextToPlayer(p.handle, 0, 0, STR_OCCUPATION_BONUS());
+            }
             if (alienForce && isInfested && alienForce.hasPlayer(p)) {
                 DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
                 // Play infestation complete sound
             }
-            else {
-                // Play upgrade complete sound
-            }
         });
-
-
-        const crewmember = this.game.crewModule.getCrewmemberForPlayer(player);
-        if (isInfested) this.setUpgradeAsInfested(id, level, true);
-        if (crewmember) this.setUpgradeSource(id, level, crewmember.role);
-        this.majorUpgradeLevels.set(id, level);
     }
 
     /**
@@ -155,9 +166,9 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
      * @param upgrade 
      * @param level 
      */
-    public getUpgradeSource(upgrade: number, level: number): ROLE_TYPES | undefined {
+    public techHasOccupationBonus(upgrade: number, level: number): boolean {
         const key = this.getKeyForUpgradeLevel(upgrade, level);
-        return this.upgradeSource.get(key);
+        return !!this.hasOccupationBonus.get(key);
     }
 
     /**
@@ -166,9 +177,9 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
      * @param level 
      * @param role 
      */
-    public setUpgradeSource(upgrade: number, level: number, role: ROLE_TYPES) {
+    public setHasOccupationBonus(upgrade: number, level: number, state: boolean) {
         const key = this.getKeyForUpgradeLevel(upgrade, level);
-        return this.upgradeSource.set(key, role);
+        return this.hasOccupationBonus.set(key, state);
     }
     
     // Used to generate keys for upgrades

@@ -2773,12 +2773,6 @@ STRING 637
 ranged
 }
 
-STRING 638
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nRecalibrates Void Engines|n|cff00ff00- Space Ships can now be entered|n- Asteroids may now be mined|r|n
-}
-
 STRING 642
 // Units: n006 (|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r ), Name (Name)
 {
@@ -2899,24 +2893,6 @@ STRING 672
 |cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
 }
 
-STRING 677
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Cooldown of Afterburner reduced by 20 seconds|n- Increased range of mining beam by 33%|n- Maximum fuel increased by 20|n- Unlocks |cffd45e19Deep Scanning|r|r|n|n|cff8a6df2Upgrade Infestation|n- Crew in space or on planet are revealed|r
-}
-
-STRING 678
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser now speed increased by 300%|n- Drones now ferry mined ore back to the Askellon|n|n|cff8a6df2Upgrade Infestation|n- Chatter may not reach those in space|n- Ore creates infesation upon delivery|r
-}
-
-STRING 680
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 60%|n|n|cff8a6df2Upgrade Infestation|n- Ordinance will always lock onto the Askellon|n- Internal damage causes infestation|n- Disables oxygen production on ships|r
-}
-
 STRING 681
 // Abilities: A000 (Afterburner), Ubertip (Tooltip - Normal - Extended)
 {
@@ -2933,5 +2909,89 @@ STRING 683
 // Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 684
+// Abilities: A00S (Macro Las), Name (Name)
+{
+Macro Las
+}
+
+STRING 685
+// Abilities: A00S (Macro Las), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 686
+// Abilities: A00S (Macro Las), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These lasers use fracture technology to emit high wave beams across the void of space.|r|n|nShoots two long ranged lasers, each dealing |cff00ff0060 damage|r.|n|n|cffd45e19"Use 'em when yer dog fightin' " - Ace Pilot|r|r|r|n|n|cff8080801 Second Cooldown|r
+}
+
+STRING 687
+// Abilities: A00S (Macro Las), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Macro Las
+}
+
+STRING 688
+// Abilities: A00S (Macro Las), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Macro Las
+}
+
+STRING 689
+// Abilities: A00S (Macro Las), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Macro Las
+}
+
+STRING 690
+// Abilities: A00S (Macro Las), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These lasers use fracture technology to emit high wave beams across the void of space.|r|n|nShoots two long ranged lasers, each dealing |cff00ff0060 damage|r.|n|n|cffd45e19"Use 'em when yer dog fightin' " - Ace Pilot|r|r|r|n|n|cff8080801 Second Cooldown|r
+}
+
+STRING 691
+// Abilities: A00S (Macro Las), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These lasers use fracture technology to emit high wave beams across the void of space.|r|n|nShoots two long ranged lasers, each dealing |cff00ff0060 damage|r.|n|n|cffd45e19"Use 'em when yer dog fightin' " - Ace Pilot|r|r|r|n|n|cff8080801 Second Cooldown|r
+}
+
+STRING 696
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nRecalibrates Void Engines|n|cff00ff00- Space Ships can now be entered|n- Asteroids may now be mined|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r
+}
+
+STRING 697
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Cooldown of Afterburner reduced by 20 seconds|n- Increased range of mining beam by 33%|n- Maximum fuel increased by 20|n- Unlocks |cffd45e19Deep Scanning|r|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Scan fuel cost reduced by 50%|n- Scan cooldown reduced by 5 seconds|r|n|n|cff8a6df2Infestation [ALIEN]|n- Crew in space or on planet are revealed|r
+}
+
+STRING 698
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser now speed increased by 300%|n- Drones now ferry mined ore back to the Askellon|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r|n|n|cff8a6df2Infestation [ALIEN]|n- Chatter may not reach those in space|n- Ore creates infesation upon delivery|r
+}
+
+STRING 699
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 40%|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|n- Ship fuel usage reduced by a further 20%|r|n|n|cff8a6df2Infestation [ALIEN]|n- Ordinance will always lock onto the Askellon|n- Internal damage causes infestation|n- Disables oxygen production on ships|r
+}
+
+STRING 700
+// Abilities: A00R (Scan), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080807 Seconds Cooldown|r
+}
+
+STRING 701
+// Abilities: A00R (Scan), Tip (Tooltip - Normal)
+{
+Deep Scan
 }
 

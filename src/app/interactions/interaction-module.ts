@@ -64,13 +64,13 @@ export class InteractionModule {
             newInteraction.startInteraction();
             this.interactions.push(newInteraction);
 
-            if (this.interactions.length === 1) {
-                this.interactionTimer.start(
-                    UPDATE_PERIODICAL_INTERACTION, 
-                    true, 
-                    () => this.processInteractions(UPDATE_PERIODICAL_INTERACTION)
-                );
-            }
+            // if (this.interactions.length === 1) {
+            //     this.interactionTimer.start(
+            //         UPDATE_PERIODICAL_INTERACTION, 
+            //         true, 
+            //         () => this.processInteractions(UPDATE_PERIODICAL_INTERACTION)
+            //     );
+            // }
         }
     }
 
@@ -81,8 +81,8 @@ export class InteractionModule {
                 if (doDestroy) interaction.destroy();
                 return !doDestroy;
             });
-        if (this.interactions.length === 0) {
-            this.interactionTimer.pause();
-        }
+        // if (this.interactions.length === 0) {
+        //     this.interactionTimer.pause();
+        // }
     }
 }

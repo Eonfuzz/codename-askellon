@@ -9,10 +9,11 @@ import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { Ship, ShipState } from "./ship";
-import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN } from "resources/ability-ids";
+import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -180,12 +181,25 @@ export class SpaceModule {
         this.game.event.addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
             if (data.data.researched === TECH_MAJOR_VOID) {
                 const techLevel = data.data.level;
+
+                const gotOccupationBonus = this.game.researchModule.techHasOccupationBonus(data.data.researched, techLevel);
+
+                if (techLevel === 1) {
+                    this.ships.forEach(ship => {
+                        if (gotOccupationBonus && ship.unit && ship.unit.isAlive()) {
+                            SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER, GetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER) + 1);
+                        }
+                    })
+                }
                 if (techLevel === 2) {
                     this.ships.forEach(ship => {
                         ship.maxFuel += 20;
                         if (ship.unit && ship.unit.isAlive()) {
                             ship.unit.maxMana = ship.maxFuel;
                             SetUnitAbilityLevel(ship.unit.handle, this.shipAfterburnerAbilityId, 2);
+                            if (gotOccupationBonus) {
+                                SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_DEEP_SCAN, 2);
+                            }
                         }
                     })
                 }
@@ -195,11 +209,17 @@ export class SpaceModule {
                             SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_CHAINGUN, 2);
                             BlzSetUnitAbilityManaCost(ship.unit.handle, ABIL_SHIP_BARREL_ROLL_LEFT, 0, 0);
                             BlzSetUnitAbilityManaCost(ship.unit.handle, ABIL_SHIP_BARREL_ROLL_RIGHT, 0, 0);
+                            if (gotOccupationBonus) {
+                                SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER, GetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER) + 1);
+                            }
                         }
                     })
                 }
                 if (techLevel === 4) {
-                    this.ships.forEach(ship => ship.setFuelUsagePercent(0.4))
+                    if (gotOccupationBonus && ship.unit && ship.unit.isAlive()) {
+                        SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER, GetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER) + 1);
+                    }
+                    this.ships.forEach(ship => ship.setFuelUsagePercent(gotOccupationBonus ? 0.4 : 0.6));
                 }
             }
         }));
@@ -336,7 +356,12 @@ export class SpaceModule {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
             }
 
-            const manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
+            const crew = this.game.crewModule.getCrewmemberForUnit(ship.inShip[0])
+            const isPilot = crew && crew.role === ROLE_TYPES.PILOT;
+            let manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
+            if (isPilot) {
+                manaCost = Min(manaCost-1, 0);
+            }
             ship.shipFuel -= manaCost;
         })
     }

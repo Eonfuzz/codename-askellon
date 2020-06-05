@@ -20,7 +20,7 @@ export class EmotionalDampenerAbility implements Ability {
 
         if (crew) {
             // Only disable resolve if HC 2 isn't upgraded
-            const hasHC2 = abMod.game.researchModule.getUpgradeSource(TECH_MAJOR_HEALTHCARE, 2) === ROLE_TYPES.DOCTOR;
+            const hasHC2 = abMod.game.researchModule.techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 2);
            
             if (!hasHC2) {
                 crew.addResolve(

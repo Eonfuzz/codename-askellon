@@ -10,6 +10,7 @@ export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
 export const ABIL_SHIP_DEEP_SCAN = FourCC('A00R');
 export const ABIL_SHIP_BARREL_ROLL_RIGHT = FourCC('A001');
 export const ABIL_SHIP_BARREL_ROLL_LEFT = FourCC('A006');
+export const ABIL_SHIP_LASER = FourCC('A00S');
 
 export const ABIL_WEP_GRENADE = FourCC('GREN');
 export const ABIL_WEP_DIODE_EJ = FourCC('DIOJ');

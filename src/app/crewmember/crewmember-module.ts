@@ -169,6 +169,7 @@ export class CrewModule {
         BlzSetUnitName(nUnit.handle, crewmember.role);
         BlzSetHeroProperName(nUnit.handle, crewmember.name);
         SuspendHeroXP(nUnit.handle, true);
+        SetPlayerName(nUnit.owner.handle, crewmember.name);
 
         return crewmember;
     }

@@ -1,7 +1,6 @@
 import { Vector3 } from "../types/vector3";
 import { Vector2 } from "../types/vector2";
 import { Unit, Effect, Timer, MapPlayer } from "w3ts/index";
-import { SMOKE_TRAIL_SFX } from "resources/sfx-paths";
 import { Log } from "lib/serilog/serilog";
 import { fastPointInterp, normaliseAngle } from "lib/utils";
 import { SoundRef } from "app/types/sound-ref";
@@ -159,48 +158,48 @@ export class SpaceMovementEngine {
         return this;
     }
 
-    private updateChemTrails(delta: Vector2, oldPosition: Vector2) {
+    // private updateChemTrails(delta: Vector2, oldPosition: Vector2) {
         
-        const dLen = delta.getLength();
+    //     const dLen = delta.getLength();
 
-        const d1 = (this.facingAngleLastIteration + 160) * bj_DEGTORAD;
-        const d2 = (this.facingAngleLastIteration - 160) * bj_DEGTORAD;
+    //     const d1 = (this.facingAngleLastIteration + 160) * bj_DEGTORAD;
+    //     const d2 = (this.facingAngleLastIteration - 160) * bj_DEGTORAD;
 
-        // Log.Information("Dlen: "+dLen);
+    //     // Log.Information("Dlen: "+dLen);
 
-        fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
-            const sfx1 = AddSpecialEffect(
-                SMOKE_TRAIL_SFX, 
-                p.x + Cos(d1) * 70, 
-                p.y + Sin(d1) * 70
-            );
+    //     fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
+    //         const sfx1 = AddSpecialEffect(
+    //             SMOKE_TRAIL_SFX, 
+    //             p.x + Cos(d1) * 70, 
+    //             p.y + Sin(d1) * 70
+    //         );
                 
-            const sfx2 = AddSpecialEffect(
-                SMOKE_TRAIL_SFX, 
-                p.x + Cos(d2) * 70, 
-                p.y + Sin(d2) * 70
-            );
+    //         const sfx2 = AddSpecialEffect(
+    //             SMOKE_TRAIL_SFX, 
+    //             p.x + Cos(d2) * 70, 
+    //             p.y + Sin(d2) * 70
+    //         );
                 
-            BlzSetSpecialEffectZ(sfx1, 100);
-            BlzSetSpecialEffectZ(sfx2, 100);
+    //         BlzSetSpecialEffectZ(sfx1, 100);
+    //         BlzSetSpecialEffectZ(sfx2, 100);
 
-            if (this.isUsingAfterburner) {
-                BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
-                BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
-                BlzSetSpecialEffectScale(sfx1, 3);
-                BlzSetSpecialEffectScale(sfx2, 3);
-            }
+    //         if (this.isUsingAfterburner) {
+    //             BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
+    //             BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
+    //             BlzSetSpecialEffectScale(sfx1, 3);
+    //             BlzSetSpecialEffectScale(sfx2, 3);
+    //         }
     
-            this.chemTrails.push({
-                effect: sfx1,
-                life: CHEM_TRAIL_LIFETIME
-            });
-            this.chemTrails.push({
-                effect: sfx2,
-                life: CHEM_TRAIL_LIFETIME
-            });
-        });
-    }
+    //         this.chemTrails.push({
+    //             effect: sfx1,
+    //             life: CHEM_TRAIL_LIFETIME
+    //         });
+    //         this.chemTrails.push({
+    //             effect: sfx2,
+    //             life: CHEM_TRAIL_LIFETIME
+    //         });
+    //     });
+    // }
 
     /**
      * Increases velocity

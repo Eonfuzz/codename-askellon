@@ -142,7 +142,8 @@ export class GeneModule {
     onGeneCast(instance: GeneInstance) {
         const castAbil = GetSpellAbilityId();
         const techLevel = this.game.researchModule.getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE); 
-        const doGiveBonusXp = this.game.researchModule.getUpgradeSource(TECH_MAJOR_HEALTHCARE, 2) === ROLE_TYPES.DOCTOR;
+        // Only disable resolve if HC 2 isn't upgraded
+        const doGiveBonusXp = this.game.researchModule.techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 2);
         const bonusXpInfested = this.game.researchModule.isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
 
         if (!instance.unitInGeneZone) return;

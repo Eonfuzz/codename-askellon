@@ -42,9 +42,9 @@ export class DynamicBuffModule {
 
         matchingBuff.addInstance(this.game, who, instance, isNegativeInstance);
         
-        if (this.buffs.length === 1) {
-            this.dynamicBuffTimer.start(0.1, true, () => this.process(0.1));
-        }
+        // if (this.buffs.length === 1) {
+        //     this.dynamicBuffTimer.start(0.1, true, () => this.process(0.1));
+        // }
     }
 
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {
@@ -65,8 +65,8 @@ export class DynamicBuffModule {
             return !doDestroy;
         })
 
-        if (this.buffs.length === 0) {
-            this.dynamicBuffTimer.pause();
-        }
+        // if (this.buffs.length === 0) {
+        //     this.dynamicBuffTimer.pause();
+        // }
     }
 }
