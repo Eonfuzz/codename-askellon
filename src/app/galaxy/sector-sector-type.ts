@@ -18,10 +18,9 @@ export class SpaceSector {
     }
 
     nameSector() {
-        const prefix    = SECTOR_PREFIXES[ Math.floor( Math.random() * SECTOR_PREFIXES.length) ];
-        const name      = SECTOR_NAMES[ Math.floor( Math.random() * SECTOR_NAMES.length) ];
+        const prefix    = SECTOR_PREFIXES[ GetRandomInt(0, SECTOR_PREFIXES.length-1) ];
+        const name      = SECTOR_NAMES[ GetRandomInt(0, SECTOR_NAMES.length-1) ];
         this.name = prefix + ' ' + name;
-        // print("Sector ["+this.name+"]");
     }
 
     setSeed(seed: number) {

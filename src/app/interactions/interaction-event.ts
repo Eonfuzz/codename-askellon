@@ -7,7 +7,6 @@ import { SMART_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 
-export const INTERACT_MAXIMUM_DISTANCE = 350;
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
 
@@ -26,13 +25,16 @@ export class InteractionEvent {
 
   private progressBar: ProgressBar | undefined;
 
-  constructor(unit: unit, targetUnit: unit, interactTime: number, callback: Function, startCallback: Function, cancelCallback: Function) {
+  private interactDistance: number;
+
+  constructor(unit: unit, targetUnit: unit, interactTime: number, interactDistance: number, callback: Function, startCallback: Function, cancelCallback: Function) {
     this.unit = Unit.fromHandle(unit);
     this.targetUnit = Unit.fromHandle(targetUnit);
     this.timeRequired = this.timeRemaining = interactTime;
     this.callback = callback;
     this.startCallback = startCallback;
     this.cancelCallback = cancelCallback;
+    this.interactDistance = interactDistance;
     this.progressBar = new ProgressBar();
   }
 
@@ -66,10 +68,14 @@ export class InteractionEvent {
     const v2 = vectorFromUnit(this.targetUnit.handle);
 
     // Only if we are at a valid distance do we process the interaction timer
-    if (v1.subtract(v2).getLength() <= INTERACT_MAXIMUM_DISTANCE) {
+    if (v1.subtract(v2).getLength() <= this.interactDistance) {
       if (this.timeRemaining === this.timeRequired) {
         // if this is the first tick show the progress bar
         this.progressBar && this.progressBar.show();
+
+        // Set progress bar speed based on anim time
+        BlzSetSpecialEffectTimeScale(this.progressBar.bar, 1 / this.timeRequired);
+
         this.startCallback();
       }
 

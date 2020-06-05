@@ -5,9 +5,9 @@ import { ForceModule } from "../../force/force-module";
 import { Game } from "../../game";
 import { Log } from "lib/serilog/serilog";
 import { Unit, Effect } from "w3ts/index";
+import { SPACE_UNIT_ASTEROID } from "resources/unit-ids";
 
 
-export const ASTEROID_UNIT_ID = FourCC('h002');
 export const ASTEROID_SKINS = [FourCC('Ast0'), FourCC('Ast1'), FourCC('Ast2'), FourCC('Ast3'), FourCC('Ast4')];
 export const ASTEROID_SKIN_PATHS = [
     'asteroids\\var1.mdx',
@@ -30,7 +30,7 @@ export class Asteroid extends SpaceObject {
 
         const location = this.getLocation();
 
-        this.widget = new Unit(game.forceModule.neutralPassive, ASTEROID_UNIT_ID, location.x, location.y, bj_UNIT_FACING) as Unit;
+        this.widget = new Unit(game.forceModule.neutralPassive, SPACE_UNIT_ASTEROID, location.x, location.y, bj_UNIT_FACING) as Unit;
         const i = GetRandomInt(0, ASTEROID_SKINS.length-1);
         const skin = ASTEROID_SKINS[i];
 
@@ -39,6 +39,9 @@ export class Asteroid extends SpaceObject {
         
         this.widget.setTimeScale(GetRandomReal(0.01, 0.1));
         SetUnitScalePercent(this.widget.handle, scaleFactor, scaleFactor, scaleFactor);
+        this.widget.selectionScale = scaleFactor / 100;
+        this.widget.maxLife = 100 + MathRound(150 * (scaleFactor / 100) * (scaleFactor / 100));
+        this.widget.life = this.widget.maxLife;
         BlzSetUnitFacingEx(this.widget.handle, GetRandomReal(0, 360));
     }
 

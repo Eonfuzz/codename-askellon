@@ -176,7 +176,7 @@ export class CrewModule {
    
 
     getCrewmemberRole() {
-        const i = Math.floor( Math.random() * this.allJobs.length );
+        const i = Math.floor(GetRandomInt(0, this.allJobs.length -1));
         const role = this.allJobs[i];
         this.allJobs.splice(i, 1);
         return role;

@@ -56,7 +56,11 @@ export class InteractionModule {
         const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
         if (interact && (!interact.condition || interact.condition(this, trigUnit, targetUnit))) {
-            const newInteraction = new InteractionEvent(GetTriggerUnit(), GetOrderTargetUnit(), 1.5, 
+            const newInteraction = new InteractionEvent(
+                GetTriggerUnit(), 
+                GetOrderTargetUnit(), 
+                interact.getInteractionTime ? interact.getInteractionTime(this, trigUnit, targetUnit) : 1.5, 
+                interact.getInteractionDistance  ? interact.getInteractionDistance(this, trigUnit, targetUnit) : 350,
                 () => interact.action(this, trigUnit, targetUnit),
                 () => interact.onStart && interact.onStart(this, trigUnit, targetUnit),
                 () => interact.onCancel && interact.onCancel(this, trigUnit, targetUnit)

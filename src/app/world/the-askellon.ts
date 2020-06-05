@@ -177,7 +177,7 @@ export class TheAskellon {
 
     private getRandomZone() {
         let items = Array.from(this.floors);
-        return items[Math.floor(Math.random() * items.length)];
+        return items[GetRandomInt(0, items.length - 1)];
     }
 
 

@@ -9,11 +9,15 @@ export interface InteractableData {
    */
   unitType?: number;
   
+
   /**
    * Ran when the unit tries to interact, true allows the interactable effect to exist
    * Leave undefined for default allowed
    */
   condition?: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => boolean;
+
+  getInteractionTime?: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => number;
+  getInteractionDistance?:  (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => number;
 
   onStart?:  (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => void;
   onCancel?:  (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => void;
