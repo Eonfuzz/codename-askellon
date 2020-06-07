@@ -10,9 +10,7 @@ import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { GeneModule } from "./shops/gene-modules";
 import { AbilityModule } from "./abilities/ability-module";
 import { InteractionModule } from "./interactions/interaction-module";
-import { Vector2 } from "./types/vector2";
 import { WorldModule } from "./world/world-module";
-import { ZONE_TYPE } from "./world/zone-id";
 import { GalaxyModule } from "./galaxy/galaxy-module";
 import { LeapModule } from "./leap-engine/leap-module";
 import { ResearchModule } from "./research/research-module";
@@ -48,13 +46,8 @@ export class Game {
     public stationSecurity: SecurityModule;
     public buffModule: DynamicBuffModule;
 
-    // public dummyUnit: unit;
+    public dummyUnit: unit;
 
-    /**
-     * Should always be defined,
-     * Used for measuring Z heights
-     */
-    public TEMP_LOCATION = Location(0, 0);
     private syncedTimer = new Timer();
 
     constructor() {
@@ -64,8 +57,9 @@ export class Game {
         }
 
         BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
-        SetAmbientDaySound('');
-        SetAmbientNightSound('');
+        StopSound(bj_nightAmbientSound, true, true);
+        StopSound(bj_dayAmbientSound, true, true);
+
         SetMapMusic("Music\\MechanicusLostCivilization.mp3", false, 0);
         SetMusicVolume(20);
         // PlayMusic("Music\\MechanicusLostCivilization.mp3");
@@ -102,7 +96,7 @@ export class Game {
     }
 
     public startGame() {
-        this.buffModule.init();
+        // this.buffModule.init();
         this.researchModule.initialise();
         this.geneModule.initGenes();
         this.tooltips.initialise();
@@ -125,10 +119,10 @@ export class Game {
 
     postOptResults(optResults: OptResult[]) {
         try {
-            this.spaceModule.initShips();
-            
             // Init forces
             this.forceModule.initForcesFor(optResults);
+
+            this.spaceModule.initShips();            
 
             // Init crew
             this.crewModule.initCrew(this.forceModule.getForces());
@@ -141,16 +135,16 @@ export class Game {
     }
 
     public processActions() {
-        // try {
+        try {
             this.spaceModule.updateShips(PROCESS_TIMER);
             this.weaponModule.updateProjectiles(PROCESS_TIMER);
             this.abilityModule.process(PROCESS_TIMER);
             this.interactionsModule.processInteractions(PROCESS_TIMER);
             this.buffModule.process(PROCESS_TIMER);
-        // }
-        // catch (e) {
-        //     Log.Error(e);
-        // }
+        }
+        catch (e) {
+            Log.Error(e);
+        }
     }
 
     /**
@@ -173,12 +167,6 @@ export class Game {
         callback(dummyUnit);
 
         UnitApplyTimedLife(dummyUnit, 0, 3);
-    }
-
-    //@deprecated
-    public getZFromXY(x: number, y: number): number {
-        MoveLocation(this.TEMP_LOCATION, x, y);
-        return GetLocationZ(this.TEMP_LOCATION)
     }
     
     public initUI() {

@@ -105,7 +105,7 @@ export abstract class ForceType {
      * Gets the player's visible chat name, by default shows role name
      */
     public getChatName(who: MapPlayer): string {
-        const crew = this.forceModule.game.crewModule.getCrewmemberForPlayer(who);
+        const crew = this.forceModule.getPlayerDetails(who).getCrewmember();
         if (crew)
             return crew.name;
         else

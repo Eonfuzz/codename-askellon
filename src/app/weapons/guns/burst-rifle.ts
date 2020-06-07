@@ -11,11 +11,8 @@ import { TimedEvent } from "../../types/timed-event";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
-import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
 import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
-import { Log } from "../../../lib/serilog/serilog";
-import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { getZFromXY } from "lib/utils";
 import { MapPlayer } from "w3ts/index";
 

@@ -146,7 +146,7 @@ export class ShipZone extends Zone {
                         const oldSource = this.lightSources[_i];
                         const oldX = GetDestructableX(oldSource);
                         const oldY = GetDestructableY(oldSource);
-                        const terrainZ =  this.game.worldModule.game.getZFromXY(oldX, oldY);
+                        const terrainZ =  getZFromXY(oldX, oldY);
 
                         const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
                         SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));

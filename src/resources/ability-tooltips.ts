@@ -34,8 +34,8 @@ export class DynamicAbilityTooltip implements DynamicTooltip {
 
     public update(who: Unit | Crewmember, data: any) {
         const unit = (who instanceof Crewmember ? who.unit : who) as Unit;
-        // Dont do anythhing if we are not local player
-        if (unit.owner.handle != GetLocalPlayer()) return;
+
+        if (!unit) return;
 
         let abilLevel = unit.getAbilityLevel(this.abilCode) || 1;
         // Hack so we can support updating alien skills when observing crewmember
@@ -43,6 +43,9 @@ export class DynamicAbilityTooltip implements DynamicTooltip {
 
         const tooltip = this.tooltip ? this.tooltip(who, abilLevel, data) : undefined;
         const tooltipExtended = this.tooltipExtended ? this.tooltipExtended(who, abilLevel, data) : undefined;
+
+        // Dont do anythhing if we are not local player
+        if (unit.owner.handle != GetLocalPlayer()) return;
 
         if (tooltip) {
             BlzSetAbilityTooltip(this.abilCode, tooltip, abilLevel - 1);

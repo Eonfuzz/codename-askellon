@@ -64,7 +64,6 @@ export function initElevators(game: Game) {
 
     const ELEVATOR_TYPE = FourCC('n001');
     const elevatorTest: InteractableData = {
-        unitType: ELEVATOR_TYPE,
         onStart: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => {
             const handleId = targetUnit.id;
             const targetElevator = elevatorMap.get(handleId);
@@ -140,7 +139,6 @@ export function initHatches(game: Game) {
     const HATCH_TYPE = FourCC('n002');
     const LADDER_TYPE = FourCC('n004');
     const hatchInteractable: InteractableData = {
-        unitType: HATCH_TYPE,
         onStart: (iModule: InteractionModule, fromUnit: Unit, targetUnit: Unit) => {
             const handleId = targetUnit.id;    
             const targetElevator = hatchMap.get(handleId);

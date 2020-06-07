@@ -21,7 +21,6 @@ export function initCommandTerminal(game: Game) {
     let timesUsed = 0;
 
     const interaction: InteractableData = {
-        unitType: BRIDGE_CAPTAINS_TERMINAL,
         action: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
 
             let sound = (timesUsed++ === 0) 

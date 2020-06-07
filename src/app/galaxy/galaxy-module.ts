@@ -5,6 +5,7 @@ import { SpaceSector } from "./sector-sector-type";
 import { Vector2 } from "app/types/vector2";
 import { Log } from "lib/serilog/serilog";
 import { NavigationGrid } from "./navigation-grid-type";
+import { getZFromXY } from "lib/utils";
 
 const GRID_RECT = gg_rct_Galaxy_Map;
 export class GalaxyModule {
@@ -37,7 +38,7 @@ export class GalaxyModule {
             this.currentSector.y + deltaY
         ));
 
-        const pilot = this.game.worldModule.askellon.getPilot() || this.game.crewModule.CREW_MEMBERS[0];
+        const pilot = this.game.worldModule.askellon.getPilot();
         if (!nSector) {
             return Log.Error("Failed to jump to new location!");
         }
@@ -60,7 +61,7 @@ export class GalaxyModule {
         const centerX = GetRectCenterX(gg_rct_Galaxy_Map);
         const centerY = GetRectCenterY(gg_rct_Galaxy_Map);   
 
-        this.galaxyMap.setCenter(centerX, centerY, this.game.getZFromXY(centerX, centerY));
+        this.galaxyMap.setCenter(centerX, centerY, getZFromXY(centerX, centerY));
         this.galaxyMap.getNewDisplay(this.currentSector.x, this.currentSector.y, this.spaceGrid.sectors);
         // this.galaxyMap.renderForOffset(this.game.spaceModule.getAskellonPosition());
     }

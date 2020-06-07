@@ -52,23 +52,32 @@ export class WorldModule {
         // }
     }
 
-    travel(unit: Unit, to: ZONE_TYPE) {
-        const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+    /**
+     * 
+     * @param unit 
+     * @param to 
+     * @param isSubTravel used internally, if true we wont call entering floors
+     */
+    travel(unit: Unit, to: ZONE_TYPE, isSubTravel?: boolean) {
 
         // Does the travel work
         this.handleTravel(unit, to);
+        const pData = this.game.forceModule.getPlayerDetails(unit.owner);
+
+        // If we dont have player data that means its an AI player
+        if (!pData) return;
 
         // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
         // If this is a player we care about
-        const crew = this.game.crewModule.getCrewmemberForUnit(unit);
-        const alien = alienForce && alienForce.getAlienFormForPlayer(unit.owner);
+        const crew = pData.getCrewmember(); 
+        const force = pData.getForce() as AlienForce;
+        const alien = force.is(ALIEN_FORCE_NAME) && force.getAlienFormForPlayer(unit.owner);
 
         const isCrewmember = crew && crew.unit === unit;
 
         // If it was the alien form, we need to travel the crewmember around
         if (alien == unit) {
-            const alienCrew = this.game.crewModule.getCrewmemberForPlayer(unit.owner) as Crewmember;
-            this.handleTravel(alienCrew.unit, to);
+            this.handleTravel(crew.unit, to);
         }
         // Otherwise, check if the traversing unit is crewmember AND has an alien form
         else if (isCrewmember && alien && crew) {
@@ -76,13 +85,14 @@ export class WorldModule {
             this.handleTravel(alien, to);
         }
 
-        if (isCrewmember  && crew) {
+        if (!isSubTravel) {
             const newLoc = this.getZone(to);
             newLoc && newLoc.displayEnteringMessage(crew.player);
         }
 
         // If the traversing unit was alien or crewmember, call the floor change event
-        if ((crew && crew.unit === unit) || alien == unit) 
+        const isCrewOrAlien = (crew && crew.unit === unit) || alien == unit;
+        if (!isSubTravel && isCrewOrAlien) 
             this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { source: unit, crewmember: crew as Crewmember });
     }
 

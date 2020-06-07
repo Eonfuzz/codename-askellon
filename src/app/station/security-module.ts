@@ -182,11 +182,10 @@ export class SecurityModule {
             else if (secondarySeed >= 150) CreateItem(ITEM_TRIFEX_ID, x, y);
             else if (secondarySeed >= 0) CreateItem(ITEM_ID_CRYO_GRENADE, x, y);
         }
-
-        // Also reward 10 XP
-        const crew = this.game.crewModule.getCrewmemberForUnit(Unit.fromHandle(GetKillingUnit() || GetDyingUnit()));
-        if (crew) {
-            crew.addExperience(this.game, 25);
-        }
+       
+        this.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+            source: Unit.fromHandle(GetKillingUnit() || GetDyingUnit()),
+            data: { value: 25 }
+        });
     }
 }

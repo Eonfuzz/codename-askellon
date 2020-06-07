@@ -4,6 +4,7 @@ import { ProjectileTarget, ProjectileMover, ProjectileMoverLinear } from "./proj
 import { Vector3 } from "../../types/vector3";
 import { ProjectileSFX } from "./projectile-sfx";
 import { WeaponModule } from "../weapon-module";
+import { getZFromXY } from "lib/utils";
 
 const AIRBORN_ABILITY_DUMMY = FourCC('A00C');
 const DEFAULT_FILTER = (projectile: Projectile) => {
@@ -153,8 +154,7 @@ export class Projectile {
     }
 
     private reachedEnd(weaponModule: WeaponModule, targetVector: Vector3): boolean {
-        MoveLocation(weaponModule.game.TEMP_LOCATION, this.position.x, this.position.y);
-        let z = GetLocationZ(weaponModule.game.TEMP_LOCATION)
+        let z = getZFromXY(this.position.x, this.position.y);
         // let location = GLOBAL_LOCATION
         return (this.position.z <= z);
     }

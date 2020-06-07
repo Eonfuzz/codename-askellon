@@ -11,8 +11,17 @@ import { Log } from "./serilog/serilog";
 let TEMP_LOCATION = Location(0, 0);
 
 export function getZFromXY(x: number, y: number): number {
-    MoveLocation(TEMP_LOCATION, x, y);
-    return GetLocationZ(TEMP_LOCATION)
+    // MoveLocation(TEMP_LOCATION, x, y);
+    // const z = GetLocationZ(TEMP_LOCATION);
+    // Log.Information("Z: "+z);
+    // return z;
+
+    // Actual Z vals cause issues
+    // MoveLocation(this.TEMP_LOCATION, x, y);
+    // return GetLocationZ(this.TEMP_LOCATION)
+
+    const cliffLevel = GetTerrainCliffLevel(x, y);
+    return (cliffLevel - 2) * 128;
 }
 
 /**
@@ -143,4 +152,8 @@ export function normaliseAngle(angle: number) {
     let result = angle % 360;
     if (result < 0) result += 360;
     return result;
+}
+
+export function getDistanceBetweenTwoPoints(x1: number, y1: number, x2: number, y2: number) {
+    return SquareRoot(Pow(x2 - x1, 2) + Pow(y2 - y1, 2));
 }

@@ -16,9 +16,9 @@ import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_
 import { InitLaserRifle, LaserRifle } from "./guns/laser-rifle";
 import { Shotgun, InitShotgun } from "./guns/shotgun";
 import { RailRifle } from "./attachment/rail-rifle";
-import { vectorFromUnit } from "app/types/vector2";
 import { DragonfireBarrelAttachment } from "./attachment/dragonfire-barrel";
 import { EVENT_TYPE } from "app/events/event";
+import { getZFromXY } from "lib/utils";
 
 const WEAPON_UPDATE_PERIOD = 0.03;
 
@@ -250,12 +250,14 @@ export class WeaponModule {
             this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0))
             this.weaponShootTrigger.addAction(() => {
                 let unit = Unit.fromHandle(GetTriggerUnit());
-                let targetLocation = GetSpellTargetLoc();
+
                 let targetLoc = new Vector3(
-                    GetLocationX(targetLocation), 
-                    GetLocationY(targetLocation), 
-                    GetLocationZ(targetLocation)
+                    GetSpellTargetX(),
+                    GetSpellTargetY(),
+                    0
                 );
+
+                targetLoc.z = getZFromXY(targetLoc.x, targetLoc.y);
 
                 // Get unit weapon instance
                 const crewmember = this.game.crewModule.getCrewmemberForUnit(unit);
@@ -273,7 +275,6 @@ export class WeaponModule {
                         targetLoc
                     );
                 }
-                RemoveLocation(targetLocation);
             })
         // }
         // // Handle auto attack

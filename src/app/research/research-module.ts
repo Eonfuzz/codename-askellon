@@ -60,11 +60,11 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
             if (this.techIsMajor(techUnlocked)) {
                 // Process the tech upgrade yo
                 this.processMajorUpgrade(player, techUnlocked, levelTech);
-                // Process upgrade for all players
-                this.game.crewModule.CREW_MEMBERS.forEach(c => c.onPlayerFinishUpgrade());
                 // Brilliant, now reward the player with experience
-                const pForce = this.game.forceModule.getPlayerForce(player);
-                const crewmember = this.game.crewModule.getCrewmemberForPlayer(player);
+                const pData = this.game.forceModule.getPlayerDetails(player);
+                const pForce = pData.getForce();
+
+                const crewmember = pData.getCrewmember();
 
                 if (pForce && crewmember) this.rewardResearchXP(pForce, crewmember, player, techUnlocked);
 
@@ -77,7 +77,8 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
             // Otherwise just update it for a single player
             else {
                 const p = GetOwningPlayer(GetTriggerUnit());
-                const crew = this.game.crewModule.getCrewmemberForPlayer(MapPlayer.fromHandle(p));
+                const pData = this.game.forceModule.getPlayerDetails(MapPlayer.fromHandle(p));
+                const crew = pData.getCrewmember();
                 if (crew) {
                     crew.onPlayerFinishUpgrade();
 
@@ -117,7 +118,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         const techName = this.getTechName(id, level);
         this.majorUpgradeLevels.set(id, level);
 
-        const crewmember = this.game.crewModule.getCrewmemberForPlayer(player);
+        const crewmember = this.game.forceModule.getPlayerDetails(player).getCrewmember();
         if (isInfested) this.setUpgradeAsInfested(id, level, true);
 
         // Handle occupation bonuses

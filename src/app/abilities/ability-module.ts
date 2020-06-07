@@ -198,12 +198,18 @@ export class AbilityModule {
         // restart timer if it is down
     }
 
+    /**
+     * @deprecated
+     * @param whichUnit 
+     */
     public trackUnitOrdersForAbilities(whichUnit: Unit) {
         // this.unitIssuedCommand.registerUnitEvent(whichUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
-        this.unitIssuedCommand.registerUnitEvent(whichUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
+        // this.unitIssuedCommand.registerUnitEvent(whichUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
     }
 
     process(delta: number) {
+        if (this.data.length === 0) return;
+
         // Go through all abilities cast
         let result = [];
         for (let index = 0; index < this.data.length; index++) {

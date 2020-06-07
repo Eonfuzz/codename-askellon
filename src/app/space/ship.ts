@@ -26,7 +26,8 @@ export class Ship {
     // Magic number for starting fuel. Upgrades to apply maybe?
     public shipFuel: number = 100;
     public maxFuel: number = 100;
-    private outOfFuelDotTicker = 1;
+
+    private fuelUpdateTicker = 1;
     private fuelUsagePercent = 1;
 
     // Ship engine
@@ -63,10 +64,6 @@ export class Ship {
             const facing = this.engine.getFacingAngle();
             BlzSetUnitFacingEx(this.unit.handle, facing);
 
-            const momentumLen = this.engine.getMomentum().getLength();
-
-            const fuelCost = (0.5 + momentumLen / 4000) * deltaTime;
-            this.shipFuel -= fuelCost * this.fuelUsagePercent;
             // Set pos
             const enginePos = this.engine.getPosition();
             this.unit.x = enginePos.x;
@@ -75,7 +72,30 @@ export class Ship {
             // We also force player cam to the ship
             const p = this.unit.owner;
             PanCameraToTimedForPlayer(p.handle, this.unit.x, this.unit.y, 0);
+        }
+        // What to do each tick if we are in a bay??
+        else if (this.state = ShipState.inBay) {
+        }
 
+        // Now update fuel costs if relevant
+        this.fuelUpdateTicker += deltaTime;
+        if (this.fuelUpdateTicker >= 1) {
+            this.fuelUpdateTicker -= 1;
+            this.updateFuel();
+        }
+    }
+
+    /**
+     * Update fuel and fuel loss / gain, is called every 1 second
+     */
+    private updateFuel() {
+        if (this.state === ShipState.inSpace) {
+            const momentumLen = this.engine.getMomentum().getLength();
+
+            const fuelCost = (0.5 + momentumLen / 4000);
+            this.shipFuel -= fuelCost * this.fuelUsagePercent;
+
+            // Also update some sfx when we update fuel
             if (momentumLen >= 100) {
                 // Set animation
                 SetUnitAnimationByIndex(this.unit.handle, 4);
@@ -85,24 +105,29 @@ export class Ship {
                 SetUnitAnimationByIndex(this.unit.handle, 3);
             }
 
+            // Additionally, if we are out of mana damage the ship...
             if (this.shipFuel <= 0) {
-                this.outOfFuelDotTicker += deltaTime;
-                if (this.outOfFuelDotTicker >= 0.5) {
-                    this.outOfFuelDotTicker -= 0.5;
-                    this.unit.damageTarget(this.unit.handle, 
-                        25, 0, 
-                        false, false, 
-                        ATTACK_TYPE_HERO, 
-                        DAMAGE_TYPE_DIVINE, 
-                        WEAPON_TYPE_WHOKNOWS
-                    );
-                }
+                this.unit.damageTarget(this.unit.handle, 
+                    40, 0, 
+                    false, false, 
+                    ATTACK_TYPE_HERO, 
+                    DAMAGE_TYPE_DIVINE, 
+                    WEAPON_TYPE_WHOKNOWS
+                );
             }
         }
-        // Otherwise update fuel
-        else if (this.state = ShipState.inBay) {
-            this.shipFuel = Math.min(this.shipFuel + 0.5 * deltaTime, this.maxFuel);
+        else if (this.state === ShipState.inBay) {
+            this.shipFuel = this.shipFuel + 0.5;
         }
+
+        // Make sure we can't be less than 0 or higher than max
+        if (this.shipFuel < 0) {
+            this.shipFuel = 0;
+        }
+        else if (this.shipFuel > this.maxFuel) {
+            this.shipFuel = this.maxFuel;
+        }
+        // Now apply the fuel change
         this.unit.mana = this.shipFuel;
     }
 

@@ -62,7 +62,7 @@ export class Resolve extends DynamicBuff {
             this.crewmember.unit.addAbility(ABIL_ACCURACY_BONUS_30);
             this.resolveMusic.setVolume(15);
             if (GetLocalPlayer() === this.crewmember.player.handle) {
-                StopMusic(true);
+                SetMusicVolume(0);
                 this.breathSound.playSound();
                 this.resolveMusic.playSound();
             }
@@ -87,7 +87,7 @@ export class Resolve extends DynamicBuff {
             if (GetLocalPlayer() === this.crewmember.player.handle) {
                 this.breathSound.stopSound();
                 this.resolveMusic.stopSound();
-                ResumeMusic();
+                SetMusicVolume(30);
             }
         }
     }

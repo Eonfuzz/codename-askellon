@@ -82,64 +82,64 @@ export class TheAskellon {
     }
 
     applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
-        let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-        const crewmember = this.world.game.crewModule.getCrewmemberForPlayer(player);
-        const vision = crewmember ? crewmember.getVisionType() : VISION_TYPE.NORMAL;
+        // let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+        // const crewmember = this.world.game.crewModule.getCrewmemberForPlayer(player);
+        // const vision = crewmember ? crewmember.getVisionType() : VISION_TYPE.NORMAL;
 
-        if (hasPower && justChanged) {
-            if (GetLocalPlayer() === player.handle) {
-                this.powerUpSound.playSound();
-            }
-            this.world.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-                if (GetLocalPlayer() === player.handle) {
-                    switch(vision) {
-                        case VISION_TYPE.NIGHT_VISION:
-                        case VISION_TYPE.ALIEN:
-                        default:
-                            SetDayNightModels(
-                                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-                                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-                            );
-                    };
-                }
-                return true;
-            }, 4000));
-        }
-        else if (hasPower && !justChanged && player.handle === GetLocalPlayer()) {
-            switch(vision) {
-                case VISION_TYPE.NIGHT_VISION:
-                case VISION_TYPE.ALIEN:
-                default:
-                    SetDayNightModels(
-                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-                        "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-                    );
-            };
-        }
-        else if (!hasPower && player.handle === GetLocalPlayer()) {
-            // Play the sound effect only if the power has *just* changed
-            if (justChanged) {
-                this.powerDownSound.playSound();
-            }
-            switch(vision) {
-                case VISION_TYPE.NIGHT_VISION:
-                case VISION_TYPE.ALIEN:
-                    SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\war3mapImported\\NiteVisionModelRed.mdx");
-                    break;
-                default:
-                    SetDayNightModels("", "");
-            }
-        }
+        // if (hasPower && justChanged) {
+        //     if (GetLocalPlayer() === player.handle) {
+        //         this.powerUpSound.playSound();
+        //     }
+        //     // this.world.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+        //     //     if (GetLocalPlayer() === player.handle) {
+        //     //         switch(vision) {
+        //     //             case VISION_TYPE.NIGHT_VISION:
+        //     //             case VISION_TYPE.ALIEN:
+        //     //             default:
+        //     //                 SetDayNightModels(
+        //     //                     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+        //     //                     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+        //     //                 );
+        //     //         };
+        //     //     }
+        //     //     return true;
+        //     // }, 4000));
+        // }
+        // else if (hasPower && !justChanged && player.handle === GetLocalPlayer()) {
+        //     switch(vision) {
+        //         case VISION_TYPE.NIGHT_VISION:
+        //         case VISION_TYPE.ALIEN:
+        //         default:
+        //             // SetDayNightModels(
+        //             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+        //             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+        //             // );
+        //     };
+        // }
+        // else if (!hasPower && player.handle === GetLocalPlayer()) {
+        //     // Play the sound effect only if the power has *just* changed
+        //     if (justChanged) {
+        //         this.powerDownSound.playSound();
+        //     }
+        //     switch(vision) {
+        //         case VISION_TYPE.NIGHT_VISION:
+        //         case VISION_TYPE.ALIEN:
+        //             // SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\war3mapImported\\NiteVisionModelRed.mdx");
+        //             break;
+        //         default:
+        //             // SetDayNightModels("", "");
+        //     }
+        // }
 
 
-        // IF we dont have power add despair to the unit
-        if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
-            crewmember.addDespair(this.world.game, new BuffInstanceCallback(crewmember.unit, () => {
-                const z = this.world.getUnitZone(crewmember.unit);
-                const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
-                return (z && hasNighteye === 0) ? z.doCauseFear() : false;
-            }));
-        }
+        // // IF we dont have power add despair to the unit
+        // if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
+        //     crewmember.addDespair(this.world.game, new BuffInstanceCallback(crewmember.unit, () => {
+        //         const z = this.world.getUnitZone(crewmember.unit);
+        //         const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
+        //         return (z && hasNighteye === 0) ? z.doCauseFear() : false;
+        //     }));
+        // }
     }
 
     /**

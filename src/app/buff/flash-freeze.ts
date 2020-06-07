@@ -73,7 +73,9 @@ export class flashFreeze extends DynamicBuff {
 
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
-            if (GetLocalPlayer() === this.who.owner.handle) FREEZE_SOUND.playSound();
+            if (GetLocalPlayer() === this.who.owner.handle) {
+                FREEZE_SOUND.playSound();
+            }
         }
         else {
             this.who.moveSpeed = this.startingSpeed;

@@ -105,9 +105,9 @@ export class Util {
         return `|cFF${colour}${str}|r`;
     }
 
-    public static RandomInt(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    // public static RandomInt(min: number, max: number): number {
+    //     return Math.floor(Math.random() * (max - min + 1)) + min;
+    // }
 
     public static ShuffleArray(arr: any[]): void {
         for (let i: number = arr.length - 1; i > 0; i--) {

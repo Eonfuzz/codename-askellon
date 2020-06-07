@@ -33,10 +33,10 @@ export class CryoGrenadeAbility implements Ability {
         this.castingPlayer = this.casterUnit.owner;
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
-        this.targetLoc.z = module.game.getZFromXY(this.targetLoc.x, this.targetLoc.y);
+        this.targetLoc.z = getZFromXY(this.targetLoc.x, this.targetLoc.y);
 
         const polarPoint = vectorFromUnit(this.casterUnit.handle).applyPolarOffset(this.casterUnit.facing, 80);
-        const startLoc = new Vector3(polarPoint.x, polarPoint.y, module.game.getZFromXY(polarPoint.x, polarPoint.y)+30);
+        const startLoc = new Vector3(polarPoint.x, polarPoint.y, getZFromXY(polarPoint.x, polarPoint.y)+30);
 
         const deltaTarget = this.targetLoc.subtract(startLoc);       
 

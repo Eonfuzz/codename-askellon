@@ -19,7 +19,6 @@ const vendingSound = new SoundRef("Sounds\\vendingMachineChunk.mp3", false);
 
 export function initVendingInteraction(game: Game) {
     const interaction: InteractableData = {
-        unitType: VENDING_MACHINE_TRIFEX,
         action: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             const pMoney = source.owner.getState(PLAYER_STATE_RESOURCE_GOLD);
             if (pMoney < 300) {

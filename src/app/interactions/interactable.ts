@@ -2,13 +2,7 @@ import { InteractionModule } from "./interaction-module";
 import { Unit } from "w3ts/handles/unit";
 
 /** @noSelfInFile **/
-export interface InteractableData {
-  /**
-   * Not really used anywhere integeral
-   * Totally optional
-   */
-  unitType?: number;
-  
+export interface InteractableData { 
 
   /**
    * Ran when the unit tries to interact, true allows the interactable effect to exist

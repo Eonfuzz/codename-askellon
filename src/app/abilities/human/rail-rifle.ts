@@ -1,6 +1,5 @@
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
-import { VISION_TYPE } from "app/world/vision-type";
 import { Unit } from "w3ts/handles/unit";
 import { PlayNewSoundOnUnit, getYawPitchRollFromVector } from "lib/translators";
 import { getZFromXY } from "lib/utils";
@@ -8,7 +7,6 @@ import { Vector3 } from "app/types/vector3";
 import { WeaponModule } from "app/weapons/weapon-module";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic } from "app/weapons/projectile/projectile-target";
-import { Log } from "lib/serilog/serilog";
 import { SoundRef } from "app/types/sound-ref";
 import { vectorFromUnit } from "app/types/vector2";
 import { TimedEvent } from "app/types/timed-event";

@@ -87,12 +87,12 @@ export class ChatModule {
         this.game.forceModule.getActivePlayers().forEach(player => {
             messageTrigger.registerPlayerChatEvent(player, "", false);
         });
-        messageTrigger.addAction(() => this.onChatMessage());
+        // messageTrigger.addAction(() => this.onChatMessage());
 
         /**
          * Create a fade tracking trigger loop
          */
-        this.fadeHandler.start(0.1, true, () => this.updateFade(0.1));
+        // this.fadeHandler.start(0.1, true, () => this.updateFade(0.1));
         // const fadeTrig = new Trigger();
         // fadeTrig.registerTimerEvent(0.1, true);
         // fadeTrig.addAction(() => this.updateFade(0.1));
@@ -105,7 +105,8 @@ export class ChatModule {
     onChatMessage() {
         const player = MapPlayer.fromHandle(GetTriggerPlayer());
         const message = GetEventPlayerChatString();
-        const crew = this.game.crewModule.getCrewmemberForPlayer(player) as Crewmember;
+        const pData = this.game.forceModule.getPlayerDetails(player);
+        const crew = pData.getCrewmember();
 
         const isCommand = message[0] === '-';
         if (isCommand) this.handleCommand(player, message, crew);
@@ -230,7 +231,9 @@ export class ChatModule {
         }
         else {
             // Get list of players to send the message to by player force
-            const force = this.game.forceModule.getPlayerForce(player);
+            const pDetails = this.game.forceModule.getPlayerDetails(player);
+            const force = pDetails.getForce();
+
             if (force) {
                 const recipients = force.getChatRecipients(player).slice();
                 const playername = force.getChatName(player);

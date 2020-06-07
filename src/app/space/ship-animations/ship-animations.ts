@@ -5,7 +5,7 @@ import { Ship } from "../ship";
 import { SoundRef } from "app/types/sound-ref";
 import { SFX_WINDWAVE } from "resources/sfx-paths";
 import { Vector2 } from "app/types/vector2";
-import { terrainIsPathable } from "lib/utils";
+import { terrainIsPathable, getDistanceBetweenTwoPoints } from "lib/utils";
 import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { Vector3 } from "app/types/vector3";
 import { PlayNewSoundOnUnit } from "lib/translators";
@@ -194,10 +194,9 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
                 DestroyEffect(sfx);
             }
         }
-
-        const totalD = Math.abs(this.ship.unit.x - this.dock.RECT.centerX) + Math.abs(this.ship.unit.y - this.dock.RECT.centerY);
-
-        return totalD <= 5 ? false : true;
+        
+        const totalD = getDistanceBetweenTwoPoints(this.ship.unit.x, this.ship.unit.y, this.dock.RECT.centerX, this.dock.RECT.centerY);
+        return totalD >= 15
     }
 
     private moveShip(delta: number) {
@@ -207,9 +206,9 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
         if (this.ship.unit.y >= (this.dock.RECT.centerY)) {
             const oldX = this.ship.unit.x;
             const oldY = this.ship.unit.y;
-    
-            const totalD = Math.abs(this.ship.unit.x - this.dock.RECT.centerX) + Math.abs(this.ship.unit.y - this.dock.RECT.centerY);
 
+            const totalD = getDistanceBetweenTwoPoints(this.ship.unit.x, this.ship.unit.y, this.dock.RECT.centerX, this.dock.RECT.centerY);
+        
             let simulatedDelta = delta/2;
             // If we are approaching the center point we need to slow down even further
             if (totalD <= 300) {

@@ -362,7 +362,7 @@ export class SpaceModule {
             const isPilot = crew && crew.role === ROLE_TYPES.PILOT;
             let manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
             if (isPilot) {
-                manaCost = Min(manaCost-1, 0);
+                manaCost = Math.min(manaCost-1, 0);
             }
             ship.shipFuel -= manaCost;
         })

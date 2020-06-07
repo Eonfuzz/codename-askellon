@@ -9,6 +9,7 @@ import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit } from "w3ts";
 import { Log } from "lib/serilog/serilog";
+import { getZFromXY } from "lib/utils";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -68,7 +69,7 @@ export class TransformAbility implements Ability {
             this.timeElapsedSinceSFX = 0;
             const tLoc = vectorFromUnit(this.casterUnit.handle);
 
-            const unitHeight = abMod.game.getZFromXY(tLoc.x, tLoc.y);
+            const unitHeight = getZFromXY(tLoc.x, tLoc.y);
             const startLoc = new Vector3(tLoc.x, tLoc.y, unitHeight + 80)
 
             const newTarget = new Vector3(

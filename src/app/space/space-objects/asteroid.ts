@@ -57,7 +57,9 @@ export class Asteroid extends SpaceObject {
 
         this.widget.z = depth;
         if (isBackground) {
-            const darkness = MathRound(255 - 255*(Math.abs(depth)/800));
+            let t = depth < 0 ? depth * -1 : depth;
+
+            const darkness = MathRound(255 - 255*(t/800));
             this.widget.setColor(darkness, darkness, darkness);
         }
         const scaleFactor = GetRandomReal(0.5, 3);

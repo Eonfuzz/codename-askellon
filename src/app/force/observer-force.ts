@@ -27,12 +27,12 @@ export class ObserverForce extends ForceType {
         const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
         FogModifierStart(modifier);
         // Make sure DNC is bright, bug fix for deaths in vents
-        if (player.handle === GetLocalPlayer()) {
-            SetDayNightModels(
-                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-            );
-        }
+        // if (player.handle === GetLocalPlayer()) {
+        //     SetDayNightModels(
+        //         "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+        //         "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+        //     );
+        // }
     }    
     
     /**

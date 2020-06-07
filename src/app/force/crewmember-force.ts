@@ -44,7 +44,7 @@ export class CrewmemberForce extends ForceType {
 
         let killedByAlien: boolean = false;
         if (killer) {
-            const pForce = this.forceModule.getPlayerForce( killer.owner );
+            const pForce = this.forceModule.getPlayerDetails( killer.owner ).getForce();
             
             if (pForce && pForce.is(ALIEN_FORCE_NAME)) {
                 const aForce = pForce as AlienForce;

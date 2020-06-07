@@ -21,12 +21,12 @@ export class ScreamAbility implements Ability {
         screamSound.playSound();
         KillSoundWhenDone(screamSound.sound);
 
-        abMod.game.crewModule.CREW_MEMBERS.forEach(c => {
-            c.addDespair(abMod.game, new BuffInstanceDuration(this.casterUnit, abMod.game.getTimeStamp(), 30));
-            // Now ping their location
-            if (c.player !== this.casterUnit.owner) 
-                PingMinimapForPlayer(this.casterUnit.owner.handle, c.unit.x, c.unit.y, 5);
-        });
+        // abMod.game.crewModule.CREW_MEMBERS.forEach(c => {
+        //     c.addDespair(abMod.game, new BuffInstanceDuration(this.casterUnit, abMod.game.getTimeStamp(), 30));
+        //     // Now ping their location
+        //     if (c.player !== this.casterUnit.owner) 
+        //         PingMinimapForPlayer(this.casterUnit.owner.handle, c.unit.x, c.unit.y, 5);
+        // });
         return false;
     };
     

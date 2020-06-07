@@ -54,7 +54,7 @@ export class GeneModule {
         });
 
         // Start gene check trigger
-        new Timer().start(0.5, true, () => this.checkGeneRequirements());
+        // new Timer().start(2, true, () => this.checkGeneRequirements());
         // const checkTrig = new Trigger();
         // checkTrig.registerTimerEvent(0.5, true);
         // checkTrig.addAction(() => this.checkGeneRequirements());
@@ -82,6 +82,7 @@ export class GeneModule {
     }
 
     checkGeneRequirements() {
+        if (this.instances.length === 0) return;
         // Go through the instances
         this.instances = this.instances.filter(gInstance => {
             // If the ui unit is dead remove this
@@ -193,27 +194,34 @@ export class GeneModule {
         
         // Now grant XP if installed by doc and medicare 2 was researched
         if (instance.source.role === ROLE_TYPES.DOCTOR && doGiveBonusXp) {
-            const installerForce = this.game.forceModule.getPlayerForce(instance.source.player) as ForceType;
-            const targetForce = this.game.forceModule.getPlayerForce(instance.unitInGeneZone.player) as ForceType;
-
-            // Grant 100 xp each
-            installerForce.onUnitGainsXp(this.game, instance.source, 100);
-            targetForce.onUnitGainsXp(this.game, instance.unitInGeneZone, 100);
+            this.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                source: instance.source.unit,
+                data: { value: 100 }
+            });
+            this.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                source: instance.unitInGeneZone.unit,
+                data: { value: 100 }
+            });
         }
         // INFESTED ugprade
-        // Grant XP for HOST
+        // Grant XP for ALL ALiENS
         else if (bonusXpInfested) {
-            const host = alienForce.getHost();
-            if (host) {
-                const hostCrewmember = this.game.crewModule.getCrewmemberForPlayer(host);
-                hostCrewmember && alienForce.onUnitGainsXp(this.game, hostCrewmember, 100);
-                
-                let text: string;
-                const rNumber = GetRandomInt(0,1);
-                if (rNumber === 0) text = "The humans alter their bodies";
-                else if (rNumber === 1) text = "Inspecting infested gene splicing";
-                this.game.chatModule.postMessage(hostCrewmember.player, "INFEST", text);
+
+            let text = "Humans alter their bodies";
+            const alienPlayers = alienForce.getPlayers();
+
+            for (let index = 0; index < alienPlayers.length; index++) {
+                const aPlayer = alienPlayers[index];
+                const pData = this.game.forceModule.getPlayerDetails(aPlayer);
+
+                this.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                    source: pData.getCrewmember().unit,
+                    data: { value: 100 }
+                });
+
+                this.game.chatModule.postMessage(aPlayer, "INFEST", text);
             }
+
         }
 
         if (targetIsAlien) {

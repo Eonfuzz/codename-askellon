@@ -184,11 +184,11 @@ export class OptSelection {
                     // const optPowerForPlayer = MathRound(this.getOptPower(p) / numOpts);
                     // totalOptPower += optPowerForPlayer
 
-                    let localString = text + ` ${COL_GOOD}Opted In!|r`;
+                    // let localString = text + ` ${COL_GOOD}Opted In!|r`;
 
-                    if (p.handle === GetLocalPlayer()) {
-                        text = localString;
-                    }
+                    // if (p.handle === GetLocalPlayer()) {
+                    //     text = localString;
+                    // }
                 })
             }
 

@@ -36,7 +36,7 @@ export class ProjectileTargetUnit implements ProjectileTarget {
 
     getTargetX(): number { return GetUnitX(this.target); };
     getTargetY(): number { return GetUnitY(this.target); };
-    getTargetZ(): number { return BlzGetUnitZ(this.target); };
+    getTargetZ(): number { return getZFromXY(this.getTargetX(), this.getTargetY()); };
     getTargetVector(): Vector3 {
         return new Vector3(this.getTargetX(), this.getTargetY(), getZFromXY(this.getTargetX(), this.getTargetY()));
     }

@@ -15,22 +15,14 @@ export class DynamicBuffModule {
     buffs: DynamicBuff[] = [];
     buffsByUnit = new Map<Unit, DynamicBuff[]>();
 
-    dynamicBuffTimer: Timer;
-
     constructor(game: Game) {
         this.game = game;
     }
 
-    init() {
-        // const buffUpdateTrigger = new Trigger();
-
-        this.dynamicBuffTimer = new Timer();
-        // buffUpdateTrigger.registerTimerEvent(0.1, true);
-        // buffUpdateTrigger.addAction(() => this.process(0.1));
-    }
+    init() {}
 
     addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
-        let buffsForUnit = this.buffsByUnit.get(who) || [];
+        let buffsForUnit = this.buffsByUnit.has(who) ? this.buffsByUnit.get(who) : [];
         let matchingBuff = buffsForUnit.filter(b => b.id === buffId)[0];
 
         if (!matchingBuff) {
@@ -41,10 +33,6 @@ export class DynamicBuffModule {
         }
 
         matchingBuff.addInstance(this.game, who, instance, isNegativeInstance);
-        
-        // if (this.buffs.length === 1) {
-        //     this.dynamicBuffTimer.start(0.1, true, () => this.process(0.1));
-        // }
     }
 
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {
@@ -55,18 +43,29 @@ export class DynamicBuffModule {
     }
 
     process(delta) {
-        this.buffs = this.buffs.filter(buff => {
-            const doDestroy = !buff.process(this.game, delta);
-            if (doDestroy) {
-                const buffs = this.buffsByUnit.get(buff.who) || [];
-                buffs.splice(buffs.indexOf(buff), 1);
-                if (buffs.length === 0) this.buffsByUnit.delete(buff.who);
-            }
-            return !doDestroy;
-        })
+        // Dont do anything if no buffs
+        if (this.buffs.length === 0) return;
+        const nBuffs = [];
 
-        // if (this.buffs.length === 0) {
-        //     this.dynamicBuffTimer.pause();
-        // }
+        for (let index = 0; index < this.buffs.length; index++) {
+            const buff = this.buffs[index];
+            const doDestory = buff.process(this.game, delta);
+            if (!doDestory) {
+                nBuffs.push(buff);
+            }
+            else {
+                const buffsForUnit = this.buffsByUnit.get(buff.who);
+                const idx = buffsForUnit.indexOf(buff);
+                if (idx >= 0) {
+                    buffsForUnit.splice(idx, 1);
+                    if (buffsForUnit.length === 0) this.buffsByUnit.delete(buff.who);
+                }
+                else {
+                    Log.Error("Deleting unit buff from unit buff cache but no unit entry");
+                }
+            }
+        }
+
+        this.buffs = nBuffs;
     }
 }

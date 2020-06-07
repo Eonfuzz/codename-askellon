@@ -105,9 +105,11 @@ export class AlienForce extends ForceType {
             // this.registerAlienDealsDamage(who);
 
 
-            const crewmember = game.crewModule.getCrewmemberForPlayer(owner);
-            if (crewmember) crewmember.setVisionType(VISION_TYPE.ALIEN);
+            // TODO Change how vision is handled
+            const pData = game.forceModule.getPlayerDetails(owner);
+            const crewmember = pData.getCrewmember();
             
+            pData.setVisionType(VISION_TYPE.ALIEN);            
 
             // mark this unit as the alien host
             if (!this.alienHost) {
@@ -242,7 +244,7 @@ export class AlienForce extends ForceType {
 
         this.removePlayerMainUnit(
             this.forceModule.game, 
-            this.forceModule.game.crewModule.getCrewmemberForPlayer(whichUnit.owner), 
+            this.forceModule.getPlayerDetails(whichUnit.owner).getCrewmember(), 
             whichUnit.owner
         );
     }
@@ -252,7 +254,8 @@ export class AlienForce extends ForceType {
 
         const alien = this.playerAlienUnits.get(who);
         const unit = this.playerUnits.get(who);
-        const crewmember = game.crewModule.getCrewmemberForPlayer(who) as Crewmember;
+
+        const crewmember = this.forceModule.getPlayerDetails(who).getCrewmember();
 
         if (!alien) throw new Error("AlienForce::transform No alien for player!");
         if (!unit) throw new Error("AlienForce::transform No human for player!");
@@ -368,12 +371,11 @@ export class AlienForce extends ForceType {
         const damagingPlayer = damageSource.owner;
         const damagedPlayer = damagedUnit.owner;
 
-        if (!this.playerAlienUnits.has(damagingPlayer)) this.onAlienTakesDamage();
-
-        const damageAmount = GetEventDamage();
-
+        // If the damaging unit isn't alien that means we're taking damage
+        if (!this.playerAlienUnits.has(damagingPlayer)) return this.onAlienTakesDamage();
         // Check to make sure you aren't damaging alien stuff
         if (damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagedPlayer)) {
+            const damageAmount = GetEventDamage();
             let xpGained: number;
 
             // Now handle this different
@@ -383,10 +385,11 @@ export class AlienForce extends ForceType {
             // Reward slightly less xp for being in human form
             xpGained = damagingSecurity ? 0 : (isAlienForm ? damageAmount * 1 : damageAmount * 0.4);
 
-            const crewmember = this.forceModule.game.crewModule.getCrewmemberForPlayer(damagingPlayer);
-            if (crewmember) {
-                crewmember.addExperience(this.forceModule.game, xpGained);
-                // this.onUnitGainsXp(this.forceModule.game, crewmember, xpGained);
+            if (xpGained > 0) {
+                this.forceModule.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                    source: damageSource,
+                    data: { value: xpGained }
+                });
             }
         }
     }
@@ -408,15 +411,19 @@ export class AlienForce extends ForceType {
         // Also check to make sure they aren't both alien players
         if (damagedUnitIsAlien && damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagingPlayer)) {
             // Okay good, now reward exp based on damage done
-            const damageSourceForce = this.forceModule.getPlayerForce(damagingPlayer);
-            const crewmember = this.forceModule.game.crewModule.getCrewmemberForPlayer(damagingPlayer);
+            const pDetails = this.forceModule.getPlayerDetails(damagingPlayer);
+            const crew = pDetails.getCrewmember();
+            
+            let xpAmount = damageAmount;
 
-            if (damageSourceForce && crewmember) {
-                // Do I make it proportional to level as a catchup mechanic?
-                // Increase XP gained for damaging host by Sec Guard
-                const xpAmount = crewmember.role === ROLE_TYPES.SEC_GUARD ? damageAmount * 1.3 : 1;
-                crewmember.addExperience(this.forceModule.game, xpAmount);
+            if (crew && crew.role === ROLE_TYPES.SEC_GUARD) {
+                xpAmount *= 1.3;
             }
+
+            this.forceModule.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                source: damageSource,
+                data: { value: xpAmount }
+            });
         }
     }
 

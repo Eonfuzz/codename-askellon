@@ -1,18 +1,9 @@
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
-import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../../weapons/weapon-constants";
-import { SPRINT_BUFF_ID, ABIL_SHIP_BARREL_ROLL_RIGHT } from "resources/ability-ids";
-import { Vector3 } from "app/types/vector3";
-import { getZFromXY } from "lib/utils";
-import { SoundRef } from "app/types/sound-ref";
+import { Vector2 } from "../../types/vector2";
+import { ABIL_SHIP_BARREL_ROLL_RIGHT } from "resources/ability-ids";
 import { Unit } from "w3ts/index";
-import { Projectile } from "app/weapons/projectile/projectile";
-import { ProjectileTargetStatic, ProjectileMoverLinear } from "app/weapons/projectile/projectile-target";
-import { WeaponModule } from "app/weapons/weapon-module";
-import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
-import { Ship, ShipState } from "app/space/ship";
+import { Ship } from "app/space/ship";
 
 /** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";

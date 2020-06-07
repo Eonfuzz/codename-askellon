@@ -7,20 +7,17 @@ import { Log } from "lib/serilog/serilog";
 export class ChurchZone extends ShipZone {
 
     churchMusic = new SoundRef("Music\\GregorianChant.mp3", true);
-    private musicIsActive = false;
 
     public onLeave(world: WorldModule, unit: Unit) {
         super.onLeave(world, unit);
 
-        if (GetLocalPlayer() === unit.owner.handle) {
-            this.musicIsActive = false;
+        // Check if it is a main unit
+        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+
+        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
             this.churchMusic.stopSound();
             SetMusicVolume(20);
-            // SetDayNightModels(
-            //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-            //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-            // );
         }
         // If no oxy remove oxy loss
         // TODO
@@ -30,10 +27,12 @@ export class ChurchZone extends ShipZone {
     public onEnter(world: WorldModule, unit: Unit) {
         super.onEnter(world, unit);
 
-        if (GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
-            this.musicIsActive = true;
-            // Play music
-            this.churchMusic.setVolume(30);
+        // Check if it is a main unit
+        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+        // Play music
+        this.churchMusic.setVolume(30);
+
+        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             this.churchMusic.playSound();
             SetMusicVolume(5);
 

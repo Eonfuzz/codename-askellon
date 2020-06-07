@@ -5,6 +5,7 @@ import { Vector3 } from "../../types/vector3";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Unit } from "w3ts/handles/unit";
 import { Log } from "lib/serilog/serilog";
+import { getZFromXY } from "lib/utils";
 
 
 const LEAP_ID = FourCC('LEAP');
@@ -39,7 +40,7 @@ export class LeapAbility implements Ability {
         // Only continue if the alien is ordered to move far away
         if (!isSelfCast && clickLoc.subtract(casterLoc).getLength() < 800) return false;
 
-        casterLoc.z = abMod.game.getZFromXY(casterLoc.x, casterLoc.y);
+        casterLoc.z = getZFromXY(casterLoc.x, casterLoc.y);
 
         let targetLoc = new Vector3(0, 0, 0);
 
@@ -138,7 +139,7 @@ export class LeapAbility implements Ability {
                 GetUnitY(this.casterUnit), 
                 0
             );
-            casterLoc.z = abMod.game.getZFromXY(casterLoc.x, casterLoc.y);
+            casterLoc.z = getZFromXY(casterLoc.x, casterLoc.y);
 
             // let sfx = AddSpecialEffect("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", casterLoc.x, casterLoc.y);
             // DestroyEffect(sfx);

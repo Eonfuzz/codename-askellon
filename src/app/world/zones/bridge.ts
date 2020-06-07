@@ -12,8 +12,10 @@ export class BridgeZone extends ShipZone {
     public onLeave(world: WorldModule, unit: Unit) {
         super.onLeave(world, unit);
 
-        if (GetLocalPlayer() === unit.owner.handle) {
-            this.musicIsActive = false;
+        // Check if it is a main unit
+        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+
+        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
             this.operaMusic.stopSound();
             SetMusicVolume(20);
@@ -23,10 +25,11 @@ export class BridgeZone extends ShipZone {
     public onEnter(world: WorldModule, unit: Unit) {
         super.onEnter(world, unit);
 
-        if (GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
-            this.musicIsActive = true;
+        // Check if it is a main unit
+        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+
+        if (isCrew && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
             // Play music
-            this.operaMusic.setVolume(127);
             this.operaMusic.playSound();
             SetMusicVolume(5);
         }
@@ -35,13 +38,14 @@ export class BridgeZone extends ShipZone {
 export class BridgeZoneVent extends ShipZone {
 
     operaMusic = new SoundRef("Music\\Puccini.mp3", true);
-    private musicIsActive = false;
 
     public onLeave(world: WorldModule, unit: Unit) {
         super.onLeave(world, unit);
 
-        if (GetLocalPlayer() === unit.owner.handle) {
-            this.musicIsActive = false;
+        // Check if it is a main unit
+        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+
+        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
             this.operaMusic.stopSound();
             SetMusicVolume(20);
@@ -51,10 +55,13 @@ export class BridgeZoneVent extends ShipZone {
     public onEnter(world: WorldModule, unit: Unit) {
         super.onEnter(world, unit);
 
-        if (GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
-            this.musicIsActive = true;
-            // Play music
-            this.operaMusic.setVolume(50);
+        // Check if it is a main unit
+        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+
+        // Play music
+        this.operaMusic.setVolume(50);
+
+        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             this.operaMusic.playSound();
             SetMusicVolume(10);
         }

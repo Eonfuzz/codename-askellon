@@ -19,7 +19,6 @@ import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
 
 export function initShipInteractions(game: Game) {
     const interaction: InteractableData = {
-        unitType: SHIP_VOYAGER_UNIT,
         condition:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             // Make sure ships can't fly ships, lol.
             return source.typeId !== SHIP_VOYAGER_UNIT;
@@ -116,11 +115,20 @@ export function initShipInteractions(game: Game) {
         },
         onCancel: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             const aTimer = asteroidTimers.get(source);
-            if (aTimer) aTimer.destroy();
+            if (aTimer) {
+                aTimer.destroy();
+                asteroidTimers.delete(source);
+            }
         },
         action: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             // Set rock anim speed so it dies faster
             interactable.setTimeScale(1);
+
+            const aTimer = asteroidTimers.get(source);
+            if (aTimer) {
+                aTimer.destroy();
+                asteroidTimers.delete(source);
+            }
         }
     }
     Interactables.set(SPACE_UNIT_ASTEROID, asteroidInteraction);
@@ -128,7 +136,6 @@ export function initShipInteractions(game: Game) {
 
 export function initAskellonInteractions(game: Game) {
     const interaction: InteractableData = {
-        unitType: SHIP_MAIN_ASKELLON,
         condition:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             // Make sure ships can't fly ships, lol.
             return source.typeId === SHIP_VOYAGER_UNIT;

@@ -45,7 +45,7 @@ export class DiodeEjectAbility implements Ability {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
-        this.targetLoc.z = abMod.game.getZFromXY(this.targetLoc.x, this.targetLoc.y);
+        this.targetLoc.z = getZFromXY(this.targetLoc.x, this.targetLoc.y);
         
 
         this.crew = abMod.game.crewModule.getCrewmemberForUnit(this.casterUnit) as Crewmember;
@@ -76,7 +76,7 @@ export class DiodeEjectAbility implements Ability {
 
         const cX = this.casterUnit.x;
         const cY = this.casterUnit.y;
-        const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
+        const casterLoc = new Vector3(cX, cY, getZFromXY(cX, cY));
 
         // Missile appear loc
         const projStartLoc = casterLoc.projectTowards2D(this.casterUnit.facing, 30);
@@ -173,7 +173,7 @@ export class DiodeEjectAbility implements Ability {
         if (this.casterUnit) {
             const cX = this.casterUnit.x;
             const cY = this.casterUnit.y;
-            const casterLoc = new Vector3(cX, cY, abMod.game.getZFromXY(cX, cY));
+            const casterLoc = new Vector3(cX, cY, getZFromXY(cX, cY));
 
             let sfx = AddSpecialEffect("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", casterLoc.x, casterLoc.y);
             DestroyEffect(sfx);

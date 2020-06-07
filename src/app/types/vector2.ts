@@ -14,7 +14,7 @@ export class Vector2 {
     }
 
     getLength(): number {
-        return Math.sqrt( this.x*this.x + this.y*this.y );
+        return SquareRoot( this.x*this.x + this.y*this.y );
     }
 
     normalise(): Vector2 {

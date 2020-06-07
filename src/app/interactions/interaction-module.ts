@@ -7,6 +7,7 @@ import { Trigger, Unit, Timer } from "w3ts";
 import { initShipInteractions, initAskellonInteractions } from "./ship-interactions";
 import { initVendingInteraction } from "./vendor-interaction";
 import { initCommandTerminal } from "./command-terminal";
+import { Log } from "lib/serilog/serilog";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -56,11 +57,20 @@ export class InteractionModule {
         const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
         if (interact && (!interact.condition || interact.condition(this, trigUnit, targetUnit))) {
+            Log.Information("Adding new interaction!");
+
+            let interactionTime = 1.5;
+            let interactionDistance = 350;
+
+            if (interact.getInteractionTime !== undefined) interactionTime = interact.getInteractionTime(this, trigUnit, targetUnit);
+            if (interact.getInteractionDistance !== undefined) interactionDistance = interact.getInteractionDistance(this, trigUnit, targetUnit);
+
+
             const newInteraction = new InteractionEvent(
                 GetTriggerUnit(), 
                 GetOrderTargetUnit(), 
-                interact.getInteractionTime ? interact.getInteractionTime(this, trigUnit, targetUnit) : 1.5, 
-                interact.getInteractionDistance  ? interact.getInteractionDistance(this, trigUnit, targetUnit) : 350,
+                interactionTime,
+                interactionDistance,
                 () => interact.action(this, trigUnit, targetUnit),
                 () => interact.onStart && interact.onStart(this, trigUnit, targetUnit),
                 () => interact.onCancel && interact.onCancel(this, trigUnit, targetUnit)
@@ -79,6 +89,8 @@ export class InteractionModule {
     }
 
     processInteractions(delta: number) {
+        if (this.interactions.length === 0) return;
+        
         this.interactions = this.interactions
             .filter(interaction => {
                 const doDestroy = !interaction.process(delta);

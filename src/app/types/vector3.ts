@@ -14,7 +14,7 @@ export class Vector3 {
     }
 
     getLength(): number {
-        return Math.sqrt( this.x*this.x + this.y*this.y + this.z*this.z );
+        return SquareRoot( this.x*this.x + this.y*this.y + this.z*this.z );
     }
 
     normalise(): Vector3 {
@@ -104,7 +104,7 @@ export class Vector3 {
 
         let dx = this.x - xx;
         let dy = this.y - yy;
-        return Math.sqrt(dx * dx + dy * dy);
+        return SquareRoot(dx * dx + dy * dy);
     }
 
     /**

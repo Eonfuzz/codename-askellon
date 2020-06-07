@@ -12,6 +12,7 @@ import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 import { EventListener, EVENT_TYPE } from "app/events/event";
 import { SoundRef } from "app/types/sound-ref";
 import { PLAYER_COLOR } from "lib/translators";
+import { PlayerWithForce } from "./player-type";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -35,7 +36,7 @@ export class ForceModule {
     private forces: Array<ForceType> = [];
 
     private playerOriginalDetails = new Map<MapPlayer, playerDetails>();
-    private playerForceDetails = new Map<MapPlayer, ForceType>();
+    private playerDetails = new Map<MapPlayer, PlayerWithForce>();
 
     // new id for the next aggresison item
     private aggressionId = 0;
@@ -93,6 +94,11 @@ export class ForceModule {
         }));
 
 
+        // Init and listen for experience gain calls
+        this.game.event.addListener(new EventListener(EVENT_TYPE.CREW_GAIN_EXPERIENCE, (self, data) => {
+            Log.Information("Unit gaining xp : "+data.data.value);
+        }))
+
         const players = this.getActivePlayers();
         // Set up player leaves events
         
@@ -144,7 +150,7 @@ export class ForceModule {
         // Only care about force logic if we aren't already hostiles
         if (!this.aggressionLog.has(aggressionKey)) {
             // Now check force logic
-            const attackerForce = this.getPlayerForce(player1);
+            const attackerForce = this.getPlayerDetails(player1).getForce();
             const aggressionValid = attackerForce.aggressionIsValid(player1, player2);
             // If the force says this aint valid, well it aint valid
             if (!aggressionValid) return false;
@@ -359,7 +365,7 @@ export class ForceModule {
 
         // Start a 15 second timer
         const timer = CreateTimer();
-        StartTimerBJ(timer, false, this.getActivePlayers().length > 1 ? 15 : 0.1);
+        StartTimerBJ(timer, false, this.getActivePlayers().length > 1 ? 3 : 0.1);
 
         const timerTrig = new Trigger();
 
@@ -388,15 +394,18 @@ export class ForceModule {
             force = this.getForceFromName(forceName);
         }
 
-        this.playerForceDetails.set(player, force);
+        const pForce = new PlayerWithForce(player);
+        pForce.setForce(force);
+
+        this.playerDetails.set(player, pForce);
         force.addPlayer(player);
     }
 
     /**
      * Gets the player's force
      */
-    public getPlayerForce(player: MapPlayer) {
-        return this.playerForceDetails.get(player);
+    public getPlayerDetails(player: MapPlayer) {
+        return this.playerDetails.get(player);
     }
     
     /**
@@ -407,12 +416,19 @@ export class ForceModule {
         const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false);
         playerLeaveSound.playSound();
 
-        const playerforce = this.getPlayerForce(who);
-        const playerCrew = this.game.crewModule.getCrewmemberForPlayer(who);
+        // Kill all units they woned
+        const allUnits = GetUnitsOfPlayerAll(who.handle);
+
+        ForGroup(allUnits, () => {
+            const u = GetEnumUnit();
+            KillUnit(u);
+        });
 
         this.getActivePlayers().forEach(player => {
             DisplayTextToPlayer(player.handle, 0, 0, `|cff${PLAYER_COLOR[who.id]}${this.getOriginalPlayerDetails(who).name}|r has left the game!`);
         });
-        playerCrew.unit.kill();
+
+        const playerDetails = this.getPlayerDetails(who);
+        if (playerDetails) playerDetails.getForce().removePlayer(playerDetails.player);
     }
 }

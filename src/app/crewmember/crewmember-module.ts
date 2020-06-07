@@ -23,9 +23,7 @@ export class CrewModule {
 
     game: Game;
 
-    CREW_MEMBERS: Array<Crewmember> = [];
-    playerCrewmembers = new Map<MapPlayer, Crewmember>();
-
+    crewmemberForUnit = new Map<Unit, Crewmember>();
     allJobs: Array<ROLE_TYPES> = [];
 
     crewmemberDamageTrigger: Trigger;
@@ -49,11 +47,6 @@ export class CrewModule {
                 crew.onDamage(game);
             }
         });
-
-        this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
-        // const updateCrewTrigger = new Trigger();
-        // updateCrewTrigger.registerTimerEvent(DELTA_CHECK, true);
-        // updateCrewTrigger.addAction(() => this.processCrew(DELTA_CHECK));
     }
 
     initCrew(forces: ForceType[]) {
@@ -82,29 +75,31 @@ export class CrewModule {
             while (y < players.length) {
                 let player = players[y];
                 let crew = this.createCrew(player, force);
-                crew.updateTooltips(this.game.weaponModule);
+                // crew.updateTooltips(this.game.weaponModule);
                 y++;
             }
             it++;
         }
+
+        // this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
     }
 
 
     timeSinceLastIncome = 0;
     processCrew(time: number) {
         const doIncome = this.timeSinceLastIncome >= INCOME_EVERY;
-        this.CREW_MEMBERS.forEach(crew => {
-            crew.resolve.process(this.game, time);
-            crew.despair.process(this.game, time);
-        });
+        // this.CREW_MEMBERS.forEach(crew => {
+        //     crew.resolve.process(this.game, time);
+        //     crew.despair.process(this.game, time);
+        // });
 
         if (doIncome) {
             this.timeSinceLastIncome = 0;
             const amount = INCOME_EVERY / 60;
-            this.CREW_MEMBERS.forEach(crew => {
-                const calculatedIncome = MathRound(amount * crew.getIncome());
-                crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome);
-            });
+            // this.CREW_MEMBERS.forEach(crew => {
+            //     const calculatedIncome = MathRound(amount * crew.getIncome());
+            //     crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome);
+            // });
         }
         else {
             this.timeSinceLastIncome += time;
@@ -120,9 +115,11 @@ export class CrewModule {
         crewmember.setName(name);
         crewmember.setPlayer(player);
 
-        this.playerCrewmembers.set(player, crewmember);
-        this.CREW_MEMBERS.push(crewmember);
+        // Update pData
+        const pData = this.game.forceModule.getPlayerDetails(nUnit.owner);
+        pData.setCrewmember(crewmember);
         
+        this.crewmemberForUnit.set(nUnit, crewmember);        
         this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         // Add the unit to its force
@@ -177,7 +174,7 @@ export class CrewModule {
    
 
     getCrewmemberRole() {
-        const i = Math.floor(GetRandomInt(0, this.allJobs.length -1));
+        const i = GetRandomInt(0, this.allJobs.length -1);
         const role = this.allJobs[i];
         this.allJobs.splice(i, 1);
         return role;
@@ -195,15 +192,7 @@ export class CrewModule {
         return `NAME NOT FOUND ${role}`;
     }
 
-    getCrewmemberForPlayer(player: MapPlayer) {
-        return this.playerCrewmembers.get(player);
-    }
-
     getCrewmemberForUnit(unit: Unit): Crewmember | void {
-        for (let member of this.CREW_MEMBERS) {
-            if (member.unit == unit) {
-                return member;
-            }
-        }
+        return this.crewmemberForUnit.get(unit);
     }
 }

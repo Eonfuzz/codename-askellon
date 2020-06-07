@@ -1,8 +1,6 @@
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
-import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../../weapons/weapon-constants";
 import { SPRINT_BUFF_ID, TECH_MAJOR_VOID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
@@ -14,7 +12,7 @@ import { WeaponModule } from "app/weapons/weapon-module";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { Ship, ShipState } from "app/space/ship";
 import { PlayNewSoundOnUnit } from "lib/translators";
-import { SFX_LASER_3, SFX_LASER_2, SFX_LASER_1 } from "resources/sfx-paths";
+import { SFX_LASER_2, SFX_LASER_1 } from "resources/sfx-paths";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance";
 

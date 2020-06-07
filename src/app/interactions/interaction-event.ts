@@ -71,11 +71,11 @@ export class InteractionEvent {
     if (v1.subtract(v2).getLength() <= this.interactDistance) {
       if (this.timeRemaining === this.timeRequired) {
         // if this is the first tick show the progress bar
-        this.progressBar && this.progressBar.show();
-
-        // Set progress bar speed based on anim time
-        BlzSetSpecialEffectTimeScale(this.progressBar.bar, 1 / this.timeRequired);
-
+        if (this.progressBar) {
+          this.progressBar.show();
+          // Set progress bar speed based on anim time
+          BlzSetSpecialEffectTimeScale(this.progressBar.bar, 1 / this.timeRequired);
+        }
         this.startCallback();
       }
 
