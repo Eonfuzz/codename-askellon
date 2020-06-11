@@ -5,8 +5,6 @@ import { Rectangle, Region, Unit } from "w3ts/index";
 import { Ship } from "./ship";
 import { Game } from "app/game";
 import { EVENT_TYPE } from "app/events/event";
-import { Vector2 } from "app/types/vector2";
-
 
 /**
  * A ship bay slot on the station or elsewhere
@@ -20,10 +18,7 @@ export class ShipBay {
     private animating: boolean = false;
 
     private animation: ShipAnimation | undefined;
-
-    // SpaceSource, where is this shipbay located
-    private location: Unit;
-
+    
     constructor(whichRect: rect) {
         this.RECT = Rectangle.fromHandle(whichRect);
     }

@@ -54,7 +54,6 @@ export class TooltipModule {
      * @param who 
      */
     updateTooltips(data: EventData) {
-        Log.Information("Updating tooltips!");
         const unitTooltips = data.source ? this.tooltips.get(data.source) : undefined;
         const crewTooltips = data.crewmember ? this.tooltips.get(data.crewmember) : undefined;
 

@@ -133,9 +133,7 @@ export class AlienForce extends ForceType {
 
             // Make brown
             alien.color = PLAYER_COLOR_BROWN;
-            // Track unit ability orders
-            game.abilityModule.trackUnitOrdersForAbilities(alien);
-
+            
             // Now create an alien for player
             this.playerAlienUnits.set(owner, alien);
 

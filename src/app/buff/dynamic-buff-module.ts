@@ -22,6 +22,7 @@ export class DynamicBuffModule {
     init() {}
 
     addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
+        Log.Information("New buff!");
         let buffsForUnit = this.buffsByUnit.has(who) ? this.buffsByUnit.get(who) : [];
         let matchingBuff = buffsForUnit.filter(b => b.id === buffId)[0];
 
@@ -43,29 +44,29 @@ export class DynamicBuffModule {
     }
 
     process(delta) {
-        // Dont do anything if no buffs
-        if (this.buffs.length === 0) return;
-        const nBuffs = [];
+        // // Dont do anything if no buffs
+        // if (this.buffs.length === 0) return;
+        // const nBuffs = [];
 
-        for (let index = 0; index < this.buffs.length; index++) {
-            const buff = this.buffs[index];
-            const doDestory = buff.process(this.game, delta);
-            if (!doDestory) {
-                nBuffs.push(buff);
-            }
-            else {
-                const buffsForUnit = this.buffsByUnit.get(buff.who);
-                const idx = buffsForUnit.indexOf(buff);
-                if (idx >= 0) {
-                    buffsForUnit.splice(idx, 1);
-                    if (buffsForUnit.length === 0) this.buffsByUnit.delete(buff.who);
-                }
-                else {
-                    Log.Error("Deleting unit buff from unit buff cache but no unit entry");
-                }
-            }
-        }
+        // for (let index = 0; index < this.buffs.length; index++) {
+        //     const buff = this.buffs[index];
+        //     const doDestory = buff.process(this.game, delta);
+        //     if (!doDestory) {
+        //         nBuffs.push(buff);
+        //     }
+        //     else {
+        //         const buffsForUnit = this.buffsByUnit.get(buff.who);
+        //         const idx = buffsForUnit.indexOf(buff);
+        //         if (idx >= 0) {
+        //             buffsForUnit.splice(idx, 1);
+        //             if (buffsForUnit.length === 0) this.buffsByUnit.delete(buff.who);
+        //         }
+        //         else {
+        //             Log.Error("Deleting unit buff from unit buff cache but no unit entry");
+        //         }
+        //     }
+        // }
 
-        this.buffs = nBuffs;
+        // this.buffs = nBuffs;
     }
 }

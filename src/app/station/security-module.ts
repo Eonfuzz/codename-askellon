@@ -61,6 +61,7 @@ export class SecurityModule {
      * Prevent security death
      */
     public onSecurityDamage(u: unit, source: unit, damage: number) {
+        Log.Information("Security taking damage");
         // Is this blow gonna kill the security item?
         const damageWithAllowance = damage + GetUnitState(u, UNIT_STATE_MAX_LIFE) * 0.1;
         if (damageWithAllowance > GetUnitState(u, UNIT_STATE_LIFE)) {
@@ -95,6 +96,8 @@ export class SecurityModule {
      * @param u 
      */
     public onSecurityHeal(u: unit, source: unit) {
+
+        Log.Information("Security healing!");
 
         const unit = Unit.fromHandle(u);
         const unitIsDestroyed = this.isUnitDestroyed(unit);
@@ -134,6 +137,8 @@ export class SecurityModule {
                 RemoveUnit(GetEnumUnit());
             }
         });
+
+        group.destroy();
     }
 
     onCrateDeath(who: Unit) {
@@ -155,9 +160,9 @@ export class SecurityModule {
     }
 
     spawnLootOn(x: number, y: number) {
-        const mainSeed = GetRandomReal(0, 1000);
-        const secondarySeed =  GetRandomReal(0, 1000);
-        const tertiarySeed = GetRandomReal(0, 1000);
+        const mainSeed = GetRandomInt(0, 1000);
+        const secondarySeed =  GetRandomInt(0, 1000);
+        const tertiarySeed = GetRandomInt(0, 1000);
 
         // 5% for weapon spawn
         if (mainSeed >= 950) {

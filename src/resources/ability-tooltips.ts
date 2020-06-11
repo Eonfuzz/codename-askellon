@@ -35,6 +35,7 @@ export class DynamicAbilityTooltip implements DynamicTooltip {
     public update(who: Unit | Crewmember, data: any) {
         const unit = (who instanceof Crewmember ? who.unit : who) as Unit;
 
+        Log.Information("Updaing Abil Tooltip");
         if (!unit) return;
 
         let abilLevel = unit.getAbilityLevel(this.abilCode) || 1;

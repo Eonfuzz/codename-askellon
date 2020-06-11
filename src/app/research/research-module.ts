@@ -38,7 +38,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         this.trackCrewUpgrades();
 
 
-        this.grantsOccupationBonus.set(TECH_MAJOR_VOID, [ROLE_TYPES.NAVIGATOR, ROLE_TYPES.PILOT, ROLE_TYPES.CAPTAIN]);
+        this.grantsOccupationBonus.set(TECH_MAJOR_VOID, [ROLE_TYPES.NAVIGATOR, ROLE_TYPES.PILOT]);
         this.grantsOccupationBonus.set(TECH_MAJOR_HEALTHCARE, [ROLE_TYPES.DOCTOR]);
     }
 

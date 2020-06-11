@@ -97,6 +97,7 @@ export class ForceModule {
         // Init and listen for experience gain calls
         this.game.event.addListener(new EventListener(EVENT_TYPE.CREW_GAIN_EXPERIENCE, (self, data) => {
             Log.Information("Unit gaining xp : "+data.data.value);
+            // TODO
         }))
 
         const players = this.getActivePlayers();
@@ -179,7 +180,13 @@ export class ForceModule {
      * @param delta 
      */
     private onAggressionTick(delta: number) {
-        this.allAggressionLogs = this.allAggressionLogs.filter(instance => {
+        if (this.allAggressionLogs.length === 0) return;
+
+        const nextTickLogs = [];
+
+        for (let index = 0; index < this.allAggressionLogs.length; index++) {
+            const instance = this.allAggressionLogs[index];
+            
             const key = instance.key;
             instance.remainingDuration = instance.remainingDuration - delta;
 
@@ -202,10 +209,14 @@ export class ForceModule {
                     // Delete it from aggression log
                     this.aggressionLog.delete(key);
                 }
-                return false;
             }
-            return true;
-        });
+            else {
+                nextTickLogs.push(instance);
+            }
+        }
+
+        this.allAggressionLogs = nextTickLogs;
+        Log.Information("Aggression Tick!");
     }
 
     private getLogKey(aggressor: MapPlayer, defendant: MapPlayer): string {
@@ -221,6 +232,7 @@ export class ForceModule {
      * @param forPlayer 
      */
     public repairAllAlliances(forPlayer: MapPlayer) {
+        Log.Information("Repairing Alliance!");
         // Clear aggression logs and repair all alliances
         let players = this.getActivePlayers();
         players.forEach(p => {
@@ -427,6 +439,8 @@ export class ForceModule {
         this.getActivePlayers().forEach(player => {
             DisplayTextToPlayer(player.handle, 0, 0, `|cff${PLAYER_COLOR[who.id]}${this.getOriginalPlayerDetails(who).name}|r has left the game!`);
         });
+
+        Log.Information("Leave timer "+this.game.getTimeStamp());
 
         const playerDetails = this.getPlayerDetails(who);
         if (playerDetails) playerDetails.getForce().removePlayer(playerDetails.player);

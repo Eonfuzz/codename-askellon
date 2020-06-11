@@ -36,7 +36,6 @@ export class AbilityModule {
     private data: Array<Ability>;
 
     private triggerAbilityCast: Trigger;
-    private unitIssuedCommand: Trigger;
 
     constructor(game: Game) {
         this.game = game;
@@ -50,10 +49,6 @@ export class AbilityModule {
         this.triggerAbilityCast = new Trigger();
         this.triggerAbilityCast.registerAnyUnitEvent( EVENT_PLAYER_UNIT_SPELL_EFFECT );
         this.triggerAbilityCast.addAction(() => this.checkSpells())
-
-        this.unitIssuedCommand = new Trigger();
-
-        this.unitIssuedCommand.addAction(() => this.onTrackUnitOrders())
     }
 
 
@@ -64,6 +59,8 @@ export class AbilityModule {
     checkSpells() {
         const id = GetSpellAbilityId();
         let instance: Ability;
+
+        Log.Information("New Ability!");
 
         switch(id) {
             case ABIL_HUMAN_SPRINT:
@@ -177,34 +174,6 @@ export class AbilityModule {
                 }
                 break;
         }
-    }
-
-    /**
-     * Abilities that need to listen to unit orders
-     * WARNING: The units must be added to the track list seperately
-     */
-    onTrackUnitOrders() {
-        const triggerUnit = GetTriggerUnit();
-        const orderId = GetIssuedOrderId();
-
-        // // Leap ability
-        // if (orderId == SMART_ORDER_ID && GetUnitAbilityLevel(triggerUnit, FourCC('LEAP')) >= 1) {
-        //     const instance = new LeapAbility();
-        //     if (instance.initialise(this)) {
-        //         this.data.push(instance);
-        //     }
-        // }
-
-        // restart timer if it is down
-    }
-
-    /**
-     * @deprecated
-     * @param whichUnit 
-     */
-    public trackUnitOrdersForAbilities(whichUnit: Unit) {
-        // this.unitIssuedCommand.registerUnitEvent(whichUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
-        // this.unitIssuedCommand.registerUnitEvent(whichUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
     }
 
     process(delta: number) {

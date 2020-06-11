@@ -17,6 +17,10 @@ import { getZFromXY } from "lib/utils";
 import { ITEM_MINERALS_SHIP_ID } from "resources/item-ids";
 import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
 
+// Interacting with asteroids
+const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false);
+const asteroidTimers = new Map<Unit, Timer>();
+
 export function initShipInteractions(game: Game) {
     const interaction: InteractableData = {
         condition:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
@@ -39,10 +43,6 @@ export function initShipInteractions(game: Game) {
 
     Interactables.set(SHIP_VOYAGER_UNIT, interaction);
 
-    // Interacting with asteroids
-    
-    const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false);
-    const asteroidTimers = new Map<Unit, Timer>();
     const asteroidInteraction: InteractableData = {
         condition:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             // Make sure ships can't fly ships, lol.

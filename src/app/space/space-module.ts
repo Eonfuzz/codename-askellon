@@ -47,7 +47,7 @@ export class SpaceModule {
 
         this.initShipAbilities();
 
-        try {
+        // try {
             // Create 300 midground asteroids
             for (let index = 0; index < 300; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
@@ -69,10 +69,10 @@ export class SpaceModule {
                 const asteroid = new Asteroid(rX, rY, SpaceObjectType.foreground);
                 asteroid.load(game);
             }
-        }
-        catch (e) {
-            Log.Error(e);
-        }
+        // }
+        // catch (e) {
+        //     Log.Error(e);
+        // }
         this.game.event.addListener( new EventListener(EVENT_TYPE.ENTER_SHIP, (self, data) => 
             this.unitEntersShip(
                 data.source, 
@@ -335,7 +335,7 @@ export class SpaceModule {
     /**
      * Ship abilities
      */
-    private shipAbilityTrigger      = new Trigger();
+    private shipAbilityTrigger          = new Trigger();
     private shipAfterburnerAbilityId    = FourCC('A000');
     initShipAbilities() {
         this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
@@ -365,6 +365,6 @@ export class SpaceModule {
                 manaCost = Math.min(manaCost-1, 0);
             }
             ship.shipFuel -= manaCost;
-        })
+        });
     }
 }

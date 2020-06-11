@@ -23,7 +23,7 @@ export class GalaxyModule {
     }
 
     initSectors() {
-        this.spaceGrid.initSectors(-5, -5, 5, 5);
+        // this.spaceGrid.initSectors(-5, -5, 5, 5);
         // this.createNavigationGrid();
     }
 

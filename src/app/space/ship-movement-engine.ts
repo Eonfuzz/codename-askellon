@@ -1,8 +1,5 @@
-import { Vector3 } from "../types/vector3";
 import { Vector2 } from "../types/vector2";
-import { Unit, Effect, Timer, MapPlayer } from "w3ts/index";
-import { Log } from "lib/serilog/serilog";
-import { fastPointInterp, normaliseAngle } from "lib/utils";
+import { Timer, MapPlayer } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 
 interface ShipChemTrail {
@@ -11,7 +8,6 @@ interface ShipChemTrail {
 }
 
 const afterburnerSound = new SoundRef("Sounds\\AfterburnerSound.mp3", false);
-const CHEM_TRAIL_LIFETIME = 2;
 
 export class SpaceMovementEngine {
 
@@ -58,48 +54,9 @@ export class SpaceMovementEngine {
     }
 
     public updateThrust(deltaTime: number) {
-        // Update chem trails
-        // if (this.doCreateTrails) {
-        //     this.chemTrails = this.chemTrails.filter(c => {
-        //         c.life -= deltaTime;
-        //         if (c.life <= 0) {
-        //             DestroyEffect(c.effect);
-        //             c.effect = undefined;
-        //             return false;
-        //         }
-        //         return true;
-        //     })
-        // }
-        
-        // // Plot the goal towards our turning arc
-        // let deltaAngle = (this.angleToGoal - this.facingAngleLastIteration + 180) % 360 - 180;
-        let thrust;
-
-        // if (this.momentum.getLength() <= 50) {
-        //     thrust = new Vector2(
-        //         Cos(this.facingAngleLastIteration * bj_DEGTORAD),
-        //         Sin(this.facingAngleLastIteration * bj_DEGTORAD)
-        //     );
-            // thrust = this.momentum.normalise();
-        // }
-
-        // if (deltaAngle > this.maxTurningArc) {
-        //     Log.Information(`Sharp ${deltaAngle} degs`);
-        //     let fAngle = this.facingAngleLastIteration + this.maxTurningArc;
-        //     thrust = new Vector2(
-        //         Cos(fAngle * bj_DEGTORAD),
-        //         Sin(fAngle * bj_DEGTORAD)
-        //     );
-        // }
-        // else if (deltaAngle < -this.maxTurningArc) {
-        //     Log.Information(`Sharp ${deltaAngle} degs`);
-        //     let fAngle = this.facingAngleLastIteration - this.maxTurningArc;
-        // }
-        // else {
-            // Convert its facing into a normalised vector
-            thrust = this.goal.normalise();
-        // }
-
+        // Update chem trails        
+        // Plot the goal towards our turning arc
+        let thrust = this.goal.normalise();
 
         // Now apply velocity
         this.thrust = thrust.multiplyN( this.velocity );
@@ -153,53 +110,8 @@ export class SpaceMovementEngine {
         if (this.position.y < minY) this.position.y = minY;
         else if (this.position.y > maxY) this.position.y = maxY;
 
-        // if (this.doCreateTrails) this.updateChemTrails(delta, oldPosition);
-
         return this;
     }
-
-    // private updateChemTrails(delta: Vector2, oldPosition: Vector2) {
-        
-    //     const dLen = delta.getLength();
-
-    //     const d1 = (this.facingAngleLastIteration + 160) * bj_DEGTORAD;
-    //     const d2 = (this.facingAngleLastIteration - 160) * bj_DEGTORAD;
-
-    //     // Log.Information("Dlen: "+dLen);
-
-    //     fastPointInterp(oldPosition, this.position, 1 + dLen/20).forEach((p: Vector2) => {
-    //         const sfx1 = AddSpecialEffect(
-    //             SMOKE_TRAIL_SFX, 
-    //             p.x + Cos(d1) * 70, 
-    //             p.y + Sin(d1) * 70
-    //         );
-                
-    //         const sfx2 = AddSpecialEffect(
-    //             SMOKE_TRAIL_SFX, 
-    //             p.x + Cos(d2) * 70, 
-    //             p.y + Sin(d2) * 70
-    //         );
-                
-    //         BlzSetSpecialEffectZ(sfx1, 100);
-    //         BlzSetSpecialEffectZ(sfx2, 100);
-
-    //         if (this.isUsingAfterburner) {
-    //             BlzSetSpecialEffectColor(sfx1, 255, 150, 150);
-    //             BlzSetSpecialEffectColor(sfx2, 255, 150, 150);
-    //             BlzSetSpecialEffectScale(sfx1, 3);
-    //             BlzSetSpecialEffectScale(sfx2, 3);
-    //         }
-    
-    //         this.chemTrails.push({
-    //             effect: sfx1,
-    //             life: CHEM_TRAIL_LIFETIME
-    //         });
-    //         this.chemTrails.push({
-    //             effect: sfx2,
-    //             life: CHEM_TRAIL_LIFETIME
-    //         });
-    //     });
-    // }
 
     /**
      * Increases velocity
@@ -214,14 +126,9 @@ export class SpaceMovementEngine {
      * Ship tries to go to a complete stop
      */
     public goToAStop() {
-        // if (!this.isGoingToStop) {
-        // }
-        // else {
         if (!this.isMovingBackwards && this.velocity > 0) {
             this.isGoingToStop = true;
-            // this.velocity = 0;
         }
-        // }
         return this;
     }
 

@@ -15,7 +15,7 @@ import { EVENT_TYPE } from "app/events/event";
 import { SoundRef } from "app/types/sound-ref";
 import { ITEM_TRIFEX_ID } from "resources/item-ids";
 
-const vendingSound = new SoundRef("Sounds\\vendingMachineChunk.mp3", false);
+// const vendingSound = new SoundRef("Sounds\\vendingMachineChunk.mp3", false);
 
 export function initVendingInteraction(game: Game) {
     const interaction: InteractableData = {

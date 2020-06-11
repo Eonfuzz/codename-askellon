@@ -1,12 +1,9 @@
-import { ShipBay } from "./ship-bay";
 import { Unit, Effect } from "w3ts/index";
-import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { Game } from "app/game";
 import { SpaceMovementEngine } from "./ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { UNIT_IS_FLY, TECH_MAJOR_VOID } from "resources/ability-ids";
-import { EventListener, EVENT_TYPE } from "app/events/event";
+import { UNIT_IS_FLY } from "resources/ability-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ROLE_TYPES } from "resources/crewmember-names";
 

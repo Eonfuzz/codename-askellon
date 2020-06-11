@@ -1,12 +1,11 @@
 /** @NoSelfInFile **/
 
+import { TimedEventQueue } from "./types/timed-event-queue";
+import { Trigger, MapPlayer, Timer } from "w3ts";
 import { CrewModule } from "./crewmember/crewmember-module";
 import { WeaponModule } from "./weapons/weapon-module";
-import { TimedEventQueue } from "./types/timed-event-queue";
 import { ForceModule } from "./force/force-module";
 import { SpaceModule } from "./space/space-module";
-import { Trigger, MapPlayer, Timer } from "w3ts";
-import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { GeneModule } from "./shops/gene-modules";
 import { AbilityModule } from "./abilities/ability-module";
 import { InteractionModule } from "./interactions/interaction-module";
@@ -17,10 +16,12 @@ import { ResearchModule } from "./research/research-module";
 import { ChatModule } from "./chat/chat-module";
 import { EventModule } from "./events/event-module";
 import { SecurityModule } from "./station/security-module";
-import { Log } from "lib/serilog/serilog";
 import { DynamicBuffModule } from "./buff/dynamic-buff-module";
 import { TooltipModule } from "./tooltip/tooltip-module";
+
 import { OptResult } from "./force/opt-selection";
+import { Log } from "lib/serilog/serilog";
+import { GameTimeElapsed } from "./types/game-time-elapsed";
 
 const PROCESS_TIMER = 0.03;
 export class Game {
@@ -92,7 +93,6 @@ export class Game {
         this.interactionsModule = new InteractionModule(this);
         this.chatModule         = new ChatModule(this);
         this.stationSecurity    = new SecurityModule(this);
-
     }
 
     public startGame() {
@@ -102,13 +102,13 @@ export class Game {
         this.tooltips.initialise();
         
         // Here be dragons, old code is below and needs update
-        this.galaxyModule.initSectors();
+        // this.galaxyModule.initSectors();
 
         // Init leaps
-        this.leapModule.initialise();
+        // this.leapModule.initialise();
 
         // Init chat
-        this.chatModule.initialise();
+        // this.chatModule.initialise();
 
         // Init station
         this.stationSecurity.initialise();

@@ -46,10 +46,6 @@ export class WorldModule {
         newZone && newZone.onEnter(this, unit);
         
         newZone && this.unitLocation.set(uHandle, newZone);
-
-        // if (oldZone) {
-        //     Log.Information(GetHeroProperName(unit)+"::"+ZONE_TYPE[oldZone.id]+"->"+ZONE_TYPE[to]);
-        // }
     }
 
     /**
