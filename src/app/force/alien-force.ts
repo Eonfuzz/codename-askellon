@@ -15,6 +15,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { OBSERVER_FORCE_NAME } from "./observer-force";
+import { BUFF_ID } from "resources/buff-ids";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -46,28 +47,25 @@ export class AlienForce extends ForceType {
         // Show vision on despair gain
         forceModule.game.event.addListener(new EventListener(
             EVENT_TYPE.CREW_GAIN_DESPAIR, 
-            (from: EventListener, data: any) => {
-                const crewmember = data.crewmember as Crewmember;
-                this.getPlayers().forEach(p => crewmember.unit.shareVision(p, true));
+            (from: EventListener, data) => {
+                this.getPlayers().forEach(p => data.source.shareVision(p, true));
             }))
         
         // Hide vision on despair gain
         forceModule.game.event.addListener(new EventListener(
             EVENT_TYPE.CREW_LOSE_DESPAIR, 
-            (from: EventListener, data: any) => {
-                const crewmember = data.crewmember as Crewmember;
+            (from: EventListener, data) => {
 
                 // If healthcare 1 is infested we may still have vision
                 if (this.forceModule.game.researchModule.isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 1)) {
-                    const negInstances = crewmember.despair.getNegativeinstanceCount();
-                    const posInstances = crewmember.despair.getInstanceCount();
+                    const despair = this.forceModule.game.buffModule.unitHasBuff(BUFF_ID.DESPAIR, data.source);
 
-                    if (posInstances > 0 && negInstances > 0) {
+                    if (despair && despair.getInstanceCount() > 0 && despair.getNegativeinstanceCount() > 0) {
                         return;
                     }
                 }
 
-                this.getPlayers().forEach(p => crewmember.unit.shareVision(p, false));
+                this.getPlayers().forEach(p => data.source.shareVision(p, false));
             }))
 
         // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
@@ -511,5 +509,28 @@ export class AlienForce extends ForceType {
         }
 
         return true;
+    }
+
+    
+    /**
+     * Does this force do anything on tick
+     * We need to reward player income
+     * @param delta 
+     */
+    public onTick(delta: number) {
+        const percent = delta / 60;
+
+        this.players.forEach(p => {
+            const details = this.forceModule.getPlayerDetails(p);
+            const crew = details.getCrewmember();
+
+            if (crew) {
+                const calculatedIncome = MathRound(percent * crew.getIncome());
+                crew.player.setState(
+                    PLAYER_STATE_RESOURCE_GOLD, 
+                    crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome
+                );
+            }
+        })
     }
 }

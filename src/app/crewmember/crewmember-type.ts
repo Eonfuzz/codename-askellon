@@ -14,21 +14,17 @@ import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { ROLE_TYPES } from "../../resources/crewmember-names";
 import { MapPlayer, Unit } from "w3ts";
 import { EVENT_TYPE } from "app/events/event";
+import { BUFF_ID } from "resources/buff-ids";
 
 export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
     public name = '';
     public player: MapPlayer;
 
-    public resolve: Resolve;
-    public despair: Despair;
-
-    private force: ForceType;
     private visionType: VISION_TYPE = VISION_TYPE.NORMAL;
 
     private crewModule: CrewModule;
 
-    private damageUpgradeLevel: number = 0;
     private damageBonusMult: number = 1;
 
     constructor(game: Game, player: MapPlayer, unit: Unit, force: ForceType, role: ROLE_TYPES) {
@@ -38,16 +34,8 @@ export class Crewmember extends ArmableUnit {
 
         this.player = player;
         this.unit = unit;
-        this.resolve = new Resolve(game, this);
-        this.despair = new Despair(game, this);
-        this.force = force;
-
 
         this.role = role;
-
-        // Cause resolve and despair to update weapon tooltips
-        this.resolve.onChange(() => this.weapon && this.updateTooltips(game.weaponModule));
-        this.despair.onChange(() => this.weapon && this.updateTooltips(game.weaponModule));
     }
 
     setUnit(unit: Unit) { this.unit = unit; }
@@ -69,16 +57,18 @@ export class Crewmember extends ArmableUnit {
      * @param game 
      */
     onDamage(game: Game) {
-        const resolveActive = this.resolve.getIsActive();
+        const resolveActive = game.buffModule.unitHasBuff(BUFF_ID.RESOLVE, this.unit);
 
         const maxHP = BlzGetUnitMaxHP(this.unit.handle);
         const hpPercentage  = (GetUnitState(this.unit.handle, UNIT_STATE_LIFE) - GetEventDamage()) * 0.7 / maxHP;
 
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {
-            this.resolve.addInstance(game, this.unit, new BuffInstanceCallback(this.unit, () => {
-                return GetUnitLifePercent(this.unit.handle) <= 30;
-            }));
+            game.buffModule.addBuff(
+                BUFF_ID.RESOLVE, 
+                this.unit, 
+                new BuffInstanceCallback(this.unit, () => GetUnitLifePercent(this.unit.handle) <= 30)
+            );
         }
         
         if (resolveActive) {
@@ -90,8 +80,6 @@ export class Crewmember extends ArmableUnit {
         let modifier = 0;
 
         const accuracy = GetHeroStatBJ(1, this.unit.handle, true);
-        // if (this.resolve.getIsActive()) modifier = modifier + 10;
-        // if (this.despair.getIsActive()) modifier = modifier - 75;
 
         return accuracy;
     }
@@ -103,7 +91,12 @@ export class Crewmember extends ArmableUnit {
      * @param onCheckToRemove 
      */
     addDespair(game: Game, instance: BuffInstance, isNegative?: boolean) {
-        this.despair.addInstance(game, this.unit, instance, isNegative);
+        game.buffModule.addBuff(
+            BUFF_ID.DESPAIR, 
+            this.unit, 
+            instance,
+            isNegative
+        );
     }
 
     /**
@@ -113,14 +106,12 @@ export class Crewmember extends ArmableUnit {
      * @param onCheckToRemove 
      */
     addResolve(game: Game, instance: BuffInstance, isNegative?: boolean) {
-        this.resolve.addInstance(game, this.unit, instance, isNegative);
-    }
-
-    testResolve(game: Game) {
-        SetUnitLifePercentBJ(this.unit.handle, 0.2);
-        this.resolve.addInstance(game, this.unit, new BuffInstanceCallback(this.unit, () => {
-            return GetUnitLifePercent(this.unit.handle) <= 30;
-        }));
+        game.buffModule.addBuff(
+            BUFF_ID.RESOLVE, 
+            this.unit, 
+            instance,
+            isNegative
+        );
     }
 
     log() {
@@ -164,7 +155,7 @@ export class Crewmember extends ArmableUnit {
     onPlayerFinishUpgrade() {
         const upgradeLevel = this.player.getTechCount(TECH_WEP_DAMAGE, true);
 
-        this.damageUpgradeLevel = upgradeLevel;
+        // this.damageUpgradeLevel = upgradeLevel;
         this.damageBonusMult = upgradeLevel > 0 ? Pow(1.1, upgradeLevel) : 1;
 
         this.updateTooltips(this.crewModule.game.weaponModule);

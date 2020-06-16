@@ -144,4 +144,13 @@ export abstract class ForceType {
     public aggressionIsValid(aggressor: MapPlayer, defendant: MapPlayer): boolean {
         return true;
     }
+
+
+    /**
+     * Does this force do anything on tick
+     * @param delta 
+     */
+    public onTick(delta: number) {
+
+    }
 }

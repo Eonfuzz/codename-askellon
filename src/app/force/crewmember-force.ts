@@ -76,5 +76,28 @@ export class CrewmemberForce extends ForceType {
             source: whichUnit.unit,
             crewmember: whichUnit
         });
-    }
+    }    
+    
+    
+    /**
+    * Does this force do anything on tick
+    * We need to reward player income
+    * @param delta 
+    */
+   public onTick(delta: number) {
+       const percent = delta / 60;
+
+       this.players.forEach(p => {
+           const details = this.forceModule.getPlayerDetails(p);
+           const crew = details.getCrewmember();
+
+           if (crew) {
+               const calculatedIncome = MathRound(percent * crew.getIncome());
+               crew.player.setState(
+                   PLAYER_STATE_RESOURCE_GOLD, 
+                   crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome
+               );
+           }
+       })
+   }
 }

@@ -81,7 +81,7 @@ export class WorldModule {
             this.handleTravel(alien, to);
         }
 
-        if (!isSubTravel) {
+        if (isCrewmember) {
             const newLoc = this.getZone(to);
             newLoc && newLoc.displayEnteringMessage(crew.player);
         }

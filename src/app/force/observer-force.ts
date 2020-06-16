@@ -77,4 +77,12 @@ export class ObserverForce extends ForceType {
        // Otherwise return default behaviour
        return 'OBS';
    }
+
+   /**
+    * Does this force do anything on tick
+    * @param delta 
+    */
+   public onTick(delta: number) {
+    return;
+   }
 }

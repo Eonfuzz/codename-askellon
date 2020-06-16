@@ -6,6 +6,8 @@ import { onFire } from "./fire";
 import { Log } from "lib/serilog/serilog";
 import { flashFreeze } from "./flash-freeze";
 import { Trifex } from "./trifex";
+import { Despair } from "./despair";
+import { Resolve } from "./resolve";
 
 /** @noSelfInFile **/
 export class DynamicBuffModule {
@@ -20,6 +22,12 @@ export class DynamicBuffModule {
     }
 
     init() {}
+
+    unitHasBuff(buffId: BUFF_ID, who: Unit) {
+        if (!this.buffsByUnit.has(who)) return false;
+        const buffs = this.buffsByUnit.get(who);
+        return buffs.find(b => b.id === buffId);
+    }
 
     addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
         let buffsForUnit = this.buffsByUnit.has(who) ? this.buffsByUnit.get(who) : [];
@@ -39,6 +47,8 @@ export class DynamicBuffModule {
         if (id === BUFF_ID.FIRE) return new onFire();
         if (id === BUFF_ID.FLASH_FREEZE) return new flashFreeze();
         if (id === BUFF_ID.TRIFEX) return new Trifex();
+        if (id === BUFF_ID.DESPAIR) return new Despair(who);
+        if (id === BUFF_ID.RESOLVE) return new Resolve(who);
         Log.Error("Creating new buff no instance for ID "+id);
     }
 

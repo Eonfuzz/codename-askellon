@@ -127,6 +127,9 @@ export class Game {
             // Init crew
             this.crewModule.initCrew(this.forceModule.getForces());
 
+            // Now init force timers
+            this.forceModule.init();
+
         }
         catch (e) {
             Log.Error(e);

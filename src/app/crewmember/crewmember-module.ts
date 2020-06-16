@@ -15,10 +15,6 @@ import { TimedEvent } from "app/types/timed-event";
 import { EVENT_TYPE } from "app/events/event";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
-const DELTA_CHECK = 0.25;
-
-// How many seconds between each income tick
-const INCOME_EVERY = 20;
 
 export class CrewModule {
 
@@ -83,28 +79,6 @@ export class CrewModule {
         }
 
         // this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
-    }
-
-
-    timeSinceLastIncome = 0;
-    processCrew(time: number) {
-        const doIncome = this.timeSinceLastIncome >= INCOME_EVERY;
-        // this.CREW_MEMBERS.forEach(crew => {
-        //     crew.resolve.process(this.game, time);
-        //     crew.despair.process(this.game, time);
-        // });
-
-        if (doIncome) {
-            this.timeSinceLastIncome = 0;
-            const amount = INCOME_EVERY / 60;
-            // this.CREW_MEMBERS.forEach(crew => {
-            //     const calculatedIncome = MathRound(amount * crew.getIncome());
-            //     crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome);
-            // });
-        }
-        else {
-            this.timeSinceLastIncome += time;
-        }
     }
 
     createCrew(player: MapPlayer, force: ForceType): Crewmember {   

@@ -114,6 +114,19 @@ export class ForceModule {
     }
 
 
+    private forceEventsTimer = new Timer();
+    /**
+     * Begins the periodical force events timer
+     */
+    public init() {
+        this.forceEventsTimer.start(5, true, () => this.process(5));
+    }
+
+    private process(delta: number) {
+        this.forces.forEach(force => force.onTick(delta));
+    }
+
+
     public getOriginalPlayerDetails(who: MapPlayer) {
         return this.playerOriginalDetails.get(who);
     }

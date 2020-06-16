@@ -83,7 +83,21 @@ export class TheAskellon {
 
     applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
         // let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-        // const crewmember = this.world.game.crewModule.getCrewmemberForPlayer(player);
+        const playerDetails = this.world.game.forceModule.getPlayerDetails(player);
+        if (playerDetails) {
+            const crewmember = playerDetails.getCrewmember();
+            const vision = playerDetails.getvisionType();
+
+            
+            // IF we dont have power add despair to the unit
+            if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
+                crewmember.addDespair(this.world.game, new BuffInstanceCallback(crewmember.unit, () => {
+                    const z = this.world.getUnitZone(crewmember.unit);
+                    const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
+                    return (z && hasNighteye === 0) ? z.doCauseFear() : false;
+                }));
+            }
+        }
         // const vision = crewmember ? crewmember.getVisionType() : VISION_TYPE.NORMAL;
 
         // if (hasPower && justChanged) {
@@ -129,16 +143,6 @@ export class TheAskellon {
         //         default:
         //             // SetDayNightModels("", "");
         //     }
-        // }
-
-
-        // // IF we dont have power add despair to the unit
-        // if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
-        //     crewmember.addDespair(this.world.game, new BuffInstanceCallback(crewmember.unit, () => {
-        //         const z = this.world.getUnitZone(crewmember.unit);
-        //         const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
-        //         return (z && hasNighteye === 0) ? z.doCauseFear() : false;
-        //     }));
         // }
     }
 

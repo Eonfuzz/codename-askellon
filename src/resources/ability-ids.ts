@@ -5,6 +5,8 @@ export const ABIL_HUMAN_SPRINT = FourCC('A003');
 export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
 export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 export const ABIL_DOCK_TEST = FourCC('A00N');
+export const ABIL_DESPAIR = FourCC('A00D');
+export const ABIL_RESOLVE = FourCC('A007');
 
 export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
 export const ABIL_SHIP_DEEP_SCAN = FourCC('A00R');
