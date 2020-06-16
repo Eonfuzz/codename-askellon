@@ -200,11 +200,6 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
             baseXp * 1.5;
         }
 
-        force.onUnitGainsXp(
-            this.game, 
-            crewmember, 
-            // Award XP
-            baseXp
-        );
+        crewmember.addExperience(this.game, baseXp);
     }
  }

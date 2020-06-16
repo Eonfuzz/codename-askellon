@@ -9,7 +9,7 @@ import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
 import { TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
 import { Game } from "app/game";
-import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON, SPACE_UNIT_ASTEROID } from "resources/unit-ids";
+import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL } from "resources/unit-ids";
 import { Interactables } from "./interaction-data";
 import { EVENT_TYPE } from "app/events/event";
 import { vectorFromUnit } from "app/types/vector2";
@@ -131,7 +131,9 @@ export function initShipInteractions(game: Game) {
             }
         }
     }
+    
     Interactables.set(SPACE_UNIT_ASTEROID, asteroidInteraction);
+    Interactables.set(SPACE_UNIT_MINERAL, asteroidInteraction);
 }
 
 export function initAskellonInteractions(game: Game) {

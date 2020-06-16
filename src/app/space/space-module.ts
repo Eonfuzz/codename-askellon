@@ -4,6 +4,7 @@ import { Game } from "../game";
 import { Trigger, Region, Rectangle, Unit, Timer } from "w3ts";
 import { SpaceObject, SpaceObjectType } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
+import { Mineral } from "./space-objects/mineral";
 import { Log } from "lib/serilog/serilog";
 import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
@@ -48,11 +49,18 @@ export class SpaceModule {
         this.initShipAbilities();
 
         // try {
-            // Create 300 midground asteroids
+            // Create 200 midground asteroids
             for (let index = 0; index < 300; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
                 const asteroid = new Asteroid(rX, rY, SpaceObjectType.midground);
+                asteroid.load(game);
+            }
+            // Create 200 midground asteroids
+            for (let index = 0; index < 300; index++) {
+                const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
+                const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
+                const asteroid = new Mineral(rX, rY, SpaceObjectType.midground);
                 asteroid.load(game);
             }
             // Create 400 background asteroids

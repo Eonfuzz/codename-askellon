@@ -3019,3 +3019,9 @@ STRING 707
 |cff808080LORE TODO|n|r|nReturn to the Askellon to complete delivery; Each mineral is worth |cff00ff005 credits|r; |cff00ff007 credits|r if you are a pilot.|n|n|cffd45e19Stacks up to 250|r
 }
 
+STRING 708
+// Units: h007 (Mineral), Name (Name)
+{
+Mineral
+}
+

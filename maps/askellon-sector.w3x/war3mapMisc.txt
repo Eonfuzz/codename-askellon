@@ -23,6 +23,16 @@ file=asteroids\var4
 skinnableID=Ast4
 skinType=unit
 
+[Min1]
+file=Sc2\Doodads\mineral cluster 01
+skinnableID=Min1
+skinType=unit
+
+[Min2]
+file=Sc2\Doodads\mineral cluster 02
+skinnableID=Min2
+skinType=unit
+
 [Misc]
 AgiAttackSpeedBonus=0.0
 AgiDefenseBonus=0.0

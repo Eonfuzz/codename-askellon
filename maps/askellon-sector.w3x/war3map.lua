@@ -122,6 +122,7 @@ gg_dest_B002_1453 = nil
 gg_dest_B002_1454 = nil
 gg_dest_B002_1452 = nil
 gg_dest_B002_1457 = nil
+gg_trg_Untitled_Trigger_001 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -825,6 +826,26 @@ function InitTrig_SetCollisionData()
     TriggerAddAction(gg_trg_SetCollisionData, Trig_SetCollisionData_Actions)
 end
 
+function Trig_Untitled_Trigger_001_Conditions()
+    if (not (GetUnitTypeId(GetTriggerUnit()) == FourCC("h007"))) then
+        return false
+    end
+    return true
+end
+
+function Trig_Untitled_Trigger_001_Actions()
+    AddSpecialEffectLocBJ(GetUnitLoc(GetTriggerUnit()), "Abilities\\Spells\\Undead\\FrostNova\\FrostNovaTarget.mdl")
+    DestroyEffectBJ(GetLastCreatedEffectBJ())
+    RemoveUnit(GetTriggerUnit())
+end
+
+function InitTrig_Untitled_Trigger_001()
+    gg_trg_Untitled_Trigger_001 = CreateTrigger()
+    TriggerRegisterAnyUnitEventBJ(gg_trg_Untitled_Trigger_001, EVENT_PLAYER_UNIT_DEATH)
+    TriggerAddCondition(gg_trg_Untitled_Trigger_001, Condition(Trig_Untitled_Trigger_001_Conditions))
+    TriggerAddAction(gg_trg_Untitled_Trigger_001, Trig_Untitled_Trigger_001_Actions)
+end
+
 function InitCustomTriggers()
     InitTrig_SetKillzones()
     InitTrig_LightsPerFloor()
@@ -834,6 +855,7 @@ function InitCustomTriggers()
     InitTrig_SetPowerGenerators()
     InitTrig_SetShipZones()
     InitTrig_SetCollisionData()
+    InitTrig_Untitled_Trigger_001()
 end
 
 function RunInitializationTriggers()
