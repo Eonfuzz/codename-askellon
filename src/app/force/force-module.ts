@@ -96,8 +96,12 @@ export class ForceModule {
 
         // Init and listen for experience gain calls
         this.game.event.addListener(new EventListener(EVENT_TYPE.CREW_GAIN_EXPERIENCE, (self, data) => {
-            Log.Information("Unit gaining xp : "+data.data.value);
-            // TODO
+            const pData = this.getPlayerDetails(data.source.owner);
+
+            if (pData) {
+                if (!data.data.value) Log.Error("Player gaining nil experience");
+                pData.addExperience(this.game, data.data.value);
+            }
         }))
 
         const players = this.getActivePlayers();
@@ -216,7 +220,7 @@ export class ForceModule {
         }
 
         this.allAggressionLogs = nextTickLogs;
-        Log.Information("Aggression Tick!");
+        // Log.Information("Aggression Tick!");
     }
 
     private getLogKey(aggressor: MapPlayer, defendant: MapPlayer): string {
@@ -232,7 +236,7 @@ export class ForceModule {
      * @param forPlayer 
      */
     public repairAllAlliances(forPlayer: MapPlayer) {
-        Log.Information("Repairing Alliance!");
+        // Log.Information("Repairing Alliance!");
         // Clear aggression logs and repair all alliances
         let players = this.getActivePlayers();
         players.forEach(p => {

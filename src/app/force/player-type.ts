@@ -3,6 +3,7 @@ import { ForceType } from "./force-type";
 import { Log } from "lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { VISION_TYPE } from "app/world/vision-type";
+import { Game } from "app/game";
 
 export class PlayerWithForce {
 
@@ -32,8 +33,9 @@ export class PlayerWithForce {
         this.playerExperience = to;
     }
 
-    addExperience(howMuch: number) {
+    addExperience(game: Game, howMuch: number) {
         this.playerExperience += howMuch;
+        this.force.onUnitGainsXp(game, this.crewmember, this.playerExperience);
     }
 
     getExperience() {

@@ -12,6 +12,7 @@ import { ForceType } from "app/force/force-type";
 import { PLAYER_COLOR } from "lib/translators";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { TimedEvent } from "app/types/timed-event";
+import { EVENT_TYPE } from "app/events/event";
 
 const CREWMEMBER_UNIT_ID = FourCC("H001");
 const DELTA_CHECK = 0.25;
@@ -132,7 +133,10 @@ export class CrewModule {
         // Captain starts at level 2
         if (crewmember.role === ROLE_TYPES.CAPTAIN) {
             // Captain bonus is additional XP
-            crewmember.addExperience(this.game, 500);
+            this.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                source: crewmember.unit,
+                data: { value: 500 }
+            });
             // And slightly higher will
             crewmember.unit.setIntelligence(
                 crewmember.unit.getIntelligence(false) + 2, 

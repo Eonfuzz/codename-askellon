@@ -24,6 +24,8 @@ export class onFire extends DynamicBuff {
 
     public process(game: Game, delta: number): boolean {
         const result =  super.process(game, delta);
+        
+        // Log.Information("Fire tick "+result);
         if (!this.isActive) return result;
     
         this.fireDamageTicker += delta

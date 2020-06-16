@@ -62,8 +62,8 @@ export class Game {
         StopSound(bj_dayAmbientSound, true, true);
 
         SetMapMusic("Music\\MechanicusLostCivilization.mp3", false, 0);
-        SetMusicVolume(20);
-        // PlayMusic("Music\\MechanicusLostCivilization.mp3");
+        // SetMusicVolume(20);
+        PlayMusic("Music\\MechanicusLostCivilization.mp3");
         SetMusicVolume(20);
         SetSkyModel("war3mapImported\\Skybox3rAlt.mdx");
 
@@ -105,7 +105,7 @@ export class Game {
         // this.galaxyModule.initSectors();
 
         // Init leaps
-        // this.leapModule.initialise();
+        this.leapModule.initialise();
 
         // Init chat
         // this.chatModule.initialise();

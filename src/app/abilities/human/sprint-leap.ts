@@ -80,7 +80,7 @@ export class SprintLeapAbility implements Ability {
                 30,
                 2.5
             ).onFinish(() => {
-                Log.Information("Post speed: "+GetUnitMoveSpeed(unit));
+                // Log.Information("Post speed: "+GetUnitMoveSpeed(unit));
             });
         }
         return true;

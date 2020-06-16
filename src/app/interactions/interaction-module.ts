@@ -57,7 +57,7 @@ export class InteractionModule {
         const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
         if (interact && (!interact.condition || interact.condition(this, trigUnit, targetUnit))) {
-            Log.Information("Adding new interaction!");
+            // Log.Information("Adding new interaction!");
 
             let interactionTime = 1.5;
             let interactionDistance = 350;

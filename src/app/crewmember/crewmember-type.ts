@@ -13,6 +13,7 @@ import { VISION_TYPE } from "app/world/vision-type";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { ROLE_TYPES } from "../../resources/crewmember-names";
 import { MapPlayer, Unit } from "w3ts";
+import { EVENT_TYPE } from "app/events/event";
 
 export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
@@ -21,10 +22,6 @@ export class Crewmember extends ArmableUnit {
 
     public resolve: Resolve;
     public despair: Despair;
-
-    // The total amount of experience points gained
-    // Used for emulating xp gain
-    public totalExperience: number = 0;
 
     private force: ForceType;
     private visionType: VISION_TYPE = VISION_TYPE.NORMAL;
@@ -137,20 +134,10 @@ export class Crewmember extends ArmableUnit {
     }
 
     addExperience(game: Game, amount: number) {
-        const oldLevel = GetHeroLevel(this.unit.handle);
-
-        // Add to the total XP
-        this.totalExperience += amount;
-
-        // temporarily re-enable xp gain
-        SuspendHeroXP(this.unit.handle, false);
-
-        this.force.onUnitGainsXp(game, this, this.totalExperience);
-
-        // now disable it
-        SuspendHeroXP(this.unit.handle, true);
-
-        if (GetHeroLevel(this.unit.handle) !== oldLevel) this.updateTooltips(game.weaponModule);
+        game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+            source: this.unit,
+            data: { value: amount }
+        });
     }
 
     getVisionType() {

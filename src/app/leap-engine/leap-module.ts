@@ -59,6 +59,8 @@ export class LeapEntry {
     }
 
     update(delta: number) {
+
+        // Log.Information("Updating leap");
         const posDelta = this.mover.move(
             this.mover.originalPos, 
             this.mover.originalDelta, 
@@ -91,7 +93,7 @@ export class LeapEntry {
 
         // Check to see if we would collide, if so don't update unit location
         if (this.location.z < terrainZ) {
-
+            // Log.Information("Less than TZ");
             BlzPauseUnitEx(this.unit, false);
             UnitRemoveAbility(this.unit, UNIT_IS_FLY);
             SetUnitFlyHeight(this.unit, 0, 9999);
@@ -123,7 +125,7 @@ export class LeapEntry {
  */
 export class LeapModule {
     game: Game;
-    leapTrigger: Timer;
+    leapTimer: Timer;
 
     instances: LeapEntry[] = [];
 
@@ -142,48 +144,62 @@ export class LeapModule {
      * Creates a timer and begins looping through all leps
      */
     initialise() {
-        this.leapTrigger = new Timer();
+        this.leapTimer = new Timer();
         // this.leapTrigger.registerTimerEvent(LEAP_INTERVAL, true);
         // this.leapTrigger.addAction(() => this.updateLeaps());
     }
 
     updateLeaps() {
         // Loop through instances
-        this.instances = this.instances.filter(i => {
-            const doDestroy = !i.update(LEAP_INTERVAL);
-            if (doDestroy) {
-                // If we need to destroy proc the callback
-                if (i.onFinishCallback) i.onFinishCallback(i);
-                // Now get unit xyz
-                const unitLoc = i.location;
-                const insideRectIndex = this.findInsideRect(udg_fall_points, unitLoc);
-                const insideKillZone = this.findInsideRect(udg_killzones, unitLoc);
+        let nextIntances = [];
 
-                if (insideKillZone) {
-                    KillUnit(i.unit);
-                    return false;
-                }
+        // Log.Information("Updating instances remaining "+this.instances.length);
 
-                // If we are inside a fall rect...
-                // FALL!
-                if (insideRectIndex) {
-                    const targetRect = udg_fall_results[insideRectIndex];
-                    targetRect && this.makeUnitFall(i.unit, targetRect, udg_fall_result_zone_names[insideRectIndex]);
+        try {
+            for (let index = 0; index < this.instances.length; index++) {
+                const i = this.instances[index];
+
+                const doDestroy = !i.update(LEAP_INTERVAL);
+                if (doDestroy) {
+                    // If we need to destroy proc the callback
+                    if (i.onFinishCallback) i.onFinishCallback(i);
+                    // Now get unit xyz
+                    const unitLoc = i.location;
+                    const insideRectIndex = this.findInsideRect(udg_fall_points, unitLoc);
+                    const insideKillZone = this.findInsideRect(udg_killzones, unitLoc);
+
+                    if (insideKillZone) {
+                        KillUnit(i.unit);
+                        return false;
+                    }
+
+                    // If we are inside a fall rect...
+                    // FALL!
+                    if (insideRectIndex) {
+                        const targetRect = udg_fall_results[insideRectIndex];
+                        targetRect && this.makeUnitFall(i.unit, targetRect, udg_fall_result_zone_names[insideRectIndex]);
+                    }
+                    // Otherwise check to see if we landed in a new zone 
+                    else {
+                        const newZone = this.findInsideRect(udg_jump_pass_zones, unitLoc);
+                        const resultZone = !!newZone && udg_jump_pass_zones_name[newZone];
+                        const z = resultZone && this.game.worldModule.getZoneByName(resultZone);
+                        z && this.game.worldModule.travel(Unit.fromHandle(i.unit), z);
+                    }
                 }
-                // Otherwise check to see if we landed in a new zone 
-                else {
-                    const newZone = this.findInsideRect(udg_jump_pass_zones, unitLoc);
-                    const resultZone = !!newZone && udg_jump_pass_zones_name[newZone];
-                    const z = resultZone && this.game.worldModule.getZoneByName(resultZone);
-                    z && this.game.worldModule.travel(Unit.fromHandle(i.unit), z);
+                if (!doDestroy) {
+                    nextIntances.push(i);
                 }
             }
-
-            return !doDestroy;
-        });
+        }
+        catch (e) {
+            Log.Error(e);
+        }
+        this.instances = nextIntances;
         
         if (this.instances.length === 0) {
-            this.leapTrigger.pause();
+            // Log.Information("Destroying instances");
+            this.leapTimer.pause();
         }
     }
 
@@ -285,8 +301,11 @@ export class LeapModule {
     newLeap(who: unit, toWhere: Vector3, angle: number, timescale?: number): LeapEntry {
         const leapInstance = new LeapEntry(who, toWhere, angle, timescale);
         this.instances.push(leapInstance);
+
+        // Log.Information("INSTANCES "+this.instances.length);
         if (this.instances.length === 1) {
-            this.leapTrigger.start(LEAP_INTERVAL, true, () => this.updateLeaps());
+            // Log.Information("Starting leap timer");
+            this.leapTimer.start(LEAP_INTERVAL, true, () => this.updateLeaps());
         }
         return leapInstance;
     }

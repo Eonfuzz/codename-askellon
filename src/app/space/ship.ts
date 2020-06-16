@@ -169,7 +169,7 @@ export class Ship {
 
     }
 
-    onLeaveShip(game: Game) {
+    onLeaveShip(game: Game, isDeath?: boolean) {
         const newOwner = game.forceModule.neutralHostile;
         this.unit.owner = newOwner;
         SetUnitAnimationByIndex(this.unit.handle, 3);
@@ -191,7 +191,7 @@ export class Ship {
         });
         
         // We're leaving space, can we dump off minerals?
-        if (game.worldModule.getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
+        if (!isDeath && game.worldModule.getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
             const owningUnit = this.inShip[0];
     
             const mineralItem = this.unit.getItemInSlot(0);

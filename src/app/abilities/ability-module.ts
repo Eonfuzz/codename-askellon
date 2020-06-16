@@ -60,7 +60,7 @@ export class AbilityModule {
         const id = GetSpellAbilityId();
         let instance: Ability;
 
-        Log.Information("New Ability!");
+        // Log.Information("New Ability!");
 
         switch(id) {
             case ABIL_HUMAN_SPRINT:

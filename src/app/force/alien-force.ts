@@ -125,9 +125,9 @@ export class AlienForce extends ForceType {
             }
 
             // Additionally force the transform ability to start on cooldown
-            BlzStartUnitAbilityCooldown(who.unit.handle, ABIL_TRANSFORM_HUMAN_ALIEN,
-                who.unit.getAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
-            );
+            // BlzStartUnitAbilityCooldown(who.unit.handle, ABIL_TRANSFORM_HUMAN_ALIEN,
+            //     who.unit.getAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
+            // );
             // Add ability tooltip
             game.tooltips.registerTooltip(who, alienTooltipToAlien);
 
