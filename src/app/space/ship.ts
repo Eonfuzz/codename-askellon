@@ -22,7 +22,7 @@ export class Ship {
     public state: ShipState;
     // Magic number for starting fuel. Upgrades to apply maybe?
     public shipFuel: number = 100;
-    public maxFuel: number = 100;
+    public maxFuel: number = 150;
 
     private fuelUpdateTicker = 1;
     private fuelUsagePercent = 1;
@@ -89,7 +89,7 @@ export class Ship {
         if (this.state === ShipState.inSpace) {
             const momentumLen = this.engine.getMomentum().getLength();
 
-            const fuelCost = (0.5 + momentumLen / 4000);
+            const fuelCost = (0.4 + momentumLen / 7000);
             this.shipFuel -= fuelCost * this.fuelUsagePercent;
 
             // Also update some sfx when we update fuel
@@ -202,9 +202,9 @@ export class Ship {
             if (owningUnit) {
                 const crew = game.crewModule.getCrewmemberForUnit(owningUnit);
                 if (crew) {
-                    const hasRoleOccupationBonus = crew.role === ROLE_TYPES.PILOT;
+                    const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
                     if (hasRoleOccupationBonus) {
-                        crew.addExperience(game, stacks * 5);
+                        crew.addExperience(game, stacks * 4);
                         crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
                             crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
                         );

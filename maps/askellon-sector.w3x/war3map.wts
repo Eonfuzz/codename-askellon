@@ -298,7 +298,7 @@ STRING 83
 }
 
 STRING 86
-// Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Units: ALI1 (Alien), EditorSuffix (Name - Editor Suffix)
 {
 - Tier 1
 }
@@ -440,12 +440,6 @@ STRING 119
 Acid Pool
 }
 
-STRING 120
-// Abilities: ACID (Acid Pool), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Caustic enzymes found in the Alien's stomach can dissolve the strongest of compounds.|r|n|nHurls a blob of acid that explodes at target point, dealing |cff00ff0050|r damage and leaving a pool of acid; lasts |cff00ffff6|r seconds and deals |cff00ff00100|r damage per second.
-}
-
 STRING 121
 // Abilities: ACID (Acid Pool), Tip (Tooltip - Normal)
 {
@@ -486,12 +480,6 @@ STRING 128
 // Abilities: LEAP (Leap), Tip (Tooltip - Normal)
 {
 Leap
-}
-
-STRING 130
-// Abilities: LEAP (Leap), Hotkey (Hotkey - Normal)
-{
-Z
 }
 
 STRING 132
@@ -1366,7 +1354,7 @@ R
 }
 
 STRING 314
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A00U (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -1426,7 +1414,7 @@ No Tier 2 Genes Chosen
 }
 
 STRING 326
-// Upgrades: RGN2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -1438,7 +1426,7 @@ No Tier 3 Genes Chosen
 }
 
 STRING 328
-// Upgrades: RGN3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: RGN2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -1865,7 +1853,7 @@ Crewmember Attack 1 Enabled
 }
 
 STRING 434
-// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: RGN3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -2196,7 +2184,7 @@ Embrace the Cosmos
 }
 
 STRING 506
-// Abilities: ACSM (Embrace the Cosmos), Hotkey (Hotkey - Normal)
+// Abilities: LEAP (Leap), Hotkey (Hotkey - Normal)
 {
 E
 }
@@ -2295,7 +2283,7 @@ Auto-cannon
 }
 
 STRING 532
-// Abilities: A006 (Dodge Roll Right), Hotkey (Hotkey - Normal)
+// Abilities: ACSM (Embrace the Cosmos), Hotkey (Hotkey - Normal)
 {
 E
 }
@@ -2828,7 +2816,7 @@ Work In Progress
 }
 
 STRING 653
-// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -3023,5 +3011,71 @@ STRING 708
 // Units: h007 (Mineral), Name (Name)
 {
 Mineral
+}
+
+STRING 709
+// Abilities: A00U (Evolve), Name (Name)
+{
+Evolve
+}
+
+STRING 710
+// Abilities: A00U (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nEvolve to your next Alien form. Takes |cff00ff0040 seconds|r to complete your evolution. |cffc81e1eInterrupting any evolution costs 500 experience.|r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 711
+// Abilities: A00U (Evolve), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 712
+// Abilities: A00U (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 713
+// Abilities: A00U (Evolve), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 714
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 715
+// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Tier 1
+}
+
+STRING 716
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 4
+}
+
+STRING 717
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Requirement, Level 4
+}
+
+STRING 718
+// Abilities: A006 (Dodge Roll Right), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 720
+// Abilities: ACID (Acid Pool), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Caustic enzymes found in the Alien's stomach can dissolve the strongest of compounds.|r|n|nHurls a blob of acid that explodes at target point, dealing |cff00ff0025|r damage and leaving a pool of acid; lasts |cff00ffff10|r seconds and deals |cff00ff0035|r damage per second.|n|n|cff80808025 Second Cooldown|r
 }
 

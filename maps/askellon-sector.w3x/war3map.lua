@@ -64,6 +64,7 @@ gg_trg_SetFall = nil
 gg_trg_SetPowerGenerators = nil
 gg_trg_SetShipZones = nil
 gg_trg_SetCollisionData = nil
+gg_trg_Untitled_Trigger_001 = nil
 gg_unit_n001_0032 = nil
 gg_unit_h004_0048 = nil
 gg_unit_n004_0034 = nil
@@ -122,7 +123,6 @@ gg_dest_B002_1453 = nil
 gg_dest_B002_1454 = nil
 gg_dest_B002_1452 = nil
 gg_dest_B002_1457 = nil
-gg_trg_Untitled_Trigger_001 = nil
 function InitGlobals()
     local i = 0
     i = 0

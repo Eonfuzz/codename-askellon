@@ -11,7 +11,7 @@ import { MapPlayer } from "w3ts";
 import { getZFromXY } from "lib/utils";
 
 /** @noSelfInFile **/
-const DAMAGE_PER_SECOND = 100;
+const DAMAGE_PER_SECOND = 35;
 const ABILITY_SLOW_ID = FourCC('A00B');
 
 const MISSILE_SPEED = 400;
@@ -20,7 +20,7 @@ const MISSILE_LAUNCH_SFX = 'Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilSpeci
 const MISSILE_SFX = 'Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdl';
 
 const POOL_SFX = 'war3mapImported\\ToxicField.mdx';
-const POOL_DURATION = 6;
+const POOL_DURATION = 10;
 const POOL_AREA = 350;
 
 export class AcidPoolAbility implements Ability {
@@ -61,7 +61,7 @@ export class AcidPoolAbility implements Ability {
             this.casterUnit.handle,
             startLoc,
             new ProjectileTargetStatic(deltaTarget),
-            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(GetRandomReal(30,70)))
+            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(GetRandomReal(45,80)))
         )
         .onDeath((proj: Projectile) => { this.createPool(proj.getPosition()); })
         .onCollide(() => true);

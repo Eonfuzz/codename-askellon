@@ -7,13 +7,12 @@ import { Log } from "lib/serilog/serilog";
 import { Unit, Effect } from "w3ts/index";
 import { SPACE_UNIT_ASTEROID } from "resources/unit-ids";
 
-export const ASTEROID_SKINS = [FourCC('Ast0'), FourCC('Ast1'), FourCC('Ast2'), FourCC('Ast3'), FourCC('Ast4')];
+export const ASTEROID_SKINS = [FourCC('Ast0'), FourCC('Ast1'), FourCC('Ast2'), FourCC('Ast3')];
 export const ASTEROID_SKIN_PATHS = [
     'asteroids\\var1.mdx',
     'asteroids\\var2.mdx',
     'asteroids\\var3.mdx',
     'asteroids\\var4.mdx',
-    'asteroids\\var5.mdx',
 ];
 
 export class Asteroid extends SpaceObject {

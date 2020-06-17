@@ -4,7 +4,7 @@ export class SoundRef {
     public sound: sound;
 
     constructor(sound: string, looping: boolean) {
-        this.sound = CreateSound(sound, looping, false, false, 0, 3, "");
+        this.sound = CreateSound(sound, looping, false, true, 0, 3, "");
         SetSoundDuration(this.sound, GetSoundFileDuration(sound));
     }
 
@@ -18,6 +18,7 @@ export class SoundRef {
         SetSoundPitch(this.sound, 1.0);
         SetSoundDistances(this.sound, 2000.0, 10000.0);
         SetSoundDistanceCutoff(this.sound, 4500.0);
+
         AttachSoundToUnit(this.sound, unit);
         StartSound(this.sound);
     }

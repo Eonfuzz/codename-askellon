@@ -161,7 +161,7 @@ export class ForceModule {
         // You cannot be aggressive against yourself
         if (player1 === player2) return false;
         // You cannot be aggressive against Neutral Hostile
-        if (player2 === this.neutralHostile) return false;
+        if (player2 === this.neutralHostile) return true;
 
         const aggressionKey = this.getLogKey(player1, player2);
         

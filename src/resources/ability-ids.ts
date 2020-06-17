@@ -1,12 +1,17 @@
 export const ABIL_CREWMEMBER_INFO = FourCC('A008');
-export const ABIL_TRANSFORM_HUMAN_ALIEN = FourCC('TF01');
-export const ABIL_TRANSFORM_ALIEN_HUMAN = FourCC('TF02');
 export const ABIL_HUMAN_SPRINT = FourCC('A003');
-export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
-export const ABIL_ALIEN_LEAP = FourCC('LEAP');
+
 export const ABIL_DOCK_TEST = FourCC('A00N');
 export const ABIL_DESPAIR = FourCC('A00D');
 export const ABIL_RESOLVE = FourCC('A007');
+
+// Alien abilities
+export const ABIL_TRANSFORM_HUMAN_ALIEN = FourCC('TF01');
+export const ABIL_TRANSFORM_ALIEN_HUMAN = FourCC('TF02');
+export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
+export const ABIL_ALIEN_LEAP = FourCC('LEAP');
+export const ABIL_ALIEN_SCREAM = FourCC('A00G');
+export const ABIL_ALIEN_EVOLVE_T1 = FourCC('A00U');
 
 export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
 export const ABIL_SHIP_DEEP_SCAN = FourCC('A00R');
@@ -17,7 +22,6 @@ export const ABIL_SHIP_LASER = FourCC('A00S');
 export const ABIL_WEP_GRENADE = FourCC('GREN');
 export const ABIL_WEP_DIODE_EJ = FourCC('DIOJ');
 
-export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 export const ABIL_ITEM_REPAIR = FourCC('A00J');
 export const ABIL_ITEM_TRIFEX = FourCC('A00P');
 
@@ -38,6 +42,7 @@ export const TECH_NO_UNIT_IN_SPLICER = FourCC('RGEN');
 export const TECH_NO_GENES_TIER_1 = FourCC('RGN1');
 export const TECH_NO_GENES_TIER_2 = FourCC('RGN2');
 export const TECH_NO_GENES_TIER_3 = FourCC('RGN3');
+export const TECH_LEVEL_4 = FourCC('R003');
 
 export const TECH_HAS_GENES_TIER_1 = FourCC('RPG1');
 export const TECH_HAS_GENES_TIER_2 = FourCC('RPG1');
