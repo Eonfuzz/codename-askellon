@@ -12,6 +12,7 @@ export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
 export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 export const ABIL_ALIEN_EVOLVE_T1 = FourCC('A00U');
+export const ABIL_ALIEN_EVOLVE_ARMOR = FourCC('A00V');
 
 export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
 export const ABIL_SHIP_DEEP_SCAN = FourCC('A00R');

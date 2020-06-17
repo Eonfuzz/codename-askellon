@@ -1,23 +1,23 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Vector3 } from "../../types/vector3";
-import { Projectile } from "../../weapons/projectile/projectile";
-import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
-import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Effect } from "w3ts";
 import { Log } from "lib/serilog/serilog";
 import { getZFromXY } from "lib/utils";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
 import { EVENT_TYPE } from "app/events/event";
+import { ABIL_ALIEN_EVOLVE_ARMOR } from "resources/ability-ids";
+import { vectorFromUnit } from "app/types/vector2";
+import { Vector3 } from "app/types/vector3";
+import { Projectile } from "app/weapons/projectile/projectile";
+import { ProjectileTargetStatic, ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 
 
 const CREATE_SFX_EVERY = 0.06;
 const EGG_SACK = "Doodads\\Dungeon\\Terrain\\EggSack\\EggSack0.mdl";
 const EGG_SOUND = "Units\\Critters\\DuneWorm\\DuneWormDeath1.flac"
+const EGG_HATCH_SOUND = "Units\\Creeps\\Archnathid\\ArachnathidWhat2.flac";
 
 const HeartbeatSound = new SoundWithCooldown(4, "Sounds\\Alien Heartbeat.mp3");
 const MoistSound = new SoundRef("Sounds\\Moist.mp3", true);
@@ -36,6 +36,8 @@ export class EvolveAbility implements Ability {
 
     private duration: number = 40;
     private visibilityModifier: fogmodifier;
+
+    private completedEvolve = false;
 
     constructor() {
         this.timeElapsed = 0;
@@ -72,6 +74,8 @@ export class EvolveAbility implements Ability {
             MoistSound.playSound();
         }
 
+        this.casterUnit.addAbility(ABIL_ALIEN_EVOLVE_ARMOR);
+
         return true;
     };
 
@@ -79,7 +83,7 @@ export class EvolveAbility implements Ability {
         this.timeElapsed += delta;
         this.timeElapsedSinceSFX += delta;
 
-        this.light.z = getZFromXY(this.casterUnit.x, this.casterUnit.y) + 150 + Cos(this.timeElapsed*2) * 100;
+        this.light.z = getZFromXY(this.casterUnit.x, this.casterUnit.y) + 150 + Cos(this.timeElapsed*1.1) * 100;
 
         // Don't continue if we interrupt
         if (this.castingOrder !== this.casterUnit.currentOrder) {
@@ -99,16 +103,66 @@ export class EvolveAbility implements Ability {
         if (this.timeElapsedSinceSFX >= CREATE_SFX_EVERY && this.casterUnit) {
             this.timeElapsedSinceSFX = 0;
         }
-        return this.timeElapsed < this.duration;
+
+        if (this.timeElapsed >= this.duration) {
+            this.completedEvolve = true;
+
+            for (let index = 0; index < 10; index++) {
+                this.createGiblet(abMod);
+            }
+
+            return false;
+        }
+        return true;
     };
 
+    public createGiblet(abMod: AbilityModule) {
+        
+        const tLoc = vectorFromUnit(this.casterUnit.handle);
+
+        const unitHeight = getZFromXY(tLoc.x, tLoc.y);
+        const startLoc = new Vector3(tLoc.x, tLoc.y, unitHeight + 80)
+
+        const newTarget = new Vector3(
+            startLoc.x + this.getRandomOffset(),
+            startLoc.y + this.getRandomOffset(),
+            unitHeight
+        );
+
+        const projStartLoc = new Vector3(startLoc.x, startLoc.y, unitHeight + 20);
+        const projectile = new Projectile(
+            this.casterUnit.handle, 
+            projStartLoc,
+            new ProjectileTargetStatic(newTarget.subtract(startLoc)),
+            new ProjectileMoverParabolic(projStartLoc, newTarget, Deg2Rad(GetRandomReal(60,70)))
+        )
+        .onCollide(() => true);
+
+        projectile.addEffect("Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdl", 
+            new Vector3(0, 0, 0), newTarget.subtract(startLoc).normalise(), 1
+        );
+
+        const bloodSfx = AddSpecialEffect("Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl", startLoc.x, startLoc.y);
+        BlzSetSpecialEffectZ(bloodSfx, startLoc.z - 30);
+        DestroyEffect(bloodSfx);
+
+        abMod.game.weaponModule.addProjectile(projectile);
+    }
+
+    private getRandomOffset(): number {
+        const isNegative = GetRandomInt(0, 1);
+        return (isNegative == 1 ? -1 : 1) * Math.max(200, GetRandomInt(0, 800));
+    }
     
     public destroy(abMod: AbilityModule) {
         if (this.casterUnit) {
             this.casterUnit.setVertexColor(255, 255, 255, 255);
             this.effect.destroy();
+            this.light.z = 9999;
             this.light.destroy();
             FogModifierStop(this.visibilityModifier);
+            this.casterUnit.removeAbility(ABIL_ALIEN_EVOLVE_ARMOR);
+            PlayNewSoundOnUnit(EGG_HATCH_SOUND, this.casterUnit, 127);
         }
         if (GetLocalPlayer() == this.casterUnit.owner.handle) {
             MoistSound.stopSound();

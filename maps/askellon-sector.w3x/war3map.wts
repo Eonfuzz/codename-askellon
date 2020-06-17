@@ -506,12 +506,6 @@ STRING 135
 UnitCanHaveFlyHeight
 }
 
-STRING 136
-// Abilities: LEAP (Leap), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Tightly nit muscles react to twitch neuron pulses from this creature.|r|n|nCauses the user to jump in place, granting |cff00ffffairborne|r until it arrives at its destination. Will automatically be cast when possible, causing the alien to leap |cff00ff00330|r forward.|n|cff00ffffAirborne:|r Gain |cff00ff0050%|r damage reduction and become immune to projectiles.|n|n|cff8080805 Second Cooldown|r
-}
-
 STRING 137
 // Doodads: D006 (Ventilator), Name (Name)
 {
@@ -3077,5 +3071,23 @@ STRING 720
 // Abilities: ACID (Acid Pool), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Caustic enzymes found in the Alien's stomach can dissolve the strongest of compounds.|r|n|nHurls a blob of acid that explodes at target point, dealing |cff00ff0025|r damage and leaving a pool of acid; lasts |cff00ffff10|r seconds and deals |cff00ff0035|r damage per second.|n|n|cff80808025 Second Cooldown|r
+}
+
+STRING 721
+// Abilities: A00V (Evolution Egg Armor), Name (Name)
+{
+Evolution Egg Armor
+}
+
+STRING 722
+// Abilities: A00V (Evolution Egg Armor), EditorSuffix (Editor Suffix)
+{
+(+20)
+}
+
+STRING 723
+// Abilities: LEAP (Leap), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Freakish dermal muscle growths on the Xenomorph's hind legs resembles the musculature structure found in frogs and other jumping animals.|r|n|n|cff00ff00Jump|r to target location; Good for jumping over bullets and cliffs.|n|n|cff8080805 Second Cooldown|r
 }
 
