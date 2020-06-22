@@ -6,7 +6,7 @@ import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC, ABIL_SHIP_CHAINGUN, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_ITEM_TRIFEX, ABIL_SHIP_DEEP_SCAN, ABIL_SHIP_LASER, ABIL_ALIEN_EVOLVE_T1 } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_HUMAN_SPRINT, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC, ABIL_SHIP_CHAINGUN, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_ITEM_TRIFEX, ABIL_SHIP_DEEP_SCAN, ABIL_SHIP_LASER, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_ACID_HURL } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
 import { SprintLeapAbility } from "./human/sprint-leap";
 import { NightVisionAbility } from "./human/night-vision";
@@ -24,6 +24,8 @@ import { TrifexAbility } from "./human/trifex";
 import { ShipDeepScanAbility } from "./human/ship-scan";
 import { ShipMacroLasAbility } from "./human/ship-macro-las";
 import { EvolveAbility } from "./alien/evolve";
+import { ROACH_ALIEN_FORM } from "resources/unit-ids";
+import { AcidHurl } from "./alien/acid-hurl";
 
 
 const TIMEOUT = 0.03;
@@ -160,8 +162,14 @@ export class AbilityModule {
                     this.data.push(instance);
                 }
                 break;
+            case ABIL_ALIEN_ACID_HURL:
+                instance = new AcidHurl();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;               
             case ABIL_ALIEN_EVOLVE_T1:
-                instance = new EvolveAbility();
+                instance = new EvolveAbility(ROACH_ALIEN_FORM);
                 if (instance.initialise(this)) {
                     this.data.push(instance);
                 }

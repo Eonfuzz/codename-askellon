@@ -148,7 +148,7 @@ STRING 37
 }
 
 STRING 39
-// Buffs/Effects: B000 (), Bufftip (Tooltip)
+// Abilities: ASPI (Sprint), Name (Name)
 {
 Sprint
 }
@@ -971,7 +971,7 @@ W
 }
 
 STRING 235
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: ASPI (Sprint), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1139,7 +1139,7 @@ W
 }
 
 STRING 277
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2690,7 +2690,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 627
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3089,5 +3089,89 @@ STRING 723
 // Abilities: LEAP (Leap), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Freakish dermal muscle growths on the Xenomorph's hind legs resembles the musculature structure found in frogs and other jumping animals.|r|n|n|cff00ff00Jump|r to target location; Good for jumping over bullets and cliffs.|n|n|cff8080805 Second Cooldown|r
+}
+
+STRING 724
+// Units: ALI2 (Alien), Name (Name)
+{
+Alien
+}
+
+STRING 725
+// Units: ALI2 (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- Tier 2
+}
+
+STRING 727
+// Abilities: A00W (Xenos Neurotoxin), Tip (Tooltip - Normal)
+{
+Xenos Neurotoxin
+}
+
+STRING 728
+// Abilities: A00W (Xenos Neurotoxin), Name (Name)
+{
+Xenos Neurotoxin
+}
+
+STRING 738
+// Abilities: A00W (Xenos Neurotoxin), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nYour next attack becomes ranged and applies a terrible two part neurotoxin on hit, lasting |cff00ff004 seconds|r and applying a |cff00ff0020% slow|r.|n|nHitting a poisoned enemy with a melee attack alters the chemical makeup of the toxin; |cffc81e1econsuming|r the slow to ministun and deal |cff00ff0030 damage|r a second for |cff00ff004 seconds|r.|n|n|cff8080807 Seconds Cooldown|r
+}
+
+STRING 739
+// Abilities: ASPI (Sprint), Tip (Tooltip - Normal)
+{
+[|cffffff00W|r] - Sprint
+}
+
+STRING 740
+// Abilities: ASPI (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n|n|cff80808020 Second Cooldown|r
+}
+
+STRING 741
+// Abilities: ASPI (Sprint), Tip (Tooltip - Normal)
+{
+[|cffffff00W|r] - Sprint
+}
+
+STRING 742
+// Abilities: ASPI (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1260%|r for |cffd45e122 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
+}
+
+STRING 743
+// Buffs/Effects: B000 (), Bufftip (Tooltip)
+{
+Sprint
+}
+
+STRING 744
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 745
+// Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Roach Range Increase
+}
+
+STRING 746
+// Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Tier 1
+}
+
+STRING 747
+// Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect1 (Effect 1)
+{
+ratr
 }
 

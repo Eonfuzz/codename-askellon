@@ -8,7 +8,9 @@ export const ABIL_RESOLVE = FourCC('A007');
 // Alien abilities
 export const ABIL_TRANSFORM_HUMAN_ALIEN = FourCC('TF01');
 export const ABIL_TRANSFORM_ALIEN_HUMAN = FourCC('TF02');
+
 export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
+export const ABIL_ALIEN_ACID_HURL = FourCC('ASPI');
 export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 export const ABIL_ALIEN_EVOLVE_T1 = FourCC('A00U');

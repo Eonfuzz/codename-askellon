@@ -118,6 +118,7 @@ export class WorldModule {
     }
 
     getUnitZone(whichUnit: Unit): Zone | undefined {
+        if (!whichUnit) Log.Error("getUnitZone called but unit is undefined");
         return this.unitLocation.get(whichUnit.id);
     }
 }

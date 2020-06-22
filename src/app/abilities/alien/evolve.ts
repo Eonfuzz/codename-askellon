@@ -12,6 +12,7 @@ import { vectorFromUnit } from "app/types/vector2";
 import { Vector3 } from "app/types/vector3";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -34,13 +35,15 @@ export class EvolveAbility implements Ability {
 
     private castingOrder: number | undefined;
 
-    private duration: number = 40;
+    private duration: number = 38;
     private visibilityModifier: fogmodifier;
 
     private completedEvolve = false;
+    private toForm: number;
 
-    constructor() {
+    constructor(toWhichForm: number) {
         this.timeElapsed = 0;
+        this.toForm = toWhichForm;
     }
 
     public initialise(abMod: AbilityModule) {
@@ -166,6 +169,13 @@ export class EvolveAbility implements Ability {
         }
         if (GetLocalPlayer() == this.casterUnit.owner.handle) {
             MoistSound.stopSound();
+        }
+
+        // If we evolved
+        if (this.completedEvolve) {
+            // get alien force
+            const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+            alienForce.onEvolve(this.toForm);
         }
         return true; 
     };

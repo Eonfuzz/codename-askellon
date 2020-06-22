@@ -191,7 +191,8 @@ export class Ship {
         });
         
         // We're leaving space, can we dump off minerals?
-        if (!isDeath && game.worldModule.getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
+        const unitZone = game.worldModule.getUnitZone(this.unit);
+        if (!isDeath && unitZone && game.worldModule.getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
             const owningUnit = this.inShip[0];
     
             const mineralItem = this.unit.getItemInSlot(0);
@@ -199,7 +200,7 @@ export class Ship {
             SetItemCharges(mineralItem, 0);
 
             // Reward money
-            if (owningUnit) {
+            if (owningUnit && stacks > 0) {
                 const crew = game.crewModule.getCrewmemberForUnit(owningUnit);
                 if (crew) {
                     const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
