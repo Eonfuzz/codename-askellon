@@ -2,16 +2,14 @@
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
 import { Trigger, Unit, Effect } from "w3ts";
-import { Log } from "lib/serilog/serilog";
-import { ABIL_ALIEN_ACID_HURL } from "resources/ability-ids";
+import { BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
+import { TECH_20_RANGE_UPGRADE, TECH_ROACH_DUMMY_UPGRADE } from "resources/ability-ids";
 import { ALIEN_ACID_BALL } from "resources/sfx-paths";
 
 // Damage increase each second
 const MAX_DURATION = 6;
 const MAX_DURATION_DAMAGE_BONUS = 30;
 const MAX_DURATION_ATTACK_RANGE_BONUS = 300;
-
-const ROACH_RANGE_UPGRADE = FourCC('R004');
 
 export class AcidHurl implements Ability {
 
@@ -42,7 +40,11 @@ export class AcidHurl implements Ability {
         BlzSetUnitWeaponStringField(this.casterUnit.handle, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 0, ALIEN_ACID_BALL);
         BlzSetUnitWeaponStringField(this.casterUnit.handle, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 1, ALIEN_ACID_BALL);
 
-        SetPlayerTechResearched(this.casterUnit.owner.handle, ROACH_RANGE_UPGRADE, 5);
+        SetPlayerTechResearched(this.casterUnit.owner.handle, TECH_20_RANGE_UPGRADE, 5);
+        SetPlayerTechResearched(this.casterUnit.owner.handle, TECH_ROACH_DUMMY_UPGRADE, 0);
+
+        BlzUnitDisableAbility(this.casterUnit.handle, FourCC('A00X'), false, false);
+        UnitRemoveBuffBJ(BUFF_ID_ROACH_ARMOR, this.casterUnit.handle);
 
         AddUnitAnimationProperties(this.casterUnit.handle, "spell", true);
 
@@ -67,7 +69,7 @@ export class AcidHurl implements Ability {
         this.rangeIncreaseTimer += delta;
         if (this.rangeIncreaseTimer >= when) {            
             this.rangeIncreaseTimer -= when;
-            SetPlayerTechResearched(this.casterUnit.owner.handle, ROACH_RANGE_UPGRADE, MathRound(this.timeElapsed / when)+5);
+            SetPlayerTechResearched(this.casterUnit.owner.handle, TECH_20_RANGE_UPGRADE, MathRound(this.timeElapsed / when)+5);
         }
 
         this.casterUnit.setVertexColor(MathRound(255 - 255 * mult), 255, MathRound(255 - 255 * mult), 255);
@@ -85,11 +87,14 @@ export class AcidHurl implements Ability {
             BlzSetUnitWeaponStringField(this.casterUnit.handle, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 0, "");
             BlzSetUnitWeaponStringField(this.casterUnit.handle, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 1, "");
             BlzSetUnitBaseDamage(this.casterUnit.handle, MathRound(this.baseAttack1Damage), 0);
-            SetPlayerTechResearched(this.casterUnit.owner.handle, ROACH_RANGE_UPGRADE, 0);
+            SetPlayerTechResearched(this.casterUnit.owner.handle, TECH_20_RANGE_UPGRADE, 0);
 
             BlzSetUnitWeaponRealField(this.casterUnit.handle, UNIT_WEAPON_RF_ATTACK_PROJECTILE_SPEED, 0, 4000);
             BlzSetUnitWeaponRealField(this.casterUnit.handle, UNIT_WEAPON_RF_ATTACK_PROJECTILE_SPEED, 1, 4000);
             this.casterUnit.setVertexColor(255, 255, 255, 255);
+
+            BlzUnitDisableAbility(this.casterUnit.handle, FourCC('A00X'), true, false);
+            SetPlayerTechResearched(this.casterUnit.owner.handle, TECH_ROACH_DUMMY_UPGRADE, 1);
 
             AddUnitAnimationProperties(this.casterUnit.handle, "spell", false);
         }

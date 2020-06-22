@@ -51,6 +51,9 @@ export const TECH_HAS_GENES_TIER_1 = FourCC('RPG1');
 export const TECH_HAS_GENES_TIER_2 = FourCC('RPG1');
 export const TECH_HAS_GENES_TIER_3 = FourCC('RPG1');
 
+export const TECH_20_RANGE_UPGRADE = FourCC('R004');
+export const TECH_ROACH_DUMMY_UPGRADE = FourCC('R005');
+
 export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
 export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');
 export const ABIL_GENE_COSMIC = FourCC('ACSM');

@@ -148,7 +148,7 @@ STRING 37
 }
 
 STRING 39
-// Abilities: ASPI (Sprint), Name (Name)
+// Buffs/Effects: B000 (), Bufftip (Tooltip)
 {
 Sprint
 }
@@ -971,7 +971,7 @@ W
 }
 
 STRING 235
-// Abilities: ASPI (Sprint), Hotkey (Hotkey - Normal)
+// Abilities: ASPI (Acidic Stigmata), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -3122,33 +3122,21 @@ STRING 738
 }
 
 STRING 739
-// Abilities: ASPI (Sprint), Tip (Tooltip - Normal)
+// Abilities: ASPI (Acidic Stigmata), Tip (Tooltip - Normal)
 {
 [|cffffff00W|r] - Sprint
 }
 
 STRING 740
-// Abilities: ASPI (Sprint), Ubertip (Tooltip - Normal - Extended)
+// Abilities: ASPI (Acidic Stigmata), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n|n|cff80808020 Second Cooldown|r
 }
 
-STRING 741
-// Abilities: ASPI (Sprint), Tip (Tooltip - Normal)
-{
-[|cffffff00W|r] - Sprint
-}
-
 STRING 742
-// Abilities: ASPI (Sprint), Ubertip (Tooltip - Normal - Extended)
+// Abilities: ASPI (Acidic Stigmata), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1260%|r for |cffd45e122 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
-}
-
-STRING 743
-// Buffs/Effects: B000 (), Bufftip (Tooltip)
-{
-Sprint
 }
 
 STRING 744
@@ -3173,5 +3161,65 @@ STRING 747
 // Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect1 (Effect 1)
 {
 ratr
+}
+
+STRING 751
+// Upgrades: R005 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Normal Form
+}
+
+STRING 752
+// Upgrades: R005 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Dummy, used to disable roach armor
+}
+
+STRING 755
+// Abilities: ASPI (Acidic Stigmata), Name (Name)
+{
+Acidic Stigmata
+}
+
+STRING 756
+// Abilities: ASPI (Acidic Stigmata), Tip (Tooltip - Normal)
+{
+Acidic Stigmata
+}
+
+STRING 757
+// Abilities: A00X (Thick Carapace), Tip (Tooltip - Normal)
+{
+Thick Carapace
+}
+
+STRING 758
+// Abilities: A00X (Thick Carapace), Name (Name)
+{
+Thick Carapace
+}
+
+STRING 759
+// Buffs/Effects: B006 (Thick Carapace), EditorName (Name (Editor Only))
+{
+Thick Carapace
+}
+
+STRING 760
+// Buffs/Effects: B006 (Thick Carapace), Bufftip (Tooltip)
+{
+Thick Carapace
+}
+
+STRING 761
+// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduced all damage received by 10|r.
+}
+
+STRING 762
+// Buffs/Effects: B006 (Thick Carapace), Buffubertip (Tooltip - Extended)
+{
+All damage recieved is reduced by 10
 }
 
