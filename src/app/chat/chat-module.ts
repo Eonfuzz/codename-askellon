@@ -87,15 +87,15 @@ export class ChatModule {
         this.game.forceModule.getActivePlayers().forEach(player => {
             messageTrigger.registerPlayerChatEvent(player, "", false);
         });
-        // messageTrigger.addAction(() => this.onChatMessage());
+        messageTrigger.addAction(() => this.onChatMessage());
 
         /**
          * Create a fade tracking trigger loop
          */
-        // this.fadeHandler.start(0.1, true, () => this.updateFade(0.1));
-        // const fadeTrig = new Trigger();
-        // fadeTrig.registerTimerEvent(0.1, true);
-        // fadeTrig.addAction(() => this.updateFade(0.1));
+        this.fadeHandler.start(0.1, true, () => this.updateFade(0.1));
+        const fadeTrig = new Trigger();
+        fadeTrig.registerTimerEvent(0.1, true);
+        fadeTrig.addAction(() => this.updateFade(0.1));
     }
 
     updateFade(deltaTime: number) {

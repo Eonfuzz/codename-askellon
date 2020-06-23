@@ -65,7 +65,7 @@ export class LeapEntry {
             this.mover.originalPos, 
             this.mover.originalDelta, 
             this.mover.velocity, 
-            delta
+            delta*this.timescale
         );
 
         const uX = GetUnitX(this.unit);

@@ -107,8 +107,9 @@ export class Game {
         // Init leaps
         this.leapModule.initialise();
 
-        // Init chat
-        // this.chatModule.initialise();
+        const enableChat = new Trigger();
+        enableChat.registerPlayerChatEvent(MapPlayer.fromIndex(0), "-chat", true);
+        enableChat.addAction(() => this.chatModule.initialise());
 
         // Init station
         this.stationSecurity.initialise();

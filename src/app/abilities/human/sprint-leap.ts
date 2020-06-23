@@ -78,7 +78,7 @@ export class SprintLeapAbility implements Ability {
                 this.unit,
                 targetLoc.projectTowards2D(GetUnitFacing(this.unit), this.distanceTravelled/2),
                 30,
-                2.5
+                1
             ).onFinish(() => {
                 // Log.Information("Post speed: "+GetUnitMoveSpeed(unit));
             });

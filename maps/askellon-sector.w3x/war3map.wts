@@ -1354,7 +1354,7 @@ R
 }
 
 STRING 315
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A00Y (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -3127,12 +3127,6 @@ STRING 739
 [|cffffff00W|r] - Sprint
 }
 
-STRING 740
-// Abilities: ASPI (Acidic Stigmata), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n|n|cff80808020 Second Cooldown|r
-}
-
 STRING 742
 // Abilities: ASPI (Acidic Stigmata), Ubertip (Tooltip - Normal - Extended)
 {
@@ -3211,15 +3205,123 @@ STRING 760
 Thick Carapace
 }
 
-STRING 761
-// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduced all damage received by 10|r.
-}
-
 STRING 762
 // Buffs/Effects: B006 (Thick Carapace), Buffubertip (Tooltip - Extended)
 {
 All damage recieved is reduced by 10
+}
+
+STRING 763
+// Buffs/Effects: B007 (Acidic Stigmata), Bufftip (Tooltip)
+{
+Acidic Stigmata
+}
+
+STRING 764
+// Buffs/Effects: B007 (Acidic Stigmata), Buffubertip (Tooltip - Extended)
+{
+This unit is taking bonus damage
+}
+
+STRING 765
+// Buffs/Effects: B007 (Acidic Stigmata), EditorName (Name (Editor Only))
+{
+Acidic Stigmata
+}
+
+STRING 766
+// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 10|r.
+}
+
+STRING 767
+// Abilities: A00U (Evolve), EditorSuffix (Editor Suffix)
+{
+- To Tier 2
+}
+
+STRING 768
+// Abilities: A00Y (Evolve), Name (Name)
+{
+Evolve
+}
+
+STRING 769
+// Abilities: A00Y (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nEvolve to your next Alien form. Takes |cff00ff0040 seconds|r to complete your evolution. |cffc81e1eInterrupting any evolution costs 500 experience.|r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 770
+// Abilities: A00Y (Evolve), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 771
+// Abilities: A00Y (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 772
+// Abilities: A00Y (Evolve), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 773
+// Abilities: A00Y (Evolve), EditorSuffix (Editor Suffix)
+{
+- To Tier 3
+}
+
+STRING 774
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 775
+// Upgrades: R006 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 7
+}
+
+STRING 776
+// Upgrades: R006 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- Requirement, Level 7
+}
+
+STRING 779
+// Abilities: ASPI (Acidic Stigmata), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A large subdermal organ resembling the lymphatic system allows this creature to open up large pores on its skin and expel an acidic neurotoxin. Possibly used to scare off other predators in its home environment; here it is deadly.|r|n|nThe carapace becomes jelly-like as glands expel dangerous toxins. This substance damages all nearby units for |cff00ff0030 hit points|r each second; |cff00ff00Lasts 6 seconds.|r|n|NWhile active you no longer benefit from |cffc81e1eThick Carapace|r and all your attacks apply |cff00ff00poison|r; reducing |cff00ff00speed by 15%|r and |cff00ff00dealing 5 damage|r a second.|n|nAfterwards the rapidly re-forming Carapace causes a deadly explosion of toxins, dealing |cff00ff0030 damage|r and applying |cff8a6df2Despair|r to all units hit.|r|n|n|cff80808026 Second Cooldown|r|n
+}
+
+STRING 784
+// Abilities: A00Z (Buster), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Evolution of this strain caused muscle mass to migrate from its hindlegs into the Xeno's torso and pelvis, granting it greater pushing and thrusting force.|r|n|nThe Xenos charges |cff00ff001500 units|r forwards, dealing |cff00ff0025 damage|r to all units hit and |cff8a6defImpaling|r them.|n|n|cff8a6dfeImpaled|r units are moved with the charge and take a bonus |cff00ff0050 damage|r and are |cff00ff00stunned for 1.5 seconds|r upon hitting a wall; if there are no |cff8a6dfeImpaled|r units you instead are |cffc81e1estunned|r for |cffc81e1e1.5 seconds.|n|n|cffd45e19The xenos will jump over holes while charging.|r|n|n|cff80808020 Second Cooldown|r
+}
+
+STRING 785
+// Abilities: A00Z (Buster), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 786
+// Abilities: A00Z (Buster), Name (Name)
+{
+Buster
+}
+
+STRING 787
+// Abilities: A00Z (Buster), Tip (Tooltip - Normal)
+{
+Buster
 }
 

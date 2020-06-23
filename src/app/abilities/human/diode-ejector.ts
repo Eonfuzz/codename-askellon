@@ -163,7 +163,7 @@ export class DiodeEjectAbility implements Ability {
             this.casterUnit.handle,
             targetLoc,
             45,
-            3
+            1
         ).onFinish((leapEntry) => {
             this.leapExpired = true;
         });

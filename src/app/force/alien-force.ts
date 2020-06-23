@@ -4,7 +4,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE } from "resources/ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2 } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
@@ -15,7 +15,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { OBSERVER_FORCE_NAME } from "./observer-force";
-import { BUFF_ID } from "resources/buff-ids";
+import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
 import { DEFAULT_ALIEN_FORM } from "resources/unit-ids";
 
 
@@ -69,7 +69,7 @@ export class AlienForce extends ForceType {
             }))
 
         // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
-        this.alienDealsDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
+        this.alienDealsDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGING);
         this.alienDealsDamageTrigger.addAction(() => this.onAlienDealsDamage());
     }
     
@@ -119,7 +119,9 @@ export class AlienForce extends ForceType {
                 alien.strength = MathRound(alien.strength * 0.75);
                 alien.intelligence = MathRound(alien.intelligence * 0.75);
                 alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
-                alien.setScale(0.75, 0.75, 0.75);
+                alien.setScale(0.8, 0.8, 0.8);
+                alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
+                alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
             }
 
             // Additionally force the transform ability to start on cooldown
@@ -394,7 +396,7 @@ export class AlienForce extends ForceType {
     }
 
     private onAlienTakesDamage() {
-        const damageAmount = GetEventDamage();
+        let damageAmount = GetEventDamage();
         const damageSource = Unit.fromHandle(GetEventDamageSource());
         const damagedUnit = Unit.fromHandle(BlzGetEventDamageTarget());
         const damagingPlayer = damageSource.owner;
@@ -409,6 +411,12 @@ export class AlienForce extends ForceType {
         // No farming xp on yourself!
         // Also check to make sure they aren't both alien players
         if (damagedUnitIsAlien && damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagingPlayer)) {
+            // If we have roach armor reduce damage received
+            if (UnitHasBuffBJ(damagedUnit.handle, BUFF_ID_ROACH_ARMOR)) {
+                BlzSetEventDamage(damageAmount - 10);
+                damageAmount -= 10;
+            }
+    
             // Okay good, now reward exp based on damage done
             const pDetails = this.forceModule.getPlayerDetails(damagingPlayer);
             const crew = pDetails.getCrewmember();
@@ -558,13 +566,18 @@ export class AlienForce extends ForceType {
                     SelectUnitForPlayerSingle(alien.handle, player.handle);
                 }
                 this.playerAlienUnits.set(player, alien);
+                alien.nameProper = 'Alien Host';
+
                 // Now we need to also set alien spawn penalties
                 if (player !== alienHost) {
                     alien.maxLife = MathRound(alien.maxLife * 0.75);
                     alien.strength = MathRound(alien.strength * 0.75);
                     alien.intelligence = MathRound(alien.intelligence * 0.75);
                     alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
-                    alien.setScale(0.75, 0.75, 0.75);
+                    alien.setScale(0.8, 0.8, 0.8);
+                    alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
+                    alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
+                    alien.nameProper = 'Alien Spawn';
                 }
                 // If a player isn't transformed force the transformation
                 if (!this.playerIsTransformed.get(player)) {

@@ -21,6 +21,7 @@ export class Resolve extends DynamicBuff {
 
     private unit: Unit;
     private prevUnitHealth: number;
+    protected doesStack = false;
 
     private checkForDespairBuffTicker: number = 0;
 

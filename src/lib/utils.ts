@@ -116,6 +116,20 @@ const pathingBlockerGround =  FourCC('YTpb');
 const pathingBlockerAir =  FourCC('YTab');
 const pathingBlockerBoth =  FourCC('YTfb');
 
+export function getAnyBlockers(minX: number, minY: number, maxX: number, maxY: number): destructable[] {
+    if (!pathingRect) pathingRect = Rectangle.fromHandle(udg_pathing_rect);
+    let result = [];
+    // Move first
+    pathingRect.setRect(minX-64, minY-64, maxX+64, maxY+64);
+    EnumDestructablesInRectAll(pathingRect.handle, () => {
+        const d = GetFilterDestructable();
+        const id = GetDestructableTypeId(d);
+        if (id === pathingBlockerBoth) result.push(d);
+        else if (id === pathingBlockerGround) result.push(d);
+        else if (id === pathingBlockerAir) result.push(d);
+    });
+    return result;
+}
 
 export function getGroundBlockers(minX: number, minY: number, maxX: number, maxY: number): destructable[] {
     if (!pathingRect) pathingRect = Rectangle.fromHandle(udg_pathing_rect);

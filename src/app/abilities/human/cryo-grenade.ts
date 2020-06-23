@@ -10,12 +10,11 @@ import { MapPlayer, Unit } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance";
+import { SFX_CRYO_GRENADE, SFX_FROST_NOVA } from "resources/sfx-paths";
 
 /** @noSelfInFile **/
 const EXPLOSION_BASE_DAMAGE = 20;
 const EXPLOSION_AOE = 300;
-const MISSILE_LAND_SFX = 'Abilities\\Spells\\Undead\\FrostNova\\FrostNovaTarget.mdl'
-const MISSILE_SFX = 'war3mapImported\\Chain Grenade Blue.mdx';
 
 
 export class CryoGrenadeAbility implements Ability {
@@ -49,7 +48,7 @@ export class CryoGrenadeAbility implements Ability {
         .onDeath((proj: Projectile) => { this.explode(module, proj.getPosition()); })
         .onCollide(() => true);
 
-        projectile.addEffect(MISSILE_SFX, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
+        projectile.addEffect(SFX_CRYO_GRENADE, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
 
         module.game.weaponModule.addProjectile(projectile);
 
@@ -57,7 +56,7 @@ export class CryoGrenadeAbility implements Ability {
     };
 
     private explode(module: AbilityModule, atWhere: Vector3) {
-        let sfx = AddSpecialEffect(MISSILE_LAND_SFX, atWhere.x, atWhere.y);
+        let sfx = AddSpecialEffect(SFX_FROST_NOVA, atWhere.x, atWhere.y);
         BlzSetSpecialEffectZ(sfx, getZFromXY(atWhere.x, atWhere.y));
         DestroyEffect(sfx);
 

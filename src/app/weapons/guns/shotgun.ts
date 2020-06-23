@@ -16,6 +16,7 @@ import { SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
 import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
 import { Log } from "lib/serilog/serilog";
 import { MapPlayer } from "w3ts/index";
+import { SFX_SHOCKWAVE } from "resources/sfx-paths";
 
 
 export const InitShotgun = (weaponModule: WeaponModule) => {
@@ -93,7 +94,7 @@ export class Shotgun extends Gun {
         );
         BlzSetSpecialEffectAlpha(projectile.addEffect(
             isCentralProjectile 
-                ? "Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdl" 
+                ? SFX_SHOCKWAVE
                 : "war3mapImported\\Bullet.mdx",
             new Vector3(0, 0, 0),
             deltaTarget.normalise(),

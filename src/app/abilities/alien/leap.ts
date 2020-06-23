@@ -103,7 +103,7 @@ export class LeapAbility implements Ability {
             this.casterUnit,
             targetLoc,
             55,
-            5
+            1
         ).onFinish((leapEntry) => {
             let caster = this.casterUnit;
             this.leapExpired = true;

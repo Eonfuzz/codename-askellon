@@ -5,6 +5,7 @@ import { Log } from "lib/serilog/serilog";
 import { getZFromXY } from "lib/utils";
 import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS, ITEM_ID_CRYO_GRENADE } from "app/weapons/weapon-constants";
 import { ITEM_TRIFEX_ID } from "resources/item-ids";
+import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -146,11 +147,7 @@ export class SecurityModule {
         const uY = who.y;
         const uZ = getZFromXY(uX, uY);
 
-        const sfx = AddSpecialEffect(
-            "abilities\\weapons\\catapult\\catapultmissile.mdl", 
-            who.x, 
-            who.y
-        );
+        const sfx = AddSpecialEffect(SFX_CATAPULT_MISSILE, who.x, who.y);
         BlzSetSpecialEffectZ(sfx, uZ+10);
         DestroyEffect(sfx);
         RemoveUnit(who.handle);
