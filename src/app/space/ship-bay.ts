@@ -2,7 +2,7 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { Log } from "lib/serilog/serilog";
 import { ShipAnimation, ShipAnimationExitStationDock, ShipAnimationEnterStationDock } from "./ship-animations/ship-animations";
 import { Rectangle, Region, Unit } from "w3ts/index";
-import { Ship } from "./ship";
+import { Ship } from "./ships/ship-type";
 import { Game } from "app/game";
 import { EVENT_TYPE } from "app/events/event";
 
@@ -56,7 +56,7 @@ export class ShipBay {
         if (this.animating) return Log.Error("Trying to launch from bay that is already animating!");
 
         this.animating = true;
-        this.dockedShip.onEnterShip(forWho);
+        this.dockedShip.onEnterShip(game, forWho);
         this.animation = new ShipAnimationExitStationDock(this.dockedShip, this);
         this.animation.onDoneCallback(() => {
             this.shipLaunched(game, forWho);

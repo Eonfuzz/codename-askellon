@@ -3,12 +3,6 @@
 Player 1
 }
 
-STRING 3
-// Units: h000 (Wraith), Name (Name)
-{
-Wraith
-}
-
 STRING 9
 // Abilities: A000 (Afterburner), Hotkey (Hotkey - Normal)
 {
@@ -1342,19 +1336,19 @@ STRING 312
 }
 
 STRING 313
-// Abilities: A00O (Auto-cannon), Hotkey (Hotkey - Normal)
+// Abilities: A00N (ASKELLON - Exit Ship Controls), Hotkey (Hotkey - Normal)
 {
 R
 }
 
 STRING 314
-// Abilities: A00U (Evolve), Hotkey (Hotkey - Normal)
+// Abilities: A00O (PERSEUS - Auto-cannon), Hotkey (Hotkey - Normal)
 {
 R
 }
 
 STRING 315
-// Abilities: A00Y (Evolve), Hotkey (Hotkey - Normal)
+// Abilities: A00U (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2219,30 +2213,6 @@ STRING 518
 Korhal Wall Large
 }
 
-STRING 520
-// Abilities: A00N (Dock), Name (Name)
-{
-Dock
-}
-
-STRING 521
-// Abilities: A00N (Dock), Hotkey (Hotkey - Normal)
-{
-D
-}
-
-STRING 522
-// Abilities: A00N (Dock), Ubertip (Tooltip - Normal - Extended)
-{
-For testing only, causes you to reenter station
-}
-
-STRING 523
-// Abilities: A00N (Dock), Tip (Tooltip - Normal)
-{
-Dock
-}
-
 STRING 524
 {
 |cff808080Kinetic weapons are effective against every other than engineered kevlar armor.|r|n|n|cffff000075%|r Damage versus Combat Armor|n|cff00ff00100%|r Damage versus Other
@@ -2268,12 +2238,6 @@ STRING 529
 // Abilities: A000 (Afterburner), Tip (Tooltip - Normal)
 {
 Engage Afterburners
-}
-
-STRING 531
-// Abilities: A00O (Auto-cannon), Name (Name)
-{
-Auto-cannon
 }
 
 STRING 532
@@ -2315,12 +2279,6 @@ Self amplifying rifle that increases in damage with each successive hit.
 |cff00ff00- Bad base damage 
 - Missing a shot resets intensity|n- |cffc81e1eFracture Round|r|cff00ff00 can deal massive damage|r|n
 |cffc81e1eFracture Round|r|cffffcc00 Cannot be removed.|r
-}
-
-STRING 543
-// Units: h003 (Askellon), Name (Name)
-{
-Askellon
 }
 
 STRING 545
@@ -2378,31 +2336,19 @@ STRING 553
 }
 
 STRING 554
-// Abilities: A001 (Dodge Roll Left), Name (Name)
+// Abilities: A001 (PERSEUS - Dodge Roll Left), Tip (Tooltip - Normal)
 {
 Dodge Roll Left
 }
 
 STRING 555
-// Abilities: A001 (Dodge Roll Left), Hotkey (Hotkey - Normal)
+// Abilities: A001 (PERSEUS - Dodge Roll Left), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
-STRING 557
-// Abilities: A001 (Dodge Roll Left), Tip (Tooltip - Normal)
-{
-Dodge Roll Left
-}
-
 STRING 558
-// Abilities: A006 (Dodge Roll Right), Name (Name)
-{
-Dodge Roll Right
-}
-
-STRING 561
-// Abilities: A006 (Dodge Roll Right), Tip (Tooltip - Normal)
+// Abilities: A006 (PERSEUS - Dodge Roll Right), Tip (Tooltip - Normal)
 {
 Dodge Roll Right
 }
@@ -2414,13 +2360,13 @@ W
 }
 
 STRING 566
-// Abilities: A001 (Dodge Roll Left), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A001 (PERSEUS - Dodge Roll Left), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080TODO.|r|n|nPerforms a barrel roll to the left.|n|n|cff80808015 Seconds Cooldown|r
 }
 
 STRING 567
-// Abilities: A006 (Dodge Roll Right), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A006 (PERSEUS - Dodge Roll Right), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080TODO.|r|n|nPerforms a barrel roll to the right.|n|n|cff80808015 Seconds Cooldown|r
 }
@@ -2432,13 +2378,13 @@ STRING 569
 }
 
 STRING 571
-// Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
+// Abilities: A00O (PERSEUS - Auto-cannon), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
 
 STRING 572
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A00Y (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2858,7 +2804,7 @@ Engage Afterburners
 }
 
 STRING 668
-// Abilities: A00O (Auto-cannon), Tip (Tooltip - Normal)
+// Abilities: A00O (PERSEUS - Auto-cannon), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
@@ -2882,61 +2828,55 @@ STRING 681
 }
 
 STRING 682
-// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A00O (PERSEUS - Auto-cannon), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
 }
 
 STRING 683
-// Abilities: A00O (Auto-cannon), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A00O (PERSEUS - Auto-cannon), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
 }
 
-STRING 684
-// Abilities: A00S (Macro Las), Name (Name)
-{
-Macro Las
-}
-
 STRING 685
-// Abilities: A00S (Macro Las), Hotkey (Hotkey - Normal)
+// Abilities: A00S (PERSEUS - Macro Las), Hotkey (Hotkey - Normal)
 {
 A
 }
 
 STRING 686
-// Abilities: A00S (Macro Las), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A00S (PERSEUS - Macro Las), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080These lasers use fracture technology to emit high wave beams across the void of space.|r|n|nShoots two long ranged lasers, each dealing |cff00ff0060 damage|r.|n|n|cffd45e19"Use 'em when yer dog fightin' " - Ace Pilot|r|r|r|n|n|cff8080801 Second Cooldown|r
 }
 
 STRING 687
-// Abilities: A00S (Macro Las), Tip (Tooltip - Normal)
+// Abilities: A00S (PERSEUS - Macro Las), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - Macro Las
 }
 
 STRING 688
-// Abilities: A00S (Macro Las), Tip (Tooltip - Normal)
+// Abilities: A00S (PERSEUS - Macro Las), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - Macro Las
 }
 
 STRING 689
-// Abilities: A00S (Macro Las), Tip (Tooltip - Normal)
+// Abilities: A00S (PERSEUS - Macro Las), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - Macro Las
 }
 
 STRING 690
-// Abilities: A00S (Macro Las), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A00S (PERSEUS - Macro Las), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080These lasers use fracture technology to emit high wave beams across the void of space.|r|n|nShoots two long ranged lasers, each dealing |cff00ff0060 damage|r.|n|n|cffd45e19"Use 'em when yer dog fightin' " - Ace Pilot|r|r|r|n|n|cff8080801 Second Cooldown|r
 }
 
 STRING 691
-// Abilities: A00S (Macro Las), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A00S (PERSEUS - Macro Las), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080These lasers use fracture technology to emit high wave beams across the void of space.|r|n|nShoots two long ranged lasers, each dealing |cff00ff0060 damage|r.|n|n|cffd45e19"Use 'em when yer dog fightin' " - Ace Pilot|r|r|r|n|n|cff8080801 Second Cooldown|r
 }
@@ -3062,7 +3002,7 @@ STRING 717
 }
 
 STRING 718
-// Abilities: A006 (Dodge Roll Right), Hotkey (Hotkey - Normal)
+// Abilities: A006 (PERSEUS - Dodge Roll Right), Hotkey (Hotkey - Normal)
 {
 E
 }
@@ -3329,5 +3269,59 @@ STRING 790
 // Abilities: A00Z (Buster), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Evolution of this strain caused muscle mass to migrate from its hindlegs into the Xeno's torso and pelvis, granting it greater pushing and thrusting force.|r|n|nThe Xenos charges |cff00ff00900 units|r forwards, dealing |cff00ff0025 damage|r to all units hit and |cff8a6defImpaling|r them.|n|n|cff8a6dfeImpaled|r units are moved with the charge and take a bonus |cff00ff0050 damage|r and are |cff00ff00stunned for 1.5 seconds|r upon hitting a wall; if there are no |cff8a6dfeImpaled|r units you instead are |cffc81e1estunned|r for |cffc81e1e1.5 seconds.|n|n|cffd45e19The xenos will jump over holes while charging.|r|n|n|cff80808020 Second Cooldown|r
+}
+
+STRING 791
+// Abilities: A00N (ASKELLON - Exit Ship Controls), Name (Name)
+{
+ASKELLON - Exit Ship Controls
+}
+
+STRING 792
+// Abilities: A00N (ASKELLON - Exit Ship Controls), Ubertip (Tooltip - Normal - Extended)
+{
+Exit ship controls and enter meatspace
+}
+
+STRING 793
+// Abilities: A00N (ASKELLON - Exit Ship Controls), Tip (Tooltip - Normal)
+{
+Exit Ship Controls
+}
+
+STRING 794
+// Abilities: A00O (PERSEUS - Auto-cannon), Name (Name)
+{
+PERSEUS - Auto-cannon
+}
+
+STRING 795
+// Abilities: A001 (PERSEUS - Dodge Roll Left), Name (Name)
+{
+PERSEUS - Dodge Roll Left
+}
+
+STRING 796
+// Abilities: A006 (PERSEUS - Dodge Roll Right), Name (Name)
+{
+PERSEUS - Dodge Roll Right
+}
+
+STRING 797
+// Abilities: A00S (PERSEUS - Macro Las), Name (Name)
+{
+PERSEUS - Macro Las
+}
+
+STRING 798
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 799
+// Units: h003 (|cffd45e19S.S Askellon|r|n|cff808080Right Click To Dock|r), Name (Name)
+{
+|cffd45e19S.S Askellon|r|n|cff808080Right Click To Dock|r
 }
 

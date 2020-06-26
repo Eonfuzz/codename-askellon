@@ -2,7 +2,8 @@ import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
 import { SoundRef } from "app/types/sound-ref";
 import { Unit } from "w3ts/index";
-import { Ship, ShipState } from "app/space/ship";
+import { Ship } from "app/space/ships/ship-type";
+import { ShipState } from "app/space/ships/ship-state-type";
 
 /** @noSelfInFile **/
 const deepScanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false);

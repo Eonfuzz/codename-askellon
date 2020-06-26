@@ -1,7 +1,7 @@
 import { ShipBay } from "../ship-bay";
 import { Trigger, Timer } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
-import { Ship } from "../ship";
+import { Ship } from "../ships/ship-type";
 import { SoundRef } from "app/types/sound-ref";
 import { SFX_WINDWAVE } from "resources/sfx-paths";
 import { Vector2 } from "app/types/vector2";

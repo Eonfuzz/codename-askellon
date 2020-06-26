@@ -1,8 +1,10 @@
 import { ShipZone } from "../zone-type";
 import { WorldModule } from "../world-module";
-import { Unit } from "w3ts/index";
+import { Unit, Timer } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { Log } from "lib/serilog/serilog";
+import { ROLE_TYPES } from "resources/crewmember-names";
+import { ZONE_TYPE } from "../zone-id";
 
 export class BridgeZone extends ShipZone {
 
@@ -26,12 +28,24 @@ export class BridgeZone extends ShipZone {
         super.onEnter(world, unit);
 
         // Check if it is a main unit
-        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+        const crewmember = world.game.crewModule.getCrewmemberForUnit(unit);
 
-        if (isCrew && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
+        if (crewmember && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
             // Play music
             this.operaMusic.playSound();
             SetMusicVolume(5);
+
+            // If we are captain keep track of his existance
+            if (crewmember.role === ROLE_TYPES.CAPTAIN) {
+                const captainXpTimer = new Timer().start(5, true, () => {
+                    const zone = world.getUnitZone(crewmember.unit);
+                    if (!zone || (zone.id !== ZONE_TYPE.BRIDGE && zone.id !==  ZONE_TYPE.SPACE)) {
+                        return captainXpTimer.destroy();
+                    }
+
+                    crewmember.addExperience(world.game, 5);
+                });
+            }
         }
     }
 }

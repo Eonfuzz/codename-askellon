@@ -42,9 +42,6 @@ export class SpaceMovementEngine {
     private goal: Vector2;
     private angleToGoal: number;
 
-    private chemTrails: ShipChemTrail[] = [];
-    public doCreateTrails = true;
-
     constructor(startX: number, startY: number, initialGoal: Vector2) {
         this.position   = new Vector2(startX, startY);
         this.momentum   = new Vector2(0, 0);
@@ -162,9 +159,7 @@ export class SpaceMovementEngine {
         });
     }
 
-    public destroy() {
-        this.chemTrails.forEach(c => DestroyEffect(c.effect));
-    }
+    public destroy() {}
 
     /**
      * 

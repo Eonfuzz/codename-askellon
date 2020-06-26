@@ -3,7 +3,7 @@ import { AbilityModule } from "../ability-module";
 import { Vector2 } from "../../types/vector2";
 import { ABIL_SHIP_BARREL_ROLL_RIGHT } from "resources/ability-ids";
 import { Unit } from "w3ts/index";
-import { Ship } from "app/space/ship";
+import { Ship } from "app/space/ships/ship-type";
 
 /** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";

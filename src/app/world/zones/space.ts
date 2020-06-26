@@ -15,6 +15,7 @@ export class SpaceZone extends Zone {
         if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, bj_mapInitialPlayableArea);
             BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
+            BlzShowTerrain(true);
         }
     }
 
@@ -27,6 +28,7 @@ export class SpaceZone extends Zone {
         if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, gg_rct_Space);
             BlzChangeMinimapTerrainTex("minimap-space.blp");
+            BlzShowTerrain(false);
         }
     }
 }

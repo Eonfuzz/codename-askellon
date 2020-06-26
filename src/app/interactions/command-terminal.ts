@@ -30,6 +30,9 @@ export function initCommandTerminal(game: Game) {
             if (GetLocalPlayer() === GetOwningPlayer(source.handle)) {
                 sound.playSound();
             }
+
+            // Now get unit to enter the askellon
+            iModule.game.spaceModule.mainShip.onEnterShip(iModule.game, source);
         }
     }
 

@@ -9,13 +9,16 @@ import { Log } from "lib/serilog/serilog";
 import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 import { EventListener, EVENT_TYPE } from "app/events/event";
-import { Ship, ShipState } from "./ship";
-import { ABIL_DOCK_TEST, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN } from "resources/ability-ids";
+import { Ship, ShipWithFuel } from "./ships/ship-type";
+import { ABIL_LEAVE_ASKELLON_CONTROLS, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { ITEM_MINERALS_SHIP_ID } from "resources/item-ids";
+import { PerseusShip } from "./ships/perseus-type";
+import { AskellonShip } from "./ships/askellon-type";
+import { ShipState } from "./ships/ship-state-type";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -31,10 +34,10 @@ export class SpaceModule {
     public spaceObjects: SpaceObject[];
 
     // An array of ships
-    public ships: Ship[];
-    private shipsForUnit = new Map<Unit, Ship>();
+    public ships: ShipWithFuel[];
+    private shipUnitDict = new Map<Unit, ShipWithFuel>();
 
-    public mainShip: Ship;
+    public mainShip: AskellonShip;
 
     public shipBays: ShipBay[];
 
@@ -101,12 +104,14 @@ export class SpaceModule {
         const spaceX = this.spaceRect.centerX;
         const spaceY = this.spaceRect.centerY;
 
-        const ship = new Ship(this.game, ShipState.inSpace, Unit.fromHandle(
+        this.mainShip = new AskellonShip(this.game, ShipState.inSpace, Unit.fromHandle(
             CreateUnit(this.game.forceModule.neutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
         );
-        ship.engine.doCreateTrails = false;
-        ship.unit.setTimeScale(0.1);
-        this.mainShip = ship;
+        this.mainShip.unit.setTimeScale(0.1);
+        this.shipDeathEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_DEATH);
+        this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_ORDER);
+        this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
+        this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
 
         /**
          * Also insansiate ships
@@ -117,10 +122,10 @@ export class SpaceModule {
             bay.ZONE = ZONE_TYPE.CARGO_A;
 
             // Also for now create a ship to sit in the dock
-            const ship = new Ship(this.game, ShipState.inBay, Unit.fromHandle(
+            const ship = new PerseusShip(this.game, ShipState.inBay, Unit.fromHandle(
                 CreateUnit(this.game.forceModule.neutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
             );
-            this.shipsForUnit.set(ship.unit, ship);
+            this.shipUnitDict.set(ship.unit, ship);
             this.ships.push(ship);
             this.game.worldModule.travel(ship.unit, bay.ZONE);
             ship.unit.addItemById(ITEM_MINERALS_SHIP_ID);
@@ -140,7 +145,7 @@ export class SpaceModule {
 
             // Log.Information("Ship death!");
 
-            const matchingShip = this.shipsForUnit.get(u);
+            const matchingShip = this.getShipForUnit(u);
 
             try {
                 // Was the ship in a bay
@@ -148,12 +153,18 @@ export class SpaceModule {
 
                 // Now remove the ship from the bay
                 if (bay) bay.onDockedShipDeath();
-                // Now kill the ship
-                matchingShip.onDeath(this.game, k);
-                // Now clear it from ships for unit
-                this.shipsForUnit.delete(u);
-                this.ships.splice(this.ships.indexOf(matchingShip), 1);
-                // Log.Information("Finished ship Death!");
+
+                if (this.mainShip !== matchingShip) {
+                    // Now kill the ship
+                    matchingShip.onDeath(this.game, k);
+                    // Now clear it from ships for unit
+                    this.shipUnitDict.delete(u);
+                    this.ships.splice(this.ships.indexOf(matchingShip as ShipWithFuel), 1);
+                    // Log.Information("Finished ship Death!");
+                }
+                else {
+                    matchingShip.onDeath(this.game, k);
+                }
             }
             catch (e) {
                 Log.Error(e);
@@ -171,7 +182,8 @@ export class SpaceModule {
             if (!isSmart && !isMove && !isStop && !isHold) return;
 
             const u = Unit.fromHandle(GetOrderedUnit());
-            const ship = this.shipsForUnit.get(u);
+            
+            const ship = this.getShipForUnit(u);
 
             let targetLoc;
 
@@ -226,10 +238,12 @@ export class SpaceModule {
                     })
                 }
                 if (techLevel === 4) {
-                    if (gotOccupationBonus && ship.unit && ship.unit.isAlive()) {
-                        SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER, GetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER) + 1);
-                    }
-                    this.ships.forEach(ship => ship.setFuelUsagePercent(gotOccupationBonus ? 0.4 : 0.6));
+                    this.ships.forEach(ship => {
+                        if (gotOccupationBonus && ship.unit && ship.unit.isAlive()) {
+                            ship.setFuelUsagePercent(gotOccupationBonus ? 0.4 : 0.6)
+                            SetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER, GetUnitAbilityLevel(ship.unit.handle, ABIL_SHIP_LASER) + 1);
+                        }
+                    });
                 }
             }
         }));
@@ -250,10 +264,6 @@ export class SpaceModule {
         this.game.worldModule.travel(who, ZONE_TYPE.SPACE);
         this.game.worldModule.travel(ship.unit, ZONE_TYPE.SPACE);
 
-        if (who.owner.handle === GetLocalPlayer()) {
-            BlzShowTerrain(false);
-        }        
-
         // Alien infestation
         // Grant vision of the ship if it is infested
         const t2IsInfested = this.game.researchModule.isUpgradeInfested(TECH_MAJOR_VOID, 2);
@@ -270,7 +280,7 @@ export class SpaceModule {
      * @param whichTarget 
      */
     onShipLeavesSpace(unit: Unit, goal: Unit) {
-        const ship = this.shipsForUnit.get(unit);
+        const ship = this.getShipForUnit(unit);
         if (!ship) return Log.Error("No ship for unit!");
 
         let bays: ShipBay[];
@@ -315,13 +325,13 @@ export class SpaceModule {
     minY = this.spaceRect.minY;
     maxY = this.spaceRect.maxY;
     updateShips(updatePeriod: number) {
-        // this.mainShip.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY);
+        this.mainShip.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY);
         this.ships.forEach(ship => ship.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY));
     }
 
     unitEntersShip(who: Unit, whichShip: Unit) {
         // Get SHIP
-        const ship = this.shipsForUnit.get(whichShip);
+        const ship = this.getShipForUnit(whichShip);
         if (!ship) return Log.Error("No ship?! WHAT");
 
         const bayMatch = this.shipBays.find((bay) => bay.getDockedShip() === ship);
@@ -336,10 +346,6 @@ export class SpaceModule {
         }
     }
 
-    public getShipForUnit(who: Unit) {
-        return this.shipsForUnit.get(who);
-    }
-
     /**
      * Ship abilities
      */
@@ -349,7 +355,7 @@ export class SpaceModule {
         this.shipAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
         this.shipAbilityTrigger.addCondition(Condition(() =>
             GetSpellAbilityId() === this.shipAfterburnerAbilityId   ||
-            GetSpellAbilityId() === ABIL_DOCK_TEST ||
+            GetSpellAbilityId() === ABIL_LEAVE_ASKELLON_CONTROLS ||
             GetUnitTypeId(GetTriggerUnit()) === SHIP_VOYAGER_UNIT
         ));
 
@@ -359,11 +365,14 @@ export class SpaceModule {
 
             // Phew, hope you have the water running, ready for your shower  
             const u = Unit.fromHandle(unit);           
-            let ship = this.shipsForUnit.get(u);
+            let ship = this.getShipForUnit(u);
 
             if (!ship) Log.Error("Ship casting movement but no ship?!");
             else if (castAbilityId === this.shipAfterburnerAbilityId) {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
+            }
+            else if (castAbilityId === ABIL_LEAVE_ASKELLON_CONTROLS) {
+                ship.onLeaveShip(this.game);
             }
 
             const crew = this.game.crewModule.getCrewmemberForUnit(ship.inShip[0])
@@ -372,7 +381,17 @@ export class SpaceModule {
             if (isPilot) {
                 manaCost = Math.min(manaCost-1, 0);
             }
-            ship.shipFuel -= manaCost;
+
+            if (ship instanceof ShipWithFuel) {
+                ship.shipFuel -= manaCost;
+            }
         });
+    }
+
+    public getShipForUnit(who: Unit) {
+        if (this.mainShip && this.mainShip.unit === who) 
+            return this.mainShip;
+        else if (this.shipUnitDict.has(who)) 
+            return this.shipUnitDict.get(who);
     }
 }

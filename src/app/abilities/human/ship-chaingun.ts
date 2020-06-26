@@ -9,7 +9,8 @@ import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverLinear } from "app/weapons/projectile/projectile-target";
 import { WeaponModule } from "app/weapons/weapon-module";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
-import { Ship, ShipState } from "app/space/ship";
+import { Ship } from "app/space/ships/ship-type";
+import { ShipState } from "app/space/ships/ship-state-type";
 
 /** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";

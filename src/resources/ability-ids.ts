@@ -1,7 +1,7 @@
 export const ABIL_CREWMEMBER_INFO = FourCC('A008');
 export const ABIL_HUMAN_SPRINT = FourCC('A003');
 
-export const ABIL_DOCK_TEST = FourCC('A00N');
+export const ABIL_LEAVE_ASKELLON_CONTROLS = FourCC('A00N');
 export const ABIL_DESPAIR = FourCC('A00D');
 export const ABIL_RESOLVE = FourCC('A007');
 
