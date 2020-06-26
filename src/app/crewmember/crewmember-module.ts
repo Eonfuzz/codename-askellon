@@ -171,6 +171,6 @@ export class CrewModule {
     }
 
     getCrewmemberForUnit(unit: Unit): Crewmember | void {
-        return this.crewmemberForUnit.get(unit);
+        return this.crewmemberForUnit.has(unit) && this.crewmemberForUnit.get(unit);
     }
 }

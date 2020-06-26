@@ -8,6 +8,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { EVENT_TYPE } from "app/events/event";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { SpaceZone } from "./zones/space";
 
 export class WorldModule {
     game: Game;
@@ -24,7 +25,7 @@ export class WorldModule {
     constructor(game: Game) {
         this.game = game;
         this.askellon = new TheAskellon(this);
-        this.worldZones.set(ZONE_TYPE.SPACE, new Zone(game, ZONE_TYPE.SPACE));
+        this.worldZones.set(ZONE_TYPE.SPACE, new SpaceZone(game, ZONE_TYPE.SPACE));
 
         const deathTrigger = new Trigger();
         deathTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);

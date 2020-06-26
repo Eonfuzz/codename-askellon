@@ -3301,12 +3301,6 @@ STRING 779
 |cff808080A large subdermal organ resembling the lymphatic system allows this creature to open up large pores on its skin and expel an acidic neurotoxin. Possibly used to scare off other predators in its home environment; here it is deadly.|r|n|nThe carapace becomes jelly-like as glands expel dangerous toxins. This substance damages all nearby units for |cff00ff0030 hit points|r each second; |cff00ff00Lasts 6 seconds.|r|n|NWhile active you no longer benefit from |cffc81e1eThick Carapace|r and all your attacks apply |cff00ff00poison|r; reducing |cff00ff00speed by 15%|r and |cff00ff00dealing 5 damage|r a second.|n|nAfterwards the rapidly re-forming Carapace causes a deadly explosion of toxins, dealing |cff00ff0030 damage|r and applying |cff8a6df2Despair|r to all units hit.|r|n|n|cff80808026 Second Cooldown|r|n
 }
 
-STRING 784
-// Abilities: A00Z (Buster), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Evolution of this strain caused muscle mass to migrate from its hindlegs into the Xeno's torso and pelvis, granting it greater pushing and thrusting force.|r|n|nThe Xenos charges |cff00ff001500 units|r forwards, dealing |cff00ff0025 damage|r to all units hit and |cff8a6defImpaling|r them.|n|n|cff8a6dfeImpaled|r units are moved with the charge and take a bonus |cff00ff0050 damage|r and are |cff00ff00stunned for 1.5 seconds|r upon hitting a wall; if there are no |cff8a6dfeImpaled|r units you instead are |cffc81e1estunned|r for |cffc81e1e1.5 seconds.|n|n|cffd45e19The xenos will jump over holes while charging.|r|n|n|cff80808020 Second Cooldown|r
-}
-
 STRING 785
 // Abilities: A00Z (Buster), Hotkey (Hotkey - Normal)
 {
@@ -3319,9 +3313,21 @@ STRING 786
 Buster
 }
 
-STRING 787
+STRING 788
+// Abilities: A010 (Stun Level * 0.25), Name (Name)
+{
+Stun Level * 0.25
+}
+
+STRING 789
 // Abilities: A00Z (Buster), Tip (Tooltip - Normal)
 {
-Buster
+Buster Charge
+}
+
+STRING 790
+// Abilities: A00Z (Buster), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Evolution of this strain caused muscle mass to migrate from its hindlegs into the Xeno's torso and pelvis, granting it greater pushing and thrusting force.|r|n|nThe Xenos charges |cff00ff00900 units|r forwards, dealing |cff00ff0025 damage|r to all units hit and |cff8a6defImpaling|r them.|n|n|cff8a6dfeImpaled|r units are moved with the charge and take a bonus |cff00ff0050 damage|r and are |cff00ff00stunned for 1.5 seconds|r upon hitting a wall; if there are no |cff8a6dfeImpaled|r units you instead are |cffc81e1estunned|r for |cffc81e1e1.5 seconds.|n|n|cffd45e19The xenos will jump over holes while charging.|r|n|n|cff80808020 Second Cooldown|r
 }
 

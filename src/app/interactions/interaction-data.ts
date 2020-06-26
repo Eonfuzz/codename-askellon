@@ -234,7 +234,7 @@ export const initWeaponsTerminals = () => {
 
             try {
                 // Select events are async
-                const syncher = syncData("TEST", player, (self, data: string) => {
+                const syncher = syncData(`INT_SEL_${i++}`, player, (self, data: string) => {
                     UnitApplyTimedLife(nUnit, FourCC('b001'), 3);
                 });
 

@@ -27,8 +27,8 @@ export class SoundRef {
         SetSoundVolume(this.sound, volume);
     }
 
-    public stopSound() {
-        StopSound(this.sound, false, true);
+    public stopSound(noFade?: boolean) {
+        StopSound(this.sound, false, !noFade);
     }
 }
 

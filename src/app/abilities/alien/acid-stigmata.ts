@@ -8,6 +8,7 @@ import { SFX_ALIEN_ACID_BALL, SFX_ACID_AURA, SFX_CONFLAGRATE_GREEN } from "resou
 import { getZFromXY } from "lib/utils";
 import { FilterIsEnemyAndAlive } from "resources/filters";
 import { BuffInstanceDuration } from "app/buff/buff-instance";
+import { SoundRef } from "app/types/sound-ref";
 
 // Damage increase each second
 const MAX_DURATION = 6;
@@ -34,6 +35,7 @@ export class AcidStigmataAbility implements Ability {
     private hasAttacked: boolean = false;
 
     private poisonAura: Effect;
+    private soundRef = new SoundRef("Abilities\\Spells\\Undead\\Unsummon\\CityscapeCrystalShield1.flac", true);
 
     constructor() {}
 
@@ -47,10 +49,13 @@ export class AcidStigmataAbility implements Ability {
         UnitRemoveBuffBJ(BUFF_ID_ROACH_ARMOR, this.casterUnit.handle);
 
         AddUnitAnimationProperties(this.casterUnit.handle, "spell", true);
+        SetPlayerTechResearched(this.casterUnit.owner.handle, TECH_ROACH_DUMMY_UPGRADE, 0);
 
         // Create poison aura
         this.poisonAura = new Effect(SFX_ACID_AURA, this.casterUnit.x, this.casterUnit.y);
         this.poisonAura.scale = 2.5;
+
+        this.soundRef.playSoundOnUnit(this.casterUnit.handle, 40);
 
         return true;
     };
@@ -159,6 +164,7 @@ export class AcidStigmataAbility implements Ability {
             });
         }
 
+        this.soundRef.stopSound(true);
         this.poisonAura.destroy();
 
         return true; 
