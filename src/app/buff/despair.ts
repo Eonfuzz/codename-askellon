@@ -63,7 +63,7 @@ export class Despair extends DynamicBuff {
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
             this.unit.addAbility(ABIL_ACCURACY_PENALTY_30);
-            this.despairMusic.setVolume(127);
+            this.despairMusic.setVolume(60);
             if (GetLocalPlayer() === this.unit.owner.handle) {
                 SetMusicVolume(0);
                 this.despairMusic.playSound();

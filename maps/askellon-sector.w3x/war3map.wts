@@ -3325,3 +3325,15 @@ STRING 799
 |cffd45e19S.S Askellon|r|n|cff808080Right Click To Dock|r
 }
 
+STRING 800
+// Abilities: A011 (Seal of Purity), Name (Name)
+{
+Seal of Purity
+}
+
+STRING 801
+// Abilities: A011 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing|r all |cff00ff00damage |rit |cff00ff00receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
