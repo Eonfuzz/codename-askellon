@@ -10,6 +10,7 @@ import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
 import { Game } from "app/game";
 import { syncData } from "lib/utils";
+import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY } from "resources/unit-ids";
 
 export let Interactables = new Map<number, InteractableData>();
 
@@ -225,6 +226,9 @@ export const initWeaponsTerminals = () => {
                 }
                 unitType = FourCC('hGEN');
             }
+            else if (targetUType === TERMINAL_RELIGION) {
+                unitType = TERMINAL_RELIGION_DUMMY;
+            }
             else {
                 unitType = FourCC('hWEP');
             }
@@ -261,4 +265,5 @@ export const initWeaponsTerminals = () => {
     Interactables.set(MEDICAL_UPGRADE_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(GENE_SPLICER_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(VOID_UPGRADE_TERMINAL, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_RELIGION, upgradeTerminalProcessing);
 }

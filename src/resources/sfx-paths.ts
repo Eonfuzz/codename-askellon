@@ -16,6 +16,7 @@ export const SFX_CATAPULT_MISSILE = "abilities\\weapons\\catapult\\catapultmissi
 export const SFX_CONFLAGRATE_GREEN = "Conflagrate Green.mdx";
 
 export const SFX_FLASH_HEAL = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl";
+export const SFX_RED_SINGULARITY = "war3mapImported\\Singularity I Red.mdl";
 
 // Preload SFX
 Preload(SFX_WINDWAVE);
@@ -32,3 +33,4 @@ Preload(SFX_SHOCKWAVE);
 Preload(SFX_CATAPULT_MISSILE);
 Preload(SFX_CONFLAGRATE_GREEN);
 Preload(SFX_FLASH_HEAL);
+Preload(SFX_RED_SINGULARITY);

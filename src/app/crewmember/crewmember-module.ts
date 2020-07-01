@@ -10,11 +10,10 @@ import { ZONE_TYPE } from "../world/zone-id";
 import { OptResult } from "app/force/opt-selection";
 import { ForceType } from "app/force/force-type";
 import { PLAYER_COLOR } from "lib/translators";
-import { TECH_WEP_DAMAGE } from "resources/ability-ids";
+import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION } from "resources/ability-ids";
 import { TimedEvent } from "app/types/timed-event";
-import { EVENT_TYPE } from "app/events/event";
-
-const CREWMEMBER_UNIT_ID = FourCC("H001");
+import { EVENT_TYPE, EventListener } from "app/events/event";
+import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 
 export class CrewModule {
 
@@ -53,11 +52,11 @@ export class CrewModule {
 
         let it = 0;
         while (it < totalPlayers) {
-            // if (it === 0) this.allJobs.push(ROLE_TYPES.INQUISITOR);
-            // else 
-            if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
-            else if (it === 1) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
-            else if (it === 2) this.allJobs.push(ROLE_TYPES.DOCTOR);
+            if (it === 0) this.allJobs.push(ROLE_TYPES.INQUISITOR);
+            else if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
+            else if (it === 1) this.allJobs.push(ROLE_TYPES.INQUISITOR);
+            else if (it === 2) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
+            else if (it === 3) this.allJobs.push(ROLE_TYPES.DOCTOR);
             else if (it < 4) this.allJobs.push(ROLE_TYPES.PILOT);
             else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
             it++;
@@ -133,6 +132,20 @@ export class CrewModule {
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
             SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
+        }
+        else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
+            nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);
+            this.game.event.addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+                if (data.data.researched === TECH_MAJOR_RELIGION) {
+                    const techLevel = data.data.level;
+                    const gotOccupationBonus = this.game.researchModule.techHasOccupationBonus(data.data.researched, techLevel);
+
+                    if (nUnit && nUnit.isAlive()) {
+                        SetUnitAbilityLevel(nUnit.handle, ABIL_INQUIS_PURITY_SEAL, techLevel + 1);
+                    }
+    
+                }
+            }));    
         }
 
         if (!roleGaveWeapons) {

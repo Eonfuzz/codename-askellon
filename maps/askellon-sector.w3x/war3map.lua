@@ -830,7 +830,7 @@ function InitTrig_SetCollisionData()
 end
 
 function Trig_Hide_Cathederal_Statue_Actions()
-    SetUnitVertexColorBJ(gg_unit_n00A_0222, 100, 100, 100, 80.00)
+    SetUnitVertexColorBJ(gg_unit_n00A_0222, 100, 100, 100, 100.00)
 end
 
 function InitTrig_Hide_Cathederal_Statue()

@@ -43,6 +43,7 @@ export class DynamicBuffModule {
         }
 
         matchingBuff.addInstance(this.game, who, instance, isNegativeInstance);
+        return matchingBuff;
     }
 
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {

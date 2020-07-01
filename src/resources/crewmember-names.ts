@@ -43,11 +43,11 @@ ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
-    "Doctor Dimento", "Doctor Quack", "Dr. Diggus Bickus", "Dr. Who"
+    "Doctor Dimento", "Doctor Quack", "Doctor Diggus Bickus", "Doctor Who", "Doctor Chemix"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
-    "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus"
+    "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus", "Inquisitor Fyre"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.PILOT, [
@@ -64,7 +64,11 @@ ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_GOLD}Navigator|r you must 
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `As ${COL_GOLD}Doctor|r research and upgrade Healthcare while using the Gene Splicer to upgrade your comrades.`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOLD}Security Guards|r gain 30% bonus experience when damaging Alien Hosts`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `${COL_GOLD}Inquisitor|r is WIP`);
+
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `The ${COL_GOLD}Inquisitor|r hunts down xenos scum.
+${COL_GOOD}- Start the game with Seal of Purity
+- Cannot benefit from Gene Splicing
+- Can upgrade abilities in the Cathederal|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.PILOT, `The ${COL_GOLD}Pilot|r patrols the void and mines minerals.
 ${COL_GOOD}- Receive bonus experience from mining
 - Receive bonus experience for fighting in space

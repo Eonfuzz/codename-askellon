@@ -3373,12 +3373,6 @@ STRING 808
 Dummy
 }
 
-STRING 810
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
 STRING 812
 // Abilities: A012 (Seal of Purity), Tip (Tooltip - Normal)
 {
@@ -3397,18 +3391,6 @@ STRING 814
 Seal of Purity
 }
 
-STRING 815
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|nEffected units now gain |cff00ff001 bonus Vitality|r upon levelling up.|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
-STRING 816
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff003 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff003|r; lasts |cff00ff004 minutes.|r|n- Effected units now gain |cff00ff001 bonus Vitality|r upon levelling up.|n- Purity Seals are consumed to heal for |cff00ff0050 hitpoints|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
 STRING 817
 // Abilities: A012 (Seal of Purity), Tip (Tooltip - Normal)
 {
@@ -3416,7 +3398,7 @@ Seal of Purity
 }
 
 STRING 818
-// Buffs/Effects: B008 (), Bufftip (Tooltip)
+// Abilities: A012 (Seal of Purity), Tip (Tooltip - Normal)
 {
 Seal of Purity
 }
@@ -3425,18 +3407,6 @@ STRING 819
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
 Religious Dogma
-}
-
-STRING 820
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nReinstates religious dogma|n|cff00ff00- Purity Seals grant that unit 1 permanent vitality when levelling up|n- Being in the Cathederal heals 1 health a second|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- The Inquisitor gains 1 vitality whenever a unit with a Purity Seal levels up|r
-}
-
-STRING 821
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nProsthelytize religious dogma|n|cff00ff00-|cffd45e19 Purity Seals|r|cff00ff00 are now consumed while on low health and heal for 50|n- |cffd45e19Purity Seal |r|cff00ff00Regeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- |cffd45e19Purity Seal|r|cff00ff00 duration increased by 60 seconds|r
 }
 
 STRING 822
@@ -3487,30 +3457,6 @@ STRING 829
 |cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
 }
 
-STRING 830
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Void Delving
-}
-
-STRING 831
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Void Delving
-}
-
-STRING 832
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Void Delving
-}
-
-STRING 833
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Void Delving
-}
-
 STRING 834
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
 {
@@ -3547,28 +3493,10 @@ STRING 839
 Upgrade Weapon Damage [10/10]
 }
 
-STRING 840
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Void Delving
-}
-
-STRING 841
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Void Delving
-}
-
 STRING 842
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
 Weapons Tech Upgrade
-}
-
-STRING 843
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Void Delving
 }
 
 STRING 844
@@ -3637,30 +3565,6 @@ STRING 854
 W
 }
 
-STRING 855
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 856
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 857
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 858
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
 STRING 859
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
 {
@@ -3671,5 +3575,209 @@ STRING 860
 // Units: n00A (|cffffff00Cathederal |rAltar|n|cff808080Right Click to Use|r), Name (Name)
 {
 |cffffff00Cathederal |rAltar|n|cff808080Right Click to Use|r
+}
+
+STRING 861
+// Units: n00B (|cffffff00Cathederal |rAltar), Name (Name)
+{
+|cffffff00Cathederal |rAltar
+}
+
+STRING 862
+// Units: n00B (|cffffff00Cathederal |rAltar), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 863
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Religious Dogma
+}
+
+STRING 864
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Religious Dogma
+}
+
+STRING 865
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Religious Dogma
+}
+
+STRING 866
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Religious Dogma
+}
+
+STRING 867
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Religious Dogma
+}
+
+STRING 868
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Religious Dogma
+}
+
+STRING 869
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Religious Dogma
+}
+
+STRING 870
+// Abilities: A013 (Punishing Smite), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 871
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 872
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 873
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 876
+// Abilities: A012 (Seal of Purity), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 877
+// Abilities: A013 (Punishing Smite), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 878
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nReinstates religious dogma|n|cff00ff00- |cffd45e19Purity Seals|r |cff00ff00grant that unit 1 permanent vitality when levelling up|n- Being in the Cathederal heals 1 health a second|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- The Inquisitor gains 1 vitality whenever a unit with a |cffd45e19Purity Seal|r |cff00ff00levels up|r
+}
+
+STRING 879
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nProsthelytize religious dogma|n|cff00ff00-|cffd45e19 Purity Seals|r|cff00ff00 now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff00ff00Regeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- |cffd45e19Purity Seal|r|cff00ff00 duration increased by 60 seconds|r
+}
+
+STRING 880
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 881
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 883
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 884
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 885
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 886
+// Abilities: A013 (Punishing Smite), Name (Name)
+{
+Punishing Smite
+}
+
+STRING 887
+// Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 888
+// Abilities: A013 (Punishing Smite), Tip (Tooltip - Normal)
+{
+Punishing Smite
+}
+
+STRING 889
+// Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 890
+// Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 891
+// Abilities: A013 (Punishing Smite), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 892
+// Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 893
+// Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 894
+// Abilities: A013 (Punishing Smite), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 895
+// Abilities: A013 (Punishing Smite), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 896
+// Buffs/Effects: B008 (), Bufftip (Tooltip)
+{
+Seal of Purity
+}
+
+STRING 897
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
 }
 
