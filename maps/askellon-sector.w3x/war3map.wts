@@ -3667,3 +3667,9 @@ STRING 859
 ranged
 }
 
+STRING 860
+// Units: n00A (|cffffff00Cathederal |rAltar|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cffffff00Cathederal |rAltar|n|cff808080Right Click to Use|r
+}
+

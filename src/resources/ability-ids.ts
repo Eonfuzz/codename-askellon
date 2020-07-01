@@ -45,6 +45,7 @@ export const TECH_WEP_DAMAGE = FourCC('RDAM');
 export const TECH_MAJOR_WEAPONS_PRODUCTION = FourCC('RWEP');
 export const TECH_MAJOR_HEALTHCARE = FourCC('RMED');
 export const TECH_MAJOR_VOID = FourCC('RSPC');
+export const TECH_MAJOR_RELIGION = FourCC('R007');
 
 
 export const TECH_NO_UNIT_IN_SPLICER = FourCC('RGEN');

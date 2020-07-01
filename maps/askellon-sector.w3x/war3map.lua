@@ -123,6 +123,8 @@ gg_dest_B002_1453 = nil
 gg_dest_B002_1454 = nil
 gg_dest_B002_1452 = nil
 gg_dest_B002_1457 = nil
+gg_trg_Hide_Cathederal_Statue = nil
+gg_unit_n00A_0222 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -546,6 +548,7 @@ function CreateNeutralPassiveBuildings()
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19584.0, -27904.0, 270.000, FourCC("n002"))
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
+    gg_unit_n00A_0222 = BlzCreateUnitWithSkin(p, FourCC("n00A"), -23034.7, -25209.5, 270.000, FourCC("n00A"))
     gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -10560.0, -25536.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n005"), -18435.9, -25586.1, 0.220, FourCC("n005"))
     u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24569.4, 89.562, FourCC("n004"))
@@ -826,6 +829,16 @@ function InitTrig_SetCollisionData()
     TriggerAddAction(gg_trg_SetCollisionData, Trig_SetCollisionData_Actions)
 end
 
+function Trig_Hide_Cathederal_Statue_Actions()
+    SetUnitVertexColorBJ(gg_unit_n00A_0222, 100, 100, 100, 80.00)
+end
+
+function InitTrig_Hide_Cathederal_Statue()
+    gg_trg_Hide_Cathederal_Statue = CreateTrigger()
+    TriggerRegisterTimerEventSingle(gg_trg_Hide_Cathederal_Statue, 0.00)
+    TriggerAddAction(gg_trg_Hide_Cathederal_Statue, Trig_Hide_Cathederal_Statue_Actions)
+end
+
 function Trig_Untitled_Trigger_001_Conditions()
     if (not (GetUnitTypeId(GetTriggerUnit()) == FourCC("h007"))) then
         return false
@@ -855,6 +868,7 @@ function InitCustomTriggers()
     InitTrig_SetPowerGenerators()
     InitTrig_SetShipZones()
     InitTrig_SetCollisionData()
+    InitTrig_Hide_Cathederal_Statue()
     InitTrig_Untitled_Trigger_001()
 end
 
