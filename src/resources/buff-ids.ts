@@ -3,7 +3,8 @@ export enum BUFF_ID {
     DESPAIR,
     FLASH_FREEZE,
     FIRE,
-    TRIFEX
+    TRIFEX,
+    PURITY_SEAL
 }
 export const BUFF_ID_TRIFEX = FourCC('B005');
 export const BUFF_ID_DESPAIR = FourCC('B004');

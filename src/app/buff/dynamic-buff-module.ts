@@ -8,6 +8,7 @@ import { flashFreeze } from "./flash-freeze";
 import { Trifex } from "./trifex";
 import { Despair } from "./despair";
 import { Resolve } from "./resolve";
+import { PuritySeal } from "./purity-seal";
 
 /** @noSelfInFile **/
 export class DynamicBuffModule {
@@ -49,6 +50,7 @@ export class DynamicBuffModule {
         if (id === BUFF_ID.TRIFEX) return new Trifex();
         if (id === BUFF_ID.DESPAIR) return new Despair(who);
         if (id === BUFF_ID.RESOLVE) return new Resolve(who);
+        if (id === BUFF_ID.PURITY_SEAL) return new PuritySeal();
         Log.Error("Creating new buff no instance for ID "+id);
     }
 
