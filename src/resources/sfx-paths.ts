@@ -15,6 +15,8 @@ export const SFX_CRYO_GRENADE = 'war3mapImported\\Chain Grenade Blue.mdx';
 export const SFX_CATAPULT_MISSILE = "abilities\\weapons\\catapult\\catapultmissile.mdl";
 export const SFX_CONFLAGRATE_GREEN = "Conflagrate Green.mdx";
 
+export const SFX_FLASH_HEAL = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl";
+
 // Preload SFX
 Preload(SFX_WINDWAVE);
 Preload(SFX_LASER_1);
@@ -29,3 +31,4 @@ Preload(SFX_CRYO_GRENADE);
 Preload(SFX_SHOCKWAVE);
 Preload(SFX_CATAPULT_MISSILE);
 Preload(SFX_CONFLAGRATE_GREEN);
+Preload(SFX_FLASH_HEAL);

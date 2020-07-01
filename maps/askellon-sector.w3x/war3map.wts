@@ -3331,9 +3331,339 @@ STRING 800
 Seal of Purity
 }
 
-STRING 801
+STRING 802
+// Abilities: A011 (Seal of Purity), Tip (Tooltip - Normal)
+{
+Purity Seal
+}
+
+STRING 803
+// Abilities: A012 (Seal of Purity), Name (Name)
+{
+Seal of Purity
+}
+
+STRING 804
+// Buffs/Effects: B008 (), Buffubertip (Tooltip - Extended)
+{
+This unit has been blessed and receives reduced damage and increased health regeneration
+}
+
+STRING 805
+// Abilities: A011 (Seal of Purity), Unhotkey (Hotkey - Turn Off)
+{
+Q
+}
+
+STRING 806
+// Abilities: A011 (Seal of Purity), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 807
 // Abilities: A011 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing|r all |cff00ff00damage |rit |cff00ff00receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 808
+// Abilities: A011 (Seal of Purity), EditorSuffix (Editor Suffix)
+{
+Dummy
+}
+
+STRING 810
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 812
+// Abilities: A012 (Seal of Purity), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 813
+// Abilities: A012 (Seal of Purity), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 814
+// Abilities: A012 (Seal of Purity), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 815
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|nEffected units now gain |cff00ff001 bonus Vitality|r upon levelling up.|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 816
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff003 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff003|r; lasts |cff00ff004 minutes.|r|n- Effected units now gain |cff00ff001 bonus Vitality|r upon levelling up.|n- Purity Seals are consumed to heal for |cff00ff0050 hitpoints|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 817
+// Abilities: A012 (Seal of Purity), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 818
+// Buffs/Effects: B008 (), Bufftip (Tooltip)
+{
+Seal of Purity
+}
+
+STRING 819
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Religious Dogma
+}
+
+STRING 820
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nReinstates religious dogma|n|cff00ff00- Purity Seals grant that unit 1 permanent vitality when levelling up|n- Being in the Cathederal heals 1 health a second|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- The Inquisitor gains 1 vitality whenever a unit with a Purity Seal levels up|r
+}
+
+STRING 821
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nProsthelytize religious dogma|n|cff00ff00-|cffd45e19 Purity Seals|r|cff00ff00 are now consumed while on low health and heal for 50|n- |cffd45e19Purity Seal |r|cff00ff00Regeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- |cffd45e19Purity Seal|r|cff00ff00 duration increased by 60 seconds|r
+}
+
+STRING 822
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nFanaticize religious dogma|n|cff00ff00- Can now pray at the altar to gain |cffd45e19Purity Seal|r|n|cff00ff00- Seal Health Regeneration is increased by 30%|r|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- Gain the |cffd45e19Smite Heathen|r |cff00ff00ability
+}
+
+STRING 823
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 40%|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|n- Ship fuel usage reduced by a further 20%|r|n|n|cff8a6df2Infestation [ALIEN]|n- Ordinance will always lock onto the Askellon|n- Internal damage causes infestation|n- Disables oxygen production on ships|r
+}
+
+STRING 824
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 825
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 61%|r|n|cffd45e19New Damage Bonus: 77%|r
+}
+
+STRING 826
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 77%|r|n|cffd45e19New Damage Bonus: 94%|r
+}
+
+STRING 827
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 94%|r|n|cffd45e19New Damage Bonus: 115%|r
+}
+
+STRING 828
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 115%|r|n|cffd45e19New Damage Bonus: 136%|r
+}
+
+STRING 829
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
+}
+
+STRING 830
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 831
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 832
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 833
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Void Delving
+}
+
+STRING 834
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 835
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 836
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 837
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 838
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 839
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 840
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Void Delving
+}
+
+STRING 841
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Void Delving
+}
+
+STRING 842
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 843
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Void Delving
+}
+
+STRING 844
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 845
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 846
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 847
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 848
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 849
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 850
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 851
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 852
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 853
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 854
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 855
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 856
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 857
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 858
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 859
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
+{
+ranged
 }
 

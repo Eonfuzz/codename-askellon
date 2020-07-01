@@ -8,6 +8,7 @@ export const BRIDGE_CAPTAINS_TERMINAL = FourCC('n005');
 export const SPACE_UNIT_ASTEROID = FourCC('h002');
 export const SPACE_UNIT_MINERAL = FourCC('h007');
 
+export const TERMINAL_RELIGION = FourCC('n00A');
 
 export const ZERGLING_ALIEN_FORM = FourCC('ALI1');
 export const ROACH_ALIEN_FORM = FourCC('ALI2');

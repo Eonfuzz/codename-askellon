@@ -4,6 +4,7 @@ import { Unit } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance";
 import { SoundRef } from "app/types/sound-ref";
+import { ABIL_INQUIS_PURITY_SEAL_DUMMY } from "resources/ability-ids";
 
 export const puritySealSounds = [
     new SoundRef("Sounds\\WhatIsHisWill.mp3", false),
@@ -33,6 +34,12 @@ export class PuritySealAbility implements Ability {
 
     public process(module: AbilityModule, delta: number) {
         
+        module.game.useDummyFor((dummy: unit) => {
+            SetUnitX(dummy, this.unit.x);
+            SetUnitY(dummy, this.unit.y + 50);
+            IssueTargetOrder(dummy, "innerfire", this.targetUnit.handle);
+        }, ABIL_INQUIS_PURITY_SEAL_DUMMY);
+
         module.game.buffModule.addBuff(
             BUFF_ID.PURITY_SEAL, 
             this.targetUnit,

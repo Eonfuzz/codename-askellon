@@ -6,7 +6,7 @@ import { TimedEvent } from "../types/timed-event";
 import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
 import { ABIL_ACCURACY_BONUS_30, ABIL_RESOLVE } from "resources/ability-ids";
-import { BUFF_ID_RESOLVE } from "resources/buff-ids";
+import { BUFF_ID_RESOLVE, BUFF_ID } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 
 /**
@@ -14,6 +14,7 @@ import { Unit } from "w3ts/index";
  * Can be applied multiple times and from multiple sources
  */
 export class Resolve extends DynamicBuff {
+    id = BUFF_ID.RESOLVE;
     name = 'resolve';
 
     private breathSound: SoundWithCooldown;
