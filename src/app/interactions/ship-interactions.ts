@@ -55,6 +55,7 @@ export function initShipInteractions(game: Game) {
     Interactables.set(SHIP_VOYAGER_UNIT, interaction);
 
     const asteroidInteraction: InteractableData = {
+        hideInteractionBar: true,
         condition:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             // Make sure ships can't fly ships, lol.
             return source.typeId === SHIP_VOYAGER_UNIT;
@@ -62,8 +63,8 @@ export function initShipInteractions(game: Game) {
         getInteractionTime:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             // Takes time based on asteroids remaining HP
             if (iModule.game.researchModule.getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3)
-                return interactable.life / 200 + 0.15;
-            return interactable.life / 100 + 0.3
+                return interactable.life / 200 + 0.3;
+            return interactable.life / 100 + 0.6;
         },
         getInteractionDistance:  (iModule: InteractionModule, source: Unit, interactable: Unit) => {
             if (iModule.game.researchModule.getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 2) {

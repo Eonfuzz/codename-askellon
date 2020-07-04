@@ -17,6 +17,9 @@ export const SFX_CONFLAGRATE_GREEN = "Conflagrate Green.mdx";
 
 export const SFX_FLASH_HEAL = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl";
 export const SFX_RED_SINGULARITY = "war3mapImported\\Singularity I Red.mdl";
+export const SFX_DARK_RITUAL = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
+export const SFX_DARK_SUMMONING = "Abilities\\Spells\\Undead\\Darksummoning\\DarkSummonTarget.mdl";
+export const SFX_HOWL = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl";
 
 // Preload SFX
 Preload(SFX_WINDWAVE);
@@ -34,3 +37,6 @@ Preload(SFX_CATAPULT_MISSILE);
 Preload(SFX_CONFLAGRATE_GREEN);
 Preload(SFX_FLASH_HEAL);
 Preload(SFX_RED_SINGULARITY);
+Preload(SFX_DARK_RITUAL);
+Preload(SFX_DARK_SUMMONING);
+Preload(SFX_HOWL);

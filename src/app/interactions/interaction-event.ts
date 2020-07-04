@@ -26,8 +26,18 @@ export class InteractionEvent {
   private progressBar: ProgressBar | undefined;
 
   private interactDistance: number;
+  private showProgressBar: boolean = true;
 
-  constructor(unit: unit, targetUnit: unit, interactTime: number, interactDistance: number, callback: Function, startCallback: Function, cancelCallback: Function) {
+  constructor(
+    unit: unit, 
+    targetUnit: unit, 
+    interactTime: number, 
+    interactDistance: number, 
+    callback: Function, 
+    startCallback: Function, 
+    cancelCallback: Function,
+    showProgressBar: boolean
+  ) {
     this.unit = Unit.fromHandle(unit);
     this.targetUnit = Unit.fromHandle(targetUnit);
     this.timeRequired = this.timeRemaining = interactTime;
@@ -35,7 +45,11 @@ export class InteractionEvent {
     this.startCallback = startCallback;
     this.cancelCallback = cancelCallback;
     this.interactDistance = interactDistance;
-    this.progressBar = new ProgressBar();
+    this.showProgressBar = showProgressBar;
+
+    if (this.showProgressBar) {
+      this.progressBar = new ProgressBar();
+    }
   }
 
   startInteraction() {

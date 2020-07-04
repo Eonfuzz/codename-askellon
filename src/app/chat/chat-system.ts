@@ -136,7 +136,7 @@ export class ChatSystem {
     public updateFade(timeSinceLastPost: number) {
         this.timeSinceLastMessage += timeSinceLastPost;
         const alpha = Math.max(
-            Math.min(255 - (this.timeSinceLastMessage - 6) / 3 * 255, 255), 
+            Math.min(255 - (this.timeSinceLastMessage - 10) / 3 * 255, 255), 
         0);
         if (this.chatFrame && this.player.handle === GetLocalPlayer()) {
             BlzFrameSetAlpha(this.chatFrame, MathRound(alpha));

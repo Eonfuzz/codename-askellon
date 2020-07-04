@@ -9,10 +9,10 @@ import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer } from "w3ts";
 import { getZFromXY } from "lib/utils";
+import { ABILITY_SLOW_ID } from "resources/ability-ids";
 
 /** @noSelfInFile **/
 const DAMAGE_PER_SECOND = 35;
-const ABILITY_SLOW_ID = FourCC('A00B');
 
 const MISSILE_SPEED = 400;
 const MISSILE_ARC_HEIGHT = 800;

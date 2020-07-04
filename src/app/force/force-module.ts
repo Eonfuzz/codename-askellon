@@ -423,9 +423,9 @@ export class ForceModule {
             force = this.getForceFromName(forceName);
         }
 
-        const pForce = new PlayerWithForce(player);
-        pForce.setForce(force);
+        const pForce = this.getPlayerDetails(player) || new PlayerWithForce(player);
 
+        pForce.setForce(force);
         this.playerDetails.set(player, pForce);
         force.addPlayer(player);
     }

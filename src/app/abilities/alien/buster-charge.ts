@@ -1,12 +1,12 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
-import { Trigger, Unit, Effect } from "w3ts";
+import { Trigger, Unit, Effect, MapPlayer } from "w3ts";
 import { BUFF_ID_ROACH_ARMOR, BUFF_ID } from "resources/buff-ids";
 import { TECH_20_RANGE_UPGRADE, TECH_ROACH_DUMMY_UPGRADE, ABIL_STUN_25 } from "resources/ability-ids";
 import { SFX_ALIEN_ACID_BALL, SFX_ACID_AURA, SFX_CONFLAGRATE_GREEN, SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 import { getZFromXY, getAnyBlockers } from "lib/utils";
-import { FilterIsEnemyAndAlive } from "resources/filters";
+import { FilterIsEnemyAndAlive, FilterIsAlive } from "resources/filters";
 import { BuffInstanceDuration } from "app/buff/buff-instance";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { Vector3 } from "app/types/vector3";
@@ -164,12 +164,13 @@ export class BusterChargeAbility implements Ability {
             this.casterUnit.x, 
             this.casterUnit.y,
             GRAB_DISTANCE,
-            FilterIsEnemyAndAlive(this.casterUnit.owner)
+            FilterIsAlive(this.casterUnit.owner)
         );
 
         ForGroup(this.searchGroup, () => {
             const unit = GetEnumUnit();
             if ((this.casterCollisionRadius + 5) < BlzGetUnitCollisionSize(unit)) return;
+            if (!abMod.game.forceModule.aggressionBetweenTwoPlayers(this.casterUnit.owner, MapPlayer.fromHandle(GetOwningPlayer(unit)))) return;
             if (!IsUnitInGroup(unit, this.impaledUnits)) {
                 // damage unit by 25
                 UnitDamageTarget(this.casterUnit.handle, 

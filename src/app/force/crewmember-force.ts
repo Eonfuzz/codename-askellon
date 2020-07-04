@@ -58,15 +58,27 @@ export class CrewmemberForce extends ForceType {
 
         // If alien killed us migrate to alien force
         if (killedByAlien) {
-            const alienForce = this.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            this.forceModule.addPlayerToForce(player, ALIEN_FORCE_NAME);
-            alienForce.addPlayerMainUnit(game, whichUnit, player);
+            try {
+                // Revive our unit
+                whichUnit.unit.revive(whichUnit.unit.x, whichUnit.unit.y, false);
+
+                const alienForce = this.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+                alienForce.addPlayerMainUnit(game, whichUnit, player);
+                this.forceModule.addPlayerToForce(player, ALIEN_FORCE_NAME);
+
+                // Force transformation
+                alienForce.transform(game, player, true);
+            }
+            catch (e) {
+                Log.Error("Crew->Death->Alien failed!");
+                Log.Error(e);
+            }
         }
         // Otherwise make observer
         else {
             const obsForce = this.forceModule.getForce(OBSERVER_FORCE_NAME);
-            this.forceModule.addPlayerToForce(player, OBSERVER_FORCE_NAME);
             obsForce.addPlayerMainUnit(game, whichUnit, player);
+            this.forceModule.addPlayerToForce(player, OBSERVER_FORCE_NAME);
         }
         this.removePlayer(player);
 

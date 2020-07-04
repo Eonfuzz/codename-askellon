@@ -73,7 +73,8 @@ export class InteractionModule {
                 interactionDistance,
                 () => interact.action(this, trigUnit, targetUnit),
                 () => interact.onStart && interact.onStart(this, trigUnit, targetUnit),
-                () => interact.onCancel && interact.onCancel(this, trigUnit, targetUnit)
+                () => interact.onCancel && interact.onCancel(this, trigUnit, targetUnit),
+                !interact.hideInteractionBar
             );
             newInteraction.startInteraction();
             this.interactions.push(newInteraction);

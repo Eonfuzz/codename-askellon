@@ -185,14 +185,7 @@ export class AlienForce extends ForceType {
      */
     addPlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer) {
         super.addPlayerMainUnit(game, whichUnit, player);
-
         this.makeAlien(game, whichUnit, player);
-        
-        // If the added player is dead we need to revive if
-        if (!whichUnit.unit.isAlive()) {
-            whichUnit.unit.revive(whichUnit.unit.x, whichUnit.unit.y, false);
-            this.transform(game, player, true);
-        }
     }
 
 
@@ -549,41 +542,48 @@ export class AlienForce extends ForceType {
      * Evolves the alien host and all spawn
      */
     public onEvolve(newForm: number) {
-        // Increment current evo
-        this.currentAlienEvolution = newForm;
-        const alienHost = this.getHost();
 
-        // Get all players
-        this.players.forEach(player => {
-            // Now get their alien units and replace with the new evo
-            const unit = this.playerAlienUnits.get(player);
-            if (unit) {
-                const unitIsSelected = unit.isSelected(player);
-                const replacedUnit = ReplaceUnitBJ(unit.handle, newForm, 1);
-                const alien = Unit.fromHandle(replacedUnit);
+        try {
+            // Increment current evo
+            this.currentAlienEvolution = newForm;
+            const alienHost = this.getHost();
 
-                if (unitIsSelected) {
-                    SelectUnitForPlayerSingle(alien.handle, player.handle);
-                }
-                this.playerAlienUnits.set(player, alien);
-                alien.nameProper = 'Alien Host';
+            // Get all players
+            this.players.forEach(player => {
+                // Now get their alien units and replace with the new evo
+                const unit = this.playerAlienUnits.get(player);
+                if (unit) {
+                    const unitIsSelected = unit.isSelected(player);
+                    const replacedUnit = ReplaceUnitBJ(unit.handle, newForm, 1);
+                    const alien = Unit.fromHandle(replacedUnit);
 
-                // Now we need to also set alien spawn penalties
-                if (player !== alienHost) {
-                    alien.maxLife = MathRound(alien.maxLife * 0.75);
-                    alien.strength = MathRound(alien.strength * 0.75);
-                    alien.intelligence = MathRound(alien.intelligence * 0.75);
-                    alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
-                    alien.setScale(0.8, 0.8, 0.8);
-                    alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
-                    alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
-                    alien.nameProper = 'Alien Spawn';
+                    if (unitIsSelected) {
+                        SelectUnitForPlayerSingle(alien.handle, player.handle);
+                    }
+                    this.playerAlienUnits.set(player, alien);
+                    alien.nameProper = 'Alien Host';
+
+                    // Now we need to also set alien spawn penalties
+                    if (player !== alienHost) {
+                        alien.maxLife = MathRound(alien.maxLife * 0.75);
+                        alien.strength = MathRound(alien.strength * 0.75);
+                        alien.intelligence = MathRound(alien.intelligence * 0.75);
+                        alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
+                        alien.setScale(0.8, 0.8, 0.8);
+                        alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
+                        alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
+                        alien.nameProper = 'Alien Spawn';
+                    }
+                    // If a player isn't transformed force the transformation
+                    if (!this.playerIsTransformed.get(player)) {
+                        this.transform(this.forceModule.game, player, true);
+                    }
                 }
-                // If a player isn't transformed force the transformation
-                if (!this.playerIsTransformed.get(player)) {
-                    this.transform(this.forceModule.game, player, true);
-                }
-            }
-        })
+            })
+        }
+        catch (e) {
+            Log.Error("Evolution failed!");
+            Log.Error(e);
+        }
     }
 }

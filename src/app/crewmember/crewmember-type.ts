@@ -60,7 +60,7 @@ export class Crewmember extends ArmableUnit {
         const resolveActive = game.buffModule.unitHasBuff(BUFF_ID.RESOLVE, this.unit);
 
         const maxHP = BlzGetUnitMaxHP(this.unit.handle);
-        const hpPercentage  = (GetUnitState(this.unit.handle, UNIT_STATE_LIFE) - GetEventDamage()) * 0.7 / maxHP;
+        const hpPercentage  = (GetUnitState(this.unit.handle, UNIT_STATE_LIFE) - GetEventDamage()) / maxHP;
 
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {

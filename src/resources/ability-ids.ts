@@ -2,10 +2,14 @@ export const ABIL_CREWMEMBER_INFO = FourCC('A008');
 export const ABIL_HUMAN_SPRINT = FourCC('A003');
 export const ABIL_INQUIS_PURITY_SEAL = FourCC('A012');
 export const ABIL_INQUIS_PURITY_SEAL_DUMMY = FourCC('A011');
+export const ABIL_INQUIS_SMITE = FourCC('A013');
 
 export const ABIL_LEAVE_ASKELLON_CONTROLS = FourCC('A00N');
 export const ABIL_DESPAIR = FourCC('A00D');
 export const ABIL_RESOLVE = FourCC('A007');
+
+// Misc
+export const ABILITY_SLOW_ID = FourCC('A00B');
 
 // Alien abilities
 export const ABIL_TRANSFORM_HUMAN_ALIEN = FourCC('TF01');

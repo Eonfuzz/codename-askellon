@@ -10,7 +10,7 @@ import { ZONE_TYPE } from "../world/zone-id";
 import { OptResult } from "app/force/opt-selection";
 import { ForceType } from "app/force/force-type";
 import { PLAYER_COLOR } from "lib/translators";
-import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION } from "resources/ability-ids";
+import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQUIS_SMITE } from "resources/ability-ids";
 import { TimedEvent } from "app/types/timed-event";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
@@ -53,7 +53,8 @@ export class CrewModule {
         let it = 0;
         while (it < totalPlayers) {
             if (it === 0) this.allJobs.push(ROLE_TYPES.INQUISITOR);
-            else if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
+            else 
+            if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
             else if (it === 1) this.allJobs.push(ROLE_TYPES.INQUISITOR);
             else if (it === 2) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
             else if (it === 3) this.allJobs.push(ROLE_TYPES.DOCTOR);
@@ -135,6 +136,7 @@ export class CrewModule {
         }
         else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
             nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);
+            nUnit.addAbility(ABIL_INQUIS_SMITE);
             this.game.event.addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
                 if (data.data.researched === TECH_MAJOR_RELIGION) {
                     const techLevel = data.data.level;

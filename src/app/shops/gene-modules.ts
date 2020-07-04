@@ -54,10 +54,10 @@ export class GeneModule {
         });
 
         // Start gene check trigger
-        // new Timer().start(2, true, () => this.checkGeneRequirements());
-        // const checkTrig = new Trigger();
-        // checkTrig.registerTimerEvent(0.5, true);
-        // checkTrig.addAction(() => this.checkGeneRequirements());
+        new Timer().start(2, true, () => this.checkGeneRequirements());
+        const checkTrig = new Trigger();
+        checkTrig.registerTimerEvent(0.5, true);
+        checkTrig.addAction(() => this.checkGeneRequirements());
     }
 
     addNewGeneInstance(who: Unit, geneUiUnit: Unit) {

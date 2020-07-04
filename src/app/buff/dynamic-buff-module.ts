@@ -35,7 +35,6 @@ export class DynamicBuffModule {
         let matchingBuff = buffsForUnit.filter(b => b.id === buffId)[0];
 
         if (!matchingBuff) {
-            Log.Information("No matching buff!");
             matchingBuff = this.newDynamicBuffFor(buffId, who);
             buffsForUnit.push(matchingBuff);
             this.buffs.push(matchingBuff);

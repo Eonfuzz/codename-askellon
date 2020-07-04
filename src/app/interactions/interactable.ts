@@ -4,6 +4,8 @@ import { Unit } from "w3ts/handles/unit";
 /** @noSelfInFile **/
 export interface InteractableData { 
 
+  hideInteractionBar?: boolean;
+
   /**
    * Ran when the unit tries to interact, true allows the interactable effect to exist
    * Leave undefined for default allowed

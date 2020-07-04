@@ -169,6 +169,14 @@ export class ChatModule {
             else if (message.indexOf("-ns") === 0) {
                 BlzShowTerrain(false);
             }
+            else if (message.indexOf("-ss") === 0) {
+                BlzShowTerrain(true);
+            }
+            else if (message == "-level") {
+                EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    SetHeroLevel(GetEnumUnit(), 10, true);
+                });
+            }
             else if (message == "-kill") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     // KillUnit(GetEnumUnit());
@@ -189,9 +197,6 @@ export class ChatModule {
                     // Log.Information(data);
                     const x = S2R(data.split(',')[0]);
                     const y = S2R(data.split(',')[1]);
-
-                    Log.Information(`x: ${x}, y: ${y}`)
-
                 
                     EnumUnitsSelected(player.handle, Filter(() => true), () => {
                         const u = GetEnumUnit();
@@ -319,6 +324,7 @@ export class ChatModule {
         if (who.name === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
         if (who.name === 'maddeem#1693') return PRIVS.DEVELOPER;
         if (who.name === 'mayday#12613') return PRIVS.DEVELOPER;
+        // if (who.name === 'pipski#12613') return PRIVS.DEVELOPER;
         if (who.name === 'Local Player') return PRIVS.DEVELOPER;
         // No # means this is a local game
         if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
