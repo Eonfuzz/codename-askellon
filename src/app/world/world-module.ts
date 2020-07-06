@@ -57,6 +57,8 @@ export class WorldModule {
      */
     travel(unit: Unit, to: ZONE_TYPE, isSubTravel?: boolean) {
 
+        // Log.Information("Unit Travel "+unit.name);
+
         // Does the travel work
         this.handleTravel(unit, to);
         const pData = this.game.forceModule.getPlayerDetails(unit.owner);
@@ -64,33 +66,39 @@ export class WorldModule {
         // If we dont have player data that means its an AI player
         if (!pData) return;
 
-        // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
-        // If this is a player we care about
-        const crew = pData.getCrewmember(); 
-        const force = pData.getForce() as AlienForce;
-        const alien = force.is(ALIEN_FORCE_NAME) && force.getAlienFormForPlayer(unit.owner);
+        try {
+            // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
+            // If this is a player we care about
+            const crew = pData.getCrewmember(); 
+            const force = pData.getForce() as AlienForce;
+            const isAlien = force.is(ALIEN_FORCE_NAME);
+            const alienUnit = isAlien ? force.getAlienFormForPlayer(unit.owner) : undefined;
 
-        const isCrewmember = crew && crew.unit === unit;
+            const isCrewmember = crew && crew.unit === unit;
 
-        // If it was the alien form, we need to travel the crewmember around
-        if (alien == unit) {
-            this.handleTravel(crew.unit, to);
+            // If it was the alien form, we need to travel the crewmember around
+            if (isAlien && alienUnit == unit) {
+                this.handleTravel(crew.unit, to);
+            }
+            // Otherwise, check if the traversing unit is crewmember AND has an alien form
+            else if (isCrewmember && isAlien && crew) {
+                // If so travel that alien form
+                this.handleTravel(alienUnit, to);
+            }
+
+            // If the traversing unit was alien or crewmember, call the floor change event
+            const isCrewOrAlien = (crew && crew.unit === unit) || alienUnit == unit;
+            if (!isSubTravel && isCrewOrAlien)  {
+                const newLoc = this.getZone(to);
+                newLoc && newLoc.displayEnteringMessage(unit.owner);
+
+                this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { source: unit, crewmember: pData.getCrewmember()});
+            }
         }
-        // Otherwise, check if the traversing unit is crewmember AND has an alien form
-        else if (isCrewmember && alien && crew) {
-            // If so travel that alien form
-            this.handleTravel(alien, to);
+        catch (e) {
+            Log.Error("TRAVEL FAILED");
+            Log.Error(e);
         }
-
-        if (isCrewmember) {
-            const newLoc = this.getZone(to);
-            newLoc && newLoc.displayEnteringMessage(crew.player);
-        }
-
-        // If the traversing unit was alien or crewmember, call the floor change event
-        const isCrewOrAlien = (crew && crew.unit === unit) || alien == unit;
-        if (!isSubTravel && isCrewOrAlien) 
-            this.game.event.sendEvent(EVENT_TYPE.CREW_CHANGES_FLOOR, { source: unit, crewmember: crew as Crewmember });
     }
 
     unitDeath() {

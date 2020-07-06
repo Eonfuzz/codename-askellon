@@ -13,7 +13,8 @@ import { TECH_NO_GENES_TIER_1,
     GENE_TECH_MOBILITY,
     GENE_INSTALL_COSMIC_SENSITIVITY,
     TECH_MAJOR_HEALTHCARE,
-    ABIL_GENE_COSMIC
+    ABIL_GENE_COSMIC,
+    ABIL_INQUIS_SMITE
 } from "resources/ability-ids";
 import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit, Timer } from "w3ts";
@@ -54,10 +55,10 @@ export class GeneModule {
         });
 
         // Start gene check trigger
-        new Timer().start(2, true, () => this.checkGeneRequirements());
-        const checkTrig = new Trigger();
-        checkTrig.registerTimerEvent(0.5, true);
-        checkTrig.addAction(() => this.checkGeneRequirements());
+        new Timer().start(1, true, () => this.checkGeneRequirements());
+        // const checkTrig = new Trigger();
+        // checkTrig.registerTimerEvent(0.5, true);
+        // checkTrig.addAction(() => this.checkGeneRequirements());
     }
 
     addNewGeneInstance(who: Unit, geneUiUnit: Unit) {
@@ -98,7 +99,10 @@ export class GeneModule {
             let units: Crewmember[] = [];
             GroupEnumUnitsInRect(this.group, gg_rct_GeneSplicer, Filter(() => {
                 const u = Unit.fromHandle(GetFilterUnit());
-                if (u.owner != instanceOwner && u.typeId !== FourCC('ncp2')) {
+
+                // Make sure unit does not have the smite ability
+                const isInquis = u.getAbilityLevel(ABIL_INQUIS_SMITE) > 0;
+                if (u.owner != instanceOwner && u.typeId !== FourCC('ncp2') && !isInquis) {
                     const crew = this.game.crewModule.getCrewmemberForUnit(u);
                     if (crew) {
                         units.push(crew);

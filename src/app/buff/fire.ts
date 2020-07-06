@@ -7,8 +7,8 @@ import { SoundWithCooldown, SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
 import { ABIL_ACCURACY_BONUS_30, FIRE_ARMOR_REDUCTION } from "resources/ability-ids";
 import { BUFF_ID } from "resources/buff-ids";
+import { SFX_FIRE } from "resources/sfx-paths";
 
-const FIRE_SFX = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl;'
 
 /**
  * Resolve is a buff applied to a unit
@@ -30,7 +30,7 @@ export class onFire extends DynamicBuff {
     
         this.fireDamageTicker += delta
 
-        const sfx = AddSpecialEffect(FIRE_SFX, this.who.x, this.who.y);
+        const sfx = AddSpecialEffect(SFX_FIRE, this.who.x, this.who.y);
         this.fireSfx.unshift(sfx);
 
         if (this.fireSfx.length >= 4) {

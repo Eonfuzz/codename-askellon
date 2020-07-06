@@ -60,7 +60,7 @@ export class DynamicAbilityTooltip implements DynamicTooltip {
 export const resolveTooltip = new DynamicAbilityTooltip(
     ABIL_CREWMEMBER_INFO,
     undefined,
-    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
+    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Crew onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
 
 It is your duty to ensure the ship and her systems stay online. But be careful, there are ${COL_ALIEN}forces|r on the ship that seek your demise.
 As a ${COL_GOOD}Crewmember|r of the Askellon you will earn income by performing your duties.
@@ -76,7 +76,7 @@ ${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
 export const alienTooltipToAlien = new DynamicAbilityTooltip(
     ABIL_TRANSFORM_HUMAN_ALIEN,
     undefined,
-    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
+    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Crew onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
 
 You are the ${COL_ALIEN}Alien.|r Win the game by destroying or assimilating all other life onboard this ship.
 Cast this ability to ${COL_INFO}transform|r, revealing your true form.
@@ -91,17 +91,17 @@ ${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
 export const alienTooltipToHuman = new DynamicAbilityTooltip(
     ABIL_TRANSFORM_ALIEN_HUMAN,
     undefined,
-    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
+    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Crew onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r
 
-    You are the ${COL_ALIEN}Alien.|r Win the game by destroying or assimilating all other life onboard this ship.
-    Cast this ability to ${COL_INFO}transform|r, disguising as a human.
-            
-    ${COL_MISC}60 Second Cooldown|r
-    
-    -= ASKELLON ROLE =-    
-    ${ROLE_DESCRIPTIONS.get(who.role)}
-    
-    ${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
+You are the ${COL_ALIEN}Alien.|r Win the game by destroying or assimilating all other life onboard this ship.
+Cast this ability to ${COL_INFO}transform|r, disguising as a human.
+
+${COL_MISC}60 Second Cooldown|r
+
+-= ASKELLON ROLE =-    
+${ROLE_DESCRIPTIONS.get(who.role)}
+
+${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
 );
 
 export const dragonBreathBlastTooltip = new DynamicAbilityTooltip(

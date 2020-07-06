@@ -1,6 +1,6 @@
 import { Game } from "app/game";
 import { Trigger, Unit, MapPlayer } from "w3ts";
-import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID, TECH_LEVEL_4, TECH_MAJOR_RELIGION } from "resources/ability-ids";
+import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID, TECH_HERO_LEVEL, TECH_MAJOR_RELIGION, TECH_PLAYER_INFESTS } from "resources/ability-ids";
 // import { STR_OPT_ALIEN } from "resources/strings";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
 import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_NAME_RELIGION, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID, STR_OCCUPATION_BONUS } from "resources/strings";
@@ -45,7 +45,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         // Update player "Level x" research when a player levels up
         this.game.event.addListener(new EventListener(EVENT_TYPE.HERO_LEVEL_UP, (self, data) => {
             const level = data.source.getHeroLevel();
-            SetPlayerTechResearched(data.source.owner.handle, TECH_LEVEL_4, level >= 4 ? 1 : 0);
+            SetPlayerTechResearched(data.source.owner.handle, TECH_HERO_LEVEL, level);
         }));
     }
 
@@ -115,7 +115,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
      */
     processMajorUpgrade(player: MapPlayer, id: number, level: number) {
         const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME);
-        const isInfested = alienForce && alienForce.hasPlayer(player);
+        const isInfested = player.getTechCount(TECH_PLAYER_INFESTS, true) > 0;
 
         // Go through all players and grant the tech at the tech at the same level
         const players = this.game.forceModule.getActivePlayers();

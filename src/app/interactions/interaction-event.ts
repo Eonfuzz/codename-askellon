@@ -5,7 +5,7 @@ import { vectorFromUnit } from "../types/vector2";
 import { ProgressBar } from "../types/progress-bar";
 import { SMART_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { Log } from "lib/serilog/serilog";
-import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
+import { SHIP_VOYAGER_UNIT, WORM_ALIEN_FORM } from "resources/unit-ids";
 
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
@@ -99,6 +99,8 @@ export class InteractionEvent {
       // For now halve progress if the unit is slow
       else if (UnitHasBuffBJ(this.unit.handle, SLOW_ID))
         delta = delta / 2;
+      else if (this.unit.typeId === WORM_ALIEN_FORM)
+        delta = delta * 2;
 
         // Process delta time
       this.timeRemaining -= delta;

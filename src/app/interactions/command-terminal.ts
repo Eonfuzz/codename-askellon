@@ -10,11 +10,11 @@ import { ITEM_TRIFEX_ID } from "resources/item-ids";
 import { Unit } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
 
-const firstTerminalSound = new SoundRef("Sounds\\Captain\\captain_welcome_online.mp3", false);
+const firstTerminalSound = new SoundRef("Sounds\\Captain\\captain_welcome_online.mp3", false, true);
 const terminalSounds = [
-    new SoundRef("Sounds\\Captain\\captain_welcome.mp3", false),
-    new SoundRef("Sounds\\Captain\\captain_help.mp3", false),
-    new SoundRef("Sounds\\Captain\\captain_help_2.mp3", false),
+    new SoundRef("Sounds\\Captain\\captain_welcome.mp3", false, true),
+    new SoundRef("Sounds\\Captain\\captain_help.mp3", false, true),
+    new SoundRef("Sounds\\Captain\\captain_help_2.mp3", false, true),
 ];
 
 export function initCommandTerminal(game: Game) {

@@ -25,41 +25,44 @@ const SFX_BLOOD_EXPLODE = "Units\\Undead\\Abomination\\AbominationExplosion.mdl"
 
 const MEAT_AOE = 950;
 const MEAT_AOE_MIN = 150;
-const DURATION_TO_ALIEN = 2;
 const DURATION_TO_HUMAN = 0.5;
 
-export class TransformAbility implements Ability {
+export class SurvivalInstinctsAbility implements Ability {
 
     private casterUnit: Unit | undefined;
     private timeElapsed: number;
     private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
 
     private orderTrigger = new Trigger();
-    private previousOrder: number | undefined;
-    private previousOrderTarget: Vector2 | undefined;
 
-    private toAlien: boolean = true;
     private duration: number;
 
-    constructor(toAlienFromHuman: boolean) {
+    constructor() {
         this.timeElapsed = 0;
-        this.toAlien = toAlienFromHuman;
-        this.duration = (this.toAlien ? DURATION_TO_ALIEN : DURATION_TO_HUMAN);
+        this.duration = DURATION_TO_HUMAN;
     }
 
     public initialise(abMod: AbilityModule) {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+        
+        const group = CreateGroup();
+        GroupEnumUnitsInRange(
+            group, 
+            this.casterUnit.x, 
+            this.casterUnit.y,
+            1200,
+            FilterIsAlive(this.casterUnit.owner)
+        );
 
-        // Log.Information("Casting transform!");
-
-        // Create order trigger to track last issued order
-        this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
-        // this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
-        this.orderTrigger.addCondition(Condition(() => GetIssuedOrderId() === SMART_ORDER_ID));
-        this.orderTrigger.addAction(() => {
-            this.previousOrder = GetIssuedOrderId();
-            this.previousOrderTarget = new Vector2(GetOrderPointX(), GetOrderPointY());
+        ForGroup(group, () => {
+            abMod.game.forceModule.aggressionBetweenTwoPlayers(
+                this.casterUnit.owner, 
+                MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
+            );
         });
+
+        DestroyGroup(group);
+
         return true;
     };
 
@@ -109,9 +112,6 @@ export class TransformAbility implements Ability {
     private getBloodEffect(): string {
         const deltaPercent = this.timeElapsed / this.duration;
         const t = GetRandomReal(deltaPercent, deltaPercent * 2);
-        if (this.toAlien) {
-            return t > 0.5 ? SFX_ALIEN_BLOOD : SFX_HUMAN_BLOOD;
-        }
         return t > 0.5 ? SFX_HUMAN_BLOOD : SFX_ALIEN_BLOOD;
     }
 
@@ -128,43 +128,12 @@ export class TransformAbility implements Ability {
     public destroy(abMod: AbilityModule) {
         if (this.casterUnit) {
 
-            const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            const alien = alienForce.transform(abMod.game, this.casterUnit.owner, this.toAlien);
-
-            // If we have an existing order send it to the new unit
-            if (this.previousOrder && this.previousOrderTarget) {
-                IssuePointOrderById(alien.handle, this.previousOrder, this.previousOrderTarget.x, this.previousOrderTarget.y);
-            }
-            
-            // If we are Alien Worm we need to go invisible for 1 second
-            if (alien.typeId === WORM_ALIEN_FORM) {
-                alien.addAbility(FourCC("Agho"));
-                const t = new Timer();
-                t.start(2, false, () => {
-                    alien.removeAbility(FourCC("Agho"));
-                });
-            }
-
-            if (this.toAlien) {
-                const group = CreateGroup();
-                GroupEnumUnitsInRange(
-                    group, 
-                    this.casterUnit.x, 
-                    this.casterUnit.y,
-                    1200,
-                    FilterIsAlive(this.casterUnit.owner)
-                );
-
-                ForGroup(group, () => {
-                    abMod.game.forceModule.aggressionBetweenTwoPlayers(
-                        this.casterUnit.owner, 
-                        MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
-                    );
-                });
-
-                DestroyGroup(group);
-            }
-
+            this.casterUnit.addAbility(FourCC("Agho"));
+            const t = new Timer();
+            t.start(2, false, () => {
+                this.casterUnit.removeAbility(FourCC("Agho"));
+                t.destroy();
+            });
             // Delete order trigger
             this.orderTrigger.destroy();
         }

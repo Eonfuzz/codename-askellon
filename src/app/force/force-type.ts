@@ -9,7 +9,7 @@ import { MapPlayer, Unit, Trigger } from "w3ts";
 import { EVENT_TYPE } from "app/events/event";
 
 
-const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3');
+const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
 export abstract class ForceType {
     // Keep track of players in force
     protected players: Array<MapPlayer> = [];

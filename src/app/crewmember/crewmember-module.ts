@@ -95,7 +95,6 @@ export class CrewModule {
         pData.setCrewmember(crewmember);
         
         this.crewmemberForUnit.set(nUnit, crewmember);        
-        this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         // Add the unit to its force
         force.addPlayerMainUnit(this.game, crewmember, player);
@@ -161,6 +160,9 @@ export class CrewModule {
         BlzSetHeroProperName(nUnit.handle, crewmember.name);
         SuspendHeroXP(nUnit.handle, true);
         SetPlayerName(nUnit.owner.handle, crewmember.name);
+
+        // Now travel the unit to floor 1
+        this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         return crewmember;
     }

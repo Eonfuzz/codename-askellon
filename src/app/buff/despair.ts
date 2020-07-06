@@ -7,6 +7,9 @@ import { EVENT_TYPE } from "app/events/event";
 import { BUFF_ID, BUFF_ID_DESPAIR } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 
+export const despairMusic = new SoundRef("Music\\FlightIntoTheUnkown.mp3", true, true);
+Preload("Music\\FlightIntoTheUnkown.mp3");
+
 /**
  * Resolve is a buff applied to a unit
  * Can be applied multiple times and from multiple sources
@@ -15,7 +18,6 @@ export class Despair extends DynamicBuff {
     name = BUFF_ID.DESPAIR;
 
     private jumpScareSound: SoundWithCooldown;
-    private despairMusic: SoundRef;
 
     private unit: Unit;
     private prevUnitHealth: number;
@@ -27,8 +29,7 @@ export class Despair extends DynamicBuff {
         super();
         
         this.jumpScareSound = new SoundWithCooldown(10, "Sounds\\HeavyBreath.mp3");
-        this.despairMusic = new SoundRef("Music\\FlightIntoTheUnkown.mp3", true);
-        this.despairMusic.setVolume(127);
+        despairMusic.setVolume(127);
 
         this.unit = who;
         this.prevUnitHealth = this.unit.getState(UNIT_STATE_LIFE);
@@ -63,10 +64,10 @@ export class Despair extends DynamicBuff {
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
             this.unit.addAbility(ABIL_ACCURACY_PENALTY_30);
-            this.despairMusic.setVolume(60);
+            despairMusic.setVolume(60);
             if (GetLocalPlayer() === this.unit.owner.handle) {
                 SetMusicVolume(0);
-                this.despairMusic.playSound();
+                despairMusic.playSound();
                 this.jumpScareSound.playSound();
             }
 
@@ -95,7 +96,7 @@ export class Despair extends DynamicBuff {
 
             // End music and sounds
             if (GetLocalPlayer() === this.unit.owner.handle) {
-                this.despairMusic.stopSound();
+                despairMusic.stopSound();
                 this.jumpScareSound.stopSound();
                 SetMusicVolume(30);
             }

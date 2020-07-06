@@ -4,7 +4,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2 } from "resources/ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
@@ -20,10 +20,10 @@ import { DEFAULT_ALIEN_FORM } from "resources/unit-ids";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
-export const ALIEN_CHAT_COLOR = '6f2583';
+export const ALIEN_CHAT_COLOR = '8a6df2';
 export const MAKE_UNCLICKABLE = false;
 
-const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(8, 'Sounds\\AlienChatSound.mp3');
+const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(8, 'Sounds\\AlienChatSound.mp3', true);
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
@@ -80,6 +80,9 @@ export class AlienForce extends ForceType {
         let alien = this.playerAlienUnits.get(owner);
         // Is this unit being added to aliens for the first time
         if (!alien) {
+            // Set player infesting to true
+            owner.setTechResearched(TECH_PLAYER_INFESTS, 1);
+
             // Add the transform ability
             who.unit.addAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
             alien = Unit.fromHandle(CreateUnit(owner.handle, 
@@ -251,8 +254,10 @@ export class AlienForce extends ForceType {
 
         const crewmember = this.forceModule.getPlayerDetails(who).getCrewmember();
 
-        if (!alien) throw new Error("AlienForce::transform No alien for player!");
-        if (!unit) throw new Error("AlienForce::transform No human for player!");
+        //@ts-ignore
+        if (!alien) return Log.Error("AlienForce::transform No alien for player!");
+        //@ts-ignore
+        if (!unit) return Log.Error("AlienForce::transform No human for player!");
 
         const toHide = toAlien ? unit.unit : alien;
         const toShow = toAlien ? alien : unit.unit;

@@ -17,16 +17,21 @@ export class ScreamAbility implements Ability {
     };
 
     public process(abMod: AbilityModule, delta: number) {
-        const screamSound = new SoundRef("Sounds\\Nazgul.wav", false);
+        const screamSound = new SoundRef("Sounds\\Nazgul.wav", false, true);
         screamSound.playSound();
         KillSoundWhenDone(screamSound.sound);
 
-        // abMod.game.crewModule.CREW_MEMBERS.forEach(c => {
-        //     c.addDespair(abMod.game, new BuffInstanceDuration(this.casterUnit, abMod.game.getTimeStamp(), 30));
-        //     // Now ping their location
-        //     if (c.player !== this.casterUnit.owner) 
-        //         PingMinimapForPlayer(this.casterUnit.owner.handle, c.unit.x, c.unit.y, 5);
-        // });
+        abMod.game.forceModule.getActivePlayers().forEach(player => {
+            const pData = abMod.game.forceModule.getPlayerDetails(player);
+
+            if (pData && pData.getCrewmember()) {
+                const crew = pData.getCrewmember();
+                if (crew && crew.unit.isAlive()) {
+                    crew.addDespair(abMod.game, new BuffInstanceDuration(this.casterUnit, abMod.game.getTimeStamp(), 30));
+                    PingMinimapForPlayer(this.casterUnit.owner.handle, crew.unit.x, crew.unit.y, 5);
+                }
+            }
+        });
         return false;
     };
     

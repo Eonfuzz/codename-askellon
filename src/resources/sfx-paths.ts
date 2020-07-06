@@ -20,6 +20,7 @@ export const SFX_RED_SINGULARITY = "war3mapImported\\Singularity I Red.mdl";
 export const SFX_DARK_RITUAL = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
 export const SFX_DARK_SUMMONING = "Abilities\\Spells\\Undead\\Darksummoning\\DarkSummonTarget.mdl";
 export const SFX_HOWL = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl";
+export const SFX_FIRE = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl;'
 
 // Preload SFX
 Preload(SFX_WINDWAVE);
@@ -40,3 +41,4 @@ Preload(SFX_RED_SINGULARITY);
 Preload(SFX_DARK_RITUAL);
 Preload(SFX_DARK_SUMMONING);
 Preload(SFX_HOWL);
+Preload(SFX_FIRE);

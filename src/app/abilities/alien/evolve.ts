@@ -21,7 +21,7 @@ const EGG_SOUND = "Units\\Critters\\DuneWorm\\DuneWormDeath1.flac"
 const EGG_HATCH_SOUND = "Units\\Creeps\\Archnathid\\ArachnathidWhat2.flac";
 
 const HeartbeatSound = new SoundWithCooldown(4, "Sounds\\Alien Heartbeat.mp3");
-const MoistSound = new SoundRef("Sounds\\Moist.mp3", true);
+const MoistSound = new SoundRef("Sounds\\Moist.mp3", true, true);
 const GREEN_LIGHT = "war3mapImported\\Light_Green_20.mdl";
 
 export class EvolveAbility implements Ability {

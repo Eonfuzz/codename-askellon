@@ -7,7 +7,7 @@ interface ShipChemTrail {
     life: number;
 }
 
-const afterburnerSound = new SoundRef("Sounds\\AfterburnerSound.mp3", false);
+const afterburnerSound = new SoundRef("Sounds\\AfterburnerSound.mp3", false, true);
 
 export class SpaceMovementEngine {
 

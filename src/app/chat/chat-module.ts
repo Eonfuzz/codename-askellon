@@ -174,19 +174,22 @@ export class ChatModule {
             }
             else if (message == "-level") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    SetHeroLevel(GetEnumUnit(), 10, true);
+                    const pData = this.game.forceModule.getPlayerDetails(MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit())));
+                    if (pData && pData.getCrewmember()) {
+                        pData.getCrewmember().addExperience(this.game, 99999);
+                    }
                 });
             }
             else if (message == "-kill") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     // KillUnit(GetEnumUnit());
                     UnitDamageTarget(GetEnumUnit(), GetEnumUnit(), 9999999, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS);
-                })
+                });
             }
             else if (message == "-cd") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     UnitResetCooldown(GetEnumUnit());
-                })
+                });
             }
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);

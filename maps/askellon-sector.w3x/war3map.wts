@@ -292,7 +292,7 @@ STRING 83
 }
 
 STRING 86
-// Units: ALI1 (Alien), EditorSuffix (Name - Editor Suffix)
+// Units: N00C (Alien), EditorSuffix (Name - Editor Suffix)
 {
 - Tier 1
 }
@@ -971,7 +971,7 @@ W
 }
 
 STRING 236
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A016 (Survival Instincts), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1139,7 +1139,7 @@ W
 }
 
 STRING 278
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2642,7 +2642,7 @@ W
 }
 
 STRING 628
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2978,7 +2978,7 @@ Magnetic Fusilade
 }
 
 STRING 714
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A014 (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2993,12 +2993,6 @@ STRING 716
 // Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Level 4
-}
-
-STRING 717
-// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
-{
-- Requirement, Level 4
 }
 
 STRING 718
@@ -3038,7 +3032,7 @@ Alien
 }
 
 STRING 725
-// Units: ALI2 (Alien), EditorSuffix (Name - Editor Suffix)
+// Units: ALI1 (Alien), EditorSuffix (Name - Editor Suffix)
 {
 - Tier 2
 }
@@ -3176,7 +3170,7 @@ STRING 766
 }
 
 STRING 767
-// Abilities: A00U (Evolve), EditorSuffix (Editor Suffix)
+// Abilities: A014 (Evolve), EditorSuffix (Editor Suffix)
 {
 - To Tier 2
 }
@@ -3212,7 +3206,7 @@ Magnetic Fusilade
 }
 
 STRING 773
-// Abilities: A00Y (Evolve), EditorSuffix (Editor Suffix)
+// Abilities: A00U (Evolve), EditorSuffix (Editor Suffix)
 {
 - To Tier 3
 }
@@ -3224,15 +3218,9 @@ R
 }
 
 STRING 775
-// Upgrades: R006 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Level 7
-}
-
-STRING 776
-// Upgrades: R006 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
-{
-- Requirement, Level 7
 }
 
 STRING 779
@@ -3524,7 +3512,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 849
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3584,7 +3572,7 @@ STRING 862
 }
 
 STRING 870
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A015 (Latch), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -3779,5 +3767,251 @@ STRING 923
 // Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Judge Inquisitors are both judge, jury and executioner of the Court's will. "Maintain purity of thought, purity of will and purity of body" is a core tenet of its dogma.|r|n|nQuickily assesses and delivers judgement over the next |cff00ff002 seconds|r; afterwards dealing |cff00ff0050 damage|r and |cff00ff00slowing by 30%|r for |cff00ff002 seconds|r. If they were fleeing from the jury at time of judgement it instead deals |cff00ff00100 damage|r and stuns for |cff00ff002 seconds|r.|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 924
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 1
+}
+
+STRING 925
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Level 1
+}
+
+STRING 926
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 2
+}
+
+STRING 927
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 3
+}
+
+STRING 928
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 5
+}
+
+STRING 929
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 6
+}
+
+STRING 930
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 8
+}
+
+STRING 931
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 9
+}
+
+STRING 932
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 10
+}
+
+STRING 933
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 11
+}
+
+STRING 934
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 12
+}
+
+STRING 935
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 13
+}
+
+STRING 936
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 15
+}
+
+STRING 937
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 16
+}
+
+STRING 938
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 18
+}
+
+STRING 939
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 14
+}
+
+STRING 940
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 17
+}
+
+STRING 941
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 19
+}
+
+STRING 942
+// Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 20
+}
+
+STRING 943
+// Items: I00C (Genetic Sampler), Name (Name)
+{
+Genetic Sampler
+}
+
+STRING 944
+// Items: I00C (Genetic Sampler), Tip (Tooltip - Basic)
+{
+Genetic Sampler
+}
+
+STRING 945
+// Items: I00C (Genetic Sampler), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO|r|n|nDeals |cff00ff0010 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 946
+// Items: I00C (Genetic Sampler), Description (Description)
+{
+Repairs buildings 100% over 5 seconds
+}
+
+STRING 947
+// Units: ALI2 (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- Tier 3
+}
+
+STRING 948
+// Units: N00C (Alien), Name (Name)
+{
+Alien
+}
+
+STRING 949
+// Abilities: A00Y (Evolve), EditorSuffix (Editor Suffix)
+{
+- To Tier 4
+}
+
+STRING 950
+// Abilities: A014 (Evolve), Name (Name)
+{
+Evolve
+}
+
+STRING 951
+// Abilities: A014 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nEvolve to your next Alien form. Takes |cff00ff0040 seconds|r to complete your evolution. |cffc81e1eInterrupting any evolution costs 500 experience.|r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 952
+// Abilities: A014 (Evolve), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 953
+// Abilities: A014 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 954
+// Abilities: A014 (Evolve), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 955
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 956
+// Abilities: A015 (Latch), Name (Name)
+{
+Latch
+}
+
+STRING 959
+// Abilities: A015 (Latch), Tip (Tooltip - Normal)
+{
+Latch
+}
+
+STRING 960
+// Upgrades: R006 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Will Infest Upgrades
+}
+
+STRING 961
+// Abilities: A016 (Survival Instincts), Name (Name)
+{
+Survival Instincts
+}
+
+STRING 962
+// Abilities: A016 (Survival Instincts), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nThe instinct for survival is strong in this prepubescent form; |cff00ff00passively|r granting the following effects:|cff00ff00|n - All interaction times are reduced by 50%|n - Transforming grants invisibility; lasting 2 seconds|n|n|rAdditionally, casting this ability causes the Alien to vomit its internal organs to confuse its prey; granting |cff00ff00invisibility |rfor |cff00ff002 seconds.|r This ability may be cast during |cff8a6df2Latch|r to instead make the |cff8a6df2Latched|r player appear to |cff8a6df2Transform.|r|n|n|cff80808040 Second Cooldown|r
+}
+
+STRING 964
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 965
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 966
+// Abilities: A016 (Survival Instincts), Tip (Tooltip - Normal)
+{
+Survival Instincts
+}
+
+STRING 967
+// Abilities: A015 (Latch), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nLatches onto the target; Becoming |cff00ff00invisible |rand |cff00ff00communicating|r as them. Any upgrades purchased by them become |cff8a6df2Infested|r.|n|n|cff80808060 Second Cooldown|r
 }
 

@@ -3,8 +3,8 @@
 export class SoundRef {
     public sound: sound;
 
-    constructor(sound: string, looping: boolean) {
-        this.sound = CreateSound(sound, looping, false, true, 0, 3, "");
+    constructor(sound: string, looping: boolean, not3d?: boolean) {
+        this.sound = CreateSound(sound, looping, !true, true, 0, 3, "");
         SetSoundDuration(this.sound, GetSoundFileDuration(sound));
     }
 
@@ -37,8 +37,8 @@ export class SoundWithCooldown extends SoundRef {
     private timePlayed: number | undefined;
     private cooldown: number;
 
-    constructor(cooldown: number, sound: string) {
-        super(sound, false);
+    constructor(cooldown: number, sound: string, isNot3d?: boolean) {
+        super(sound, false, isNot3d);
         this.cooldown = cooldown;
     }
 

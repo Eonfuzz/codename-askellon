@@ -9,6 +9,9 @@ import { ABIL_ACCURACY_BONUS_30, ABIL_RESOLVE } from "resources/ability-ids";
 import { BUFF_ID_RESOLVE, BUFF_ID } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 
+export const resolveMusic = new SoundRef("Music\\KavinskyRampage.mp3", true, true);
+Preload("Music\\KavinskyRampage.mp3");
+
 /**
  * Resolve is a buff applied to a unit
  * Can be applied multiple times and from multiple sources
@@ -18,7 +21,6 @@ export class Resolve extends DynamicBuff {
     name = 'resolve';
 
     private breathSound: SoundWithCooldown;
-    private resolveMusic: SoundRef;
 
     private unit: Unit;
     private prevUnitHealth: number;
@@ -30,7 +32,6 @@ export class Resolve extends DynamicBuff {
         super();
 
         this.breathSound = new SoundWithCooldown(10, "Sounds\\HeavyBreath.mp3");
-        this.resolveMusic = new SoundRef("Music\\KavinskyRampage.mp3", true);
 
         this.unit = who;
         this.prevUnitHealth = this.unit.getState(UNIT_STATE_LIFE);
@@ -61,11 +62,11 @@ export class Resolve extends DynamicBuff {
     public onStatusChange(game: Game, newStatus: boolean) {
         if (newStatus) {
             this.unit.addAbility(ABIL_ACCURACY_BONUS_30);
-            this.resolveMusic.setVolume(15);
+            resolveMusic.setVolume(15);
             if (GetLocalPlayer() === this.unit.owner.handle) {
                 SetMusicVolume(0);
                 this.breathSound.playSound();
-                this.resolveMusic.playSound();
+                resolveMusic.playSound();
             }
 
             // If we dont got the buff cast that bad boi
@@ -87,7 +88,7 @@ export class Resolve extends DynamicBuff {
             // End music and sounds
             if (GetLocalPlayer() === this.unit.owner.handle) {
                 this.breathSound.stopSound();
-                this.resolveMusic.stopSound();
+                resolveMusic.stopSound();
                 SetMusicVolume(30);
             }
         }

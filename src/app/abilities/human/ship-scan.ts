@@ -6,7 +6,7 @@ import { Ship } from "app/space/ships/ship-type";
 import { ShipState } from "app/space/ships/ship-state-type";
 
 /** @noSelfInFile **/
-const deepScanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false);
+const deepScanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
 export class ShipDeepScanAbility implements Ability {
 
     private unit: Unit;

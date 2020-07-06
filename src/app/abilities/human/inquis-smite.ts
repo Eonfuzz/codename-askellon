@@ -71,7 +71,20 @@ export class SmiteAbility implements Ability {
             BlzSetSpecialEffectZ(sfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
             DestroyEffect(sfx);
 
+            
             if (d > 0) {
+
+                PlayNewSoundOnUnit(
+                    "Doodads\\Dungeon\\Terrain\\DungeonPortculisGate\\DungeonPortculisGateOpenMetal.flac", 
+                    this.targetUnit, 
+                    127
+                );
+                sfx = AddSpecialEffect(SFX_RED_SINGULARITY, this.targetUnit.x, this.targetUnit.y);
+                BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
+                BlzSetSpecialEffectZ(sfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
+                DestroyEffect(sfx);
+
+                if (!module.game.forceModule.aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
                 // We've moved uh oh time for BLAM
                 UnitDamageTarget(
                     this.unit.handle, 
@@ -92,17 +105,9 @@ export class SmiteAbility implements Ability {
                     IssueTargetOrder(dummy, "thunderbolt", unit);
                 }, ABIL_STUN_25);
 
-                PlayNewSoundOnUnit(
-                    "Doodads\\Dungeon\\Terrain\\DungeonPortculisGate\\DungeonPortculisGateOpenMetal.flac", 
-                    this.targetUnit, 
-                    127
-                );
-                sfx = AddSpecialEffect(SFX_RED_SINGULARITY, this.targetUnit.x, this.targetUnit.y);
-                BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
-                BlzSetSpecialEffectZ(sfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
-                DestroyEffect(sfx);
             }
             else {
+                if (!module.game.forceModule.aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
                 // Deal 50 damage
                 UnitDamageTarget(
                     this.unit.handle, 
