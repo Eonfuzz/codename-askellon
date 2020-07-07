@@ -12,6 +12,7 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { FilterIsAlive } from "resources/filters";
 import { ChatHook } from "app/chat/chat-module";
 import { PLAYER_COLOR } from "lib/translators";
+import { GENERIC_CHAT_SOUND_REF } from "app/force/force-type";
 
 
 export class LatchAbility implements Ability {
@@ -112,6 +113,7 @@ export class LatchAbility implements Ability {
         if (crew) {
             hook.name = crew.name;
             hook.color = PLAYER_COLOR[crew.unit.owner.id];
+            hook.sound = GENERIC_CHAT_SOUND_REF;
         }
 
         return hook;
@@ -176,42 +178,36 @@ export class LatchAbility implements Ability {
         const newOrder = GetIssuedOrderId();
         this.forceStop = true;
 
-        try {
+        // Our survival instincts order
+        if (newOrder === 852252) {
+            this.isCastingSurvivalInstincts = true;
+            
+            this.targetUnit.addAbility(FourCC("Agho"));
+            // Pick all players and cause hostility
+            const group = CreateGroup();
 
-            // Our survival instincts order
-            if (newOrder === 852252) {
-                this.isCastingSurvivalInstincts = true;
-                
-                this.targetUnit.addAbility(FourCC("Agho"));
-                // Pick all players and cause hostility
-                const group = CreateGroup();
-
-                GroupEnumUnitsInRange(
-                    group, 
-                    this.targetUnit.x, 
-                    this.targetUnit.y,
-                    1200,
-                    FilterIsAlive(this.targetUnit.owner)
+            GroupEnumUnitsInRange(
+                group, 
+                this.targetUnit.x, 
+                this.targetUnit.y,
+                1200,
+                FilterIsAlive(this.targetUnit.owner)
+            );
+    
+            ForGroup(group, () => {
+                module.game.forceModule.aggressionBetweenTwoPlayers(
+                    this.targetUnit.owner, 
+                    MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
                 );
-        
-                ForGroup(group, () => {
-                    module.game.forceModule.aggressionBetweenTwoPlayers(
-                        this.targetUnit.owner, 
-                        MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
-                    );
-                });
+            });
 
-                DestroyGroup(group);
+            DestroyGroup(group);
 
-                const t = new Timer();
-                t.start(2, false, () => {
-                    this.targetUnit.removeAbility(FourCC("Agho"));
-                    t.destroy();
-                });
-            }
-        }
-        catch (e) {
-            Log.Error(e);
+            const t = new Timer();
+            t.start(2, false, () => {
+                this.targetUnit.removeAbility(FourCC("Agho"));
+                t.destroy();
+            });
         }
     }
 

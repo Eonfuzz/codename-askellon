@@ -13,7 +13,8 @@ export interface ChatHook {
     recipients: MapPlayer[], 
     name: string, 
     color: string, 
-    message: string
+    message: string,
+    sound: SoundWithCooldown | undefined
 } 
 
 export enum PRIVS {
@@ -251,24 +252,24 @@ export class ChatModule {
                 const messageString = force.getChatMessage(player, message);
 
                 
-                const postHookData = this.applyChatHooks(player, playername, recipients, color, message);
+                const postHookData = this.applyChatHooks(player, playername, recipients, color, message, sound);
 
                 // Handle listen mode
                 this.usersInListen.forEach(u => {
                     if (recipients.indexOf(u) === -1) recipients.push(u);
                 });
 
-                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, messageTag, sound);
+                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, messageTag, postHookData.sound);
             }
         }
     }
 
-    private applyChatHooks(player: MapPlayer, playerName: string, recipients: MapPlayer[], color: string, message: string) {
+    private applyChatHooks(player: MapPlayer, playerName: string, recipients: MapPlayer[], color: string, message: string, sound?: SoundWithCooldown) {
         let idx = 0;
         let data: ChatHook = {
             who: player, 
             name: playerName, 
-            recipients, color, message
+            recipients, color, message, sound
         };
 
         while (idx < this.onChatHooks.length) {

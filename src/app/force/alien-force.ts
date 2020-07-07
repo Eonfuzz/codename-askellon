@@ -4,7 +4,7 @@ import { Log } from "../../lib/serilog/serilog";
 import { ForceModule } from "./force-module";
 import { ForceType } from "./force-type";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS } from "resources/ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3 } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { VISION_TYPE } from "app/world/vision-type";
@@ -559,14 +559,31 @@ export class AlienForce extends ForceType {
                 const unit = this.playerAlienUnits.get(player);
                 if (unit) {
                     const unitIsSelected = unit.isSelected(player);
-                    const replacedUnit = ReplaceUnitBJ(unit.handle, newForm, 1);
+
+
+                    // Get old unit zone
+                    const oldZone = this.forceModule.game.worldModule.getUnitZone(unit);
+
+                    // Remove the old unit from the zone
+                    if (oldZone) {
+                        this.forceModule.game.worldModule.removeUnit(unit);
+                    }
+                    ReplaceUnitBJ(unit.handle, newForm, 1);
+
+                    const replacedUnit = GetLastReplacedUnitBJ();
                     const alien = Unit.fromHandle(replacedUnit);
 
+                    // And handle travel
+                    if (oldZone) {
+                        this.forceModule.game.worldModule.handleTravel(alien, oldZone.id);
+                    }
+                    
                     if (unitIsSelected) {
                         SelectUnitForPlayerSingle(alien.handle, player.handle);
                     }
                     this.playerAlienUnits.set(player, alien);
                     alien.nameProper = 'Alien Host';
+                    alien.color = PLAYER_COLOR_BROWN;
 
                     // Now we need to also set alien spawn penalties
                     if (player !== alienHost) {
@@ -577,6 +594,7 @@ export class AlienForce extends ForceType {
                         alien.setScale(0.8, 0.8, 0.8);
                         alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
                         alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
+                        alien.removeAbility(ABIL_ALIEN_EVOLVE_T3);
                         alien.nameProper = 'Alien Spawn';
                     }
                     // If a player isn't transformed force the transformation

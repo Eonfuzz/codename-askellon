@@ -5,7 +5,7 @@ import { ForceType } from "./force-type";
 import { CrewmemberForce, CREW_FORCE_NAME } from "./crewmember-force";
 import { AlienForce, ALIEN_FORCE_NAME } from "./alien-force";
 import { ObserverForce } from "./observer-force";
-import { Trigger, MapPlayer, Timer } from "w3ts";
+import { Trigger, MapPlayer, Timer, Unit } from "w3ts";
 import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
 import { OptSelection, OPT_TYPES, OptSelectOption, OptResult } from "./opt-selection";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
@@ -450,6 +450,8 @@ export class ForceModule {
 
         ForGroup(allUnits, () => {
             const u = GetEnumUnit();
+            // Also remove their unit from the zone
+            this.game.worldModule.removeUnit(Unit.fromHandle(u));
             KillUnit(u);
         });
 

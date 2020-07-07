@@ -34,6 +34,7 @@ export class Zone {
     public onLeave(world: WorldModule, unit: Unit) {
         const idx = this.unitsInside.indexOf(unit);
         if (idx >= 0) this.unitsInside.splice(idx, 1);
+        else Log.Warning("Failed to remove unit "+unit.name+" from "+this.id);
     }
 
     /**
@@ -52,10 +53,20 @@ export class Zone {
      * Returns all players present in a zone
      */
     public getPlayersInZone() {
-        let players = this.unitsInside.map(u => u.owner);
-        return players.filter(function(elem, index, self) {
-            return index === self.indexOf(elem);
-        });
+        try { 
+            let players = this.unitsInside.map(u => {
+                // Log.Information("Getting "+u.name);
+                return u.owner;
+            });
+            return players.filter(function(elem, index, self) {
+                return index === self.indexOf(elem);
+            });
+        }
+        catch (e) {
+            Log.Error("Failed to get players in zone "+this.id);
+            Log.Error(e);
+            return [];
+        }
     }
 
     public doCauseFear() { return false; }

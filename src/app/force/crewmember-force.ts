@@ -79,6 +79,9 @@ export class CrewmemberForce extends ForceType {
             const obsForce = this.forceModule.getForce(OBSERVER_FORCE_NAME);
             obsForce.addPlayerMainUnit(game, whichUnit, player);
             this.forceModule.addPlayerToForce(player, OBSERVER_FORCE_NAME);
+
+            // Also remove their unit from the zone
+            this.forceModule.game.worldModule.removeUnit(whichUnit.unit);
         }
         this.removePlayer(player);
 

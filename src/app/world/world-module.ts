@@ -37,7 +37,7 @@ export class WorldModule {
      * @param unit 
      * @param to 
      */
-    private handleTravel(unit: Unit, to: ZONE_TYPE) {
+    public handleTravel(unit: Unit, to: ZONE_TYPE) {
         const uHandle = unit.id;
         const oldZone = this.unitLocation.get(uHandle);
         const newZone = this.getZone(to);        
@@ -129,5 +129,25 @@ export class WorldModule {
     getUnitZone(whichUnit: Unit): Zone | undefined {
         if (!whichUnit) Log.Error("getUnitZone called but unit is undefined");
         return this.unitLocation.get(whichUnit.id);
+    }
+
+    /**
+     * Removes the unit from our data list
+     * REQUIRED to maintain correct state
+     * @param whichUnit 
+     */
+    removeUnit(whichUnit: Unit) {
+        const zone = this.getUnitZone(whichUnit);
+
+        if (zone) {
+            // Log.Information("Removing unit "+whichUnit.name+" from "+zone.id);
+            // Force on leave
+            zone.onLeave(this, whichUnit);
+            // Remove data on it
+            this.unitLocation.delete(whichUnit.id);
+        }
+        else {
+            Log.Information("Remove zone failed for "+whichUnit.name);
+        }
     }
 }
