@@ -4,18 +4,14 @@ import { Game } from "../game";
 import { Zone, ShipZone } from "./zone-type";
 import { WorldModule } from "./world-module";
 import { SoundRef } from "../types/sound-ref";
-import { TimedEvent } from "../types/timed-event";
 import { BuffInstanceDuration, BuffInstanceCallback } from "../buff/buff-instance";
 import { Log } from "../../lib/serilog/serilog";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
-import { Vector2 } from "app/types/vector2";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { VISION_TYPE } from "./vision-type";
 import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
-import { EventListener, EVENT_TYPE } from "app/events/event";
-import { MapPlayer } from "w3ts";
+import { MapPlayer, Unit } from "w3ts";
 import { ChurchZone } from "./zones/church";
 import { BridgeZone, BridgeZoneVent } from "./zones/bridge";
+import { VISION_PENALTY } from "app/vision/vision-type";
 
 // Small damage
 // Will not cause damage to interior
@@ -45,6 +41,7 @@ export class TheAskellon {
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
 
     private pilot: Crewmember | undefined;
+    private playerLightingModifiers = new Map<MapPlayer, number>();
 
     constructor(world: WorldModule) {
         this.world = world;
@@ -86,8 +83,6 @@ export class TheAskellon {
         const playerDetails = this.world.game.forceModule.getPlayerDetails(player);
         if (playerDetails) {
             const crewmember = playerDetails.getCrewmember();
-            const vision = playerDetails.getvisionType();
-
             
             // IF we dont have power add despair to the unit
             if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
@@ -98,52 +93,25 @@ export class TheAskellon {
                 }));
             }
         }
-        // const vision = crewmember ? crewmember.getVisionType() : VISION_TYPE.NORMAL;
 
-        // if (hasPower && justChanged) {
-        //     if (GetLocalPlayer() === player.handle) {
-        //         this.powerUpSound.playSound();
-        //     }
-        //     // this.world.game.timedEventQueue.AddEvent(new TimedEvent(() => {
-        //     //     if (GetLocalPlayer() === player.handle) {
-        //     //         switch(vision) {
-        //     //             case VISION_TYPE.NIGHT_VISION:
-        //     //             case VISION_TYPE.ALIEN:
-        //     //             default:
-        //     //                 SetDayNightModels(
-        //     //                     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-        //     //                     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-        //     //                 );
-        //     //         };
-        //     //     }
-        //     //     return true;
-        //     // }, 4000));
-        // }
-        // else if (hasPower && !justChanged && player.handle === GetLocalPlayer()) {
-        //     switch(vision) {
-        //         case VISION_TYPE.NIGHT_VISION:
-        //         case VISION_TYPE.ALIEN:
-        //         default:
-        //             // SetDayNightModels(
-        //             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-        //             //     "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-        //             // );
-        //     };
-        // }
-        // else if (!hasPower && player.handle === GetLocalPlayer()) {
-        //     // Play the sound effect only if the power has *just* changed
-        //     if (justChanged) {
-        //         this.powerDownSound.playSound();
-        //     }
-        //     switch(vision) {
-        //         case VISION_TYPE.NIGHT_VISION:
-        //         case VISION_TYPE.ALIEN:
-        //             // SetDayNightModels("war3mapImported\\NiteVisionModelRed.mdx", "war3mapImported\\war3mapImported\\NiteVisionModelRed.mdx");
-        //             break;
-        //         default:
-        //             // SetDayNightModels("", "");
-        //     }
-        // }
+        // Remove the existing modifier (if any)
+        if (this.playerLightingModifiers.has(player)) {
+            const mod = this.playerLightingModifiers.get(player);
+            this.playerLightingModifiers.delete(player);
+            this.world.game.vision.removeVisionModifier(mod);
+        }
+
+        if (!hasPower) {
+            this.playerLightingModifiers.set(player, 
+                this.world.game.vision.addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
+            );
+        }
+        if (hasPower && justChanged && GetLocalPlayer() === player.handle) {
+            this.powerUpSound.playSound();
+        }
+        else if (!hasPower && justChanged  && GetLocalPlayer() === player.handle) {
+            this.powerDownSound.playSound();
+        }
     }
 
     /**

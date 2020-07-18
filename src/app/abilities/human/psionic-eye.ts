@@ -6,7 +6,6 @@ import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../../weapons/weapon-constants"
 import { SPRINT_BUFF_ID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
-import { VISION_TYPE } from "app/world/vision-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 import { Unit } from "w3ts/handles/unit";
@@ -21,7 +20,6 @@ export class PsionicEyeAbility implements Ability {
     private timeElapsed: number = 0;
     private timeSincePing: number = 0;
 
-    private oldVis: VISION_TYPE = VISION_TYPE.NORMAL;
 
     constructor() {}
 

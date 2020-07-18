@@ -7,6 +7,7 @@ import { PLAYER_COLOR } from "lib/translators";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer, Unit, Trigger } from "w3ts";
 import { EVENT_TYPE } from "app/events/event";
+import { VISION_TYPE } from "app/vision/vision-type";
 
 
 export const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
@@ -54,6 +55,7 @@ export abstract class ForceType {
 
         this.playerUnits.set(player, whichUnit);
         this.playerDeathTriggers.set(player, trig);
+        this.forceModule.game.vision.setPlayervision(player, VISION_TYPE.HUMAN);
     };
 
     public removePlayerMainUnit(game: Game, whichUnit: Crewmember, player: MapPlayer, killer?: Unit): void {

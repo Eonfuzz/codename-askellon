@@ -9,7 +9,6 @@ import { BuffInstanceCallback, BuffInstance } from "../buff/buff-instance";
 import { ForceType } from "app/force/force-type";
 import { Log } from "lib/serilog/serilog";
 import { CrewModule } from "./crewmember-module";
-import { VISION_TYPE } from "app/world/vision-type";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { ROLE_TYPES } from "../../resources/crewmember-names";
 import { MapPlayer, Unit } from "w3ts";
@@ -20,8 +19,6 @@ export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
     public name = '';
     public player: MapPlayer;
-
-    private visionType: VISION_TYPE = VISION_TYPE.NORMAL;
 
     private crewModule: CrewModule;
 
@@ -129,14 +126,6 @@ export class Crewmember extends ArmableUnit {
             source: this.unit,
             data: { value: amount }
         });
-    }
-
-    getVisionType() {
-        return this.visionType;
-    }
-
-    setVisionType(type: VISION_TYPE) {
-        this.visionType = type;
     }
 
     getIncome() {

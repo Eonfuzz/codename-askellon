@@ -7,7 +7,6 @@ import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3 } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
-import { VISION_TYPE } from "app/world/vision-type";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { PLAYER_COLOR } from "lib/translators";
 import { Trigger, MapPlayer, Unit } from "w3ts";
@@ -17,6 +16,7 @@ import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIE
 import { OBSERVER_FORCE_NAME } from "./observer-force";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
 import { DEFAULT_ALIEN_FORM } from "resources/unit-ids";
+import { VISION_TYPE } from "app/vision/vision-type";
 
 
 export const ALIEN_FORCE_NAME = 'ALIEN';
@@ -109,8 +109,7 @@ export class AlienForce extends ForceType {
             // TODO Change how vision is handled
             const pData = game.forceModule.getPlayerDetails(owner);
             const crewmember = pData.getCrewmember();
-            
-            pData.setVisionType(VISION_TYPE.ALIEN);            
+                
 
             // mark this unit as the alien host
             if (!this.alienHost) {
@@ -149,6 +148,8 @@ export class AlienForce extends ForceType {
             // Post event
             if (crewmember)
                 game.event.sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { source: alien, crewmember: crewmember });
+
+            this.forceModule.game.vision.setPlayervision(owner, VISION_TYPE.HUMAN);
             return alien;
         }
         

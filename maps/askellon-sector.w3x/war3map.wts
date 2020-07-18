@@ -4015,3 +4015,27 @@ STRING 967
 |cff808080Lore TODO|r|n|nLatches onto the target; Becoming |cff00ff00invisible |rand |cff00ff00communicating|r as them. Any upgrades purchased by them become |cff8a6df2Infested|r.|n|n|cff80808060 Second Cooldown|r
 }
 
+STRING 968
+// Abilities: A0DF (Unit Event Ability), Name (Name)
+{
+Unit Event Ability
+}
+
+STRING 969
+// Abilities: A0DF (Unit Event Ability), EditorSuffix (Editor Suffix)
+{
+(Transform Detect)
+}
+
+STRING 970
+// Abilities: A0UF (Unit Event Ability), Name (Name)
+{
+Unit Event Ability
+}
+
+STRING 971
+// Abilities: A0UF (Unit Event Ability), EditorSuffix (Editor Suffix)
+{
+(Transform Remove Detect)
+}
+

@@ -43,6 +43,9 @@ export class ChatModule {
         const players = this.game.forceModule.getActivePlayers();
         const font = 'LVCMono.otf';
 
+        const playerActivityTrigger = new Trigger();
+        playerActivityTrigger.registerPlayerMouseEvent
+
         // Hide alliance UI
         BlzFrameSetVisible(BlzGetFrameByName("AllianceDialog", 0), false);
         BlzFrameSetEnable(BlzGetFrameByName("AllianceDialog", 0), false);

@@ -22,6 +22,7 @@ import { TooltipModule } from "./tooltip/tooltip-module";
 import { OptResult } from "./force/opt-selection";
 import { Log } from "lib/serilog/serilog";
 import { GameTimeElapsed } from "./types/game-time-elapsed";
+import { VisionModule } from "./vision/vision-module";
 
 const PROCESS_TIMER = 0.03;
 export class Game {
@@ -43,6 +44,7 @@ export class Game {
     public chatModule: ChatModule;
     public event: EventModule;
     public tooltips: TooltipModule;
+    public vision: VisionModule;
 
     public stationSecurity: SecurityModule;
     public buffModule: DynamicBuffModule;
@@ -77,6 +79,7 @@ export class Game {
         this.tooltips           = new TooltipModule(this);
 
         // Load modules after all helper objects
+        this.vision             = new VisionModule(this);
         this.buffModule         = new DynamicBuffModule(this);
         this.galaxyModule       = new GalaxyModule(this);
         this.forceModule        = new ForceModule(this);

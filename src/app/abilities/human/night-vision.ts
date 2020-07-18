@@ -1,13 +1,7 @@
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
-import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../../weapons/weapon-constants";
-import { SPRINT_BUFF_ID } from "resources/ability-ids";
-import { Vector3 } from "app/types/vector3";
-import { getZFromXY } from "lib/utils";
-import { VISION_TYPE } from "app/world/vision-type";
 import { Unit } from "w3ts/handles/unit";
+import { VISION_TYPE } from "app/vision/vision-type";
 
 const NIGHT_VISION_DURATION = 30;
 
@@ -16,7 +10,7 @@ export class NightVisionAbility implements Ability {
     private unit: Unit | undefined;
     private timeElapsed: number = 0;
 
-    private oldVis: VISION_TYPE = VISION_TYPE.NORMAL;
+    private oldVis: VISION_TYPE = VISION_TYPE.HUMAN;
 
     constructor() {}
 
@@ -26,8 +20,8 @@ export class NightVisionAbility implements Ability {
         const z = abMod.game.worldModule.getUnitZone(this.unit);
         const crew = abMod.game.crewModule.getCrewmemberForUnit(this.unit);
         if (z && crew) {
-            this.oldVis = crew.getVisionType();
-            crew.setVisionType(VISION_TYPE.NIGHT_VISION);
+            this.oldVis = abMod.game.vision.getPlayerVision(this.unit.owner);
+            abMod.game.vision.setPlayervision(this.unit.owner, VISION_TYPE.NIGHT_VISION);
             z.onEnter(abMod.game.worldModule, this.unit);
         }
         return true;
@@ -43,7 +37,8 @@ export class NightVisionAbility implements Ability {
             const z = aMod.game.worldModule.getUnitZone(this.unit);
             const crew = aMod.game.crewModule.getCrewmemberForUnit(this.unit);
             if (z && crew) {
-                crew.setVisionType(this.oldVis);
+                aMod.game.vision.setPlayervision(this.unit.owner, this.oldVis);
+    
                 z.onEnter(aMod.game.worldModule, this.unit);
             }
         }
