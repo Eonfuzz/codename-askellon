@@ -4,7 +4,7 @@ export class SoundRef {
     public sound: sound;
 
     constructor(sound: string, looping: boolean, not3d?: boolean) {
-        this.sound = CreateSound(sound, looping, !true, true, 0, 3, "");
+        this.sound = CreateSound(sound, looping, !not3d, true, 0, 3, "");
         SetSoundDuration(this.sound, GetSoundFileDuration(sound));
     }
 

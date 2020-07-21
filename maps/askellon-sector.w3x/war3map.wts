@@ -4075,9 +4075,189 @@ STRING 977
 ITEM IS INFESTED
 }
 
-STRING 980
-// Units: n00D (|cff00ffffGenetic Facility |rFacility|n|cff808080Right Click to Place a sample ), Name (Name)
+STRING 981
+// Units: n00D (|cff00ffffGenetic Sequencer |rFacility|n|cff808080Right Click to Place a sample), Name (Name)
 {
-|cff00ffffGenetic Facility |rFacility|n|cff808080Right Click to Place a sample inside|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|r
+|cff00ffffGenetic Sequencer |rFacility|n|cff808080Right Click to Place a sample inside|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|r
+}
+
+STRING 983
+// Units: n00E (|cff00ffffGenetic Facility|r Computer|n|cff808080Right Click to Interact|r), Name (Name)
+{
+|cff00ffffGenetic Facility|r Computer|n|cff808080Right Click to Interact|r
+}
+
+STRING 984
+// Units: n00F (|cff00ffffGene Sequencer|r Computer), Name (Name)
+{
+|cff00ffffGene Sequencer|r Computer
+}
+
+STRING 985
+// Units: n00F (|cff00ffffGene Sequencer|r Computer), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 986
+// Abilities: A019 (Sequence Genetic Samples), Name (Name)
+{
+Sequence Genetic Samples
+}
+
+STRING 987
+// Abilities: A019 (Sequence Genetic Samples), Hotkey (Hotkey - Normal)
+{
+X
+}
+
+STRING 989
+// Abilities: A019 (Sequence Genetic Samples), Tip (Tooltip - Normal)
+{
+Sequence Genetic Samples
+}
+
+STRING 990
+// Abilities: A019 (Sequence Genetic Samples), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 991
+// Abilities: A019 (Sequence Genetic Samples), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 992
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+1 Genetic Sample in Sequencer
+}
+
+STRING 993
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+1 Genetic Sample in Sequencer
+}
+
+STRING 994
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+2 Genetic Samples in Sequencer
+}
+
+STRING 995
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+3 Genetic Samples in Sequencer
+}
+
+STRING 996
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+4 Genetic Samples in Sequencer
+}
+
+STRING 997
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 5
+}
+
+STRING 998
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 6
+}
+
+STRING 999
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 7
+}
+
+STRING 1000
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 8
+}
+
+STRING 1001
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 9
+}
+
+STRING 1002
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 10
+}
+
+STRING 1003
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 11
+}
+
+STRING 1004
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 12
+}
+
+STRING 1005
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 13
+}
+
+STRING 1006
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 15
+}
+
+STRING 1007
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 16
+}
+
+STRING 1008
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 18
+}
+
+STRING 1009
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 14
+}
+
+STRING 1010
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 17
+}
+
+STRING 1011
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 19
+}
+
+STRING 1012
+// Upgrades: R008 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Level 20
+}
+
+STRING 1014
+// Abilities: A019 (Sequence Genetic Samples), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080In response to employee concerns about genetic contamination, HexCorp has provided your vessel with this Genetic Sequencer! Compare your genome with others and identify aberrant genetic markers in moments! By using this appliance, you are permitting HexCorp to use any provided genomes for research and marketing purposes. For reasons of cost-efficiency, genomes must be sequenced in groups of four. Please consult HexCorp Terms and Conditions Form 20322 for details.|r|n|nCompares |cff00ff00four |rprovided DNA samples, |cff00ff00alerting |rthe station if one or more samples are of a different species to the others. Takes |cff00ff0010 seconds|r to complete.|n|n|cffd45e19"There's not much point if you test the same samples repeatedly" - Doctor Obvious|r|N|n|cff808080180 Seconds Cooldown|r
 }
 

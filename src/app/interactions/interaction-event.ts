@@ -128,7 +128,10 @@ export class InteractionEvent {
 
   destroy() {
     this.interactionTrigger && this.interactionTrigger.destroy();
-    this.progressBar && this.progressBar.destroy();
+    if (this.progressBar) {
+      BlzSetSpecialEffectTimeScale(this.progressBar.bar, 500);
+      this.progressBar.destroy();
+    }
     this.interactionTrigger = undefined;
     this.cancelCallback();
   }

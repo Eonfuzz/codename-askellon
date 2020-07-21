@@ -23,6 +23,7 @@ udg_Lights_Cargo = {}
 udg_Lights_Bridge = {}
 udg_Lights_Biology = {}
 udg_genetic_test_lights = {}
+udg_genetic_sequencer_unit = nil
 gg_rct_Space = nil
 gg_rct_Galaxy_Map = nil
 gg_rct_FallZone1 = nil
@@ -65,6 +66,7 @@ gg_trg_SetFall = nil
 gg_trg_SetPowerGenerators = nil
 gg_trg_SetShipZones = nil
 gg_trg_SetCollisionData = nil
+gg_trg_SetGeneticTesterLights = nil
 gg_trg_Hide_Cathederal_Statue = nil
 gg_trg_Untitled_Trigger_001 = nil
 gg_unit_n001_0032 = nil
@@ -89,6 +91,7 @@ gg_unit_n001_0240 = nil
 gg_unit_n004_0267 = nil
 gg_unit_n002_0245 = nil
 gg_unit_n00A_0222 = nil
+gg_unit_n00D_0226 = nil
 gg_dest_B002_0015 = nil
 gg_dest_B002_0017 = nil
 gg_dest_B002_0019 = nil
@@ -126,11 +129,10 @@ gg_dest_B002_1453 = nil
 gg_dest_B002_1454 = nil
 gg_dest_B002_1452 = nil
 gg_dest_B002_1457 = nil
-gg_trg_SetGeneticTesterLights = nil
 gg_dest_B003_2137 = nil
-gg_dest_B003_2136 = nil
-gg_dest_B003_2139 = nil
 gg_dest_B003_2138 = nil
+gg_dest_B003_2139 = nil
+gg_dest_B003_2136 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -242,20 +244,18 @@ function CreateAllDestructables()
     gg_dest_B002_1454 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11905.9, -22313.1, 128.0, 118.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_1452 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11910.7, -25205.8, 128.0, 118.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_1457 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12794.8, -24648.2, 147.2, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B003_2138 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13293.0, -21843.4, 70.4, 37.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2139 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13589.7, -21832.9, 76.8, 234.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2136 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13587.2, -21545.8, 76.8, 88.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2137 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13292.5, -21536.1, 64.0, 344.000, 1.000, 0, FourCC("B003"))
-    gg_dest_B003_2138 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13293.0, -21843.4, 70.4, 37.000, 1.000, 0, FourCC("B003"))
 end
 
 function CreateAllItems()
     local itemID
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
-    BlzCreateItemWithSkin(FourCC("I00C"), 280.2, 357.7, FourCC("I00C"))
-    BlzCreateItemWithSkin(FourCC("I00C"), 327.5, 283.2, FourCC("I00C"))
-    BlzCreateItemWithSkin(FourCC("I00C"), 367.6, 408.2, FourCC("I00C"))
+    BlzCreateItemWithSkin(FourCC("I00C"), -13205.9, -22025.1, FourCC("I00C"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
-    gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), 450.0, 159.3, FourCC("ratf"))
+    gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
 end
 
 function CreateUnitsForPlayer20()
@@ -284,7 +284,6 @@ function CreateBuildingsForPlayer21()
     gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), 640.0, 768.0, 270.000, FourCC("h004"))
     gg_unit_h004_0061 = BlzCreateUnitWithSkin(p, FourCC("h004"), -17856.0, -28800.0, 270.000, FourCC("h004"))
     gg_unit_h004_0268 = BlzCreateUnitWithSkin(p, FourCC("h004"), -11136.0, -24704.0, 270.000, FourCC("h004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n003"), -11904.0, -22272.0, 270.000, FourCC("n003"))
     u = BlzCreateUnitWithSkin(p, FourCC("n003"), -26944.0, -27200.0, 270.000, FourCC("n003"))
     u = BlzCreateUnitWithSkin(p, FourCC("n008"), -13120.0, -24512.0, 270.000, FourCC("n008"))
     u = BlzCreateUnitWithSkin(p, FourCC("n008"), -22144.0, -27008.0, 270.000, FourCC("n008"))
@@ -562,7 +561,8 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n00A_0222 = BlzCreateUnitWithSkin(p, FourCC("n00A"), -23034.7, -25209.5, 270.000, FourCC("n00A"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n00D"), -13437.8, -21683.5, 270.000, FourCC("n00D"))
+    gg_unit_n00D_0226 = BlzCreateUnitWithSkin(p, FourCC("n00D"), -13437.8, -21683.5, 270.000, FourCC("n00D"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00E"), -13050.2, -21942.5, 225.861, FourCC("n00E"))
     gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -10560.0, -25536.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n005"), -18435.9, -25586.1, 0.220, FourCC("n005"))
     u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24569.4, 89.562, FourCC("n004"))
@@ -848,6 +848,7 @@ function Trig_SetGeneticTesterLights_Actions()
     udg_genetic_test_lights[2] = gg_dest_B003_2136
     udg_genetic_test_lights[3] = gg_dest_B003_2139
     udg_genetic_test_lights[4] = gg_dest_B003_2138
+    udg_genetic_sequencer_unit = gg_unit_n00D_0226
 end
 
 function InitTrig_SetGeneticTesterLights()

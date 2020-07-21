@@ -66,6 +66,9 @@ export const TECH_HAS_GENES_TIER_1 = FourCC('RPG1');
 export const TECH_HAS_GENES_TIER_2 = FourCC('RPG1');
 export const TECH_HAS_GENES_TIER_3 = FourCC('RPG1');
 
+export const TECH_ITEMS_IN_GENETIC_SEQUENCER = FourCC('R008');
+export const ABIL_ACTIVATE_SEQUENCER_TEST = FourCC('A019');
+
 export const TECH_20_RANGE_UPGRADE = FourCC('R004');
 export const TECH_ROACH_DUMMY_UPGRADE = FourCC('R005');
 

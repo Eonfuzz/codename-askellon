@@ -10,7 +10,7 @@ import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
 import { Game } from "app/game";
 import { syncData } from "lib/utils";
-import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY } from "resources/unit-ids";
+import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, GENETIC_TESTING_FACILITY_SWITCH_DUMMY, GENETIC_TESTING_FACILITY_SWITCH } from "resources/unit-ids";
 
 export let Interactables = new Map<number, InteractableData>();
 
@@ -228,6 +228,9 @@ export const initWeaponsTerminals = () => {
             }
             else if (targetUType === TERMINAL_RELIGION) {
                 unitType = TERMINAL_RELIGION_DUMMY;
+            }
+            else if (targetUType === GENETIC_TESTING_FACILITY_SWITCH) {
+                unitType = GENETIC_TESTING_FACILITY_SWITCH_DUMMY;
             }
             else {
                 unitType = FourCC('hWEP');

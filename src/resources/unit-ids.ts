@@ -5,6 +5,8 @@ export const CREWMEMBER_UNIT_ID = FourCC("H001");
 
 export const VENDING_MACHINE_TRIFEX = FourCC('n006');
 export const GENETIC_TESTING_FACILITY = FourCC('n00D');
+export const GENETIC_TESTING_FACILITY_SWITCH = FourCC('n00E');
+export const GENETIC_TESTING_FACILITY_SWITCH_DUMMY = FourCC('n00F');
 
 export const BRIDGE_CAPTAINS_TERMINAL = FourCC('n005');
 export const SPACE_UNIT_ASTEROID = FourCC('h002');
