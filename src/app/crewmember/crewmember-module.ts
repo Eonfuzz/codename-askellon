@@ -14,6 +14,7 @@ import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQ
 import { TimedEvent } from "app/types/timed-event";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { ITEM_GENETIC_SAMPLER } from "resources/item-ids";
 
 export class CrewModule {
 
@@ -52,12 +53,10 @@ export class CrewModule {
 
         let it = 0;
         while (it < totalPlayers) {
-            if (it === 0) this.allJobs.push(ROLE_TYPES.INQUISITOR);
-            else 
             if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
-            else if (it === 1) this.allJobs.push(ROLE_TYPES.INQUISITOR);
-            else if (it === 2) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
-            else if (it === 3) this.allJobs.push(ROLE_TYPES.DOCTOR);
+            else if (it === 1) this.allJobs.push(ROLE_TYPES.DOCTOR);
+            else if (it === 2) this.allJobs.push(ROLE_TYPES.INQUISITOR);
+            // else if (it === 3) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
             else if (it < 4) this.allJobs.push(ROLE_TYPES.PILOT);
             else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
             it++;
@@ -128,6 +127,8 @@ export class CrewModule {
         else if (crewmember.role === ROLE_TYPES.DOCTOR) {
             SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+2, true);
             SetHeroInt(nUnit.handle, GetHeroInt(nUnit.handle, false)+4, true);
+            const item = CreateItem(ITEM_GENETIC_SAMPLER, 0, 0);
+            UnitAddItem(crewmember.unit.handle, item);
         }
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {

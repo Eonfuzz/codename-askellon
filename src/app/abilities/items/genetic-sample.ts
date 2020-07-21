@@ -1,11 +1,13 @@
 import { Ability } from "../ability-type";
 import { AbilityModule } from "../ability-module";
 import { Unit } from "w3ts/index";
-import { ITEM_GENETIC_SAMPLE } from "resources/item-ids";
+import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { STR_GENETIC_SAMPLE } from "resources/strings";
 import { COL_MISC, COL_RESOLVE } from "resources/colours";
 import { ALIEN_FORCE_NAME } from "app/force/alien-force";
 import { ABIL_ITEM_GENETIC_SAMPLE_INFESTED } from "resources/ability-ids";
+import { Log } from "lib/serilog/serilog";
+import { getZFromXY } from "lib/utils";
 
 export enum GENE_SPLICE_ALLIANCE {
     HUMAN,
@@ -34,11 +36,6 @@ export class GeneticSamplerItemAbility implements Ability {
     };
 
     public process(module: AbilityModule, delta: number) {
-        const item = CreateItem(ITEM_GENETIC_SAMPLE, this.unit.x, this.unit.y);
-        BlzSetItemName(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
-        BlzSetItemTooltip(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
-        BlzSetItemExtendedTooltip(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
-        BlzSetItemDescription(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
 
         const unitHasSpareItemSlot = UnitInventoryCount(this.unit.handle) < UnitInventorySize(this.unit.handle);
 
@@ -68,13 +65,23 @@ export class GeneticSamplerItemAbility implements Ability {
             }
         }
 
-        if (alliance === GENE_SPLICE_ALLIANCE.ALIEN) {
-            BlzItemAddAbility(item, ABIL_ITEM_GENETIC_SAMPLE_INFESTED);
-        }
+        const item = CreateItem(alliance === GENE_SPLICE_ALLIANCE.ALIEN 
+            ? ITEM_GENETIC_SAMPLE_INFESTED 
+            : ITEM_GENETIC_SAMPLE, 
+            this.unit.x, this.unit.y
+        );
+        BlzSetItemName(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
+        BlzSetItemTooltip(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
+        BlzSetItemExtendedTooltip(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
+        BlzSetItemDescription(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
 
         if (unitHasSpareItemSlot) {
             UnitAddItem(this.unit.handle, item);
         }
+
+        const sfx = AddSpecialEffect("Objects\\Spawnmodels\\Orc\\Orcblood\\BattrollBlood.mdl", this.unit.x, this.unit.y);
+        BlzSetSpecialEffectZ(sfx, getZFromXY(this.unit.x, this.unit.y) + 30);
+        DestroyEffect(sfx);
 
         return false;
     };

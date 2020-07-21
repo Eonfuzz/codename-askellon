@@ -9,6 +9,8 @@ import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
 import { ABIL_ITEM_GENETIC_SAMPLE_INFESTED } from "resources/ability-ids";
 import { COL_TEAL } from "resources/colours";
 import { SOUND_COMPLEX_BEEP } from "resources/sounds";
+import { Log } from "lib/serilog/serilog";
+import { ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 
 declare const udg_genetic_test_lights: destructable[];
 declare const udg_genetic_sequencer_unit: unit;
@@ -57,7 +59,7 @@ export class GeneticSequenceAbility implements Ability {
         let hasHumanDNA = false;
         // Do the test
         testerSlots.forEach(item => {
-            if (BlzGetItemAbility(item, ABIL_ITEM_GENETIC_SAMPLE_INFESTED)) {
+            if (GetItemTypeId(item) === ITEM_GENETIC_SAMPLE_INFESTED) {
                 hasAlienDNA = true;
             }
             else {
@@ -86,6 +88,9 @@ export class GeneticSequenceAbility implements Ability {
 
 
         // Remove all items in inventory
+        testerSlots.forEach(i => {
+            RemoveItem(i);
+        });
         testerSlots.splice(0, testerSlots.length);
         for (let i = 0; i < 4; i++) {
 

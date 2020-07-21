@@ -61,7 +61,11 @@ ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `The ${COL_GOLD}Captain|r pilots the A
 ${COL_GOOD}- Start the game at level 2 and have bonus Will
 - Gain bonus experience points while on the bridge|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_GOLD}Navigator|r you must scan deep space and lead your ${COL_GOLD}Captain|r through deep space.|nYou are also in charge of the Cargo Bay's ships.`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `As ${COL_GOLD}Doctor|r research and upgrade Healthcare while using the Gene Splicer to upgrade your comrades.`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `The ${COL_GOLD}Doctor|r researches Genetic enhancement and hunts the Alien.
+${COL_GOOD}- Start the game with +2 Vitality and +4 Will
+- Gain bonus experience points while applying Genetic Splices
+- Gain bonus experience points while Sequencing DNA
+- Start with a Genetic Sampler|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOLD}Security Guards|r gain 30% bonus experience when damaging Alien Hosts`);
 

@@ -6,7 +6,7 @@ import { Log } from "lib/serilog/serilog";
 
 export class ChurchZone extends ShipZone {
 
-    churchMusic = new SoundRef("Music\\GregorianChant.mp3", true);
+    churchMusic = new SoundRef("Music\\GregorianChant.mp3", true, true);
 
     public onLeave(world: WorldModule, unit: Unit) {
         super.onLeave(world, unit);

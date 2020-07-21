@@ -3896,7 +3896,7 @@ Genetic Sampler
 }
 
 STRING 945
-// Items: I00C (Genetic Sampler), Ubertip (Tooltip - Extended)
+// Items: I00E (Genetic Sample), Ubertip (Tooltip - Extended)
 {
 |cff808080Fluff TODO|r|n|nDeals |cff00ff0010 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
 }
@@ -4049,12 +4049,6 @@ STRING 973
 // Items: I00D (Genetic Sample), Tip (Tooltip - Basic)
 {
 Genetic Sample
-}
-
-STRING 974
-// Items: I00D (Genetic Sample), Ubertip (Tooltip - Extended)
-{
-|cff808080Fluff TODO|r|n|nDeals |cff00ff0010 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
 }
 
 STRING 975
@@ -4259,5 +4253,35 @@ STRING 1014
 // Abilities: A019 (Sequence Genetic Samples), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080In response to employee concerns about genetic contamination, HexCorp has provided your vessel with this Genetic Sequencer! Compare your genome with others and identify aberrant genetic markers in moments! By using this appliance, you are permitting HexCorp to use any provided genomes for research and marketing purposes. For reasons of cost-efficiency, genomes must be sequenced in groups of four. Please consult HexCorp Terms and Conditions Form 20322 for details.|r|n|nCompares |cff00ff00four |rprovided DNA samples, |cff00ff00alerting |rthe station if one or more samples are of a different species to the others. Takes |cff00ff0010 seconds|r to complete.|n|n|cffd45e19"There's not much point if you test the same samples repeatedly" - Doctor Obvious|r|N|n|cff808080180 Seconds Cooldown|r
+}
+
+STRING 1016
+// Items: I00E (Genetic Sample), Name (Name)
+{
+Genetic Sample
+}
+
+STRING 1018
+// Items: I00E (Genetic Sample), Description (Description)
+{
+Repairs buildings 100% over 5 seconds
+}
+
+STRING 1019
+// Items: I00E (Genetic Sample), Tip (Tooltip - Basic)
+{
+Genetic Sample
+}
+
+STRING 1020
+// Items: I00D (Genetic Sample), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO|r|n|nDeals |cff00ff0035 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 1021
+// Items: I00C (Genetic Sampler), Ubertip (Tooltip - Extended)
+{
+|cff808080A somewhat medieval approach to extracting genetic tissue; This device quickly tears the top layer of the skin and seals it in a portal hermetic container.|r|n|nExtracts a |cff00ff00Genetic Sample|r from the target; dealing |cff00ff0035 damage|r and applying a ministun.|n|n|cff80808025 Seconds Cooldown|r
 }
 

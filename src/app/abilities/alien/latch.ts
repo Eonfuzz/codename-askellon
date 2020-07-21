@@ -53,7 +53,7 @@ export class LatchAbility implements Ability {
         );
 
         this.unit.setPathing(false);
-        this.unit.setScale(0, 0, 0);
+        // this.unit.setScale(0, 0, 0);
         this.unit.addAbility(FourCC("Agho"));
 
         // Increment infest upgrade
@@ -79,6 +79,9 @@ export class LatchAbility implements Ability {
             
             this.latchChatHookId = module.game.chatModule.addHook((hook: ChatHook) => this.processChat(module, hook));
         }
+
+        // Clear any aggression
+        module.game.forceModule.repairAllAlliances(this.unit.owner);
 
         return true;
     };
@@ -107,13 +110,16 @@ export class LatchAbility implements Ability {
     };
 
     private processChat(module: AbilityModule, hook: ChatHook) {
-        const pData = module.game.forceModule.getPlayerDetails(this.targetUnit.owner);
-        const crew = pData.getCrewmember();
 
-        if (crew) {
-            hook.name = crew.name;
-            hook.color = PLAYER_COLOR[crew.unit.owner.id];
-            hook.sound = GENERIC_CHAT_SOUND_REF;
+        if (hook.who === this.targetUnit.owner) {
+            const pData = module.game.forceModule.getPlayerDetails(this.targetUnit.owner);
+            const crew = pData.getCrewmember();
+
+            if (crew) {
+                hook.name = crew.name;
+                hook.color = PLAYER_COLOR[crew.unit.owner.id];
+                hook.sound = GENERIC_CHAT_SOUND_REF;
+            }
         }
 
         return hook;
@@ -219,7 +225,7 @@ export class LatchAbility implements Ability {
                 this.unit.setPathing(true);
 
                 // Delay removal of ghost for 0.5 seconds           
-                this.unit.setScale(0.9, 0.9, 0.9);
+                // this.unit.setScale(0.9, 0.9, 0.9);
                 if (!this.isCastingSurvivalInstincts) {
                     const t = new Timer();
                     t.start(0.5, false, () => {

@@ -1,4 +1,4 @@
-import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, COL_PINK, COL_MISC, } from "./colours";
+import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, COL_PINK, COL_MISC, COL_ORANGE, } from "./colours";
 import { MapPlayer, Unit } from "w3ts/index";
 import { Crewmember } from "app/crewmember/crewmember-type";
 
@@ -32,14 +32,12 @@ ${COL_ALIEN}An Alien has been slain!|r
 |cff${whoColor}${crew.name}|r${COL_ALIEN} was ${isAlienHost ? 'the Alien Host' : 'an Alien Spawn'}|r`;
 
 
-export const STR_GENETIC_SAMPLE = (who: MapPlayer, forUnit: Unit) => `
-${COL_MISC}Genetic mess|r
+export const STR_GENETIC_SAMPLE = (who: MapPlayer, forUnit: Unit) => `${COL_MISC}Mandate :: All staff are to ensure they are regularly tested and immunized. The Askellon cannot afford another quarantine breach.|r
 
-Bring this sample of ${forUnit.nameProper} back to the thing to thingy
+This is a genetic sample of ${COL_GOOD}${forUnit.nameProper}|r.
+Bring this to the ${COL_TEAL}Genetic Sequencer|r to have it tested.`;
 
-`;
-
-export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffGenetic Facility |rFacility
+export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffGenetic Sequencing |rFacility
 ${ slot4 ? `${COL_GOLD}Activate Computer to continue` : `${COL_MISC}Right Click to place a sample inside` }
 ${COL_MISC}[ ${slot1 ? `|r${GetItemName(slot1)}${COL_MISC}` : `EMPTY SLOT`} ]
 [ ${slot2 ? `|r${GetItemName(slot2)}${COL_MISC}` : `EMPTY SLOT`} ]

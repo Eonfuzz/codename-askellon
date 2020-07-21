@@ -8,7 +8,7 @@ import { ZONE_TYPE } from "../zone-id";
 
 export class BridgeZone extends ShipZone {
 
-    operaMusic = new SoundRef("Music\\Puccini.mp3", true);
+    operaMusic = new SoundRef("Music\\Puccini.mp3", true, true);
     private musicIsActive = false;
 
     public onLeave(world: WorldModule, unit: Unit) {

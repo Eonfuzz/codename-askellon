@@ -13,7 +13,7 @@ import { GENETIC_TESTING_FACILITY, GENETIC_TESTING_FACILITY_SWITCH, GENETIC_TEST
 import { Interactables } from "./interaction-data";
 import { EVENT_TYPE } from "app/events/event";
 import { SoundRef } from "app/types/sound-ref";
-import { ITEM_GENETIC_SAMPLE } from "resources/item-ids";
+import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { getZFromXY, syncData } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED } from "resources/sfx-paths";
 
@@ -41,7 +41,7 @@ export function initTesterInteractions(game: Game) {
         action: (iModule: InteractionModule, source: Unit, interactable: Unit) => {
 
             // Get the first genetic thing in the units inventory
-            const hasGeneticSample = UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE);
+            const hasGeneticSample = UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE) || UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE_INFESTED);
 
             if (hasGeneticSample && testerSlots.length < 4) {
 
@@ -50,7 +50,7 @@ export function initTesterInteractions(game: Game) {
                 let i = 0;
                 while (!item) {
                     const tempItem = UnitItemInSlot(source.handle, i++);
-                    if (GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE) {
+                    if (GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE || GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE_INFESTED) {
                         item = tempItem;
                     }
                 }
