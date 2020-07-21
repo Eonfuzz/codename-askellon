@@ -241,6 +241,9 @@ end
 function CreateAllItems()
     local itemID
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
+    BlzCreateItemWithSkin(FourCC("I00C"), 280.2, 357.7, FourCC("I00C"))
+    BlzCreateItemWithSkin(FourCC("I00C"), 327.5, 283.2, FourCC("I00C"))
+    BlzCreateItemWithSkin(FourCC("I00C"), 367.6, 408.2, FourCC("I00C"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), 450.0, 159.3, FourCC("ratf"))
 end

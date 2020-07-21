@@ -1,4 +1,4 @@
-import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, COL_PINK, } from "./colours";
+import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, COL_PINK, COL_MISC, } from "./colours";
 import { MapPlayer, Unit } from "w3ts/index";
 import { Crewmember } from "app/crewmember/crewmember-type";
 
@@ -30,3 +30,11 @@ export const STR_GENE_ALIEN_SUCCESSFUL = () => `${COL_ALIEN}Mimicking human geno
 export const STR_ALIEN_DEATH = (who: MapPlayer, whoColor: string, crew: Crewmember, alien: Unit, isAlienHost: boolean) => `
 ${COL_ALIEN}An Alien has been slain!|r
 |cff${whoColor}${crew.name}|r${COL_ALIEN} was ${isAlienHost ? 'the Alien Host' : 'an Alien Spawn'}|r`;
+
+
+export const STR_GENETIC_SAMPLE = (who: MapPlayer, forUnit: Unit) => `
+${COL_MISC}Genetic mess|r
+
+Bring this sample of ${forUnit.name} back to the thing to thingy
+
+`;

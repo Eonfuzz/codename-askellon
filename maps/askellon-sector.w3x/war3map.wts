@@ -4039,3 +4039,39 @@ STRING 971
 (Transform Remove Detect)
 }
 
+STRING 972
+// Items: I00D (Genetic Sample), Name (Name)
+{
+Genetic Sample
+}
+
+STRING 973
+// Items: I00D (Genetic Sample), Tip (Tooltip - Basic)
+{
+Genetic Sample
+}
+
+STRING 974
+// Items: I00D (Genetic Sample), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO|r|n|nDeals |cff00ff0010 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 975
+// Items: I00D (Genetic Sample), Description (Description)
+{
+Repairs buildings 100% over 5 seconds
+}
+
+STRING 976
+// Abilities: A017 (Genetic Sampler Dummy), Name (Name)
+{
+Genetic Sampler Dummy
+}
+
+STRING 977
+// Abilities: A018 (ITEM IS INFESTED), Name (Name)
+{
+ITEM IS INFESTED
+}
+

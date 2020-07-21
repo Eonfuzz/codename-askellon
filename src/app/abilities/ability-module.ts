@@ -6,7 +6,7 @@ import { AcidPoolAbility } from "./alien/acid-pool";
 import { LeapAbility } from "./alien/leap";
 import { TransformAbility } from "./alien/transform";
 import { DiodeEjectAbility } from "./human/diode-ejector";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_ALIEN_SURVIVAL_INSTINCTS, ABIL_HUMAN_SPRINT, ABIL_ALIEN_LATCH, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC, ABIL_SHIP_CHAINGUN, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_ITEM_TRIFEX, ABIL_SHIP_DEEP_SCAN, ABIL_SHIP_LASER, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_ACID_HURL, ABIL_ALIEN_CHARGE, ABIL_INQUIS_PURITY_SEAL, ABIL_INQUIS_SMITE, ABIL_ALIEN_EVOLVE_T2 } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_ALIEN_SURVIVAL_INSTINCTS, ABIL_HUMAN_SPRINT, ABIL_ALIEN_LATCH, ABIL_ALIEN_ACID_POOL, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_LEAP, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_ALIEN_SCREAM, ABIL_WEP_DIODE_EJ, ABIL_GENE_NIGHTEYE, SMART_ORDER_ID, ABIL_ITEM_REPAIR, ABIL_ITEM_EMOTIONAL_DAMP, ABIL_ITEM_CRYO_GRENADE, ABIL_GENE_COSMIC, ABIL_SHIP_CHAINGUN, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_ITEM_TRIFEX, ABIL_SHIP_DEEP_SCAN, ABIL_SHIP_LASER, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_ACID_HURL, ABIL_ALIEN_CHARGE, ABIL_INQUIS_PURITY_SEAL, ABIL_INQUIS_SMITE, ABIL_ALIEN_EVOLVE_T2, ABIL_ITEM_GENETIC_SAMPLER } from "resources/ability-ids";
 import { ScreamAbility } from "./alien/scream";
 import { SprintLeapAbility } from "./human/sprint-leap";
 import { NightVisionAbility } from "./human/night-vision";
@@ -31,6 +31,7 @@ import { PuritySealAbility } from "./human/inquis-purity-seal";
 import { SmiteAbility } from "./human/inquis-smite";
 import { LatchAbility } from "./alien/latch";
 import { SurvivalInstinctsAbility } from "./alien/survival-instincts";
+import { GeneticSamplerItemAbility } from "./items/genetic-sample";
 
 
 const TIMEOUT = 0.03;
@@ -145,6 +146,12 @@ export class AbilityModule {
                 break;
             case ABIL_ITEM_CRYO_GRENADE:
                 instance = new CryoGrenadeAbility();
+                if (instance.initialise(this)) {
+                    this.data.push(instance);
+                }
+                break;
+            case ABIL_ITEM_GENETIC_SAMPLER:
+                instance = new GeneticSamplerItemAbility();
                 if (instance.initialise(this)) {
                     this.data.push(instance);
                 }
