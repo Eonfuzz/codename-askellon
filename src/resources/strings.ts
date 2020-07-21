@@ -38,3 +38,10 @@ ${COL_MISC}Genetic mess|r
 Bring this sample of ${forUnit.name} back to the thing to thingy
 
 `;
+
+export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffGenetic Facility |rFacility
+${COL_MISC}Right Click to Place a sample inside
+[ ${slot1 ? `|r${GetItemName(slot1)}${COL_MISC}` : `EMPTY SLOT`} ]
+[ ${slot2 ? `|r${GetItemName(slot2)}${COL_MISC}` : `EMPTY SLOT`} ]
+[ ${slot3 ? `|r${GetItemName(slot3)}${COL_MISC}` : `EMPTY SLOT`} ]
+[ ${slot4 ? `|r${GetItemName(slot4)}${COL_MISC}` : `EMPTY SLOT`} ]`;

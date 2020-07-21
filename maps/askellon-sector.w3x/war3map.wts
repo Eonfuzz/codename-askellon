@@ -4075,3 +4075,9 @@ STRING 977
 ITEM IS INFESTED
 }
 
+STRING 980
+// Units: n00D (|cff00ffffGenetic Facility |rFacility|n|cff808080Right Click to Place a sample ), Name (Name)
+{
+|cff00ffffGenetic Facility |rFacility|n|cff808080Right Click to Place a sample inside|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|r
+}
+

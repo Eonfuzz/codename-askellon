@@ -8,6 +8,7 @@ import { initShipInteractions, initAskellonInteractions } from "./ship-interacti
 import { initVendingInteraction } from "./vendor-interaction";
 import { initCommandTerminal } from "./command-terminal";
 import { Log } from "lib/serilog/serilog";
+import { initTesterInteractions } from "./genetic-tester-interactions";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -42,6 +43,7 @@ export class InteractionModule {
         initAskellonInteractions(game);
         initVendingInteraction(game);
         initCommandTerminal(game);
+        initTesterInteractions(game);
     }
 
     beginInteraction() {

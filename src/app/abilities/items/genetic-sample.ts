@@ -35,8 +35,10 @@ export class GeneticSamplerItemAbility implements Ability {
 
     public process(module: AbilityModule, delta: number) {
         const item = CreateItem(ITEM_GENETIC_SAMPLE, this.unit.x, this.unit.y);
-        BlzSetItemTooltip(item, `Sequence [${COL_MISC}${this.targetUnit.name}|r]`);
+        BlzSetItemName(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
+        BlzSetItemTooltip(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
         BlzSetItemExtendedTooltip(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
+        BlzSetItemDescription(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
 
         const unitHasSpareItemSlot = UnitInventoryCount(this.unit.handle) < UnitInventorySize(this.unit.handle);
 
