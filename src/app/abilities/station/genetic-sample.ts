@@ -7,7 +7,7 @@ import { SoundRef } from "app/types/sound-ref";
 import { testerSlots, setTesterLastActivatedTo } from "app/interactions/genetic-tester-interactions";
 import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
 import { ABIL_ITEM_GENETIC_SAMPLE_INFESTED } from "resources/ability-ids";
-import { COL_TEAL } from "resources/colours";
+import { COL_TEAL, COL_ATTATCH } from "resources/colours";
 import { SOUND_COMPLEX_BEEP } from "resources/sounds";
 import { Log } from "lib/serilog/serilog";
 import { ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
@@ -68,11 +68,11 @@ export class GeneticSequenceAbility implements Ability {
         });
 
         const allPlayers = aMod.game.forceModule.getActivePlayers();
-        if (hasAlienDNA && hasHumanDNA) {
-            aMod.game.chatModule.postMessageFor(allPlayers, "GENETICS LAB", '00ffff', "DNA SEQUENCED. CONTAMINANTS DETECTED", undefined, SOUND_COMPLEX_BEEP);
+        if (hasAlienDNA) {
+            aMod.game.chatModule.postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', `Result: ${COL_ATTATCH}Contaminants|r detected. Quarantine is recommended.`, undefined, SOUND_COMPLEX_BEEP);
         }
         else {
-            aMod.game.chatModule.postMessageFor(allPlayers, "GENETICS LAB", '00ffff', "SEQUENCE COMPLETE. NO MISMATCH", undefined, SOUND_COMPLEX_BEEP);
+            aMod.game.chatModule.postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', "Result: No foreign samples detected.", undefined, SOUND_COMPLEX_BEEP);
         }
     }
 

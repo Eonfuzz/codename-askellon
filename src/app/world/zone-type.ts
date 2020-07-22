@@ -80,7 +80,10 @@ export class ShipZone extends Zone {
     public lightSources: Array<destructable> = [];
     public powerGenerators: Array<Unit> = [];
 
-    constructor(game: Game, id: ZONE_TYPE, lights?: destructable[]) {
+    // The exits to and from this zone
+    private exits: Array<Unit> = [];
+
+    constructor(game: Game, id: ZONE_TYPE, lights?: destructable[], exits?: Unit[]) {
         super(game, id);
 
         // Get get light sources and power gens based on ID
@@ -102,6 +105,14 @@ export class ShipZone extends Zone {
         );
 
         if (lights) this.lightSources = lights;
+    }
+
+    public addExit(whichExit: Unit) {
+        this.exits.push(whichExit);
+    }
+
+    public setExits(to: Unit[]) {
+        this.exits = to;
     }
 
     private onGeneratorDestroy(generator: Unit, source: Unit) {
@@ -131,6 +142,10 @@ export class ShipZone extends Zone {
         // If no oxy remove oxy loss
         // TODO
         // If no power remove power loss
+        // Remove shared vision of exits
+        this.exits.forEach(exit => {
+            exit.shareVision(unit.owner, false);
+        });
     }
 
     public onEnter(world: WorldModule, unit: Unit) {
@@ -140,6 +155,9 @@ export class ShipZone extends Zone {
         // TODO
         // If no power apply power loss
         world.askellon.applyPowerChange(unit.owner, this.hasPower, false);
+        this.exits.forEach(exit => {
+            exit.shareVision(unit.owner, true);
+        });
     }
 
     public updatePower(newState: boolean) {

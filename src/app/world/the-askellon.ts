@@ -1,5 +1,5 @@
 /** @noSelfInFile **/
-import { ZONE_TYPE } from "./zone-id";
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME, STRING_TO_ZONE_TYPE } from "./zone-id";
 import { Game } from "../game";
 import { Zone, ShipZone } from "./zone-type";
 import { WorldModule } from "./world-module";
@@ -31,6 +31,10 @@ declare const udg_Lights_Cargo: destructable[];
 declare const udg_Lights_Bridge: destructable[];
 declare const udg_Lights_Biology: destructable[];
 
+declare const udg_elevator_entrances: unit[];
+declare const udg_elevator_exits: unit[];
+declare const udg_elevator_entrance_names: string[];
+declare const udg_elevator_exit_zones: string[];
 
 export class TheAskellon {
     
@@ -72,6 +76,19 @@ export class TheAskellon {
             BRIDGE_VENT.updatePower(false);
             BRIDGE_VENT.alwaysCauseFear = true;
         }
+
+        // Now apply exits
+        udg_elevator_entrances.forEach((u, index) => {
+            const matchingExitZones = udg_elevator_exit_zones[index];
+            const zone = STRING_TO_ZONE_TYPE.get(matchingExitZones);
+
+            // Get our zone
+            if (this.floors.has(zone)) {
+                const floor = this.floors.get(zone);
+                floor.addExit(Unit.fromHandle(u));
+            }
+
+        });
     }
 
     findZone(zone: ZONE_TYPE): ShipZone | undefined {

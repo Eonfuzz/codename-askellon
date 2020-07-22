@@ -253,7 +253,7 @@ end
 function CreateAllItems()
     local itemID
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
-    BlzCreateItemWithSkin(FourCC("I00C"), -13205.9, -22025.1, FourCC("I00C"))
+    BlzCreateItemWithSkin(FourCC("I00C"), -13584.0, -22032.9, FourCC("I00C"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
 end
@@ -562,7 +562,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n00A_0222 = BlzCreateUnitWithSkin(p, FourCC("n00A"), -23034.7, -25209.5, 270.000, FourCC("n00A"))
     gg_unit_n00D_0226 = BlzCreateUnitWithSkin(p, FourCC("n00D"), -13437.8, -21683.5, 270.000, FourCC("n00D"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n00E"), -13050.2, -21942.5, 225.861, FourCC("n00E"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00E"), -13050.2, -22006.5, 225.861, FourCC("n00E"))
     gg_unit_n001_0240 = BlzCreateUnitWithSkin(p, FourCC("n001"), -10560.0, -25536.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n005"), -18435.9, -25586.1, 0.220, FourCC("n005"))
     u = BlzCreateUnitWithSkin(p, FourCC("n004"), -27137.3, 24569.4, 89.562, FourCC("n004"))

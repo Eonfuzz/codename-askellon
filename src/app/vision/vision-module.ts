@@ -44,7 +44,7 @@ export class VisionModule {
             penalty: penalty
         });
 
-        Log.Information(forWho.name+" ADD "+VISION_PENALTY[penalty]);
+        // Log.Information(forWho.name+" ADD "+VISION_PENALTY[penalty]);
         this.calculateVision(forPlayer);
 
         // Return out modifier index

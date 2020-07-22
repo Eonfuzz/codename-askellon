@@ -111,7 +111,7 @@ export class LatchAbility implements Ability {
 
     private processChat(module: AbilityModule, hook: ChatHook) {
 
-        if (hook.who === this.targetUnit.owner) {
+        if (hook.who === this.unit.owner) {
             const pData = module.game.forceModule.getPlayerDetails(this.targetUnit.owner);
             const crew = pData.getCrewmember();
 

@@ -67,7 +67,10 @@ ${COL_GOOD}- Start the game with +2 Vitality and +4 Will
 - Gain bonus experience points while Sequencing DNA
 - Start with a Genetic Sampler|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOLD}Security Guards|r gain 30% bonus experience when damaging Alien Hosts`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOLD}Security Guards|r patrols the station to ensure order is upheld.
+${COL_GOOD}- Start the game with +10% bonus damage
+- Receive bonus experience from combat
+- Starts with Harkon's Blitzer`);
 
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `The ${COL_GOLD}Inquisitor|r hunts down xenos scum.
 ${COL_GOOD}- Start the game with Seal of Purity
