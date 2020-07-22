@@ -200,8 +200,9 @@ export class ChatModule {
                 FogModifierStart(modifier);
             }
             else if (message == "-tp") {
-                const syncher = syncData('-tp', player, (self, data: string) => {
-                    // Log.Information(data);
+                let i = GetRandomInt(0, 10000);
+                const syncher = syncData('-tp'+i, player, (self, data: string) => {
+                    Log.Information(data);
                     const x = S2R(data.split(',')[0]);
                     const y = S2R(data.split(',')[1]);
                 

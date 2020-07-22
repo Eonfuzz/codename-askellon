@@ -97,8 +97,7 @@ export class CrewModule {
 
         // Add the unit to its force
         force.addPlayerMainUnit(this.game, crewmember, player);
-        SelectUnitAddForPlayer(crewmember.unit.handle, player.handle);
-        PanCameraToTimedForPlayer(player.handle, nUnit.x, nUnit.y, 0);
+        // SelectUnitAddForPlayer(crewmember.unit.handle, player.handle);
         
         let roleGaveWeapons = false;
         // Handle unique role bonuses
@@ -114,6 +113,13 @@ export class CrewModule {
                 crewmember.unit.getIntelligence(false) + 2, 
                 true
             );
+
+            
+            nUnit.x = -18420;
+            nUnit.y = -25613;
+
+            // Now travel the unit to floor 1
+            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.BRIDGE, true);
         }
         // Sec guard starts with weapon damage 1 and have shotguns
         else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
@@ -122,6 +128,8 @@ export class CrewModule {
             UnitAddItem(crewmember.unit.handle, item);
             this.game.weaponModule.applyItemEquip(crewmember, item);
             roleGaveWeapons = true;
+            // Now travel the unit to floor 1
+            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1, true);
         }
         // Doctor begins with extra will and vigor
         else if (crewmember.role === ROLE_TYPES.DOCTOR) {
@@ -129,10 +137,17 @@ export class CrewModule {
             SetHeroInt(nUnit.handle, GetHeroInt(nUnit.handle, false)+4, true);
             const item = CreateItem(ITEM_GENETIC_SAMPLER, 0, 0);
             UnitAddItem(crewmember.unit.handle, item);
+
+            nUnit.x = -13337;
+            nUnit.y = -22229;
+
+            // Now travel the unit to floor 1
+            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.BIOLOGY, true);
         }
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
             SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
+            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1, true);
         }
         else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
             nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);
@@ -148,6 +163,12 @@ export class CrewModule {
     
                 }
             }));    
+            
+            nUnit.x = -22916;
+            nUnit.y = -25386;
+
+            // Now travel the unit to floor 1
+            // this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
 
         if (!roleGaveWeapons) {
@@ -161,9 +182,8 @@ export class CrewModule {
         BlzSetHeroProperName(nUnit.handle, crewmember.name);
         SuspendHeroXP(nUnit.handle, true);
         SetPlayerName(nUnit.owner.handle, crewmember.name);
+        PanCameraToTimedForPlayer(nUnit.owner.handle, nUnit.x, nUnit.y, 0);
 
-        // Now travel the unit to floor 1
-        this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1);
 
         return crewmember;
     }

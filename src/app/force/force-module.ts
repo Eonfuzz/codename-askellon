@@ -394,7 +394,7 @@ export class ForceModule {
 
         // Start a 15 second timer
         const timer = CreateTimer();
-        StartTimerBJ(timer, false, this.getActivePlayers().length > 1 ? 15 : 0.1);
+        StartTimerBJ(timer, false, this.getActivePlayers().length > 1 ? 16 : 0.1);
 
         const timerTrig = new Trigger();
 
@@ -455,11 +455,11 @@ export class ForceModule {
             KillUnit(u);
         });
 
-        this.getActivePlayers().forEach(player => {
-            DisplayTextToPlayer(player.handle, 0, 0, `|cff${PLAYER_COLOR[who.id]}${this.getOriginalPlayerDetails(who).name}|r has left the game!`);
-        });
+        // this.getActivePlayers().forEach(player => {
+        //     DisplayTextToPlayer(player.handle, 0, 0, `|cff${PLAYER_COLOR[who.id]}${this.getOriginalPlayerDetails(who).name}|r has left the game!`);
+        // });
 
-        Log.Information("Leave timer "+this.game.getTimeStamp());
+        // Log.Information("Leave timer "+this.game.getTimeStamp());
 
         const playerDetails = this.getPlayerDetails(who);
         if (playerDetails) playerDetails.getForce().removePlayer(playerDetails.player);

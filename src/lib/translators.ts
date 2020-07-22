@@ -27,6 +27,17 @@ export function SendMessageUnlogged(this: void, msg: any): void {
     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `${msg}`);
 }
 
+export function PlayNewSound(soundPath: string, volume: number) {
+    const result = CreateSound(soundPath, false, false, true, 10, 10, "" )
+    SetSoundDuration(result, GetSoundFileDuration(soundPath));
+    SetSoundChannel(result, 0);
+    SetSoundVolume(result, volume);
+    SetSoundPitch(result, 1.0);
+    StartSound(result);
+    KillSoundWhenDone(result);
+    return result;
+}
+
 export function PlayNewSoundOnUnit(soundPath: string, unit: Unit, volume: number): sound {
     const result = CreateSound(soundPath, false, true, true, 10, 10, "" )
     SetSoundDuration(result, GetSoundFileDuration(soundPath));

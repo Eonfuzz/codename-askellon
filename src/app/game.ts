@@ -29,7 +29,8 @@ import { ShipZone } from "./world/zone-type";
 import { SFX_PORTAL } from "resources/sfx-paths";
 import { Vector2 } from "./types/vector2";
 import { Vector3 } from "./types/vector3";
-import { getYawPitchRollFromVector } from "lib/translators";
+import { getYawPitchRollFromVector, PlayNewSoundOnUnit, PlayNewSound } from "lib/translators";
+import { COL_ATTATCH, COL_GOOD, COL_ORANGE } from "resources/colours";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 const PROCESS_TIMER = 0.03;
@@ -172,7 +173,20 @@ export class Game {
             const x = mainShip.unit.x;
             const y = mainShip.unit.y;
             PanCameraToTimed(x, y, 0);
-        }) 
+        });
+
+        
+        PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+        DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}INFO|r] Preparing Warp`);
+        new Timer().start(10, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Deep-Scans failing`);
+        });
+        new Timer().start(15, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] DIVERTING`);
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 2, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 80.00, 15.00, 40.00, 0)
+        });
     }
 
     private stopFollowingMainShip() {
@@ -227,15 +241,38 @@ export class Game {
 
         this.cinematicSound.playSound();
         CameraSetSourceNoise(2, 50);
-        CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 6, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 100.00, 100.00, 90.00, 0)
+        PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+        DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Hull Deteriorating`);
+
+        new Timer().start(2, false, () => {
+            PlayNewSound("Sounds\\ShipDamage\\GroanLong2.mp3", 127);
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 100.00, 100.00, 90.00, 0)
+           
+        })
+
         new Timer().start(3, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
+
             SetDayNightModels("DeepFried\\dnclordaeronunit.mdx", "DeepFried\\dnclordaeronunit.mdx");
             CameraSetSourceNoise(5, 50);
             for (let i = 0; i < 12; i++) {
                 BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), false);            
             }
         });
+        new Timer().start(4, false, () => {
+            PlayNewSound("Sounds\\ShipDamage\\GroanLong1.mp3", 127);
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
+        });
+        new Timer().start(5, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
+        });
         new Timer().start(6, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Power Loss imminent`);
+
             CameraSetSourceNoise(10, 50);
         });
         new Timer().start(7, false, () => {
@@ -246,19 +283,27 @@ export class Game {
             this.worldModule.askellon.powerDownSound.playSound();
         });
         new Timer().start(9, false, () => {
-            const startZone = this.worldModule.getZone(ZONE_TYPE.FLOOR_1) as ShipZone;
-            startZone.updatePower(false);
+            this.worldModule.askellon.findZone(ZONE_TYPE.BRIDGE).updatePower(false);
+            this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1).updatePower(false);
+            this.worldModule.askellon.findZone(ZONE_TYPE.BIOLOGY).updatePower(false);
             CameraSetSourceNoise(20, 50);
         });
         new Timer().start(14, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Rebooting...`);
             CameraSetSourceNoise(10, 50);
         });
         new Timer().start(16, false, () => {
             CameraSetSourceNoise(5, 50);
-            const startZone = this.worldModule.getZone(ZONE_TYPE.FLOOR_1) as ShipZone;
-            startZone.updatePower(true);
+
+            this.worldModule.askellon.findZone(ZONE_TYPE.BRIDGE).updatePower(true);
+            this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1).updatePower(true);
+            this.worldModule.askellon.findZone(ZONE_TYPE.BIOLOGY).updatePower(true);
         });
         new Timer().start(20, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Breaches detected`);
+
             hideButtons.pause();
             hideButtons.destroy();
 
@@ -272,6 +317,18 @@ export class Game {
 
             // Init chat
             this.chatModule.initialise();
+        });
+        new Timer().start(21, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Signs of ${COL_ATTATCH}INTRUSION|r. XENOS ON BOARD`);
+        });
+        new Timer().start(22, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Calculating scenario...`);
+        });
+        new Timer().start(24, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Eliminate intruder`);
         });
     }
 

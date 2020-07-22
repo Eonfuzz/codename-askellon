@@ -35,17 +35,17 @@ export class BridgeZone extends ShipZone {
             this.operaMusic.playSound();
             SetMusicVolume(5);
 
-            // If we are captain keep track of his existance
-            if (crewmember.role === ROLE_TYPES.CAPTAIN) {
-                const captainXpTimer = new Timer().start(5, true, () => {
-                    const zone = world.getUnitZone(crewmember.unit);
-                    if (!zone || (zone.id !== ZONE_TYPE.BRIDGE && zone.id !==  ZONE_TYPE.SPACE)) {
-                        return captainXpTimer.destroy();
-                    }
+        }
+        // If we are captain keep track of his existance
+        if (crewmember && crewmember.role === ROLE_TYPES.CAPTAIN) {
+            const captainXpTimer = new Timer().start(5, true, () => {
+                const zone = world.getUnitZone(crewmember.unit);
+                if (!zone || (zone.id !== ZONE_TYPE.BRIDGE && zone.id !==  ZONE_TYPE.SPACE)) {
+                    return captainXpTimer.destroy();
+                }
 
-                    crewmember.addExperience(world.game, 5);
-                });
-            }
+                crewmember.addExperience(world.game, 5);
+            });
         }
     }
 }
