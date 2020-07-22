@@ -26,6 +26,7 @@ export const SFX_DARK_SUMMONING = "Abilities\\Spells\\Undead\\Darksummoning\\Dar
 export const SFX_HOWL = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl";
 export const SFX_FIRE = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl';
 export const SFX_LIGHTNING_BOLT = 'Doodads\\Cinematic\\Lightningbolt\\Lightningbolt.mdl';
+export const SFX_PORTAL = "Doodads\\Cinematic\\ShimmeringPortal\\ShimmeringPortal.mdx";
 
 // Preload SFX
 Preload(SFX_WINDWAVE);
@@ -48,3 +49,4 @@ Preload(SFX_DARK_SUMMONING);
 Preload(SFX_HOWL);
 Preload(SFX_FIRE);
 Preload(SFX_LIGHTNING_BOLT);
+Preload(SFX_PORTAL);

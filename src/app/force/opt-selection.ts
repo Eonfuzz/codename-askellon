@@ -77,7 +77,7 @@ export class OptSelection {
      * @param what 
      */
     public addOpt(what: OptSelectOption) {
-        this.optsPossible.push(what)
+        this.optsPossible.unshift(what)
     }
 
     /**

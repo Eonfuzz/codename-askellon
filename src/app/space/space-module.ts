@@ -107,7 +107,8 @@ export class SpaceModule {
         this.mainShip = new AskellonShip(this.game, ShipState.inSpace, Unit.fromHandle(
             CreateUnit(this.game.forceModule.neutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
         );
-        this.mainShip.unit.setTimeScale(0.1);
+        this.mainShip.unit.setTimeScale(0.5);
+        
         this.shipDeathEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_DEATH);
         this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_ORDER);
         this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_POINT_ORDER);

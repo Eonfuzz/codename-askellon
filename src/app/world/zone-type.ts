@@ -5,7 +5,7 @@ import { TimedEvent } from "../types/timed-event";
 import { Log } from "../../lib/serilog/serilog";
 import { LIGHT_DEST_ID } from "../types/widget-id";
 import { Unit } from "w3ts/handles/unit";
-import { MapPlayer } from "w3ts";
+import { MapPlayer, Timer } from "w3ts";
 import { Game } from "app/game";
 import { EventListener, EVENT_TYPE, EventData } from "app/events/event";
 import { getZFromXY } from "lib/utils";
@@ -162,8 +162,19 @@ export class ShipZone extends Zone {
 
     public updatePower(newState: boolean) {
         if (this.hasPower != newState) {
-            // Apply power change to all players
-            this.getPlayersInZone().map(p => this.game.worldModule.askellon.applyPowerChange(p, newState, true));
+
+            if (this.hasPower) {
+                // Apply power change to all players
+                this.getPlayersInZone().map(p => this.game.worldModule.askellon.applyPowerChange(p, newState, true));
+            }
+            else {
+                const t = new Timer();
+                t.start(4, false, () => {
+                    // Apply power change to all players
+                    this.getPlayersInZone().map(p => this.game.worldModule.askellon.applyPowerChange(p, newState, true));
+                    t.destroy();
+                });
+            }
 
             if (!newState) {
                 this.lightSources.forEach((lightSource, i) => {

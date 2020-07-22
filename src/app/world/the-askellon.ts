@@ -38,8 +38,8 @@ declare const udg_elevator_exit_zones: string[];
 
 export class TheAskellon {
     
-    powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false);
-    powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false);
+    powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false, true);
+    powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false, true);
 
     world: WorldModule;
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
