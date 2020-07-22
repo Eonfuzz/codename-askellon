@@ -133,6 +133,8 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_dest_B002_2135 = nil
+gg_dest_B002_2134 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -244,6 +246,8 @@ function CreateAllDestructables()
     gg_dest_B002_1454 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11905.9, -22313.1, 128.0, 118.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_1452 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11910.7, -25205.8, 128.0, 118.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_1457 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12794.8, -24648.2, 147.2, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_2134 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13697.2, -22339.9, 102.4, 118.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B002_2135 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13100.4, -22120.0, 134.4, 118.000, 1.000, 0, FourCC("B002"))
     gg_dest_B003_2138 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13293.0, -21843.4, 70.4, 37.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2139 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13589.7, -21832.9, 76.8, 234.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2136 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13587.2, -21545.8, 76.8, 88.000, 1.000, 0, FourCC("B003"))
@@ -690,6 +694,8 @@ function Trig_LightsPerFloor_Actions()
     udg_Lights_Biology[13] = gg_dest_B002_0632
     udg_Lights_Biology[14] = gg_dest_B002_0629
     udg_Lights_Biology[15] = gg_dest_B002_0628
+    udg_Lights_Biology[16] = gg_dest_B002_2135
+    udg_Lights_Biology[17] = gg_dest_B002_2134
 end
 
 function InitTrig_LightsPerFloor()

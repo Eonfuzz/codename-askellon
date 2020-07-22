@@ -153,19 +153,23 @@ export class LatchAbility implements Ability {
 
     private onDamage(module: AbilityModule) {
         this.forceStop = true;
-        // Worm takes bonus damage
-        UnitDamageTarget(GetEventDamageSource(), 
-            this.unit.handle, 
-            25, 
-            true, 
-            true, 
-            ATTACK_TYPE_MAGIC, 
-            DAMAGE_TYPE_ACID, 
-            WEAPON_TYPE_WHOKNOWS
-        );
-        // Mini stun to end channels
-        this.unit.paused = true;
-        this.unit.paused = false;
+
+
+        if (!this.unit.paused) {
+            // Mini stun to end channels
+            this.unit.paused = true;
+            // Worm takes bonus damage
+            UnitDamageTarget(GetEventDamageSource(), 
+                this.unit.handle, 
+                25, 
+                true, 
+                true, 
+                ATTACK_TYPE_MAGIC, 
+                DAMAGE_TYPE_ACID, 
+                WEAPON_TYPE_WHOKNOWS
+            );
+            this.unit.paused = false;
+        }
     }
 
     private onLatchedGainsXp(module: AbilityModule, data: EventData) {
