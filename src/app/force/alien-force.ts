@@ -349,7 +349,7 @@ export class AlienForce extends ForceType {
         
         // Apply XP gain to alien form
         alien.suspendExperience(false);
-        alien.setExperience(MathRound(newTotal), true);
+        alien.setExperience(MathRound(newTotal), false);
         alien.suspendExperience(true);
     
         if (levelBefore !== alien.level) {

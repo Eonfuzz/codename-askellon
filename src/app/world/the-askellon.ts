@@ -26,14 +26,13 @@ const MODREATE_DAMAGE_THRESHOLD = 900;
 // Will cause damage to interior and other ship systems
 const EXTREME_DAMAGE_THRESHOLD = 1800;
 
-declare const udg_Lights_Floor_1: destructable[];
 declare const udg_Lights_Cargo: destructable[];
 declare const udg_Lights_Bridge: destructable[];
 declare const udg_Lights_Biology: destructable[];
+declare const udg_Lights_Armory: destructable[];
 
 declare const udg_elevator_entrances: unit[];
 declare const udg_elevator_exits: unit[];
-declare const udg_elevator_entrance_names: string[];
 declare const udg_elevator_exit_zones: string[];
 
 export class TheAskellon {
@@ -50,8 +49,8 @@ export class TheAskellon {
     constructor(world: WorldModule) {
         this.world = world;
 
-        this.floors.set(ZONE_TYPE.FLOOR_1, new ShipZone(world.game, ZONE_TYPE.FLOOR_1, udg_Lights_Floor_1));
-        this.floors.set(ZONE_TYPE.FLOOR_2, new ShipZone(world.game, ZONE_TYPE.FLOOR_2));
+        this.floors.set(ZONE_TYPE.ARMORY, new ShipZone(world.game, ZONE_TYPE.ARMORY, udg_Lights_Armory));
+        this.floors.set(ZONE_TYPE.ARMORY_VENT, new ShipZone(world.game, ZONE_TYPE.ARMORY_VENT));
         this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(world.game, ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
         this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(world.game, ZONE_TYPE.CARGO_A_VENT));
         this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(world.game, ZONE_TYPE.SERVICE_TUNNELS));
@@ -76,6 +75,12 @@ export class TheAskellon {
             BRIDGE_VENT.updatePower(false);
             BRIDGE_VENT.alwaysCauseFear = true;
         }
+        const ARMORY_VENT = this.floors.get(ZONE_TYPE.ARMORY_VENT);
+        if (ARMORY_VENT) {
+            ARMORY_VENT.updatePower(false);
+            ARMORY_VENT.alwaysCauseFear = true;
+        }
+
 
         // Now apply exits
         udg_elevator_entrances.forEach((u, index) => {
@@ -85,7 +90,7 @@ export class TheAskellon {
             // Get our zone
             if (this.floors.has(zone)) {
                 const floor = this.floors.get(zone);
-                floor.addExit(Unit.fromHandle(u));
+                floor.addExit(Unit.fromHandle(udg_elevator_exits[index]));
             }
 
         });

@@ -15,6 +15,7 @@ import { TimedEvent } from "app/types/timed-event";
 import { EVENT_TYPE, EventListener } from "app/events/event";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { ITEM_GENETIC_SAMPLER } from "resources/item-ids";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
 
 export class CrewModule {
 
@@ -62,6 +63,9 @@ export class CrewModule {
             it++;
         }      
     
+        // Force alien host to transform
+        const aForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+
         it = 0;
         while (it < forces.length) {
             const force = forces[it];
@@ -72,6 +76,27 @@ export class CrewModule {
                 let player = players[y];
                 let crew = this.createCrew(player, force);
                 // crew.updateTooltips(this.game.weaponModule);
+
+                if (force === aForce) {
+                    const aUnit = aForce.getAlienFormForPlayer(player);
+                    // Cancel pause
+                    aUnit.show = true;
+                    aUnit.pauseEx(false);
+                    aUnit.x = crew.unit.x - 20;
+                    aUnit.y = crew.unit.y - 300;
+
+                    
+                    crew.unit.pauseEx(true);
+                    aUnit.issueOrderAt("move", crew.unit.x, crew.unit.y);
+                    new Timer().start(1.5, false, () => {
+                        crew.unit.setAnimation("death");
+                        crew.unit.pauseEx(false);
+
+                        aUnit.pauseEx(true);
+                        aUnit.show = false;
+                    })
+                }
+
                 y++;
             }
             it++;
@@ -129,7 +154,7 @@ export class CrewModule {
             this.game.weaponModule.applyItemEquip(crewmember, item);
             roleGaveWeapons = true;
             // Now travel the unit to floor 1
-            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1, true);
+            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.ARMORY, true);
         }
         // Doctor begins with extra will and vigor
         else if (crewmember.role === ROLE_TYPES.DOCTOR) {
@@ -147,7 +172,7 @@ export class CrewModule {
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
             SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
-            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.FLOOR_1, true);
+            this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.ARMORY, true);
         }
         else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
             nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);

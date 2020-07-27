@@ -83,7 +83,7 @@ export abstract class ForceType {
 
         // Just apply the xp earned
         whichUnit.unit.suspendExperience(false);
-        whichUnit.unit.setExperience(MathRound(newTotal), true);
+        whichUnit.unit.setExperience(MathRound(newTotal), false);
         whichUnit.unit.suspendExperience(true);
 
         if (levelBefore !== whichUnit.unit.level) {

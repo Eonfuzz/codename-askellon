@@ -2,7 +2,7 @@
 import { InteractableData } from "./interactable";
 import { InteractionModule } from "./interaction-module";
 import { Log } from "../../lib/serilog/serilog";
-import { ZONE_TYPE } from "../world/zone-id";
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../world/zone-id";
 import { PlayNewSoundOnUnit, COLOUR, console } from "../../lib/translators";
 import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS, COL_MISC } from "../../resources/colours";
 import { Trigger, MapPlayer, Unit } from "w3ts";
@@ -18,7 +18,7 @@ export let Interactables = new Map<number, InteractableData>();
 class Elevator {
     unit: Unit;
     to: Elevator | undefined;
-    inside_zone: ZONE_TYPE
+    goes_to: ZONE_TYPE
     exit_offset: {
         x: number,
         y: number
@@ -26,7 +26,7 @@ class Elevator {
 
     constructor(u: Unit, zone: ZONE_TYPE, offset: {x: number, y: number}) {
         this.unit = u;
-        this.inside_zone = zone;
+        this.goes_to = zone;
         this.exit_offset = offset;
     }
 };
@@ -35,7 +35,6 @@ const elevatorMap = new Map<number, Elevator>();
 
 declare const udg_elevator_entrances: unit[];
 declare const udg_elevator_exits: unit[];
-declare const udg_elevator_entrance_names: string[];
 declare const udg_elevator_exit_zones: string[];
 
 export function initElevators(game: Game) {
@@ -43,8 +42,8 @@ export function initElevators(game: Game) {
     const elevators: Elevator[] = [];
 
     udg_elevator_entrances.forEach((entrance, i) => {
-        const entranceName = udg_elevator_entrance_names[i];
         const elevatorExitZone = game.worldModule.getZoneByName(udg_elevator_exit_zones[i]);
+        const elevatorExitZoneName = ZONE_TYPE_TO_ZONE_NAME.get(elevatorExitZone);
 
         const elevator = new Elevator(
             Unit.fromHandle(entrance),
@@ -52,7 +51,7 @@ export function initElevators(game: Game) {
             {x: 0, y: -165 }
         );
 
-        BlzSetUnitName(entrance, `To ${entranceName}|n${COL_MISC}Right Click To Use|r`);
+        BlzSetUnitName(entrance, `To ${elevatorExitZoneName}|n${COL_MISC}Right Click To Use|r`);
         elevatorMap.set(GetHandleId(entrance), elevator);
         elevators.push(elevator);
     });
@@ -100,7 +99,7 @@ export function initElevators(game: Game) {
                 if (IsUnitSelected(fromUnit.handle, fromUnit.owner.handle)) {
                     PanCameraToTimedForPlayer(fromUnit.owner.handle, fromUnit.x, fromUnit.y, 0);
                 }
-                iModule.game.worldModule.travel(fromUnit, targetElevator.to.inside_zone);
+                iModule.game.worldModule.travel(fromUnit, targetElevator.goes_to);
             }
         }
     }
@@ -109,7 +108,6 @@ export function initElevators(game: Game) {
 
 declare const udg_hatch_entrances: unit[];
 declare const udg_hatch_exits: unit[];
-declare const udg_hatch_entrance_names: string[];
 declare const udg_hatch_exit_zones: string[];
 
 const hatchMap = new Map<number, Elevator>();
@@ -118,8 +116,8 @@ export function initHatches(game: Game) {
     const hatches: Elevator[] = [];
 
     udg_hatch_entrances.forEach((entrance, i) => {
-        const entranceName = udg_hatch_entrance_names[i];
         const hatchExitZone = game.worldModule.getZoneByName(udg_hatch_exit_zones[i]);
+        const hatchExitZoneName = ZONE_TYPE_TO_ZONE_NAME.get(hatchExitZone);
 
         const elevator = new Elevator(
             Unit.fromHandle(entrance),
@@ -127,7 +125,7 @@ export function initHatches(game: Game) {
             {x: 0, y: 0 }
         );
 
-        BlzSetUnitName(entrance, `To ${entranceName}|n${COL_MISC}Right Click To Use|r`);
+        BlzSetUnitName(entrance, `To ${hatchExitZoneName}|n${COL_MISC}Right Click To Use|r`);
         hatchMap.set(GetHandleId(entrance), elevator);
         hatches.push(elevator);
     });
@@ -178,7 +176,7 @@ export function initHatches(game: Game) {
                 if (IsUnitSelected(fromUnit.handle, fromUnit.owner.handle)) {
                     PanCameraToTimedForPlayer(fromUnit.owner.handle, fromUnit.x, fromUnit.y, 0);
                 }
-                iModule.game.worldModule.travel(fromUnit, targetElevator.to.inside_zone);
+                iModule.game.worldModule.travel(fromUnit, targetElevator.goes_to);
             }
         }
     }

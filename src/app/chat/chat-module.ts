@@ -122,15 +122,7 @@ export class ChatModule {
 
         // Priv 2 === DEVELOPER
         if (priv >= 2) {
-            if (message === "-p1off") {
-                const z = this.game.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
-                z && z.updatePower(false);
-            }
-            else if (message === "-p1on") {
-                const z = this.game.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1)
-                z && z.updatePower(true);
-            }
-            else if (message.indexOf("-m") === 0) {
+            if (message.indexOf("-m") === 0) {
                 const mSplit = message.split(" ");
                 const dX = S2I(mSplit[1] || "0");
                 const dY = S2I(mSplit[2] || "0");

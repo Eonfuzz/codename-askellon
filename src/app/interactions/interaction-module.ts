@@ -36,14 +36,20 @@ export class InteractionModule {
         this.interactionBeginTrigger.addCondition(Condition(() => GetIssuedOrderId() === SMART_ORDER_ID));
         this.interactionBeginTrigger.addAction(() => this.beginInteraction());
 
-        initElevators(game);
-        initHatches(game);
-        initWeaponsTerminals();
-        initShipInteractions(game);
-        initAskellonInteractions(game);
-        initVendingInteraction(game);
-        initCommandTerminal(game);
-        initTesterInteractions(game);
+        try {
+            initElevators(game);
+            initHatches(game);
+            initWeaponsTerminals();
+            initShipInteractions(game);
+            initAskellonInteractions(game);
+            initVendingInteraction(game);
+            initCommandTerminal(game);
+            initTesterInteractions(game);
+        }
+        catch (e) {
+            Log.Error("Failed setting up interactables");
+            Log.Error(e);
+        }
     }
 
     beginInteraction() {

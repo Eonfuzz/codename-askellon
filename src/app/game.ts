@@ -80,6 +80,7 @@ export class Game {
         SetMusicVolume(30);
 
         BlzHideOriginFrames(true);
+        PauseGameOff();
 
         // Load order is important
         this.timedEventQueue    = new TimedEventQueue(this);
@@ -180,12 +181,12 @@ export class Game {
         DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}INFO|r] Preparing Warp`);
         new Timer().start(10, false, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Deep-Scans failing`);
+            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Deep-Scan failing`);
         });
-        new Timer().start(15, false, () => {
+        new Timer().start(16, false, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] DIVERTING`);
-            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 2, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 80.00, 15.00, 40.00, 0)
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 1, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 80.00, 80.00, 100.00, 0)
         });
     }
 
@@ -246,7 +247,7 @@ export class Game {
 
         new Timer().start(2, false, () => {
             PlayNewSound("Sounds\\ShipDamage\\GroanLong2.mp3", 127);
-            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 100.00, 100.00, 90.00, 0)
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 2, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 100.00, 100.00, 90.00, 0)
            
         })
 
@@ -261,7 +262,7 @@ export class Game {
             }
         });
         new Timer().start(4, false, () => {
-            PlayNewSound("Sounds\\ShipDamage\\GroanLong1.mp3", 127);
+            // PlayNewSound("Sounds\\ShipDamage\\GroanLong1.mp3", 127);
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
         });
@@ -284,12 +285,12 @@ export class Game {
         });
         new Timer().start(9, false, () => {
             this.worldModule.askellon.findZone(ZONE_TYPE.BRIDGE).updatePower(false);
-            this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1).updatePower(false);
+            this.worldModule.askellon.findZone(ZONE_TYPE.ARMORY).updatePower(false);
             this.worldModule.askellon.findZone(ZONE_TYPE.BIOLOGY).updatePower(false);
             CameraSetSourceNoise(20, 50);
         });
         new Timer().start(14, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Rebooting...`);
             CameraSetSourceNoise(10, 50);
         });
@@ -297,7 +298,7 @@ export class Game {
             CameraSetSourceNoise(5, 50);
 
             this.worldModule.askellon.findZone(ZONE_TYPE.BRIDGE).updatePower(true);
-            this.worldModule.askellon.findZone(ZONE_TYPE.FLOOR_1).updatePower(true);
+            this.worldModule.askellon.findZone(ZONE_TYPE.ARMORY).updatePower(true);
             this.worldModule.askellon.findZone(ZONE_TYPE.BIOLOGY).updatePower(true);
         });
         new Timer().start(20, false, () => {

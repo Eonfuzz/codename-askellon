@@ -1593,24 +1593,6 @@ STRING 375
 Unlock Psionic Potential
 }
 
-STRING 376
-{
-|cff455D68Alpha Version|r
-}
-
-STRING 377
-{
-|cff839299Codename Askellon|r
-}
-
-STRING 378
-{
-|cff839299The crew onboard the Askellon wake to blaring alarms and a damaged ship. Some of your comrades are either dead, missing or just as dazed as you are.|r
-
-|cff455D68Travel through deep space, repair the broken subsystems of your Ship and escape...|r
-|n|n
-}
-
 STRING 379
 {
 Unknown
