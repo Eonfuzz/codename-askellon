@@ -4267,3 +4267,21 @@ STRING 1021
 |cff808080A somewhat medieval approach to extracting genetic tissue; This device quickly tears the top layer of the skin and seals it in a portal hermetic container.|r|n|nExtracts a |cff00ff00Genetic Sample|r from the target; dealing |cff00ff0035 damage|r and applying a ministun.|n|n|cff80808025 Seconds Cooldown|r
 }
 
+STRING 1022
+// Doodads: D00W (Conveyer), Name (Name)
+{
+Conveyer
+}
+
+STRING 1023
+// Units: h000 (Target Dummy), Name (Name)
+{
+Target Dummy
+}
+
+STRING 1024
+// Doodads: D00X (Window Internal), Name (Name)
+{
+Window Internal
+}
+

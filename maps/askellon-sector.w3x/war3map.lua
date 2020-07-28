@@ -23,6 +23,10 @@ udg_genetic_test_lights = {}
 udg_genetic_sequencer_unit = nil
 udg_Lights_Armory = {}
 udg_i = 0
+udg_Conveyors_West = {}
+udg_Conveyors_North = {}
+udg_Conveyors_East = {}
+udg_Conveyors_South = {}
 gg_rct_Space = nil
 gg_rct_FallZone1Land = nil
 gg_rct_GeneSplicer = nil
@@ -55,6 +59,11 @@ gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = nil
 gg_rct_pathingRect = nil
+gg_rct_FallZoneCargo_Copy = nil
+gg_rct_Region_002 = nil
+gg_rct_Region_002_Copy = nil
+gg_rct_Region_002_Copy_Copy = nil
+gg_rct_Region_002_Copy_2 = nil
 gg_trg_SetKillzones = nil
 gg_trg_LightsPerFloor = nil
 gg_trg_Set = nil
@@ -66,6 +75,8 @@ gg_trg_SetCollisionData = nil
 gg_trg_SetGeneticTesterLights = nil
 gg_trg_Hide_Cathederal_Statue = nil
 gg_trg_Untitled_Trigger_001 = nil
+gg_trg_SetConveyors = nil
+gg_unit_n001_0228 = nil
 gg_unit_n004_0034 = nil
 gg_unit_n001_0055 = nil
 gg_unit_n004_0047 = nil
@@ -84,12 +95,14 @@ gg_unit_h004_0061 = nil
 gg_unit_n001_0240 = nil
 gg_unit_n004_0267 = nil
 gg_unit_n002_0245 = nil
+gg_unit_n002_0263 = nil
+gg_unit_n001_0269 = nil
 gg_unit_n00A_0222 = nil
 gg_unit_n00D_0226 = nil
-gg_dest_B002_0015 = nil
-gg_dest_B002_0017 = nil
-gg_dest_B002_0019 = nil
-gg_dest_B002_0022 = nil
+gg_unit_h004_0048 = nil
+gg_unit_n004_0229 = nil
+gg_unit_n001_0225 = nil
+gg_unit_n002_0032 = nil
 gg_dest_B002_0340 = nil
 gg_dest_B002_0096 = nil
 gg_dest_B002_0097 = nil
@@ -129,19 +142,11 @@ gg_dest_B002_2135 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
-gg_unit_h004_0048 = nil
-gg_unit_n001_0225 = nil
-gg_unit_n001_0228 = nil
-gg_unit_n001_0269 = nil
-gg_unit_n002_0263 = nil
-gg_unit_n004_0229 = nil
-gg_rct_FallZoneCargo_Copy = nil
-gg_dest_B002_2284 = nil
 gg_dest_B002_2280 = nil
+gg_dest_B002_2284 = nil
 gg_dest_B002_2290 = nil
 gg_dest_B002_2291 = nil
-gg_dest_B002_2292 = nil
-gg_unit_n002_0032 = nil
+gg_rct_CargoAConveyor = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -239,22 +244,17 @@ function CreateAllDestructables()
     gg_dest_B002_1452 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11910.7, -25205.8, 128.0, 118.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_1457 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12794.8, -24648.2, 147.2, 118.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_2134 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13697.2, -22339.9, 102.4, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_2291 = BlzCreateDestructableZWithSkin(FourCC("B002"), -6460.9, -24818.6, 83.2, 251.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_2135 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13100.4, -22120.0, 134.4, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_2290 = BlzCreateDestructableZWithSkin(FourCC("B002"), -7404.5, -24802.2, 102.4, 251.000, 1.000, 0, FourCC("B002"))
     gg_dest_B002_2284 = BlzCreateDestructableZWithSkin(FourCC("B002"), -7497.0, -23484.0, 134.4, 251.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_2280 = BlzCreateDestructableZWithSkin(FourCC("B002"), -8072.9, -23729.7, 134.4, 251.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_2292 = BlzCreateDestructableZWithSkin(FourCC("B002"), -4688.6, -24851.4, 83.2, 251.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B003_2138 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13293.0, -21843.4, 70.4, 37.000, 1.000, 0, FourCC("B003"))
-    gg_dest_B003_2137 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13292.5, -21536.1, 64.0, 344.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2139 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13589.7, -21832.9, 76.8, 234.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2136 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13587.2, -21545.8, 76.8, 88.000, 1.000, 0, FourCC("B003"))
+    gg_dest_B003_2138 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13293.0, -21843.4, 70.4, 37.000, 1.000, 0, FourCC("B003"))
+    gg_dest_B003_2137 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13292.5, -21536.1, 64.0, 344.000, 1.000, 0, FourCC("B003"))
 end
 
 function CreateAllItems()
     local itemID
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
-    BlzCreateItemWithSkin(FourCC("I00C"), -13584.0, -22032.9, FourCC("I00C"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
 end
@@ -307,6 +307,7 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1376.0, 416.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1184.0, 416.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1376.0, 288.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5632.0, -24064.0, 269.179, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1184.0, 288.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1248.0, 160.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1760.0, 480.0, 270.000, FourCC("h005"))
@@ -504,7 +505,7 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -13728.0, -25440.0, 90.777, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -13824.0, -25440.0, 90.777, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7840.0, -24512.0, 149.972, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -8160.0, -24544.0, -67.055, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -8160.0, -24544.0, 292.945, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -8128.0, -24992.0, 7.650, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10624.0, -25120.0, 78.867, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -10560.0, -24928.0, 149.770, FourCC("h005"))
@@ -522,22 +523,26 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7872.0, -24704.0, 149.972, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -8160.0, -24768.0, 149.972, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -8000.0, -25056.0, 149.972, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6848.0, -23264.0, 269.189, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6784.0, -23264.0, 268.431, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6720.0, -23264.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6848.0, -23328.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6784.0, -23328.0, 268.410, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6528.0, -23424.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6688.0, -23456.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6720.0, -23328.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6656.0, -23264.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6848.0, -23488.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5184.0, -24384.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5184.0, -24320.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5280.0, -24352.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5184.0, -24160.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6272.0, -23200.0, 269.189, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6208.0, -23200.0, 268.431, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6272.0, -23264.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6208.0, -23264.0, 268.410, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6144.0, -23200.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6080.0, -23424.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6400.0, -23200.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6144.0, -23264.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6080.0, -23200.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -6368.0, -23328.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -4352.0, -23616.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5376.0, -22624.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -4768.0, -22624.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5031.8, -24342.5, 218.140, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -8160.0, -24896.0, 269.179, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -8160.0, -24672.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5632.0, -22944.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5632.0, -23296.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -4352.0, -22880.0, 269.179, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -4352.0, -24096.0, 269.179, FourCC("h005"))
 end
 
 function CreateNeutralHostileBuildings()
@@ -557,6 +562,11 @@ function CreateNeutralHostile()
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 3725.9, -403.1, 210.264, FourCC("ntrd"))
     u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 3602.9, -115.6, 215.074, FourCC("ntrd"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h000"), -4327.5, -23198.2, 265.400, FourCC("h000"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h000"), -5063.5, -22654.2, 265.400, FourCC("h000"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h000"), -5639.5, -23582.2, 265.400, FourCC("h000"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h000"), -5375.6, -24340.1, 272.110, FourCC("h000"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h000"), -4698.6, -24341.5, 170.680, FourCC("h000"))
 end
 
 function CreateNeutralPassiveBuildings()
@@ -568,7 +578,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n002_0032 = BlzCreateUnitWithSkin(p, FourCC("n002"), -5760.0, -20480.0, 270.000, FourCC("n002"))
     gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
     gg_unit_n004_0035 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26113.3, 26361.4, 89.562, FourCC("n004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), 1024.0, -256.0, 270.000, FourCC("nWEP"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), -6592.0, -23232.0, 270.000, FourCC("nWEP"))
     u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -12803.1, -24508.2, 270.000, FourCC("nMED"))
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -13696.0, -24896.0, 270.000, FourCC("nGEN"))
     gg_unit_n002_0043 = BlzCreateUnitWithSkin(p, FourCC("n002"), -27584.0, -26944.0, 270.000, FourCC("n002"))
@@ -581,7 +591,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n00A_0222 = BlzCreateUnitWithSkin(p, FourCC("n00A"), -23034.7, -25209.5, 270.000, FourCC("n00A"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -4672.0, -24448.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -3904.0, -24512.0, 270.000, FourCC("n001"))
     gg_unit_n001_0225 = BlzCreateUnitWithSkin(p, FourCC("n001"), -7488.0, -23168.0, 270.000, FourCC("n001"))
     gg_unit_n00D_0226 = BlzCreateUnitWithSkin(p, FourCC("n00D"), -13437.8, -21683.5, 270.000, FourCC("n00D"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00E"), -13050.2, -22006.5, 225.861, FourCC("n00E"))
@@ -653,6 +663,11 @@ function CreateRegions()
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = Rect(-18144.0, -27456.0, -17664.0, -26496.0)
     gg_rct_pathingRect = Rect(0.0, 0.0, 256.0, 256.0)
     gg_rct_FallZoneCargo_Copy = Rect(-6560.0, -23168.0, -5888.0, -22912.0)
+    gg_rct_Region_002 = Rect(-4416.0, -24384.0, -4288.0, -22624.0)
+    gg_rct_Region_002_Copy = Rect(-5696.0, -24384.0, -4320.0, -24288.0)
+    gg_rct_Region_002_Copy_Copy = Rect(-5664.0, -22688.0, -4288.0, -22592.0)
+    gg_rct_Region_002_Copy_2 = Rect(-5696.0, -24352.0, -5568.0, -22592.0)
+    gg_rct_CargoAConveyor = Rect(-28480.0, -27680.0, -25888.0, -27552.0)
 end
 
 function Trig_SetKillzones_Actions()
@@ -715,16 +730,7 @@ function Trig_LightsPerFloor_Actions()
     udg_Lights_Biology[16] = gg_dest_B002_2135
     udg_Lights_Biology[17] = gg_dest_B002_2134
     udg_i = 1
-    udg_Lights_Biology[udg_i] = gg_dest_B002_2284
-    udg_i = (udg_i + 1)
-    udg_Lights_Biology[udg_i] = gg_dest_B002_2280
-    udg_i = (udg_i + 1)
-    udg_Lights_Biology[udg_i] = gg_dest_B002_2290
-    udg_i = (udg_i + 1)
-    udg_Lights_Biology[udg_i] = gg_dest_B002_2291
-    udg_i = (udg_i + 1)
-    udg_Lights_Biology[udg_i] = gg_dest_B002_2292
-    udg_i = (udg_i + 1)
+    udg_Lights_Armory[udg_i] = gg_dest_B002_2284
 end
 
 function InitTrig_LightsPerFloor()
@@ -917,6 +923,19 @@ function InitTrig_Untitled_Trigger_001()
     TriggerAddAction(gg_trg_Untitled_Trigger_001, Trig_Untitled_Trigger_001_Actions)
 end
 
+function Trig_SetConveyors_Actions()
+    udg_Conveyors_North[1] = gg_rct_Region_002
+    udg_Conveyors_East[1] = gg_rct_Region_002_Copy
+    udg_Conveyors_East[2] = gg_rct_CargoAConveyor
+    udg_Conveyors_West[1] = gg_rct_Region_002_Copy_Copy
+    udg_Conveyors_South[1] = gg_rct_Region_002_Copy_2
+end
+
+function InitTrig_SetConveyors()
+    gg_trg_SetConveyors = CreateTrigger()
+    TriggerAddAction(gg_trg_SetConveyors, Trig_SetConveyors_Actions)
+end
+
 function InitCustomTriggers()
     InitTrig_SetKillzones()
     InitTrig_LightsPerFloor()
@@ -929,6 +948,7 @@ function InitCustomTriggers()
     InitTrig_SetGeneticTesterLights()
     InitTrig_Hide_Cathederal_Statue()
     InitTrig_Untitled_Trigger_001()
+    InitTrig_SetConveyors()
 end
 
 function RunInitializationTriggers()
@@ -941,6 +961,7 @@ function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetShipZones)
     ConditionalTriggerExecute(gg_trg_SetCollisionData)
     ConditionalTriggerExecute(gg_trg_SetGeneticTesterLights)
+    ConditionalTriggerExecute(gg_trg_SetConveyors)
 end
 
 function InitCustomPlayerSlots()

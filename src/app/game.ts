@@ -31,6 +31,7 @@ import { Vector2 } from "./types/vector2";
 import { Vector3 } from "./types/vector3";
 import { getYawPitchRollFromVector, PlayNewSoundOnUnit, PlayNewSound } from "lib/translators";
 import { COL_ATTATCH, COL_GOOD, COL_ORANGE } from "resources/colours";
+import { ConveyorModule } from "./conveyor/conveyor-module";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 const PROCESS_TIMER = 0.03;
@@ -54,6 +55,7 @@ export class Game {
     public event: EventModule;
     public tooltips: TooltipModule;
     public vision: VisionModule;
+    public conveyor: ConveyorModule;
 
     public stationSecurity: SecurityModule;
     public buffModule: DynamicBuffModule;
@@ -99,6 +101,7 @@ export class Game {
         this.crewModule         = new CrewModule(this);
         this.leapModule         = new LeapModule(this);
         this.researchModule     = new ResearchModule(this);
+        this.conveyor           = new ConveyorModule(this);
 
         this.abilityModule      = new AbilityModule(this);
         this.geneModule         = new GeneModule(this);
@@ -113,6 +116,7 @@ export class Game {
         this.researchModule.initialise();
         this.geneModule.initGenes();
         this.tooltips.initialise();
+        this.conveyor.initialise();
         
         // Here be dragons, old code is below and needs update
         // this.galaxyModule.initSectors();
@@ -234,16 +238,13 @@ export class Game {
     private cinematicSound = new SoundRef("Sounds\\StationStormScreech.mp3", false, true);
     private openingCinematic() {
 
-        const hideButtons = new Timer().start(0.01, true, () => {
-            for (let i = 0; i < 12; i++) {
-                BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), false);  
-            }
-        });
-
         this.cinematicSound.playSound();
         CameraSetSourceNoise(2, 50);
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
         DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Hull Deteriorating`);
+
+        // Init chat
+        this.chatModule.initialise();
 
         new Timer().start(2, false, () => {
             PlayNewSound("Sounds\\ShipDamage\\GroanLong2.mp3", 127);
@@ -305,9 +306,6 @@ export class Game {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Breaches detected`);
 
-            hideButtons.pause();
-            hideButtons.destroy();
-
             CameraSetSourceNoise(0, 0);
             BlzHideOriginFrames(false);
             BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
@@ -315,9 +313,6 @@ export class Game {
             for (let i = 0; i < 12; i++) {
                 BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), true);            
             }
-
-            // Init chat
-            this.chatModule.initialise();
         });
         new Timer().start(21, false, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
