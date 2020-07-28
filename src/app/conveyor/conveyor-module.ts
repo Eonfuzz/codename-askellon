@@ -1,6 +1,7 @@
 import { Game } from "app/game";
 import { Widget, Region, Trigger, Rectangle, Timer } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
+import { UNIT_IS_FLY } from "resources/ability-ids";
 
 declare const udg_Conveyors_West: rect[];
 declare const udg_Conveyors_North: rect[];
@@ -118,25 +119,29 @@ export class ConveyorModule {
         if (this.unitMoveNorth.length > 0)
             this.unitMoveNorth = this.unitMoveNorth.filter(u => {
                 if (!UnitAlive(u)) return false;
-                SetUnitY(u, GetUnitY(u) + conveyorSpeed);            
+                if (GetUnitAbilityLevel(u, UNIT_IS_FLY) === 0)
+                    SetUnitY(u, GetUnitY(u) + conveyorSpeed);            
                 return true;
             });
         if (this.unitMoveSouth.length > 0)
             this.unitMoveSouth = this.unitMoveSouth.filter(u => {
                 if (!UnitAlive(u)) return false;
-                SetUnitY(u, GetUnitY(u) - conveyorSpeed);     
+                if (GetUnitAbilityLevel(u, UNIT_IS_FLY) === 0)
+                    SetUnitY(u, GetUnitY(u) - conveyorSpeed);     
                 return true;
             });
         if (this.unitMoveWest.length > 0)
             this.unitMoveWest = this.unitMoveWest.filter(u => {
                 if (!UnitAlive(u)) return false;
-                SetUnitX(u, GetUnitX(u) - conveyorSpeed);     
+                if (GetUnitAbilityLevel(u, UNIT_IS_FLY) === 0)
+                    SetUnitX(u, GetUnitX(u) - conveyorSpeed);     
                 return true;
             });
         if (this.unitMoveEast.length > 0)
             this.unitMoveEast = this.unitMoveEast.filter(u => {
                 if (!UnitAlive(u)) return false;
-                SetUnitX(u, GetUnitX(u) + conveyorSpeed);     
+                if (GetUnitAbilityLevel(u, UNIT_IS_FLY) === 0)
+                    SetUnitX(u, GetUnitX(u) + conveyorSpeed);     
                 return true;
             });
     }

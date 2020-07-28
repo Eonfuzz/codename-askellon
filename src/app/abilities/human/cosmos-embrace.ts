@@ -53,13 +53,10 @@ export class EmbraceCosmosAbility implements Ability {
                 this.embraceCosmosExplode(module);
             }
             if (this.timeCast >= SFXEnd && this.sfx) {
-                // Log.Information("Destroy effect");
-                this.sfx.destroy();
                 return false;
             }
         }
         else if (this.timeCast < EmbraceCosmosCastTime) {
-            // Log.Information("Ending animation")
             return false;
         }
 
@@ -126,6 +123,9 @@ export class EmbraceCosmosAbility implements Ability {
     public destroy(aMod: AbilityModule) {
         // Log.Information("Destroy");
         this.soundEffect.stopSound();
+        if (this.sfx) {
+            this.sfx.destroy();
+        }
         return true;
     };
 }

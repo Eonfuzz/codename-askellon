@@ -4285,3 +4285,9 @@ STRING 1024
 Window Internal
 }
 
+STRING 1025
+// Destructibles: B006 (Light Blue), Name (Name)
+{
+Light Blue
+}
+
