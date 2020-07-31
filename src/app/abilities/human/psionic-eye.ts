@@ -1,14 +1,8 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
-import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../../weapons/weapon-constants";
-import { SPRINT_BUFF_ID } from "resources/ability-ids";
-import { Vector3 } from "app/types/vector3";
-import { getZFromXY } from "lib/utils";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/forces/alien-force";
 import { Unit } from "w3ts/handles/unit";
+import { ForceEntity } from "app/force/force-entity";
 
 /** @noSelfInFile **/
 const PSIONIC_EYE_DURATION = 5;
@@ -23,16 +17,16 @@ export class PsionicEyeAbility implements Ability {
 
     constructor() {}
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
 
         const pingFor: Crewmember[] = [];
-        const alienForce = module.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+        const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME) as AlienForce;
         const pingForplayer = this.unit.owner;
 
         pingFor.forEach(crew => {
@@ -50,7 +44,7 @@ export class PsionicEyeAbility implements Ability {
         return this.timeElapsed < PSIONIC_EYE_DURATION;
     };
 
-    public destroy(aMod: AbilityModule) {
+    public destroy() {
         return true;
     };
 }

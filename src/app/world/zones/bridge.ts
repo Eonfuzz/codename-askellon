@@ -1,21 +1,22 @@
 import { ShipZone } from "../zone-type";
-import { WorldModule } from "../world-module";
+import { WorldEntity } from "../world-entity";
 import { Unit, Timer } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { Log } from "lib/serilog/serilog";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { ZONE_TYPE } from "../zone-id";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 export class BridgeZone extends ShipZone {
 
     operaMusic = new SoundRef("Music\\Puccini.mp3", true, true);
     private musicIsActive = false;
 
-    public onLeave(world: WorldModule, unit: Unit) {
-        super.onLeave(world, unit);
+    public onLeave(unit: Unit) {
+        super.onLeave(unit);
 
         // Check if it is a main unit
-        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+        const isCrew = !!CrewFactory.getInstance().getCrewmemberForUnit(unit);
 
         if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
@@ -24,11 +25,11 @@ export class BridgeZone extends ShipZone {
         }
     }
 
-    public onEnter(world: WorldModule, unit: Unit) {
-        super.onEnter(world, unit);
+    public onEnter(unit: Unit) {
+        super.onEnter(unit);
 
         // Check if it is a main unit
-        const crewmember = world.game.crewModule.getCrewmemberForUnit(unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
 
         if (crewmember && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
             // Play music
@@ -39,12 +40,12 @@ export class BridgeZone extends ShipZone {
         // If we are captain keep track of his existance
         if (crewmember && crewmember.role === ROLE_TYPES.CAPTAIN) {
             const captainXpTimer = new Timer().start(5, true, () => {
-                const zone = world.getUnitZone(crewmember.unit);
+                const zone = WorldEntity.getInstance().getUnitZone(crewmember.unit);
                 if (!zone || (zone.id !== ZONE_TYPE.BRIDGE && zone.id !==  ZONE_TYPE.SPACE)) {
                     return captainXpTimer.destroy();
                 }
 
-                crewmember.addExperience(world.game, 5);
+                crewmember.addExperience(5);
             });
         }
     }
@@ -53,29 +54,28 @@ export class BridgeZoneVent extends ShipZone {
 
     operaMusic = new SoundRef("Music\\Puccini.mp3", true);
 
-    public onLeave(world: WorldModule, unit: Unit) {
-        super.onLeave(world, unit);
+    public onLeave(unit: Unit) {
+        super.onLeave(unit);
 
         // Check if it is a main unit
-        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
 
-        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
+        if (crewmember && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
             this.operaMusic.stopSound();
             SetMusicVolume(20);
         }
     }
 
-    public onEnter(world: WorldModule, unit: Unit) {
-        super.onEnter(world, unit);
+    public onEnter(unit: Unit) {
+        super.onEnter(unit);
 
-        // Check if it is a main unit
-        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
 
         // Play music
         this.operaMusic.setVolume(50);
 
-        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
+        if (crewmember && GetLocalPlayer() === unit.owner.handle) {
             this.operaMusic.playSound();
             SetMusicVolume(10);
         }

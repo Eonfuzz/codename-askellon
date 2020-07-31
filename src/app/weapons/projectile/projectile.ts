@@ -3,7 +3,6 @@
 import { ProjectileTarget, ProjectileMover, ProjectileMoverLinear } from "./projectile-target";
 import { Vector3 } from "../../types/vector3";
 import { ProjectileSFX } from "./projectile-sfx";
-import { WeaponModule } from "../weapon-module";
 import { getZFromXY } from "lib/utils";
 
 const AIRBORN_ABILITY_DUMMY = FourCC('A00C');
@@ -37,8 +36,8 @@ export class Projectile {
     public filter: filterfunc;
 
     // Callbacks
-    private onCollideCallback: ((module: WeaponModule, projectile: Projectile, who: unit) => void) | undefined;
-    private onDeathCallback: Function | undefined;
+    private onCollideCallback: ((projectile: Projectile, who: unit) => void) | undefined;
+    private onDeathCallback: ((projectile: Projectile) => void) | undefined;
 
     constructor(source: unit, startPosition: Vector3, target: ProjectileTarget, projectileMover?: ProjectileMover) {
         this.position = startPosition;
@@ -111,19 +110,19 @@ export class Projectile {
         return this;
     }
 
-    public onCollide(callback: (module: WeaponModule, projectile: Projectile, who: unit) => void): Projectile {
+    public onCollide(callback: (projectile: Projectile, who: unit) => void): Projectile {
         this.onCollideCallback = callback;
         return this;
     }
 
-    public onDeath(callback: Function): Projectile {
+    public onDeath(callback: (projectile: Projectile) => boolean): Projectile {
         this.onDeathCallback = callback;
         return this;
     }
 
-    public collide(weaponModule: WeaponModule, withUnit: unit): void {
+    public collide(withUnit: unit): void {
         if (this.onCollideCallback) {
-            this.onCollideCallback(weaponModule, this, withUnit);
+            this.onCollideCallback(this, withUnit);
         }
     }
     
@@ -134,7 +133,7 @@ export class Projectile {
      * Updates the projectile's location and returns distance moved
      * @param deltaTime 
      */
-    update(weaponModule: WeaponModule, deltaTime: number): Vector3 {
+    update(deltaTime: number): Vector3 {
 
         let velocityToApply = this.mover.move(this.position, this.getTarget().getTargetVector(), this.velocity, deltaTime);
         let newPosition = this.position.add(velocityToApply);
@@ -143,7 +142,7 @@ export class Projectile {
         // Now update attached sfx
         this.sfx.forEach(sfx => sfx.updatePosition(this.position));
 
-        if (this.reachedEnd(weaponModule, velocityToApply)) this.doDestroy = true;
+        if (this.reachedEnd(velocityToApply)) this.doDestroy = true;
         // Return distance travelled
         return velocityToApply;
     }
@@ -153,14 +152,14 @@ export class Projectile {
         return this;
     }
 
-    private reachedEnd(weaponModule: WeaponModule, targetVector: Vector3): boolean {
+    private reachedEnd(targetVector: Vector3): boolean {
         let z = getZFromXY(this.position.x, this.position.y);
         // let location = GLOBAL_LOCATION
         return (this.position.z <= z);
     }
 
-    public destroy(weaponModule: WeaponModule): boolean {
-        this.onDeathCallback && this.onDeathCallback(weaponModule, this);
+    public destroy(): boolean {
+        this.onDeathCallback && this.onDeathCallback(this);
         this.sfx.forEach(sfx => sfx.destroy());
         this.sfx = [];
         return true;

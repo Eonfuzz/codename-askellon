@@ -12,7 +12,6 @@ import { MapPlayer } from "w3ts";
 const MAX_CHAT_MESSAGES = 15;
 
 export class ChatSystem {
-    private game: Game;
 
     private player: MapPlayer;
 
@@ -23,15 +22,14 @@ export class ChatSystem {
     private timeSinceLastMessage: number = 0;
     private timestampLastMessage: number = 0;
 
-    constructor(game: Game, forWho: MapPlayer) {
-        this.game = game;
+    constructor(forWho: MapPlayer) {
         this.player = forWho;
     }
 
     /**
      * Delegate for gametime
      */
-    private getGameTime() { return this.game.getTimeStamp(); }
+    private getGameTime() { return Game.getInstance().getTimeStamp(); }
 
     /**
      * Gets the player's chat colour
@@ -126,7 +124,7 @@ export class ChatSystem {
                 const text = this.generateMessage(playerName, playerColor, message, messageTag);
                 this.addMessage(text);
                 this.update();
-                if (sound && sound.canPlaySound(this.game.getTimeStamp())) sound.playSound();
+                if (sound && sound.canPlaySound()) sound.playSound();
                 this.timestampLastMessage = timestamp;
                 this.timeSinceLastMessage = 0;
             }

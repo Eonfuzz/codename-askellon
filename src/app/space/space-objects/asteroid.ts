@@ -1,9 +1,7 @@
 /** @noSelfInFile **/
 import { SpaceObject, SpaceObjectType } from "./space-object";
 import { Vector2 } from "../../types/vector2";
-import { ForceModule } from "../../force/force-module";
-import { Game } from "../../game";
-import { Log } from "lib/serilog/serilog";
+import { ForceEntity } from "../../force/force-entity";
 import { Unit, Effect } from "w3ts/index";
 import { SPACE_UNIT_ASTEROID } from "resources/unit-ids";
 
@@ -24,11 +22,11 @@ export class Asteroid extends SpaceObject {
     }
 
 
-    public loadAsUnit(game: Game) {
+    public loadAsUnit() {
 
         const location = this.getLocation();
 
-        this.widget = new Unit(game.forceModule.neutralPassive, SPACE_UNIT_ASTEROID, location.x, location.y, bj_UNIT_FACING) as Unit;
+        this.widget = new Unit(ForceEntity.getInstance().neutralPassive, SPACE_UNIT_ASTEROID, location.x, location.y, bj_UNIT_FACING) as Unit;
         const i = GetRandomInt(0, ASTEROID_SKINS.length-1);
         const skin = ASTEROID_SKINS[i];
 
@@ -43,7 +41,7 @@ export class Asteroid extends SpaceObject {
         BlzSetUnitFacingEx(this.widget.handle, GetRandomReal(0, 360));
     }
 
-    public loadAsEffect(game: Game) {
+    public loadAsEffect() {
         const loc = this.getLocation();
 
         const isBackground = this.type === SpaceObjectType.background;

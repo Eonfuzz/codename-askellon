@@ -1,8 +1,6 @@
 import { MapPlayer, Unit } from "w3ts/index";
-import { ForceType } from "./force-type";
-import { Log } from "lib/serilog/serilog";
+import { ForceType } from "./forces/force-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { Game } from "app/game";
 
 export class PlayerWithForce {
 
@@ -29,9 +27,9 @@ export class PlayerWithForce {
         this.playerExperience = to;
     }
 
-    addExperience(game: Game, howMuch: number) {
+    addExperience(howMuch: number) {
         this.playerExperience += howMuch;
-        this.force.onUnitGainsXp(game, this.crewmember, this.playerExperience);
+        this.force.onUnitGainsXp(this.crewmember, this.playerExperience);
     }
 
     getExperience() {

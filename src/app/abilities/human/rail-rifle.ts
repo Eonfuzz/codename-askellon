@@ -1,15 +1,15 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Unit } from "w3ts/handles/unit";
 import { PlayNewSoundOnUnit, getYawPitchRollFromVector } from "lib/translators";
 import { getZFromXY } from "lib/utils";
 import { Vector3 } from "app/types/vector3";
-import { WeaponModule } from "app/weapons/weapon-module";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic } from "app/weapons/projectile/projectile-target";
 import { SoundRef } from "app/types/sound-ref";
 import { vectorFromUnit } from "app/types/vector2";
-import { TimedEvent } from "app/types/timed-event";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { Timers } from "app/timer-type";
 
 
 export class RailRifleAbility implements Ability {
@@ -24,7 +24,7 @@ export class RailRifleAbility implements Ability {
     private sound: SoundRef;
     constructor() {}
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.sound = new SoundRef("Sounds\\chargeUp.mp3", false); 
         this.sound.playSoundOnUnit(this.unit.handle, 30);
@@ -43,7 +43,7 @@ export class RailRifleAbility implements Ability {
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         const unit = this.unit;
         this.timeElapsed += delta;
 
@@ -104,10 +104,10 @@ export class RailRifleAbility implements Ability {
             );
             // BlzSetSpecialEffectColor(effect, 130, 160, 255);
 
-            module.game.weaponModule.addProjectile(projectile);
+            WeaponEntity.getInstance().addProjectile(projectile);
 
             // Create smoke rings every tick if we charged more than 2 seconds
-            if (this.timeElapsed >= 2) this.createSmokeRingsFor(module, projectile, deltaTarget);
+            if (this.timeElapsed >= 2) this.createSmokeRingsFor(projectile, deltaTarget);
             if (this.timeElapsed >= 3) {
                 const facingVec = targetLoc.subtract(casterLoc).normalise();
                 collisionRadius = 40;
@@ -140,8 +140,8 @@ export class RailRifleAbility implements Ability {
             projectile
                 .setCollisionRadius(collisionRadius)
                 .setVelocity(PROJ_SPEED)
-                .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
-                    this.onProjectileCollide(weaponModule, projectile, collidesWith)
+                .onCollide((projectile: Projectile, collidesWith: unit) => 
+                    this.onProjectileCollide(projectile, collidesWith)
                 );
             return false;
         }
@@ -149,12 +149,12 @@ export class RailRifleAbility implements Ability {
     };
 
     
-    private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
+    private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         // Destroy projectile
         projectile.setDestroy(true);
 
         // Case equipped unit to damage the target
-        const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
         if (crewmember) {
             const chargeFactor = Pow(1+this.timeElapsed/10, 2)
 
@@ -171,10 +171,10 @@ export class RailRifleAbility implements Ability {
         }
     }
 
-    private createSmokeRingsFor(module: AbilityModule, projectile: Projectile, deltaTarget: Vector3) {
+    private createSmokeRingsFor(projectile: Projectile, deltaTarget: Vector3) {
         let delay = 0;
         while (delay < 1000) {
-            module.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+            Timers.addTimedAction(delay, () => {
                 if (!projectile || projectile.willDestroy()) return true;
                 const position = projectile.getPosition().add(deltaTarget.normalise());
                 const sfxOrientation = getYawPitchRollFromVector(deltaTarget.normalise());
@@ -190,13 +190,13 @@ export class RailRifleAbility implements Ability {
 
                 DestroyEffect(sfx);
                 return true;
-            }, delay, false));
+            });
             delay += 100;
         }
 
     }
 
-    public destroy(aMod: AbilityModule) {
+    public destroy() {
         // Stop the charge sound
         StopSound(this.sound.sound, true, true);
         SetSoundVolume(this.sound.sound, 0);

@@ -1,11 +1,7 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Vector3 } from "app/types/vector3";
 import { Unit } from "w3ts/index";
-import { Log } from "lib/serilog/serilog";
-import { SoundRef } from "app/types/sound-ref";
 import { PlayNewSoundOnUnit } from "lib/translators";
+import { Game } from "app/game";
 
 const REPAIR_DURATION = 6;
 const REPAIR_TICK_EVERY = 1;
@@ -23,7 +19,7 @@ export class ItemRepairAbility implements Ability {
 
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
 
@@ -31,7 +27,7 @@ export class ItemRepairAbility implements Ability {
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
         this.timeElapsedSinceLastRepair += delta;
 
@@ -47,7 +43,7 @@ export class ItemRepairAbility implements Ability {
             this.targetUnit.life = this.targetUnit.life + REPAIR_AMOUNT;
 
             // Notify game of the healing
-            module.game.stationSecurity.onSecurityHeal(this.targetUnit.handle, this.unit.handle);
+            Game.getInstance().stationSecurity.onSecurityHeal(this.targetUnit.handle, this.unit.handle);
 
             // If the unit is full health lets end the repair
             if (this.targetUnit.life >= this.targetUnit.maxLife) { 
@@ -65,7 +61,7 @@ export class ItemRepairAbility implements Ability {
         return this.timeElapsed < REPAIR_DURATION;
     };
 
-    public destroy(aMod: AbilityModule) { 
+    public destroy() { 
         this.targetUnit.setVertexColor(255, 255, 255, 255);
         this.unit.setVertexColor(255, 255 , 255, 255);
         return true;

@@ -1,9 +1,9 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector2 } from "../../types/vector2";
 import { ABIL_SHIP_BARREL_ROLL_RIGHT } from "resources/ability-ids";
 import { Unit } from "w3ts/index";
 import { Ship } from "app/space/ships/ship-type";
+import { SpaceEntity } from "app/space/space-module";
 
 /** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";
@@ -24,9 +24,9 @@ export class ShipBarrelRoll implements Ability {
 
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
-        this.ship = module.game.spaceModule.getShipForUnit(this.unit);
+        this.ship = SpaceEntity.getInstance().getShipForUnit(this.unit);
 
         this.isRollRight = GetSpellAbilityId() === ABIL_SHIP_BARREL_ROLL_RIGHT;
 
@@ -40,7 +40,7 @@ export class ShipBarrelRoll implements Ability {
         return true;
     }
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
 
         if (!this.ship.engine) return false;
@@ -64,7 +64,7 @@ export class ShipBarrelRoll implements Ability {
         return this.timeElapsed <= (this.rollDuration + this.rollSlowDown);
     }
 
-    public destroy(aMod: AbilityModule) {
+    public destroy() {
         this.ship.unit.setField(UNIT_RF_MAXIMUM_PITCH_ANGLE_DEGREES, 45);
         return true;
     }

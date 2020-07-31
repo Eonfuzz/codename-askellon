@@ -1,16 +1,15 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic, ProjectileMoverLinear } from "../../weapons/projectile/projectile-target";
-import { FilterIsEnemyAndAlive } from "../../../resources/filters";
-import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { LaserRifle } from "app/weapons/guns/laser-rifle";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { getZFromXY, getPointsInRangeWithSpread } from "lib/utils";
 import { Unit } from "w3ts/handles/unit";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { LeapEntity } from "app/leap-engine/leap-entity";
 
 // How many projectiles are fired inside the cone
 const NUM_PROJECTILES = 20;
@@ -41,37 +40,37 @@ export class DiodeEjectAbility implements Ability {
         this.timeElapsed = 0;
     }
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
         this.targetLoc.z = getZFromXY(this.targetLoc.x, this.targetLoc.y);
         
 
-        this.crew = abMod.game.crewModule.getCrewmemberForUnit(this.casterUnit) as Crewmember;
+        this.crew = CrewFactory.getInstance().getCrewmemberForUnit(this.casterUnit) as Crewmember;
         this.weapon = this.crew.weapon as LaserRifle;
         this.weaponIntensityOnCast = this.weapon.getIntensity();
         return true;
     };
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
         let leapFinished = false;
         this.timeElapsed += delta;
 
         if (!this.doneDamage && this.ventDamagePoint <= this.timeElapsed) {
             this.doneDamage = true;
-            this.doVentDamage(abMod);
+            this.doVentDamage();
         }
 
         if (!this.hasLeaped && this.startLeapAt <= this.timeElapsed) {
-            this.startLeap(abMod);
+            this.startLeap();
             this.hasLeaped = true;
         }
         
         return !this.leapExpired;
     };
 
-    private doVentDamage(abMod: AbilityModule) {
+    private doVentDamage() {
         if (!this.casterUnit || !this.weapon || !this.crew || !this.targetLoc) return;
 
         const cX = this.casterUnit.x;
@@ -93,7 +92,7 @@ export class DiodeEjectAbility implements Ability {
         let spread = PROJECTILE_CONE * (1 + 1 - accuracy);
 
         // Damage numbers
-        const weaponBaseDamage = this.weapon.getDamage(abMod.game.weaponModule, this.crew);
+        const weaponBaseDamage = this.weapon.getDamage(this.crew);
         const diodeDamage = (50 + weaponBaseDamage * 4) / NUM_PROJECTILES;
 
 
@@ -122,7 +121,7 @@ export class DiodeEjectAbility implements Ability {
                 new ProjectileMoverLinear()
             )
             .setVelocity(PROJECTILE_SPEED)
-            .onCollide((module, projectile, who) => {
+            .onCollide((projectile, who) => {
                 projectile.setDestroy(true);
                 if (this.casterUnit) {
                     UnitDamageTarget(this.casterUnit.handle, 
@@ -138,12 +137,12 @@ export class DiodeEjectAbility implements Ability {
             });
     
             projectile.addEffect(sfxModel, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
-            abMod.game.weaponModule.addProjectile(projectile);
+            WeaponEntity.getInstance().addProjectile(projectile);
         });
         this.weapon.setIntensity(0);
     }
 
-    private startLeap(abMod: AbilityModule) {
+    private startLeap() {
         if (!this.casterUnit || !this.weapon || !this.crew) return;
 
         const cX = this.casterUnit.x;
@@ -159,7 +158,7 @@ export class DiodeEjectAbility implements Ability {
         let targetLoc = casterLoc.projectTowards2D(this.casterUnit.facing, -distanceJumpBack);
 
         // Register the leap and its callback
-        abMod.game.leapModule.newLeap(
+        LeapEntity.getInstance().newLeap(
             this.casterUnit.handle,
             targetLoc,
             45,
@@ -169,7 +168,7 @@ export class DiodeEjectAbility implements Ability {
         });
     }
     
-    public destroy(abMod: AbilityModule) {
+    public destroy() {
         if (this.casterUnit) {
             const cX = this.casterUnit.x;
             const cY = this.casterUnit.y;

@@ -4,6 +4,8 @@ import { Log } from "../../../lib/serilog/serilog";
 import { BURST_RIFLE_ABILITY_ID, SHOTGUN_ABILITY_ID, AT_ABILITY_DRAGONFIRE_BLAST } from "../weapon-constants";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { dragonBreathBlastTooltip } from "resources/ability-tooltips";
+import { TooltipEntity } from "app/tooltip/tooltip-module";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
  */
@@ -22,7 +24,7 @@ export class DragonfireBarrelAttachment extends Attachment {
                 weapon.equippedTo.unit.addAbility(AT_ABILITY_DRAGONFIRE_BLAST);
                 BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST, BlzGetAbilityCooldown(AT_ABILITY_DRAGONFIRE_BLAST, 0));
 
-                this.game.tooltips.registerTooltip(
+                TooltipEntity.getInstance().registerTooltip(
                     crewmember, 
                     dragonBreathBlastTooltip
                 );
@@ -39,8 +41,8 @@ export class DragonfireBarrelAttachment extends Attachment {
         if (this.attachedTo &&  this.attachedTo.equippedTo) {
             UnitRemoveAbility(this.attachedTo.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST);
             // Add ability tooltip TODO handle no crewmember?
-            this.game.tooltips.unregisterTooltip(
-                this.game.crewModule.getCrewmemberForUnit(this.attachedTo.equippedTo.unit) as Crewmember, 
+            TooltipEntity.getInstance().unregisterTooltip(
+                CrewFactory.getInstance().getCrewmemberForUnit(this.attachedTo.equippedTo.unit) as Crewmember, 
                 dragonBreathBlastTooltip
             );
         }
@@ -52,7 +54,7 @@ export class DragonfireBarrelAttachment extends Attachment {
             BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST, BlzGetAbilityCooldown(AT_ABILITY_DRAGONFIRE_BLAST, 0));
 
             // Add ability tooltip
-            this.game.tooltips.registerTooltip(crewmember, dragonBreathBlastTooltip);
+            TooltipEntity.getInstance().registerTooltip(crewmember, dragonBreathBlastTooltip);
         }
     }
 
@@ -60,7 +62,7 @@ export class DragonfireBarrelAttachment extends Attachment {
         if (weapon &&  weapon.equippedTo) {
             UnitRemoveAbility(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST);
             // Add ability tooltip
-            this.game.tooltips.unregisterTooltip(crewmember, dragonBreathBlastTooltip);
+            TooltipEntity.getInstance().unregisterTooltip(crewmember, dragonBreathBlastTooltip);
         }
     }
 }

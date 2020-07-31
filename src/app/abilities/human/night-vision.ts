@@ -1,7 +1,9 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Unit } from "w3ts/handles/unit";
 import { VISION_TYPE } from "app/vision/vision-type";
+import { WorldEntity } from "app/world/world-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { VisionFactory } from "app/vision/vision-factory";
 
 const NIGHT_VISION_DURATION = 30;
 
@@ -14,32 +16,32 @@ export class NightVisionAbility implements Ability {
 
     constructor() {}
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         // Re-enter the unit's current zone
-        const z = abMod.game.worldModule.getUnitZone(this.unit);
-        const crew = abMod.game.crewModule.getCrewmemberForUnit(this.unit);
+        const z = WorldEntity.getInstance().getUnitZone(this.unit);
+        const crew = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
         if (z && crew) {
-            this.oldVis = abMod.game.vision.getPlayerVision(this.unit.owner);
-            abMod.game.vision.setPlayervision(this.unit.owner, VISION_TYPE.NIGHT_VISION);
-            z.onEnter(abMod.game.worldModule, this.unit);
+            this.oldVis = VisionFactory.getInstance().getPlayerVision(this.unit.owner);
+            VisionFactory.getInstance().setPlayervision(this.unit.owner, VISION_TYPE.NIGHT_VISION);
+            z.onEnter(this.unit);
         }
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
         return this.timeElapsed < NIGHT_VISION_DURATION;
     };
 
-    public destroy(aMod: AbilityModule) { 
+    public destroy() { 
         if (this.unit) {
-            const z = aMod.game.worldModule.getUnitZone(this.unit);
-            const crew = aMod.game.crewModule.getCrewmemberForUnit(this.unit);
+            const z = WorldEntity.getInstance().getUnitZone(this.unit);
+            const crew = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
             if (z && crew) {
-                aMod.game.vision.setPlayervision(this.unit.owner, this.oldVis);
+                VisionFactory.getInstance().setPlayervision(this.unit.owner, this.oldVis);
     
-                z.onEnter(aMod.game.worldModule, this.unit);
+                z.onEnter(this.unit);
             }
         }
         return true;

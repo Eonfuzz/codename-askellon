@@ -1,17 +1,18 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/forces/alien-force";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer, MapPlayer } from "w3ts";
 import { Log } from "lib/serilog/serilog";
 import { getZFromXY } from "lib/utils";
 import { WORM_ALIEN_FORM } from "resources/unit-ids";
 import { FilterIsAlive } from "resources/filters";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { ForceEntity } from "app/force/force-entity";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -47,7 +48,7 @@ export class TransformAbility implements Ability {
         this.duration = (this.toAlien ? DURATION_TO_ALIEN : DURATION_TO_HUMAN);
     }
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         // Log.Information("Casting transform!");
@@ -63,7 +64,7 @@ export class TransformAbility implements Ability {
         return true;
     };
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
         this.timeElapsedSinceSFX += delta;
 
@@ -87,7 +88,7 @@ export class TransformAbility implements Ability {
                 new ProjectileTargetStatic(newTarget.subtract(startLoc)),
                 new ProjectileMoverParabolic(projStartLoc, newTarget, Deg2Rad(GetRandomReal(60,85)))
             )
-            .onDeath((proj: Projectile) => { this.bloodSplash(proj.getPosition()) })
+            .onDeath((proj: Projectile) => this.bloodSplash(proj.getPosition()))
             .onCollide(() => true);
 
             projectile.addEffect(this.getRandomSFX(), new Vector3(0, 0, 0), newTarget.subtract(startLoc).normalise(), 1);
@@ -96,7 +97,7 @@ export class TransformAbility implements Ability {
             BlzSetSpecialEffectZ(bloodSfx, startLoc.z - 30);
             DestroyEffect(bloodSfx);
 
-            abMod.game.weaponModule.addProjectile(projectile);
+            WeaponEntity.getInstance().addProjectile(projectile);
         }
         return this.timeElapsed < this.duration;
     };
@@ -123,13 +124,14 @@ export class TransformAbility implements Ability {
         // const bloodSfx = AddSpecialEffect(SFX_BLOOD_EXPLODE, where.x, where.y);
         // BlzSetSpecialEffectZ(bloodSfx, where.z - 30);
         // DestroyEffect(bloodSfx);
+        return true;
     }
     
-    public destroy(abMod: AbilityModule) {
+    public destroy() {
         if (this.casterUnit) {
 
-            const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-            const alien = alienForce.transform(abMod.game, this.casterUnit.owner, this.toAlien);
+            const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME) as AlienForce;
+            const alien = alienForce.transform(this.casterUnit.owner, this.toAlien);
 
             // If we have an existing order send it to the new unit
             if (this.previousOrder && this.previousOrderTarget) {
@@ -156,7 +158,7 @@ export class TransformAbility implements Ability {
                 );
 
                 ForGroup(group, () => {
-                    abMod.game.forceModule.aggressionBetweenTwoPlayers(
+                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(
                         this.casterUnit.owner, 
                         MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
                     );

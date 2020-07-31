@@ -1,5 +1,7 @@
 /** @noSelfInFile **/
 
+import { Game } from "app/game";
+
 export class SoundRef {
     public sound: sound;
 
@@ -46,7 +48,8 @@ export class SoundWithCooldown extends SoundRef {
      * 
      * @param currentTime 
      */
-    public canPlaySound(currentTime: number) {
+    public canPlaySound() {
+        const currentTime = Game.getInstance().getTimeStamp();
         const doPlaySound = !this.timePlayed || ((currentTime - this.timePlayed) > this.cooldown);
 
         if (doPlaySound) {

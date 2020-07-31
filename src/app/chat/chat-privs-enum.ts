@@ -1,0 +1,3 @@
+export enum PRIVS {
+    USER, MODERATOR, DEVELOPER
+}

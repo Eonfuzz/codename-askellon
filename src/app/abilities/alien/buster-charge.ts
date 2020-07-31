@@ -1,17 +1,18 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Trigger, Unit, Effect, MapPlayer } from "w3ts";
 import { BUFF_ID_ROACH_ARMOR, BUFF_ID } from "resources/buff-ids";
 import { TECH_20_RANGE_UPGRADE, TECH_ROACH_DUMMY_UPGRADE, ABIL_STUN_25 } from "resources/ability-ids";
 import { SFX_ALIEN_ACID_BALL, SFX_ACID_AURA, SFX_CONFLAGRATE_GREEN, SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 import { getZFromXY, getAnyBlockers } from "lib/utils";
-import { FilterIsEnemyAndAlive, FilterIsAlive } from "resources/filters";
-import { BuffInstanceDuration } from "app/buff/buff-instance";
+import { FilterIsAlive } from "resources/filters";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { Vector3 } from "app/types/vector3";
 import { Log } from "lib/serilog/serilog";
 import { PlayNewSoundOnUnit } from "lib/translators";
+import { LeapEntity } from "app/leap-engine/leap-entity";
+import { Game } from "app/game";
+import { ForceEntity } from "app/force/force-entity";
 
 // Damage increase each second
 const MAX_DISTANCE = 900;
@@ -22,7 +23,6 @@ const GRAB_DISTANCE = 60;
 export class BusterChargeAbility implements Ability {
 
     private casterUnit: Unit;
-    private timeElapsed: number = 0;
 
     private searchGroup = CreateGroup();
     private impaledUnits = CreateGroup();
@@ -37,7 +37,7 @@ export class BusterChargeAbility implements Ability {
 
     constructor() {}
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         const targetLoc = new Vector2(GetSpellTargetX(), GetSpellTargetY());
@@ -63,8 +63,7 @@ export class BusterChargeAbility implements Ability {
         return true;
     };
 
-    public process(abMod: AbilityModule, delta: number) {
-        this.timeElapsed += delta;
+    public process(delta: number) {
 
         let moveVec: Vector2;
         let oldZ: number;
@@ -107,7 +106,7 @@ export class BusterChargeAbility implements Ability {
 
 
             const angle = this.casterUnit.facing;
-            abMod.game.leapModule.newLeap(
+            LeapEntity.getInstance().newLeap(
                 this.casterUnit.handle,
                 jumpVec,
                 55,
@@ -132,13 +131,13 @@ export class BusterChargeAbility implements Ability {
                     SetUnitY(unit, unitLoc.y);
 
                     const knockbackLoc = unitLoc.projectTowards2D(angle, 450);
-                    abMod.game.useDummyFor((dummy: unit) => {
+                    Game.getInstance().useDummyFor((dummy: unit) => {
                         SetUnitAbilityLevel(dummy, ABIL_STUN_25, 5);
                         SetUnitX(dummy, GetUnitX(unit));
                         SetUnitY(dummy, GetUnitY(unit));
                         IssueTargetOrder(dummy, "thunderbolt", unit);
                     }, ABIL_STUN_25);
-                    abMod.game.leapModule.newLeap(
+                    LeapEntity.getInstance().newLeap(
                         unit,
                         knockbackLoc,
                         55,
@@ -148,7 +147,7 @@ export class BusterChargeAbility implements Ability {
             });
         }
         else if (hasTerrainCollision || newZ > oldZ || newZ2 > oldZ || newZ3 > oldZ) {
-            this.onWallCollide(abMod, newX, newY);
+            this.onWallCollide(newX, newY);
             return false;
         }
 
@@ -170,7 +169,7 @@ export class BusterChargeAbility implements Ability {
         ForGroup(this.searchGroup, () => {
             const unit = GetEnumUnit();
             if ((this.casterCollisionRadius + 5) < BlzGetUnitCollisionSize(unit)) return;
-            if (!abMod.game.forceModule.aggressionBetweenTwoPlayers(this.casterUnit.owner, MapPlayer.fromHandle(GetOwningPlayer(unit)))) return;
+            if (!ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.casterUnit.owner, MapPlayer.fromHandle(GetOwningPlayer(unit)))) return;
             if (!IsUnitInGroup(unit, this.impaledUnits)) {
                 // damage unit by 25
                 UnitDamageTarget(this.casterUnit.handle, 
@@ -203,7 +202,7 @@ export class BusterChargeAbility implements Ability {
         return true;
     }
 
-    private onWallCollide(abMod: AbilityModule, newX: number, newY: number) {
+    private onWallCollide(newX: number, newY: number) {
 
         // We are colliding
         const sfx = AddSpecialEffect(SFX_CATAPULT_MISSILE, newX, newY);
@@ -229,13 +228,13 @@ export class BusterChargeAbility implements Ability {
             SetUnitY(unit, unitLoc.y);
 
             const knockbackLoc = unitLoc.projectTowards2D(this.casterUnit.facing, -250);
-            abMod.game.useDummyFor((dummy: unit) => {
+            Game.getInstance().useDummyFor((dummy: unit) => {
                 SetUnitAbilityLevel(dummy, ABIL_STUN_25, 5);
                 SetUnitX(dummy, GetUnitX(unit));
                 SetUnitY(dummy, GetUnitY(unit));
                 IssueTargetOrder(dummy, "thunderbolt", unit);
             }, ABIL_STUN_25);
-            abMod.game.leapModule.newLeap(
+            LeapEntity.getInstance().newLeap(
                 unit,
                 knockbackLoc,
                 55,
@@ -249,14 +248,14 @@ export class BusterChargeAbility implements Ability {
         const knockbackLoc = unitLoc.projectTowards2D(this.casterUnit.facing, hasImpaledUnits ? -390 : -250);
 
         if (!hasImpaledUnits) {
-            abMod.game.useDummyFor((dummy: unit) => {
+            Game.getInstance().useDummyFor((dummy: unit) => {
                 SetUnitAbilityLevel(dummy, ABIL_STUN_25, 5);
                 SetUnitX(dummy, this.casterUnit.x);
                 SetUnitY(dummy, this.casterUnit.y + 50);
                 IssueTargetOrder(dummy, "thunderbolt", this.casterUnit.handle);
             }, ABIL_STUN_25);
         }
-        abMod.game.leapModule.newLeap(
+        LeapEntity.getInstance().newLeap(
             this.casterUnit.handle,
             knockbackLoc,
             55,
@@ -266,7 +265,7 @@ export class BusterChargeAbility implements Ability {
         });
     }
     
-    public destroy(abMod: AbilityModule) {
+    public destroy() {
 
         this.casterUnit.pauseEx(false);
         this.casterUnit.setPathing(true);

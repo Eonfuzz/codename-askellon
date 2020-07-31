@@ -1,11 +1,9 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
-import { HIGH_QUALITY_POLYMER_ABILITY_ID } from "../../weapons/weapon-constants";
 import { SPRINT_BUFF_ID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
+import { LeapEntity } from "app/leap-engine/leap-entity";
 
 /** @noSelfInFile **/
 
@@ -21,7 +19,7 @@ export class SprintLeapAbility implements Ability {
 
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.unit = GetTriggerUnit();
 
         // If unit doesn't have the right tech upgrade return false
@@ -36,7 +34,7 @@ export class SprintLeapAbility implements Ability {
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
 
         if (this.unit && UnitHasBuffBJ(this.unit, SPRINT_BUFF_ID) && this.unitLastLoc) {
@@ -59,7 +57,7 @@ export class SprintLeapAbility implements Ability {
         return true;
     };
 
-    public destroy(aMod: AbilityModule) { 
+    public destroy() { 
         if (this.unit) {
             let targetLoc = new Vector3(GetUnitX(this.unit), GetUnitY(this.unit), 0);
             targetLoc.z = getZFromXY(targetLoc.x, targetLoc.z);
@@ -74,7 +72,7 @@ export class SprintLeapAbility implements Ability {
             DestroyEffect(sfx);
 
             let unit = this.unit;
-            aMod.game.leapModule.newLeap(
+            LeapEntity.getInstance().newLeap(
                 this.unit,
                 targetLoc.projectTowards2D(GetUnitFacing(this.unit), this.distanceTravelled/2),
                 30,

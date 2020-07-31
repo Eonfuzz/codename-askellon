@@ -1,20 +1,20 @@
 import { ShipZone } from "../zone-type";
-import { WorldModule } from "../world-module";
 import { Unit } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { Log } from "lib/serilog/serilog";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 export class ChurchZone extends ShipZone {
 
     churchMusic = new SoundRef("Music\\GregorianChant.mp3", true, true);
 
-    public onLeave(world: WorldModule, unit: Unit) {
-        super.onLeave(world, unit);
+    public onLeave(unit: Unit) {
+        super.onLeave(unit);
 
         // Check if it is a main unit
-        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
 
-        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
+        if (crewmember && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
             this.churchMusic.stopSound();
             SetMusicVolume(20);
@@ -24,15 +24,15 @@ export class ChurchZone extends ShipZone {
         // If no power remove power loss
     }
 
-    public onEnter(world: WorldModule, unit: Unit) {
-        super.onEnter(world, unit);
+    public onEnter(unit: Unit) {
+        super.onEnter(unit);
 
         // Check if it is a main unit
-        const isCrew = !!world.game.crewModule.getCrewmemberForUnit(unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
         // Play music
         this.churchMusic.setVolume(30);
 
-        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
+        if (crewmember && GetLocalPlayer() === unit.owner.handle) {
             this.churchMusic.playSound();
             SetMusicVolume(5);
 

@@ -1,18 +1,20 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Trigger, Unit, Effect } from "w3ts";
 import { Log } from "lib/serilog/serilog";
 import { getZFromXY } from "lib/utils";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
-import { EVENT_TYPE } from "app/events/event";
 import { ABIL_ALIEN_EVOLVE_ARMOR } from "resources/ability-ids";
 import { vectorFromUnit } from "app/types/vector2";
 import { Vector3 } from "app/types/vector3";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/alien-force";
+import { ALIEN_FORCE_NAME, AlienForce } from "app/force/forces/alien-force";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { EventEntity } from "app/events/event-entity";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { ForceEntity } from "app/force/force-entity";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -46,7 +48,7 @@ export class EvolveAbility implements Ability {
         this.toForm = toWhichForm;
     }
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.castingOrder = this.casterUnit.currentOrder;
 
@@ -82,7 +84,7 @@ export class EvolveAbility implements Ability {
         return true;
     };
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
         this.timeElapsedSinceSFX += delta;
 
@@ -91,7 +93,7 @@ export class EvolveAbility implements Ability {
         // Don't continue if we interrupt
         if (this.castingOrder !== this.casterUnit.currentOrder) {
 
-            abMod.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
                 source: this.casterUnit,
                 data: { value: -500 }
             });
@@ -99,7 +101,7 @@ export class EvolveAbility implements Ability {
             return false;
         }
 
-        if (HeartbeatSound.canPlaySound(abMod.game.getTimeStamp())) {
+        if (HeartbeatSound.canPlaySound()) {
             HeartbeatSound.playSoundOnUnit(this.casterUnit.handle, 127);
         }
 
@@ -111,7 +113,7 @@ export class EvolveAbility implements Ability {
             this.completedEvolve = true;
 
             for (let index = 0; index < 10; index++) {
-                this.createGiblet(abMod);
+                this.createGiblet();
             }
 
             return false;
@@ -119,7 +121,7 @@ export class EvolveAbility implements Ability {
         return true;
     };
 
-    public createGiblet(abMod: AbilityModule) {
+    public createGiblet() {
         
         const tLoc = vectorFromUnit(this.casterUnit.handle);
 
@@ -149,7 +151,7 @@ export class EvolveAbility implements Ability {
         BlzSetSpecialEffectZ(bloodSfx, startLoc.z - 30);
         DestroyEffect(bloodSfx);
 
-        abMod.game.weaponModule.addProjectile(projectile);
+        WeaponEntity.getInstance().addProjectile(projectile);
     }
 
     private getRandomOffset(): number {
@@ -157,7 +159,7 @@ export class EvolveAbility implements Ability {
         return (isNegative == 1 ? -1 : 1) * Math.max(200, GetRandomInt(0, 800));
     }
     
-    public destroy(abMod: AbilityModule) {
+    public destroy() {
         if (this.casterUnit) {
             this.casterUnit.setVertexColor(255, 255, 255, 255);
             this.effect.destroy();
@@ -174,7 +176,7 @@ export class EvolveAbility implements Ability {
         // If we evolved
         if (this.completedEvolve) {
             // get alien force
-            const alienForce = abMod.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+            const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME) as AlienForce;
             alienForce.onEvolve(this.toForm);
         }
         return true; 

@@ -1,7 +1,5 @@
 /** @noSelfInFile **/
 import { Vector2 } from "../../types/vector2";
-import { ForceModule } from "../../force/force-module";
-import { Game } from "../../game";
 
 export enum SpaceObjectType {
     foreground, midground, background
@@ -34,21 +32,21 @@ export abstract class SpaceObject {
     }
 
     protected isLoaded(): boolean { return this.loaded; }
-    public load(game: Game): void { 
+    public load(): void { 
         if (this.type === SpaceObjectType.midground) {
-            this.loadAsUnit(game);
+            this.loadAsUnit();
         }
         else {
-            this.loadAsEffect(game);
+            this.loadAsEffect();
         }
         this.loaded = true; 
     };
     protected offload(): void { this.loaded = false; };
 
     // Used if type is background, foreground
-    abstract loadAsEffect(game: Game): void;
+    abstract loadAsEffect(): void;
     // Used it type is midground
-    abstract loadAsUnit(game: Game): void;
+    abstract loadAsUnit(): void;
     
     abstract pickle(): void;
     abstract onUpdate(): void;

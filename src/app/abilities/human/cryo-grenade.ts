@@ -1,5 +1,4 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
@@ -9,8 +8,12 @@ import { FilterIsEnemyAndAlive, FilterIsAlive } from "../../../resources/filters
 import { MapPlayer, Unit } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { BUFF_ID } from "resources/buff-ids";
-import { BuffInstanceDuration } from "app/buff/buff-instance";
 import { SFX_CRYO_GRENADE, SFX_FROST_NOVA } from "resources/sfx-paths";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { ForceEntity } from "app/force/force-entity";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 /** @noSelfInFile **/
 const EXPLOSION_BASE_DAMAGE = 20;
@@ -27,7 +30,7 @@ export class CryoGrenadeAbility implements Ability {
 
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.castingPlayer = this.casterUnit.owner;
 
@@ -45,17 +48,17 @@ export class CryoGrenadeAbility implements Ability {
             new ProjectileTargetStatic(deltaTarget),
             new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(45))
         )
-        .onDeath((proj: Projectile) => { this.explode(module, proj.getPosition()); })
+        .onDeath((proj: Projectile) => this.explode(proj.getPosition()))
         .onCollide(() => true);
 
         projectile.addEffect(SFX_CRYO_GRENADE, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
 
-        module.game.weaponModule.addProjectile(projectile);
+        WeaponEntity.getInstance().addProjectile(projectile);
 
         return true;
     };
 
-    private explode(module: AbilityModule, atWhere: Vector3) {
+    private explode(atWhere: Vector3) {
         let sfx = AddSpecialEffect(SFX_FROST_NOVA, atWhere.x, atWhere.y);
         BlzSetSpecialEffectZ(sfx, getZFromXY(atWhere.x, atWhere.y));
         DestroyEffect(sfx);
@@ -68,21 +71,22 @@ export class CryoGrenadeAbility implements Ability {
                 EXPLOSION_AOE,
                 FilterIsAlive(this.castingPlayer)
             );
-            ForGroup(this.damageGroup, () => this.damageUnit(module));
+            ForGroup(this.damageGroup, () => this.damageUnit());
         }
+        return true;
     }
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
         return true;
     };
 
-    private damageUnit(module: AbilityModule) {
+    private damageUnit() {
         if (this.casterUnit) {
             const unit = Unit.fromHandle(GetEnumUnit());
 
             // Check to make sure we are allowed aggression between the two teams
             const aggressionAllowed = this.casterUnit.owner === unit.owner 
-                || module.game.forceModule.aggressionBetweenTwoPlayers(
+                || ForceEntity.getInstance().aggressionBetweenTwoPlayers(
                     this.casterUnit.owner, 
                     unit.owner
                 );
@@ -92,14 +96,14 @@ export class CryoGrenadeAbility implements Ability {
             if (!aggressionAllowed) return;
 
             // Otherwise continue onwards
-            const crew = module.game.crewModule.getCrewmemberForUnit(unit);
+            const crew = CrewFactory.getInstance().getCrewmemberForUnit(unit);
             let damageMult = 1;
             if (crew) damageMult = crew.getDamageBonusMult();
 
-            module.game.buffModule.addBuff(
+            DynamicBuffEntity.getInstance().addBuff(
                 BUFF_ID.FLASH_FREEZE, 
                 unit,
-                new BuffInstanceDuration(unit, module.game.getTimeStamp(), 7)
+                new BuffInstanceDuration(unit, 7)
             );
             
             this.casterUnit.damageTarget(
@@ -115,7 +119,7 @@ export class CryoGrenadeAbility implements Ability {
         }
     }
 
-    public destroy(module: AbilityModule) { 
+    public destroy() { 
         DestroyGroup(this.damageGroup);
         return true; 
     };

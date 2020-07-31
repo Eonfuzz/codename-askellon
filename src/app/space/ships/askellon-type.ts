@@ -3,12 +3,12 @@ import { Game } from "app/game";
 import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { UNIT_IS_FLY } from "resources/ability-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
-import { ROLE_TYPES } from "resources/crewmember-names";
-import { Ship, ShipWithFuel } from "./ship-type";
+import { Ship } from "./ship-type";
 import { Zone } from "app/world/zone-type";
 import { ShipState } from "./ship-state-type";
+import { WorldEntity } from "app/world/world-entity";
+import { ForceEntity } from "app/force/force-entity";
 
 export class AskellonShip extends Ship {
 
@@ -18,8 +18,8 @@ export class AskellonShip extends Ship {
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
-    constructor(game: Game, state: ShipState, u: Unit) {
-        super(game, state, u);
+    constructor(state: ShipState, u: Unit) {
+        super(state, u);
     }
 
     createEngine() {
@@ -37,7 +37,7 @@ export class AskellonShip extends Ship {
         }
     }
 
-    onEnterShip(game: Game, who: Unit) {
+    onEnterShip(who: Unit) {
 
         if (this.inShip.length === 0) {
             const newOwner = who.owner;
@@ -53,11 +53,11 @@ export class AskellonShip extends Ship {
 
             this.unitControllingDeath = new Trigger();
             this.unitControllingDeath.registerUnitEvent(who, EVENT_UNIT_DEATH);
-            this.unitControllingDeath.addAction(() => this.onLeaveShip(game, false));
+            this.unitControllingDeath.addAction(() => this.onLeaveShip(false));
 
             // Also "transport" the unit into space
-            this.controllerOldZone = game.worldModule.getUnitZone(who);
-            game.worldModule.travel(who, ZONE_TYPE.SPACE);
+            this.controllerOldZone = WorldEntity.getInstance().getUnitZone(who);
+            WorldEntity.getInstance().travel(who, ZONE_TYPE.SPACE);
         }
         else {
             Log.Warning("Unit is already piloting the Askellon");
@@ -72,7 +72,7 @@ export class AskellonShip extends Ship {
         // Shouldn't need to do anything
     }
 
-    onDeath(game: Game, killer: Unit) {
+    onDeath(killer: Unit) {
         Log.Information("Main ship dead, not yet implemented soz");
     }
 
@@ -87,14 +87,14 @@ export class AskellonShip extends Ship {
         }
     }
 
-    onLeaveShip(game: Game, isDeath?: boolean) {
-        const newOwner = game.forceModule.neutralHostile;
+    onLeaveShip(isDeath?: boolean) {
+        const newOwner = ForceEntity.getInstance().neutralHostile;
         this.unit.owner = newOwner;
 
         // Remove control
         // Move unit back to its old word
         const u = this.inShip[0];
-        game.worldModule.travel(u, this.controllerOldZone.id);
+        WorldEntity.getInstance().travel(u, this.controllerOldZone.id);
 
         // Center the camera back on the unit
         // Select unit too

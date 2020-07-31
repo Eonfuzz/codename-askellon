@@ -1,11 +1,9 @@
-/** @noSelfInFile **/
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector3 } from "../../types/vector3";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Unit } from "w3ts/handles/unit";
-import { Log } from "lib/serilog/serilog";
 import { getZFromXY } from "lib/utils";
+import { LeapEntity } from "app/leap-engine/leap-entity";
 
 
 const LEAP_ID = FourCC('LEAP');
@@ -22,7 +20,7 @@ export class LeapAbility implements Ability {
         this.timeElapsed = 0;
     }
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.casterUnit = GetTriggerUnit();
 
         const cdRemaining = BlzGetUnitAbilityCooldownRemaining(this.casterUnit, LEAP_ID);
@@ -99,7 +97,7 @@ export class LeapAbility implements Ability {
         SetUnitTimeScale(this.casterUnit, 0.3);
 
         // Register the leap and its callback
-        abMod.game.leapModule.newLeap(
+        LeapEntity.getInstance().newLeap(
             this.casterUnit,
             targetLoc,
             55,
@@ -122,7 +120,7 @@ export class LeapAbility implements Ability {
         return soundPaths[GetRandomInt(0, soundPaths.length - 1)]
     }
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
         // Bug fix, play this here to avoid animation locking
         if (this.timeElapsed == 0) {
             SetUnitAnimation(this.casterUnit, "attack");
@@ -132,7 +130,7 @@ export class LeapAbility implements Ability {
     };
 
     
-    public destroy(abMod: AbilityModule) {
+    public destroy() {
         if (this.casterUnit) {
             const casterLoc = new Vector3(
                 GetUnitX(this.casterUnit), 

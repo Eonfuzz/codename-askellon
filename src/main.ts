@@ -1,4 +1,3 @@
-/** @noSelfInFile **/
 import { Game } from "./app/game";
 import { addScriptHook, W3TS_HOOK } from "w3ts/hooks";
 import { Timer } from "w3ts/handles/timer";
@@ -7,8 +6,6 @@ import { Log, LogLevel } from "lib/serilog/serilog";
 import { SendMessageUnlogged } from "lib/translators";
 
 
-let AksellonSector = undefined;
-let gameStart = undefined;
 
 function tsMain() {
     Log.Init([
@@ -16,13 +13,11 @@ function tsMain() {
     ]);
 
     function Main(){
-        AksellonSector = new Game();
-        gameStart = new Timer();
-        // Fuck sake, apparently periodical events are broken
-        // FIXME LATER YO
+        const gameStart = new Timer();
         gameStart.start(0.1, false, () => {
             try {
-                AksellonSector.startGame()
+                const askellon = Game.getInstance();
+                // AksellonSector.startGame()
                 // Log.Information("Start game!");
             }
             catch (e) {

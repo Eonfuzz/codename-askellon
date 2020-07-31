@@ -1,11 +1,11 @@
 /** @noSelfInFile **/
 import { SpaceObject, SpaceObjectType } from "./space-object";
 import { Vector2 } from "../../types/vector2";
-import { ForceModule } from "../../force/force-module";
 import { Game } from "../../game";
 import { Log } from "lib/serilog/serilog";
 import { Unit, Effect } from "w3ts/index";
 import { SPACE_UNIT_MINERAL } from "resources/unit-ids";
+import { ForceEntity } from "app/force/force-entity";
 
 
 export const MINERAL_SKINS = [FourCC('Min1'), FourCC('Min2')];
@@ -23,11 +23,11 @@ export class Mineral extends SpaceObject {
     }
 
 
-    public loadAsUnit(game: Game) {
+    public loadAsUnit() {
 
         const location = this.getLocation();
 
-        this.widget = new Unit(game.forceModule.neutralPassive, SPACE_UNIT_MINERAL, location.x, location.y, bj_UNIT_FACING) as Unit;
+        this.widget = new Unit(ForceEntity.getInstance().neutralPassive, SPACE_UNIT_MINERAL, location.x, location.y, bj_UNIT_FACING) as Unit;
         const i = GetRandomInt(0, MINERAL_SKINS.length-1);
         const skin = MINERAL_SKINS[i];
 
@@ -42,7 +42,7 @@ export class Mineral extends SpaceObject {
         BlzSetUnitFacingEx(this.widget.handle, GetRandomReal(0, 360));
     }
 
-    public loadAsEffect(game: Game) {
+    public loadAsEffect() {
         const loc = this.getLocation();
 
         const isBackground = this.type === SpaceObjectType.background;

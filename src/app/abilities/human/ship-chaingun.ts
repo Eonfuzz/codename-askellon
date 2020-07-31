@@ -1,5 +1,4 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
@@ -7,10 +6,13 @@ import { SoundRef } from "app/types/sound-ref";
 import { Unit } from "w3ts/index";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverLinear } from "app/weapons/projectile/projectile-target";
-import { WeaponModule } from "app/weapons/weapon-module";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { Ship } from "app/space/ships/ship-type";
 import { ShipState } from "app/space/ships/ship-state-type";
+import { SpaceEntity } from "app/space/space-module";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { ForceEntity } from "app/force/force-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 /** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";
@@ -25,9 +27,9 @@ export class ShipChaingunAbility implements Ability {
     private sound = new SoundRef("sounds\\chaingunSound.mp3", false);
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
-        this.shootingShip = module.game.spaceModule.getShipForUnit(this.unit);
+        this.shootingShip = SpaceEntity.getInstance().getShipForUnit(this.unit);
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass += this.shootingShip.engine.velocityForwardMax / 4;
 
         const abilLevel = GetUnitAbilityLevel(this.unit.handle, GetSpellAbilityId());
@@ -38,7 +40,7 @@ export class ShipChaingunAbility implements Ability {
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
         this.timeSinceBullet += delta;
 
@@ -73,24 +75,24 @@ export class ShipChaingunAbility implements Ability {
                     && GetOwningPlayer(unit) !== this.unit.owner.handle &&
                     IsUnitType(unit, UNIT_TYPE_MAGIC_IMMUNE) == false;
             })
-            .onCollide((wepModule, projectile, withWho) => this.onCollide(wepModule, projectile, withWho));
+            .onCollide((projectile, withWho) => this.onCollide(projectile, withWho));
 
             const effect = projectile.addEffect(bulletModel, new Vector3(0, 0, 0), deltaTarget.normalise(), 1.2);
             BlzSetSpecialEffectColor(effect, 160, 140, 255);
-            module.game.weaponModule.addProjectile(projectile);
+            WeaponEntity.getInstance().addProjectile(projectile);
         }
 
         return this.timeElapsed <= 5;
     };
 
-    private onCollide(wepModule: WeaponModule, projectile: Projectile, withWho: unit) {
+    private onCollide(projectile: Projectile, withWho: unit) {
         projectile.setDestroy(true);
         const targetUnit = Unit.fromHandle(withWho);
-        wepModule.game.forceModule.aggressionBetweenTwoPlayers(this.unit.owner, targetUnit.owner);
+        ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, targetUnit.owner);
 
         // Now deal damage
 
-        const crewmember = wepModule.game.crewModule.getCrewmemberForUnit(this.unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
         let damage = this.bulletDamage;
 
         if (crewmember) {
@@ -110,7 +112,7 @@ export class ShipChaingunAbility implements Ability {
     }
 
 
-    public destroy(aMod: AbilityModule) {
+    public destroy() {
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass -= this.shootingShip.engine.velocityForwardMax / 4;
         return true;
     };

@@ -1,12 +1,13 @@
 /** @noSelfInFile **/
 import { Vector3 } from "../../types/vector3";
 import { Crewmember } from "../../crewmember/crewmember-type";
-import { WeaponModule } from "../weapon-module";
 import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
 import { TECH_CREWMEMBER_ATTACK_ENABLE } from "../../../resources/ability-ids";
+import { WeaponEntity } from "../weapon-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 export abstract class Gun {
     item: item;
@@ -24,20 +25,20 @@ export abstract class Gun {
         this.equippedTo = equippedTo;
     }
     
-    public onAdd(weaponModule: WeaponModule, caster: Crewmember) {
+    public onAdd(caster: Crewmember) {
         this.equippedTo = caster;
-        this.equippedTo.onWeaponAdd(weaponModule, this);
+        this.equippedTo.onWeaponAdd(this);
 
-        weaponModule.unitsWithWeapon.set(caster.unit.handle, this);
+        WeaponEntity.getInstance().unitsWithWeapon.set(caster.unit.handle, this);
 
 
         // Always update the tooltip
-        this.updateTooltip(weaponModule, caster);
+        this.updateTooltip(caster);
         // Enable the attack UI
         SetPlayerTechResearched(caster.player.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 1);
 
         // Cast mode adds the ability
-        if (weaponModule.WEAPON_MODE === 'CAST') {
+        if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
             caster.unit.addAbility(this.getAbilityId());
             BlzStartUnitAbilityCooldown(
                 this.equippedTo.unit.handle, 
@@ -58,10 +59,10 @@ export abstract class Gun {
         }
     }
 
-    public onRemove(weaponModule: WeaponModule) {
+    public onRemove() {
         if (this.equippedTo) {
 
-            weaponModule.unitsWithWeapon.delete(this.equippedTo.unit.handle);
+            WeaponEntity.getInstance().unitsWithWeapon.delete(this.equippedTo.unit.handle);
 
             // Don't care about the mode, always remove cast ability
             this.equippedTo.unit.removeAbility(this.getAbilityId());
@@ -69,48 +70,48 @@ export abstract class Gun {
             SetPlayerTechResearched(this.equippedTo.unit.owner.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 0);
 
             // If we are cast mode set this remaning cooldown
-            if (weaponModule.WEAPON_MODE === 'CAST') {
+            if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
                 // this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
             }
             else {
                 UnitAddAbility(this.equippedTo.unit.handle, FourCC('Abun'));
             }
 
-            this.equippedTo.onWeaponRemove(weaponModule, this);
+            this.equippedTo.onWeaponRemove(this);
             // Handle no crewmember?
-            if (this.attachment) this.attachment.onUnequip(this, weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit) as Crewmember);
+            if (this.attachment) this.attachment.onUnequip(this, CrewFactory.getInstance().getCrewmemberForUnit(this.equippedTo.unit) as Crewmember);
             this.equippedTo = undefined;
         }
     }
 
-    public updateTooltip(weaponModule: WeaponModule, caster: Crewmember) {
+    public updateTooltip(caster: Crewmember) {
         // Update the item tooltip
-        const itemTooltip = this.getItemTooltip(weaponModule, caster);
+        const itemTooltip = this.getItemTooltip(caster);
         BlzSetItemExtendedTooltip(this.item, itemTooltip);
 
         if (this.equippedTo) {
             const owner = this.equippedTo.unit.owner;
 
             // Update the equip tooltip
-            const newTooltip = this.getTooltip(weaponModule, caster);
+            const newTooltip = this.getTooltip(caster);
             if (GetLocalPlayer() === owner.handle) {
                 BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
             }
 
             // Also update our weapon stats
-            this.applyWeaponAttackValues(weaponModule, caster);
+            this.applyWeaponAttackValues(caster);
         }
     }
 
-    protected abstract getTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string;
-    protected abstract getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string;
-    protected abstract applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember): void;
+    protected abstract getTooltip(crewmember: Crewmember): string;
+    protected abstract getItemTooltip(crewmember: Crewmember): string;
+    protected abstract applyWeaponAttackValues(caster: Crewmember): void;
 
-    public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
+    public onShoot(caster: Crewmember, targetLocation: Vector3): void {
         // this.remainingCooldown = weaponModule.game.getTimeStamp();
     }
 
-    abstract getDamage(weaponModule: WeaponModule, caster: Crewmember): number;
+    abstract getDamage(caster: Crewmember): number;
 
 
     public attach(attachment: Attachment): boolean {

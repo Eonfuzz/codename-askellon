@@ -1,5 +1,4 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
@@ -10,6 +9,8 @@ import { Unit } from "w3ts/handles/unit";
 import { MapPlayer } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { ABILITY_SLOW_ID } from "resources/ability-ids";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { Game } from "app/game";
 
 /** @noSelfInFile **/
 const DAMAGE_PER_SECOND = 35;
@@ -44,7 +45,7 @@ export class AcidPoolAbility implements Ability {
         this.timeElapsed = 0;
     }
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.castingPlayer = this.casterUnit.owner;
 
@@ -63,7 +64,7 @@ export class AcidPoolAbility implements Ability {
             new ProjectileTargetStatic(deltaTarget),
             new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(GetRandomReal(45,80)))
         )
-        .onDeath((proj: Projectile) => { this.createPool(proj.getPosition()); })
+        .onDeath((proj: Projectile) => { return this.createPool(proj.getPosition()); })
         .onCollide(() => true);
 
         projectile.addEffect(MISSILE_SFX, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
@@ -72,7 +73,7 @@ export class AcidPoolAbility implements Ability {
         BlzSetSpecialEffectHeight(sfx, -30);
         DestroyEffect(sfx);
 
-        module.game.weaponModule.addProjectile(projectile);
+        WeaponEntity.getInstance().addProjectile(projectile);
 
         return true;
     };
@@ -95,9 +96,10 @@ export class AcidPoolAbility implements Ability {
             // Log.Information("Destroying Item "+GetItemName(item));
             RemoveItem(item);
         });
+        return true;
     }
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
 
         if (this.poolLocation && this.castingPlayer) {
             this.timeElapsed += delta;
@@ -113,7 +115,7 @@ export class AcidPoolAbility implements Ability {
 
             ForGroup(this.damageGroup, () => this.damageUnit());
             if (this.timeElapsedSinceLastSlowCheck >= this.checkForSlowEvery) {
-                ForGroup(this.damageGroup, () => this.slowUnit(abMod));
+                ForGroup(this.damageGroup, () => this.slowUnit());
                 this.timeElapsedSinceLastSlowCheck = 0;
             }
         }
@@ -136,18 +138,16 @@ export class AcidPoolAbility implements Ability {
         }
     }
 
-    private slowUnit(abMod: AbilityModule) {
-        // Log.Information("Applying slow!");
-
+    private slowUnit() {
         const unit = GetEnumUnit();
-        abMod.game.useDummyFor((dummy: unit) => {
+        Game.getInstance().useDummyFor((dummy: unit) => {
             SetUnitX(dummy, GetUnitX(unit));
             SetUnitY(dummy, GetUnitY(unit) + 50);
             IssueTargetOrder(dummy, 'slow', GetEnumUnit());
         }, ABILITY_SLOW_ID);
     }
     
-    public destroy(module: AbilityModule) { 
+    public destroy() { 
         // Log.Information("Ending");
         this.sfx && BlzSetSpecialEffectTimeScale(this.sfx, 10);
         this.sfx && DestroyEffect(this.sfx);

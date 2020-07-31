@@ -1,16 +1,16 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
-import { Unit } from "w3ts/index";
 import { getZFromXY } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED, SFX_LIGHTNING_BOLT } from "resources/sfx-paths";
 import { SoundRef } from "app/types/sound-ref";
-import { testerSlots, setTesterLastActivatedTo } from "app/interactions/genetic-tester-interactions";
+import { testerSlots, setTesterLastActivatedTo } from "app/interactions/interactables/genetic-tester";
 import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
-import { ABIL_ITEM_GENETIC_SAMPLE_INFESTED } from "resources/ability-ids";
 import { COL_TEAL, COL_ATTATCH } from "resources/colours";
 import { SOUND_COMPLEX_BEEP } from "resources/sounds";
 import { Log } from "lib/serilog/serilog";
 import { ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
+import { Game } from "app/game";
+import { ForceEntity } from "app/force/force-entity";
+import { ChatEntity } from "app/chat/chat-entity";
 
 declare const udg_genetic_test_lights: destructable[];
 declare const udg_genetic_sequencer_unit: unit;
@@ -26,13 +26,13 @@ export class GeneticSequenceAbility implements Ability {
 
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         ambienceSoundGeneticSequence.playSoundOnUnit(udg_genetic_sequencer_unit, 30);
-        setTesterLastActivatedTo(module.game.getTimeStamp());
+        setTesterLastActivatedTo(Game.getInstance().getTimeStamp());
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
 
         const redLight = MathRound(this.timeElapsed*6) % 4;
@@ -54,7 +54,7 @@ export class GeneticSequenceAbility implements Ability {
         return this.timeElapsed <= SEQUENCE_MAX_DURATION;
     };
 
-    public completeTest(aMod: AbilityModule) {
+    public completeTest() {
         let hasAlienDNA = false;
         let hasHumanDNA = false;
         // Do the test
@@ -67,17 +67,17 @@ export class GeneticSequenceAbility implements Ability {
             }
         });
 
-        const allPlayers = aMod.game.forceModule.getActivePlayers();
+        const allPlayers = ForceEntity.getInstance().getActivePlayers();
         if (hasAlienDNA) {
-            aMod.game.chatModule.postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', `Result: ${COL_ATTATCH}Contaminants|r detected. Quarantine is recommended.`, undefined, SOUND_COMPLEX_BEEP);
+            ChatEntity.getInstance().postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', `Result: ${COL_ATTATCH}Contaminants|r detected. Quarantine is recommended.`, undefined, SOUND_COMPLEX_BEEP);
         }
         else {
-            aMod.game.chatModule.postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', "Result: No foreign samples detected.", undefined, SOUND_COMPLEX_BEEP);
+            ChatEntity.getInstance().postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', "Result: No foreign samples detected.", undefined, SOUND_COMPLEX_BEEP);
         }
     }
 
-    public destroy(aMod: AbilityModule) {
-        this.completeTest(aMod);
+    public destroy() {
+        this.completeTest();
 
         let dX = GetUnitX(udg_genetic_sequencer_unit);
         let dY = GetUnitY(udg_genetic_sequencer_unit);

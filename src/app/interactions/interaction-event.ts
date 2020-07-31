@@ -4,8 +4,7 @@ import { Trigger, Unit } from "w3ts";
 import { vectorFromUnit } from "../types/vector2";
 import { ProgressBar } from "../types/progress-bar";
 import { SMART_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
-import { Log } from "lib/serilog/serilog";
-import { SHIP_VOYAGER_UNIT, WORM_ALIEN_FORM } from "resources/unit-ids";
+import { WORM_ALIEN_FORM } from "resources/unit-ids";
 
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');

@@ -1,29 +1,25 @@
-import { Game } from "app/game";
-import { EVENT_TYPE } from "app/events/event";
 import { Trigger, Unit, Group, Rectangle } from "w3ts";
-import { Log } from "lib/serilog/serilog";
 import { getZFromXY } from "lib/utils";
 import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS, ITEM_ID_CRYO_GRENADE } from "app/weapons/weapon-constants";
 import { ITEM_TRIFEX_ID } from "resources/item-ids";
 import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
+import { ForceEntity } from "app/force/force-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { EventEntity } from "app/events/event-entity";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
 const CRATE_ID = FourCC('h005');
-export class SecurityModule {
-
-    game: Game;
-
+export class SecurityFactory {
     isDestroyedMap = new Map<Unit, boolean>();
 
-    constructor(game: Game) { this.game = game; }
 
     initialise() {
         const securityDamageTrigger = new Trigger();
 
         // Get all security units on the map
         const uGroup = CreateGroup();
-        GroupEnumUnitsOfPlayer(uGroup, this.game.forceModule.stationProperty.handle, Filter(() => {
+        GroupEnumUnitsOfPlayer(uGroup, ForceEntity.getInstance().stationProperty.handle, Filter(() => {
             const u = GetFilterUnit();
             const uType = GetUnitTypeId(u);
             
@@ -81,7 +77,7 @@ export class SecurityModule {
                 // Pause the unit
                 unit.paused = true;
                 // Publish event that a security object is damaged
-                this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
+                EventEntity.getInstance().sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
                     source: Unit.fromHandle(source),
                     data: { 
                         unit: unit,
@@ -115,7 +111,7 @@ export class SecurityModule {
             // Pause the unit
             unit.paused = false;
             // Publish event that a security object is repaired
-            this.game.event.sendEvent(EVENT_TYPE.STATION_SECURITY_ENABLED, {
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.STATION_SECURITY_ENABLED, {
                 source: Unit.fromHandle(source),
                 data: { 
                     unit: unit,
@@ -185,7 +181,7 @@ export class SecurityModule {
             else if (secondarySeed >= 0) CreateItem(ITEM_ID_CRYO_GRENADE, x, y);
         }
        
-        this.game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+        EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
             source: Unit.fromHandle(GetKillingUnit() || GetDyingUnit()),
             data: { value: 25 }
         });

@@ -1,17 +1,15 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { MapPlayer, Unit } from "w3ts";
 import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
-import { WeaponModule } from "app/weapons/weapon-module";
 import { PlayNewSoundOnUnit, getYawPitchRollFromVector } from "lib/translators";
 import { BUFF_ID } from "resources/buff-ids";
-import { BuffInstanceDuration } from "app/buff/buff-instance";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 
 /** @noSelfInFile **/
 const SPREAD = 45;
@@ -33,7 +31,7 @@ export class DragonFireBlastAbility implements Ability {
 
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.unitsHit.clear();
 
@@ -75,9 +73,9 @@ export class DragonFireBlastAbility implements Ability {
             const nX = casterLoc.x + loc.x;
             const nY = casterLoc.y + loc.y;
             const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
-            this.fireProjectile(module.game.weaponModule, this.casterUnit, targetLoc, false)
-                .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
-                    this.onProjectileCollide(module.game.weaponModule, projectile, collidesWith)
+            this.fireProjectile(this.casterUnit, targetLoc, false)
+                .onCollide((projectile: Projectile, collidesWith: unit) => 
+                    this.onProjectileCollide(projectile, collidesWith)
                 );
         });
 
@@ -85,7 +83,7 @@ export class DragonFireBlastAbility implements Ability {
     };
 
     
-    private fireProjectile(weaponModule: WeaponModule, caster: Unit, targetLocation: Vector3, isCentralProjectile: boolean): Projectile {
+    private fireProjectile(caster: Unit, targetLocation: Vector3, isCentralProjectile: boolean): Projectile {
         const unit = caster.handle;
         // print("Target "+targetLocation.toString())
         let casterLoc = new Vector3(caster.x, caster.y, getZFromXY(caster.x, caster.y)).projectTowardsGunModel(unit);
@@ -109,32 +107,32 @@ export class DragonFireBlastAbility implements Ability {
             0.4
         );
 
-        weaponModule.addProjectile(projectile);
+        WeaponEntity.getInstance().addProjectile(projectile);
         return projectile
             .setCollisionRadius(15)
             .setVelocity(1250);
     }
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
         return true;
     };
 
-    public destroy(module: AbilityModule) { 
+    public destroy() { 
         DestroyGroup(this.damageGroup);
         return true; 
     };
     
-    private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
+    private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         const timesUnitHit = this.unitsHit.get(collidesWith) || 0;
         this.unitsHit.set(collidesWith, timesUnitHit + 1);
 
-        const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.casterUnit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.casterUnit);
 
         // Add fire debuff to unit
-        weaponModule.game.buffModule.addBuff(BUFF_ID.FIRE, 
+        DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
             Unit.fromHandle(collidesWith), 
-            new BuffInstanceDuration(this.casterUnit, weaponModule.game.getTimeStamp(), 10)
+            new BuffInstanceDuration(this.casterUnit, 10)
         );
         if (crewmember) {
             const damage = (20 * crewmember.getDamageBonusMult()) / Pow(2, timesUnitHit);

@@ -6,24 +6,25 @@ import { Crewmember } from "../../crewmember/crewmember-type";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
 import { Game } from "../../game";
-import { WeaponModule } from "../weapon-module";
-import { TimedEvent } from "../../types/timed-event";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { LASER_EXTENDED, LASER_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { ArmableUnit } from "./unit-has-weapon";
-import { Log } from "../../../lib/serilog/serilog";
 import { LASER_ITEM_ID, LASER_ABILITY_ID } from "../weapon-constants";
 import { DiodeEjector } from "../attachment/diode-ejector";
-import { EVENT_TYPE } from "app/events/event";
 import { getZFromXY } from "lib/utils";
 import { MapPlayer } from "w3ts/index";
+import { EventEntity } from "app/events/event-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { ForceEntity } from "app/force/force-entity";
+import { WeaponEntity } from "../weapon-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 const INTENSITY_MAX = 4;
 
-export const InitLaserRifle = (weaponModule: WeaponModule) => {
-    weaponModule.weaponItemIds.push(LASER_ITEM_ID);
-    weaponModule.weaponAbilityIds.push(LASER_ABILITY_ID);
+export const InitLaserRifle = () => {
+    WeaponEntity.getInstance().weaponItemIds.push(LASER_ITEM_ID);
+    WeaponEntity.getInstance().weaponAbilityIds.push(LASER_ABILITY_ID);
 }
 export class LaserRifle extends Gun {
 
@@ -39,17 +40,17 @@ export class LaserRifle extends Gun {
         this.attachment = new DiodeEjector(game, item);
     }
 
-    public applyWeaponAttackValues(weaponModule: WeaponModule, caster: Crewmember) {
+    public applyWeaponAttackValues(caster: Crewmember) {
         caster.unit.setAttackCooldown(1.5, 1);
-        this.equippedTo.unit.setBaseDamage(this.getDamage(weaponModule, caster) - 1, 0);
+        this.equippedTo.unit.setBaseDamage(this.getDamage(caster) - 1, 0);
         caster.unit.acquireRange = this.bulletDistance * 0.8;
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 5);
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED, 0, 2);
     }
     
-    public onShoot(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3): void {
-        super.onShoot(weaponModule, caster, targetLocation);
+    public onShoot(caster: Crewmember, targetLocation: Vector3): void {
+        super.onShoot(caster, targetLocation);
 
         const unit = caster.unit.handle;
         
@@ -58,10 +59,10 @@ export class LaserRifle extends Gun {
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
         let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
 
-        this.fireProjectile(weaponModule, caster, newTargetLocation);
+        this.fireProjectile(caster, newTargetLocation);
     };
 
-    private fireProjectile(weaponModule: WeaponModule, caster: Crewmember, targetLocation: Vector3) {
+    private fireProjectile(caster: Crewmember, targetLocation: Vector3) {
         const unit = caster.unit.handle;
         // print("Target "+targetLocation.toString())
         let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
@@ -81,10 +82,10 @@ export class LaserRifle extends Gun {
         );
         projectile
             .setVelocity(3000)
-            .onCollide((weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) => 
-                this.onProjectileCollide(weaponModule, projectile, collidesWith)
+            .onCollide((projectile: Projectile, collidesWith: unit) => 
+                this.onProjectileCollide(projectile, collidesWith)
             )
-            .onDeath((self: any, weaponModule: WeaponModule, projectile: Projectile) => {
+            .onDeath((projectile: Projectile) => {
                 const didCollide = this.collideDict.get(projectile.getId());
                 if (!didCollide) {
                     if (this.intensity > 1) {
@@ -96,18 +97,19 @@ export class LaserRifle extends Gun {
                     this.collideDict.delete(projectile.getId());
                     PlayNewSoundOnUnit("Sounds\\LaserConfirmedHit.mp3", caster.unit, 80);
                 }
-                this.updateTooltip(weaponModule, caster);
+                this.updateTooltip(caster);
 
                 // Broadcast item equip event
-                weaponModule.game.event.sendEvent(EVENT_TYPE.MINOR_UPGRADE_RESEARCHED, { 
+                EventEntity.getInstance().sendEvent(EVENT_TYPE.MINOR_UPGRADE_RESEARCHED, { 
                     source: this.equippedTo.unit, crewmember: caster
                 });
+                return true;
             })
 
-        weaponModule.addProjectile(projectile);
+        WeaponEntity.getInstance().addProjectile(projectile);
     }
     
-    private onProjectileCollide(weaponModule: WeaponModule, projectile: Projectile, collidesWith: unit) {
+    private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         // Set true in the collide dict
         this.collideDict.set(projectile.getId(), true);
         // Destroy projectile
@@ -118,27 +120,27 @@ export class LaserRifle extends Gun {
 
         // Case equipped unit to damage the target
         if (this.equippedTo) {
-            const crewmember = weaponModule.game.crewModule.getCrewmemberForUnit(this.equippedTo.unit);
+            const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.equippedTo.unit);
             if (crewmember) {
                 UnitDamageTarget(
                     projectile.source, 
                     collidesWith, 
-                    this.getDamage(weaponModule, crewmember), 
+                    this.getDamage(crewmember), 
                     false, 
                     true, 
                     ATTACK_TYPE_PIERCE, 
                     DAMAGE_TYPE_NORMAL, 
                     WEAPON_TYPE_WOOD_MEDIUM_STAB
                 );
-                weaponModule.game.forceModule.aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
+                ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
             }
         }
     }
 
-    protected getTooltip(weaponModule: WeaponModule, crewmember: Crewmember) {
+    protected getTooltip(crewmember: Crewmember) {
         const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
         const newTooltip = LASER_EXTENDED(
-            this.getDamage(weaponModule, crewmember), 
+            this.getDamage(crewmember), 
             this.intensity,
             minDistance, 
             this.spreadAOE
@@ -146,13 +148,13 @@ export class LaserRifle extends Gun {
         return newTooltip;
     }
 
-    protected getItemTooltip(weaponModule: WeaponModule, crewmember: Crewmember): string {
-        const damage = this.getDamage(weaponModule, crewmember);
+    protected getItemTooltip(crewmember: Crewmember): string {
+        const damage = this.getDamage(crewmember);
         return LASER_ITEM(this, damage);
     }
 
 
-    public getDamage(weaponModule: WeaponModule, caster: Crewmember): number {
+    public getDamage(caster: Crewmember): number {
         return MathRound( 25 * Pow(1.5, this.intensity) * caster.getDamageBonusMult());
     }
 

@@ -1,10 +1,9 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Unit } from "w3ts/handles/unit";
 import { BUFF_ID } from "resources/buff-ids";
-import { BuffInstance, DynamicBuff, BuffInstanceDuration } from "app/buff/buff-instance";
-import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
-import { ROLE_TYPES } from "resources/crewmember-names";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 export class TrifexAbility implements Ability {
 
@@ -12,25 +11,25 @@ export class TrifexAbility implements Ability {
 
     constructor() {}
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
-        const crew = abMod.game.crewModule.getCrewmemberForUnit(this.unit);
+        const crew = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
 
         if (crew) {
-            abMod.game.buffModule.addBuff(
+            DynamicBuffEntity.getInstance().addBuff(
                 BUFF_ID.TRIFEX, 
                 this.unit, 
-                new BuffInstanceDuration(this.unit, abMod.game.getTimeStamp(), 30)
+                new BuffInstanceDuration(this.unit, 30)
             );
         }
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         return false;
     };
 
-    public destroy(aMod: AbilityModule) {
+    public destroy() {
         return true;
     };
 }

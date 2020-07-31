@@ -1,5 +1,4 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { SPRINT_BUFF_ID, TECH_MAJOR_VOID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
@@ -8,13 +7,18 @@ import { SoundRef } from "app/types/sound-ref";
 import { Unit } from "w3ts/index";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverLinear } from "app/weapons/projectile/projectile-target";
-import { WeaponModule } from "app/weapons/weapon-module";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 import { Ship } from "app/space/ships/ship-type";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { SFX_LASER_2, SFX_LASER_1 } from "resources/sfx-paths";
 import { BUFF_ID } from "resources/buff-ids";
-import { BuffInstanceDuration } from "app/buff/buff-instance";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { ResearchFactory } from "app/research/research-factory";
+import { SpaceEntity } from "app/space/space-module";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { ForceEntity } from "app/force/force-entity";
 
 /** @noSelfInFile **/
 export class ShipMacroLasAbility implements Ability {
@@ -27,9 +31,9 @@ export class ShipMacroLasAbility implements Ability {
 
     constructor() {}
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
-        this.shootingShip = module.game.spaceModule.getShipForUnit(this.unit);
+        this.shootingShip = SpaceEntity.getInstance().getShipForUnit(this.unit);
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass += this.shootingShip.engine.velocityForwardMax / 4;
 
         const abilLevel = GetUnitAbilityLevel(this.unit.handle, GetSpellAbilityId());
@@ -37,8 +41,8 @@ export class ShipMacroLasAbility implements Ability {
         PlayNewSoundOnUnit("Sounds\\Laser1.mp3", this.unit, 127);
 
         const casterLoc = vectorFromUnit(this.unit.handle);
-        const t3VoidResearched = module.game.researchModule.getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3;
-        const t3VoidBonus = module.game.researchModule.techHasOccupationBonus(TECH_MAJOR_VOID, 3);
+        const t3VoidResearched = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3;
+        const t3VoidBonus = ResearchFactory.getInstance().techHasOccupationBonus(TECH_MAJOR_VOID, 3);
 
         this.bulletDamage = t3VoidResearched ? 60 : 90;
         this.causeFires = t3VoidBonus;
@@ -69,7 +73,7 @@ export class ShipMacroLasAbility implements Ability {
                 && GetOwningPlayer(unit) !== this.unit.owner.handle &&
                 IsUnitType(unit, UNIT_TYPE_MAGIC_IMMUNE) == false;
         })
-        .onCollide((wepModule, projectile, withWho) => this.onCollide(wepModule, projectile, withWho));
+        .onCollide((projectile, withWho) => this.onCollide(projectile, withWho));
 
         const projRight = new Projectile(
             this.unit.handle,
@@ -84,35 +88,35 @@ export class ShipMacroLasAbility implements Ability {
                 && GetOwningPlayer(unit) !== this.unit.owner.handle &&
                 IsUnitType(unit, UNIT_TYPE_MAGIC_IMMUNE) == false;
         })
-        .onCollide((wepModule, projectile, withWho) => this.onCollide(wepModule, projectile, withWho));
+        .onCollide((projectile, withWho) => this.onCollide(projectile, withWho));
 
         BlzSetSpecialEffectScale(projLeft.addEffect(this.causeFires ? SFX_LASER_2 : SFX_LASER_1, new Vector3(0, 0, 0), deltaLeft.normalise(), 1.2), 0.5);
         BlzSetSpecialEffectScale(projRight.addEffect(this.causeFires ? SFX_LASER_2 : SFX_LASER_1, new Vector3(0, 0, 0), deltaRight.normalise(), 1.2), 0.5);
 
-        module.game.weaponModule.addProjectile(projLeft);
-        module.game.weaponModule.addProjectile(projRight);
+        WeaponEntity.getInstance().addProjectile(projLeft);
+        WeaponEntity.getInstance().addProjectile(projRight);
 
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         return false;
     };
 
-    private onCollide(wepModule: WeaponModule, projectile: Projectile, withWho: unit) {
+    private onCollide(projectile: Projectile, withWho: unit) {
         projectile.setDestroy(true);
         const targetUnit = Unit.fromHandle(withWho);
-        wepModule.game.forceModule.aggressionBetweenTwoPlayers(this.unit.owner, targetUnit.owner);
+        ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, targetUnit.owner);
 
         // Now deal damage
 
-        const crewmember = wepModule.game.crewModule.getCrewmemberForUnit(this.unit);
+        const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
         let damage = this.bulletDamage;
 
         // Add fire debuff to unit
-        wepModule.game.buffModule.addBuff(BUFF_ID.FIRE, 
+        DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
             Unit.fromHandle(withWho), 
-            new BuffInstanceDuration(this.shootingShip.unit, wepModule.game.getTimeStamp(), 10)
+            new BuffInstanceDuration(this.shootingShip.unit, 10)
         );
 
         if (crewmember) {
@@ -132,7 +136,7 @@ export class ShipMacroLasAbility implements Ability {
     }
 
 
-    public destroy(aMod: AbilityModule) {
+    public destroy() {
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass -= this.shootingShip.engine.velocityForwardMax / 4;
         return true;
     };

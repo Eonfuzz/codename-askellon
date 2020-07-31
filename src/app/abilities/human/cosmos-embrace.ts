@@ -1,15 +1,12 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Unit } from "w3ts/handles/unit";
 import { BUFF_ID } from "resources/buff-ids";
-import { BuffInstance, DynamicBuff, BuffInstanceDuration } from "app/buff/buff-instance";
-import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
-import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef } from "app/types/sound-ref";
-import { Log } from "lib/serilog/serilog";
 import { FilterIsAlive } from "resources/filters";
-import { getZFromXY } from "lib/utils";
 import { Effect } from "w3ts/index";
+import { ForceEntity } from "app/force/force-entity";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 
 const SFXAt = 0.8;
 const SFXEnd = 1.6;
@@ -28,7 +25,7 @@ export class EmbraceCosmosAbility implements Ability {
 
     constructor() {}
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.soundEffect.playSoundOnUnit(this.unit.handle, 127);
         this.castingOrder = this.unit.currentOrder;
@@ -36,7 +33,7 @@ export class EmbraceCosmosAbility implements Ability {
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeCast += delta;
 
         if (this.castingOrder === this.unit.currentOrder || this.timeCast > EmbraceCosmosCastTime) {
@@ -50,7 +47,7 @@ export class EmbraceCosmosAbility implements Ability {
             }
             if (this.timeCast >= EmbraceCosmosCastTime && !this.hasDoneDamage) {
                 this.hasDoneDamage = true;
-                this.embraceCosmosExplode(module);
+                this.embraceCosmosExplode();
             }
             if (this.timeCast >= SFXEnd && this.sfx) {
                 return false;
@@ -63,7 +60,7 @@ export class EmbraceCosmosAbility implements Ability {
         return true;
     };
 
-    public embraceCosmosExplode(module: AbilityModule) {
+    public embraceCosmosExplode() {
         const damageGroup = CreateGroup();
         const uX = this.unit.x;
         const uY = this.unit.y;
@@ -75,18 +72,18 @@ export class EmbraceCosmosAbility implements Ability {
             350,
             FilterIsAlive(this.unit.owner)
         );
-        ForGroup(damageGroup, () => this.damageUnit(module));
+        ForGroup(damageGroup, () => this.damageUnit());
 
         DestroyGroup(damageGroup);
     }
 
-    private damageUnit(module: AbilityModule) {
+    private damageUnit() {
         if (this.unit) {
             const unit = Unit.fromHandle(GetEnumUnit());
 
             // Check to make sure we are allowed aggression between the two teams
             const aggressionAllowed = this.unit.owner === unit.owner 
-                || module.game.forceModule.aggressionBetweenTwoPlayers(
+                || ForceEntity.getInstance().aggressionBetweenTwoPlayers(
                     this.unit.owner, 
                     unit.owner
                 );
@@ -98,10 +95,10 @@ export class EmbraceCosmosAbility implements Ability {
             const isSelfUnit = this.unit === unit;
             // Only freeze not-self
             if (!isSelfUnit) {
-                module.game.buffModule.addBuff(
+                DynamicBuffEntity.getInstance().addBuff(
                     BUFF_ID.FLASH_FREEZE, 
                     unit,
-                    new BuffInstanceDuration(unit, module.game.getTimeStamp(), 7)
+                    new BuffInstanceDuration(unit, 7)
                 );
             }
             
@@ -120,7 +117,7 @@ export class EmbraceCosmosAbility implements Ability {
         }
     }
 
-    public destroy(aMod: AbilityModule) {
+    public destroy() {
         // Log.Information("Destroy");
         this.soundEffect.stopSound();
         if (this.sfx) {

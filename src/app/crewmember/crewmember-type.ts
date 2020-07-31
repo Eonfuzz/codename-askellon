@@ -1,33 +1,26 @@
-/** @noSelfInFile **/
 import { Gun } from "../weapons/guns/gun";
-import { Resolve } from "../buff/resolve";
-import { Game } from "../game";
 import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
-import { WeaponModule } from "../weapons/weapon-module";
-import { Despair } from "../buff/despair";
-import { BuffInstanceCallback, BuffInstance } from "../buff/buff-instance";
-import { ForceType } from "app/force/force-type";
+import { ForceType } from "app/force/forces/force-type";
 import { Log } from "lib/serilog/serilog";
-import { CrewModule } from "./crewmember-module";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { ROLE_TYPES } from "../../resources/crewmember-names";
 import { MapPlayer, Unit } from "w3ts";
-import { EVENT_TYPE } from "app/events/event";
 import { BUFF_ID } from "resources/buff-ids";
+import { EventEntity } from "app/events/event-entity";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
+import { BuffInstance } from "app/buff/buff-instance-type";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
     public name = '';
     public player: MapPlayer;
 
-    private crewModule: CrewModule;
-
     private damageBonusMult: number = 1;
 
-    constructor(game: Game, player: MapPlayer, unit: Unit, force: ForceType, role: ROLE_TYPES) {
+    constructor(player: MapPlayer, unit: Unit, force: ForceType, role: ROLE_TYPES) {
         super(unit);
-
-        this.crewModule = game.crewModule;
 
         this.player = player;
         this.unit = unit;
@@ -40,11 +33,11 @@ export class Crewmember extends ArmableUnit {
     setName(name: string) { this.name = name; }
     setPlayer(player: MapPlayer) { this.player = player; }
 
-    onWeaponAdd(weaponModule: WeaponModule, whichGun: Gun) {
+    onWeaponAdd(whichGun: Gun) {
         this.weapon = whichGun;
     }
 
-    onWeaponRemove(weaponModule: WeaponModule, whichGun: Gun) {
+    onWeaponRemove(whichGun: Gun) {
         this.weapon = undefined;
     }
 
@@ -53,15 +46,15 @@ export class Crewmember extends ArmableUnit {
      * 
      * @param game 
      */
-    onDamage(game: Game) {
-        const resolveActive = game.buffModule.unitHasBuff(BUFF_ID.RESOLVE, this.unit);
+    onDamage() {
+        const resolveActive = DynamicBuffEntity.getInstance().unitHasBuff(BUFF_ID.RESOLVE, this.unit);
 
         const maxHP = BlzGetUnitMaxHP(this.unit.handle);
         const hpPercentage  = (GetUnitState(this.unit.handle, UNIT_STATE_LIFE) - GetEventDamage()) / maxHP;
 
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {
-            game.buffModule.addBuff(
+            DynamicBuffEntity.getInstance().addBuff(
                 BUFF_ID.RESOLVE, 
                 this.unit, 
                 new BuffInstanceCallback(this.unit, () => GetUnitLifePercent(this.unit.handle) <= 30)
@@ -87,8 +80,8 @@ export class Crewmember extends ArmableUnit {
      * @param initialDuration 
      * @param onCheckToRemove 
      */
-    addDespair(game: Game, instance: BuffInstance, isNegative?: boolean) {
-        game.buffModule.addBuff(
+    addDespair(instance: BuffInstance, isNegative?: boolean) {
+        DynamicBuffEntity.getInstance().addBuff(
             BUFF_ID.DESPAIR, 
             this.unit, 
             instance,
@@ -102,8 +95,8 @@ export class Crewmember extends ArmableUnit {
      * @param initialDuration 
      * @param onCheckToRemove 
      */
-    addResolve(game: Game, instance: BuffInstance, isNegative?: boolean) {
-        game.buffModule.addBuff(
+    addResolve(instance: BuffInstance, isNegative?: boolean) {
+        DynamicBuffEntity.getInstance().addBuff(
             BUFF_ID.RESOLVE, 
             this.unit, 
             instance,
@@ -117,12 +110,12 @@ export class Crewmember extends ArmableUnit {
         print("Position: "+this.role);
     }
 
-    updateTooltips(weaponModule: WeaponModule) {
-        if (this.weapon) this.weapon.updateTooltip(weaponModule, this);
+    updateTooltips() {
+        if (this.weapon) this.weapon.updateTooltip(this);
     }
 
-    addExperience(game: Game, amount: number) {
-        game.event.sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+    addExperience(amount: number) {
+        EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
             source: this.unit,
             data: { value: amount }
         });
@@ -147,7 +140,7 @@ export class Crewmember extends ArmableUnit {
         // this.damageUpgradeLevel = upgradeLevel;
         this.damageBonusMult = upgradeLevel > 0 ? Pow(1.1, upgradeLevel) : 1;
 
-        this.updateTooltips(this.crewModule.game.weaponModule);
+        this.updateTooltips();
     }
 
     getDamageBonusMult() {

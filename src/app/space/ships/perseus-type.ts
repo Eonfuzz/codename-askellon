@@ -1,5 +1,4 @@
 import { Unit, Effect } from "w3ts/index";
-import { Game } from "app/game";
 import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
@@ -8,6 +7,9 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { Ship, ShipWithFuel } from "./ship-type";
 import { ShipState } from "./ship-state-type";
+import { ForceEntity } from "app/force/force-entity";
+import { WorldEntity } from "app/world/world-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -16,8 +18,8 @@ export class PerseusShip extends ShipWithFuel {
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
-    constructor(game: Game, state: ShipState, u: Unit) {
-        super(game, state, u);
+    constructor(state: ShipState, u: Unit) {
+        super(state, u);
         
         this.unit.maxMana = this.maxFuel;
         this.shipFuel = this.maxFuel;
@@ -36,7 +38,7 @@ export class PerseusShip extends ShipWithFuel {
         }
     }
 
-    onEnterShip(game: Game, who: Unit) {
+    onEnterShip(who: Unit) {
         const newOwner = who.owner;
         this.unit.owner = who.owner;
 
@@ -71,10 +73,10 @@ export class PerseusShip extends ShipWithFuel {
         this.unit.setPathing(true);
     }
 
-    onDeath(game: Game, killer: Unit) {
+    onDeath(killer: Unit) {
         // first of all eject all our units
         const allUnits = this.inShip.slice();
-        this.onLeaveShip(game);
+        this.onLeaveShip();
 
         // Make killer damage them for 400 damage as they were inside the ship
         allUnits.forEach(u => {
@@ -152,8 +154,8 @@ export class PerseusShip extends ShipWithFuel {
         }
     }
 
-    onLeaveShip(game: Game, isDeath?: boolean) {
-        const newOwner = game.forceModule.neutralHostile;
+    onLeaveShip(isDeath?: boolean) {
+        const newOwner = ForceEntity.getInstance().neutralHostile;
         this.unit.owner = newOwner;
         SetUnitAnimationByIndex(this.unit.handle, 3);
 
@@ -172,8 +174,8 @@ export class PerseusShip extends ShipWithFuel {
         });
         
         // We're leaving space, can we dump off minerals?
-        const unitZone = game.worldModule.getUnitZone(this.unit);
-        if (!isDeath && unitZone && game.worldModule.getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
+        const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
+        if (!isDeath && unitZone && WorldEntity.getInstance().getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
             const owningUnit = this.inShip[0];
     
             const mineralItem = this.unit.getItemInSlot(0);
@@ -182,17 +184,17 @@ export class PerseusShip extends ShipWithFuel {
 
             // Reward money
             if (owningUnit && stacks > 0) {
-                const crew = game.crewModule.getCrewmemberForUnit(owningUnit);
+                const crew = CrewFactory.getInstance().getCrewmemberForUnit(owningUnit);
                 if (crew) {
                     const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
                     if (hasRoleOccupationBonus) {
-                        crew.addExperience(game, stacks * 4);
+                        crew.addExperience(stacks * 4);
                         crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
                             crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
                         );
                     }
                     else {
-                        crew.addExperience(game, stacks * 3);
+                        crew.addExperience(stacks * 3);
                         crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
                             crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 5
                         );

@@ -1,8 +1,5 @@
 import { Gun } from "./gun";
-import { WeaponModule } from "../weapon-module";
 import { Unit } from "w3ts/handles/unit";
-
-/** @noSelfInFile **/
 
 export abstract class ArmableUnit {
     public unit: Unit;
@@ -12,6 +9,6 @@ export abstract class ArmableUnit {
         this.unit = unit;
     }
     
-    abstract onWeaponAdd(weaponModule: WeaponModule, weapon: Gun): void
-    abstract onWeaponRemove(weaponModule: WeaponModule, weapon: Gun): void
+    abstract onWeaponAdd(weapon: Gun): void
+    abstract onWeaponRemove(weapon: Gun): void
 }

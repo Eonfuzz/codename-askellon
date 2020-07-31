@@ -1,16 +1,13 @@
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
 import { Unit } from "w3ts/index";
-import { BUFF_ID } from "resources/buff-ids";
-import { BuffInstanceDuration } from "app/buff/buff-instance";
 import { SoundRef } from "app/types/sound-ref";
-import { ABIL_INQUIS_PURITY_SEAL_DUMMY, TECH_MAJOR_RELIGION, ABIL_INQUIS_PURITY_SEAL, ABILITY_SLOW_ID, ABIL_STUN_25 } from "resources/ability-ids";
-import { PuritySeal } from "app/buff/purity-seal";
+import { ABILITY_SLOW_ID, ABIL_STUN_25 } from "resources/ability-ids";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { SFX_RED_SINGULARITY, SFX_DARK_RITUAL, SFX_DARK_SUMMONING, SFX_HOWL } from "resources/sfx-paths";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { getZFromXY } from "lib/utils";
-import { Log } from "lib/serilog/serilog";
+import { ForceEntity } from "app/force/force-entity";
+import { Game } from "app/game";
 
 export const smiteSound = new SoundRef("Sounds\\InquisitorSmite.mp3", false);
 
@@ -34,7 +31,7 @@ export class SmiteAbility implements Ability {
         this.isImpure = isImpure;
     }
 
-    public initialise(module: AbilityModule) {
+    public initialise() {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
 
@@ -47,7 +44,7 @@ export class SmiteAbility implements Ability {
         return true;
     };
 
-    public process(module: AbilityModule, delta: number) {
+    public process(delta: number) {
 
         this.timerUntilCheck -= delta;
 
@@ -84,7 +81,7 @@ export class SmiteAbility implements Ability {
                 BlzSetSpecialEffectZ(sfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
                 DestroyEffect(sfx);
 
-                if (!module.game.forceModule.aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
+                if (!ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
                 // We've moved uh oh time for BLAM
                 UnitDamageTarget(
                     this.unit.handle, 
@@ -98,7 +95,7 @@ export class SmiteAbility implements Ability {
                 );
 
                 const unit = this.targetUnit.handle;
-                module.game.useDummyFor((dummy: unit) => {
+                Game.getInstance().useDummyFor((dummy: unit) => {
                     SetUnitAbilityLevel(dummy, ABIL_STUN_25, 8);
                     SetUnitX(dummy, GetUnitX(unit));
                     SetUnitY(dummy, GetUnitY(unit));
@@ -107,7 +104,7 @@ export class SmiteAbility implements Ability {
 
             }
             else {
-                if (!module.game.forceModule.aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
+                if (!ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
                 // Deal 50 damage
                 UnitDamageTarget(
                     this.unit.handle, 
@@ -122,7 +119,7 @@ export class SmiteAbility implements Ability {
 
                 // Slow the unit
                 const unit = this.targetUnit.handle;
-                module.game.useDummyFor((dummy: unit) => {
+                Game.getInstance().useDummyFor((dummy: unit) => {
                     SetUnitX(dummy, GetUnitX(unit));
                     SetUnitY(dummy, GetUnitY(unit) + 50);
 
@@ -140,7 +137,7 @@ export class SmiteAbility implements Ability {
         return !this.doFinish;
     };
 
-    public destroy(aMod: AbilityModule) { 
+    public destroy() { 
         DestroyEffect(this.smiteSfx);
         return true;
     };

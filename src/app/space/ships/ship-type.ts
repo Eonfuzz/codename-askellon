@@ -4,8 +4,6 @@ import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { UNIT_IS_FLY } from "resources/ability-ids";
-import { ZONE_TYPE } from "app/world/zone-id";
-import { ROLE_TYPES } from "resources/crewmember-names";
 import { ShipState } from "./ship-state-type";
 
 /**
@@ -27,7 +25,7 @@ export abstract class Ship {
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
-    constructor(game: Game, state: ShipState, u: Unit) {
+    constructor(state: ShipState, u: Unit) {
         this.state = state;
         this.unit = u;
         this.unit.paused = true;
@@ -42,7 +40,7 @@ export abstract class Ship {
         }
     }
 
-    process(game: Game, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
+    process(deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
         if (this.state === ShipState.inSpace) {
             this.engine.updateThrust(deltaTime)
                 .applyThrust(deltaTime)
@@ -69,14 +67,14 @@ export abstract class Ship {
 
     public abstract createEngine();
 
-    public abstract onEnterShip(game: Game, who: Unit);
+    public abstract onEnterShip(who: Unit);
 
     public abstract onEnterSpace();
     public abstract onLeaveSpace();
 
-    public abstract onDeath(game: Game, killer: Unit);
+    public abstract onDeath(killer: Unit);
     public abstract onMoveOrder(targetLoc: Vector2);
-    public abstract onLeaveShip(game: Game, isDeath?: boolean);
+    public abstract onLeaveShip(isDeath?: boolean);
 }
 
 export abstract class ShipWithFuel extends Ship {
@@ -91,16 +89,16 @@ export abstract class ShipWithFuel extends Ship {
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
-    constructor(game: Game, state: ShipState, u: Unit) {
-        super(game, state, u);
+    constructor(state: ShipState, u: Unit) {
+        super(state, u);
     }
 
     public setFuelUsagePercent(newVal: number) {
         this.fuelUsagePercent = newVal;
     }
 
-    public process(game: Game, deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
-        super.process(game, deltaTime, minX, maxX, minY, maxY);
+    public process(deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
+        super.process(deltaTime, minX, maxX, minY, maxY);
         
         // Now update fuel costs if relevant
         this.fuelUpdateTicker += deltaTime;

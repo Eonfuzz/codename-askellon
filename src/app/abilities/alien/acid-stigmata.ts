@@ -1,14 +1,15 @@
 /** @noSelfInFile **/
 import { Ability } from "../ability-type";
-import { AbilityModule } from "../ability-module";
-import { Trigger, Unit, Effect } from "w3ts";
+import { Unit, Effect } from "w3ts";
 import { BUFF_ID_ROACH_ARMOR, BUFF_ID } from "resources/buff-ids";
-import { TECH_20_RANGE_UPGRADE, TECH_ROACH_DUMMY_UPGRADE } from "resources/ability-ids";
-import { SFX_ALIEN_ACID_BALL, SFX_ACID_AURA, SFX_CONFLAGRATE_GREEN } from "resources/sfx-paths";
+import { TECH_ROACH_DUMMY_UPGRADE } from "resources/ability-ids";
+import { SFX_ACID_AURA, SFX_CONFLAGRATE_GREEN } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
 import { FilterIsEnemyAndAlive } from "resources/filters";
-import { BuffInstanceDuration } from "app/buff/buff-instance";
 import { SoundRef } from "app/types/sound-ref";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { Game } from "app/game";
 
 // Damage increase each second
 const MAX_DURATION = 6;
@@ -25,10 +26,6 @@ export class AcidStigmataAbility implements Ability {
     private casterUnit: Unit;
     private timeElapsed: number = 0;
 
-    private rangeIncreaseTimer: number = 0;
-    private baseAttack1Damage: number = 0;
-    private totalBonusDamage: number = 0;
-
     private damageGroup = CreateGroup();
     private damageTicker: number = DAMAGE_EVERY;
 
@@ -39,11 +36,8 @@ export class AcidStigmataAbility implements Ability {
 
     constructor() {}
 
-    public initialise(abMod: AbilityModule) {
+    public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
-
-        // Get attack 1 base
-        this.baseAttack1Damage = BlzGetUnitWeaponIntegerField(this.casterUnit.handle, UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE, 0);
 
         this.casterUnit.addAbility(FourCC('A00W'));
         UnitRemoveBuffBJ(BUFF_ID_ROACH_ARMOR, this.casterUnit.handle);
@@ -60,7 +54,7 @@ export class AcidStigmataAbility implements Ability {
         return true;
     };
 
-    public process(abMod: AbilityModule, delta: number) {
+    public process(delta: number) {
         this.timeElapsed += delta;
 
         // Stop if time elapsed is too far
@@ -74,7 +68,6 @@ export class AcidStigmataAbility implements Ability {
         this.poisonAura.z = getZFromXY(this.casterUnit.x, this.casterUnit.y)+25;
 
         const mult = (this.timeElapsed / MAX_DURATION);
-        this.totalBonusDamage = mult * MAX_DURATION_DAMAGE_BONUS;
 
         this.casterUnit.setVertexColor(MathRound(255 - 255 * mult), 255, MathRound(255 - 255 * mult), 255);
 
@@ -111,7 +104,7 @@ export class AcidStigmataAbility implements Ability {
         }
     }
     
-    public destroy(abMod: AbilityModule) {
+    public destroy() {
         if (this.casterUnit) {
                 
             this.casterUnit.removeAbility(FourCC('A00W'));
@@ -149,14 +142,14 @@ export class AcidStigmataAbility implements Ability {
                     WEAPON_TYPE_WHOKNOWS
                 );
                 
-                abMod.game.buffModule.addBuff(
+                DynamicBuffEntity.getInstance().addBuff(
                     BUFF_ID.DESPAIR, 
                     Unit.fromHandle(unit), 
-                    new BuffInstanceDuration(this.casterUnit, abMod.game.getTimeStamp(), 40),
+                    new BuffInstanceDuration(this.casterUnit, 40),
                     false
                 );
                 
-                abMod.game.useDummyFor((dummy: unit) => {
+                Game.getInstance().useDummyFor((dummy: unit) => {
                     SetUnitX(dummy, GetUnitX(unit));
                     SetUnitY(dummy, GetUnitY(unit) + 50);
                     IssueTargetOrder(dummy, 'slow', GetEnumUnit());

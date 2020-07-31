@@ -2,9 +2,7 @@
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME, STRING_TO_ZONE_TYPE } from "./zone-id";
 import { Game } from "../game";
 import { Zone, ShipZone } from "./zone-type";
-import { WorldModule } from "./world-module";
 import { SoundRef } from "../types/sound-ref";
-import { BuffInstanceDuration, BuffInstanceCallback } from "../buff/buff-instance";
 import { Log } from "../../lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
@@ -12,6 +10,10 @@ import { MapPlayer, Unit } from "w3ts";
 import { ChurchZone } from "./zones/church";
 import { BridgeZone, BridgeZoneVent } from "./zones/bridge";
 import { VISION_PENALTY } from "app/vision/vision-type";
+import { ForceEntity } from "app/force/force-entity";
+import { VisionFactory } from "app/vision/vision-factory";
+import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
+import { WorldEntity } from "./world-entity";
 
 // Small damage
 // Will not cause damage to interior
@@ -40,24 +42,22 @@ export class TheAskellon {
     powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false, true);
     powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false, true);
 
-    world: WorldModule;
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
 
     private pilot: Crewmember | undefined;
     private playerLightingModifiers = new Map<MapPlayer, number>();
 
-    constructor(world: WorldModule) {
-        this.world = world;
+    constructor() {
 
-        this.floors.set(ZONE_TYPE.ARMORY, new ShipZone(world.game, ZONE_TYPE.ARMORY, udg_Lights_Armory));
-        this.floors.set(ZONE_TYPE.ARMORY_VENT, new ShipZone(world.game, ZONE_TYPE.ARMORY_VENT));
-        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(world.game, ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
-        this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(world.game, ZONE_TYPE.CARGO_A_VENT));
-        this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(world.game, ZONE_TYPE.SERVICE_TUNNELS));
-        this.floors.set(ZONE_TYPE.BIOLOGY, new ShipZone(world.game, ZONE_TYPE.BIOLOGY,udg_Lights_Biology ));
-        this.floors.set(ZONE_TYPE.BRIDGE, new BridgeZone(world.game, ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
-        this.floors.set(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(world.game, ZONE_TYPE.BRIDGE_VENT));
-        this.floors.set(ZONE_TYPE.CHURCH, new ChurchZone(world.game, ZONE_TYPE.CHURCH));
+        this.floors.set(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY, udg_Lights_Armory));
+        this.floors.set(ZONE_TYPE.ARMORY_VENT, new ShipZone(ZONE_TYPE.ARMORY_VENT));
+        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
+        this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
+        this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
+        this.floors.set(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY,udg_Lights_Biology ));
+        this.floors.set(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
+        this.floors.set(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
+        this.floors.set(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
 
         // Now apply lights to the zones
         const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
@@ -102,14 +102,14 @@ export class TheAskellon {
 
     applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
         // let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-        const playerDetails = this.world.game.forceModule.getPlayerDetails(player);
+        const playerDetails = ForceEntity.getInstance().getPlayerDetails(player);
         if (playerDetails) {
             const crewmember = playerDetails.getCrewmember();
             
             // IF we dont have power add despair to the unit
             if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
-                crewmember.addDespair(this.world.game, new BuffInstanceCallback(crewmember.unit, () => {
-                    const z = this.world.getUnitZone(crewmember.unit);
+                crewmember.addDespair(new BuffInstanceCallback(crewmember.unit, () => {
+                    const z = WorldEntity.getInstance().getUnitZone(crewmember.unit);
                     const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
                     return (z && hasNighteye === 0) ? z.doCauseFear() : false;
                 }));
@@ -120,12 +120,12 @@ export class TheAskellon {
         if (this.playerLightingModifiers.has(player)) {
             const mod = this.playerLightingModifiers.get(player);
             this.playerLightingModifiers.delete(player);
-            this.world.game.vision.removeVisionModifier(mod);
+            VisionFactory.getInstance().removeVisionModifier(mod);
         }
 
         if (!hasPower) {
             this.playerLightingModifiers.set(player, 
-                this.world.game.vision.addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
+                VisionFactory.getInstance().addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
             );
         }
         if (hasPower && justChanged && GetLocalPlayer() === player.handle) {
@@ -144,8 +144,6 @@ export class TheAskellon {
      */
     damageShip(damage: number, zone?: ZONE_TYPE) {
         const damagedZone = zone ? this.findZone(zone) : this.getRandomZone()[1];
-        // const askellonUnit = this.world.game.spaceModule.mainShip.unit;
-
         // // Damage the ship
         // if (askellonUnit) {
         //     askellonUnit.damageTarget(askellonUnit.handle, damage, 0, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);

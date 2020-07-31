@@ -1,9 +1,4 @@
-import { Trigger } from 'w3ts';
-import { TimedEvent } from './timed-event';
-import { Game } from '../game';
-import { Util } from '../../lib/translators';
-
-export class GameTimeElapsed {
+export class GameTimeElapsed {    
     
     private everyTenSeconds: number = 0;
     private globalTimer: timer;

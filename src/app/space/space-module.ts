@@ -1,6 +1,3 @@
-/** @noSelfInFile **/
-
-import { Game } from "../game";
 import { Trigger, Region, Rectangle, Unit, Timer } from "w3ts";
 import { SpaceObject, SpaceObjectType } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
@@ -8,24 +5,38 @@ import { Mineral } from "./space-objects/mineral";
 import { Log } from "lib/serilog/serilog";
 import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
-import { EventListener, EVENT_TYPE } from "app/events/event";
+import { EventListener } from "app/events/event-type";
 import { Ship, ShipWithFuel } from "./ships/ship-type";
 import { ABIL_LEAVE_ASKELLON_CONTROLS, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
-import { ALIEN_FORCE_NAME } from "app/force/alien-force";
+import { ALIEN_FORCE_NAME } from "app/force/forces/alien-force";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { ITEM_MINERALS_SHIP_ID } from "resources/item-ids";
 import { PerseusShip } from "./ships/perseus-type";
 import { AskellonShip } from "./ships/askellon-type";
 import { ShipState } from "./ships/ship-state-type";
+import { Entity } from "app/entity-type";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { ForceEntity } from "app/force/force-entity";
+import { ResearchFactory } from "app/research/research-factory";
+import { WorldEntity } from "app/world/world-entity";
+import { CrewFactory } from "app/crewmember/crewmember-factory";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
 declare const gg_rct_Space: rect;
 
-export class SpaceModule {
-    private game: Game;
+export class SpaceEntity extends Entity {
+    private static instance: SpaceEntity;
+
+    public static getInstance() {        
+        if (this.instance == null) {
+            this.instance = new SpaceEntity();
+        }
+        return this.instance;
+    }
 
     public spaceRect: Rectangle = Rectangle.fromHandle(gg_rct_Space);
 
@@ -41,8 +52,8 @@ export class SpaceModule {
 
     public shipBays: ShipBay[];
 
-    constructor(game: Game) {
-        this.game = game;
+    constructor() {
+        super();
 
         this.ships          = [];
         this.spaceObjects   = [];
@@ -56,43 +67,40 @@ export class SpaceModule {
             for (let index = 0; index < 300; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
-                const asteroid = new Asteroid(rX, rY, SpaceObjectType.midground);
-                asteroid.load(game);
+                new Asteroid(rX, rY, SpaceObjectType.midground).load();
             }
             // Create 200 midground asteroids
             for (let index = 0; index < 300; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
-                const asteroid = new Mineral(rX, rY, SpaceObjectType.midground);
-                asteroid.load(game);
+                new Mineral(rX, rY, SpaceObjectType.midground).load();
             }
             // Create 400 background asteroids
             for (let index = 0; index < 400; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
-                const asteroid = new Asteroid(rX, rY, SpaceObjectType.background);
-                asteroid.load(game);
+                new Asteroid(rX, rY, SpaceObjectType.background).load();
             }
             // Create 100 foreground asteroids
             for (let index = 0; index < 400; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
-                const asteroid = new Asteroid(rX, rY, SpaceObjectType.foreground);
-                asteroid.load(game);
+                new Asteroid(rX, rY, SpaceObjectType.foreground).load();
             }
         // }
         // catch (e) {
         //     Log.Error(e);
         // }
-        this.game.event.addListener( new EventListener(EVENT_TYPE.ENTER_SHIP, (self, data) => 
+        const eventEntity = EventEntity.getInstance();
+        eventEntity.addListener( new EventListener(EVENT_TYPE.ENTER_SHIP, (self, data) => 
             this.unitEntersShip(
                 data.source, 
                 data.data.ship
             ))
-        );
-        this.game.event.addListener( new EventListener(EVENT_TYPE.LEAVE_SHIP, () => {}) );
-        this.game.event.addListener( new EventListener(EVENT_TYPE.SHIP_ENTERS_SPACE, (self, data) => this.onShipEntersSpace(data.source, data.data.ship)) );
-        this.game.event.addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.goal)) );
+        )
+        .addListener( new EventListener(EVENT_TYPE.LEAVE_SHIP, () => {}) )
+        .addListener( new EventListener(EVENT_TYPE.SHIP_ENTERS_SPACE, (self, data) => this.onShipEntersSpace(data.source, data.data.ship)) )
+        .addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.goal)) );
     }
     
     /**
@@ -104,8 +112,10 @@ export class SpaceModule {
         const spaceX = this.spaceRect.centerX;
         const spaceY = this.spaceRect.centerY;
 
-        this.mainShip = new AskellonShip(this.game, ShipState.inSpace, Unit.fromHandle(
-            CreateUnit(this.game.forceModule.neutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
+        const forceEntity = ForceEntity.getInstance();
+
+        this.mainShip = new AskellonShip(ShipState.inSpace, Unit.fromHandle(
+            CreateUnit(forceEntity.neutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
         );
         this.mainShip.unit.setTimeScale(0.5);
         
@@ -123,15 +133,16 @@ export class SpaceModule {
             bay.ZONE = ZONE_TYPE.CARGO_A;
 
             // Also for now create a ship to sit in the dock
-            const ship = new PerseusShip(this.game, ShipState.inBay, Unit.fromHandle(
-                CreateUnit(this.game.forceModule.neutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
+            const ship = new PerseusShip(ShipState.inBay, Unit.fromHandle(
+                CreateUnit(forceEntity.neutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
             );
             this.shipUnitDict.set(ship.unit, ship);
             this.ships.push(ship);
-            this.game.worldModule.travel(ship.unit, bay.ZONE);
+
+            WorldEntity.getInstance().travel(ship.unit, bay.ZONE);
             ship.unit.addItemById(ITEM_MINERALS_SHIP_ID);
 
-            bay.dockShip(this.game, ship);
+            bay.dockShip(ship);
 
             this.shipDeathEvent.registerUnitEvent(ship.unit, EVENT_UNIT_DEATH);
             this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_ORDER);
@@ -157,14 +168,14 @@ export class SpaceModule {
 
                 if (this.mainShip !== matchingShip) {
                     // Now kill the ship
-                    matchingShip.onDeath(this.game, k);
+                    matchingShip.onDeath(k);
                     // Now clear it from ships for unit
                     this.shipUnitDict.delete(u);
                     this.ships.splice(this.ships.indexOf(matchingShip as ShipWithFuel), 1);
                     // Log.Information("Finished ship Death!");
                 }
                 else {
-                    matchingShip.onDeath(this.game, k);
+                    matchingShip.onDeath(k);
                 }
             }
             catch (e) {
@@ -201,11 +212,11 @@ export class SpaceModule {
         // Hook into the space upgrades
         
         // Listen to ugprade events
-        this.game.event.addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+        EventEntity.getInstance().addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
             if (data.data.researched === TECH_MAJOR_VOID) {
                 const techLevel = data.data.level;
 
-                const gotOccupationBonus = this.game.researchModule.techHasOccupationBonus(data.data.researched, techLevel);
+                const gotOccupationBonus = ResearchFactory.getInstance().techHasOccupationBonus(data.data.researched, techLevel);
 
                 if (techLevel === 1) {
                     this.ships.forEach(ship => {
@@ -262,14 +273,14 @@ export class SpaceModule {
         ship.onEnterSpace();
         PanCameraToTimedForPlayer(who.owner.handle, ship.unit.x, ship.unit.y, 0);
 
-        this.game.worldModule.travel(who, ZONE_TYPE.SPACE);
-        this.game.worldModule.travel(ship.unit, ZONE_TYPE.SPACE);
+        WorldEntity.getInstance().travel(who, ZONE_TYPE.SPACE);
+        WorldEntity.getInstance().travel(ship.unit, ZONE_TYPE.SPACE);
 
         // Alien infestation
         // Grant vision of the ship if it is infested
-        const t2IsInfested = this.game.researchModule.isUpgradeInfested(TECH_MAJOR_VOID, 2);
+        const t2IsInfested = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_VOID, 2);
         if (t2IsInfested) {
-            const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME);
+            const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME);
             alienForce.getPlayers().forEach(p => ship.unit.shareVision(p, true));
         }
     }
@@ -296,13 +307,13 @@ export class SpaceModule {
         }
         // iterate units
         ship.inShip.forEach(u => {
-            this.game.worldModule.travel(u, freeBay.ZONE);
+            WorldEntity.getInstance().travel(u, freeBay.ZONE);
         });
-        this.game.worldModule.travel(ship.unit, freeBay.ZONE);
+        WorldEntity.getInstance().travel(ship.unit, freeBay.ZONE);
 
         // Now we need to dock
         ship.onLeaveSpace();
-        freeBay.dockShip(this.game, ship, true);
+        freeBay.dockShip(ship, true);
         PanCameraToTimedForPlayer(unit.owner.handle, unit.x, unit.y, 0);
         if (unit.owner.handle === GetLocalPlayer()) {
             BlzShowTerrain(true);
@@ -310,9 +321,9 @@ export class SpaceModule {
 
         // Alien infestation
         // Remove vision of the ship if it is infested
-        const t2IsInfested = this.game.researchModule.isUpgradeInfested(TECH_MAJOR_VOID, 2);
+        const t2IsInfested = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_VOID, 2);
         if (t2IsInfested) {
-            const alienForce = this.game.forceModule.getForce(ALIEN_FORCE_NAME);
+            const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME);
             alienForce.getPlayers().forEach(p => ship.unit.shareVision(p, false));
         }
     }
@@ -325,9 +336,9 @@ export class SpaceModule {
     maxX = this.spaceRect.maxX;
     minY = this.spaceRect.minY;
     maxY = this.spaceRect.maxY;
-    updateShips(updatePeriod: number) {
-        this.mainShip.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY);
-        this.ships.forEach(ship => ship.process(this.game, updatePeriod, this.minX, this.maxX, this.minY, this.maxY));
+    step() {
+        this.mainShip.process(this._timerDelay, this.minX, this.maxX, this.minY, this.maxY);
+        this.ships.forEach(ship => ship.process(this._timerDelay, this.minX, this.maxX, this.minY, this.maxY));
     }
 
     unitEntersShip(who: Unit, whichShip: Unit) {
@@ -340,7 +351,7 @@ export class SpaceModule {
         if (!bayMatch) return Log.Error("NO BAY FOUND FOR SHIP, REPORT THIS PLEASE TY THANKS NERDS");
 
         try {
-            bayMatch.launchShip(this.game, who);
+            bayMatch.launchShip(who);
         }
         catch(e) {
             Log.Error(e);
@@ -373,10 +384,10 @@ export class SpaceModule {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
             }
             else if (castAbilityId === ABIL_LEAVE_ASKELLON_CONTROLS) {
-                ship.onLeaveShip(this.game);
+                ship.onLeaveShip();
             }
 
-            const crew = this.game.crewModule.getCrewmemberForUnit(ship.inShip[0])
+            const crew = CrewFactory.getInstance().getCrewmemberForUnit(ship.inShip[0])
             const isPilot = crew && crew.role === ROLE_TYPES.PILOT;
             let manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
             if (isPilot) {

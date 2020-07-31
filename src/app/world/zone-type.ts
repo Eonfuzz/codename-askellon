@@ -1,14 +1,17 @@
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "./zone-id";
 import { SoundRef } from "../types/sound-ref";
-import { WorldModule } from "./world-module";
-import { TimedEvent } from "../types/timed-event";
 import { Log } from "../../lib/serilog/serilog";
 import { LIGHT_DEST_ID } from "../types/widget-id";
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer, Timer } from "w3ts";
 import { Game } from "app/game";
-import { EventListener, EVENT_TYPE, EventData } from "app/events/event";
+import { EventListener } from "app/events/event-type";
 import { getZFromXY } from "lib/utils";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { EventData } from "app/events/event-data";
+import { WorldEntity } from "./world-entity";
+import { Timers } from "app/timer-type";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
@@ -16,22 +19,20 @@ declare const udg_power_generator_zones: Array<string>;
 
 export class Zone {
     public id: ZONE_TYPE;
-    protected game: Game;
 
     // Adjacent zones UNUSED
     protected adjacent: Array<Zone> = [];
     protected unitsInside: Array<Unit> = [];
 
-    constructor(game: Game, id: ZONE_TYPE) {
+    constructor(id: ZONE_TYPE) {
         this.id = id;
-        this.game = game;
     }
 
     /**
      * Unit enters the zone
      * @param unit 
      */
-    public onLeave(world: WorldModule, unit: Unit) {
+    public onLeave(unit: Unit) {
         const idx = this.unitsInside.indexOf(unit);
         if (idx >= 0) this.unitsInside.splice(idx, 1);
         else Log.Warning("Failed to remove unit "+unit.name+" from "+this.id);
@@ -41,7 +42,7 @@ export class Zone {
      * Unit leaves the zone
      * @param unit 
      */
-    public onEnter(world: WorldModule, unit: Unit) {
+    public onEnter(unit: Unit) {
         this.unitsInside.push(unit);
     }
 
@@ -83,8 +84,8 @@ export class ShipZone extends Zone {
     // The exits to and from this zone
     private exits: Array<Unit> = [];
 
-    constructor(game: Game, id: ZONE_TYPE, lights?: destructable[], exits?: Unit[]) {
-        super(game, id);
+    constructor(id: ZONE_TYPE, lights?: destructable[], exits?: Unit[]) {
+        super(id);
 
         // Get get light sources and power gens based on ID
         const matchingIndexes = [];
@@ -94,12 +95,12 @@ export class ShipZone extends Zone {
         });
 
         // Hook into station destruction events
-        game.event.addListener(
+        EventEntity.getInstance().addListener(
             new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, 
             (self, data: EventData) => this.onGeneratorDestroy(data.data.unit, data.source))
         );
         // Register to and listen for security repair
-        game.event.addListener(
+        EventEntity.getInstance().addListener(
             new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED,
             (self, data: EventData) => this.onGeneratorRepair(data.data.unit, data.source))
         );
@@ -136,8 +137,8 @@ export class ShipZone extends Zone {
         }
     }
 
-    public onLeave(world: WorldModule, unit: Unit) {
-        super.onLeave(world, unit);
+    public onLeave(unit: Unit) {
+        super.onLeave(unit);
 
         // If no oxy remove oxy loss
         // TODO
@@ -148,13 +149,13 @@ export class ShipZone extends Zone {
         });
     }
 
-    public onEnter(world: WorldModule, unit: Unit) {
-        super.onEnter(world, unit);
+    public onEnter(unit: Unit) {
+        super.onEnter(unit);
 
         // If no oxy apply oxy loss
         // TODO
         // If no power apply power loss
-        world.askellon.applyPowerChange(unit.owner, this.hasPower, false);
+        WorldEntity.getInstance().askellon.applyPowerChange(unit.owner, this.hasPower, false);
         this.exits.forEach(exit => {
             exit.shareVision(unit.owner, true);
         });
@@ -165,13 +166,13 @@ export class ShipZone extends Zone {
 
             if (this.hasPower) {
                 // Apply power change to all players
-                this.getPlayersInZone().map(p => this.game.worldModule.askellon.applyPowerChange(p, newState, true));
+                this.getPlayersInZone().map(p => WorldEntity.getInstance().askellon.applyPowerChange(p, newState, true));
             }
             else {
                 const t = new Timer();
                 t.start(4, false, () => {
                     // Apply power change to all players
-                    this.getPlayersInZone().map(p => this.game.worldModule.askellon.applyPowerChange(p, newState, true));
+                    this.getPlayersInZone().map(p => WorldEntity.getInstance().askellon.applyPowerChange(p, newState, true));
                     t.destroy();
                 });
             }
@@ -182,7 +183,7 @@ export class ShipZone extends Zone {
                     const r = GetRandomInt(2, 4);
                     const timer = 500 + r*r * 200;
 
-                    this.game.worldModule.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                    Timers.addTimedAction(timer, () => {
                         const oldSource = this.lightSources[_i];
                         const oldX = GetDestructableX(oldSource);
                         const oldY = GetDestructableY(oldSource);
@@ -204,7 +205,7 @@ export class ShipZone extends Zone {
                         RemoveDestructable(oldSource);
                         this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 9999, 0, 1, 0);
                         return true;
-                    }, timer));
+                    });
                 });
             }
             // Otherwise we need to reset the lights
@@ -214,7 +215,7 @@ export class ShipZone extends Zone {
                     const r = GetRandomInt(2, 4);
                     const timer = 500 + r*r * 200;
 
-                    this.game.timedEventQueue.AddEvent(new TimedEvent(() => {
+                    Timers.addTimedAction(timer, () => {
                         const oldSource = this.lightSources[_i];
                         const oldX = GetDestructableX(oldSource);
                         const oldY = GetDestructableY(oldSource);
@@ -237,7 +238,7 @@ export class ShipZone extends Zone {
                         RemoveDestructable(oldSource);
                         this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 100, 0, 1, 0);
                         return true;
-                    }, timer));
+                    });
                 });
             }
         }

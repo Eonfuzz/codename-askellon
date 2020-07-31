@@ -1,26 +1,31 @@
-import { Game } from "app/game";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
 import { DynamicTooltip } from "resources/ability-tooltips";
-import { EventListener, EVENT_TYPE, EventData } from "app/events/event";
-import { Log } from "lib/serilog/serilog";
+import { EventListener } from "app/events/event-type";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { EventData } from "app/events/event-data";
 
 /**
  * Dynamic update of tooltips
  * Requires registing of tooltips and their events
  */
-export class TooltipModule {
-    public game: Game;
+export class TooltipEntity {
+    private static instance: TooltipEntity;
+
+    public static getInstance() {        
+        if (this.instance == null) {
+            this.instance = new TooltipEntity();
+        }
+        return this.instance;
+    }
 
     private tooltips = new Map<Unit | Crewmember, DynamicTooltip[]>();
 
-    constructor(game: Game) {
-        this.game = game;
-    }
 
     initialise() {
         // Update a tooltip for a single unit if it equips a weapon
-        this.game.event.addListener([
+        EventEntity.getInstance().addListener([
             new EventListener(EVENT_TYPE.WEAPON_EQUIP, (self, data) => this.updateTooltips(data)),
             // Update a tooltip for a single unit if it removes a weapon
             new EventListener(EVENT_TYPE.WEAPON_UNEQUIP, (self, data) => this.updateTooltips(data)),
