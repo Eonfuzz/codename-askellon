@@ -1,8 +1,18 @@
-/** @noSelfInFile **/
-
 import { Vector2 } from "app/types/vector2";
 import { Rectangle, Item, Trigger, MapPlayer } from "w3ts/index";
 import { Log } from "./serilog/serilog";
+import { Players } from "w3ts/globals/index";
+
+export function GetActivePlayers() {
+    return Players.filter(currentPlayer => {
+            const isPlaying = currentPlayer.slotState == PLAYER_SLOT_STATE_PLAYING;
+            const isUser = currentPlayer.controller == MAP_CONTROL_USER;
+        
+            if (isPlaying && isUser) {
+                return true;
+            }
+    });
+}
 
 /**
  * Should always be defined,

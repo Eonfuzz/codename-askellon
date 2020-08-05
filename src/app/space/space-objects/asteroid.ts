@@ -1,9 +1,8 @@
-/** @noSelfInFile **/
 import { SpaceObject, SpaceObjectType } from "./space-object";
 import { Vector2 } from "../../types/vector2";
-import { ForceEntity } from "../../force/force-entity";
 import { Unit, Effect } from "w3ts/index";
 import { SPACE_UNIT_ASTEROID } from "resources/unit-ids";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 export const ASTEROID_SKINS = [FourCC('Ast0'), FourCC('Ast1'), FourCC('Ast2'), FourCC('Ast3')];
 export const ASTEROID_SKIN_PATHS = [
@@ -26,7 +25,7 @@ export class Asteroid extends SpaceObject {
 
         const location = this.getLocation();
 
-        this.widget = new Unit(ForceEntity.getInstance().neutralPassive, SPACE_UNIT_ASTEROID, location.x, location.y, bj_UNIT_FACING) as Unit;
+        this.widget = new Unit(PlayerStateFactory.NeutralPassive, SPACE_UNIT_ASTEROID, location.x, location.y, bj_UNIT_FACING) as Unit;
         const i = GetRandomInt(0, ASTEROID_SKINS.length-1);
         const skin = ASTEROID_SKINS[i];
 

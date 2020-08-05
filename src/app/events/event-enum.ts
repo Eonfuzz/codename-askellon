@@ -42,6 +42,18 @@ export enum EVENT_TYPE {
     SHIP_ENTERS_SPACE,
     SHIP_LEAVES_SPACE,
 
+    // When units travel
+    TRAVEL_UNIT_TO,
+
+    INTERACT_BRIDGE_TERMINAL,
+
+    // Adds a projectile, data.projectile = projectile to add
+    ADD_PROJECTILE,
+    // Unequips a weapon, data.weapon = weapon to drop, data.item = item source
+    DO_UNQEUIP_WEAPON,
+    // Equips a weapon, data.weapon = weapon to equip, data.item = item source
+    DO_EQUIP_WEAPON,
+
     // EVENTS THAT SHOULD ONLY FIRE ONCE
     ENTITY_INIT_CHAT,
 }

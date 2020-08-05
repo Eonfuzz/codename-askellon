@@ -14,6 +14,7 @@ import { ChatHook } from "app/chat/chat-hook-type";
 import { ChatEntity } from "app/chat/chat-entity";
 import { EventData } from "app/events/event-data";
 import { WorldEntity } from "app/world/world-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 
 export class LatchAbility implements Ability {
@@ -74,7 +75,7 @@ export class LatchAbility implements Ability {
         this.onUnitchangeOrder.addAction(() => this.onOrderChange());
 
         // if we are trageting a crewmember we gotta hijack chat
-        const pData = ForceEntity.getInstance().getPlayerDetails(this.targetUnit.owner);
+        const pData = PlayerStateFactory.get(this.targetUnit.owner);
         if (pData && pData.getCrewmember() && pData.getCrewmember().unit === this.targetUnit) {
             // Create that hook
             
@@ -113,7 +114,7 @@ export class LatchAbility implements Ability {
     private processChat(hook: ChatHook) {
 
         if (hook.who === this.unit.owner) {
-            const pData = ForceEntity.getInstance().getPlayerDetails(this.targetUnit.owner);
+            const pData = PlayerStateFactory.get(this.targetUnit.owner);
             const crew = pData.getCrewmember();
 
             if (crew) {

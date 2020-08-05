@@ -6,6 +6,7 @@ import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 import { ForceEntity } from "app/force/force-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -19,7 +20,7 @@ export class SecurityFactory {
 
         // Get all security units on the map
         const uGroup = CreateGroup();
-        GroupEnumUnitsOfPlayer(uGroup, ForceEntity.getInstance().stationProperty.handle, Filter(() => {
+        GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.StationSecurity.handle, Filter(() => {
             const u = GetFilterUnit();
             const uType = GetUnitTypeId(u);
             

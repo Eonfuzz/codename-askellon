@@ -3,9 +3,10 @@ import { Unit } from "w3ts/index";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { STR_GENETIC_SAMPLE } from "resources/strings";
 import { COL_MISC, COL_RESOLVE } from "resources/colours";
-import { ALIEN_FORCE_NAME } from "app/force/forces/alien-force";
 import { getZFromXY } from "lib/utils";
 import { ForceEntity } from "app/force/force-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 
 export enum GENE_SPLICE_ALLIANCE {
     HUMAN,
@@ -42,19 +43,19 @@ export class GeneticSamplerItemAbility implements Ability {
         const forceEntity = ForceEntity.getInstance()
         let alliance;
 
-        if (forceEntity.neutralPassive == player) {
+        if (PlayerStateFactory.NeutralPassive == player) {
             alliance = GENE_SPLICE_ALLIANCE.HUMAN;
         }
-        else if (forceEntity.neutralHostile == player) {
+        else if (PlayerStateFactory.NeutralHostile == player) {
             alliance = GENE_SPLICE_ALLIANCE.HUMAN;
         }
-        else if (forceEntity.alienAIPlayer == player) {
+        else if (PlayerStateFactory.AlienAIPlayer == player) {
             alliance = GENE_SPLICE_ALLIANCE.ALIEN
         }
         else {
             // Otherwise it's a player, get force
             // Check unit force
-            const pData = forceEntity.getPlayerDetails(this.targetUnit.owner);
+            const pData = PlayerStateFactory.get(this.targetUnit.owner);
             if (pData.getForce().name === ALIEN_FORCE_NAME) {
                 alliance = GENE_SPLICE_ALLIANCE.ALIEN;
             }

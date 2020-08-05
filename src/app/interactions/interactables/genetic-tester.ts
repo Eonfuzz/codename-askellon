@@ -1,16 +1,15 @@
-/** @noSelfInFile **/
 import { InteractableData } from "./interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
 import { TECH_MAJOR_HEALTHCARE, TECH_ITEMS_IN_GENETIC_SEQUENCER, ABIL_ACTIVATE_SEQUENCER_TEST } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE, GENETIC_FACILITY_TOOLTIP } from "resources/strings";
-import { Game } from "app/game";
 import { GENETIC_TESTING_FACILITY, GENETIC_TESTING_FACILITY_SWITCH, GENETIC_TESTING_FACILITY_SWITCH_DUMMY } from "resources/unit-ids";
-import { Interactables } from "./elevator";
 import { SoundRef } from "app/types/sound-ref";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { getZFromXY, syncData } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED } from "resources/sfx-paths";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
+import { Interactables } from "./interactables";
 
 declare const udg_genetic_test_lights: destructable[];
 
@@ -131,7 +130,7 @@ export function initTesterInteractions() {
             SelectUnitForPlayerSingle(nUnit, player.handle);
             SetPlayerTechResearched(fromUnit.owner.handle, TECH_ITEMS_IN_GENETIC_SEQUENCER, testerSlots.length);
 
-            let timeSinceLastCast = Game.getInstance().getTimeStamp() - testerLastActivated;
+            let timeSinceLastCast = GameTimeElapsed.getTime() - testerLastActivated;
             if (timeSinceLastCast < 20) {
                 BlzStartUnitAbilityCooldown(nUnit, ABIL_ACTIVATE_SEQUENCER_TEST, 20 - timeSinceLastCast);
             }

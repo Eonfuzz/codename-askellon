@@ -8,7 +8,7 @@ import { Ship } from "./ship-type";
 import { Zone } from "app/world/zone-type";
 import { ShipState } from "./ship-state-type";
 import { WorldEntity } from "app/world/world-entity";
-import { ForceEntity } from "app/force/force-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 export class AskellonShip extends Ship {
 
@@ -88,7 +88,7 @@ export class AskellonShip extends Ship {
     }
 
     onLeaveShip(isDeath?: boolean) {
-        const newOwner = ForceEntity.getInstance().neutralHostile;
+        const newOwner = PlayerStateFactory.NeutralHostile;
         this.unit.owner = newOwner;
 
         // Remove control

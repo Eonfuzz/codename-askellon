@@ -1,18 +1,14 @@
-/** @noSelfInFile **/
 import { InteractableData } from "./interactable-type";
-import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS, COL_MISC, COL_ATTATCH, COL_PINK } from "../../../resources/colours";
-import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
-import { TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID } from "resources/ability-ids";
-import { Game } from "app/game";
+import { COL_ATTATCH, COL_PINK } from "../../../resources/colours";
+import { Unit, Timer } from "w3ts";
+import { TECH_MAJOR_VOID } from "resources/ability-ids";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL } from "resources/unit-ids";
-import { Interactables } from "./elevator";
-import { vectorFromUnit } from "app/types/vector2";
-import { getZFromXY } from "lib/utils";
 import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
-import { ResearchFactory } from "app/research/research-factory";
-import { SpaceEntity } from "app/space/space-module";
+// import { ResearchFactory } from "app/research/research-factory";
+// import { SpaceEntity } from "app/space/space-module";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { Interactables } from "./interactables";
 
 // Interacting with asteroids
 const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false);
@@ -59,80 +55,80 @@ export function initShipInteractions() {
         },
         getInteractionTime:  (source: Unit, interactable: Unit) => {
             // Takes time based on asteroids remaining HP
-            if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3)
-                return interactable.life / 200 + 0.3;
+            // if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3)
+            //     return interactable.life / 200 + 0.3;
             return interactable.life / 100 + 0.6;
         },
         getInteractionDistance:  (source: Unit, interactable: Unit) => {
-            if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 2) {
-                return 800 * 1.33;
-            }
+            // if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 2) {
+            //     return 800 * 1.33;
+            // }
             return 800;
         },
         onStart: (source: Unit, interactable: Unit) => {
-            // Issue unit "Hold" order
-            const ship = SpaceEntity.getInstance().getShipForUnit(source);
-            if (ship) {
-                ship.engine.goToAStop();
-            }
+            // // Issue unit "Hold" order
+            // const ship = SpaceEntity.getInstance().getShipForUnit(source);
+            // if (ship) {
+            //     ship.engine.goToAStop();
+            // }
 
-            let isBlue = interactable.typeId === SPACE_UNIT_MINERAL;
+            // let isBlue = interactable.typeId === SPACE_UNIT_MINERAL;
 
-            // let sfxPath = isBlue ? "Abilities\\Weapons\\Bolt\\BoltImpact.mdl" : "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
-            let sfxPath = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
+            // // let sfxPath = isBlue ? "Abilities\\Weapons\\Bolt\\BoltImpact.mdl" : "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
+            // let sfxPath = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
             
-            const timer = new Timer();
-            // Log.Information("Start!");
-            timer.start(ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3 ? 0.15 : 0.3, true, () => {
+            // const timer = new Timer();
+            // // Log.Information("Start!");
+            // timer.start(ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3 ? 0.15 : 0.3, true, () => {
 
-                if (!interactable.isAlive()) {
-                    timer.pause();
-                    return;
-                }
+            //     if (!interactable.isAlive()) {
+            //         timer.pause();
+            //         return;
+            //     }
 
-                const scale = interactable.selectionScale;
+            //     const scale = interactable.selectionScale;
 
-                const sVec = vectorFromUnit(source.handle).applyPolarOffset(source.facing, 60);
-                const tVec = vectorFromUnit(interactable.handle);
-                tVec.x += GetRandomInt(-45, 45) * scale;
-                tVec.y += GetRandomInt(-45, 45) * scale;
-                const vecZ = getZFromXY(tVec.x, tVec.y) + GetRandomInt(-45, 45) * scale;
+            //     const sVec = vectorFromUnit(source.handle).applyPolarOffset(source.facing, 60);
+            //     const tVec = vectorFromUnit(interactable.handle);
+            //     tVec.x += GetRandomInt(-45, 45) * scale;
+            //     tVec.y += GetRandomInt(-45, 45) * scale;
+            //     const vecZ = getZFromXY(tVec.x, tVec.y) + GetRandomInt(-45, 45) * scale;
                 
-                const lightning = AddLightningEx(
-                    "SPNL", false, 
-                    sVec.x, sVec.y, getZFromXY(sVec.x, sVec.y) + 80,
-                    tVec.x , tVec.y, vecZ
-                );
+            //     const lightning = AddLightningEx(
+            //         "SPNL", false, 
+            //         sVec.x, sVec.y, getZFromXY(sVec.x, sVec.y) + 80,
+            //         tVec.x , tVec.y, vecZ
+            //     );
 
-                const kL = new Timer();
-                UnitDamageTarget(source.handle, interactable.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
+            //     const kL = new Timer();
+            //     UnitDamageTarget(source.handle, interactable.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
 
-                const sfx = AddSpecialEffect(
-                    sfxPath,
-                    tVec.x,
-                    tVec.y
-                );
+            //     const sfx = AddSpecialEffect(
+            //         sfxPath,
+            //         tVec.x,
+            //         tVec.y
+            //     );
 
-                const minerals = source.getItemInSlot(0);
-                const charges = GetItemCharges(minerals);
-                if (charges < 250) {
-                    SetItemCharges(minerals, charges + 1);
+            //     const minerals = source.getItemInSlot(0);
+            //     const charges = GetItemCharges(minerals);
+            //     if (charges < 250) {
+            //         SetItemCharges(minerals, charges + 1);
                     
-                }
-                else if (GetLocalPlayer() == ship.unit.owner.handle) {
-                    noInventorySpace.playSound();
-                }
+            //     }
+            //     else if (GetLocalPlayer() == ship.unit.owner.handle) {
+            //         noInventorySpace.playSound();
+            //     }
 
-                BlzSetSpecialEffectZ(sfx, vecZ);
+            //     BlzSetSpecialEffectZ(sfx, vecZ);
                 
 
-                kL.start(0.1, false, () => {
-                    DestroyEffect(sfx);
-                    DestroyLightning(lightning);
-                    kL.destroy()
-                });
-            });
-            asteroidTimers.set(source, timer);
+            //     kL.start(0.1, false, () => {
+            //         DestroyEffect(sfx);
+            //         DestroyLightning(lightning);
+            //         kL.destroy()
+            //     });
+            // });
+            // asteroidTimers.set(source, timer);
         },
         onCancel: (source: Unit, interactable: Unit) => {
             const aTimer = asteroidTimers.get(source);
@@ -165,10 +161,10 @@ export function initAskellonInteractions() {
         },
         onStart: (source: Unit, interactable: Unit) => {
             // Issue unit "Hold" order
-            const ship = SpaceEntity.getInstance().getShipForUnit(source);
-            if (ship) {
-                ship.engine.goToAStop();
-            }
+            // const ship = SpaceEntity.getInstance().getShipForUnit(source);
+            // if (ship) {
+            //     ship.engine.goToAStop();
+            // }
         },
         onCancel: (source: Unit, interactable: Unit) => {
         },

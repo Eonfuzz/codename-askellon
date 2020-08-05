@@ -1,13 +1,12 @@
-/** @noSelfInFile **/
 import { Vector3 } from "../../types/vector3";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { Attachment } from "../attachment/attachment";
 import { ArmableUnit } from "./unit-has-weapon";
 import { PlayNewSoundOnUnit } from "../../../lib/translators";
-import { Log } from "../../../lib/serilog/serilog";
 import { TECH_CREWMEMBER_ATTACK_ENABLE } from "../../../resources/ability-ids";
-import { WeaponEntity } from "../weapon-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 export abstract class Gun {
     item: item;
@@ -29,27 +28,24 @@ export abstract class Gun {
         this.equippedTo = caster;
         this.equippedTo.onWeaponAdd(this);
 
-        WeaponEntity.getInstance().unitsWithWeapon.set(caster.unit.handle, this);
-
-
         // Always update the tooltip
         this.updateTooltip(caster);
         // Enable the attack UI
         SetPlayerTechResearched(caster.player.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 1);
 
         // Cast mode adds the ability
-        if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
+        // if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
             caster.unit.addAbility(this.getAbilityId());
             BlzStartUnitAbilityCooldown(
                 this.equippedTo.unit.handle, 
                 this.getAbilityId(), 
                 BlzGetAbilityCooldown(this.getAbilityId(), 0)
             );
-        }
-        // If we are in attack mode let the user attack
-        else {
-            UnitRemoveAbility(this.equippedTo.unit.handle, FourCC('Abun'));
-        }
+        // }
+        // // If we are in attack mode let the user attack
+        // else {
+        //     UnitRemoveAbility(this.equippedTo.unit.handle, FourCC('Abun'));
+        // }
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
 
@@ -61,21 +57,18 @@ export abstract class Gun {
 
     public onRemove() {
         if (this.equippedTo) {
-
-            WeaponEntity.getInstance().unitsWithWeapon.delete(this.equippedTo.unit.handle);
-
             // Don't care about the mode, always remove cast ability
             this.equippedTo.unit.removeAbility(this.getAbilityId());
             // Don't care about mode, always disable attack ui
             SetPlayerTechResearched(this.equippedTo.unit.owner.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 0);
 
             // If we are cast mode set this remaning cooldown
-            if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
+            // if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
                 // this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
-            }
-            else {
-                UnitAddAbility(this.equippedTo.unit.handle, FourCC('Abun'));
-            }
+            // }
+            // else {
+            //     UnitAddAbility(this.equippedTo.unit.handle, FourCC('Abun'));
+            // }
 
             this.equippedTo.onWeaponRemove(this);
             // Handle no crewmember?

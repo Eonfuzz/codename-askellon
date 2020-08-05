@@ -1,4 +1,3 @@
-/** @noSelfInFile **/
 import { Vector3 } from "../../types/vector3";
 import { getYawPitchRollFromVector } from "../../../lib/translators";
 

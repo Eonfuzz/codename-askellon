@@ -6,6 +6,7 @@ import { BUFF_ID } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { BuffInstanceDuration } from "../buff-instance-duration-type";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 const FREEZE_SOUND = new SoundRef('Sounds\\CryoGrenade.wav', false);
 FREEZE_SOUND.setVolume(50);
@@ -36,7 +37,7 @@ export class flashFreeze extends DynamicBuff {
         if (!isNegativeInstance) {
             if (instance instanceof BuffInstanceDuration) {
                 const i = instance as BuffInstanceDuration;
-                const duration = i.endTimestamp - Game.getInstance().getTimeStamp();
+                const duration = i.endTimestamp - GameTimeElapsed.getTime();
                 this.remainingDuration = (duration > this.remainingDuration) 
                     ? duration 
                     : this.remainingDuration;

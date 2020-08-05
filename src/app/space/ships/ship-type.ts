@@ -1,7 +1,5 @@
 import { Unit, Effect } from "w3ts/index";
-import { Game } from "app/game";
 import { SpaceMovementEngine } from "../ship-movement-engine";
-import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { UNIT_IS_FLY } from "resources/ability-ids";
 import { ShipState } from "./ship-state-type";

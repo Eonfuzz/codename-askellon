@@ -3,9 +3,7 @@ import { Log } from "lib/serilog/serilog";
 import { ShipAnimation, ShipAnimationExitStationDock, ShipAnimationEnterStationDock } from "./ship-animations/ship-animations";
 import { Rectangle, Region, Unit } from "w3ts/index";
 import { Ship } from "./ships/ship-type";
-import { Game } from "app/game";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 
 /**

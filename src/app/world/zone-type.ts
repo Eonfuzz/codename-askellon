@@ -1,17 +1,20 @@
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "./zone-id";
-import { SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
-import { LIGHT_DEST_ID } from "../types/widget-id";
+
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer, Timer } from "w3ts";
-import { Game } from "app/game";
 import { EventListener } from "app/events/event-type";
-import { getZFromXY } from "lib/utils";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventData } from "app/events/event-data";
-import { WorldEntity } from "./world-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
+import { VisionFactory } from "app/vision/vision-factory";
+import { VISION_PENALTY } from "app/vision/vision-type";
+import { SoundRef } from "app/types/sound-ref";
+import { getZFromXY } from "lib/utils";
 import { Timers } from "app/timer-type";
+import { LIGHT_DEST_ID } from "app/types/widget-id";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
@@ -83,6 +86,10 @@ export class ShipZone extends Zone {
 
     // The exits to and from this zone
     private exits: Array<Unit> = [];
+    private playerLightingModifiers = new Map<MapPlayer, number>();
+
+    powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false, true);
+    powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false, true);
 
     constructor(id: ZONE_TYPE, lights?: destructable[], exits?: Unit[]) {
         super(id);
@@ -155,7 +162,8 @@ export class ShipZone extends Zone {
         // If no oxy apply oxy loss
         // TODO
         // If no power apply power loss
-        WorldEntity.getInstance().askellon.applyPowerChange(unit.owner, this.hasPower, false);
+        this.applyPowerChange(unit.owner, this.hasPower, false)
+
         this.exits.forEach(exit => {
             exit.shareVision(unit.owner, true);
         });
@@ -166,13 +174,13 @@ export class ShipZone extends Zone {
 
             if (this.hasPower) {
                 // Apply power change to all players
-                this.getPlayersInZone().map(p => WorldEntity.getInstance().askellon.applyPowerChange(p, newState, true));
+                this.getPlayersInZone().map(p => this.applyPowerChange(p, newState, true));
             }
             else {
                 const t = new Timer();
                 t.start(4, false, () => {
                     // Apply power change to all players
-                    this.getPlayersInZone().map(p => WorldEntity.getInstance().askellon.applyPowerChange(p, newState, true));
+                    this.getPlayersInZone().map(p => this.applyPowerChange(p, newState, true));
                     t.destroy();
                 });
             }
@@ -243,6 +251,42 @@ export class ShipZone extends Zone {
             }
         }
         this.hasPower = newState;
+    }
+
+    applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
+        // let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+        const playerDetails = PlayerStateFactory.get(player);
+        if (playerDetails) {
+            const crewmember = playerDetails.getCrewmember();
+            
+            // IF we dont have power add despair to the unit
+            if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
+                // crewmember.addDespair(new BuffInstanceCallback(crewmember.unit, () => {
+                //     const z = WorldEntity.getInstance().getUnitZone(crewmember.unit);
+                //     const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
+                //     return (z && hasNighteye === 0) ? z.doCauseFear() : false;
+                // }));
+            }
+        }
+
+        // Remove the existing modifier (if any)
+        if (this.playerLightingModifiers.has(player)) {
+            const mod = this.playerLightingModifiers.get(player);
+            this.playerLightingModifiers.delete(player);
+            VisionFactory.getInstance().removeVisionModifier(mod);
+        }
+
+        if (!hasPower) {
+            this.playerLightingModifiers.set(player, 
+                VisionFactory.getInstance().addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
+            );
+        }
+        if (hasPower && justChanged && GetLocalPlayer() === player.handle) {
+            this.powerUpSound.playSound();
+        }
+        else if (!hasPower && justChanged  && GetLocalPlayer() === player.handle) {
+            this.powerDownSound.playSound();
+        }
     }
 
     public doCauseFear() { return !this.hasPower || this.alwaysCauseFear; }

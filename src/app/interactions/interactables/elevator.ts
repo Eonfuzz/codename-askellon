@@ -7,14 +7,11 @@ import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS, COL_MISC } from "../../../resource
 import { Trigger, MapPlayer, Unit } from "w3ts";
 import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
-import { Game } from "app/game";
 import { syncData } from "lib/utils";
 import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, GENETIC_TESTING_FACILITY_SWITCH_DUMMY, GENETIC_TESTING_FACILITY_SWITCH } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
-import { GeneEntity } from "app/shops/gene-entity";
-
-export let Interactables = new Map<number, InteractableData>();
-
+// import { GeneEntity } from "app/shops/gene-entity";
+import { Interactables } from "./interactables";
 
 class Elevator {
     unit: Unit;
@@ -255,7 +252,7 @@ export const initWeaponsTerminals = () => {
 
                 // Handle gene splicer interact
                 if (targetUType === GENE_SPLICER_TERMINAL) {
-                    GeneEntity.getInstance().addNewGeneInstance(fromUnit, Unit.fromHandle(nUnit));
+                    // GeneEntity.getInstance().addNewGeneInstance(fromUnit, Unit.fromHandle(nUnit));
                 }
             }
             catch (e) {

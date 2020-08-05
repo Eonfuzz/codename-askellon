@@ -1,6 +1,4 @@
 import { Vector3 } from "../../types/vector3";
-import { Log } from "../../../lib/serilog/serilog";
-import { Vector2 } from "../../types/vector2";
 import { getZFromXY, getGroundBlockers, getAirBlockers } from "lib/utils";
 
 /** @noSelfInFile **/

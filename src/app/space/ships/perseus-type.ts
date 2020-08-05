@@ -7,9 +7,9 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { Ship, ShipWithFuel } from "./ship-type";
 import { ShipState } from "./ship-state-type";
-import { ForceEntity } from "app/force/force-entity";
+
 import { WorldEntity } from "app/world/world-entity";
-import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -155,7 +155,7 @@ export class PerseusShip extends ShipWithFuel {
     }
 
     onLeaveShip(isDeath?: boolean) {
-        const newOwner = ForceEntity.getInstance().neutralHostile;
+        const newOwner = PlayerStateFactory.NeutralHostile;
         this.unit.owner = newOwner;
         SetUnitAnimationByIndex(this.unit.handle, 3);
 
@@ -184,8 +184,10 @@ export class PerseusShip extends ShipWithFuel {
 
             // Reward money
             if (owningUnit && stacks > 0) {
-                const crew = CrewFactory.getInstance().getCrewmemberForUnit(owningUnit);
-                if (crew) {
+                const pData = PlayerStateFactory.get(owningUnit.owner);
+
+                const crew = pData.getCrewmember();
+                if (crew && crew.unit == owningUnit) {
                     const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
                     if (hasRoleOccupationBonus) {
                         crew.addExperience(stacks * 4);

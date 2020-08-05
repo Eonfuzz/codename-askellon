@@ -1,11 +1,8 @@
-/** @noSelfInFile **/
 import { SpaceObject, SpaceObjectType } from "./space-object";
 import { Vector2 } from "../../types/vector2";
-import { Game } from "../../game";
-import { Log } from "lib/serilog/serilog";
 import { Unit, Effect } from "w3ts/index";
 import { SPACE_UNIT_MINERAL } from "resources/unit-ids";
-import { ForceEntity } from "app/force/force-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 
 export const MINERAL_SKINS = [FourCC('Min1'), FourCC('Min2')];
@@ -27,7 +24,7 @@ export class Mineral extends SpaceObject {
 
         const location = this.getLocation();
 
-        this.widget = new Unit(ForceEntity.getInstance().neutralPassive, SPACE_UNIT_MINERAL, location.x, location.y, bj_UNIT_FACING) as Unit;
+        this.widget = new Unit(PlayerStateFactory.NeutralHostile, SPACE_UNIT_MINERAL, location.x, location.y, bj_UNIT_FACING) as Unit;
         const i = GetRandomInt(0, MINERAL_SKINS.length-1);
         const skin = MINERAL_SKINS[i];
 

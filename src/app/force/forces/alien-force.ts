@@ -1,41 +1,36 @@
-/** @noSelfInFile **/
-import { Game } from "../../game";
 import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
-import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3 } from "resources/ability-ids";
+import { vectorFromUnit } from "app/types/vector2";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3 } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { PLAYER_COLOR } from "lib/translators";
 import { Trigger, MapPlayer, Unit } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
-import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
+import { SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
-import { OBSERVER_FORCE_NAME } from "./observer-force";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
 import { DEFAULT_ALIEN_FORM } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { ResearchFactory } from "app/research/research-factory";
-import { ForceEntity } from "../force-entity";
 import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
 import { VisionFactory } from "app/vision/vision-factory";
-import { WorldEntity } from "app/world/world-entity";
+import { ChatHook } from "app/chat/chat-hook-type";
+import { PlayerStateFactory } from "../player-state-entity";
+import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME, ALIEN_CHAT_COLOR } from "./force-names";
+import { Players } from "w3ts/globals/index";
 
 
-export const ALIEN_FORCE_NAME = 'ALIEN';
-export const ALIEN_CHAT_COLOR = '8a6df2';
 export const MAKE_UNCLICKABLE = false;
 
 const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(8, 'Sounds\\AlienChatSound.mp3', true);
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
-
-    public alienAIPlayer: player = Player(24);
 
     private alienHost: MapPlayer | undefined;
     private playerAlienUnits: Map<MapPlayer, Unit> = new Map();
@@ -114,7 +109,7 @@ export class AlienForce extends ForceType {
 
 
             // TODO Change how vision is handled
-            const pData = ForceEntity.getInstance().getPlayerDetails(owner);
+            const pData = PlayerStateFactory.get(owner);
             const crewmember = pData.getCrewmember();
                 
 
@@ -204,8 +199,6 @@ export class AlienForce extends ForceType {
         super.removePlayerMainUnit(whichUnit, player);
         whichUnit.unit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
 
-        const forceEntity = ForceEntity.getInstance();
-
         // Remove ability tooltip
         TooltipEntity.getInstance().unregisterTooltip(whichUnit, alienTooltipToHuman);
         TooltipEntity.getInstance().unregisterTooltip(this.getAlienFormForPlayer(player), alienTooltipToHuman);
@@ -217,13 +210,11 @@ export class AlienForce extends ForceType {
         alienUnit.kill();
 
         // Ensure player name reverts
-        const oldData = forceEntity.getOriginalPlayerDetails(player);
-        player.name = oldData.name;
-        player.color = oldData.colour;
+        const pData = PlayerStateFactory.get(player);
+        player.name = pData.originalName;
+        player.color = pData.originalColour;
 
-        
-        const players = forceEntity.getActivePlayers();
-        players.forEach(p => {
+        Players.forEach(p => {
             DisplayTextToPlayer(p.handle, 0, 0, STR_ALIEN_DEATH(
                 player,
                 PLAYER_COLOR[player.id],
@@ -233,9 +224,9 @@ export class AlienForce extends ForceType {
             );
         });
 
-        const obsForce = forceEntity.getForce(OBSERVER_FORCE_NAME);
-        obsForce.addPlayerMainUnit(whichUnit, player);
-        forceEntity.addPlayerToForce(player, OBSERVER_FORCE_NAME);
+        // const obsForce = forceEntity.getForce(OBSERVER_FORCE_NAME);
+        // obsForce.addPlayerMainUnit(whichUnit, player);
+        // forceEntity.addPlayerToForce(player, OBSERVER_FORCE_NAME);
         this.removePlayer(player);
 
         // Check victory conds
@@ -250,7 +241,7 @@ export class AlienForce extends ForceType {
         this.alienDeathTrigs.delete(whichUnit);
 
         this.removePlayerMainUnit(
-            ForceEntity.getInstance().getPlayerDetails(whichUnit.owner).getCrewmember(), 
+            PlayerStateFactory.get(whichUnit.owner).getCrewmember(), 
             whichUnit.owner
         );
     }
@@ -258,12 +249,10 @@ export class AlienForce extends ForceType {
     transform(who: MapPlayer, toAlien: boolean): Unit {
         this.playerIsTransformed.set(who, toAlien);
 
-        const forceEntity = ForceEntity.getInstance();
-
         const alien = this.playerAlienUnits.get(who);
         const unit = this.playerUnits.get(who);
 
-        const crewmember = forceEntity.getPlayerDetails(who).getCrewmember();
+        const crewmember = PlayerStateFactory.get(who).getCrewmember();
 
         //@ts-ignore
         if (!alien) return Log.Error("AlienForce::transform No alien for player!");
@@ -310,10 +299,11 @@ export class AlienForce extends ForceType {
             toShow.nameProper = unitName;
             // Repair alliances
             // Then make it an enemy of security
-            forceEntity.repairAllAlliances(who);
+            // forceEntity.repairAllAlliances(who); TODO
+
             // Make enemy of security
-            who.setAlliance(forceEntity.stationSecurity, ALLIANCE_PASSIVE, true);
-            forceEntity.stationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
+            who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
+            PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
             who.name = unitName;
             who.color = PLAYER_COLOR_PURPLE;
 
@@ -321,10 +311,10 @@ export class AlienForce extends ForceType {
             EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
         }
         else {
-            forceEntity.repairAllAlliances(who);
-            const oldData = forceEntity.getOriginalPlayerDetails(who);
-            who.name = oldData.name;
-            who.color = oldData.colour;
+            // Ensure player name reverts
+            const pData = PlayerStateFactory.get(who);
+            who.name = pData.originalName;
+            who.color = pData.originalColour;
 
             // Post event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
@@ -385,13 +375,12 @@ export class AlienForce extends ForceType {
         if (!this.playerAlienUnits.has(damagingPlayer)) return this.onAlienTakesDamage();
         // Check to make sure you aren't damaging alien stuff
         if (damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagedPlayer)) {
-            const forceEntity = ForceEntity.getInstance();
             const damageAmount = GetEventDamage();
             let xpGained: number;
 
             // Now handle this different
             // If we are damaging station property gain less XP
-            const damagingSecurity = damagedPlayer == forceEntity.stationProperty || damagedPlayer == forceEntity.stationSecurity;
+            const damagingSecurity = damagedPlayer == PlayerStateFactory.StationProperty || damagedPlayer == PlayerStateFactory.StationSecurity;
             const isAlienForm = this.playerIsTransformed.get(damagingPlayer);
             // Reward slightly less xp for being in human form
             xpGained = damagingSecurity ? 0 : (isAlienForm ? damageAmount * 1 : damageAmount * 0.4);
@@ -412,10 +401,8 @@ export class AlienForce extends ForceType {
         const damagingPlayer = damageSource.owner;
         const damagedPlayer = damagedUnit.owner;
 
-        const forceEntity = ForceEntity.getInstance();
-
         // Hitting alien player
-        const damagedUnitIsAlien = damagedPlayer === forceEntity.alienAIPlayer || 
+        const damagedUnitIsAlien = damagedPlayer === PlayerStateFactory.AlienAIPlayer || 
             // OR hitting alien form
             this.playerAlienUnits.has(damagedPlayer)  && this.playerAlienUnits.get(damagedPlayer) === damagedUnit;
 
@@ -430,7 +417,7 @@ export class AlienForce extends ForceType {
             }
     
             // Okay good, now reward exp based on damage done
-            const pDetails = forceEntity.getPlayerDetails(damagingPlayer);
+            const pDetails = PlayerStateFactory.get(damagingPlayer);
             const crew = pDetails.getCrewmember();
             
             let xpAmount = damageAmount;
@@ -451,69 +438,69 @@ export class AlienForce extends ForceType {
      * Gets a list of who can see the chat messages
      * Unless overridden returns all the players
      */
-    public getChatRecipients(sendingPlayer: MapPlayer) {
+    public getChatRecipients(chatEvent: ChatHook) {
         // If the player is transformed return a list of all alien players
-        if (this.isPlayerTransformed(sendingPlayer) && this.playerIsAlienAlliesOnly.get(sendingPlayer)) {
+        if (this.isPlayerTransformed(chatEvent.who) && this.playerIsAlienAlliesOnly.get(chatEvent.who)) {
             return this.players;
         }
         
         // Otherwise return default behaviour
-        return super.getChatRecipients(sendingPlayer);
+        return super.getChatRecipients(chatEvent);
     }
 
     /**
      * Gets the player's visible chat name, by default shows role name
      */
-    public getChatName(who: MapPlayer) {
+    public getChatName(chatEvent: ChatHook) {
         // Log.Information("Alien is chatting? "+this.isPlayerTransformed(who));
         // If player is transformed return an alien name
-        if (this.isPlayerTransformed(who)) {
-            return this.alienHost === who ? STR_CHAT_ALIEN_HOST : STR_CHAT_ALIEN_SPAWN;
+        if (this.isPlayerTransformed(chatEvent.who)) {
+            return this.alienHost === chatEvent.who ? STR_CHAT_ALIEN_HOST : STR_CHAT_ALIEN_SPAWN;
         }
         
         // Otherwise return default behaviour
-        return super.getChatName(who);
+        return super.getChatName(chatEvent);
     }
 
     /**
      * Return's a players chat colour
      * @param who 
      */
-    public getChatColor(who: MapPlayer): string {
+    public getChatColor(chatEvent: ChatHook): string {
         // If player is transformed return an alien name
-        if (this.isPlayerTransformed(who)) {
+        if (this.isPlayerTransformed(chatEvent.who)) {
             return ALIEN_CHAT_COLOR;
         }
         
         // Otherwise return default behaviour
-        return super.getChatColor(who);
+        return super.getChatColor(chatEvent);
     }
 
     /**
      * Returns the sound to be used on chat events
      * @param who
      */
-    public getChatSoundRef(who: MapPlayer): SoundWithCooldown {
+    public getChatSoundRef(chatEvent: ChatHook): SoundWithCooldown {
         // If player is transformed return an alien name
-        if (this.isPlayerTransformed(who)) {
+        if (this.isPlayerTransformed(chatEvent.who)) {
             return ALIEN_CHAT_SOUND_REF;
         }
         
         // Otherwise return default behaviour
-        return super.getChatSoundRef(who);
+        return super.getChatSoundRef(chatEvent);
     }
     
     /**
      * Returns the chat tag, by default it will be null
      */
-    public getChatTag(who: MapPlayer): string | undefined { 
+    public getChatTag(chatEvent: ChatHook): string | undefined { 
         // If player is transformed return an alien name
-        if (this.playerIsAlienAlliesOnly.get(who)) {
+        if (this.playerIsAlienAlliesOnly.get(chatEvent.who)) {
             return STR_CHAT_ALIEN_TAG;
         }
         
         // Otherwise return default behaviour
-        return super.getChatTag(who);
+        return super.getChatTag(chatEvent);
     }
 
     /**
@@ -542,9 +529,9 @@ export class AlienForce extends ForceType {
      */
     public onTick(delta: number) {
         const percent = delta / 60;
-        const forceEnt = ForceEntity.getInstance();
         this.players.forEach(p => {
-            const details = forceEnt.getPlayerDetails(p);
+            
+            const details = PlayerStateFactory.get(p);
             const crew = details.getCrewmember();
 
             if (crew) {
@@ -566,8 +553,8 @@ export class AlienForce extends ForceType {
             // Increment current evo
             this.currentAlienEvolution = newForm;
             const alienHost = this.getHost();
-            const forceEnt = ForceEntity.getInstance();
-            const worldEnt = WorldEntity.getInstance();
+            // const forceEnt = ForceEntity.getInstance();
+            // const worldEnt = WorldEntity.getInstance();
             
             // Get all players
             this.players.forEach(player => {
@@ -578,21 +565,21 @@ export class AlienForce extends ForceType {
 
 
                     // Get old unit zone
-                    const oldZone = worldEnt.getUnitZone(unit);
+                    // const oldZone = worldEnt.getUnitZone(unit);
 
-                    // Remove the old unit from the zone
-                    if (oldZone) {
-                        worldEnt.removeUnit(unit);
-                    }
+                    // // Remove the old unit from the zone
+                    // if (oldZone) {
+                    //     worldEnt.removeUnit(unit);
+                    // }
                     ReplaceUnitBJ(unit.handle, newForm, 1);
 
                     const replacedUnit = GetLastReplacedUnitBJ();
                     const alien = Unit.fromHandle(replacedUnit);
 
-                    // And handle travel
-                    if (oldZone) {
-                        worldEnt.handleTravel(alien, oldZone.id);
-                    }
+                    // // And handle travel
+                    // if (oldZone) {
+                    //     worldEnt.handleTravel(alien, oldZone.id);
+                    // }
                     
                     if (unitIsSelected) {
                         SelectUnitForPlayerSingle(alien.handle, player.handle);

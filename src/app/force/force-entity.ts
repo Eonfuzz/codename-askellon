@@ -1,23 +1,26 @@
-/** @noSelfInFile **/
-import { Game } from "../game";
 import { Log } from "../../lib/serilog/serilog";
 import { ForceType } from "./forces/force-type";
-import { CrewmemberForce, CREW_FORCE_NAME } from "./forces/crewmember-force";
-import { AlienForce, ALIEN_FORCE_NAME } from "./forces/alien-force";
-import { ObserverForce } from "./forces/observer-force";
 import { Trigger, MapPlayer, Timer, Unit } from "w3ts";
-import { COL_VENTS, COL_GOOD, COL_BAD } from "resources/colours";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 import { SoundRef } from "app/types/sound-ref";
-import { PLAYER_COLOR } from "lib/translators";
-import { PlayerWithForce } from "./player-type";
 import { Aggression } from "./alliance/aggression-type";
 import { Entity } from "app/entity-type";
-import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { OptResult, OptSelection } from "./opt/opt-selection-factory";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
+import { ChatHook } from "app/chat/chat-hook-type";
+
+// Entities and factories
+import { EventEntity } from "app/events/event-entity";
+import { PlayerStateFactory } from "./player-state-entity";
+// Forces
 import { OPT_TYPES } from "./opt/opt-types-enum";
+import { CrewmemberForce } from "./forces/crewmember-force";
+import { ObserverForce } from "./forces/observer-force";
+import { CREW_FORCE_NAME, ALIEN_FORCE_NAME } from "./forces/force-names";
+import { AlienForce } from "./forces/alien-force";
+import { GetActivePlayers } from "lib/utils";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -37,46 +40,19 @@ export class ForceEntity extends Entity {
 
     private forces: Array<ForceType> = [];
 
-    private playerOriginalDetails = new Map<MapPlayer, playerDetails>();
-    private playerDetails = new Map<MapPlayer, PlayerWithForce>();
-
     // new id for the next aggresison item
     private aggressionId = 0;
     // Key is ${p1}::${p2}
     private aggressionLog = new Map<string, Aggression[]>();
     private allAggressionLogs: Aggression[] = [];
 
-    public neutralPassive: MapPlayer;
-    public neutralHostile: MapPlayer;
-
-    public stationSecurity: MapPlayer;
-    public stationProperty: MapPlayer;
-    public unknownPlayer: MapPlayer;
-    public alienAIPlayer: MapPlayer;
-
     constructor() {
         super();
-
-        // set original player details
-        this.getActivePlayers().forEach(p => {
-            this.playerOriginalDetails.set(p, {
-                name: p.name,
-                colour: p.color
-            });
-        });
 
         // Add main forces to force array
         this.forces.push(new CrewmemberForce());
         // Add observer to forces
         this.forces.push(new ObserverForce());
-
-        this.stationSecurity = MapPlayer.fromIndex(22);
-        this.stationProperty = MapPlayer.fromIndex(21);
-        this.alienAIPlayer = MapPlayer.fromIndex(20);
-        this.unknownPlayer = MapPlayer.fromIndex(23);
-
-        this.neutralHostile = MapPlayer.fromIndex(PLAYER_NEUTRAL_AGGRESSIVE);
-        this.neutralPassive = MapPlayer.fromIndex(PLAYER_NEUTRAL_PASSIVE);
 
         // const ticker = new Trigger();
         // // Check every second  
@@ -95,7 +71,7 @@ export class ForceEntity extends Entity {
 
         // Init and listen for experience gain calls
         eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_GAIN_EXPERIENCE, (self, data) => {
-            const pData = this.getPlayerDetails(data.source.owner);
+            const pData = PlayerStateFactory.get(data.source.owner);
 
             if (pData) {
                 if (!data.data.value) Log.Error("Player gaining nil experience");
@@ -103,7 +79,7 @@ export class ForceEntity extends Entity {
             }
         }))
 
-        const players = this.getActivePlayers();
+        const players = GetActivePlayers();
         // Set up player leaves events
         
 
@@ -112,18 +88,6 @@ export class ForceEntity extends Entity {
         playerLeavesGameTrigger.addAction(() => this.playerLeavesGame(MapPlayer.fromHandle(GetTriggerPlayer())))
     }
 
-
-    private forceEventsTimer = new Timer();
-
-    private process(delta: number) {
-        this.forces.forEach(force => force.onTick(delta));
-    }
-
-
-    public getOriginalPlayerDetails(who: MapPlayer) {
-        return this.playerOriginalDetails.get(who);
-    }
-    
     /**
      * Handles aggression between two players
      * default behaviour sets players as enemies
@@ -150,18 +114,18 @@ export class ForceEntity extends Entity {
      */
     private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
         // We can never have tracked aggression against aliens
-        if (player2 === this.alienAIPlayer) return true;
+        if (player2 === PlayerStateFactory.AlienAIPlayer) return true;
         // You cannot be aggressive against yourself
         if (player1 === player2) return false;
         // You cannot be aggressive against Neutral Hostile
-        if (player2 === this.neutralHostile) return true;
+        if (player2 === PlayerStateFactory.NeutralHostile) return true;
 
         const aggressionKey = this.getLogKey(player1, player2);
         
         // Only care about force logic if we aren't already hostiles
         if (!this.aggressionLog.has(aggressionKey)) {
             // Now check force logic
-            const attackerForce = this.getPlayerDetails(player1).getForce();
+            const attackerForce = PlayerStateFactory.get(player1).getForce();
             const aggressionValid = attackerForce.aggressionIsValid(player1, player2);
             // If the force says this aint valid, well it aint valid
             if (!aggressionValid) return false;
@@ -171,7 +135,7 @@ export class ForceEntity extends Entity {
             id: this.aggressionId++,
             aggressor: player1,
             defendant: player2,
-            timeStamp: Game.getInstance().getTimeStamp(),
+            timeStamp: GameTimeElapsed.getTime(),
             remainingDuration: 30,
             key: aggressionKey
         };
@@ -189,6 +153,7 @@ export class ForceEntity extends Entity {
      * If there are none remaining between players we re-ally them
      */
     step() {
+        this.forces.forEach(force => force.onTick(this._timerDelay));
         if (this.allAggressionLogs.length === 0) return;
 
         const nextTickLogs = [];
@@ -243,7 +208,7 @@ export class ForceEntity extends Entity {
     public repairAllAlliances(forPlayer: MapPlayer) {
         // Log.Information("Repairing Alliance!");
         // Clear aggression logs and repair all alliances
-        let players = this.getActivePlayers();
+        let players = GetActivePlayers();
         players.forEach(p => {
             const key = this.getLogKey(p, forPlayer);
             const instances = this.aggressionLog.get(key);
@@ -259,7 +224,7 @@ export class ForceEntity extends Entity {
         });
 
         // TODO Security to maintain aggression state
-        forPlayer.setAlliance(this.stationSecurity, ALLIANCE_PASSIVE, true);
+        forPlayer.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
     }
 
     /**
@@ -296,23 +261,6 @@ export class ForceEntity extends Entity {
             Log.Information("Game is a draw but I haven't finished coding it");
         }
         return winningForces.length === 1 ? winningForces[0] : undefined;
-    }
-
-    /**
-     * Returns a list of active players
-     */
-    public getActivePlayers(): Array<MapPlayer> {
-        const result = [];
-        for (let i = 0; i < GetBJMaxPlayerSlots(); i ++) {
-            const currentPlayer = MapPlayer.fromIndex(i);
-            const isPlaying = currentPlayer.slotState == PLAYER_SLOT_STATE_PLAYING;
-            const isUser = currentPlayer.controller == MAP_CONTROL_USER;
-
-            if (isPlaying && isUser) {
-                result.push(currentPlayer);
-            }
-        }
-        return result;
     }
 
     /**
@@ -386,7 +334,7 @@ export class ForceEntity extends Entity {
 
         // Start a 15 second timer
         const timer = CreateTimer();
-        StartTimerBJ(timer, false, this.getActivePlayers().length > 1 ? 16 : 16);
+        StartTimerBJ(timer, false, GetActivePlayers().length > 1 ? 16 : 0.1);
 
         const timerTrig = new Trigger();
 
@@ -415,18 +363,8 @@ export class ForceEntity extends Entity {
             force = this.getForceFromName(forceName);
         }
 
-        const pForce = this.getPlayerDetails(player) || new PlayerWithForce(player);
-
-        pForce.setForce(force);
-        this.playerDetails.set(player, pForce);
+        PlayerStateFactory.get(player).setForce(force);
         force.addPlayer(player);
-    }
-
-    /**
-     * Gets the player's force
-     */
-    public getPlayerDetails(player: MapPlayer) {
-        return this.playerDetails.get(player);
     }
     
     /**
@@ -445,7 +383,25 @@ export class ForceEntity extends Entity {
             KillUnit(u);
         });
 
-        const playerDetails = this.getPlayerDetails(who);
-        if (playerDetails) playerDetails.getForce().removePlayer(playerDetails.player);
+        PlayerStateFactory.get(who).getForce().removePlayer(who);
+    }
+
+    /**
+     * Run through the chat hook for a player's force
+     * @param who 
+     * @param hook 
+     */
+    public forceChatHook(hook: ChatHook) {
+        const pData = PlayerStateFactory.get(hook.who);
+        const force = pData.getForce();
+
+        hook.recipients     = force.getChatRecipients(hook);
+        hook.name           = force.getChatName(hook);
+        hook.color          = force.getChatColor(hook);
+        hook.sound          = force.getChatSoundRef(hook);
+        // hook. = force.getChatTag(player);
+        hook.message        = force.getChatMessage(hook);
+
+        return hook;
     }
 }

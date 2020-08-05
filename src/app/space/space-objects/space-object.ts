@@ -1,4 +1,3 @@
-/** @noSelfInFile **/
 import { Vector2 } from "../../types/vector2";
 
 export enum SpaceObjectType {

@@ -1,5 +1,4 @@
 import { VISION_PENALTY, VISION_STATE, VISION_TYPE } from "./vision-type";
-import { Game } from "app/game";
 import { MapPlayer, Unit } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
 

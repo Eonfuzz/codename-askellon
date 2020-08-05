@@ -1,7 +1,6 @@
 import { Gun } from "../weapons/guns/gun";
 import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
 import { ForceType } from "app/force/forces/force-type";
-import { Log } from "lib/serilog/serilog";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { ROLE_TYPES } from "../../resources/crewmember-names";
 import { MapPlayer, Unit } from "w3ts";

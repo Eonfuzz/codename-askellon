@@ -1,7 +1,5 @@
-/** @noSelfInFile **/
-import { Game } from "../game";
 import { InteractionEvent } from "./interaction-event";
-import { Interactables, initElevators, initHatches, initWeaponsTerminals } from "./interactables/elevator";
+import { initElevators, initHatches, initWeaponsTerminals } from "./interactables/elevator";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
 import { initShipInteractions, initAskellonInteractions } from "./interactables/ship";
@@ -10,13 +8,14 @@ import { initCommandTerminal } from "./interactables/bridge";
 import { Log } from "lib/serilog/serilog";
 import { initTesterInteractions } from "./interactables/genetic-tester";
 import { Entity } from "app/entity-type";
+import { Interactables } from "./interactables/interactables";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
 export class InteractionEntity extends Entity {
     private static instance: InteractionEntity;
 
-    public static getInstance() {        
+    public static getInstance() {
         if (this.instance == null) {
             this.instance = new InteractionEntity();
         }

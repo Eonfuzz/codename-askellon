@@ -1,15 +1,16 @@
-/** @noSelfInFile **/
-import { Game } from "../game";
 import { Zone } from "./zone-type";
 import { TheAskellon } from "./the-askellon";
 import { ZONE_TYPE, STRING_TO_ZONE_TYPE } from "./zone-id";
 import { Trigger, Unit, MapPlayer } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/forces/alien-force";
+import { AlienForce } from "app/force/forces/alien-force";
 import { SpaceZone } from "./zones/space";
-import { ForceEntity } from "app/force/force-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+
 import { EventEntity } from "app/events/event-entity";
+import { EventListener } from "app/events/event-type";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 
 export class WorldEntity {
     private static instance: WorldEntity;
@@ -37,6 +38,14 @@ export class WorldEntity {
         const deathTrigger = new Trigger();
         deathTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
         deathTrigger.addAction(() => this.unitDeath());
+
+        // Listen to unit travel events
+        EventEntity.listen(new EventListener(EVENT_TYPE.TRAVEL_UNIT_TO, (listener, data) => {
+            const u = data.source;
+            let desiredLoc = data.data.zone || this.getZoneByName(data.data.zoneName);
+            const isSubtravel = !!data.data.subTravel;
+            this.travel(u, desiredLoc, isSubtravel);
+        }));
     }
 
     /**
@@ -68,7 +77,7 @@ export class WorldEntity {
 
         // Does the travel work
         this.handleTravel(unit, to);
-        const pData = ForceEntity.getInstance().getPlayerDetails(unit.owner);
+        const pData = PlayerStateFactory.get(unit.owner);
 
         // If we dont have player data that means its an AI player
         if (!pData) return;

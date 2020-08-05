@@ -5,8 +5,9 @@ import { UNIT_IS_FLY } from "resources/ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { Entity } from "app/entity-type";
 import { Leap } from "./leap-type";
-import { WorldEntity } from "app/world/world-entity";
 import { Timers } from "app/timer-type";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 /**
  * These locations are declared by the world editor
@@ -82,8 +83,13 @@ export class LeapEntity extends Entity {
         else {
             const newZone = this.findInsideRect(udg_jump_pass_zones, unitLoc);
             const resultZone = !!newZone && udg_jump_pass_zones_name[newZone];
-            const z = resultZone && WorldEntity.getInstance().getZoneByName(resultZone);
-            z && WorldEntity.getInstance().travel(Unit.fromHandle(leap.unit), z);
+            if (resultZone) {
+                // Travel the unit as needed
+                EventEntity.send(EVENT_TYPE.TRAVEL_UNIT_TO, {
+                    source: Unit.fromHandle(leap.unit),
+                    data: { zoneName: resultZone }
+                })
+            }
         }
     }
 
@@ -113,8 +119,13 @@ export class LeapEntity extends Entity {
         // After 1.7 seconds unpause the unit
         Timers.addTimedAction(250, () => {
             // Move the player to the matching location
-            const z = WorldEntity.getInstance().getZoneByName(zoneName);
-            z && WorldEntity.getInstance().travel(Unit.fromHandle(who), z);
+            if (zoneName) {
+                // Travel the unit as needed
+                EventEntity.send(EVENT_TYPE.TRAVEL_UNIT_TO, {
+                    source: Unit.fromHandle(who),
+                    data: { zoneName: zoneName }
+                })
+            }
 
             PanCameraToTimedForPlayer(player, locX, locY, 0);
 

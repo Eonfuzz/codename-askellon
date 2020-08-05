@@ -13,12 +13,14 @@ function tsMain() {
     ]);
 
     function Main(){
+
+        const askellon = Game.getInstance();
+
         const gameStart = new Timer();
         gameStart.start(0.1, false, () => {
             try {
-                const askellon = Game.getInstance();
-                // AksellonSector.startGame()
-                // Log.Information("Start game!");
+                askellon.startGame()
+                Log.Information("Start game!");
             }
             catch (e) {
                 Log.Error(e)

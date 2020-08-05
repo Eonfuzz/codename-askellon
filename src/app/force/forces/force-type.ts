@@ -1,13 +1,14 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { PLAYER_COLOR } from "lib/translators";
-import {  SoundWithCooldown } from "app/types/sound-ref";
+import { SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer, Unit, Trigger } from "w3ts";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { EventEntity } from "app/events/event-entity";
 import { VisionFactory } from "app/vision/vision-factory";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { ForceEntity } from "../force-entity";
+import { ChatHook } from "app/chat/chat-hook-type";
+import { PlayerStateFactory } from "../player-state-entity";
 
 
 export const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
@@ -86,29 +87,27 @@ export abstract class ForceType {
         }
     }
 
-    public getChatMessage(who: MapPlayer, oldString: string): string {
-        return oldString;
+    public getChatMessage(chatEvent: ChatHook): string {
+        return chatEvent.message;
     }
 
     /**
      * Gets a list of who can see the chat messages
      * Unless overridden returns all the players
      */
-    public getChatRecipients(sendingPlayer: MapPlayer) {
-        return ForceEntity.getInstance().getActivePlayers();
+    public getChatRecipients(chatEvent: ChatHook) {
+        return chatEvent.recipients;
     }
 
     /**
      * Gets the player's visible chat name, by default shows role name
      */
-    public getChatName(who: MapPlayer): string {
-        const pData = ForceEntity.getInstance().getPlayerDetails(who);
-        const crew = pData.getCrewmember();
+    public getChatName(chatEvent: ChatHook): string {
+        const crew = PlayerStateFactory.get(chatEvent.who).getCrewmember();
         if (crew)
             return crew.name;
         else {
-            Log.Error("Failed to get crew name for "+who.name);
-            Log.Error("P Data: "+(pData.player ? pData.player.name : "p data no player!"));
+            Log.Error("Failed to get crew name for "+chatEvent.who.name);
             return "Missing Crew Name";
         }
     }
@@ -117,22 +116,22 @@ export abstract class ForceType {
      * Return's a players chat colour
      * @param who 
      */
-    public getChatColor(who: MapPlayer): string {
-        return PLAYER_COLOR[who.id];
+    public getChatColor(chatEvent: ChatHook): string {
+        return PLAYER_COLOR[chatEvent.who.id];
     }
 
     /**
      * Returns the sound to be used on chat events
      * @param who
      */
-    public getChatSoundRef(who: MapPlayer): SoundWithCooldown {
+    public getChatSoundRef(chatEvent: ChatHook): SoundWithCooldown {
         return GENERIC_CHAT_SOUND_REF;
     }
 
     /**
      * Returns the chat tag, by default it will be null
      */
-    public getChatTag(who: MapPlayer): string | undefined { return; }
+    public getChatTag(chatEvent: ChatHook): string | undefined { return; }
 
 
     /**

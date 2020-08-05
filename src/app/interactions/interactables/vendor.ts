@@ -1,11 +1,9 @@
-/** @noSelfInFile **/
 import { InteractableData } from "./interactable-type";
 import { PlayNewSoundOnUnit, COLOUR, console } from "../../../lib/translators";
 import { Unit } from "w3ts";
-import { Game } from "app/game";
 import { VENDING_MACHINE_TRIFEX } from "resources/unit-ids";
-import { Interactables } from "./elevator";
 import { ITEM_TRIFEX_ID } from "resources/item-ids";
+import { Interactables } from "./interactables";
 
 // const vendingSound = new SoundRef("Sounds\\vendingMachineChunk.mp3", false);
 

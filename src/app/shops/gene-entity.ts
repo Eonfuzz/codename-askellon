@@ -20,19 +20,25 @@ import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit, Timer } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Log } from "lib/serilog/serilog";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/forces/alien-force";
 import { STR_GENE_SUCCESSFUL, STR_GENE_ALIEN_SUCCESSFUL } from "resources/strings";
 import { EventListener } from "app/events/event-type";
 import { ROLE_NAMES, ROLE_TYPES } from "resources/crewmember-names";
 import { ForceType } from "app/force/forces/force-type";
+
 import { Entity } from "app/entity-type";
-import { ForceEntity } from "app/force/force-entity";
-import { ResearchFactory } from "app/research/research-factory";
+
 import { EventEntity } from "app/events/event-entity";
 import { ChatEntity } from "app/chat/chat-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { CrewFactory } from "app/crewmember/crewmember-factory";
+// import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
+import { AlienForce } from "app/force/forces/alien-force";
+
+import { ForceEntity } from "app/force/force-entity";
+import { ResearchFactory } from "app/research/research-factory";
+import { GetActivePlayers } from "lib/utils";
 
 interface GeneInstance {
     source: Crewmember,
@@ -60,7 +66,7 @@ export class GeneEntity extends Entity {
     constructor() {
         super();
 
-        const players = ForceEntity.getInstance().getActivePlayers();
+        const players = GetActivePlayers();
 
         // Apply starting gene upgrades
         players.forEach(p => {
@@ -71,9 +77,10 @@ export class GeneEntity extends Entity {
     }
 
     addNewGeneInstance(who: Unit, geneUiUnit: Unit) {
-        const crew = CrewFactory.getInstance().getCrewmemberForUnit(who);
+        const pData = PlayerStateFactory.get(who.owner);
+        const crew = pData.getCrewmember();
 
-        if (crew) {
+        if (crew && crew.unit === who) {
             const instance = {
                 source: crew,
                 ui: geneUiUnit,
@@ -111,8 +118,9 @@ export class GeneEntity extends Entity {
                     // Make sure unit does not have the smite ability
                     const isInquis = u.getAbilityLevel(ABIL_INQUIS_SMITE) > 0;
                     if (u.owner != instanceOwner && u.typeId !== FourCC('ncp2') && !isInquis) {
-                        const crew = CrewFactory.getInstance().getCrewmemberForUnit(u);
-                        if (crew) {
+                        const pData = PlayerStateFactory.get(u.owner);
+                        const crew = pData.getCrewmember();
+                        if (crew && crew.unit == u) {
                             units.push(crew);
                         }
                     }
@@ -227,7 +235,7 @@ export class GeneEntity extends Entity {
 
             for (let index = 0; index < alienPlayers.length; index++) {
                 const aPlayer = alienPlayers[index];
-                const pData = ForceEntity.getInstance().getPlayerDetails(aPlayer);
+                const pData = PlayerStateFactory.get(aPlayer);
                 EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
                     source: pData.getCrewmember().unit,
                     data: { value: 100 }

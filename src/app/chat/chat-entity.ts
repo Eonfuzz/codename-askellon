@@ -4,7 +4,7 @@ import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import {  SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE } from "resources/colours";
-import { syncData } from "lib/utils";
+import { syncData, GetActivePlayers } from "lib/utils";
 import { ChatHook } from "./chat-hook-type";
 import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
@@ -12,6 +12,8 @@ import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { ForceEntity } from "app/force/force-entity";
 import { PRIVS } from "./chat-privs-enum";
+import { Players } from "w3ts/globals/index";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 export class ChatEntity extends Entity {
 
@@ -45,7 +47,6 @@ export class ChatEntity extends Entity {
      */
     fadeHandler = new Timer();
     initialise() {
-        const players = ForceEntity.getInstance().getActivePlayers();
         const font = 'LVCMono.otf';
 
         const playerActivityTrigger = new Trigger();
@@ -78,10 +79,14 @@ export class ChatEntity extends Entity {
         BlzFrameSetTextAlignment(chatTextHandle, TEXT_JUSTIFY_BOTTOM, TEXT_JUSTIFY_LEFT);
         BlzFrameSetFont(chatTextHandle, "UI\\Font\\" + font, 0.011, 1);
 
+        // Init chat events
+        const messageTrigger = new Trigger();
+        messageTrigger.addAction(() => this.onChatMessage());
+
         /**
          * Creates and prepare the chat handlers
          */
-        players.forEach(p => {
+        GetActivePlayers().forEach(p => {
             const chatHandler = new ChatSystem(p);
 
             // Init chat system
@@ -89,14 +94,9 @@ export class ChatEntity extends Entity {
 
             // Now set chat system in map
             this.chatHandlers.set(p, chatHandler);
+            
+            messageTrigger.registerPlayerChatEvent(p, "", false);
         });
-
-        // Init chat events
-        const messageTrigger = new Trigger();
-        ForceEntity.getInstance().getActivePlayers().forEach(player => {
-            messageTrigger.registerPlayerChatEvent(player, "", false);
-        });
-        messageTrigger.addAction(() => this.onChatMessage());
     }
 
     step() {
@@ -106,7 +106,7 @@ export class ChatEntity extends Entity {
     onChatMessage() {
         const player = MapPlayer.fromHandle(GetTriggerPlayer());
         const message = GetEventPlayerChatString();
-        const pData = ForceEntity.getInstance().getPlayerDetails(player);
+        const pData = PlayerStateFactory.get(player);
         const crew = pData.getCrewmember();
 
         const isCommand = message[0] === '-';
@@ -168,7 +168,7 @@ export class ChatEntity extends Entity {
             }
             else if (message == "-level") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    const pData = ForceEntity.getInstance().getPlayerDetails(MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit())));
+                    const pData = PlayerStateFactory.get(MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit())));
                     if (pData && pData.getCrewmember()) {
                         pData.getCrewmember().addExperience(99999);
                     }
@@ -229,48 +229,46 @@ export class ChatEntity extends Entity {
         // We might handle this differently for admins.
         // Is the user in god chat?
         if (this.adminGodUsers.indexOf(player) >= 0) {
-            const players = ForceEntity.getInstance().getActivePlayers();
+            const players = GetActivePlayers();
             this.postMessageFor(players, player.name, COL_GOD, message, "ADMIN");
         }
         else {
+
+            // Run through our initial hook via force
+            const chatData = ForceEntity.getInstance().forceChatHook({
+                who: player, 
+                name: player.name, 
+                recipients: Players, 
+                color: undefined, 
+                message: message,
+                sound: undefined
+            });
+
+            // Now run through our own hooks
+            const postHookData = this.applyChatHooks(chatData);
+
             // Get list of players to send the message to by player force
-            const pDetails = ForceEntity.getInstance().getPlayerDetails(player);
+            const pDetails = PlayerStateFactory.get(player);
             const force = pDetails.getForce();
 
             if (force) {
-                const recipients = force.getChatRecipients(player).slice();
-                const playername = force.getChatName(player);
-                const color      = force.getChatColor(player);
-                const sound      = force.getChatSoundRef(player);
-                const messageTag = force.getChatTag(player);
-                const messageString = force.getChatMessage(player, message);
-
-                
-                const postHookData = this.applyChatHooks(player, playername, recipients, color, message, sound);
-
                 // Handle listen mode
                 this.adminListenUsers.forEach(u => {
-                    if (recipients.indexOf(u) === -1) recipients.push(u);
+                    if (chatData.recipients.indexOf(u) === -1) chatData.recipients.push(u);
                 });
 
-                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, messageTag, postHookData.sound);
+                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, undefined, postHookData.sound);
             }
         }
     }
 
-    private applyChatHooks(player: MapPlayer, playerName: string, recipients: MapPlayer[], color: string, message: string, sound?: SoundWithCooldown) {
+    private applyChatHooks(chatData: ChatHook) {
         let idx = 0;
-        let data: ChatHook = {
-            who: player, 
-            name: playerName, 
-            recipients, color, message, sound
-        };
-
         while (idx < this.chatHooks.length) {
-            data = this.chatHooks[idx](data);
+            chatData = this.chatHooks[idx](chatData);
             idx++;
         }
-        return data;
+        return chatData;
     }
 
     /**
@@ -326,7 +324,7 @@ export class ChatEntity extends Entity {
         if (who.name === 'Local Player') return PRIVS.DEVELOPER;
         // No # means this is a local game
         if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
-        else if (ForceEntity.getInstance().getActivePlayers().length === 1) return PRIVS.MODERATOR;
+        else if (GetActivePlayers().length === 1) return PRIVS.MODERATOR;
         return PRIVS.USER;
     }
 }

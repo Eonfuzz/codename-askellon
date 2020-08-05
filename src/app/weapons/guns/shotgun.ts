@@ -1,5 +1,3 @@
-/** @noSelfInFile **/
-
 import { Vector3 } from "../../types/vector3";
 import { Gun } from "./gun";
 import { Crewmember } from "../../crewmember/crewmember-type";
@@ -12,15 +10,11 @@ import { SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
 import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
 import { MapPlayer } from "w3ts/index";
 import { SFX_SHOCKWAVE } from "resources/sfx-paths";
-import { WeaponEntity } from "../weapon-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
-
-export const InitShotgun = () => {
-    WeaponEntity.getInstance().weaponItemIds.push(SHOTGUN_ITEM_ID);
-    WeaponEntity.getInstance().weaponAbilityIds.push(SHOTGUN_ABILITY_ID);
-}
 export class Shotgun extends Gun {
 
     private unitsHit = new Map<unit, number>();
@@ -73,13 +67,10 @@ export class Shotgun extends Gun {
             const nY = casterLoc.y + loc.y;
             const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
             this.fireProjectile(caster, targetLoc, false)
-                .onCollide((projectile: Projectile, collidesWith: unit) => {
-                    this.onProjectileCollide(projectile, collidesWith);
-                });
         });
     };
 
-    private fireProjectile(caster: Crewmember, targetLocation: Vector3, isCentralProjectile: boolean): Projectile {
+    private fireProjectile(caster: Crewmember, targetLocation: Vector3, isCentralProjectile: boolean): void {
         const unit = caster.unit.handle;
         // print("Target "+targetLocation.toString())
         let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
@@ -99,10 +90,14 @@ export class Shotgun extends Gun {
             isCentralProjectile ? 0.6 : 1.4
         ), 100);
 
-        WeaponEntity.getInstance().addProjectile(projectile);
-        return projectile
+        projectile
             .setCollisionRadius(20)
-            .setVelocity(isCentralProjectile ? 2400 : 2250);
+            .setVelocity(isCentralProjectile ? 2400 : 2250)
+            .onCollide((projectile: Projectile, collidesWith: unit) => {
+                this.onProjectileCollide(projectile, collidesWith);
+            });
+        
+        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile }});
     }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {

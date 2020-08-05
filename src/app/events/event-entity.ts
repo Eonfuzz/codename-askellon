@@ -1,5 +1,4 @@
-import { EventListener, } from "app/events/event-type";
-import { Entity } from "app/entity-type";
+import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "./event-enum";
 import { EventData } from "./event-data";
 
@@ -53,4 +52,14 @@ export class EventEntity {
         const listeners = this.eventListeners.get(listener.eventType) || [];
         this.eventListeners.set(listener.eventType, listeners.filter(l => l != listener));
     }
+
+
+    /** STATIC API */
+    public static send(whichEvent: EVENT_TYPE, data: EventData) {
+        EventEntity.getInstance().sendEvent(whichEvent, data);
+    } 
+
+    public static listen(listener: EventListener) {
+        EventEntity.getInstance().addListener(listener)
+    } 
 }

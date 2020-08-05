@@ -1,6 +1,4 @@
-/** @noSelfInFile **/
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME, STRING_TO_ZONE_TYPE } from "./zone-id";
-import { Game } from "../game";
 import { Zone, ShipZone } from "./zone-type";
 import { SoundRef } from "../types/sound-ref";
 import { Log } from "../../lib/serilog/serilog";
@@ -10,10 +8,11 @@ import { MapPlayer, Unit } from "w3ts";
 import { ChurchZone } from "./zones/church";
 import { BridgeZone, BridgeZoneVent } from "./zones/bridge";
 import { VISION_PENALTY } from "app/vision/vision-type";
-import { ForceEntity } from "app/force/force-entity";
+
 import { VisionFactory } from "app/vision/vision-factory";
 import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
-import { WorldEntity } from "./world-entity";
+// import { WorldEntity } from "./world-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 // Small damage
 // Will not cause damage to interior
@@ -45,10 +44,8 @@ export class TheAskellon {
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
 
     private pilot: Crewmember | undefined;
-    private playerLightingModifiers = new Map<MapPlayer, number>();
 
     constructor() {
-
         this.floors.set(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY, udg_Lights_Armory));
         this.floors.set(ZONE_TYPE.ARMORY_VENT, new ShipZone(ZONE_TYPE.ARMORY_VENT));
         this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
@@ -98,42 +95,6 @@ export class TheAskellon {
 
     findZone(zone: ZONE_TYPE): ShipZone | undefined {
         return this.floors.get(zone);
-    }
-
-    applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
-        // let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-        const playerDetails = ForceEntity.getInstance().getPlayerDetails(player);
-        if (playerDetails) {
-            const crewmember = playerDetails.getCrewmember();
-            
-            // IF we dont have power add despair to the unit
-            if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
-                crewmember.addDespair(new BuffInstanceCallback(crewmember.unit, () => {
-                    const z = WorldEntity.getInstance().getUnitZone(crewmember.unit);
-                    const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
-                    return (z && hasNighteye === 0) ? z.doCauseFear() : false;
-                }));
-            }
-        }
-
-        // Remove the existing modifier (if any)
-        if (this.playerLightingModifiers.has(player)) {
-            const mod = this.playerLightingModifiers.get(player);
-            this.playerLightingModifiers.delete(player);
-            VisionFactory.getInstance().removeVisionModifier(mod);
-        }
-
-        if (!hasPower) {
-            this.playerLightingModifiers.set(player, 
-                VisionFactory.getInstance().addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
-            );
-        }
-        if (hasPower && justChanged && GetLocalPlayer() === player.handle) {
-            this.powerUpSound.playSound();
-        }
-        else if (!hasPower && justChanged  && GetLocalPlayer() === player.handle) {
-            this.powerDownSound.playSound();
-        }
     }
 
     /**

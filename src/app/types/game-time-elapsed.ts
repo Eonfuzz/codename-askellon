@@ -1,4 +1,13 @@
-export class GameTimeElapsed {    
+export class GameTimeElapsed {
+
+    private static instance: GameTimeElapsed;
+    public static getInstance() {        
+        if (this.instance == null) {
+            this.instance = new GameTimeElapsed();
+        }
+        return this.instance;
+    }
+
     
     private everyTenSeconds: number = 0;
     private globalTimer: timer;
@@ -16,5 +25,12 @@ export class GameTimeElapsed {
 
     public getTimeElapsed() {
         return this.everyTenSeconds * 10 + TimerGetElapsed(this.globalTimer);
+    }
+
+    /**
+     * STATIC API
+     */
+    public static getTime() {
+        return GameTimeElapsed.getInstance().getTimeElapsed();
     }
 }

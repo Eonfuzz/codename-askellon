@@ -8,6 +8,7 @@ import { Game } from "app/game";
 import { Log } from "lib/serilog/serilog";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer } from "w3ts";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 const MAX_CHAT_MESSAGES = 15;
 
@@ -29,7 +30,7 @@ export class ChatSystem {
     /**
      * Delegate for gametime
      */
-    private getGameTime() { return Game.getInstance().getTimeStamp(); }
+    private getGameTime() { return GameTimeElapsed.getTime(); }
 
     /**
      * Gets the player's chat colour

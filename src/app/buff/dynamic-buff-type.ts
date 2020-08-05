@@ -1,8 +1,6 @@
-import { Game } from "../game";
 import { Unit } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstance } from "./buff-instance-type";
-
 
 export abstract class DynamicBuff {
     public id: BUFF_ID;

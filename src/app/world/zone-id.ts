@@ -1,6 +1,5 @@
 import { COL_VENTS, COL_CARGO_A, COL_FLOOR_1, COL_GOLD, COL_TEAL, COL_PURPLE, COL_ATTATCH } from "resources/colours";
 
-/** @noSelfInFile **/
 export enum ZONE_TYPE {
     SPACE='SPACE',
     ARMORY='ARMORY',

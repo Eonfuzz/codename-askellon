@@ -1,7 +1,5 @@
 import { Trigger, Unit, MapPlayer } from "w3ts";
 import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID, TECH_HERO_LEVEL, TECH_MAJOR_RELIGION, TECH_PLAYER_INFESTS } from "resources/ability-ids";
-// import { STR_OPT_ALIEN } from "resources/strings";
-import { ALIEN_FORCE_NAME } from "app/force/forces/alien-force";
 import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_NAME_RELIGION, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID, STR_OCCUPATION_BONUS } from "resources/strings";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/forces/force-type";
@@ -10,7 +8,10 @@ import { SoundRef } from "app/types/sound-ref";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { ForceEntity } from "app/force/force-entity";
+// import { ForceEntity } from "app/force/force-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
+import { Players } from "w3ts/globals/index";
 
 const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false);
 
@@ -68,7 +69,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
                 // Process the tech upgrade yo
                 this.processMajorUpgrade(player, techUnlocked, levelTech);
                 // Brilliant, now reward the player with experience
-                const pData = ForceEntity.getInstance().getPlayerDetails(player);
+                const pData = PlayerStateFactory.get(player);
                 const pForce = pData.getForce();
 
                 const crewmember = pData.getCrewmember();
@@ -84,7 +85,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
             // Otherwise just update it for a single player
             else {
                 const p = GetOwningPlayer(GetTriggerUnit());
-                const pData = ForceEntity.getInstance().getPlayerDetails(MapPlayer.fromHandle(p));
+                const pData = PlayerStateFactory.get(MapPlayer.fromHandle(p));
                 const crew = pData.getCrewmember();
                 if (crew) {
                     crew.onPlayerFinishUpgrade();
@@ -114,21 +115,18 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
      * Grants upgrades, unlocks things and others!
      */
     processMajorUpgrade(player: MapPlayer, id: number, level: number) {
-        const forceEntity = ForceEntity.getInstance();
-
-        const alienForce = forceEntity.getForce(ALIEN_FORCE_NAME);
         const isInfested = player.getTechCount(TECH_PLAYER_INFESTS, true) > 0;
 
         // Go through all players and grant the tech at the tech at the same level
-        const players = forceEntity.getActivePlayers();
-        players.forEach(p => p.setTechResearched(id, level));
+        Players.forEach(p => p.setTechResearched(id, level));
+
         // Now send message to all players
         // Get all players on the ship
         // const pAlert = this.game.worldModule.askellon.getPlayers();
         const techName = this.getTechName(id, level);
         this.majorUpgradeLevels.set(id, level);
 
-        const crewmember = forceEntity.getPlayerDetails(player).getCrewmember();
+        const crewmember = PlayerStateFactory.get(player).getCrewmember();
         if (isInfested) this.setUpgradeAsInfested(id, level, true);
 
         // Handle occupation bonuses
@@ -136,14 +134,17 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         const hasOccupationBonus = crewmember && roles && roles.indexOf(crewmember.role) >= 0;
         this.setHasOccupationBonus(id, level, hasOccupationBonus);
 
-        players.forEach(p => {
+        Players.forEach(p => {
             DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_HEADER());
             DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_SUBTITLE(techName));
             if (hasOccupationBonus) {
                 // Play upgrade complete sound
                 DisplayTextToPlayer(p.handle, 0, 0, STR_OCCUPATION_BONUS());
             }
-            if (alienForce && isInfested && alienForce.hasPlayer(p)) {
+            const pData = PlayerStateFactory.get(p);
+            const pForce = pData.getForce();
+
+            if (isInfested && pForce.is(ALIEN_FORCE_NAME)) {
                 DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
                 // Play infestation complete sound
             }

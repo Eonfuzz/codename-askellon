@@ -5,6 +5,7 @@ import { Unit } from "w3ts/index";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { ForceEntity } from "app/force/force-entity";
 import { WorldEntity } from "app/world/world-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 const screamSound =new SoundRef("Sounds\\Nazgul.wav", false, true);
 
@@ -25,7 +26,7 @@ export class ScreamAbility implements Ability {
         const zone = world.getUnitZone(this.casterUnit);
         const pInZone = zone.getPlayersInZone();
         pInZone.forEach(player => {
-            const pData = ForceEntity.getInstance().getPlayerDetails(player);
+            const pData = PlayerStateFactory.get(player);
             if (pData && pData.getCrewmember()) {
                 const crew = pData.getCrewmember();
                 if (crew && crew.unit.isAlive()) {

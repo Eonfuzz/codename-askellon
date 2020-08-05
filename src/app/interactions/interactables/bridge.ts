@@ -1,11 +1,11 @@
-/** @noSelfInFile **/
 import { InteractableData } from "./interactable-type";
-import { VENDING_MACHINE_TRIFEX, BRIDGE_CAPTAINS_TERMINAL } from "resources/unit-ids";
-import { Interactables } from "./elevator";
+import { BRIDGE_CAPTAINS_TERMINAL } from "resources/unit-ids";
 import { SoundRef } from "app/types/sound-ref";
 import { Unit } from "w3ts/index";
-import { Log } from "lib/serilog/serilog";
-import { SpaceEntity } from "app/space/space-module";
+// import { SpaceEntity } from "app/space/space-module";
+import { Interactables } from "./interactables";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 const firstTerminalSound = new SoundRef("Sounds\\Captain\\captain_welcome_online.mp3", false, true);
 const terminalSounds = [
@@ -29,7 +29,8 @@ export function initCommandTerminal() {
             }
 
             // Now get unit to enter the askellon
-            SpaceEntity.getInstance().mainShip.onEnterShip(source);
+            // SpaceEntity.getInstance().mainShip.onEnterShip(source);
+            EventEntity.send(EVENT_TYPE.INTERACT_BRIDGE_TERMINAL, { source: source });
         }
     }
 

@@ -1,4 +1,4 @@
-import { Trigger, Region, Rectangle, Unit, Timer } from "w3ts";
+import { Trigger, Rectangle, Unit } from "w3ts";
 import { SpaceObject, SpaceObjectType } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
 import { Mineral } from "./space-objects/mineral";
@@ -10,19 +10,22 @@ import { Ship, ShipWithFuel } from "./ships/ship-type";
 import { ABIL_LEAVE_ASKELLON_CONTROLS, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
-import { ALIEN_FORCE_NAME } from "app/force/forces/alien-force";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { ITEM_MINERALS_SHIP_ID } from "resources/item-ids";
+
 import { PerseusShip } from "./ships/perseus-type";
 import { AskellonShip } from "./ships/askellon-type";
 import { ShipState } from "./ships/ship-state-type";
+
 import { Entity } from "app/entity-type";
-import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { ForceEntity } from "app/force/force-entity";
-import { ResearchFactory } from "app/research/research-factory";
 import { WorldEntity } from "app/world/world-entity";
-import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { EventEntity } from "app/events/event-entity";
+import { ResearchFactory } from "app/research/research-factory";
+// import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -101,6 +104,8 @@ export class SpaceEntity extends Entity {
         .addListener( new EventListener(EVENT_TYPE.LEAVE_SHIP, () => {}) )
         .addListener( new EventListener(EVENT_TYPE.SHIP_ENTERS_SPACE, (self, data) => this.onShipEntersSpace(data.source, data.data.ship)) )
         .addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.goal)) );
+    
+        this.initShips();
     }
     
     /**
@@ -115,7 +120,7 @@ export class SpaceEntity extends Entity {
         const forceEntity = ForceEntity.getInstance();
 
         this.mainShip = new AskellonShip(ShipState.inSpace, Unit.fromHandle(
-            CreateUnit(forceEntity.neutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
+            CreateUnit(PlayerStateFactory.NeutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
         );
         this.mainShip.unit.setTimeScale(0.5);
         
@@ -134,7 +139,7 @@ export class SpaceEntity extends Entity {
 
             // Also for now create a ship to sit in the dock
             const ship = new PerseusShip(ShipState.inBay, Unit.fromHandle(
-                CreateUnit(forceEntity.neutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
+                CreateUnit(PlayerStateFactory.NeutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
             );
             this.shipUnitDict.set(ship.unit, ship);
             this.ships.push(ship);
@@ -212,7 +217,7 @@ export class SpaceEntity extends Entity {
         // Hook into the space upgrades
         
         // Listen to ugprade events
-        EventEntity.getInstance().addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+        EventEntity.listen(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
             if (data.data.researched === TECH_MAJOR_VOID) {
                 const techLevel = data.data.level;
 
@@ -337,7 +342,8 @@ export class SpaceEntity extends Entity {
     minY = this.spaceRect.minY;
     maxY = this.spaceRect.maxY;
     step() {
-        this.mainShip.process(this._timerDelay, this.minX, this.maxX, this.minY, this.maxY);
+        if (this.mainShip)
+            this.mainShip.process(this._timerDelay, this.minX, this.maxX, this.minY, this.maxY);
         this.ships.forEach(ship => ship.process(this._timerDelay, this.minX, this.maxX, this.minY, this.maxY));
     }
 
@@ -387,8 +393,10 @@ export class SpaceEntity extends Entity {
                 ship.onLeaveShip();
             }
 
-            const crew = CrewFactory.getInstance().getCrewmemberForUnit(ship.inShip[0])
-            const isPilot = crew && crew.role === ROLE_TYPES.PILOT;
+            const pData = PlayerStateFactory.get(ship.inShip[0].owner);
+            const crew = pData.getCrewmember();
+
+            const isPilot = crew && crew.unit === ship.inShip[0] && crew.role === ROLE_TYPES.PILOT;
             let manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
             if (isPilot) {
                 manaCost = Math.min(manaCost-1, 0);

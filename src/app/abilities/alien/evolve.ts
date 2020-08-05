@@ -10,11 +10,12 @@ import { vectorFromUnit } from "app/types/vector2";
 import { Vector3 } from "app/types/vector3";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/forces/alien-force";
+import { AlienForce } from "app/force/forces/alien-force";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { ForceEntity } from "app/force/force-entity";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 
 
 const CREATE_SFX_EVERY = 0.06;

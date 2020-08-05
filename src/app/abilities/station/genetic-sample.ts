@@ -1,5 +1,5 @@
 import { Ability } from "../ability-type";
-import { getZFromXY } from "lib/utils";
+import { getZFromXY, GetActivePlayers } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED, SFX_LIGHTNING_BOLT } from "resources/sfx-paths";
 import { SoundRef } from "app/types/sound-ref";
 import { testerSlots, setTesterLastActivatedTo } from "app/interactions/interactables/genetic-tester";
@@ -11,6 +11,7 @@ import { ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { Game } from "app/game";
 import { ForceEntity } from "app/force/force-entity";
 import { ChatEntity } from "app/chat/chat-entity";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 declare const udg_genetic_test_lights: destructable[];
 declare const udg_genetic_sequencer_unit: unit;
@@ -28,7 +29,7 @@ export class GeneticSequenceAbility implements Ability {
 
     public initialise() {
         ambienceSoundGeneticSequence.playSoundOnUnit(udg_genetic_sequencer_unit, 30);
-        setTesterLastActivatedTo(Game.getInstance().getTimeStamp());
+        setTesterLastActivatedTo(GameTimeElapsed.getTime());
         return true;
     };
 
@@ -67,7 +68,7 @@ export class GeneticSequenceAbility implements Ability {
             }
         });
 
-        const allPlayers = ForceEntity.getInstance().getActivePlayers();
+        const allPlayers = GetActivePlayers();
         if (hasAlienDNA) {
             ChatEntity.getInstance().postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', `Result: ${COL_ATTATCH}Contaminants|r detected. Quarantine is recommended.`, undefined, SOUND_COMPLEX_BEEP);
         }

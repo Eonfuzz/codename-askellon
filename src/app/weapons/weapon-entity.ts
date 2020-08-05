@@ -1,18 +1,16 @@
-/** @noSelfInFile **/
-
 import { Projectile } from "./projectile/projectile";
 import { Vector3 } from "../types/vector3";
 import { Gun } from "./guns/gun";
-import { BurstRifle, InitBurstRifle } from "./guns/burst-rifle";
+import { BurstRifle } from "./guns/burst-rifle";
 import { Crewmember } from "../crewmember/crewmember-type";
 import { Game } from "../game";
-import { Trigger, Unit, Timer } from "w3ts";
+import { Trigger, Unit, Timer, Item, MapPlayer } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
 import { Attachment } from "./attachment/attachment";
 import { ArmableUnit } from "./guns/unit-has-weapon";
-import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST } from "./weapon-constants";
-import { InitLaserRifle, LaserRifle } from "./guns/laser-rifle";
-import { Shotgun, InitShotgun } from "./guns/shotgun";
+import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, BURST_RIFLE_ABILITY_ID, SHOTGUN_ABILITY_ID } from "./weapon-constants";
+import { LaserRifle } from "./guns/laser-rifle";
+import { Shotgun } from "./guns/shotgun";
 import { RailRifle } from "./attachment/rail-rifle";
 import { DragonfireBarrelAttachment } from "./attachment/dragonfire-barrel";
 import { getZFromXY } from "lib/utils";
@@ -21,6 +19,8 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { EventListener } from "app/events/event-type";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -52,9 +52,17 @@ export class WeaponEntity extends Entity {
          * To add a new weapon call its initialisation AND add it to CreateWeaponForId()
          * I tried to work out a better way of doing this, but sleep is hurting my thoughts
          */
-        InitBurstRifle();
-        InitLaserRifle();
-        InitShotgun();
+        // Init burst rifle
+        this.weaponItemIds.push(BURST_RIFLE_ITEM_ID);
+        this.weaponAbilityIds.push(BURST_RIFLE_ABILITY_ID);
+
+        // Init shotgun
+        this.weaponItemIds.push(SHOTGUN_ITEM_ID);
+        this.weaponAbilityIds.push(SHOTGUN_ABILITY_ID);
+
+        // Init laser rifle
+        this.weaponItemIds.push(LASER_ITEM_ID);
+        this.weaponAbilityIds.push(LASER_ABILITY_ID);
 
         /**
          * Now initialise all weapon systems
@@ -62,6 +70,14 @@ export class WeaponEntity extends Entity {
         this.initialiseWeaponEquip();
         this.initaliseWeaponShooting();
         this.initialiseWeaponDropPickup();
+
+        // Subscribe to event entity
+        EventEntity.listen(new EventListener(EVENT_TYPE.DO_EQUIP_WEAPON, (self, data) => {
+            this.applyItemEquip(data.source, data.data.item);
+        }));
+        EventEntity.listen(new EventListener(EVENT_TYPE.DO_UNQEUIP_WEAPON, (self, data) => {
+            this.onWeaponUnEquip(data.source, data.data.item, data.data.weapon);
+        }));
     }
 
 
@@ -199,23 +215,27 @@ export class WeaponEntity extends Entity {
             const itemSlot = orderId - 852008;
             const item = UnitItemInSlot(unit.handle, itemSlot);
 
-            // Phew, hope you have the water running, ready for your shower            
-            let crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
-            if (crewmember) {
-                this.applyItemEquip(crewmember, item);
-            }
+            EventEntity.send(EVENT_TYPE.DO_EQUIP_WEAPON, {
+                source: unit,
+                data: { item }
+            })
         })
     }
 
-    applyItemEquip(unit: Crewmember, item: item) {
+    applyItemEquip(unit: Unit, item: item) {
 
         const itemId = GetItemTypeId(item);
+
         const itemIsWeapon = this.itemIsWeapon(itemId);
         const itemIsAttachment = this.itemIsAttachment(itemId);
 
+        // Get crewmember
+        const pData = PlayerStateFactory.get(unit.owner);
+        const crew = pData.getCrewmember();
+
         if (itemIsWeapon) {
-            const oldWeapon = this.getGunForUnit(unit.unit);
-            const weaponForItem = this.getGunForItem(item) || this.createWeaponForId(item, unit);
+            const oldWeapon = this.getGunForUnit(unit);
+            const weaponForItem = this.getGunForItem(item) || this.createWeaponForId(item, crew);
 
             if (oldWeapon) {
                 oldWeapon.onRemove();
@@ -224,26 +244,27 @@ export class WeaponEntity extends Entity {
             // Now check to see if we created a gun or not
             if (weaponForItem) {
                 this.guns.push(weaponForItem);
-                weaponForItem.onAdd(unit);
+                weaponForItem.onAdd(crew);
+                this.unitsWithWeapon.set(crew.unit.handle, weaponForItem);
 
                 // Broadcast item equip event
                 EventEntity.getInstance().sendEvent(EVENT_TYPE.WEAPON_EQUIP, { 
-                    source: unit.unit, crewmember: unit, data: { weapon: weaponForItem }
+                    source: unit, crewmember: crew, data: { weapon: weaponForItem, item: item }
                 });
             }
         }
 
         // Otherwise it's an attachment
         else if (itemIsAttachment) {
-            if (unit.weapon) {
+            if (crew.weapon) {
                 const attachment = this.createAttachmentForId(item);
                 if (attachment) {
-                    attachment.attachTo(unit.weapon, unit);
-                    unit.updateTooltips();
+                    attachment.attachTo(crew.weapon, crew);
+                    crew.updateTooltips();
                     
                     // Broadcast item equip event
                     EventEntity.getInstance().sendEvent(EVENT_TYPE.WEAPON_EQUIP, { 
-                        source: unit.unit, crewmember: unit, data: { attachment: attachment }
+                        source: crew.unit, crewmember: crew, data: { attachment: attachment }
                     });
                 }                
             }
@@ -348,22 +369,36 @@ export class WeaponEntity extends Entity {
     initialiseWeaponDropPickup() {
         this.weaponDropTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DROP_ITEM);
         this.weaponDropTrigger.addCondition(Condition(() => {
-            const gun = this.getGunForItem(GetManipulatedItem());
-            if (gun) {
-                gun.onRemove();
-            }
+
+            EventEntity.send(EVENT_TYPE.WEAPON_EQUIP, { 
+                source: Unit.fromHandle(GetTriggerUnit()), data: { item: GetManipulatedItem() }
+            });
             return false;
         }));
 
         this.weaponPickupTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_PICKUP_ITEM);
         this.weaponPickupTrigger.addCondition(Condition(() => {
-            const gun = this.getGunForItem(GetManipulatedItem());
-            const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(Unit.fromHandle(GetManipulatingUnit()));
-            if (gun && crewmember) {
-                gun.updateTooltip(crewmember)
+            const pData = PlayerStateFactory.get(MapPlayer.fromEvent());
+
+            if (pData) {
+                const crewmember = pData.getCrewmember();
+                const gun = this.getGunForItem(GetManipulatedItem());
+                if (gun && crewmember && crewmember.unit.handle === GetTriggerUnit()) {
+                    gun.updateTooltip(crewmember)
+                }
             }
             return false;
         }));
+    }
+
+    public onWeaponUnEquip(unit: Unit, item: item, _gun?: Gun) {
+        let gun = _gun || this.getGunForItem(item);
+
+        if (gun) {
+            gun.onRemove();
+            // Remove weapon
+            this.unitsWithWeapon.delete(unit.handle);
+        }
     }
 
     itemIsWeapon(itemId: number) : boolean {

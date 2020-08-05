@@ -1,5 +1,3 @@
-/** @noSelfInFile **/
-
 import { Vector3 } from "../../types/vector3";
 import { Gun } from "./gun";
 import { Crewmember } from "../../crewmember/crewmember-type";
@@ -17,15 +15,10 @@ import { MapPlayer } from "w3ts/index";
 import { EventEntity } from "app/events/event-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
-import { WeaponEntity } from "../weapon-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 
 const INTENSITY_MAX = 4;
 
-export const InitLaserRifle = () => {
-    WeaponEntity.getInstance().weaponItemIds.push(LASER_ITEM_ID);
-    WeaponEntity.getInstance().weaponAbilityIds.push(LASER_ABILITY_ID);
-}
 export class LaserRifle extends Gun {
 
     // The intensity of the gun, each increment increases damage and sound
@@ -106,7 +99,7 @@ export class LaserRifle extends Gun {
                 return true;
             })
 
-        WeaponEntity.getInstance().addProjectile(projectile);
+        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile }});
     }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {

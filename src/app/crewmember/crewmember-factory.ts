@@ -1,4 +1,3 @@
-/** @noSelfInFile **/
 import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES, ROLE_TYPES } from "../../resources/crewmember-names";
 import { Game } from "../game";
@@ -9,14 +8,19 @@ import { ForceType } from "app/force/forces/force-type";
 import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQUIS_SMITE } from "resources/ability-ids";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { ITEM_GENETIC_SAMPLER } from "resources/item-ids";
-import { ALIEN_FORCE_NAME, AlienForce } from "app/force/forces/alien-force";
+import { AlienForce } from "app/force/forces/alien-force";
 import { ForceEntity } from "app/force/force-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+
 import { WorldEntity } from "app/world/world-entity";
-import { WeaponEntity } from "app/weapons/weapon-entity";
+// import { WeaponEntity } from "app/weapons/weapon-entity";
 import { EventListener } from "app/events/event-type";
 import { ResearchFactory } from "app/research/research-factory";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+
+import { PlayerState } from "app/force/player-type";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 
 export class CrewFactory {  
     private static instance: CrewFactory;
@@ -41,7 +45,7 @@ export class CrewFactory {
         this.crewmemberDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
         this.crewmemberDamageTrigger.addCondition(Condition(() => {
             const player = GetOwningPlayer(GetTriggerUnit());
-            return (GetPlayerId(player) < ForceEntity.getInstance().alienAIPlayer.id);
+            return (GetPlayerId(player) < PlayerStateFactory.AlienAIPlayer.id);
         }));
         this.crewmemberDamageTrigger.addAction(() => {
             const unit = Unit.fromHandle(GetTriggerUnit());
@@ -122,7 +126,7 @@ export class CrewFactory {
         crewmember.setPlayer(player);
 
         // Update pData
-        const pData = ForceEntity.getInstance().getPlayerDetails(nUnit.owner);
+        const pData = PlayerStateFactory.get(nUnit.owner);
         pData.setCrewmember(crewmember);
         
         this.crewmemberForUnit.set(nUnit, crewmember);        
@@ -158,7 +162,10 @@ export class CrewFactory {
             player.setTechResearched(TECH_WEP_DAMAGE, 1);
             const item = CreateItem(SHOTGUN_ITEM_ID, 0, 0);
             UnitAddItem(crewmember.unit.handle, item);
-            WeaponEntity.getInstance().applyItemEquip(crewmember, item);
+            EventEntity.send(EVENT_TYPE.DO_EQUIP_WEAPON, {
+                source: crewmember.unit,
+                data: { item }
+            });
             roleGaveWeapons = true;
             // Now travel the unit to floor 1
             WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.ARMORY, true);
@@ -206,7 +213,10 @@ export class CrewFactory {
         if (!roleGaveWeapons) {
             const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
             UnitAddItem(crewmember.unit.handle, item);
-            WeaponEntity.getInstance().applyItemEquip(crewmember, item);
+            EventEntity.send(EVENT_TYPE.DO_EQUIP_WEAPON, {
+                source: crewmember.unit,
+                data: { item }
+            });
         }
 
         BlzShowUnitTeamGlow(crewmember.unit.handle, false);

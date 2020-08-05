@@ -1,5 +1,3 @@
-/** @noSelfInFile **/
-
 import { Vector3 } from "../../types/vector3";
 import { Gun } from "./gun";
 import { Crewmember } from "../../crewmember/crewmember-type";
@@ -12,16 +10,12 @@ import { ArmableUnit } from "./unit-has-weapon";
 import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
 import { getZFromXY } from "lib/utils";
 import { MapPlayer, Force } from "w3ts/index";
-import { WeaponEntity } from "../weapon-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
 import { Timers } from "app/timer-type";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
-
-export const InitBurstRifle = () => {
-    WeaponEntity.getInstance().weaponItemIds.push(BURST_RIFLE_ITEM_ID);
-    WeaponEntity.getInstance().weaponAbilityIds.push(BURST_RIFLE_ABILITY_ID);
-}
 export class BurstRifle extends Gun {
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
@@ -84,7 +78,7 @@ export class BurstRifle extends Gun {
                 1.4
             );
 
-        WeaponEntity.getInstance().addProjectile(projectile);
+        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile }});
     }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {

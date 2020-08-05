@@ -6,7 +6,9 @@ import { COL_GOOD, COL_BAD, COL_MISC, COL_ALIEN } from "resources/colours";
 import { STR_OPT_HUMAN, STR_OPT_ALIEN, STR_OPT_MESSAGE } from "resources/strings";
 import { OptSelectOption } from "./opt-select-option-type";
 import { OPT_TYPES } from "./opt-types-enum";
-import { ForceEntity } from "../force-entity";
+import { Players } from "w3ts/globals/index";
+import { GetActivePlayers } from "lib/utils";
+// import { ForceEntity } from "../force-entity";
 
 export interface OptResult { player: MapPlayer, role: OptSelectOption };
 
@@ -65,7 +67,7 @@ export class OptSelection {
         let allOpts = this.optsPossible.slice();
         allOpts.push(this.defaultOpt);
 
-        this.players = ForceEntity.getInstance().getActivePlayers();
+        this.players = GetActivePlayers();
         this.players.forEach(p => this.dialog.display(p, true));
 
         PauseGame(false);
@@ -187,7 +189,7 @@ export class OptSelection {
         this.players.forEach(p => this.dialog.display(p, false));
 
         // Time to roll for opts
-        const playersNoRole = ForceEntity.getInstance().getActivePlayers();
+        const playersNoRole = GetActivePlayers();
         const rolesToUse = this.optsPossible.filter(opt => (GetRandomInt(0, 100) <= opt.chanceToExist));
         const result: Array<OptResult> = [];
 
