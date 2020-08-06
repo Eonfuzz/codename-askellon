@@ -78,6 +78,9 @@ export class WeaponEntity extends Entity {
         EventEntity.listen(new EventListener(EVENT_TYPE.DO_UNQEUIP_WEAPON, (self, data) => {
             this.onWeaponUnEquip(data.source, data.data.item, data.data.weapon);
         }));
+        EventEntity.listen(new EventListener(EVENT_TYPE.ADD_PROJECTILE, (self, data) => {
+            this.addProjectile(data.data.projectile);
+        }));
     }
 
 
@@ -114,7 +117,7 @@ export class WeaponEntity extends Entity {
             }
 
             // Destroy projectile if it asks nicely
-            if (!(projectile.willDestroy() && projectile.destroy())) {
+            if (projectile.willDestroy() && projectile.destroy()) {
                 this.projectiles[i] = this.projectiles[this.projectiles.length-1];
                 delete this.projectiles[this.projectiles.length - 1];
             }

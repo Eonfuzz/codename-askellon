@@ -8,6 +8,7 @@ import { PlayNewSoundOnUnit } from "lib/translators";
 import { getZFromXY } from "lib/utils";
 import { ForceEntity } from "app/force/force-entity";
 import { Game } from "app/game";
+import { DummyCast } from "lib/dummy";
 
 export const smiteSound = new SoundRef("Sounds\\InquisitorSmite.mp3", false);
 
@@ -95,7 +96,7 @@ export class SmiteAbility implements Ability {
                 );
 
                 const unit = this.targetUnit.handle;
-                Game.getInstance().useDummyFor((dummy: unit) => {
+                DummyCast((dummy: unit) => {
                     SetUnitAbilityLevel(dummy, ABIL_STUN_25, 8);
                     SetUnitX(dummy, GetUnitX(unit));
                     SetUnitY(dummy, GetUnitY(unit));
@@ -119,7 +120,7 @@ export class SmiteAbility implements Ability {
 
                 // Slow the unit
                 const unit = this.targetUnit.handle;
-                Game.getInstance().useDummyFor((dummy: unit) => {
+                DummyCast((dummy: unit) => {
                     SetUnitX(dummy, GetUnitX(unit));
                     SetUnitY(dummy, GetUnitY(unit) + 50);
 

@@ -44,7 +44,7 @@ export class Asteroid extends SpaceObject {
         const loc = this.getLocation();
 
         const isBackground = this.type === SpaceObjectType.background;
-        const depth = isBackground ? GetRandomReal(-600, -1350) : GetRandomReal(600, 900);
+        const depth = isBackground ? GetRandomReal(-1000, -4000) : GetRandomReal(600, 900);
 
         const i = GetRandomInt(0, ASTEROID_SKIN_PATHS.length-1);
         const skin = ASTEROID_SKIN_PATHS[i];
@@ -54,7 +54,7 @@ export class Asteroid extends SpaceObject {
         if (isBackground) {
             let t = depth < 0 ? depth * -1 : depth;
 
-            const darkness = MathRound(255 - 255*(t/800));
+            const darkness = MathRound(255 - 255*(t/3000));
             this.widget.setColor(darkness, darkness, darkness);
         }
         const scaleFactor = GetRandomReal(0.5, 3);

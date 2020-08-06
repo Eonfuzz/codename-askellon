@@ -2,6 +2,7 @@ import { Ability } from "../ability-type";
 import { Unit } from "w3ts/index";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { Game } from "app/game";
+import { SecurityFactory } from "app/station/security-module";
 
 const REPAIR_DURATION = 6;
 const REPAIR_TICK_EVERY = 1;
@@ -43,7 +44,7 @@ export class ItemRepairAbility implements Ability {
             this.targetUnit.life = this.targetUnit.life + REPAIR_AMOUNT;
 
             // Notify game of the healing
-            Game.getInstance().stationSecurity.onSecurityHeal(this.targetUnit.handle, this.unit.handle);
+            SecurityFactory.getInstance().onSecurityHeal(this.targetUnit.handle, this.unit.handle);
 
             // If the unit is full health lets end the repair
             if (this.targetUnit.life >= this.targetUnit.maxLife) { 

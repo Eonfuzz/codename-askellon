@@ -708,8 +708,8 @@ function Trig_LightsPerFloor_Actions()
     udg_Lights_Biology[10] = gg_dest_B002_1452
     udg_Lights_Biology[11] = gg_dest_B002_1453
     udg_Lights_Biology[12] = gg_dest_B002_1454
-    udg_Lights_Biology[14] = gg_dest_B002_0629
-    udg_Lights_Biology[15] = gg_dest_B002_0628
+    udg_Lights_Biology[13] = gg_dest_B002_0629
+    udg_Lights_Biology[14] = gg_dest_B002_0628
     udg_i = 1
     udg_Lights_Armory[udg_i] = gg_dest_B002_2284
 end

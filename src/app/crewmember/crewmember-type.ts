@@ -10,6 +10,7 @@ import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
 import { BuffInstance } from "app/buff/buff-instance-type";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 
 export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
@@ -46,7 +47,7 @@ export class Crewmember extends ArmableUnit {
      * @param game 
      */
     onDamage() {
-        const resolveActive = DynamicBuffEntity.getInstance().unitHasBuff(BUFF_ID.RESOLVE, this.unit);
+        const resolveActive = DynamicBuffState.unitHasBuff(BUFF_ID.RESOLVE, this.unit);
 
         const maxHP = BlzGetUnitMaxHP(this.unit.handle);
         const hpPercentage  = (GetUnitState(this.unit.handle, UNIT_STATE_LIFE) - GetEventDamage()) / maxHP;

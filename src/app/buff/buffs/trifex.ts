@@ -1,4 +1,3 @@
-import { Log } from "lib/serilog/serilog";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { BUFF_ID } from "resources/buff-ids";
 import { ChatEntity } from "app/chat/chat-entity";

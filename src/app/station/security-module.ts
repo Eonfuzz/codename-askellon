@@ -3,7 +3,6 @@ import { getZFromXY } from "lib/utils";
 import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS, ITEM_ID_CRYO_GRENADE } from "app/weapons/weapon-constants";
 import { ITEM_TRIFEX_ID } from "resources/item-ids";
 import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
-import { ForceEntity } from "app/force/force-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
@@ -14,8 +13,16 @@ const CRATE_ID = FourCC('h005');
 export class SecurityFactory {
     isDestroyedMap = new Map<Unit, boolean>();
 
+    private static instance: SecurityFactory;
 
-    initialise() {
+    public static getInstance() {        
+        if (this.instance == null) {
+            this.instance = new SecurityFactory();
+        }
+        return this.instance;
+    }
+
+    constructor() {
         const securityDamageTrigger = new Trigger();
 
         // Get all security units on the map

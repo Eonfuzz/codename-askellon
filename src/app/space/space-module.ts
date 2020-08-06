@@ -79,7 +79,7 @@ export class SpaceEntity extends Entity {
                 new Mineral(rX, rY, SpaceObjectType.midground).load();
             }
             // Create 400 background asteroids
-            for (let index = 0; index < 400; index++) {
+            for (let index = 0; index < 600; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
                 new Asteroid(rX, rY, SpaceObjectType.background).load();

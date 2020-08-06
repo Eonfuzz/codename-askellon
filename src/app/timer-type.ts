@@ -1,3 +1,4 @@
+import { Log } from "lib/serilog/serilog";
 
 /**
  * Provides timers for other classes,

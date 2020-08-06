@@ -13,7 +13,6 @@ import { NightVisionAbility } from "./human/night-vision";
 import { ItemRepairAbility } from "./human/repair";
 import { SNIPER_ABILITY_ID, AT_ABILITY_DRAGONFIRE_BLAST } from "app/weapons/weapon-constants";
 import { RailRifleAbility } from "./human/rail-rifle";
-import { Log } from "lib/serilog/serilog";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
 import { EmotionalDampenerAbility } from "./human/emotional-dampener";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";

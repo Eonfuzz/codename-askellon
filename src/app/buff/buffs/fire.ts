@@ -1,6 +1,4 @@
-/** @noSelfInFile **/
-import { Game } from "../../game";
-import { ABIL_ACCURACY_BONUS_30, FIRE_ARMOR_REDUCTION } from "resources/ability-ids";
+import { FIRE_ARMOR_REDUCTION } from "resources/ability-ids";
 import { BUFF_ID } from "resources/buff-ids";
 import { SFX_FIRE } from "resources/sfx-paths";
 import { DynamicBuff } from "../dynamic-buff-type";

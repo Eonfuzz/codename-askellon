@@ -1,7 +1,5 @@
-/** @noSelfInFile **/
-import { Game } from "../../game";
 import { BuffInstance } from "../buff-instance-type";
-import { SoundWithCooldown, SoundRef } from "../../types/sound-ref";
+import { SoundRef } from "../../types/sound-ref";
 import { BUFF_ID } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";

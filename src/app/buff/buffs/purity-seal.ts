@@ -1,6 +1,5 @@
 import { BUFF_ID, BUFF_ID_RESOLVE, BUFF_ID_PURITY_SEAL } from "resources/buff-ids";
 import { Unit, Trigger } from "w3ts/index";
-import { Log } from "lib/serilog/serilog";
 import { SFX_FLASH_HEAL } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
 import { TECH_MAJOR_RELIGION } from "resources/ability-ids";

@@ -37,10 +37,6 @@ declare const udg_elevator_exits: unit[];
 declare const udg_elevator_exit_zones: string[];
 
 export class TheAskellon {
-    
-    powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false, true);
-    powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false, true);
-
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
 
     private pilot: Crewmember | undefined;

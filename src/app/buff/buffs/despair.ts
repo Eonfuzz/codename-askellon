@@ -1,5 +1,3 @@
-/** @noSelfInFile **/
-import { Game } from "../../game";
 import { SoundWithCooldown, SoundRef } from "../../types/sound-ref";
 import { ABIL_ACCURACY_PENALTY_30, ABIL_DESPAIR } from "resources/ability-ids";
 import { BUFF_ID, BUFF_ID_DESPAIR } from "resources/buff-ids";
@@ -7,6 +5,7 @@ import { Unit } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { DummyCast } from "lib/dummy";
 
 export const despairMusic = new SoundRef("Music\\FlightIntoTheUnkown.mp3", true, true);
 Preload("Music\\FlightIntoTheUnkown.mp3");
@@ -52,7 +51,7 @@ export class Despair extends DynamicBuff {
             this.checkForDespairBuffTicker = 0;
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR)) {
                 // If we don't have another ticker apply the buff to the unit
-                Game.getInstance().useDummyFor((dummy: unit) => {
+                DummyCast((dummy: unit) => {
                     SetUnitX(dummy, this.unit.x);
                     SetUnitY(dummy, this.unit.y + 50);
                     IssueTargetOrder(dummy, "faeriefire", this.unit.handle);
@@ -75,7 +74,7 @@ export class Despair extends DynamicBuff {
             // If we dont got the buff cast that bad boi
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR)) {
                 // If we don't have another ticker apply the buff to the unit
-                Game.getInstance().useDummyFor((dummy: unit) => {
+                DummyCast((dummy: unit) => {
                     SetUnitX(dummy, this.unit.x);
                     SetUnitY(dummy, this.unit.y + 50);
                     IssueTargetOrder(dummy, "faeriefire", this.unit.handle);

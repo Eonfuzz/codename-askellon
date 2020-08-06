@@ -1,9 +1,7 @@
-/** @noSelfInFile **/
 import { Ability } from "../ability-type";
 import { Trigger, Unit, Effect, MapPlayer } from "w3ts";
-import { BUFF_ID_ROACH_ARMOR, BUFF_ID } from "resources/buff-ids";
-import { TECH_20_RANGE_UPGRADE, TECH_ROACH_DUMMY_UPGRADE, ABIL_STUN_25 } from "resources/ability-ids";
-import { SFX_ALIEN_ACID_BALL, SFX_ACID_AURA, SFX_CONFLAGRATE_GREEN, SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
+import { ABIL_STUN_25 } from "resources/ability-ids";
+import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 import { getZFromXY, getAnyBlockers } from "lib/utils";
 import { FilterIsAlive } from "resources/filters";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
@@ -11,8 +9,8 @@ import { Vector3 } from "app/types/vector3";
 import { Log } from "lib/serilog/serilog";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { LeapEntity } from "app/leap-engine/leap-entity";
-import { Game } from "app/game";
 import { ForceEntity } from "app/force/force-entity";
+import { DummyCast } from "lib/dummy";
 
 // Damage increase each second
 const MAX_DISTANCE = 900;
@@ -131,7 +129,7 @@ export class BusterChargeAbility implements Ability {
                     SetUnitY(unit, unitLoc.y);
 
                     const knockbackLoc = unitLoc.projectTowards2D(angle, 450);
-                    Game.getInstance().useDummyFor((dummy: unit) => {
+                    DummyCast((dummy: unit) => {
                         SetUnitAbilityLevel(dummy, ABIL_STUN_25, 5);
                         SetUnitX(dummy, GetUnitX(unit));
                         SetUnitY(dummy, GetUnitY(unit));
@@ -228,7 +226,7 @@ export class BusterChargeAbility implements Ability {
             SetUnitY(unit, unitLoc.y);
 
             const knockbackLoc = unitLoc.projectTowards2D(this.casterUnit.facing, -250);
-            Game.getInstance().useDummyFor((dummy: unit) => {
+            DummyCast((dummy: unit) => {
                 SetUnitAbilityLevel(dummy, ABIL_STUN_25, 5);
                 SetUnitX(dummy, GetUnitX(unit));
                 SetUnitY(dummy, GetUnitY(unit));
@@ -248,7 +246,7 @@ export class BusterChargeAbility implements Ability {
         const knockbackLoc = unitLoc.projectTowards2D(this.casterUnit.facing, hasImpaledUnits ? -390 : -250);
 
         if (!hasImpaledUnits) {
-            Game.getInstance().useDummyFor((dummy: unit) => {
+            DummyCast((dummy: unit) => {
                 SetUnitAbilityLevel(dummy, ABIL_STUN_25, 5);
                 SetUnitX(dummy, this.casterUnit.x);
                 SetUnitY(dummy, this.casterUnit.y + 50);

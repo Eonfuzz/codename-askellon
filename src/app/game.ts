@@ -7,7 +7,7 @@ import { SFX_PORTAL } from "resources/sfx-paths";
 import { Vector2 } from "./types/vector2";
 import { Vector3 } from "./types/vector3";
 import { COL_GOOD, COL_ORANGE, COL_ATTATCH } from "resources/colours";
-// import { SecurityFactory } from "./station/security-module";
+import { SecurityFactory } from "./station/security-module";
 import { EventEntity } from "./events/event-entity";
 import { TooltipEntity } from "./tooltip/tooltip-module";
 import { DynamicBuffEntity } from "./buff/dynamic-buff-entity";
@@ -20,7 +20,7 @@ import { ChatEntity } from "./chat/chat-entity";
 import { InteractionEntity } from "./interactions/interaction-entity";
 import { ResearchFactory } from "./research/research-factory";
 import { GeneEntity } from "./shops/gene-entity";
-// import { AbilityEntity } from "./abilities/ability-entity";
+import { AbilityEntity } from "./abilities/ability-entity";
 import { WorldEntity } from "./world/world-entity";
 import { SpaceEntity } from "./space/space-module";
 
@@ -79,6 +79,7 @@ export class Game {
         LeapEntity.getInstance();
 
         ForceEntity.getInstance();
+        SecurityFactory.getInstance();
 
         // Deps: Force Entity
         ResearchFactory.getInstance();
@@ -93,15 +94,11 @@ export class Game {
 
         // // Relies on the above
         CrewFactory.getInstance();
-        // AbilityEntity.getInstance();
 
         // Relies on ALL the above
         SpaceEntity.getInstance();
-
-
         WeaponEntity.getInstance();
-        // this.stationSecurity = new SecurityFactory();
-
+        AbilityEntity.getInstance();
 
         // Camera follow the main ship
         this.followMainShip();
@@ -143,7 +140,7 @@ export class Game {
             this.visModifiers.push(modifier);
         });
         
-        this.followTimer.start(0.03, true, () => {
+        this.followTimer.start(0.01, true, () => {
             const x = mainShip.unit.x;
             const y = mainShip.unit.y;
             PanCameraToTimed(x, y, 0);
@@ -156,10 +153,10 @@ export class Game {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Deep-Scan failing`);
         });
-        new Timer().start(16, false, () => {
+        new Timer().start(15.25, false, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] DIVERTING`);
-            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 1, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 80.00, 80.00, 100.00, 0)
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 1.5, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 80.00, 70.00, 100.00, 0)
         });
     }
 
@@ -174,8 +171,6 @@ export class Game {
             FogModifierStop(m);
         })
 
-
-        SetSkyModel("war3mapImported\\Skybox3rAlt.mdx");
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.engine.mass = 800;
         mainShip.engine.velocityForwardMax = 1400;
@@ -247,14 +242,14 @@ export class Game {
             CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0.00, 0.00, 0.00, 0);
             CameraSetSourceNoise(15, 50);
         });
-        new Timer().start(7, false, () => {
-            WorldEntity.getInstance().askellon.powerDownSound.playSound();
-        });
         new Timer().start(9, false, () => {
             WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.BRIDGE).updatePower(false);
             WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.ARMORY).updatePower(false);
             WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.BIOLOGY).updatePower(false);
             WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.CHURCH).updatePower(false);
+            
+            CameraSetupSetField(GetCurrentCameraSetup(), CAMERA_FIELD_FARZ, 8000, 0.01);
+            SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
             CameraSetSourceNoise(20, 50);
         });
         new Timer().start(14, false, () => {
@@ -294,21 +289,6 @@ export class Game {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Eliminate intruder`);
         });
-    }
-
-    /**
-     * passes the dummy unit as a parameter to the callback
-     * ensure you remove any abilities afterwards
-     * @param callback 
-     */
-    public useDummyFor(callback: (dummy: unit) => void, abilityToCast: number) {
-        // Create a dummy unit for all abilities
-        const dummyUnit = CreateUnit(Player(25), FourCC('dumy'), 0, 0, bj_UNIT_FACING);
-        ShowUnit(dummyUnit, false);
-        UnitAddAbility(dummyUnit, abilityToCast);
-        callback(dummyUnit);
-
-        UnitApplyTimedLife(dummyUnit, 0, 3);
     }
     
 }

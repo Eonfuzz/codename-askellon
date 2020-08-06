@@ -1,11 +1,9 @@
-/** @noSelfInFile **/
-import { Game } from "../../game";
 import { SoundWithCooldown, SoundRef } from "../../types/sound-ref";
-import { Log } from "../../../lib/serilog/serilog";
 import { ABIL_ACCURACY_BONUS_30, ABIL_RESOLVE } from "resources/ability-ids";
 import { BUFF_ID_RESOLVE, BUFF_ID } from "resources/buff-ids";
 import { Unit } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
+import { DummyCast } from "lib/dummy";
 
 export const resolveMusic = new SoundRef("Music\\KavinskyRampage.mp3", true, true);
 Preload("Music\\KavinskyRampage.mp3");
@@ -47,7 +45,7 @@ export class Resolve extends DynamicBuff {
             this.checkForDespairBuffTicker = 0;
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_RESOLVE)) {
                 // If we don't have another ticker apply the buff to the unit
-                Game.getInstance().useDummyFor((dummy: unit) => {
+                DummyCast((dummy: unit) => {
                     SetUnitX(dummy, this.unit.x);
                     SetUnitY(dummy, this.unit.y + 50);
                     IssueTargetOrder(dummy, "bloodlust", this.unit.handle);
@@ -70,7 +68,7 @@ export class Resolve extends DynamicBuff {
             // If we dont got the buff cast that bad boi
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_RESOLVE)) {
                 // If we don't have another ticker apply the buff to the unit
-                Game.getInstance().useDummyFor((dummy: unit) => {
+                DummyCast((dummy: unit) => {
                     SetUnitX(dummy, this.unit.x);
                     SetUnitY(dummy, this.unit.y + 50);
                     IssueTargetOrder(dummy, "bloodlust", this.unit.handle);

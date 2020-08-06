@@ -1,6 +1,5 @@
 import { Ability } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
@@ -10,7 +9,7 @@ import { MapPlayer } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { ABILITY_SLOW_ID } from "resources/ability-ids";
 import { WeaponEntity } from "app/weapons/weapon-entity";
-import { Game } from "app/game";
+import { DummyCast } from "lib/dummy";
 
 /** @noSelfInFile **/
 const DAMAGE_PER_SECOND = 35;
@@ -140,7 +139,7 @@ export class AcidPoolAbility implements Ability {
 
     private slowUnit() {
         const unit = GetEnumUnit();
-        Game.getInstance().useDummyFor((dummy: unit) => {
+        DummyCast((dummy: unit) => {
             SetUnitX(dummy, GetUnitX(unit));
             SetUnitY(dummy, GetUnitY(unit) + 50);
             IssueTargetOrder(dummy, 'slow', GetEnumUnit());

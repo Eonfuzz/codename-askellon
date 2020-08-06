@@ -19,8 +19,7 @@ function tsMain() {
         const gameStart = new Timer();
         gameStart.start(0.1, false, () => {
             try {
-                askellon.startGame()
-                Log.Information("Start game!");
+                askellon.startGame();
             }
             catch (e) {
                 Log.Error(e)

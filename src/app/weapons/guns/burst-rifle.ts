@@ -48,7 +48,7 @@ export class BurstRifle extends Gun {
                 this.fireProjectile(caster, newTargetLocation);
                 return true;
             });
-            delay = delay + 50;
+            delay = delay + 0.05;
         }   
     };
 
@@ -78,7 +78,7 @@ export class BurstRifle extends Gun {
                 1.4
             );
 
-        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile }});
+        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile: projectile }});
     }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {

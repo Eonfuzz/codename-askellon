@@ -12,7 +12,6 @@ import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIE
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
 import { DEFAULT_ALIEN_FORM } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
-import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
@@ -23,6 +22,7 @@ import { ChatHook } from "app/chat/chat-hook-type";
 import { PlayerStateFactory } from "../player-state-entity";
 import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME, ALIEN_CHAT_COLOR } from "./force-names";
 import { Players } from "w3ts/globals/index";
+import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -60,7 +60,7 @@ export class AlienForce extends ForceType {
 
                 // If healthcare 1 is infested we may still have vision
                 if (ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 1)) {
-                    const despair = DynamicBuffEntity.getInstance().unitHasBuff(BUFF_ID.DESPAIR, data.source);
+                    const despair = DynamicBuffState.unitHasBuff(BUFF_ID.DESPAIR, data.source);
 
                     if (despair && despair.getInstanceCount() > 0 && despair.getNegativeinstanceCount() > 0) {
                         return;

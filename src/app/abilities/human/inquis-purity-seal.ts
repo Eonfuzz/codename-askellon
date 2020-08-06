@@ -8,6 +8,7 @@ import { Game } from "app/game";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { ResearchFactory } from "app/research/research-factory";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { DummyCast } from "lib/dummy";
 
 export const puritySealSounds = [
     new SoundRef("Sounds\\WhatIsHisWill.mp3", false),
@@ -30,13 +31,10 @@ export class PuritySealAbility implements Ability {
     };
 
     public process(delta: number) {
-
-        const game = Game.getInstance();
-
         const tLevel = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION);
         const hasIncreasedDuration = ResearchFactory.getInstance().techHasOccupationBonus(TECH_MAJOR_RELIGION, 2);
         
-        game.useDummyFor((dummy: unit) => {
+        DummyCast((dummy: unit) => {
             SetUnitAbilityLevel(dummy, ABIL_INQUIS_PURITY_SEAL_DUMMY, tLevel+1);
             SetUnitX(dummy, this.unit.x);
             SetUnitY(dummy, this.unit.y + 50);

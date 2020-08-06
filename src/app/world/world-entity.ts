@@ -80,7 +80,7 @@ export class WorldEntity {
         const pData = PlayerStateFactory.get(unit.owner);
 
         // If we dont have player data that means its an AI player
-        if (!pData) return;
+        if (!pData || !pData.getCrewmember()) return;
 
         try {
             // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)

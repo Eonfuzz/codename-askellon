@@ -9,7 +9,7 @@ import { FilterIsEnemyAndAlive } from "resources/filters";
 import { SoundRef } from "app/types/sound-ref";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { Game } from "app/game";
+import { DummyCast } from "lib/dummy";
 
 // Damage increase each second
 const MAX_DURATION = 6;
@@ -149,7 +149,7 @@ export class AcidStigmataAbility implements Ability {
                     false
                 );
                 
-                Game.getInstance().useDummyFor((dummy: unit) => {
+                DummyCast((dummy: unit) => {
                     SetUnitX(dummy, GetUnitX(unit));
                     SetUnitY(dummy, GetUnitY(unit) + 50);
                     IssueTargetOrder(dummy, 'slow', GetEnumUnit());

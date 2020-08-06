@@ -15,6 +15,7 @@ import { SoundRef } from "app/types/sound-ref";
 import { getZFromXY } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { LIGHT_DEST_ID } from "app/types/widget-id";
+import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
@@ -170,87 +171,92 @@ export class ShipZone extends Zone {
     }
 
     public updatePower(newState: boolean) {
-        if (this.hasPower != newState) {
+        try {
+            if (this.hasPower != newState) {
 
-            if (this.hasPower) {
-                // Apply power change to all players
-                this.getPlayersInZone().map(p => this.applyPowerChange(p, newState, true));
-            }
-            else {
-                const t = new Timer();
-                t.start(4, false, () => {
+                if (this.hasPower) {
                     // Apply power change to all players
                     this.getPlayersInZone().map(p => this.applyPowerChange(p, newState, true));
-                    t.destroy();
-                });
-            }
-
-            if (!newState) {
-                this.lightSources.forEach((lightSource, i) => {
-                    const _i = i;
-                    const r = GetRandomInt(2, 4);
-                    const timer = 500 + r*r * 200;
-
-                    Timers.addTimedAction(timer, () => {
-                        const oldSource = this.lightSources[_i];
-                        const oldX = GetDestructableX(oldSource);
-                        const oldY = GetDestructableY(oldSource);
-                        const terrainZ =  getZFromXY(oldX, oldY);
-
-                        const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
-                        SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
-                        SetSoundChannel(result, 1);
-                        SetSoundVolume(result, 127);
-                        SetSoundPitch(result, 1.0);
-                        SetSoundDistances(result, 2000.0, 10000.0);
-                        SetSoundDistanceCutoff(result, 4500.0);
-    
-                        const location = Location(oldX, oldY);
-                        PlaySoundAtPointBJ(result, 127, location, terrainZ);
-                        RemoveLocation(location);
-                        KillSoundWhenDone(result);
-
-                        RemoveDestructable(oldSource);
-                        this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 9999, 0, 1, 0);
-                        return true;
+                }
+                else {
+                    const t = new Timer();
+                    t.start(4, false, () => {
+                        // Apply power change to all players
+                        this.getPlayersInZone().map(p => this.applyPowerChange(p, newState, true));
+                        t.destroy();
                     });
-                });
-            }
-            // Otherwise we need to reset the lights
-            else {
-                this.lightSources.forEach((lightSource, i) => {
-                    const _i = i;
-                    const r = GetRandomInt(2, 4);
-                    const timer = 500 + r*r * 200;
+                }
 
-                    Timers.addTimedAction(timer, () => {
-                        const oldSource = this.lightSources[_i];
-                        const oldX = GetDestructableX(oldSource);
-                        const oldY = GetDestructableY(oldSource);
-                        const terrainZ = getZFromXY(oldX, oldY);
+                if (!newState) {
+                    this.lightSources.forEach((lightSource, i) => {
+                        const _i = i;
+                        const r = GetRandomInt(2, 4);
+                        const timer = 0.5 + r*r * 0.2;
 
-                        const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
-                        SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
-                        SetSoundChannel(result, 2);
-                        SetSoundVolume(result, 127);
-                        SetSoundPitch(result, 1.0);
-                        SetSoundDistances(result, 2000.0, 10000.0);
-                        SetSoundDistanceCutoff(result, 4500.0);
-    
-                        const location = Location(oldX, oldY);
-                        PlaySoundAtPointBJ(result, 127, location, terrainZ);
-                        KillSoundWhenDone(result);
+                        Timers.addTimedAction(timer, () => {
+                            const oldSource = this.lightSources[_i];
+                            const oldX = GetDestructableX(oldSource);
+                            const oldY = GetDestructableY(oldSource);
+                            const terrainZ =  getZFromXY(oldX, oldY);
 
-                        RemoveLocation(location);
+                            const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
+                            SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
+                            SetSoundChannel(result, 1);
+                            SetSoundVolume(result, 127);
+                            SetSoundPitch(result, 1.0);
+                            SetSoundDistances(result, 2000.0, 10000.0);
+                            SetSoundDistanceCutoff(result, 4500.0);
+        
+                            const location = Location(oldX, oldY);
+                            PlaySoundAtPointBJ(result, 127, location, terrainZ);
+                            RemoveLocation(location);
+                            KillSoundWhenDone(result);
 
-                        RemoveDestructable(oldSource);
-                        this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 100, 0, 1, 0);
-                        return true;
+                            RemoveDestructable(oldSource);
+                            this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 9999, 0, 1, 0);
+                            return true;
+                        });
                     });
-                });
+                }
+                // Otherwise we need to reset the lights
+                else {
+                    this.lightSources.forEach((lightSource, i) => {
+                        const _i = i;
+                        const r = GetRandomInt(2, 4);
+                        const timer = 0.5 + r*r * 0.2;
+
+                        Timers.addTimedAction(timer, () => {
+                            const oldSource = this.lightSources[_i];
+                            const oldX = GetDestructableX(oldSource);
+                            const oldY = GetDestructableY(oldSource);
+                            const terrainZ = getZFromXY(oldX, oldY);
+
+                            const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
+                            SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
+                            SetSoundChannel(result, 2);
+                            SetSoundVolume(result, 127);
+                            SetSoundPitch(result, 1.0);
+                            SetSoundDistances(result, 2000.0, 10000.0);
+                            SetSoundDistanceCutoff(result, 4500.0);
+        
+                            const location = Location(oldX, oldY);
+                            PlaySoundAtPointBJ(result, 127, location, terrainZ);
+                            KillSoundWhenDone(result);
+
+                            RemoveLocation(location);
+
+                            RemoveDestructable(oldSource);
+                            this.lightSources[_i] = CreateDestructableZ(LIGHT_DEST_ID, oldX, oldY, terrainZ + 100, 0, 1, 0);
+                            return true;
+                        });
+                    });
+                }
             }
+            this.hasPower = newState;
         }
-        this.hasPower = newState;
+        catch(e) {
+            Log.Error(e);
+        }
     }
 
     applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
@@ -259,14 +265,14 @@ export class ShipZone extends Zone {
         if (playerDetails) {
             const crewmember = playerDetails.getCrewmember();
             
-            // IF we dont have power add despair to the unit
-            if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
-                // crewmember.addDespair(new BuffInstanceCallback(crewmember.unit, () => {
-                //     const z = WorldEntity.getInstance().getUnitZone(crewmember.unit);
-                //     const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
-                //     return (z && hasNighteye === 0) ? z.doCauseFear() : false;
-                // }));
-            }
+            // // IF we dont have power add despair to the unit
+            // if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
+            //     crewmember.addDespair(new BuffInstanceCallback(crewmember.unit, () => {
+            //         const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
+
+            //         return !hasNighteye && this.unitsInside.indexOf(crewmember.unit) >= 0 && this.doCauseFear();
+            //     }));
+            // }
         }
 
         // Remove the existing modifier (if any)
