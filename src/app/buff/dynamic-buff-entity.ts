@@ -7,7 +7,7 @@ import { BuffInstance } from "./buff-instance-type";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 import { flashFreeze } from "./buffs/flash-freeze";
-// import { Trifex } from "./buffs/trifex";
+import { Trifex } from "./buffs/trifex";
 import { Despair } from "./buffs/despair";
 import { Resolve } from "./buffs/resolve";
 import { PuritySeal } from "./buffs/purity-seal";
@@ -41,7 +41,7 @@ export class DynamicBuffEntity extends Entity {
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {
         if (id === BUFF_ID.FIRE) return new onFire();
         if (id === BUFF_ID.FLASH_FREEZE) return new flashFreeze();
-        // if (id === BUFF_ID.TRIFEX) return new Trifex();
+        if (id === BUFF_ID.TRIFEX) return new Trifex();
         if (id === BUFF_ID.DESPAIR) return new Despair(who);
         if (id === BUFF_ID.RESOLVE) return new Resolve(who);
         // if (id === BUFF_ID.PURITY_SEAL) return new PuritySeal();

@@ -38,8 +38,6 @@ export class ForceEntity extends Entity {
 
     _timerDelay = 5.0;
 
-    private forces: Array<ForceType> = [];
-
     // new id for the next aggresison item
     private aggressionId = 0;
     // Key is ${p1}::${p2}
@@ -50,9 +48,9 @@ export class ForceEntity extends Entity {
         super();
 
         // Add main forces to force array
-        this.forces.push(new CrewmemberForce());
+        PlayerStateFactory.getInstance().forces.push(new CrewmemberForce());
         // Add observer to forces
-        this.forces.push(new ObserverForce());
+        PlayerStateFactory.getInstance().forces.push(new ObserverForce());
 
         // const ticker = new Trigger();
         // // Check every second  
@@ -153,7 +151,7 @@ export class ForceEntity extends Entity {
      * If there are none remaining between players we re-ally them
      */
     step() {
-        this.forces.forEach(force => force.onTick(this._timerDelay));
+        PlayerStateFactory.getInstance().forces.forEach(force => force.onTick(this._timerDelay));
         if (this.allAggressionLogs.length === 0) return;
 
         const nextTickLogs = [];
@@ -233,7 +231,7 @@ export class ForceEntity extends Entity {
      */
     public checkVictoryConditions(): ForceType | undefined {
         // has only one force one?
-        const winningForces = this.forces.filter(f => f.checkVictoryConditions());
+        const winningForces = PlayerStateFactory.getInstance().forces.filter(f => f.checkVictoryConditions());
 
         if (winningForces.length === 1) {
             const winningSound = new SoundRef("Sound\\Interface\\NewTournament.flac", false);
@@ -264,19 +262,6 @@ export class ForceEntity extends Entity {
     }
 
     /**
-     * Gets a force under a name ID
-     * @param whichForce 
-     */
-    public getForce(whichForce: string): ForceType | undefined {
-        return this.forces.filter(f => f.is(whichForce))[0];
-    }
-
-    public getForces() {
-        return this.forces;
-    }
-
-
-    /**
      * Initialises forces
      * @param opts 
      */
@@ -290,7 +275,7 @@ export class ForceEntity extends Entity {
      * @param name 
      */
     private getForceFromName(name: string) {
-        let force = this.getForce(name);
+        let force = PlayerStateFactory.getForce(name);
         if (!force) {
             switch(name) {
                 case ALIEN_FORCE_NAME:
@@ -301,7 +286,7 @@ export class ForceEntity extends Entity {
                     force = new CrewmemberForce(); 
                     break;
             }
-            this.forces.push(force);
+            PlayerStateFactory.getInstance().forces.push(force);
         }
         return force;
     }
@@ -356,7 +341,7 @@ export class ForceEntity extends Entity {
      * @param forceName 
      */
     public addPlayerToForce(player: MapPlayer, forceName: string) {
-        let force = this.getForce(forceName);
+        let force = PlayerStateFactory.getForce(forceName);
 
         if (!force) {
             // Log.Error("Failed to add "+GetPlayerName(player)+" to force. Force not found:::"+forceName);
@@ -384,24 +369,5 @@ export class ForceEntity extends Entity {
         });
 
         PlayerStateFactory.get(who).getForce().removePlayer(who);
-    }
-
-    /**
-     * Run through the chat hook for a player's force
-     * @param who 
-     * @param hook 
-     */
-    public forceChatHook(hook: ChatHook) {
-        const pData = PlayerStateFactory.get(hook.who);
-        const force = pData.getForce();
-
-        hook.recipients     = force.getChatRecipients(hook);
-        hook.name           = force.getChatName(hook);
-        hook.color          = force.getChatColor(hook);
-        hook.sound          = force.getChatSoundRef(hook);
-        // hook. = force.getChatTag(player);
-        hook.message        = force.getChatMessage(hook);
-
-        return hook;
     }
 }

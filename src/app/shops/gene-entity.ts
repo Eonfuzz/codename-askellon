@@ -172,7 +172,7 @@ export class GeneEntity extends Entity {
 
         if (!instance.unitInGeneZone) return;
         const target = instance.unitInGeneZone;
-        const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME) as AlienForce;
+        const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
         const targetIsAlien = alienForce.hasPlayer(target.player);
 
         const messageSuccessful = STR_GENE_SUCCESSFUL();

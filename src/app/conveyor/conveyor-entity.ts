@@ -1,6 +1,7 @@
 import { Region, Trigger, Rectangle } from "w3ts/index";
 import { UNIT_IS_FLY } from "resources/ability-ids";
 import { Entity } from "app/entity-type";
+import { Timers } from "app/timer-type";
 
 declare const udg_Conveyors_West: rect[];
 declare const udg_Conveyors_North: rect[];
@@ -21,6 +22,11 @@ export class ConveyorEntity extends Entity {
     unitMoveEast:    unit[] = [];
     unitMoveWest:    unit[] = [];
     unitMoveSouth:   unit[] = [];
+    itemMoveNorth:   item[] = [];
+    itemMoveEast:    item[] = [];
+    itemMoveWest:    item[] = [];
+    itemMoveSouth:   item[] = [];
+
 
     unitEntersRegionNorth = new Trigger();
     unitEntersRegionEast = new Trigger();
@@ -29,6 +35,9 @@ export class ConveyorEntity extends Entity {
 
     unitEnterRegion = new Trigger();
     unitLeaveRegion = new Trigger();
+
+    itemPickup = new Trigger();
+    itemDrop = new Trigger();
 
     conveyorPushNorthRegion = new Region();
     conveyorPushEastRegion = new Region();
@@ -76,6 +85,28 @@ export class ConveyorEntity extends Entity {
         this.unitLeaveRegion.registerLeaveRegion(this.conveyorPushSouthRegion.handle, validUnits);
         this.unitLeaveRegion.registerLeaveRegion(this.conveyorPushWestRegion.handle, validUnits);
 
+        this.itemDrop.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DROP_ITEM);
+        this.itemDrop.addAction(() => {
+            const item = GetManipulatedItem();
+
+            Timers.addTimedAction(0.05, () => {
+                const iX = GetItemX(item);
+                const iY = GetItemY(item);
+
+                if (this.conveyorPushNorthRegion.containsCoords(iX, iY)) {
+                    this.itemMoveNorth.push(item);
+                }
+                else if (this.conveyorPushEastRegion.containsCoords(iX, iY)) {
+                    this.itemMoveEast.push(item);
+                }
+                else if (this.conveyorPushSouthRegion.containsCoords(iX, iY)) {
+                    this.itemMoveSouth.push(item);
+                }
+                else if (this.conveyorPushWestRegion.containsCoords(iX, iY)) {
+                    this.itemMoveWest.push(item);
+                }
+            });
+        })
 
         
         this.unitEnterRegion.addAction(() => {
@@ -121,12 +152,26 @@ export class ConveyorEntity extends Entity {
                     SetUnitY(u, GetUnitY(u) + conveyorSpeed);            
                 return true;
             });
+        if (this.itemMoveNorth.length > 0)
+            this.itemMoveNorth = this.itemMoveNorth.filter(i => {
+                if (!IsItemVisible(i)) return false;
+                if (IsItemOwned(i)) return false;
+                SetItemPosition(i, GetItemX(i), GetItemY(i) + conveyorSpeed);   
+                return this.conveyorPushNorthRegion.containsCoords(GetItemX(i), GetItemY(i));
+            });
         if (this.unitMoveSouth.length > 0)
             this.unitMoveSouth = this.unitMoveSouth.filter(u => {
                 if (!UnitAlive(u)) return false;
                 if (GetUnitAbilityLevel(u, UNIT_IS_FLY) === 0)
                     SetUnitY(u, GetUnitY(u) - conveyorSpeed);     
                 return true;
+            });
+        if (this.itemMoveSouth.length > 0)
+            this.itemMoveSouth = this.itemMoveSouth.filter(i => {
+                if (!IsItemVisible(i)) return false;
+                if (IsItemOwned(i)) return false;
+                SetItemPosition(i, GetItemX(i), GetItemY(i) - conveyorSpeed); 
+                return this.conveyorPushSouthRegion.containsCoords(GetItemX(i), GetItemY(i));
             });
         if (this.unitMoveWest.length > 0)
             this.unitMoveWest = this.unitMoveWest.filter(u => {
@@ -135,12 +180,26 @@ export class ConveyorEntity extends Entity {
                     SetUnitX(u, GetUnitX(u) - conveyorSpeed);     
                 return true;
             });
+        if (this.itemMoveWest.length > 0)
+            this.itemMoveWest = this.itemMoveWest.filter(i => {
+                if (!IsItemVisible(i)) return false;
+                if (IsItemOwned(i)) return false;
+                SetItemPosition(i, GetItemX(i)  - conveyorSpeed, GetItemY(i));      
+                return this.conveyorPushWestRegion.containsCoords(GetItemX(i), GetItemY(i));
+            });
         if (this.unitMoveEast.length > 0)
             this.unitMoveEast = this.unitMoveEast.filter(u => {
                 if (!UnitAlive(u)) return false;
                 if (GetUnitAbilityLevel(u, UNIT_IS_FLY) === 0)
                     SetUnitX(u, GetUnitX(u) + conveyorSpeed);     
                 return true;
+            });
+        if (this.itemMoveEast.length > 0)
+            this.itemMoveEast = this.itemMoveEast.filter(i => {
+                if (!IsItemVisible(i)) return false;
+                if (IsItemOwned(i)) return false;
+                SetItemPosition(i, GetItemX(i) + conveyorSpeed, GetItemY(i));  
+                return this.conveyorPushEastRegion.containsCoords(GetItemX(i), GetItemY(i));
             });
     }
 }

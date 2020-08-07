@@ -10,11 +10,9 @@ import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { ForceEntity } from "app/force/force-entity";
 import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -235,7 +233,7 @@ export class ChatEntity extends Entity {
         else {
 
             // Run through our initial hook via force
-            const chatData = ForceEntity.getInstance().forceChatHook({
+            const chatData = PlayerStateFactory.doChat({
                 who: player, 
                 name: player.name, 
                 recipients: Players, 

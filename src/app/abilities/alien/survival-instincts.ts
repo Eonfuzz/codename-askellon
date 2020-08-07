@@ -126,10 +126,21 @@ export class SurvivalInstinctsAbility implements Ability {
     public destroy() {
         if (this.casterUnit) {
 
-            this.casterUnit.addAbility(FourCC("Agho"));
+            if (this.casterUnit.getAbilityLevel(FourCC("Agho")) > 0) {
+                this.casterUnit.setAbilityLevel(FourCC("Agho"), this.casterUnit.getAbilityLevel(FourCC("Agho")) + 1);
+            }
+            else {
+                this.casterUnit.addAbility(FourCC("Agho"));
+            }
+
             const t = new Timer();
             t.start(2, false, () => {
-                this.casterUnit.removeAbility(FourCC("Agho"));
+                if (this.casterUnit.getAbilityLevel(FourCC("Agho")) > 1) {
+                    this.casterUnit.setAbilityLevel(FourCC("Agho"), this.casterUnit.getAbilityLevel(FourCC("Agho")) + 1);
+                }
+                else {
+                    this.casterUnit.removeAbility(FourCC("Agho"));
+                }
                 t.destroy();
             });
             // Delete order trigger

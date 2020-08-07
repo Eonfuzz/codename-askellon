@@ -285,7 +285,7 @@ export class SpaceEntity extends Entity {
         // Grant vision of the ship if it is infested
         const t2IsInfested = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_VOID, 2);
         if (t2IsInfested) {
-            const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME);
+            const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME);
             alienForce.getPlayers().forEach(p => ship.unit.shareVision(p, true));
         }
     }
@@ -328,7 +328,7 @@ export class SpaceEntity extends Entity {
         // Remove vision of the ship if it is infested
         const t2IsInfested = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_VOID, 2);
         if (t2IsInfested) {
-            const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME);
+            const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME);
             alienForce.getPlayers().forEach(p => ship.unit.shareVision(p, false));
         }
     }

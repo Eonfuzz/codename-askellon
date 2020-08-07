@@ -16,6 +16,7 @@ import { getZFromXY } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { LIGHT_DEST_ID } from "app/types/widget-id";
 import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
+import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
@@ -127,7 +128,7 @@ export class ShipZone extends Zone {
     private onGeneratorDestroy(generator: Unit, source: Unit) {
         // Make sure we have generator in our array
         if (this.powerGenerators.indexOf(generator) >= 0) {
-            Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
+            // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
             try {
                 this.updatePower(false);
             }
@@ -140,7 +141,7 @@ export class ShipZone extends Zone {
     private onGeneratorRepair(generator: Unit, source: Unit) {
         // Make sure we have generator in our array
         if (this.powerGenerators.indexOf(generator) >= 0) {
-            Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
+            // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
             this.updatePower(true);
         }
     }
@@ -148,26 +149,41 @@ export class ShipZone extends Zone {
     public onLeave(unit: Unit) {
         super.onLeave(unit);
 
-        // If no oxy remove oxy loss
-        // TODO
-        // If no power remove power loss
-        // Remove shared vision of exits
-        this.exits.forEach(exit => {
-            exit.shareVision(unit.owner, false);
-        });
+        if (unit.typeId === CREWMEMBER_UNIT_ID) {
+
+            // Remove the existing modifier (if any)
+            if (this.playerLightingModifiers.has(unit.owner)) {
+                const mod = this.playerLightingModifiers.get(unit.owner);
+                this.playerLightingModifiers.delete(unit.owner);
+                VisionFactory.getInstance().removeVisionModifier(mod);
+            }
+
+            // If no oxy remove oxy loss
+            // TODO
+            // If no power remove power loss
+            // Remove shared vision of exits
+            this.exits.forEach(exit => {
+                // Log.Information("Removing exit vision "+exit.name);
+                exit.shareVision(unit.owner, false);
+            });
+        }
     }
 
     public onEnter(unit: Unit) {
         super.onEnter(unit);
 
-        // If no oxy apply oxy loss
-        // TODO
-        // If no power apply power loss
-        this.applyPowerChange(unit.owner, this.hasPower, false)
+        if (unit.typeId === CREWMEMBER_UNIT_ID) {
+            // Log.Information("Sharing exit vision");
+            this.exits.forEach(exit => {
+                // Log.Information(exit.name);
+                exit.shareVision(unit.owner, true);
+            });
 
-        this.exits.forEach(exit => {
-            exit.shareVision(unit.owner, true);
-        });
+            // If no oxy apply oxy loss
+            // TODO
+            // If no power apply power loss
+            this.applyPowerChange(unit.owner, this.hasPower, false)
+        }
     }
 
     public updatePower(newState: boolean) {
@@ -260,38 +276,44 @@ export class ShipZone extends Zone {
     }
 
     applyPowerChange(player: MapPlayer, hasPower: boolean, justChanged: boolean) {
-        // let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
-        const playerDetails = PlayerStateFactory.get(player);
-        if (playerDetails) {
-            const crewmember = playerDetails.getCrewmember();
-            
-            // // IF we dont have power add despair to the unit
-            // if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
-            //     crewmember.addDespair(new BuffInstanceCallback(crewmember.unit, () => {
-            //         const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE);
+        try {
+            // let alienForce = this.world.game.forceModule.getForce(ALIEN_FORCE_NAME) as AlienForce;
+            const playerDetails = PlayerStateFactory.get(player);
+            if (playerDetails) {
+                const crewmember = playerDetails.getCrewmember();
+                
+                // IF we dont have power add despair to the unit
+                if (!hasPower && crewmember && GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) === 0) {
+                    crewmember.addDespair(new BuffInstanceCallback(crewmember.unit, () => {
+                        const hasNighteye = GetUnitAbilityLevel(crewmember.unit.handle, ABIL_GENE_NIGHTEYE) > 0;
 
-            //         return !hasNighteye && this.unitsInside.indexOf(crewmember.unit) >= 0 && this.doCauseFear();
-            //     }));
-            // }
-        }
+                        return !hasNighteye && this.unitsInside.indexOf(crewmember.unit) >= 0 && this.doCauseFear();
+                    }));
+                }
+            }
 
-        // Remove the existing modifier (if any)
-        if (this.playerLightingModifiers.has(player)) {
-            const mod = this.playerLightingModifiers.get(player);
-            this.playerLightingModifiers.delete(player);
-            VisionFactory.getInstance().removeVisionModifier(mod);
-        }
+            // Remove the existing modifier (if any)
+            if (this.playerLightingModifiers.has(player)) {
+                const mod = this.playerLightingModifiers.get(player);
+                this.playerLightingModifiers.delete(player);
+                VisionFactory.getInstance().removeVisionModifier(mod);
+            }
 
-        if (!hasPower) {
-            this.playerLightingModifiers.set(player, 
-                VisionFactory.getInstance().addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
-            );
+            if (!hasPower) {
+                this.playerLightingModifiers.set(player, 
+                    VisionFactory.getInstance().addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
+                );
+            }
+            if (hasPower && justChanged && GetLocalPlayer() === player.handle) {
+                this.powerUpSound.playSound();
+            }
+            else if (!hasPower && justChanged  && GetLocalPlayer() === player.handle) {
+                this.powerDownSound.playSound();
+            }
         }
-        if (hasPower && justChanged && GetLocalPlayer() === player.handle) {
-            this.powerUpSound.playSound();
-        }
-        else if (!hasPower && justChanged  && GetLocalPlayer() === player.handle) {
-            this.powerDownSound.playSound();
+        catch(e) {
+            Log.Error("Failed to apply power change");
+            Log.Error(e);
         }
     }
 

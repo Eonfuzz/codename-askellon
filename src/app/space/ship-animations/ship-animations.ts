@@ -9,6 +9,7 @@ import { terrainIsPathable, getDistanceBetweenTwoPoints } from "lib/utils";
 import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { Vector3 } from "app/types/vector3";
 import { PlayNewSoundOnUnit } from "lib/translators";
+import { UNIT_IS_FLY } from "resources/ability-ids";
 
 export abstract class ShipAnimation {
     protected totalTime: number = 0;
@@ -24,6 +25,7 @@ export abstract class ShipAnimation {
 
         this.animationTimer = new Timer();
         this.animationTimer.start(0.02, true, () =>  !this.process(0.02) && this.destroy());
+        UnitAddAbility(ship.unit.handle, UNIT_IS_FLY);
     }
 
     abstract process(delta: number): boolean;
@@ -33,6 +35,7 @@ export abstract class ShipAnimation {
             if (!skipCallbacks) {
                 this.onDoneCallbacks.forEach(cb => cb());
             }
+            UnitRemoveAbility(this.ship.unit.handle, UNIT_IS_FLY);
             this.onDoneCallbacks = undefined;
             this.ship = undefined;
             this.dock = undefined;

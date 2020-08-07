@@ -4291,3 +4291,25 @@ STRING 1025
 Light Blue
 }
 
+STRING 1026
+// Doodads: YCx4 (Ruined Ground (1x1)), Name (Name)
+{
+Ruined Ground (1x1)
+}
+
+STRING 1027
+// Doodads: YCx5 (Ruined Ground (64x64)), Name (Name)
+{
+Ruined Ground (64x64)
+}
+
+STRING 1028
+{
+ - Each point increases mana and mana regeneration
+}
+
+STRING 1031
+{
+ - Every 3 points reduces despair duration by 1
+}
+

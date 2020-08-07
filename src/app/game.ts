@@ -199,6 +199,13 @@ export class Game {
     private cinematicSound = new SoundRef("Sounds\\StationStormScreech.mp3", false, true);
     private openingCinematic() {
 
+        BlzHideOriginFrames(false);
+        BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
+        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0),true);
+        for (let i = 0; i < 12; i++) {
+            BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), true);            
+        }
+        
         this.cinematicSound.playSound();
         CameraSetSourceNoise(2, 50);
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
@@ -270,12 +277,6 @@ export class Game {
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Breaches detected`);
 
             CameraSetSourceNoise(0, 0);
-            BlzHideOriginFrames(false);
-            BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
-            BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0),true);
-            for (let i = 0; i < 12; i++) {
-                BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), true);            
-            }
         });
         new Timer().start(21, false, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);

@@ -14,12 +14,9 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 
 import { WorldEntity } from "app/world/world-entity";
-// import { WeaponEntity } from "app/weapons/weapon-entity";
 import { EventListener } from "app/events/event-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-
-import { PlayerState } from "app/force/player-type";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 
 export class CrewFactory {  
@@ -58,7 +55,7 @@ export class CrewFactory {
     }
 
     initCrew() {
-        const forces = ForceEntity.getInstance().getForces();
+        const forces = PlayerStateFactory.getInstance().forces;
         let totalPlayers = 0;
 
         forces.forEach(force => totalPlayers += force.getPlayers().length);
@@ -75,7 +72,7 @@ export class CrewFactory {
         }      
     
         // Force alien host to transform
-        const aForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME) as AlienForce;
+        const aForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
 
         it = 0;
         while (it < forces.length) {

@@ -8,7 +8,6 @@ import { SoundRef } from "app/types/sound-ref";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-// import { ForceEntity } from "app/force/force-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Players } from "w3ts/globals/index";

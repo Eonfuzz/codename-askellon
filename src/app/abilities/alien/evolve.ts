@@ -16,6 +16,7 @@ import { EventEntity } from "app/events/event-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { ForceEntity } from "app/force/force-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -177,7 +178,7 @@ export class EvolveAbility implements Ability {
         // If we evolved
         if (this.completedEvolve) {
             // get alien force
-            const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME) as AlienForce;
+            const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
             alienForce.onEvolve(this.toForm);
         }
         return true; 

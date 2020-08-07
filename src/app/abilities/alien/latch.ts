@@ -55,8 +55,13 @@ export class LatchAbility implements Ability {
         );
 
         this.unit.setPathing(false);
-        // this.unit.setScale(0, 0, 0);
-        this.unit.addAbility(FourCC("Agho"));
+
+        if (this.unit.getAbilityLevel(FourCC("Agho")) > 0) {
+            this.unit.setAbilityLevel(FourCC("Agho"), this.unit.getAbilityLevel(FourCC("Agho")) + 1);
+        }
+        else {
+            this.unit.addAbility(FourCC("Agho"));
+        }
 
         // Increment infest upgrade
         this.targetUnit.owner.setTechResearched(TECH_PLAYER_INFESTS, 
@@ -194,7 +199,13 @@ export class LatchAbility implements Ability {
         if (newOrder === 852252) {
             this.isCastingSurvivalInstincts = true;
             
-            this.targetUnit.addAbility(FourCC("Agho"));
+            
+            if (this.unit.getAbilityLevel(FourCC("Agho")) > 0) {
+                this.unit.setAbilityLevel(FourCC("Agho"), 2);
+            }
+            else {
+                this.unit.addAbility(FourCC("Agho"));
+            }
             // Pick all players and cause hostility
             const group = CreateGroup();
 
@@ -217,7 +228,13 @@ export class LatchAbility implements Ability {
 
             const t = new Timer();
             t.start(2, false, () => {
-                this.targetUnit.removeAbility(FourCC("Agho"));
+                
+                if (this.unit.getAbilityLevel(FourCC("Agho")) > 1) {
+                    this.unit.setAbilityLevel(FourCC("Agho"), this.unit.getAbilityLevel(FourCC("Agho")) + 1);
+                }
+                else {
+                    this.unit.removeAbility(FourCC("Agho"));
+                }
                 t.destroy();
             });
         }
@@ -235,7 +252,12 @@ export class LatchAbility implements Ability {
                 if (!this.isCastingSurvivalInstincts) {
                     const t = new Timer();
                     t.start(0.5, false, () => {
-                        this.unit.removeAbility(FourCC("Agho"));
+                        if (this.unit.getAbilityLevel(FourCC("Agho")) > 1) {
+                            this.unit.setAbilityLevel(FourCC("Agho"), this.unit.getAbilityLevel(FourCC("Agho")) + 1);
+                        }
+                        else {
+                            this.targetUnit.removeAbility(FourCC("Agho"));
+                        }
                         t.destroy();
                     });
                 }

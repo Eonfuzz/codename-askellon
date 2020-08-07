@@ -23,6 +23,7 @@ import { PlayerStateFactory } from "../player-state-entity";
 import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME, ALIEN_CHAT_COLOR } from "./force-names";
 import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
+import { WorldEntity } from "app/world/world-entity";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -554,7 +555,7 @@ export class AlienForce extends ForceType {
             this.currentAlienEvolution = newForm;
             const alienHost = this.getHost();
             // const forceEnt = ForceEntity.getInstance();
-            // const worldEnt = WorldEntity.getInstance();
+            const worldEnt = WorldEntity.getInstance();
             
             // Get all players
             this.players.forEach(player => {
@@ -565,21 +566,21 @@ export class AlienForce extends ForceType {
 
 
                     // Get old unit zone
-                    // const oldZone = worldEnt.getUnitZone(unit);
+                    const oldZone = worldEnt.getUnitZone(unit);
 
-                    // // Remove the old unit from the zone
-                    // if (oldZone) {
-                    //     worldEnt.removeUnit(unit);
-                    // }
+                    // Remove the old unit from the zone
+                    if (oldZone) {
+                        worldEnt.removeUnit(unit);
+                    }
                     ReplaceUnitBJ(unit.handle, newForm, 1);
 
                     const replacedUnit = GetLastReplacedUnitBJ();
                     const alien = Unit.fromHandle(replacedUnit);
 
-                    // // And handle travel
-                    // if (oldZone) {
-                    //     worldEnt.handleTravel(alien, oldZone.id);
-                    // }
+                    // And handle travel
+                    if (oldZone) {
+                        worldEnt.handleTravel(alien, oldZone.id);
+                    }
                     
                     if (unitIsSelected) {
                         SelectUnitForPlayerSingle(alien.handle, player.handle);

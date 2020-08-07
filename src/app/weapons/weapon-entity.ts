@@ -373,9 +373,10 @@ export class WeaponEntity extends Entity {
         this.weaponDropTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DROP_ITEM);
         this.weaponDropTrigger.addCondition(Condition(() => {
 
-            EventEntity.send(EVENT_TYPE.WEAPON_EQUIP, { 
+            EventEntity.send(EVENT_TYPE.DO_UNQEUIP_WEAPON, { 
                 source: Unit.fromHandle(GetTriggerUnit()), data: { item: GetManipulatedItem() }
             });
+                
             return false;
         }));
 

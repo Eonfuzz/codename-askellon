@@ -4,6 +4,7 @@ import { Unit } from "w3ts/handles/unit";
 import { ForceEntity } from "app/force/force-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 /** @noSelfInFile **/
 const PSIONIC_EYE_DURATION = 5;
@@ -27,7 +28,7 @@ export class PsionicEyeAbility implements Ability {
         this.timeElapsed += delta;
 
         const pingFor: Crewmember[] = [];
-        const alienForce = ForceEntity.getInstance().getForce(ALIEN_FORCE_NAME) as AlienForce;
+        const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
         const pingForplayer = this.unit.owner;
 
         pingFor.forEach(crew => {
