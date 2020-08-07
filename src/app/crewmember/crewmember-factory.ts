@@ -183,6 +183,7 @@ export class CrewFactory {
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
             SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
+
             WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.ARMORY, true);
         }
         else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
@@ -203,8 +204,8 @@ export class CrewFactory {
             nUnit.x = -22916;
             nUnit.y = -25386;
 
-            // Now travel the unit to floor 1
-            // this.game.worldModule.travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
+            // Now travel the unit to Church
+            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
 
         if (!roleGaveWeapons) {

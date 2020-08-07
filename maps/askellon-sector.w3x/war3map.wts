@@ -4313,3 +4313,15 @@ STRING 1031
  - Every 3 points reduces despair duration by 1
 }
 
+STRING 1032
+// Doodads: D00Y (Korhal Military Wall), Name (Name)
+{
+Korhal Military Wall
+}
+
+STRING 1033
+// Doodads: D00Z (Launch Tower), Name (Name)
+{
+Launch Tower
+}
+
