@@ -65,6 +65,7 @@ gg_rct_Region_002_Copy = nil
 gg_rct_Region_002_Copy_Copy = nil
 gg_rct_Region_002_Copy_2 = nil
 gg_rct_CargoAConveyor = nil
+gg_rct_Mineral_Crush = nil
 gg_trg_SetKillzones = nil
 gg_trg_LightsPerFloor = nil
 gg_trg_Set = nil
@@ -246,6 +247,7 @@ end
 function CreateAllItems()
     local itemID
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
+    BlzCreateItemWithSkin(FourCC("I00F"), -18258.1, -26314.6, FourCC("I00F"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
 end
@@ -570,6 +572,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n002_0053 = BlzCreateUnitWithSkin(p, FourCC("n002"), -19712.0, -27264.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -19584.0, -27904.0, 270.000, FourCC("n002"))
     gg_unit_n001_0055 = BlzCreateUnitWithSkin(p, FourCC("n001"), -22464.0, -28864.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nVOI"), -26531.3, -27222.1, 270.000, FourCC("nVOI"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n00A_0222 = BlzCreateUnitWithSkin(p, FourCC("n00A"), -23034.7, -25209.5, 270.000, FourCC("n00A"))
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), -3904.0, -24512.0, 270.000, FourCC("n001"))
@@ -615,7 +618,7 @@ function CreateRegions()
     gg_rct_GeneSplicer = Rect(-14752.0, -25184.0, -14624.0, -25056.0)
     gg_rct_FallZoneCargo = Rect(-26432.0, -27136.0, -25760.0, -26880.0)
     gg_rct_FallZoneCargoLand = Rect(-25600.0, 26016.0, -25344.0, 26496.0)
-    gg_rct_JumpPassCargo = Rect(-26816.0, -27936.0, -25696.0, -27104.0)
+    gg_rct_JumpPassCargo = Rect(-26816.0, -27968.0, -25696.0, -27136.0)
     gg_rct_JumpPassCargoVent = Rect(-26496.0, -26944.0, -25728.0, -26080.0)
     gg_rct_Kill_Zone = Rect(-27008.0, 27168.0, -26016.0, 28160.0)
     gg_rct_Kill_Zone_Copy = Rect(-24768.0, -24800.0, -21216.0, -23360.0)
@@ -647,7 +650,8 @@ function CreateRegions()
     gg_rct_Region_002_Copy = Rect(-5696.0, -24384.0, -4320.0, -24288.0)
     gg_rct_Region_002_Copy_Copy = Rect(-5664.0, -22688.0, -4288.0, -22592.0)
     gg_rct_Region_002_Copy_2 = Rect(-5696.0, -24352.0, -5568.0, -22592.0)
-    gg_rct_CargoAConveyor = Rect(-28480.0, -27680.0, -25984.0, -27552.0)
+    gg_rct_CargoAConveyor = Rect(-28480.0, -27680.0, -26016.0, -27552.0)
+    gg_rct_Mineral_Crush = Rect(-26016.0, -27712.0, -25824.0, -27456.0)
 end
 
 function Trig_SetKillzones_Actions()

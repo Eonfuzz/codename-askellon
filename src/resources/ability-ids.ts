@@ -37,6 +37,7 @@ export const ABIL_STUN_25 = FourCC('A010');
 
 export const ABIL_WEP_GRENADE = FourCC('GREN');
 export const ABIL_WEP_DIODE_EJ = FourCC('DIOJ');
+export const ABIL_WEP_MINIGUN = FourCC('A01A');
 
 export const ABIL_ITEM_REPAIR = FourCC('A00J');
 export const ABIL_ITEM_TRIFEX = FourCC('A00P');

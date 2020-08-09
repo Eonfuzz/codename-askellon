@@ -9,7 +9,6 @@ import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { OptResult, OptSelection } from "./opt/opt-selection-factory";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
-import { ChatHook } from "app/chat/chat-hook-type";
 
 // Entities and factories
 import { EventEntity } from "app/events/event-entity";

@@ -30,6 +30,7 @@ import { PlayNewSound, getYawPitchRollFromVector } from "lib/translators";
 import { OptResult } from "./force/opt/opt-selection-factory";
 import { Players } from "w3ts/globals/index";
 import { GetActivePlayers } from "lib/utils";
+import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -67,7 +68,7 @@ export class Game {
     }
 
     public startGame() {
-        
+        InputManager.getInstance();
         GameTimeElapsed.getInstance();
         // Load our helper objects
         // Load order is VERY important
@@ -175,6 +176,7 @@ export class Game {
         mainShip.engine.mass = 800;
         mainShip.engine.velocityForwardMax = 1400;
 
+        this.portalSFX.destroy();
         Players.forEach(p => mainShip.unit.shareVision(p, false));
     }
 

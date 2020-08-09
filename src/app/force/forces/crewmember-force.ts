@@ -10,8 +10,9 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
 import { PlayerStateFactory } from "../player-state-entity";
-import { CREW_FORCE_NAME, ALIEN_FORCE_NAME } from "./force-names";
+import { CREW_FORCE_NAME, ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "./force-names";
 import { AlienForce } from "./alien-force";
+import { PlayerState } from "../player-type";
 
 
 export class CrewmemberForce extends ForceType {
@@ -60,31 +61,32 @@ export class CrewmemberForce extends ForceType {
 
             // If alien killed us migrate to alien force
             if (killedByAlien) {
-                // try {
-                //     // Revive our unit
-                //     whichUnit.unit.revive(whichUnit.unit.x, whichUnit.unit.y, false);
+                try {
+                    // Revive our unit
+                    whichUnit.unit.revive(whichUnit.unit.x, whichUnit.unit.y, false);
     
-                //     const alienForce = pForce as AlienForce;
-                //     alienForce.addPlayerMainUnit(whichUnit, player);
-                //     forceEntity.addPlayerToForce(player, ALIEN_FORCE_NAME);
+                    const alienForce = pForce as AlienForce;
+                    alienForce.addPlayerMainUnit(whichUnit, player);
+                    PlayerStateFactory.get(player).setForce(alienForce);
     
-                //     // Force transformation
-                //     alienForce.transform(player, true);
-                // }
-                // catch (e) {
-                //     Log.Error("Crew->Death->Alien failed!");
-                //     Log.Error(e);
-                // }
+                    // Force transformation
+                    alienForce.transform(player, true);
+                }
+                catch (e) {
+                    Log.Error("Crew->Death->Alien failed!");
+                    Log.Error(e);
+                }
             }
             // Otherwise make observer
             else {
-                // const obsForce = forceEntity.getForce(OBSERVER_FORCE_NAME);
-                // obsForce.addPlayerMainUnit(whichUnit, player);
-                // forceEntity.addPlayerToForce(player, OBSERVER_FORCE_NAME);
+                const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
+
+                obsForce.addPlayerMainUnit(whichUnit, player);
+                PlayerStateFactory.get(player).setForce(obsForce);
     
-                // // Also remove their unit from the zone
-                // Log.Information("Player died TODO remove from world entity");
-                // // WorldEntity.getInstance().removeUnit(whichUnit.unit);
+                // Also remove their unit from the zone
+                Log.Information("Player died TODO remove from world entity");
+                // WorldEntity.getInstance().removeUnit(whichUnit.unit);
             }
         }
         this.removePlayer(player);

@@ -77,59 +77,9 @@ export function initShipInteractions() {
             // let sfxPath = isBlue ? "Abilities\\Weapons\\Bolt\\BoltImpact.mdl" : "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
             let sfxPath = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
             
-            const timer = new Timer();
             // Log.Information("Start!");
             const tickEvery = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3 ? 0.15 : 0.3;
-
-            Timers.addTimedAction(tickEvery, () => {
-
-                if (!interactable.isAlive()) {
-                    timer.pause();
-                    return;
-                }
-
-                const scale = interactable.selectionScale;
-
-                const sVec = vectorFromUnit(source.handle).applyPolarOffset(source.facing, 60);
-                const tVec = vectorFromUnit(interactable.handle);
-                tVec.x += GetRandomInt(-45, 45) * scale;
-                tVec.y += GetRandomInt(-45, 45) * scale;
-                const vecZ = getZFromXY(tVec.x, tVec.y) + GetRandomInt(-45, 45) * scale;
-                
-                const lightning = AddLightningEx(
-                    "SPNL", false, 
-                    sVec.x, sVec.y, getZFromXY(sVec.x, sVec.y) + 80,
-                    tVec.x , tVec.y, vecZ
-                );
-
-                const kL = new Timer();
-                UnitDamageTarget(source.handle, interactable.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
-
-                const sfx = AddSpecialEffect(
-                    sfxPath,
-                    tVec.x,
-                    tVec.y
-                );
-
-                const minerals = source.getItemInSlot(0);
-                const charges = GetItemCharges(minerals);
-                if (charges < 250) {
-                    SetItemCharges(minerals, charges + 1);
-                    
-                }
-                else if (GetLocalPlayer() == source.owner.handle) {
-                    noInventorySpace.playSound();
-                }
-
-                BlzSetSpecialEffectZ(sfx, vecZ);
-                
-
-                kL.start(0.1, false, () => {
-                    DestroyEffect(sfx);
-                    DestroyLightning(lightning);
-                    kL.destroy()
-                });
-            });
+            doMine(sfxPath, tickEvery, source, interactable);
         },
         onCancel: (source: Unit, interactable: Unit) => {
         },
@@ -143,6 +93,58 @@ export function initShipInteractions() {
     Interactables.set(SPACE_UNIT_MINERAL, asteroidInteraction);
 }
 
+export function doMine(sfxPath: string, tickEvery: number, source: Unit, interactable: Unit) {
+    Timers.addTimedAction(tickEvery, () => {
+
+        if (!interactable.isAlive()) {
+            return;
+        }
+
+        const scale = interactable.selectionScale;
+
+        const sVec = vectorFromUnit(source.handle).applyPolarOffset(source.facing, 60);
+        const tVec = vectorFromUnit(interactable.handle);
+        tVec.x += GetRandomInt(-45, 45) * scale;
+        tVec.y += GetRandomInt(-45, 45) * scale;
+        const vecZ = getZFromXY(tVec.x, tVec.y) + GetRandomInt(-45, 45) * scale;
+        
+        const lightning = AddLightningEx(
+            "SPNL", false, 
+            sVec.x, sVec.y, getZFromXY(sVec.x, sVec.y) + 80,
+            tVec.x , tVec.y, vecZ
+        );
+
+        const kL = new Timer();
+        UnitDamageTarget(source.handle, interactable.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
+
+        const sfx = AddSpecialEffect(
+            sfxPath,
+            tVec.x,
+            tVec.y
+        );
+
+        const minerals = source.getItemInSlot(0);
+        const charges = GetItemCharges(minerals);
+        if (charges < 250) {
+            SetItemCharges(minerals, charges + 1);
+            
+        }
+        else if (GetLocalPlayer() == source.owner.handle) {
+            noInventorySpace.playSound();
+        }
+
+        BlzSetSpecialEffectZ(sfx, vecZ);
+        
+
+        Timers.addTimedAction(0.1, () => {
+            DestroyEffect(sfx);
+            DestroyLightning(lightning);
+            kL.destroy()
+        });
+        doMine(sfxPath, tickEvery, source, interactable);
+    });
+}
+
 export function initAskellonInteractions() {
     const interaction: InteractableData = {
         condition:  (source: Unit, interactable: Unit) => {
@@ -151,10 +153,7 @@ export function initAskellonInteractions() {
         },
         onStart: (source: Unit, interactable: Unit) => {
             // Issue unit "Hold" order
-            // const ship = SpaceEntity.getInstance().getShipForUnit(source);
-            // if (ship) {
-            //     ship.engine.goToAStop();
-            // }
+            source.issueImmediateOrder(HOLD_ORDER_ID);
         },
         onCancel: (source: Unit, interactable: Unit) => {
         },

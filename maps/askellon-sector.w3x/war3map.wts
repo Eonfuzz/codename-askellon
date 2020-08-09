@@ -4325,3 +4325,94 @@ STRING 1033
 Launch Tower
 }
 
+STRING 1034
+// Doodads: D010 (Space Platform), Name (Name)
+{
+Space Platform
+}
+
+STRING 1035
+// Doodads: D011 (Space Pipes), Name (Name)
+{
+Space Pipes
+}
+
+STRING 1036
+// Items: I00F (Minigun), Name (Name)
+{
+Minigun
+}
+
+STRING 1037
+// Items: I00F (Minigun), Tip (Tooltip - Basic)
+{
+Purchase Minigun
+}
+
+STRING 1038
+// Items: I00F (Minigun), Ubertip (Tooltip - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
+Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
+
+The standard issue rifle; ideal for thinning hordes and can dish out serious damage up close.
+|cff00ff00- 6 shot burst
+- Each shot does 18 damage
+- Short cooldown|r
+|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
+}
+
+STRING 1039
+// Items: I00F (Minigun), Description (Description)
+{
+Weapon: Fires a burst of 6 shots
+}
+
+STRING 1040
+// Abilities: A01A (Attack - Minigun), Name (Name)
+{
+Attack - Minigun
+}
+
+STRING 1041
+// Abilities: A01A (Attack - Minigun), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 1042
+// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 1044
+// Abilities: A01A (Attack - Minigun), Tip (Tooltip - Normal)
+{
+Minigun
+}
+
+STRING 1045
+// Abilities: A01B (Oversized Weaponry), Name (Name)
+{
+Oversized Weaponry
+}
+
+STRING 1046
+// Abilities: A01B (Oversized Weaponry), Tip (Tooltip - Normal)
+{
+Oversized Autoloader
+}
+
+STRING 1047
+// Abilities: A01B (Oversized Weaponry), EditorSuffix (Editor Suffix)
+{
+[Minigun Slow]
+}
+
+STRING 1048
+// Abilities: A01B (Oversized Weaponry), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nEach bullet fired increases attack speed by |cff00ff005%|r, |cff00ff00stacking |rup to |cff00ff0080%|r. The heavy loading mechanism |cffff0000passively reduces|r your movement speed by |cff00ff0030|r.
+}
+

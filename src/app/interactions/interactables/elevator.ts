@@ -12,6 +12,7 @@ import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, GENETIC_TESTING_FACILITY_SW
 import { WorldEntity } from "app/world/world-entity";
 // import { GeneEntity } from "app/shops/gene-entity";
 import { Interactables } from "./interactables";
+import { GeneEntity } from "app/shops/gene-entity";
 
 class Elevator {
     unit: Unit;
@@ -252,7 +253,7 @@ export const initWeaponsTerminals = () => {
 
                 // Handle gene splicer interact
                 if (targetUType === GENE_SPLICER_TERMINAL) {
-                    // GeneEntity.getInstance().addNewGeneInstance(fromUnit, Unit.fromHandle(nUnit));
+                    GeneEntity.getInstance().addNewGeneInstance(fromUnit, Unit.fromHandle(nUnit));
                 }
             }
             catch (e) {

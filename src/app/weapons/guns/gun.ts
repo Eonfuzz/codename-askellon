@@ -128,8 +128,9 @@ export abstract class Gun {
     protected getStrayValue(caster: Crewmember) {
         // Accuracy is some number, starting at 100
         const accuracy = caster.getAccuracy();
+        
         // Make accuracy exponentially effect the weapon
-        const accuracyModifier = Pow(100-accuracy, 2) * (accuracy > 0 ? -1 : 1);
+        const accuracyModifier = Pow(100-accuracy, 2) * (accuracy > 100 ? -1 : 1);
         return accuracyModifier;
     }
 
@@ -143,7 +144,7 @@ export abstract class Gun {
         const maxLength = this.spreadAOE + accuracyModifier / 2;
 
         // The maximimum possible spread for the shot
-        const angleSpread = Math.min(30 + accuracyModifier / 40, 10);
+        const angleSpread = Math.min(30 - accuracyModifier / 40, 10);
 
         // Get the angle back towards the caster
         const dX = caster.unit.x - originalLocation.x;
@@ -153,7 +154,7 @@ export abstract class Gun {
         // Project the point with a random distance
         let newLocation = originalLocation.projectTowards2D( 
             Rad2Deg(thetaRadians) * GetRandomReal(-angleSpread, angleSpread), 
-            GetRandomInt(MathRound(minLength), MathRound(maxLength))
+            GetRandomReal(minLength, maxLength)
         );
 
         return newLocation;

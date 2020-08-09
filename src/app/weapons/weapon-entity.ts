@@ -21,6 +21,9 @@ import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { EventListener } from "app/events/event-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ITEM_WEP_MINIGUN } from "resources/item-ids";
+import { ABIL_WEP_MINIGUN } from "resources/ability-ids";
+import { Minigun } from "./guns/minigun";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -63,6 +66,10 @@ export class WeaponEntity extends Entity {
         // Init laser rifle
         this.weaponItemIds.push(LASER_ITEM_ID);
         this.weaponAbilityIds.push(LASER_ABILITY_ID);
+
+        // Init minigun
+        this.weaponItemIds.push(ITEM_WEP_MINIGUN);
+        this.weaponAbilityIds.push(ABIL_WEP_MINIGUN);
 
         /**
          * Now initialise all weapon systems
@@ -409,6 +416,7 @@ export class WeaponEntity extends Entity {
         if (itemId === BURST_RIFLE_ITEM_ID) return true;
         if (itemId === LASER_ITEM_ID) return true;
         if (itemId === SHOTGUN_ITEM_ID) return true;
+        if (itemId === ITEM_WEP_MINIGUN) return true;
         return false;
     }
 
@@ -428,6 +436,8 @@ export class WeaponEntity extends Entity {
             return new LaserRifle(this.game, item, unit);
         else if (itemId === SHOTGUN_ITEM_ID) 
             return new Shotgun(item, unit);
+        else if (itemId === ITEM_WEP_MINIGUN) 
+            return new Minigun(item, unit);
         return undefined;
     }
 

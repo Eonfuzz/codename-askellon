@@ -57,7 +57,9 @@ export class InteractionEntity extends Entity {
 
         // First of all make sure we don't have one already
         const foundMatch = this.interactions.find(i => i.unit === trigUnit && i.targetUnit === targetUnit);
-        if (foundMatch) return;
+        if (foundMatch) {
+            return;
+        }
 
         // Check to see if we have it in our interactable data
         const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
@@ -91,6 +93,7 @@ export class InteractionEntity extends Entity {
                 i ++;
             }
             else {
+                this.interactions[i].destroy();
                 this.interactions[i] = this.interactions[ this.interactions.length - 1];
                 delete this.interactions[this.interactions.length - 1];
             }
