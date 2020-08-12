@@ -73,6 +73,7 @@ export const ABIL_ACTIVATE_SEQUENCER_TEST = FourCC('A019');
 
 export const TECH_20_RANGE_UPGRADE = FourCC('R004');
 export const TECH_ROACH_DUMMY_UPGRADE = FourCC('R005');
+export const TECH_LATCHED_IN_HUMAN = FourCC('R009');
 
 export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
 export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');

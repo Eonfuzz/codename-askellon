@@ -1,7 +1,7 @@
 import { Ability } from "../ability-type";
 import { Unit, Timer, Trigger, MapPlayer } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
-import { ABIL_ALIEN_LATCH, TECH_PLAYER_INFESTS } from "resources/ability-ids";
+import { ABIL_ALIEN_LATCH, TECH_PLAYER_INFESTS, TECH_LATCHED_IN_HUMAN } from "resources/ability-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { FilterIsAlive } from "resources/filters";
 import { PLAYER_COLOR } from "lib/translators";
@@ -86,6 +86,7 @@ export class LatchAbility implements Ability {
             // Create that hook
             
             this.latchChatHookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.processChat(hook));
+            this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
         }
 
         // Clear any aggression
@@ -196,8 +197,13 @@ export class LatchAbility implements Ability {
         const newOrder = GetIssuedOrderId();
         this.forceStop = true;
 
+        // Neural Takeover
+        if (newOrder === 852129) {
+            this.forceStop = false;
+            return;
+        }
         // Our survival instincts order
-        if (newOrder === 852252) {
+        else if (newOrder === 852252) {
             this.isCastingSurvivalInstincts = true;
             
             
@@ -276,6 +282,7 @@ export class LatchAbility implements Ability {
             if (this.latchChatHookId) {
                 ChatEntity.getInstance().removeHook(this.latchChatHookId);
             }
+            this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 0);
         }
         catch(e) {
             Log.Error(e);

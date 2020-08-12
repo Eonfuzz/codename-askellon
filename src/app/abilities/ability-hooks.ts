@@ -29,7 +29,8 @@ import {
     ABIL_ITEM_TRIFEX,
     ABIL_ITEM_GENETIC_SAMPLER,
     ABIL_ACTIVATE_SEQUENCER_TEST,
-    ABIL_ALIEN_EVOLVE_T3
+    ABIL_ALIEN_EVOLVE_T3,
+    ABIL_ALIEN_NEURAL_TAKEOVER
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -58,6 +59,7 @@ import { TransformAbility } from "./alien/transform";
 import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { DiodeEjectAbility } from "./human/diode-ejector";
+import { NeuralTakeoverAbility } from "./alien/neural-takeover";
 
 
 
@@ -120,3 +122,4 @@ AbilityHooks.Add(ABIL_HUMAN_SPRINT, () => new SprintLeapAbility());
 AbilityHooks.Add(ABIL_ITEM_TRIFEX, () => new TrifexAbility());
 AbilityHooks.Add(ABIL_ITEM_GENETIC_SAMPLER, () => new GeneticSamplerItemAbility());
 AbilityHooks.Add(ABIL_ACTIVATE_SEQUENCER_TEST, () => new GeneticSequenceAbility());
+AbilityHooks.Add(ABIL_ALIEN_NEURAL_TAKEOVER, () => new NeuralTakeoverAbility());

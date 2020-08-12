@@ -105,13 +105,13 @@ export class ForceEntity extends Entity {
     }
 
     /**
-     * Adds an aggression log between two players
-     * If they have no aggression between the two after the duration, they become allies again
+     * Can two players aggress upon each other?
+     * used to stop teamkilling
+     * will return an aggression key (string) if valid
      * @param player1 
      * @param player2 
-     * @returns boolean if aggression was allowed
      */
-    private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
+    public canFight(player1: MapPlayer, player2: MapPlayer) : boolean | string {
         // We can never have tracked aggression against aliens
         if (player2 === PlayerStateFactory.AlienAIPlayer) return true;
         // You cannot be aggressive against yourself
@@ -129,6 +129,19 @@ export class ForceEntity extends Entity {
             // If the force says this aint valid, well it aint valid
             if (!aggressionValid) return false;
         }
+        return aggressionKey;
+    }
+
+    /**
+     * Adds an aggression log between two players
+     * If they have no aggression between the two after the duration, they become allies again
+     * @param player1 
+     * @param player2 
+     * @returns boolean if aggression was allowed
+     */
+    private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
+        const key = this.canFight(player1, player2) as string;
+        if (!key) return false;
 
         const newItem = {
             id: this.aggressionId++,
@@ -136,7 +149,7 @@ export class ForceEntity extends Entity {
             defendant: player2,
             timeStamp: GameTimeElapsed.getTime(),
             remainingDuration: 30,
-            key: aggressionKey
+            key: key
         };
 
         const logs = this.aggressionLog.get(newItem.key) || [];

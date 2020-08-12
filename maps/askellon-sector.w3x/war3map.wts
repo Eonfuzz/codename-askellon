@@ -4458,3 +4458,9 @@ STRING 1057
 |cff808080LORE TODO.|r|n|nTake control of your host's actions, forcing them to become hostile and fire any weapon where your mouse currently is.|n|n|cff80808010 Seconds Cooldown|r
 }
 
+STRING 1058
+// Upgrades: R009 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Latched inside human host
+}
+

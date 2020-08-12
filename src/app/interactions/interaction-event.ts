@@ -5,6 +5,7 @@ import { vectorFromUnit } from "../types/vector2";
 import { ProgressBar } from "../types/progress-bar";
 import { SMART_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { WORM_ALIEN_FORM } from "resources/unit-ids";
+import { Log } from "lib/serilog/serilog";
 
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
