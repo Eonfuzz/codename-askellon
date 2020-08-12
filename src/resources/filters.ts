@@ -6,7 +6,7 @@ export const FilterIsEnemyAndAlive = (enemyOfWho: MapPlayer) => Filter(() => {
         !BlzIsUnitInvulnerable(fUnit)
 });
 
-export const FilterIsAlive = (enemyOfWho: MapPlayer) => Filter(() => {
+export const FilterIsAlive = (whichPlayer: MapPlayer) => Filter(() => {
     const fUnit = GetFilterUnit();
-    return !BlzIsUnitInvulnerable(fUnit)
+    return !BlzIsUnitInvulnerable(fUnit) && GetOwningPlayer(fUnit) !== whichPlayer.handle;
 });

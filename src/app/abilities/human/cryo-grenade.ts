@@ -1,6 +1,5 @@
 import { Ability } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { Log } from "../../../lib/serilog/serilog";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
@@ -14,8 +13,9 @@ import { ForceEntity } from "app/force/force-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { AbilityHooks } from "../ability-hooks";
+import { ABIL_ITEM_CRYO_GRENADE } from "resources/ability-ids";
 
-/** @noSelfInFile **/
 const EXPLOSION_BASE_DAMAGE = 20;
 const EXPLOSION_AOE = 300;
 

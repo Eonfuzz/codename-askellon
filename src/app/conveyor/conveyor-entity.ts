@@ -2,6 +2,7 @@ import { Region, Trigger, Rectangle } from "w3ts/index";
 import { UNIT_IS_FLY } from "resources/ability-ids";
 import { Entity } from "app/entity-type";
 import { Timers } from "app/timer-type";
+import { Hooks } from "lib/Hooks";
 
 declare const udg_Conveyors_West: rect[];
 declare const udg_Conveyors_North: rect[];
@@ -14,6 +15,7 @@ export class ConveyorEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new ConveyorEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

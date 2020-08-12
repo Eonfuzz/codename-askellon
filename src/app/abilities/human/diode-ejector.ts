@@ -10,6 +10,8 @@ import { Unit } from "w3ts/handles/unit";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { LeapEntity } from "app/leap-engine/leap-entity";
+import { AbilityHooks } from "../ability-hooks";
+import { ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
 
 // How many projectiles are fired inside the cone
 const NUM_PROJECTILES = 20;

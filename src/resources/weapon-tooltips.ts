@@ -1,5 +1,5 @@
 import { Gun } from "../app/weapons/guns/gun";
-import { COL_ATTATCH, COL_GOOD, COL_INFO, COL_GOLD, COL_MISC, COL_BAD } from "./colours";
+import { COL_ATTATCH, COL_GOOD, COL_INFO, COL_GOLD, COL_MISC, COL_BAD, COL_ORANGE } from "./colours";
 
 export const BURST_RIFLE_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
 `|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
@@ -97,3 +97,37 @@ ${COL_GOOD}- Great Damage
 
 ${COL_ATTATCH}Electrode Cannon|r ${COL_GOLD}cannot be removed.|r
 }`;
+
+export const MINIGUN_ITEM = (weapon: Gun, damage: any) => 
+`${COL_MISC}No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 
+Hostile targets are obliterated by a hail of high-powered rounds, but the Flamesaw's true source of notoriety is its infamous cooling system, which causes ammunition to engulf targets in flames.|r
+
+Attached: ${weapon.attachment 
+    ? `${COL_GOLD}${weapon.attachment.name}`
+    : `${COL_ATTATCH}Nothing`
+}|r
+
+A heavy weapon designed for holding down corridors
+${COL_GOOD}- Great Damage
+- Sets targets alight while ${COL_ORANGE}Flamesaw|r${COL_GOOD} is active
+- Fires up to 250 rounds over 15 seconds
+${COL_ATTATCH}- Must stand still
+- Turning reduces attack speed
+- Unallies all units in the cone of fire|r
+
+${!weapon.attachment
+     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r${COL_INFO} attachments.|r` 
+     : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
+}`;
+
+export const MINIGUN_EXTENDED = (weapon: Gun, damage: any) => 
+`${COL_MISC}No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 
+Hostile targets are obliterated by a hail of high-powered rounds, but the Flamesaw's true source of notoriety is its infamous cooling system, which cause ammunition to engulf targets in flames.|r
+
+
+Fires a hose of bullets over ${COL_GOOD}15 seconds|r, ramping up attack speed with each shot.
+Continuous shooting while at max attack speed activates ${COL_ORANGE}Flamesaw|r, increasing damage and attack speed by ${COL_GOOD}10%|r and applying ${COL_ORANGE}Burning!|r to any units hit.
+
+${COL_ATTATCH}This weapon does not care for friend or foe, and will hit anything within its shower of molten lead|r
+
+${COL_MISC}8 Seconds Cooldown|r`;

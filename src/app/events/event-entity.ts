@@ -1,6 +1,7 @@
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "./event-enum";
 import { EventData } from "./event-data";
+import { Hooks } from "lib/Hooks";
 
 /**
  * Handles and tracks events being passed to and from the game
@@ -11,6 +12,7 @@ export class EventEntity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new EventEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

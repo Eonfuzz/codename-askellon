@@ -1,9 +1,12 @@
+import { Hooks } from "lib/Hooks";
+
 export class GameTimeElapsed {
 
     private static instance: GameTimeElapsed;
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new GameTimeElapsed();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

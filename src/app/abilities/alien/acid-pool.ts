@@ -1,5 +1,5 @@
 import { Ability } from "../ability-type";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
+import { vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
@@ -7,11 +7,11 @@ import { FilterIsEnemyAndAlive } from "../../../resources/filters";
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer } from "w3ts";
 import { getZFromXY } from "lib/utils";
-import { ABILITY_SLOW_ID } from "resources/ability-ids";
+import { ABILITY_SLOW_ID, ABIL_ALIEN_ACID_POOL } from "resources/ability-ids";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { DummyCast } from "lib/dummy";
+import { AbilityHooks } from "../ability-hooks";
 
-/** @noSelfInFile **/
 const DAMAGE_PER_SECOND = 35;
 
 const MISSILE_SPEED = 400;

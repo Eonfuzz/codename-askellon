@@ -9,6 +9,8 @@ import { getZFromXY } from "lib/utils";
 import { FilterIsAlive } from "resources/filters";
 import { ForceEntity } from "app/force/force-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity";
+import { AbilityHooks } from "../ability-hooks";
+import { ABIL_ALIEN_SURVIVAL_INSTINCTS } from "resources/ability-ids";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -135,8 +137,9 @@ export class SurvivalInstinctsAbility implements Ability {
 
             const t = new Timer();
             t.start(2, false, () => {
-                if (this.casterUnit.getAbilityLevel(FourCC("Agho")) > 1) {
-                    this.casterUnit.setAbilityLevel(FourCC("Agho"), this.casterUnit.getAbilityLevel(FourCC("Agho")) + 1);
+                const abilLevel = this.casterUnit.getAbilityLevel(FourCC("Agho"));
+                if (abilLevel > 1) {
+                    this.casterUnit.setAbilityLevel(FourCC("Agho"), abilLevel - 1);
                 }
                 else {
                     this.casterUnit.removeAbility(FourCC("Agho"));

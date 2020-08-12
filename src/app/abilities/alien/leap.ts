@@ -4,6 +4,8 @@ import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Unit } from "w3ts/handles/unit";
 import { getZFromXY } from "lib/utils";
 import { LeapEntity } from "app/leap-engine/leap-entity";
+import { AbilityHooks } from "../ability-hooks";
+import { ABIL_ALIEN_LEAP } from "resources/ability-ids";
 
 
 const LEAP_ID = FourCC('LEAP');

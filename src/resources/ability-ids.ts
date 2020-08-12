@@ -22,6 +22,7 @@ export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 export const ABIL_ALIEN_CHARGE = FourCC('A00Z');
 export const ABIL_ALIEN_SURVIVAL_INSTINCTS = FourCC('A016');
+export const ABIL_ALIEN_NEURAL_TAKEOVER = FourCC('A01C');
 
 export const ABIL_ALIEN_EVOLVE_T1 = FourCC('A014');
 export const ABIL_ALIEN_EVOLVE_T2 = FourCC('A00U');

@@ -6,6 +6,7 @@ import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { Hooks } from "lib/Hooks";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -18,6 +19,7 @@ export class SecurityFactory {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new SecurityFactory();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

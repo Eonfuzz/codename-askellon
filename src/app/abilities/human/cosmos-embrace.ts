@@ -7,6 +7,8 @@ import { Effect } from "w3ts/index";
 import { ForceEntity } from "app/force/force-entity";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { AbilityHooks } from "../ability-hooks";
+import { ABIL_GENE_COSMIC } from "resources/ability-ids";
 
 const SFXAt = 0.8;
 const SFXEnd = 1.6;

@@ -18,6 +18,7 @@ import { EventListener } from "app/events/event-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
+import { Hooks } from "lib/Hooks";
 
 export class CrewFactory {  
     private static instance: CrewFactory;
@@ -25,6 +26,7 @@ export class CrewFactory {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new CrewFactory();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

@@ -4,12 +4,12 @@ import { Crewmember } from "../../crewmember/crewmember-type";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM } from "../../../resources/weapon-tooltips";
+import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM, MINIGUN_EXTENDED, MINIGUN_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { ArmableUnit } from "./unit-has-weapon";
 import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
 import { getZFromXY } from "lib/utils";
-import { MapPlayer, Force, Timer } from "w3ts/index";
+import { MapPlayer, Force, Timer, Unit } from "w3ts/index";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
 import { Timers } from "app/timer-type";
@@ -20,6 +20,11 @@ import { ABIL_WEP_MINIGUN } from "resources/ability-ids";
 import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { Log } from "lib/serilog/serilog";
+import { SFX_FIRE, SFX_LASER_3, SFX_LASER_2, SFX_LASER_1 } from "resources/sfx-paths";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { BUFF_ID } from "resources/buff-ids";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { FilterIsAlive } from "resources/filters";
 
 export class Minigun extends Gun {
 
@@ -31,6 +36,8 @@ export class Minigun extends Gun {
     private spinStacks = 0;
     private attackSpeedPerStack = 1.3;
     private maxSpinStacks = 5;
+    private flameSawMaxCounter = 0;
+    private flamesawActive = false;
 
     private castOrderId: number;
     private targetLoc: Vector3;
@@ -39,11 +46,14 @@ export class Minigun extends Gun {
     private maxTurnSpeed = 110;
     private shootTimer = new Timer();
 
+    private unallyTicker = 1;
+    private unallyGroup = CreateGroup();
+
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
         // Define spread and bullet distance
-        this.spreadAOE = 110;
-        this.bulletDistance = 1250;
+        this.spreadAOE = 375;
+        this.bulletDistance = 1875;
     }
 
     public applyWeaponAttackValues(caster: Crewmember) {
@@ -58,8 +68,10 @@ export class Minigun extends Gun {
         super.onShoot(caster, targetLocation);
 
         const unit = caster.unit.handle;
+        this.flamesawActive = false;
 
         this.spinStacks = 0;
+        this.unallyTicker = 1;
         this.castOrderId = caster.unit.currentOrder;
         this.warmUpSound.playSoundOnUnit(caster.unit.handle, 127);
 
@@ -114,10 +126,64 @@ export class Minigun extends Gun {
 
         if (nAngleD < -45*delta || nAngleD > 45*delta) {
             this.spinStacks -= 1;
+            if (nAngleD < -60*delta || nAngleD > 60*delta) {
+                this.flamesawActive = false;
+            }
             if (nAngleD < -90*delta || nAngleD > 90*delta) {
                 this.spinStacks = MathRound( this.spinStacks / 1.5 );
             }
             if (this.spinStacks < 0) this.spinStacks = 0;
+        }
+
+        if (this.spinStacks === this.maxSpinStacks && !this.flamesawActive) {
+            this.flameSawMaxCounter += delta;
+            if (this.flameSawMaxCounter >= 0.75) {
+                this.flamesawActive = true;
+
+                let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", unit.x, unit.y);
+                BlzSetSpecialEffectAlpha(sfx, 40);
+                BlzSetSpecialEffectScale(sfx, 0.7);
+                BlzSetSpecialEffectTimeScale(sfx, 1);
+                BlzSetSpecialEffectTime(sfx, 0.2);
+                BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
+                DestroyEffect(sfx);
+            }
+        }
+        else {
+            this.flameSawMaxCounter = 0;
+        }
+
+        this.unallyTicker -= delta;
+        if (this.unallyTicker <= 0) {
+            this.unallyTicker = 1;
+            GroupEnumUnitsInRange(
+                this.unallyGroup, 
+                unit.x, 
+                unit.y,
+                350,
+                FilterIsAlive(unit.owner)
+            );
+            ForGroup(this.unallyGroup, () => {
+                ForceEntity.getInstance().aggressionBetweenTwoPlayers(
+                    this.equippedTo.unit.owner,
+                    MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
+                );
+            });
+            // Now unally for target loc
+            GroupEnumUnitsInRange(
+                this.unallyGroup, 
+                this.targetLoc.x, 
+                this.targetLoc.y,
+                1350,
+                FilterIsAlive(unit.owner)
+            );
+            ForGroup(this.unallyGroup, () => {
+                ForceEntity.getInstance().aggressionBetweenTwoPlayers(
+                    this.equippedTo.unit.owner,
+                    MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
+                );
+            });
+            
         }
     }
 
@@ -132,10 +198,7 @@ export class Minigun extends Gun {
         let strayTarget = this.getStrayLocation(this.targetLoc, caster);
         let deltaTarget = strayTarget.subtract(casterLoc);
 
-        // Log.Information(strayTarget.toString());
-
-        const sound = this.getNextShootSound();
-        sound.playSoundOnUnit(caster.unit.handle, 60);
+        PlayNewSoundOnUnit("Sounds\\minigun-fire.wav", caster.unit, 45);
 
         let projectile = new Projectile(
             unit,
@@ -145,23 +208,51 @@ export class Minigun extends Gun {
         projectile
             .setCollisionRadius(15)
             .setVelocity(2100)
-            .onCollide((projectile: Projectile, collidesWith: unit) => 
-                this.onProjectileCollide(projectile, collidesWith)
-            )
             .addEffect(
                 "war3mapImported\\Bullet.mdx",
                 new Vector3(0, 0, 0),
                 deltaTarget.normalise(),
-                1
+                1.2
             );
+        
+        if (this.flamesawActive) {
+            projectile
+            .onCollide((projectile: Projectile, collidesWith: unit) => 
+                this.onFlameProjectileCollide(projectile, collidesWith)
+            ).addEffect(
+                SFX_FIRE,
+                new Vector3(0, 0, 0),
+                deltaTarget.normalise(),
+                0.5
+            )
+            projectile.addEffect(
+                SFX_LASER_2,
+                new Vector3(0, 0, 0),
+                deltaTarget.normalise(),
+                0.2
+            )
+        }
+        else {
+            projectile
+            .onCollide((projectile: Projectile, collidesWith: unit) => 
+                this.onProjectileCollide(projectile, collidesWith)
+            )
+        }
 
         EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile: projectile }});
         if (this.spinStacks < this.maxSpinStacks) {
             this.spinStacks++;
         }
-        Timers.addTimedAction((0.25 / Pow(this.attackSpeedPerStack, this.spinStacks)), () => {
-            this.fireProjectile(caster);
-        });
+        if (this.flamesawActive) {
+            Timers.addTimedAction((0.23 / Pow(this.attackSpeedPerStack, this.spinStacks)), () => {
+                this.fireProjectile(caster);
+            });
+        }
+        else {
+            Timers.addTimedAction((0.25 / Pow(this.attackSpeedPerStack, this.spinStacks)), () => {
+                this.fireProjectile(caster);
+            });
+        }
     }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
@@ -184,14 +275,30 @@ export class Minigun extends Gun {
         }
     }
 
-    private getNextShootSound() {
-        for (let i = 0; i < this.shootSound.length; i++) {
-            if (!GetSoundIsPlaying(this.shootSound[i].sound))
-                return this.shootSound[i];
+    private onFlameProjectileCollide(projectile: Projectile, collidesWith: unit) {
+        projectile.setDestroy(true);
+        if (this.equippedTo) {
+            const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.equippedTo.unit);
+            if (crewmember) {
+                UnitDamageTarget(
+                    projectile.source, 
+                    collidesWith, 
+                    MathRound(this.getDamage(crewmember) * 1.1), 
+                    false, 
+                    true, 
+                    ATTACK_TYPE_PIERCE, 
+                    DAMAGE_TYPE_NORMAL, 
+                    WEAPON_TYPE_WOOD_MEDIUM_STAB
+                );
+                ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
+                
+                // Add fire debuff to unit
+                DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
+                    Unit.fromHandle(collidesWith), 
+                    new BuffInstanceDuration(this.equippedTo.unit, 4)
+                );
+            }
         }
-
-        this.shootSound.push(new SoundRef("Sounds\\minigun-fire.wav", false));
-        return this.shootSound[this.shootSound.length-1];
     }
 
     private onStopShooting() {
@@ -201,24 +308,21 @@ export class Minigun extends Gun {
     }
 
     protected getTooltip(crewmember: Crewmember) {
-        const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
+        // const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
 
-        const newTooltip = BURST_RIFLE_EXTENDED(
-            this.getDamage(crewmember), 
-            minDistance, 
-            this.spreadAOE
-        );
+        const damage = this.getDamage(crewmember);
+        const newTooltip = MINIGUN_EXTENDED(this, damage);
         return newTooltip;
     }
 
     protected getItemTooltip(crewmember: Crewmember): string {
         const damage = this.getDamage(crewmember);
-        return BURST_RIFLE_ITEM(this, damage);
+        return MINIGUN_ITEM(this, damage);
     }
 
 
     public getDamage(caster: Crewmember): number {
-        return MathRound( 15 * caster.getDamageBonusMult());
+        return MathRound( 13 * caster.getDamageBonusMult());
     }
 
     public getAbilityId() { return ABIL_WEP_MINIGUN; }

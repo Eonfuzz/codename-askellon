@@ -11,8 +11,9 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Players } from "w3ts/globals/index";
+import { Hooks } from "lib/Hooks";
 
-const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false);
+const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false, true);
 
 /**
  * Handles research and upgrades
@@ -23,6 +24,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new ResearchFactory();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

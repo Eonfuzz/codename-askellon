@@ -1,6 +1,7 @@
 import { Unit } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { DynamicBuff } from "./dynamic-buff-type";
+import { Hooks } from "lib/Hooks";
 
 export class DynamicBuffState {
     private static instance: DynamicBuffState;
@@ -8,6 +9,7 @@ export class DynamicBuffState {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new DynamicBuffState();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

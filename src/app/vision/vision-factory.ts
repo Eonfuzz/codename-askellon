@@ -1,6 +1,7 @@
 import { VISION_PENALTY, VISION_STATE, VISION_TYPE } from "./vision-type";
 import { MapPlayer, Unit } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
+import { Hooks } from "lib/Hooks";
 
 
 export class VisionFactory {
@@ -9,6 +10,7 @@ export class VisionFactory {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new VisionFactory();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

@@ -8,6 +8,7 @@ import { Leap } from "./leap-type";
 import { Timers } from "app/timer-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { Hooks } from "lib/Hooks";
 
 /**
  * These locations are declared by the world editor
@@ -31,6 +32,7 @@ export class LeapEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new LeapEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

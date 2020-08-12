@@ -24,7 +24,7 @@ export class Mineral extends SpaceObject {
 
         const location = this.getLocation();
 
-        this.widget = new Unit(PlayerStateFactory.NeutralHostile, SPACE_UNIT_MINERAL, location.x, location.y, bj_UNIT_FACING) as Unit;
+        this.widget = new Unit(PlayerStateFactory.NeutralPassive, SPACE_UNIT_MINERAL, location.x, location.y, bj_UNIT_FACING) as Unit;
         const i = GetRandomInt(0, MINERAL_SKINS.length-1);
         const skin = MINERAL_SKINS[i];
 

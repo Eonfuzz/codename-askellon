@@ -2,6 +2,7 @@ import { MapPlayer } from "w3ts/index";
 import { PlayerState } from "./player-type";
 import { ForceType } from "./forces/force-type";
 import { ChatHook } from "app/chat/chat-hook-type";
+import { Hooks } from "lib/Hooks";
 
 /**
  * A factory that stores all player data
@@ -13,6 +14,7 @@ export class PlayerStateFactory {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new PlayerStateFactory();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

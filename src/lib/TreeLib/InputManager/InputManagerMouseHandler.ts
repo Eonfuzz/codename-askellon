@@ -4,6 +4,7 @@ import {MouseCallback} from "./MouseCallback";
 import { Vector2 } from "app/types/vector2";
 import { Log } from "lib/serilog/serilog";
 import { Quick } from "lib/Quick";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
 export class InputManagerMouseHandler {
 
     constructor() {
@@ -112,6 +113,11 @@ export class InputManagerMouseHandler {
     }
 
     public getLastMouseCoordinate(triggerPlayer: player) {
-        return this.lastCoordinate[GetPlayerId(triggerPlayer)] || new Vector2(0, 0);
+        // Log.Information("Getter: "+this.lastCoordinate[GetPlayerId(triggerPlayer)].x+", "+this.lastCoordinate[GetPlayerId(triggerPlayer)].y)
+        const lastCoordinate = this.lastCoordinate[GetPlayerId(triggerPlayer)];
+        if (lastCoordinate) {
+            return lastCoordinate
+        }
+        return  new Vector2(0, 0);
     }
 }

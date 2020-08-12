@@ -39,6 +39,7 @@ import { AlienForce } from "app/force/forces/alien-force";
 import { ForceEntity } from "app/force/force-entity";
 import { ResearchFactory } from "app/research/research-factory";
 import { GetActivePlayers } from "lib/utils";
+import { Hooks } from "lib/Hooks";
 
 interface GeneInstance {
     source: Crewmember,
@@ -53,6 +54,7 @@ export class GeneEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new GeneEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

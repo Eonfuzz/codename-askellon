@@ -1,5 +1,3 @@
-/** @noSelfInFile **/
-
 export function vectorFromUnit(u: unit): Vector2 {
     return new Vector2(GetUnitX(u), GetUnitY(u));
 }
@@ -87,7 +85,7 @@ export class Vector2 {
     }
 
     toString() : string {
-        return "Vector2={x:"+this.x+", y:"+this.y+",len:"+this.getLength()+"}";
+        return `Vector2= x: ${this.x}, y: ${this.y}, len: ${this.getLength()}`;
     }
 
     angleTo(where: Vector2) {

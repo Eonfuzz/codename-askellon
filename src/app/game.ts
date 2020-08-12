@@ -31,6 +31,7 @@ import { OptResult } from "./force/opt/opt-selection-factory";
 import { Players } from "w3ts/globals/index";
 import { GetActivePlayers } from "lib/utils";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
+import { Hooks } from "lib/Hooks";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -39,6 +40,7 @@ export class Game {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new Game();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

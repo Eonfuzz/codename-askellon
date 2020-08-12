@@ -15,6 +15,7 @@ import { ChatEntity } from "app/chat/chat-entity";
 import { EventData } from "app/events/event-data";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { AbilityHooks } from "../ability-hooks";
 
 
 export class LatchAbility implements Ability {
@@ -200,12 +201,14 @@ export class LatchAbility implements Ability {
             this.isCastingSurvivalInstincts = true;
             
             
-            if (this.unit.getAbilityLevel(FourCC("Agho")) > 0) {
-                this.unit.setAbilityLevel(FourCC("Agho"), 2);
+            const abilLevel = this.unit.getAbilityLevel(FourCC("Agho"));
+            if (abilLevel > 0) {
+                this.unit.setAbilityLevel(FourCC("Agho"), abilLevel + 1);
             }
             else {
                 this.unit.addAbility(FourCC("Agho"));
             }
+
             // Pick all players and cause hostility
             const group = CreateGroup();
 
@@ -229,8 +232,9 @@ export class LatchAbility implements Ability {
             const t = new Timer();
             t.start(2, false, () => {
                 
-                if (this.unit.getAbilityLevel(FourCC("Agho")) > 1) {
-                    this.unit.setAbilityLevel(FourCC("Agho"), this.unit.getAbilityLevel(FourCC("Agho")) + 1);
+                const abilLevel = this.unit.getAbilityLevel(FourCC("Agho"));
+                if (abilLevel > 1) {
+                    this.unit.setAbilityLevel(FourCC("Agho"), abilLevel - 1);
                 }
                 else {
                     this.unit.removeAbility(FourCC("Agho"));

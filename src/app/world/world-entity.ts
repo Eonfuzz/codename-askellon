@@ -11,6 +11,7 @@ import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
+import { Hooks } from "lib/Hooks";
 
 export class WorldEntity {
     private static instance: WorldEntity;
@@ -18,6 +19,7 @@ export class WorldEntity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new WorldEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

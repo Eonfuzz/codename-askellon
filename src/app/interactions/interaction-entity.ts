@@ -9,6 +9,7 @@ import { Log } from "lib/serilog/serilog";
 import { initTesterInteractions } from "./interactables/genetic-tester";
 import { Entity } from "app/entity-type";
 import { Interactables } from "./interactables/interactables";
+import { Hooks } from "lib/Hooks";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -18,6 +19,7 @@ export class InteractionEntity extends Entity {
     public static getInstance() {
         if (this.instance == null) {
             this.instance = new InteractionEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

@@ -24,6 +24,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { ABIL_WEP_MINIGUN } from "resources/ability-ids";
 import { Minigun } from "./guns/minigun";
+import { Hooks } from "lib/Hooks";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -31,6 +32,7 @@ export class WeaponEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new WeaponEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

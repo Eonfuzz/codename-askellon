@@ -5,6 +5,8 @@ import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventData } from "app/events/event-data";
+import { Hooks } from "lib/Hooks";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * Dynamic update of tooltips
@@ -16,6 +18,7 @@ export class TooltipEntity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new TooltipEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }
@@ -23,7 +26,7 @@ export class TooltipEntity {
     private tooltips = new Map<Unit | Crewmember, DynamicTooltip[]>();
 
 
-    initialise() {
+    constructor() {
         // Update a tooltip for a single unit if it equips a weapon
         EventEntity.getInstance().addListener([
             new EventListener(EVENT_TYPE.WEAPON_EQUIP, (self, data) => this.updateTooltips(data)),
@@ -48,7 +51,6 @@ export class TooltipEntity {
      * Updates all tooltips
      */
     updateAllTooltip(data: EventData) {
-        // Log.Information("Updating all tooltips");
         this.tooltips.forEach((tooltips, u) => {
             tooltips.forEach(t => t.update(u, data));
         });
@@ -62,7 +64,6 @@ export class TooltipEntity {
         const unitTooltips = data.source ? this.tooltips.get(data.source) : undefined;
         const crewTooltips = data.crewmember ? this.tooltips.get(data.crewmember) : undefined;
 
-        // Log.Information("Updating a tooltip for unit");
         // Now go through and update them
         if (unitTooltips) unitTooltips.forEach(t => t.update(data.source, data));
         if (crewTooltips) crewTooltips.forEach(t => t.update(data.crewmember, data));
@@ -79,6 +80,7 @@ export class TooltipEntity {
         const tooltipsForWho = this.tooltips.get(who) || [];
         tooltipsForWho.push(tooltip);
         this.tooltips.set(who, tooltipsForWho);
+        tooltip.update(who, undefined);
     }
 
     /**

@@ -26,6 +26,7 @@ import { ResearchFactory } from "app/research/research-factory";
 // import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
+import { Hooks } from "lib/Hooks";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -37,6 +38,7 @@ export class SpaceEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new SpaceEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

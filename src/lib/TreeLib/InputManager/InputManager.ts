@@ -3,6 +3,7 @@ import {KeyCallback} from "./KeyCallback";
 import {MouseCallback} from "./MouseCallback";
 import {InputManagerKeyboardHandler} from "./InputManagerKeyboardHandler";
 import {InputManagerMouseHandler} from "./InputManagerMouseHandler";
+import { Hooks } from "lib/Hooks";
 
 export class InputManager {
     private static instance: InputManager;
@@ -10,7 +11,7 @@ export class InputManager {
     public static getInstance() {
         if (this.instance == null) {
             this.instance = new InputManager();
-            // Hooks.set(this.name, this.instance);
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

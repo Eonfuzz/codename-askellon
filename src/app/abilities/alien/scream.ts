@@ -7,6 +7,8 @@ import { ForceEntity } from "app/force/force-entity";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Log } from "lib/serilog/serilog";
+import { AbilityHooks } from "../ability-hooks";
+import { ABIL_ALIEN_SCREAM } from "resources/ability-ids";
 
 const screamSound =new SoundRef("Sounds\\Nazgul.wav", false, true);
 

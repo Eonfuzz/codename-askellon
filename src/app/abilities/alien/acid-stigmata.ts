@@ -2,7 +2,7 @@
 import { Ability } from "../ability-type";
 import { Unit, Effect } from "w3ts";
 import { BUFF_ID_ROACH_ARMOR, BUFF_ID } from "resources/buff-ids";
-import { TECH_ROACH_DUMMY_UPGRADE } from "resources/ability-ids";
+import { TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_ACID_HURL } from "resources/ability-ids";
 import { SFX_ACID_AURA, SFX_CONFLAGRATE_GREEN } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
 import { FilterIsEnemyAndAlive } from "resources/filters";
@@ -10,6 +10,7 @@ import { SoundRef } from "app/types/sound-ref";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { DummyCast } from "lib/dummy";
+import { AbilityHooks } from "../ability-hooks";
 
 // Damage increase each second
 const MAX_DURATION = 6;

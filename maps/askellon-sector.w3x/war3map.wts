@@ -4337,20 +4337,14 @@ STRING 1035
 Space Pipes
 }
 
-STRING 1036
-// Items: I00F (Minigun), Name (Name)
-{
-Minigun
-}
-
 STRING 1037
-// Items: I00F (Minigun), Tip (Tooltip - Basic)
+// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Tip (Tooltip - Basic)
 {
 Purchase Minigun
 }
 
 STRING 1038
-// Items: I00F (Minigun), Ubertip (Tooltip - Extended)
+// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Ubertip (Tooltip - Extended)
 {
 |cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
 Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
@@ -4363,7 +4357,7 @@ The standard issue rifle; ideal for thinning hordes and can dish out serious dam
 }
 
 STRING 1039
-// Items: I00F (Minigun), Description (Description)
+// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Description (Description)
 {
 Weapon: Fires a burst of 6 shots
 }
@@ -4384,12 +4378,6 @@ STRING 1042
 // Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
-}
-
-STRING 1044
-// Abilities: A01A (Attack - Minigun), Tip (Tooltip - Normal)
-{
-Minigun
 }
 
 STRING 1045
@@ -4414,5 +4402,59 @@ STRING 1048
 // Abilities: A01B (Oversized Weaponry), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Lore TODO|r|n|nEach bullet fired increases attack speed by |cff00ff005%|r, |cff00ff00stacking |rup to |cff00ff0080%|r. The heavy loading mechanism |cffff0000passively reduces|r your movement speed by |cff00ff0030|r.
+}
+
+STRING 1049
+// Destructibles: B007 (Force Wall), Name (Name)
+{
+Force Wall
+}
+
+STRING 1050
+// Doodads: D012 (Force Wall), Name (Name)
+{
+Force Wall
+}
+
+STRING 1051
+// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Name (Name)
+{
+MG5-27 "Flamesaw" Pattern Minigun
+}
+
+STRING 1052
+// Abilities: A01A (Attack - Minigun), Tip (Tooltip - Normal)
+{
+MG5-27 "Flamesaw" Pattern Minigun
+}
+
+STRING 1053
+// Abilities: A01C (Neural Takeover), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 1054
+// Abilities: A01C (Neural Takeover), EditorSuffix (Editor Suffix)
+{
+ (Worm)
+}
+
+STRING 1055
+// Abilities: A01C (Neural Takeover), Name (Name)
+{
+Neural Takeover
+}
+
+STRING 1056
+// Abilities: A01C (Neural Takeover), Tip (Tooltip - Normal)
+{
+Neural Takeover
+}
+
+STRING 1057
+// Abilities: A01C (Neural Takeover), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nTake control of your host's actions, forcing them to become hostile and fire any weapon where your mouse currently is.|n|n|cff80808010 Seconds Cooldown|r
 }
 

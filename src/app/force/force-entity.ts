@@ -20,6 +20,7 @@ import { ObserverForce } from "./forces/observer-force";
 import { CREW_FORCE_NAME, ALIEN_FORCE_NAME } from "./forces/force-names";
 import { AlienForce } from "./forces/alien-force";
 import { GetActivePlayers } from "lib/utils";
+import { Hooks } from "lib/Hooks";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -31,6 +32,7 @@ export class ForceEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new ForceEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

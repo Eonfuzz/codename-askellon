@@ -1,4 +1,5 @@
 import { Log } from "lib/serilog/serilog";
+import { Hooks } from "lib/Hooks";
 
 /**
  * Provides timers for other classes,
@@ -12,6 +13,7 @@ export class Timers {
     public static getInstance() {
         if (this.instance == null) {
             this.instance = new Timers();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

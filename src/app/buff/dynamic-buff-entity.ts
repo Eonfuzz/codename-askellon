@@ -13,6 +13,7 @@ import { Resolve } from "./buffs/resolve";
 import { PuritySeal } from "./buffs/purity-seal";
 import { onFire } from "./buffs/fire";
 import { DynamicBuffState } from "./dynamic-buff-state";
+import { Hooks } from "lib/Hooks";
 
 export class DynamicBuffEntity extends Entity {
 
@@ -21,6 +22,7 @@ export class DynamicBuffEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new DynamicBuffEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }

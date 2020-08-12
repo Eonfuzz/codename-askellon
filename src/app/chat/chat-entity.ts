@@ -13,6 +13,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { Hooks } from "lib/Hooks";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -20,6 +21,7 @@ export class ChatEntity extends Entity {
     public static getInstance() {        
         if (this.instance == null) {
             this.instance = new ChatEntity();
+            Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }
