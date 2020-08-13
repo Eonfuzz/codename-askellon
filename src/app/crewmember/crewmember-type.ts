@@ -49,13 +49,14 @@ export class Crewmember extends ArmableUnit {
      */
     onDamage() {
         const resolveActive = DynamicBuffState.unitHasBuff(BUFF_ID.RESOLVE, this.unit);
-
+        
         const maxHP = BlzGetUnitMaxHP(this.unit.handle);
         const hpPercentage  = (GetUnitState(this.unit.handle, UNIT_STATE_LIFE) - GetEventDamage()) / maxHP;
 
-        // Create a blood effect
-        CreateBlood(this.unit.x, this.unit.y);
-
+        if (GetEventDamage() > 10) {
+            // Create a blood effect
+            CreateBlood(this.unit.x, this.unit.y);
+        }
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {
             DynamicBuffEntity.getInstance().addBuff(

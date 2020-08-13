@@ -16,6 +16,7 @@ import { EventData } from "app/events/event-data";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { AbilityHooks } from "../ability-hooks";
+import { AddGhost, RemoveGhost } from "lib/utils";
 
 
 export class LatchAbility implements Ability {
@@ -57,12 +58,7 @@ export class LatchAbility implements Ability {
 
         this.unit.setPathing(false);
 
-        if (this.unit.getAbilityLevel(FourCC("Agho")) > 0) {
-            this.unit.setAbilityLevel(FourCC("Agho"), this.unit.getAbilityLevel(FourCC("Agho")) + 1);
-        }
-        else {
-            this.unit.addAbility(FourCC("Agho"));
-        }
+        AddGhost(this.unit);
 
         // Increment infest upgrade
         this.targetUnit.owner.setTechResearched(TECH_PLAYER_INFESTS, 
@@ -205,16 +201,6 @@ export class LatchAbility implements Ability {
         // Our survival instincts order
         else if (newOrder === 852252) {
             this.isCastingSurvivalInstincts = true;
-            
-            
-            const abilLevel = this.unit.getAbilityLevel(FourCC("Agho"));
-            if (abilLevel > 0) {
-                this.unit.setAbilityLevel(FourCC("Agho"), abilLevel + 1);
-            }
-            else {
-                this.unit.addAbility(FourCC("Agho"));
-            }
-
             // Pick all players and cause hostility
             const group = CreateGroup();
 
@@ -235,16 +221,11 @@ export class LatchAbility implements Ability {
 
             DestroyGroup(group);
 
+            AddGhost(this.unit);
+
             const t = new Timer();
             t.start(2, false, () => {
-                
-                const abilLevel = this.unit.getAbilityLevel(FourCC("Agho"));
-                if (abilLevel > 1) {
-                    this.unit.setAbilityLevel(FourCC("Agho"), abilLevel - 1);
-                }
-                else {
-                    this.unit.removeAbility(FourCC("Agho"));
-                }
+                RemoveGhost(this.unit);
                 t.destroy();
             });
         }
@@ -262,12 +243,7 @@ export class LatchAbility implements Ability {
                 if (!this.isCastingSurvivalInstincts) {
                     const t = new Timer();
                     t.start(0.5, false, () => {
-                        if (this.unit.getAbilityLevel(FourCC("Agho")) > 1) {
-                            this.unit.setAbilityLevel(FourCC("Agho"), this.unit.getAbilityLevel(FourCC("Agho")) + 1);
-                        }
-                        else {
-                            this.targetUnit.removeAbility(FourCC("Agho"));
-                        }
+                        RemoveGhost(this.unit);
                         t.destroy();
                     });
                 }

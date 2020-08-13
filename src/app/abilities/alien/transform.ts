@@ -8,7 +8,7 @@ import { AlienForce } from "app/force/forces/alien-force";
 import { SMART_ORDER_ID, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_TRANSFORM_HUMAN_ALIEN } from "resources/ability-ids";
 import { Trigger, Unit, Timer, MapPlayer } from "w3ts";
 import { Log } from "lib/serilog/serilog";
-import { getZFromXY, getRandomBlood, CreateBlood } from "lib/utils";
+import { getZFromXY, getRandomBlood, CreateBlood, AddGhost, RemoveGhost } from "lib/utils";
 import { WORM_ALIEN_FORM, CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { FilterIsAlive } from "resources/filters";
 import { WeaponEntity } from "app/weapons/weapon-entity";
@@ -166,25 +166,9 @@ export class TransformAbility implements Ability {
             
             // If we are Alien Worm we need to go invisible for 1 second
             if (alien.typeId === WORM_ALIEN_FORM) {
-
-                if (alien.getAbilityLevel(FourCC("Agho")) > 0) {
-                    alien.setAbilityLevel(FourCC("Agho"), alien.getAbilityLevel(FourCC("Agho")) + 1);
-                }
-                else {
-                    alien.addAbility(FourCC("Agho"));
-                }
-
+                AddGhost(alien);
                 const t = new Timer();
-                t.start(2, false, () => {
-            
-                    const abilLevel = alien.getAbilityLevel(FourCC("Agho"));
-                    if (abilLevel > 1) {
-                        alien.setAbilityLevel(FourCC("Agho"), abilLevel - 1);
-                    }
-                    else {
-                        alien.removeAbility(FourCC("Agho"));
-                    }
-                });
+                t.start(2, false, () => RemoveGhost(alien));
             }
 
             if (this.toAlien) {

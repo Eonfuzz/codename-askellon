@@ -1,5 +1,5 @@
 import { Vector2 } from "app/types/vector2";
-import { Rectangle, Item, Trigger, MapPlayer } from "w3ts/index"
+import { Rectangle, Item, Trigger, MapPlayer, Unit } from "w3ts/index"
 import { Log } from "./serilog/serilog";
 import { Players } from "w3ts/globals/index";
 import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7 } from "resources/sfx-paths";
@@ -32,10 +32,31 @@ export function CreateBlood(x: number, y: number) {
     const bloodSfx = AddSpecialEffect(getRandomBlood(), x, y);
     BlzSetSpecialEffectZ(bloodSfx, getZFromXY(x, y)+5);
     BlzSetSpecialEffectYaw(bloodSfx, GetRandomInt(0, 360));
+    BlzSetSpecialEffectScale(bloodSfx, GetRandomReal(0.8, 1.8));
 
     Timers.addSlowTimedAction(GetRandomInt(80, 300), () => {
         DestroyEffect(bloodSfx);
     });
+}
+
+export function AddGhost(toWho: Unit) {
+    const abilLevel = toWho.getAbilityLevel(FourCC("Agho"));
+    if (abilLevel > 0) {
+        toWho.setAbilityLevel(FourCC("Agho"), abilLevel + 1);
+    }
+    else {
+        toWho.addAbility(FourCC("Agho"));
+    }
+}
+
+export function RemoveGhost(fromWHo: Unit) {
+    const abilLevel = fromWHo.getAbilityLevel(FourCC("Agho"));
+    if (abilLevel > 1) {
+        fromWHo.setAbilityLevel(FourCC("Agho"), abilLevel - 1);
+    }
+    else {
+        fromWHo.removeAbility(FourCC("Agho"));
+    }
 }
 
 

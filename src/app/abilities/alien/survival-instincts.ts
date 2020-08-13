@@ -5,7 +5,7 @@ import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
 import { Trigger, Unit, Timer, MapPlayer } from "w3ts";
-import { getZFromXY } from "lib/utils";
+import { getZFromXY, AddGhost, RemoveGhost, CreateBlood } from "lib/utils";
 import { FilterIsAlive } from "resources/filters";
 import { ForceEntity } from "app/force/force-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity";
@@ -119,31 +119,18 @@ export class SurvivalInstinctsAbility implements Ability {
     }
 
     private bloodSplash(where: Vector3) {
-        // const bloodSfx = AddSpecialEffect(SFX_BLOOD_EXPLODE, where.x, where.y);
-        // BlzSetSpecialEffectZ(bloodSfx, where.z - 30);
-        // DestroyEffect(bloodSfx);
+        CreateBlood(where.x, where.y);
         return false;
     }
     
     public destroy() {
         if (this.casterUnit) {
 
-            if (this.casterUnit.getAbilityLevel(FourCC("Agho")) > 0) {
-                this.casterUnit.setAbilityLevel(FourCC("Agho"), this.casterUnit.getAbilityLevel(FourCC("Agho")) + 1);
-            }
-            else {
-                this.casterUnit.addAbility(FourCC("Agho"));
-            }
+            AddGhost(this.casterUnit);
 
             const t = new Timer();
             t.start(2, false, () => {
-                const abilLevel = this.casterUnit.getAbilityLevel(FourCC("Agho"));
-                if (abilLevel > 1) {
-                    this.casterUnit.setAbilityLevel(FourCC("Agho"), abilLevel - 1);
-                }
-                else {
-                    this.casterUnit.removeAbility(FourCC("Agho"));
-                }
+                RemoveGhost(this.casterUnit);
                 t.destroy();
             });
             // Delete order trigger
