@@ -1,7 +1,9 @@
 import { Vector2 } from "app/types/vector2";
-import { Rectangle, Item, Trigger, MapPlayer } from "w3ts/index";
+import { Rectangle, Item, Trigger, MapPlayer } from "w3ts/index"
 import { Log } from "./serilog/serilog";
 import { Players } from "w3ts/globals/index";
+import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7 } from "resources/sfx-paths";
+import { Timers } from "app/timer-type";
 
 export function GetActivePlayers() {
     return Players.filter(currentPlayer => {
@@ -13,6 +15,29 @@ export function GetActivePlayers() {
             }
     });
 }
+
+export function getRandomBlood() {
+    const idx = GetRandomInt(1,7);
+    if (idx === 1) return SFX_BLOOD_1;
+    if (idx === 2) return SFX_BLOOD_2;
+    if (idx === 3) return SFX_BLOOD_3;
+    if (idx === 4) return SFX_BLOOD_4;
+    if (idx === 5) return SFX_BLOOD_5;
+    if (idx === 6) return SFX_BLOOD_6;
+    return SFX_BLOOD_7;
+}
+
+export function CreateBlood(x: number, y: number) {
+    
+    const bloodSfx = AddSpecialEffect(getRandomBlood(), x, y);
+    BlzSetSpecialEffectZ(bloodSfx, getZFromXY(x, y)+5);
+    BlzSetSpecialEffectYaw(bloodSfx, GetRandomInt(0, 360));
+
+    Timers.addSlowTimedAction(GetRandomInt(80, 300), () => {
+        DestroyEffect(bloodSfx);
+    });
+}
+
 
 /**
  * Should always be defined,

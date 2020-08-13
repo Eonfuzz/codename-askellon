@@ -32,6 +32,7 @@ You'll need to have [node](https://nodejs.org/en/) and [git](https://git-scm.com
 - Thanks to Niklas for chat interface help
 - Thanks to Mayday for being a boss
 - Thanks to Maddeem for being a boss
+- Thanks to Piggy for the Askellon Icon
 
 And a special thanks to my awesome testers:
 - Zach

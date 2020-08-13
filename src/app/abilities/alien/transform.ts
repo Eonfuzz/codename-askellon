@@ -8,7 +8,7 @@ import { AlienForce } from "app/force/forces/alien-force";
 import { SMART_ORDER_ID, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_TRANSFORM_HUMAN_ALIEN } from "resources/ability-ids";
 import { Trigger, Unit, Timer, MapPlayer } from "w3ts";
 import { Log } from "lib/serilog/serilog";
-import { getZFromXY } from "lib/utils";
+import { getZFromXY, getRandomBlood, CreateBlood } from "lib/utils";
 import { WORM_ALIEN_FORM, CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { FilterIsAlive } from "resources/filters";
 import { WeaponEntity } from "app/weapons/weapon-entity";
@@ -28,7 +28,7 @@ const SFX_HUMAN_BLOOD = "Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLar
 const SFX_ALIEN_BLOOD = "Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl";
 const SFX_BLOOD_EXPLODE = "Units\\Undead\\Abomination\\AbominationExplosion.mdl";
 
-const MEAT_AOE = 950;
+const MEAT_AOE = 450;
 const MEAT_AOE_MIN = 150;
 const DURATION_TO_ALIEN = 2;
 const DURATION_TO_HUMAN = 0.5;
@@ -125,9 +125,8 @@ export class TransformAbility implements Ability {
     }
 
     private bloodSplash(where: Vector3) {
-        // const bloodSfx = AddSpecialEffect(SFX_BLOOD_EXPLODE, where.x, where.y);
-        // BlzSetSpecialEffectZ(bloodSfx, where.z - 30);
-        // DestroyEffect(bloodSfx);
+        // Create a blood effect
+        CreateBlood(where.x, where.y);
         return true;
     }
     

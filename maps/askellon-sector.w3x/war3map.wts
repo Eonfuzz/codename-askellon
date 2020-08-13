@@ -4452,15 +4452,15 @@ STRING 1056
 Neural Takeover
 }
 
-STRING 1057
-// Abilities: A01C (Neural Takeover), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080LORE TODO.|r|n|nTake control of your host's actions, forcing them to become hostile and fire any weapon where your mouse currently is.|n|n|cff80808010 Seconds Cooldown|r
-}
-
 STRING 1058
 // Upgrades: R009 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Latched inside human host
+}
+
+STRING 1059
+// Abilities: A01C (Neural Takeover), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nTake control of your host's actions, forcing them to become hostile and fire any weapon where your mouse currently is. |cffd45e19Their weapon must be able to fire.|r|n|n|cff8080806 Seconds Cooldown|r
 }
 

@@ -15,6 +15,10 @@ export class AskellonShip extends Ship {
     private unitControllingDeath: Trigger;
     private controllerOldZone: Zone;
 
+    private updateIconEvery = 5;
+    private iconTicker = 0;
+    private minimapIcon: minimapicon;
+
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
@@ -64,6 +68,20 @@ export class AskellonShip extends Ship {
         }
     }
 
+    process(deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
+        super.process(deltaTime, minX, maxX, minY, maxY);
+
+        this.iconTicker -= deltaTime;
+        if (this.iconTicker <= 0) {
+            this.iconTicker = this.updateIconEvery;
+            // Redraw icon
+            if (this.minimapIcon) {
+                DestroyMinimapIcon(this.minimapIcon);
+            }
+            this.minimapIcon = CreateMinimapIconOnUnit(this.unit.handle, 255, 255, 255, "minimap-askellon.mdx", FOG_OF_WAR_FOGGED);
+        }
+    }
+
     onEnterSpace() {
         // Shouldn't need to do anything
     }
@@ -73,6 +91,9 @@ export class AskellonShip extends Ship {
     }
 
     onDeath(killer: Unit) {
+        if (this.minimapIcon) {
+            DestroyMinimapIcon(this.minimapIcon);
+        }
         Log.Information("Main ship dead, not yet implemented soz");
     }
 

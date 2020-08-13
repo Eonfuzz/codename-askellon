@@ -28,6 +28,14 @@ export const SFX_FIRE = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDam
 export const SFX_LIGHTNING_BOLT = 'Doodads\\Cinematic\\Lightningbolt\\Lightningbolt.mdl';
 export const SFX_PORTAL = "Doodads\\Cinematic\\ShimmeringPortal\\ShimmeringPortal.mdx";
 
+export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
+export const SFX_BLOOD_2 = "Models\\FloorBlood2.mdx";
+export const SFX_BLOOD_3 = "Models\\FloorBlood3.mdx";
+export const SFX_BLOOD_4 = "Models\\FloorBlood4.mdx";
+export const SFX_BLOOD_5 = "Models\\FloorBlood5.mdx";
+export const SFX_BLOOD_6 = "Models\\FloorBlood6.mdx";
+export const SFX_BLOOD_7 = "Models\\FloorBlood7.mdx";
+
 // Preload SFX
 Preload(SFX_WINDWAVE);
 Preload(SFX_LASER_1);
@@ -49,4 +57,10 @@ Preload(SFX_DARK_SUMMONING);
 Preload(SFX_HOWL);
 Preload(SFX_FIRE);
 Preload(SFX_LIGHTNING_BOLT);
-Preload(SFX_PORTAL);
+Preload(SFX_BLOOD_1);
+Preload(SFX_BLOOD_2);
+Preload(SFX_BLOOD_3);
+Preload(SFX_BLOOD_4);
+Preload(SFX_BLOOD_5);
+Preload(SFX_BLOOD_6);
+Preload(SFX_BLOOD_7);

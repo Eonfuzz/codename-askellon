@@ -11,6 +11,7 @@ import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
 import { BuffInstance } from "app/buff/buff-instance-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
+import { getRandomBlood, getZFromXY, CreateBlood } from "lib/utils";
 
 export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
@@ -51,6 +52,9 @@ export class Crewmember extends ArmableUnit {
 
         const maxHP = BlzGetUnitMaxHP(this.unit.handle);
         const hpPercentage  = (GetUnitState(this.unit.handle, UNIT_STATE_LIFE) - GetEventDamage()) / maxHP;
+
+        // Create a blood effect
+        CreateBlood(this.unit.x, this.unit.y);
 
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {

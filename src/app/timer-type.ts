@@ -23,6 +23,10 @@ export class Timers {
 
     private timedActionCallbacks: {time: number, action: Function}[] = [];
 
+    
+    private readonly slowTimer: trigger;
+    private slowTimedActionCallbacks: {time: number, action: Function}[] = [];
+
     private constructor() {
         this.fastTimer = CreateTrigger();
         TriggerRegisterTimerEvent(this.fastTimer, 0.01, true);
@@ -44,6 +48,22 @@ export class Timers {
                }
             }
         });
+        this.slowTimer = CreateTrigger();
+        TriggerRegisterTimerEvent(this.slowTimer, 1, true);
+        TriggerAddAction(this.slowTimer, () => {
+            let i = 0;
+            while (i < this.slowTimedActionCallbacks.length) {
+               this.slowTimedActionCallbacks[i].time -= 0.01;
+               if (this.slowTimedActionCallbacks[i].time <= 0) {
+                    this.slowTimedActionCallbacks[i].action();
+                    this.slowTimedActionCallbacks[i] = this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];
+                    delete this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];
+               } 
+               else {
+                   i++;
+               }
+            }
+        });
     }
 
     public addFastTimerCallback(func: Function) {
@@ -59,5 +79,15 @@ export class Timers {
 
     public static addTimedAction(time: number, action: Function) {
         return Timers.getInstance().timedActionCallbacks.push({ time, action });
+    }
+
+    /**
+     * This increments by the seconds
+     * Use for long lasting effects or counters
+     * @param time 
+     * @param action 
+     */
+    public static addSlowTimedAction(time: number, action: Function) {
+        return Timers.getInstance().slowTimedActionCallbacks.push({ time, action });
     }
 }
