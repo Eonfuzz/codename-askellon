@@ -13,8 +13,9 @@ export class ProgressBar {
     constructor() {
     }
 
-    show() {
+    show(forPlayer: player) {
         this.bar = AddSpecialEffect(PROGRESS_BAR_MODEL_PATH, 0, 0);
+        BlzSetSpecialEffectColorByPlayer(this.bar, forPlayer);
     }
 
     hide() {

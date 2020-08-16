@@ -60,6 +60,7 @@ import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { DiodeEjectAbility } from "./human/diode-ejector";
 import { NeuralTakeoverAbility } from "./alien/neural-takeover";
+import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
 
 
 
@@ -96,8 +97,8 @@ export class AbilityHooks {
 AbilityHooks.Add(ABIL_ALIEN_ACID_POOL, () => new AcidPoolAbility());
 AbilityHooks.Add(ABIL_ALIEN_ACID_HURL, () => new AcidStigmataAbility());
 AbilityHooks.Add(ABIL_ALIEN_CHARGE, () => new BusterChargeAbility());
-AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T1, () => new EvolveAbility(ABIL_ALIEN_EVOLVE_T2));
-AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T2, () => new EvolveAbility(ABIL_ALIEN_EVOLVE_T3));
+AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T1, () => new EvolveAbility(ZERGLING_ALIEN_FORM));
+AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T2, () => new EvolveAbility(ROACH_ALIEN_FORM));
 AbilityHooks.Add(ABIL_ALIEN_LATCH, () => new LatchAbility());
 AbilityHooks.Add(ABIL_ALIEN_LEAP, () => new LeapAbility());
 AbilityHooks.Add(ABIL_ALIEN_SCREAM, () => new ScreamAbility());

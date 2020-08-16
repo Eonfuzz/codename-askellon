@@ -52,7 +52,9 @@ export class AlienForce extends ForceType {
             EVENT_TYPE.CREW_GAIN_DESPAIR, 
             (from: EventListener, data) => {
                 this.getPlayers().forEach(p => data.source.shareVision(p, true));
-            }))
+                // Reveal for alien AI
+                data.source.shareVision(PlayerStateFactory.AlienAIPlayer, true);
+            }));
         
         // Hide vision on despair gain
         EventEntity.getInstance().addListener(new EventListener(
@@ -69,7 +71,8 @@ export class AlienForce extends ForceType {
                 }
 
                 this.getPlayers().forEach(p => data.source.shareVision(p, false));
-            }))
+                data.source.shareVision(PlayerStateFactory.AlienAIPlayer, false);
+            }));
 
         // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
         this.alienDealsDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGING);

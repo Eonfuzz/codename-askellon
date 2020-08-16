@@ -15,6 +15,8 @@ import { UnitActionExecuteCode } from "lib/TreeLib/ActionQueue/Actions/UnitActio
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { CREW_FORCE_NAME } from "app/force/forces/force-names";
+import { UnitQueue } from "lib/TreeLib/ActionQueue/Queues/UnitQueue";
+import { BUFF_ID_DESPAIR } from "resources/buff-ids";
 
 /**
  * A player that acts under the AI entity
@@ -69,7 +71,7 @@ export class PlayerAgent {
         }
         // 40% to seek a random player
         // If no players are available it wanders
-        else if (seed >= 35) {
+        else if (seed >= 10) {
             return AGENT_STATE.SEEK;
         }
         // 20% to wander on current floor
@@ -96,7 +98,7 @@ export class PlayerAgent {
 
     private enactStateOnAgent(agent: unit, state: AGENT_STATE) {
         if (state === AGENT_STATE.SEEK) {
-            Log.Information("Seek Start");
+            // Log.Information("Seek Start");
             const visibleCrew: Unit[] = [];
 
             const humanPlayers = PlayerStateFactory.getForce(CREW_FORCE_NAME);
@@ -104,36 +106,46 @@ export class PlayerAgent {
 
             allHumans.forEach(human => {
                 const crew = PlayerStateFactory.getCrewmember(human);
-                if (crew && UnitAlive(crew.unit.handle)) {
-                    this.player.coordsVisible(crew.unit.x, crew.unit.y) && visibleCrew.push(crew.unit);
+                // if (crew) Log.Information("Checking crew is visible "+crew.unit.nameProper);
+                if (crew && UnitAlive(crew.unit.handle) && 
+                (IsUnitVisible(crew.unit.handle, this.player.handle) || UnitHasBuffBJ(crew.unit.handle, BUFF_ID_DESPAIR))) {
+                    // Log.Information("Crew is visible crew is alive "+crew.unit.nameProper);
+                    visibleCrew.push(crew.unit);
                 }
             })
 
             if (visibleCrew.length === 0) {
-                state = AGENT_STATE.WANDER;
-                Log.Information("No visible crew, wandering instead");
+                const i = GetRandomInt(0, 10);
+                if (i > 5) state = AGENT_STATE.WANDER;
+                else state = AGENT_STATE.TRAVEL;
+                // Log.Information("AI cannot see any crew...");
             } 
             else {
                 const target = visibleCrew[GetRandomInt(0, visibleCrew.length - 1)];
                 const targetLocation = WorldEntity.getInstance().getUnitZone(target);
                 if (!targetLocation) {
-                    Log.Error("Failed to find target location for seek AI");
+                    // Log.Error("Failed to find target location for seek AI");
                     state = AGENT_STATE.WANDER;
                 }
                 else {
                     const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
+
+                    const attackOrder = new UnitActionWaypoint(Vector2.fromWidget(target.handle), WaypointOrders.attack, 100);
+                    const newOrders = new UnitActionExecuteCode((target, timeStep, queue) => this.enactStateOnAgent(agent, this.generateState()));
+
                     const queue = this.sendUnitTo(agent, agentLocation.id, targetLocation.id);
                     if (queue) {
-                        queue.addAction(new UnitActionWaypoint(Vector2.fromWidget(target.handle), WaypointOrders.attack, 100));
-                        queue.addAction(new UnitActionExecuteCode((target, timeStep, queue) => {
-                            this.enactStateOnAgent(agent, this.generateState());
-                        }));
+                        queue.addAction(attackOrder);
+                        queue.addAction(newOrders);
+                    }
+                    else {
+                        ActionQueue.createUnitQueue(agent, attackOrder, newOrders);
                     }
                 }
             }
         } 
         if (state === AGENT_STATE.WANDER) {
-            Log.Information("Wander start");
+            // Log.Information("Wander start");
             const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
             // We wander a random amount
             const numWanders = GetRandomInt(1, 4);
@@ -152,7 +164,7 @@ export class PlayerAgent {
             const queue = ActionQueue.createUnitQueue(agent, ...actions);
         }
         if (state === AGENT_STATE.TRAVEL) {
-            Log.Information("Travel start");
+            // Log.Information("Travel start");
             const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
             const ourFloor = this.pathingGraph.nodeDict.get(agentLocation.id);
             const randomLocation = ourFloor.connectedNodes[GetRandomInt(0, ourFloor.connectedNodes.length - 1)];
@@ -169,11 +181,14 @@ export class PlayerAgent {
     /**
      * Constructs edges and pathways based on our zone details
      */
-    private sendUnitTo(whichUnit: unit, from: ZONE_TYPE, to: ZONE_TYPE) {
+    private sendUnitTo(whichUnit: unit, from: ZONE_TYPE, to: ZONE_TYPE): UnitQueue | undefined {
         const path = this.pathingGraph.pathTo(from, to);
-        if (path) {
+        if (path && path.edges.length > 0) {
             const actions: UnitAction[] = [];
             path.edges.forEach(edge => {
+                if (!IsUnitVisible(edge.unit.handle, this.player.handle)) {
+                    UnitShareVision(edge.unit.handle, this.player.handle, true);
+                }
                 actions.push(new UnitActionWaypoint(Vector2.fromWidget(edge.unit.handle), WaypointOrders.attack, 200));
                 actions.push(new UnitActionInteract(edge.unit.handle));
             });

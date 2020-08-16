@@ -82,7 +82,7 @@ export class InteractionEntity extends Entity {
                 () => interact.action(trigUnit, targetUnit),
                 () => interact.onStart && interact.onStart(trigUnit, targetUnit),
                 () => interact.onCancel && interact.onCancel(trigUnit, targetUnit),
-                !interact.hideInteractionBar
+                GetPlayerController(trigUnit.owner.handle) ===  MAP_CONTROL_COMPUTER ? false : !interact.hideInteractionBar
             );
             newInteraction.startInteraction();
             this.interactions.push(newInteraction);

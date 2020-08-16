@@ -86,7 +86,7 @@ export class InteractionEvent {
       if (this.timeRemaining === this.timeRequired) {
         // if this is the first tick show the progress bar
         if (this.progressBar) {
-          this.progressBar.show();
+          this.progressBar.show(this.unit.owner.handle);
           // Set progress bar speed based on anim time
           BlzSetSpecialEffectTimeScale(this.progressBar.bar, 1 / this.timeRequired);
         }
