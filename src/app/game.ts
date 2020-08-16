@@ -32,6 +32,7 @@ import { Players } from "w3ts/globals/index";
 import { GetActivePlayers } from "lib/utils";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { Hooks } from "lib/Hooks";
+import { AIEntity } from "./ai/ai-entity";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -102,6 +103,10 @@ export class Game {
         SpaceEntity.getInstance();
         WeaponEntity.getInstance();
         AbilityEntity.getInstance();
+
+
+        Log.Information("Getting AI entity");
+        AIEntity.getInstance();
 
         // Camera follow the main ship
         this.followMainShip();

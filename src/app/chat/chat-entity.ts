@@ -4,7 +4,7 @@ import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import {  SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE } from "resources/colours";
-import { syncData, GetActivePlayers } from "lib/utils";
+import { syncData, GetActivePlayers, GetPlayerCamLoc } from "lib/utils";
 import { ChatHook } from "./chat-hook-type";
 import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
@@ -14,6 +14,10 @@ import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
+import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { WorldEntity } from "app/world/world-entity";
+import { ZONE_TYPE } from "app/world/zone-id";
+import { AIEntity } from "app/ai/ai-entity";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -180,6 +184,19 @@ export class ChatEntity extends Entity {
                     UnitDamageTarget(GetEnumUnit(), GetEnumUnit(), 9999999, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS);
                 });
             }
+            else if (message == "-pf") {
+                // Log.Information("PF "+message);
+                GetPlayerCamLoc(player, (x, y) => {
+                    const dummyUnit = CreateUnit(PlayerStateFactory.AlienAIPlayer.handle, CREWMEMBER_UNIT_ID, x, y, bj_UNIT_FACING);
+                    const pData = PlayerStateFactory.get(player);
+                    const crewUnit = pData.getCrewmember().unit;
+
+                    const zone = WorldEntity.getInstance().getUnitZone(crewUnit);
+                    // Log.Information("Spawn in zone: "+ZONE_TYPE[zone.id]);
+                    AIEntity.getInstance().sendUnitTo(dummyUnit, zone.id, ZONE_TYPE.CARGO_A);
+                });
+                // const unit =
+            }
             else if (message == "-cd") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     UnitResetCooldown(GetEnumUnit());
@@ -190,24 +207,15 @@ export class ChatEntity extends Entity {
                 FogModifierStart(modifier);
             }
             else if (message == "-tp") {
-                let i = GetRandomInt(0, 10000);
-                const syncher = syncData('-tp'+i, player, (self, data: string) => {
-                    Log.Information(data);
-                    const x = S2R(data.split(',')[0]);
-                    const y = S2R(data.split(',')[1]);
-                
+                // Log.Information("TP");
+                GetPlayerCamLoc(player, (x, y) => {
+                    Log.Information("Done tp "+x+", "+y);
                     EnumUnitsSelected(player.handle, Filter(() => true), () => {
                         const u = GetEnumUnit();
                         SetUnitX(u, x);
                         SetUnitY(u, y);
                     })
                 });
-
-                if (GetLocalPlayer() == player.handle) {
-                    const x = GetCameraTargetPositionX();
-                    const y = GetCameraTargetPositionY();
-                    syncher(`${x},${y}`);
-                }
             }
         }
         // Priv 1 === MODERATOR

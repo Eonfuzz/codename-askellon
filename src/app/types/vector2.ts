@@ -91,4 +91,15 @@ export class Vector2 {
     angleTo(where: Vector2) {
         return Rad2Deg(Atan2(where.y-this.y, where.x-this.x));
     }
+
+    distanceTo(where: Vector2) {
+        return where.subtract(this).getLength();
+    }
+
+    /**
+     * Static api
+     */
+    public static fromWidget(widget: widget): Vector2 {
+        return new Vector2(GetWidgetX(widget), GetWidgetY(widget));
+    }
 }

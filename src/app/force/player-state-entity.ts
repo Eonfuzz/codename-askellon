@@ -21,6 +21,15 @@ export class PlayerStateFactory {
 
     private state = new Map<MapPlayer, PlayerState>();
 
+    /**
+     * Constructor
+     */
+    constructor() {
+        // Reveal map for alien AI
+        const modifier = CreateFogModifierRect(PlayerStateFactory.AlienAIPlayer.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
+        FogModifierStart(modifier);
+    }
+
     public get(who: MapPlayer) {
         if (this.state.has(who)) {
             return this.state.get(who);

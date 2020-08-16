@@ -2,8 +2,25 @@ import { Vector2 } from "app/types/vector2";
 import { Rectangle, Item, Trigger, MapPlayer, Unit } from "w3ts/index"
 import { Log } from "./serilog/serilog";
 import { Players } from "w3ts/globals/index";
-import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7 } from "resources/sfx-paths";
+import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7, SFX_BLOOD_8, SFX_BLOOD_9, SFX_BLOOD_10, SFX_BLOOD_11, SFX_BLOOD_12 } from "resources/sfx-paths";
 import { Timers } from "app/timer-type";
+
+let camIterator = 0;
+export function GetPlayerCamLoc(who: MapPlayer, callback: (x: number, y: number) => void) {
+    const syncher = syncData(`${camIterator++}`, who, (self, data: string) => {
+        Log.Information(data);
+        const x = S2R(data.split(',')[0]);
+        const y = S2R(data.split(',')[1]);
+    
+        callback(x,y);
+    });
+
+    if (GetLocalPlayer() == who.handle) {
+        const x = GetCameraTargetPositionX();
+        const y = GetCameraTargetPositionY();
+        syncher(`${x},${y}`);
+    }
+}
 
 export function GetActivePlayers() {
     return Players.filter(currentPlayer => {
@@ -17,14 +34,19 @@ export function GetActivePlayers() {
 }
 
 export function getRandomBlood() {
-    const idx = GetRandomInt(1,7);
+    const idx = GetRandomInt(1,12);
     if (idx === 1) return SFX_BLOOD_1;
     if (idx === 2) return SFX_BLOOD_2;
     if (idx === 3) return SFX_BLOOD_3;
     if (idx === 4) return SFX_BLOOD_4;
     if (idx === 5) return SFX_BLOOD_5;
     if (idx === 6) return SFX_BLOOD_6;
-    return SFX_BLOOD_7;
+    if (idx === 7) return SFX_BLOOD_7;
+    if (idx === 8) return SFX_BLOOD_8;
+    if (idx === 9) return SFX_BLOOD_9;
+    if (idx === 10) return SFX_BLOOD_10;
+    if (idx === 11) return SFX_BLOOD_11;
+    return SFX_BLOOD_12;
 }
 
 export function CreateBlood(x: number, y: number) {

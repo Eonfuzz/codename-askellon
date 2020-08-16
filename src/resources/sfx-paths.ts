@@ -35,6 +35,11 @@ export const SFX_BLOOD_4 = "Models\\FloorBlood4.mdx";
 export const SFX_BLOOD_5 = "Models\\FloorBlood5.mdx";
 export const SFX_BLOOD_6 = "Models\\FloorBlood6.mdx";
 export const SFX_BLOOD_7 = "Models\\FloorBlood7.mdx";
+export const SFX_BLOOD_8 = "Models\\FloorBlood8.mdx";
+export const SFX_BLOOD_9 = "Models\\FloorBlood9.mdx";
+export const SFX_BLOOD_10 = "Models\\FloorBlood10.mdx";
+export const SFX_BLOOD_11 = "Models\\FloorBlood11.mdx";
+export const SFX_BLOOD_12 = "Models\\FloorBlood12.mdx";
 
 // Preload SFX
 Preload(SFX_WINDWAVE);
@@ -64,3 +69,8 @@ Preload(SFX_BLOOD_4);
 Preload(SFX_BLOOD_5);
 Preload(SFX_BLOOD_6);
 Preload(SFX_BLOOD_7);
+Preload(SFX_BLOOD_8);
+Preload(SFX_BLOOD_9);
+Preload(SFX_BLOOD_10);
+Preload(SFX_BLOOD_11);
+Preload(SFX_BLOOD_12);
