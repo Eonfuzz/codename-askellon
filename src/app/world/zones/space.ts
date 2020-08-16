@@ -7,9 +7,8 @@ export class SpaceZone extends Zone {
     public onLeave(unit: Unit) {
         super.onLeave(unit);
 
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crewmember = pData.getCrewmember();
-        const isCrew = crewmember.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, bj_mapInitialPlayableArea);
@@ -21,9 +20,8 @@ export class SpaceZone extends Zone {
     public onEnter(unit: Unit) {
         super.onEnter(unit);
 
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crewmember = pData.getCrewmember();
-        const isCrew = crewmember.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, gg_rct_Space);

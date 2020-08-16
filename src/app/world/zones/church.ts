@@ -10,9 +10,8 @@ export class ChurchZone extends ShipZone {
     public onLeave(unit: Unit) {
         super.onLeave(unit);
 
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crewmember = pData.getCrewmember();
-        const isCrew = crewmember.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
@@ -27,9 +26,8 @@ export class ChurchZone extends ShipZone {
     public onEnter(unit: Unit) {
         super.onEnter(unit);
 
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crewmember = pData.getCrewmember();
-        const isCrew = crewmember.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             this.churchMusic.playSound();

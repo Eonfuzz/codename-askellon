@@ -34,6 +34,8 @@ export class CrewFactory {
     game: Game;
 
     crewmemberForUnit = new Map<Unit, Crewmember>();
+    allCrew: Crewmember[] = [];
+
     allJobs: Array<ROLE_TYPES> = [];
 
     crewmemberDamageTrigger: Trigger;
@@ -205,7 +207,7 @@ export class CrewFactory {
             
             nUnit.x = -22916;
             nUnit.y = -25386;
-
+            
             // Now travel the unit to Church
             WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
@@ -225,7 +227,7 @@ export class CrewFactory {
         SuspendHeroXP(nUnit.handle, true);
         SetPlayerName(nUnit.owner.handle, crewmember.name);
         PanCameraToTimedForPlayer(nUnit.owner.handle, nUnit.x, nUnit.y, 0);
-
+        this.allCrew.push(crewmember);
 
         return crewmember;
     }

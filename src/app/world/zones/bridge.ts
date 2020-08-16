@@ -15,9 +15,8 @@ export class BridgeZone extends ShipZone {
         super.onLeave(unit);
 
         // Check if it is a main unit
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crew = pData.getCrewmember();
-        const isCrew = crew.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
@@ -30,9 +29,8 @@ export class BridgeZone extends ShipZone {
         super.onEnter(unit);
 
         // Check if it is a main unit
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crewmember = pData.getCrewmember();
-        const isCrew = crewmember.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
             // Play music
@@ -60,9 +58,8 @@ export class BridgeZoneVent extends ShipZone {
         super.onLeave(unit);
 
         // Check if it is a main unit
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crewmember = pData.getCrewmember();
-        const isCrew = crewmember.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
@@ -74,9 +71,8 @@ export class BridgeZoneVent extends ShipZone {
     public onEnter(unit: Unit) {
         super.onEnter(unit);
 
-        const pData = PlayerStateFactory.get(unit.owner);
-        const crewmember = pData.getCrewmember();
-        const isCrew = crewmember.unit === unit;
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             this.operaMusic.playSound();

@@ -3,6 +3,8 @@ export enum AGENT_STATE {
     AIMLESS,
     // Seeks out a specific player
     SEEK,
+    // Goes to a specific floor
+    TRAVEL,
     // Wanders through the current floor aimlessly
     WANDER,
 }

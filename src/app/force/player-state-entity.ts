@@ -3,6 +3,7 @@ import { PlayerState } from "./player-type";
 import { ForceType } from "./forces/force-type";
 import { ChatHook } from "app/chat/chat-hook-type";
 import { Hooks } from "lib/Hooks";
+import { Crewmember } from "app/crewmember/crewmember-type";
 
 /**
  * A factory that stores all player data
@@ -50,6 +51,16 @@ export class PlayerStateFactory {
      */
     public static get(who: MapPlayer) {
         return PlayerStateFactory.getInstance().get(who);
+    }
+
+    public static getCrewmember(who: MapPlayer): Crewmember | undefined {
+        const pData = PlayerStateFactory.get(who);
+        
+        if (pData) {
+            const crewmember = pData.getCrewmember();
+            return crewmember;
+        }
+        return undefined;
     }
 
     public static getForce(forceName: string) {

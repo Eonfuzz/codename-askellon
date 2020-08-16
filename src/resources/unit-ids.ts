@@ -20,3 +20,5 @@ export const ZERGLING_ALIEN_FORM = FourCC('ALI1');
 export const ROACH_ALIEN_FORM = FourCC('ALI2');
 export const DEFAULT_ALIEN_FORM = WORM_ALIEN_FORM;
 // export const DEFAULT_ALIEN_FORM = ROACH_ALIEN_FORM;
+
+export const ALIEN_MINION_CANITE = FourCC('u000');

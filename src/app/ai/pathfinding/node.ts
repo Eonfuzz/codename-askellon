@@ -7,4 +7,7 @@ import { Zone } from "app/world/zone-type";
 export class Node {
     pathways: Edge[] = [];
     zone: Zone;
+
+    // A map all nodes this node could possibly reach
+    connectedNodes: Node[] = [];
 }

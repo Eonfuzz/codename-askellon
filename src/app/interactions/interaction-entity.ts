@@ -57,7 +57,7 @@ export class InteractionEntity extends Entity {
         const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
         const targetUnitType = targetUnit.typeId;
 
-        Log.Information("BEING INTERACT TRACKING");
+        // Log.Information("BEING INTERACT TRACKING");
 
         // First of all make sure we don't have one already
         const foundMatch = this.interactions.find(i => i.unit === trigUnit && i.targetUnit === targetUnit);

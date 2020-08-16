@@ -14,7 +14,7 @@ import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
@@ -187,13 +187,11 @@ export class ChatEntity extends Entity {
             else if (message == "-pf") {
                 // Log.Information("PF "+message);
                 GetPlayerCamLoc(player, (x, y) => {
-                    const dummyUnit = CreateUnit(PlayerStateFactory.AlienAIPlayer.handle, CREWMEMBER_UNIT_ID, x, y, bj_UNIT_FACING);
                     const pData = PlayerStateFactory.get(player);
                     const crewUnit = pData.getCrewmember().unit;
 
                     const zone = WorldEntity.getInstance().getUnitZone(crewUnit);
-                    // Log.Information("Spawn in zone: "+ZONE_TYPE[zone.id]);
-                    AIEntity.getInstance().sendUnitTo(dummyUnit, zone.id, ZONE_TYPE.CARGO_A);
+                    AIEntity.createAddAgent(ALIEN_MINION_CANITE, x, y, zone.id);
                 });
                 // const unit =
             }

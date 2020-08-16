@@ -2,7 +2,7 @@ import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "./zone-id";
 import { Log } from "../../lib/serilog/serilog";
 
 import { Unit } from "w3ts/handles/unit";
-import { MapPlayer, Timer } from "w3ts";
+import { MapPlayer, Timer, Region, Rectangle } from "w3ts";
 import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
@@ -17,6 +17,7 @@ import { Timers } from "app/timer-type";
 import { LIGHT_DEST_ID } from "app/types/widget-id";
 import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { Vector2 } from "app/types/vector2";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
@@ -29,8 +30,48 @@ export class Zone {
     protected adjacent: Array<Zone> = [];
     protected unitsInside: Array<Unit> = [];
 
+    protected zoneRegion: Region;
+    protected allRects: rect[] = [];
+
     constructor(id: ZONE_TYPE) {
         this.id = id;
+        
+        this.zoneRegion = new Region();
+
+        try {
+            // We need to scan _g to find rects that match us
+            let strId = ZONE_TYPE[this.id].toLowerCase();
+            while (strId.indexOf('_') >= 0) {
+                strId = strId.replace('_', '');
+            }
+            const namespaceVarName = `gg_rct_zone${strId}`;
+
+            let idx = 1;
+            let namespaceCheck = `${namespaceVarName}${idx++}`;
+            while (_G[namespaceCheck]) {
+                const rect = _G[namespaceCheck] as rect;
+                this.zoneRegion.addRect(Rectangle.fromHandle(rect));
+                this.allRects.push(rect);
+
+                namespaceCheck = `${namespaceVarName}${idx++}`;
+            }
+        }
+        catch(e) {
+            Log.Error("Reading regions fail");
+            Log.Error(e);
+        }
+    }
+
+    public pointIsInZone(x: number, y: number): boolean {
+        if (this.allRects.length === 0) return false;
+        else return this.zoneRegion.containsCoords(x, y);
+    }
+
+    public getRandomPointInZone(): Vector2 {
+        if (this.allRects.length === 0) return new Vector2(0,0);
+        const idx = GetRandomInt(0, this.allRects.length - 1);
+        const rect = this.allRects[idx];
+        return new Vector2(GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)));
     }
 
     /**
@@ -128,7 +169,7 @@ export class ShipZone extends Zone {
     private onGeneratorDestroy(generator: Unit, source: Unit) {
         // Make sure we have generator in our array
         if (this.powerGenerators.indexOf(generator) >= 0) {
-            // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
+            Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
             try {
                 this.updatePower(false);
             }
@@ -141,7 +182,7 @@ export class ShipZone extends Zone {
     private onGeneratorRepair(generator: Unit, source: Unit) {
         // Make sure we have generator in our array
         if (this.powerGenerators.indexOf(generator) >= 0) {
-            // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
+            Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
             this.updatePower(true);
         }
     }

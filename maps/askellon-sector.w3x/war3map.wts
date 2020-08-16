@@ -4464,3 +4464,9 @@ STRING 1059
 |cff808080LORE TODO.|r|n|nTake control of your host's actions, forcing them to become hostile and fire any weapon where your mouse currently is. |cffd45e19Their weapon must be able to fire.|r|n|n|cff8080806 Seconds Cooldown|r
 }
 
+STRING 1060
+// Units: u000 (Canite), Name (Name)
+{
+Canite
+}
+

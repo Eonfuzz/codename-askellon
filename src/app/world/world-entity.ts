@@ -56,15 +56,21 @@ export class WorldEntity {
      * @param to 
      */
     public handleTravel(unit: Unit, to: ZONE_TYPE) {
-        const uHandle = unit.id;
-        const oldZone = this.unitLocation.get(uHandle);
-        const newZone = this.getZone(to);        
+        try {
+            const uHandle = unit.id;
+            const oldZone = this.unitLocation.get(uHandle);
+            const newZone = this.getZone(to);        
 
-        // Now call on enter and on leave for the zones
-        oldZone && oldZone.onLeave(unit);
-        newZone && newZone.onEnter(unit);
-        
-        newZone && this.unitLocation.set(uHandle, newZone);
+            // Now call on enter and on leave for the zones
+            oldZone && oldZone.onLeave(unit);
+            newZone && newZone.onEnter(unit);
+            
+            newZone && this.unitLocation.set(uHandle, newZone);
+        }
+        catch(e) {
+            Log.Error("Handle Travel Failed");
+            Log.Error(e);
+        }
     }
 
     /**

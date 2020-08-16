@@ -4,6 +4,7 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { Node } from "./pathfinding/node";
 import { Unit } from "w3ts/index";
 import { WorldEntity } from "app/world/world-entity";
+import { Log } from "lib/serilog/serilog";
 
 declare const udg_elevator_entrances: unit[];
 declare const udg_elevator_exits: unit[];
@@ -108,5 +109,45 @@ export function BuildGraph() {
 
     graph.nodes = nodes;
     graph.nodeDict = nodeForZoneType;
+
+    // Now develop connections
+    graph.nodes.forEach(node => DevelopGraphConnections(node));
     return graph;
+}
+
+function DevelopGraphConnections(node: Node) {
+    if (node.connectedNodes.length > 0) return node.connectedNodes;
+    const visitedNodes = new Map<Node, boolean>();
+
+    const allNodes = [];
+    const nodeSearch = [node];
+
+    // Log.Information("-> "+ZONE_TYPE[node.zone.id]);
+
+    let maxSearches = 60;
+    while (nodeSearch.length > 0 && maxSearches > 0) {
+        let currentNode = nodeSearch[0];
+        maxSearches--;
+
+
+        // For each possible pathway of a node
+        for (let index = 0; index < currentNode.pathways.length; index++) {
+            // Get the edge we are traversing
+            const nEdge = currentNode.pathways[index];    
+            // If the new node doesn't exist in the travel map
+            if (!visitedNodes.has(nEdge.exit.node)) {
+                visitedNodes.set(nEdge.exit.node, true);                
+                // If the new node doesn't exist in the travel map
+                // Log.Information("-> "+ZONE_TYPE[nEdge.exit.node.zone.id])
+                allNodes.push(nEdge.exit.node);
+                nodeSearch.push(nEdge.exit.node);
+            }
+        }
+
+        nodeSearch.splice(0, 1);
+    }
+
+    const idx = allNodes.indexOf(node);
+    if (idx > 0) allNodes.splice(idx, 1);
+    node.connectedNodes = allNodes;
 }
