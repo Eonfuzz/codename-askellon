@@ -31,15 +31,11 @@ export class WorldEntity {
     // Zones outside of the ship
     private worldZones: Map<ZONE_TYPE, Zone> = new Map();
     // Map of unit to zone
-    private unitLocation: Map<number, Zone> = new Map();
+    private unitLocation: Map<Unit, Zone> = new Map();
 
     constructor() {
         this.askellon = new TheAskellon();
         this.worldZones.set(ZONE_TYPE.SPACE, new SpaceZone(ZONE_TYPE.SPACE));
-
-        const deathTrigger = new Trigger();
-        deathTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
-        deathTrigger.addAction(() => this.unitDeath());
 
         // Listen to unit travel events
         EventEntity.listen(new EventListener(EVENT_TYPE.TRAVEL_UNIT_TO, (listener, data) => {
@@ -47,6 +43,11 @@ export class WorldEntity {
             let desiredLoc = data.data.zone || this.getZoneByName(data.data.zoneName);
             const isSubtravel = !!data.data.subTravel;
             this.travel(u, desiredLoc, isSubtravel);
+        }));
+
+        EventEntity.listen(new EventListener(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, (self, data) => {
+            // Log.Information("World entity caught unit remove")
+            this.removeUnit(data.source);
         }));
     }
 
@@ -57,15 +58,17 @@ export class WorldEntity {
      */
     public handleTravel(unit: Unit, to: ZONE_TYPE) {
         try {
-            const uHandle = unit.id;
-            const oldZone = this.unitLocation.get(uHandle);
+            const oldZone = this.unitLocation.get(unit);
             const newZone = this.getZone(to);        
 
             // Now call on enter and on leave for the zones
             oldZone && oldZone.onLeave(unit);
             newZone && newZone.onEnter(unit);
             
-            newZone && this.unitLocation.set(uHandle, newZone);
+            if (newZone) {
+                // Log.Information("Setting "+unit.name+" to zone "+ZONE_TYPE[newZone.id]);
+                this.unitLocation.set(unit, newZone);
+            }
         }
         catch(e) {
             Log.Error("Handle Travel Failed");
@@ -128,17 +131,6 @@ export class WorldEntity {
         }
     }
 
-    unitDeath() {
-        const unit = Unit.fromHandle(GetTriggerUnit());
-        const handle = unit.id;
-
-        if (this.unitLocation.has(handle)) {
-            const zone = this.unitLocation.get(handle);
-            zone && zone.onLeave(unit);
-            this.unitLocation.delete(handle);
-        }
-    }
-
     getZone(whichZone: ZONE_TYPE) {
         return this.askellon.findZone(whichZone) || this.worldZones.get(whichZone);
     }
@@ -155,7 +147,7 @@ export class WorldEntity {
 
     getUnitZone(whichUnit: Unit): Zone | undefined {
         if (!whichUnit) Log.Error("getUnitZone called but unit is undefined");
-        return this.unitLocation.get(whichUnit.id);
+        return this.unitLocation.get(whichUnit);
     }
 
     /**
@@ -171,7 +163,7 @@ export class WorldEntity {
             // Force on leave
             zone.onLeave(whichUnit);
             // Remove data on it
-            this.unitLocation.delete(whichUnit.id);
+            this.unitLocation.delete(whichUnit);
         }
         else {
             Log.Information("Remove zone failed for "+whichUnit.name);

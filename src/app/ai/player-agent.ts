@@ -17,6 +17,9 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { CREW_FORCE_NAME } from "app/force/forces/force-names";
 import { UnitQueue } from "lib/TreeLib/ActionQueue/Queues/UnitQueue";
 import { BUFF_ID_DESPAIR } from "resources/buff-ids";
+import { EventListener } from "app/events/event-type";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { EventEntity } from "app/events/event-entity";
 
 /**
  * A player that acts under the AI entity
@@ -38,14 +41,21 @@ export class PlayerAgent {
 
     // Units without orders
 
-
     constructor(player: MapPlayer, pathingGraph: Graph, maxAgents: number = 33) {
         this.maxAgents = maxAgents;
         this.player = player;
         this.pathingGraph = pathingGraph;
+
+        EventEntity.listen(new EventListener(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, (self, data) => {
+            // Log.Information("World entity caught unit remove")
+            this.removeAgent(data.source.handle);
+        }));
     }
 
     public removeAgent(agent: unit) {
+        if (GetOwningPlayer(agent) !== this.player.handle) return;
+
+
         const idx = this.allAgents.indexOf(agent);
 
         if (idx >= 0) {
@@ -55,6 +65,7 @@ export class PlayerAgent {
             // this.unitToOrderQueue.delete(agent);
             // const unitsStateList = this.stateToUnits.get(unitState);
             // Quick.Slice(unitsStateList, unitsStateList.indexOf(agent));
+            // Log.Information("Remove agent");
         }
         else {
             Log.Information("Remove agent failed?!");
@@ -106,10 +117,7 @@ export class PlayerAgent {
 
             allHumans.forEach(human => {
                 const crew = PlayerStateFactory.getCrewmember(human);
-                // if (crew) Log.Information("Checking crew is visible "+crew.unit.nameProper);
-                if (crew && UnitAlive(crew.unit.handle) && 
-                (IsUnitVisible(crew.unit.handle, this.player.handle) || UnitHasBuffBJ(crew.unit.handle, BUFF_ID_DESPAIR))) {
-                    // Log.Information("Crew is visible crew is alive "+crew.unit.nameProper);
+                if (crew && UnitAlive(crew.unit.handle) && (IsUnitVisible(crew.unit.handle, this.player.handle) || UnitHasBuffBJ(crew.unit.handle, BUFF_ID_DESPAIR))) {
                     visibleCrew.push(crew.unit);
                 }
             })
@@ -118,13 +126,11 @@ export class PlayerAgent {
                 const i = GetRandomInt(0, 10);
                 if (i > 5) state = AGENT_STATE.WANDER;
                 else state = AGENT_STATE.TRAVEL;
-                // Log.Information("AI cannot see any crew...");
             } 
             else {
                 const target = visibleCrew[GetRandomInt(0, visibleCrew.length - 1)];
                 const targetLocation = WorldEntity.getInstance().getUnitZone(target);
                 if (!targetLocation) {
-                    // Log.Error("Failed to find target location for seek AI");
                     state = AGENT_STATE.WANDER;
                 }
                 else {
@@ -164,7 +170,6 @@ export class PlayerAgent {
             const queue = ActionQueue.createUnitQueue(agent, ...actions);
         }
         if (state === AGENT_STATE.TRAVEL) {
-            // Log.Information("Travel start");
             const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
             const ourFloor = this.pathingGraph.nodeDict.get(agentLocation.id);
             const randomLocation = ourFloor.connectedNodes[GetRandomInt(0, ourFloor.connectedNodes.length - 1)];

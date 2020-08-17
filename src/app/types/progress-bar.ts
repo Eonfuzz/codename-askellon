@@ -1,11 +1,8 @@
-/** @noSelfInFile **/
 export const PROGRESS_BAR_MODEL_PATH = 'Models\\Progressbar.mdxx';
 
 export class ProgressBar {
     bar: effect | undefined;
 
-    // barMax: number = 100;
-    // barMin: number = 0;
     progress: number = 0;
 
     isReverse: boolean = false;

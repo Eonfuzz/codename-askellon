@@ -4470,3 +4470,15 @@ STRING 1060
 Canite
 }
 
+STRING 1062
+// Units: h008 (Egg), Name (Name)
+{
+Egg
+}
+
+STRING 1063
+// Units: h008 (Egg), EditorSuffix (Name - Editor Suffix)
+{
+( Canite Alien )
+}
+

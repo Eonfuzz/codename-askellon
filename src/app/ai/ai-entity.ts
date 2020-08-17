@@ -15,6 +15,7 @@ import { PlayerAgent } from "./player-agent";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { MapPlayer, Unit } from "w3ts/index";
 import { WorldEntity } from "app/world/world-entity";
+import { Timers } from "app/timer-type";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -115,7 +116,7 @@ export class AIEntity extends Entity {
             const createFor = instance.getBestPlayerAgent(ignoreLimit);
             
             if (createFor) {
-                Log.Information("Creating agent!");
+                // Log.Information("Creating agent!");
                 const unit = CreateUnit(createFor.player.handle, whichUnitType, x, y, bj_UNIT_FACING);
                 WorldEntity.getInstance().handleTravel(Unit.fromHandle(unit), zone);
                 this.addAgent(unit);

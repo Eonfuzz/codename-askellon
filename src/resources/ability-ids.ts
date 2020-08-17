@@ -97,3 +97,6 @@ export const ABIL_ITEM_EMOTIONAL_DAMP = FourCC('A00L');
 export const ABIL_ITEM_CRYO_GRENADE = FourCC('A00M');
 export const ABIL_ITEM_GENETIC_SAMPLER = FourCC('A017');
 export const ABIL_ITEM_GENETIC_SAMPLE_INFESTED = FourCC('A018');
+
+
+export const ABIL_DEFEND = FourCC('Adef');

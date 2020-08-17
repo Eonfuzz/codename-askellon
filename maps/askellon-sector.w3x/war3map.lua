@@ -66,6 +66,36 @@ gg_rct_Region_002_Copy_Copy = nil
 gg_rct_Region_002_Copy_2 = nil
 gg_rct_CargoAConveyor = nil
 gg_rct_Mineral_Crush = nil
+gg_rct_zonecargoa1 = nil
+gg_rct_zonechurch1 = nil
+gg_rct_zonechurch2 = nil
+gg_rct_zonebridge1 = nil
+gg_rct_zonebridge2 = nil
+gg_rct_zonebridge3 = nil
+gg_rct_zonebridge4 = nil
+gg_rct_zonebridge5 = nil
+gg_rct_zonebridge6 = nil
+gg_rct_zonebridge7 = nil
+gg_rct_zonebridge8 = nil
+gg_rct_zonebiology1 = nil
+gg_rct_zonebiology2 = nil
+gg_rct_zonebiology3 = nil
+gg_rct_zonebiology4 = nil
+gg_rct_zonebiology5 = nil
+gg_rct_zonebiology6 = nil
+gg_rct_zonebiology7 = nil
+gg_rct_zonebiology8 = nil
+gg_rct_zonebiology9 = nil
+gg_rct_zonebiology10 = nil
+gg_rct_zonebiology11 = nil
+gg_rct_zonebiology12 = nil
+gg_rct_zonebiology13 = nil
+gg_rct_zonebiology14 = nil
+gg_rct_zonearmory1 = nil
+gg_rct_zonearmory2 = nil
+gg_rct_zonearmory3 = nil
+gg_rct_zonearmory4 = nil
+gg_rct_zonearmory5 = nil
 gg_trg_SetKillzones = nil
 gg_trg_LightsPerFloor = nil
 gg_trg_Set = nil
@@ -142,36 +172,6 @@ gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
 gg_dest_B002_2284 = nil
-gg_rct_zonecargoa1 = nil
-gg_rct_zonechurch1 = nil
-gg_rct_zonechurch2 = nil
-gg_rct_zonebridge1 = nil
-gg_rct_zonebridge2 = nil
-gg_rct_zonebridge3 = nil
-gg_rct_zonebridge4 = nil
-gg_rct_zonebridge5 = nil
-gg_rct_zonebridge6 = nil
-gg_rct_zonebridge7 = nil
-gg_rct_zonebridge8 = nil
-gg_rct_zonebiology1 = nil
-gg_rct_zonebiology2 = nil
-gg_rct_zonebiology3 = nil
-gg_rct_zonebiology4 = nil
-gg_rct_zonebiology5 = nil
-gg_rct_zonebiology6 = nil
-gg_rct_zonebiology7 = nil
-gg_rct_zonebiology8 = nil
-gg_rct_zonebiology9 = nil
-gg_rct_zonebiology10 = nil
-gg_rct_zonebiology11 = nil
-gg_rct_zonebiology12 = nil
-gg_rct_zonebiology13 = nil
-gg_rct_zonebiology14 = nil
-gg_rct_zonearmory1 = nil
-gg_rct_zonearmory2 = nil
-gg_rct_zonearmory3 = nil
-gg_rct_zonearmory4 = nil
-gg_rct_zonearmory5 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -282,6 +282,15 @@ function CreateAllItems()
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
 end
 
+function CreateUnitsForPlayer0()
+    local p = Player(0)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -18707.7, -26298.7, 76.061, FourCC("h008"))
+end
+
 function CreateUnitsForPlayer20()
     local p = Player(20)
     local u
@@ -295,6 +304,7 @@ function CreateUnitsForPlayer20()
     u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 337.8, -628.5, 305.078, FourCC("uaco"))
     u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 260.3, -658.4, 315.998, FourCC("uaco"))
     u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 184.7, -671.5, 193.893, FourCC("uaco"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -18075.9, -26285.7, 76.060, FourCC("h008"))
 end
 
 function CreateBuildingsForPlayer21()
@@ -628,6 +638,7 @@ function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
+    CreateUnitsForPlayer0()
     CreateUnitsForPlayer20()
     CreateUnitsForPlayer21()
 end
@@ -681,7 +692,7 @@ function CreateRegions()
     gg_rct_Region_002_Copy_2 = Rect(-5696.0, -24352.0, -5568.0, -22592.0)
     gg_rct_CargoAConveyor = Rect(-28480.0, -27680.0, -26016.0, -27552.0)
     gg_rct_Mineral_Crush = Rect(-26016.0, -27712.0, -25824.0, -27456.0)
-    gg_rct_zonecargoa1 = Rect(-29088.0, -28672.0, -25696.0, -27136.0)
+    gg_rct_zonecargoa1 = Rect(-29088.0, -28672.0, -25696.0, -27040.0)
     gg_rct_zonechurch1 = Rect(-24224.0, -28544.0, -21888.0, -24896.0)
     gg_rct_zonechurch2 = Rect(-23328.0, -29344.0, -22720.0, -28512.0)
     gg_rct_zonebridge1 = Rect(-19392.0, -26528.0, -17472.0, -25280.0)
@@ -694,7 +705,7 @@ function CreateRegions()
     gg_rct_zonebridge8 = Rect(-19360.0, -25312.0, -17504.0, -25056.0)
     gg_rct_zonebiology1 = Rect(-14880.0, -27712.0, -13888.0, -27008.0)
     gg_rct_zonebiology2 = Rect(-15392.0, -27040.0, -13664.0, -25952.0)
-    gg_rct_zonebiology3 = Rect(-15072.0, -25984.0, -13504.0, -24800.0)
+    gg_rct_zonebiology3 = Rect(-15168.0, -25984.0, -13504.0, -24800.0)
     gg_rct_zonebiology4 = Rect(-13696.0, -26112.0, -10080.0, -25728.0)
     gg_rct_zonebiology5 = Rect(-12960.0, -26816.0, -11040.0, -26080.0)
     gg_rct_zonebiology6 = Rect(-12608.0, -27232.0, -11456.0, -26784.0)
@@ -702,7 +713,7 @@ function CreateRegions()
     gg_rct_zonebiology8 = Rect(-13248.0, -25760.0, -12288.0, -24416.0)
     gg_rct_zonebiology9 = Rect(-11456.0, -25280.0, -10304.0, -24384.0)
     gg_rct_zonebiology10 = Rect(-12256.0, -25760.0, -10816.0, -25248.0)
-    gg_rct_zonebiology11 = Rect(-12224.0, -25248.0, -11424.0, -24192.0)
+    gg_rct_zonebiology11 = Rect(-12224.0, -25280.0, -11424.0, -24192.0)
     gg_rct_zonebiology12 = Rect(-12576.0, -24224.0, -11232.0, -22496.0)
     gg_rct_zonebiology13 = Rect(-13088.0, -22592.0, -10048.0, -21920.0)
     gg_rct_zonebiology14 = Rect(-13856.0, -22592.0, -13024.0, -21376.0)

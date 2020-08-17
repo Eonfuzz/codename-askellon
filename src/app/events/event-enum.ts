@@ -56,4 +56,7 @@ export enum EVENT_TYPE {
 
     // EVENTS THAT SHOULD ONLY FIRE ONCE
     ENTITY_INIT_CHAT,
+
+    // Called on death, or if a unit is removed
+    UNIT_REMOVED_FROM_GAME
 }
