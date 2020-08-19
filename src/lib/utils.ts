@@ -56,7 +56,7 @@ export function CreateBlood(x: number, y: number) {
     BlzSetSpecialEffectYaw(bloodSfx, GetRandomInt(0, 360));
     BlzSetSpecialEffectScale(bloodSfx, GetRandomReal(0.8, 1.8));
 
-    Timers.addSlowTimedAction(GetRandomInt(80, 300), () => {
+    Timers.addSlowTimedAction(GetRandomInt(10, 200), () => {
         DestroyEffect(bloodSfx);
     });
 }

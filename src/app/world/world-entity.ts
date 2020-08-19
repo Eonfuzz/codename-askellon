@@ -166,7 +166,7 @@ export class WorldEntity {
             this.unitLocation.delete(whichUnit);
         }
         else {
-            Log.Information("Remove zone failed for "+whichUnit.name);
+            // Log.Information("Remove zone failed for "+whichUnit.name);
         }
     }
 }

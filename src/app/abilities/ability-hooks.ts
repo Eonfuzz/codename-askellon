@@ -30,7 +30,8 @@ import {
     ABIL_ITEM_GENETIC_SAMPLER,
     ABIL_ACTIVATE_SEQUENCER_TEST,
     ABIL_ALIEN_EVOLVE_T3,
-    ABIL_ALIEN_NEURAL_TAKEOVER
+    ABIL_ALIEN_NEURAL_TAKEOVER,
+    ABIL_SHIP_CHAINGUN
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -61,6 +62,7 @@ import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { DiodeEjectAbility } from "./human/diode-ejector";
 import { NeuralTakeoverAbility } from "./alien/neural-takeover";
 import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
+import { ShipChaingunAbility } from "./human/ship-chaingun";
 
 
 
@@ -119,6 +121,7 @@ AbilityHooks.Add(ABIL_SHIP_BARREL_ROLL_LEFT, () => new ShipBarrelRoll());
 AbilityHooks.Add(ABIL_SHIP_BARREL_ROLL_RIGHT, () => new ShipBarrelRoll());
 AbilityHooks.Add(ABIL_SHIP_LASER, () => new ShipMacroLasAbility());
 AbilityHooks.Add(ABIL_SHIP_DEEP_SCAN, () => new ShipDeepScanAbility());
+AbilityHooks.Add(ABIL_SHIP_CHAINGUN, () => new ShipChaingunAbility());
 AbilityHooks.Add(ABIL_HUMAN_SPRINT, () => new SprintLeapAbility());
 AbilityHooks.Add(ABIL_ITEM_TRIFEX, () => new TrifexAbility());
 AbilityHooks.Add(ABIL_ITEM_GENETIC_SAMPLER, () => new GeneticSamplerItemAbility());

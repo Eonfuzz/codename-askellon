@@ -2,13 +2,10 @@
  * Chat system by Niklas
  * Converted to Typescript by Boar
  */
-
-
-import { Game } from "app/game";
-import { Log } from "lib/serilog/serilog";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer } from "w3ts";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
+import { COL_MISC } from "resources/colours";
 
 const MAX_CHAT_MESSAGES = 15;
 
@@ -79,7 +76,7 @@ export class ChatSystem {
     private generateMessage(playerName: string, playerColor: string, message: string, messageTag?: string): string {
         // Append an empty string if this isn't the local player
         if (GetLocalPlayer() === this.player.handle) {
-            return `[${this.getChatTimeTag()}${messageTag ? `::${messageTag}` : ''}] ${this.getChatUser(playerName, playerColor)}: ${message}`;
+            return `[${COL_MISC}${this.getChatTimeTag()}|r${messageTag ? `::${messageTag}` : ''}] ${this.getChatUser(playerName, playerColor)}: ${message}`;
         }
         return ``;
     }

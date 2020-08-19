@@ -7,7 +7,7 @@ import { Log } from "lib/serilog/serilog";
 import { ABIL_DEFEND } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { UNIT_ID_DUMMY_CASTER } from "resources/unit-ids";
+import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL } from "resources/unit-ids";
 
 /**
  * Handles and tracks events being passed to and from the game
@@ -42,9 +42,15 @@ export class EventEntity {
             SetPlayerAbilityAvailable(player.handle, ABIL_DEFEND, false);
         });
         this.onUnitSpawn.addAction(() => {
-            // Log.Information("Adding Defend to "+GetUnitName(GetTriggerUnit()));
+            const u = GetUnitTypeId(GetTriggerUnit());
+            
+            if (u == UNIT_ID_DUMMY_CASTER) return false;
+            if (u == UNIT_ID_CRATE) return false;
+            if (u == SPACE_UNIT_ASTEROID) return false;
+            if (u == SPACE_UNIT_MINERAL) return false;
+            // if (u == UNIT_) return false;
+            
             UnitAddAbility(GetTriggerUnit(), ABIL_DEFEND);
-            // UnitRemoveAbility(GetTriggerUnit(), ABIL_DEFEND);
         })
 
         this.onUnitUndefend = new Trigger();
@@ -52,7 +58,7 @@ export class EventEntity {
         this.onUnitUndefend.addCondition(Condition(() => { 
             const order = GetIssuedOrderId()
             // If we are undefending it means something's happened to the unit
-            if (order === 852056 && GetUnitTypeId(GetTriggerUnit()) !== UNIT_ID_DUMMY_CASTER) {
+            if (order === 852056) {
                 const unit = Unit.fromHandle(GetTriggerUnit());
                 const unitIsDead = !UnitAlive(unit.handle)
                 if (unitIsDead) {

@@ -4482,3 +4482,9 @@ STRING 1063
 ( Canite Alien )
 }
 
+STRING 1064
+// Units: u001 (Leech), Name (Name)
+{
+Leech
+}
+

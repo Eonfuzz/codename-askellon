@@ -7,10 +7,10 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
+import { UNIT_ID_CRATE } from "resources/unit-ids";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
-const CRATE_ID = FourCC('h005');
 export class SecurityFactory {
     isDestroyedMap = new Map<Unit, boolean>();
 
@@ -29,7 +29,7 @@ export class SecurityFactory {
 
         // Get all security units on the map
         const uGroup = CreateGroup();
-        GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.StationSecurity.handle, Filter(() => {
+        GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.StationProperty.handle, Filter(() => {
             const u = GetFilterUnit();
             const uType = GetUnitTypeId(u);
             
@@ -56,7 +56,7 @@ export class SecurityFactory {
         // Now begin crate death trig
         const crateDeath = new Trigger();
         crateDeath.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
-        crateDeath.addCondition(Filter(() => GetUnitTypeId(GetDyingUnit()) === CRATE_ID));
+        crateDeath.addCondition(Filter(() => GetUnitTypeId(GetDyingUnit()) === UNIT_ID_CRATE));
         crateDeath.addAction(() => this.onCrateDeath(Unit.fromHandle(GetDyingUnit())));
     }
 
@@ -137,7 +137,7 @@ export class SecurityFactory {
         const group = new Group();
         const rect = Rectangle.fromHandle(bj_mapInitialPlayableArea);
 
-        group.enumUnitsInRect(rect, Filter(() => GetUnitTypeId(GetFilterUnit()) === CRATE_ID));
+        group.enumUnitsInRect(rect, Filter(() => GetUnitTypeId(GetFilterUnit()) === UNIT_ID_CRATE));
         group.for(() => {
             const doDecimate = GetRandomInt(0, 100) >= 40;
             if (doDecimate) {

@@ -245,6 +245,8 @@ export class WeaponEntity extends Entity {
         const pData = PlayerStateFactory.get(unit.owner);
         const crew = pData.getCrewmember();
 
+        // Log.Information("Equip "+GetItemName(item)+" is weapon "+itemIsWeapon+" is attachment "+itemIsAttachment);
+
         if (itemIsWeapon) {
             const oldWeapon = this.getGunForUnit(unit);
             const weaponForItem = this.getGunForItem(item) || this.createWeaponForId(item, crew);
@@ -269,6 +271,7 @@ export class WeaponEntity extends Entity {
         // Otherwise it's an attachment
         else if (itemIsAttachment) {
             if (crew.weapon) {
+                // Log.Information("Crew has weapon while attaching");
                 const attachment = this.createAttachmentForId(item);
                 if (attachment) {
                     attachment.attachTo(crew.weapon, crew);
@@ -423,8 +426,8 @@ export class WeaponEntity extends Entity {
     }
 
     itemIsAttachment(itemId: number) : boolean {
-        if (itemId === HIGH_QUALITY_POLYMER_ITEM_ID) return true;
-        if (itemId === EMS_RIFLING_ITEM_ID) return true;
+        // if (itemId === HIGH_QUALITY_POLYMER_ITEM_ID) return true;
+        // if (itemId === EMS_RIFLING_ITEM_ID) return true;
         if (itemId == SNIPER_ITEM_ID) return true;
         if (itemId == AT_ITEM_DRAGONFIRE_BLAST) return true;
         return false;
@@ -445,7 +448,7 @@ export class WeaponEntity extends Entity {
 
     createAttachmentForId(item: item) : Attachment | undefined {
         let itemId = GetItemTypeId(item);
-        if (itemId == HIGH_QUALITY_POLYMER_ITEM_ID)
+        // if (itemId == HIGH_QUALITY_POLYMER_ITEM_ID)
         if (itemId == SNIPER_ITEM_ID)
             return new RailRifle(this.game, item);
         if (itemId == AT_ITEM_DRAGONFIRE_BLAST)

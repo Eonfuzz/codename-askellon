@@ -169,7 +169,7 @@ export class ShipZone extends Zone {
     private onGeneratorDestroy(generator: Unit, source: Unit) {
         // Make sure we have generator in our array
         if (this.powerGenerators.indexOf(generator) >= 0) {
-            Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
+            // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
             try {
                 this.updatePower(false);
             }
@@ -182,7 +182,7 @@ export class ShipZone extends Zone {
     private onGeneratorRepair(generator: Unit, source: Unit) {
         // Make sure we have generator in our array
         if (this.powerGenerators.indexOf(generator) >= 0) {
-            Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
+            // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
             this.updatePower(true);
         }
     }

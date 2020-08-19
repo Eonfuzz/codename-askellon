@@ -14,7 +14,7 @@ import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
@@ -77,7 +77,7 @@ export class ChatEntity extends Entity {
         const chatTextHandle = BlzGetFrameByName("Chat Text", 0);
         BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_CHAT_MSG, 0), false);
 
-        BlzFrameSetAbsPoint(chatHandle, FRAMEPOINT_BOTTOMLEFT, (0.6 * BlzGetLocalClientWidth() / BlzGetLocalClientHeight() - 0.8) / -2, 0.17);
+        BlzFrameSetAbsPoint(chatHandle, FRAMEPOINT_BOTTOMLEFT, (0.6 * BlzGetLocalClientWidth() / BlzGetLocalClientHeight() - 0.8) / -2 + 0.05, 0.17);
         BlzFrameSetLevel(chatHandle, 8);
 
         BlzFrameSetTextAlignment(chatTextHandle, TEXT_JUSTIFY_BOTTOM, TEXT_JUSTIFY_LEFT);
@@ -191,7 +191,7 @@ export class ChatEntity extends Entity {
                     const crewUnit = pData.getCrewmember().unit;
 
                     const zone = WorldEntity.getInstance().getUnitZone(crewUnit);
-                    AIEntity.createAddAgent(ALIEN_MINION_CANITE, x, y, zone.id);
+                    AIEntity.createAddAgent(ALIEN_MINION_LEECH, x, y, zone.id);
                 });
                 // const unit =
             }

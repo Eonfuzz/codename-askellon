@@ -79,9 +79,11 @@ export function initShipInteractions() {
             
             // Log.Information("Start!");
             const tickEvery = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3 ? 0.15 : 0.3;
+            miningShips.set(source, true);
             doMine(sfxPath, tickEvery, source, interactable);
         },
         onCancel: (source: Unit, interactable: Unit) => {
+            miningShips.set(source, false);
         },
         action: (source: Unit, interactable: Unit) => {
             // Set rock anim speed so it dies faster
@@ -93,6 +95,7 @@ export function initShipInteractions() {
     Interactables.set(SPACE_UNIT_MINERAL, asteroidInteraction);
 }
 
+const miningShips = new Map<Unit,  boolean>();
 export function doMine(sfxPath: string, tickEvery: number, source: Unit, interactable: Unit) {
     Timers.addTimedAction(tickEvery, () => {
 
@@ -141,7 +144,7 @@ export function doMine(sfxPath: string, tickEvery: number, source: Unit, interac
             DestroyLightning(lightning);
             kL.destroy()
         });
-        doMine(sfxPath, tickEvery, source, interactable);
+        if (miningShips.get(source) == true) doMine(sfxPath, tickEvery, source, interactable);
     });
 }
 
