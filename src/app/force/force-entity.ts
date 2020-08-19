@@ -87,7 +87,7 @@ export class ForceEntity extends Entity {
 
         const playerLeavesGameTrigger = new Trigger();
         players.forEach(player => playerLeavesGameTrigger.registerPlayerEvent(player, EVENT_PLAYER_LEAVE));
-        playerLeavesGameTrigger.addAction(() => this.playerLeavesGame(MapPlayer.fromHandle(GetTriggerPlayer())))
+        playerLeavesGameTrigger.addAction(() => this.playerLeavesGame(MapPlayer.fromHandle(GetTriggerPlayer())));
     }
 
     /**
@@ -390,5 +390,17 @@ export class ForceEntity extends Entity {
         });
 
         PlayerStateFactory.get(who).getForce().removePlayer(who);
+    }
+
+    public startIntroduction() {
+        Players.forEach(player => {
+            const pData = PlayerStateFactory.get(player);
+            if (pData) {
+                const force = pData.getForce();
+                if (force) {
+                    force.introduction(player);
+                }
+            }
+        })
     }
 }

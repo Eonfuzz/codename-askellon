@@ -1,7 +1,7 @@
 import { Trigger, Unit, Group, Rectangle } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS, ITEM_ID_CRYO_GRENADE } from "app/weapons/weapon-constants";
-import { ITEM_TRIFEX_ID } from "resources/item-ids";
+import { ITEM_TRIFEX_ID, ITEM_BARRICADES } from "resources/item-ids";
 import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
@@ -179,8 +179,11 @@ export class SecurityFactory {
             else CreateItem(SNIPER_ITEM_ID, x, y);
         }
         // 50% Chance for 50 coins
-        else if (mainSeed >= 300) {
+        else if (mainSeed >= 500) {
             CreateItem(ITEM_ID_25_COINS, x, y);
+        }
+        else if (mainSeed >= 400) {
+            CreateItem(ITEM_BARRICADES, x, y);
         }
         // Otherwise misc stuff
         else {

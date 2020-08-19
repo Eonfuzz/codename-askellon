@@ -988,12 +988,6 @@ STRING 244
 ranged
 }
 
-STRING 245
-// Units: n003 (Weapon Shop), Name (Name)
-{
-Weapon Shop
-}
-
 STRING 246
 // Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
@@ -4456,5 +4450,71 @@ STRING 1072
 // Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Description (Description)
 {
 Weapon: Fires a continuous stream of molten lead
+}
+
+STRING 1073
+// Units: n003 (Gun Rack), Name (Name)
+{
+Gun Rack
+}
+
+STRING 1074
+// Units: h009 (Barrier), Name (Name)
+{
+Barrier
+}
+
+STRING 1075
+// Items: I002 (Barricades), Name (Name)
+{
+Barricades
+}
+
+STRING 1076
+// Items: I002 (Barricades), Tip (Tooltip - Basic)
+{
+Barricades
+}
+
+STRING 1077
+// Items: I002 (Barricades), Ubertip (Tooltip - Extended)
+{
+|cff808080Intelligent metal cylinders quickly expand once placed into the ground, forming an instant and sturdy wall.|r|n|nPlaces a |cff00ff00Barricade|r that has |cff00ff00200 |rhp.|n|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 1078
+// Items: I002 (Barricades), Description (Description)
+{
+Places a Barricade
+}
+
+STRING 1079
+// Abilities: A01D (Build Barricades), Name (Name)
+{
+Build Barricades
+}
+
+STRING 1080
+// Abilities: A01E (Slow Aura), EditorSuffix (Editor Suffix)
+{
+ (Barricade)
+}
+
+STRING 1081
+// Buffs/Effects: B009 (Stuck), EditorName (Name (Editor Only))
+{
+Stuck
+}
+
+STRING 1082
+// Buffs/Effects: B009 (Stuck), Bufftip (Tooltip)
+{
+Stuck
+}
+
+STRING 1083
+// Buffs/Effects: B009 (Stuck), Buffubertip (Tooltip - Extended)
+{
+This unit is stuck
 }
 

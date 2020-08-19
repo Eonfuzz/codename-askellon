@@ -90,7 +90,7 @@ export class ConveyorEntity extends Entity {
         this.itemDrop.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DROP_ITEM);
         this.itemDrop.addAction(() => {
             const item = GetManipulatedItem();
-
+            
             Timers.addTimedAction(0.05, () => {
                 const iX = GetItemX(item);
                 const iY = GetItemY(item);
@@ -113,6 +113,7 @@ export class ConveyorEntity extends Entity {
         
         this.unitEnterRegion.addAction(() => {
             const tRegion = GetTriggeringRegion();
+            if (IsUnitType(GetTriggerUnit(), UNIT_TYPE_MECHANICAL)) return false;
 
             if (tRegion === this.conveyorPushNorthRegion.handle) {
                 this.unitMoveNorth.push(GetTriggerUnit());
@@ -129,6 +130,7 @@ export class ConveyorEntity extends Entity {
         });
         this.unitLeaveRegion.addAction(() => {
             const tRegion = GetTriggeringRegion();
+            if (IsUnitType(GetTriggerUnit(), UNIT_TYPE_MECHANICAL)) return false;
 
             if (tRegion === this.conveyorPushNorthRegion.handle) {
                 this.unitMoveNorth.splice(this.unitMoveNorth.indexOf(GetTriggerUnit()), 1);

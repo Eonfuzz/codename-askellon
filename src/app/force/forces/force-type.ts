@@ -1,7 +1,7 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { PLAYER_COLOR } from "lib/translators";
-import { SoundWithCooldown } from "app/types/sound-ref";
+import { PLAYER_COLOR, PlayNewSound } from "lib/translators";
+import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
 import { MapPlayer, Unit, Trigger } from "w3ts";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { EventEntity } from "app/events/event-entity";
@@ -9,6 +9,9 @@ import { VisionFactory } from "app/vision/vision-factory";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { ChatHook } from "app/chat/chat-hook-type";
 import { PlayerStateFactory } from "../player-state-entity";
+import { COL_GOLD } from "resources/colours";
+import { EventListener } from "app/events/event-type";
+import { ChatEntity } from "app/chat/chat-entity";
 
 
 export const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
@@ -83,6 +86,7 @@ export abstract class ForceType {
         whichUnit.unit.suspendExperience(true);
 
         if (levelBefore !== whichUnit.unit.level) {
+            this.onPlayerLevelUp(whichUnit.unit.owner, whichUnit.unit.level);
             EventEntity.getInstance().sendEvent(EVENT_TYPE.HERO_LEVEL_UP, { source: whichUnit.unit, crewmember: whichUnit });
         }
     }
@@ -152,5 +156,24 @@ export abstract class ForceType {
      */
     public onTick(delta: number) {
 
+    }
+
+    /**
+     * 
+     * @param who 
+     */
+    private introSound = new SoundRef("Sounds\\ComplexBeep.mp3", false, true);
+    public introduction(who: MapPlayer) {
+        const pData = PlayerStateFactory.get(who);
+        const crew = pData.getCrewmember();
+
+        if (GetLocalPlayer() === who.handle) {
+            this.introSound.playSound();
+            DisplayTextToPlayer(who.handle, 0, 0, `${COL_GOLD}Your Role |r`+crew.role);
+        }
+    }
+
+    protected onPlayerLevelUp(who: MapPlayer, level: number) {
+        ChatEntity.getInstance().postSystemMessage(who, `Level up! ${COL_GOLD}+30 Income|r`);
     }
 }

@@ -230,8 +230,8 @@ export class Game {
         })
 
         new Timer().start(3, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
+            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
 
             SetDayNightModels("DeepFried\\dnclordaeronunit.mdx", "DeepFried\\dnclordaeronunit.mdx");
             CameraSetSourceNoise(5, 50);
@@ -239,18 +239,18 @@ export class Game {
                 BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), false);            
             }
         });
-        new Timer().start(4, false, () => {
-            // PlayNewSound("Sounds\\ShipDamage\\GroanLong1.mp3", 127);
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
-        });
-        new Timer().start(5, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
-        });
+        // new Timer().start(4, false, () => {
+        //     // PlayNewSound("Sounds\\ShipDamage\\GroanLong1.mp3", 127);
+        //     PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+        //     DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
+        // });
+        // new Timer().start(5, false, () => {
+        //     PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+        //     DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
+        // });
         new Timer().start(6, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Power Loss imminent`);
+            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Power Loss imminent`);
 
             CameraSetSourceNoise(10, 50);
         });
@@ -270,7 +270,7 @@ export class Game {
         });
         new Timer().start(14, false, () => {
             // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Rebooting...`);
+            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Rebooting...`);
             CameraSetSourceNoise(10, 50);
         });
         new Timer().start(16, false, () => {
@@ -282,22 +282,16 @@ export class Game {
             WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.CHURCH).updatePower(true);
         });
         new Timer().start(20, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Breaches detected`);
+            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Breaches detected`);
 
             CameraSetSourceNoise(0, 0);
         });
         new Timer().start(21, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Signs of ${COL_ATTATCH}INTRUSION|r. XENOS ON BOARD`);
-        });
-        new Timer().start(22, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Calculating scenario...`);
-        });
-        new Timer().start(24, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Eliminate intruder`);
+            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Signs of ${COL_ATTATCH}INTRUSION|r. XENOS ON BOARD`);
+
+            ForceEntity.getInstance().startIntroduction();
         });
     }
     

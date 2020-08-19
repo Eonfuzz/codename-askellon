@@ -12,6 +12,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Players } from "w3ts/globals/index";
 import { Hooks } from "lib/Hooks";
+import { Log } from "lib/serilog/serilog";
 
 const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false, true);
 
@@ -67,21 +68,26 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
              * If tech researched is a global thing, alert and give the upgrade to all players
              */
             if (this.techIsMajor(techUnlocked)) {
-                // Process the tech upgrade yo
-                this.processMajorUpgrade(player, techUnlocked, levelTech);
-                // Brilliant, now reward the player with experience
-                const pData = PlayerStateFactory.get(player);
-                const pForce = pData.getForce();
+                try {
+                    // Process the tech upgrade yo
+                    this.processMajorUpgrade(player, techUnlocked, levelTech);
+                    // Brilliant, now reward the player with experience
+                    const pData = PlayerStateFactory.get(player);
+                    const pForce = pData.getForce();
 
-                const crewmember = pData.getCrewmember();
+                    const crewmember = pData.getCrewmember();
 
-                if (pForce && crewmember) this.rewardResearchXP(pForce, crewmember, player, techUnlocked);
+                    if (pForce && crewmember) this.rewardResearchXP(pForce, crewmember, player, techUnlocked);
 
-                majorResarchSound.playSound();
-                // Broadcast item equip event
-                EventEntity.getInstance().sendEvent(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { 
-                    source: unit, data: { researched: techUnlocked, level: levelTech }
-                });
+                    majorResarchSound.playSound();
+                    // Broadcast item equip event
+                    EventEntity.getInstance().sendEvent(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { 
+                        source: unit, data: { researched: techUnlocked, level: levelTech }
+                    });
+                }
+                catch(e) {
+                    Log.Error(e);
+                }
             }
             // Otherwise just update it for a single player
             else {
@@ -142,12 +148,15 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
                 // Play upgrade complete sound
                 DisplayTextToPlayer(p.handle, 0, 0, STR_OCCUPATION_BONUS());
             }
+
             const pData = PlayerStateFactory.get(p);
             const pForce = pData.getForce();
+            if (pData && pForce) {
 
-            if (isInfested && pForce.is(ALIEN_FORCE_NAME)) {
-                DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
-                // Play infestation complete sound
+                if (isInfested && pForce.is(ALIEN_FORCE_NAME)) {
+                    DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
+                    // Play infestation complete sound
+                }
             }
         });
     }
@@ -207,11 +216,16 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
     }
     
     private rewardResearchXP(force: ForceType, crewmember: Crewmember, player: MapPlayer, techUnlocked: number) {
-        let baseXp = 500 * this.getMajorUpgradeLevel(techUnlocked);
+        Log.Information("Rewarding XP");
+        let baseXp = 250 * this.getMajorUpgradeLevel(techUnlocked);
 
-        // Increase xp by 50% if it is your role's research
-        if (techUnlocked === TECH_MAJOR_HEALTHCARE && crewmember.role === ROLE_TYPES.DOCTOR) {
-            baseXp * 1.5;
+
+        const roles = this.grantsOccupationBonus.get(techUnlocked);
+        const hasOccupationBonus = crewmember && roles && roles.indexOf(crewmember.role) >= 0;
+
+        // Increase xp by 30% if it is your role's research
+        if (hasOccupationBonus) {
+            baseXp * 1.3;
         }
 
         crewmember.addExperience(baseXp);

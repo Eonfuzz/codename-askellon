@@ -24,6 +24,10 @@ import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME, ALIEN_CHAT_COLOR } from "./force
 import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { WorldEntity } from "app/world/world-entity";
+import { Timers } from "app/timer-type";
+import { COL_ALIEN } from "resources/colours";
+import { SOUND_ALIEN_GROWL } from "resources/sounds";
+import { ChatEntity } from "app/chat/chat-entity";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -357,6 +361,7 @@ export class AlienForce extends ForceType {
         alien.suspendExperience(true);
     
         if (levelBefore !== alien.level) {
+            this.onPlayerLevelUp(whichUnit.unit.owner, alien.level);
             EventEntity.getInstance().sendEvent(EVENT_TYPE.HERO_LEVEL_UP, { source: alien });
         }
     }
@@ -487,7 +492,7 @@ export class AlienForce extends ForceType {
     public getChatSoundRef(chatEvent: ChatHook): SoundWithCooldown {
         // If player is transformed return an alien name
         if (this.isPlayerTransformed(chatEvent.who)) {
-            return ALIEN_CHAT_SOUND_REF;
+            return SOUND_ALIEN_GROWL;
         }
         
         // Otherwise return default behaviour
@@ -614,6 +619,35 @@ export class AlienForce extends ForceType {
         catch (e) {
             Log.Error("Evolution failed!");
             Log.Error(e);
+        }
+    }
+
+    
+    /**
+     * 
+     * @param who 
+     */
+    public introduction(who: MapPlayer) {
+        super.introduction(who);
+
+        const pData = PlayerStateFactory.get(who);
+        const crew = pData.getCrewmember();
+
+        Timers.addTimedAction(4, () => {
+            if (GetLocalPlayer() === who.handle) {
+                SOUND_ALIEN_GROWL.setVolume(127);
+                SOUND_ALIEN_GROWL.playSound();
+                DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}The hive welcomes you, my new Host.|r`);
+                DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}Find the others, hunt them, eat them. Welcome them like I have welcomed you.|r`);
+            }
+        });
+    }
+
+    protected onPlayerLevelUp(who: MapPlayer, level: number) {
+        super.onPlayerLevelUp(who, level);
+
+        if (level === 4) {
+            ChatEntity.getInstance().postSystemMessage(who, `${COL_ALIEN}You are powerful enough to evolve|r`);
         }
     }
 }

@@ -9,8 +9,9 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Log } from "lib/serilog/serilog";
 import { AbilityHooks } from "../ability-hooks";
 import { ABIL_ALIEN_SCREAM } from "resources/ability-ids";
+import { SOUND_ALIEN_SCREAM } from "resources/sounds";
 
-const screamSound =new SoundRef("Sounds\\Nazgul.wav", false, true);
+// const screamSound =new SoundRef("Sounds\\Nazgul.wav", false, true);
 
 export class ScreamAbility implements Ability {
     casterUnit: Unit;
@@ -37,7 +38,7 @@ export class ScreamAbility implements Ability {
                     if (crew && crew.unit.isAlive()) {
                         crew.addDespair(new BuffInstanceDuration(this.casterUnit, 30));
                         if (GetLocalPlayer() === pData.player.handle) {
-                            screamSound.playSound();
+                            SOUND_ALIEN_SCREAM.playSound();
                         }
                     }
                 }
