@@ -21,6 +21,9 @@ import { CREW_FORCE_NAME, ALIEN_FORCE_NAME } from "./forces/force-names";
 import { AlienForce } from "./forces/alien-force";
 import { GetActivePlayers } from "lib/utils";
 import { Hooks } from "lib/Hooks";
+import { ChatEntity } from "app/chat/chat-entity";
+import { Players } from "w3ts/globals/index";
+import { PLAYER_COLOR } from "lib/translators";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -373,6 +376,10 @@ export class ForceEntity extends Entity {
     private playerLeavesGame(who: MapPlayer) {
         const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false);
         playerLeaveSound.playSound();
+
+        Players.forEach(player => {
+            ChatEntity.getInstance().postSystemMessage(player, `${PLAYER_COLOR[player.id]}${player.name}|r has left the game!`);            
+        });
 
         // Kill all units they woned
         const allUnits = GetUnitsOfPlayerAll(who.handle);

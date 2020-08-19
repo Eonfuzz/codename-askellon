@@ -32,6 +32,8 @@ export class PerseusShip extends ShipWithFuel {
                 this.unit.y, 
                 vectorFromUnit(this.unit.handle).applyPolarOffset(this.unit.facing, 30)
             );
+            this.engine.velocityForwardMax = 400;
+            this.engine.mass = 260;
         }
         else {
             Log.Warning("Perseus asked to create vector engine but already exists");

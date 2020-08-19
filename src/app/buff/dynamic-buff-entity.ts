@@ -46,7 +46,7 @@ export class DynamicBuffEntity extends Entity {
         if (id === BUFF_ID.TRIFEX) return new Trifex();
         if (id === BUFF_ID.DESPAIR) return new Despair(who);
         if (id === BUFF_ID.RESOLVE) return new Resolve(who);
-        // if (id === BUFF_ID.PURITY_SEAL) return new PuritySeal();
+        if (id === BUFF_ID.PURITY_SEAL) return new PuritySeal();
         Log.Error("Creating new buff no instance for ID "+id);
     }
 

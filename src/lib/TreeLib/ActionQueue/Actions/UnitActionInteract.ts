@@ -34,7 +34,7 @@ export class UnitActionInteract implements UnitAction {
         this.updateTimer += timeStep;
         this.prevLocUpdateCounter -= timeStep;
         if (this.prevLocUpdateCounter <= 0) {
-            if (this.prevLoc.distanceTo(Vector2.fromWidget(target)) >= 1000 || this.timer > this.maxTime) {
+            if (this.prevLoc.distanceTo(Vector2.fromWidget(target)) >= 2000 || this.timer > this.maxTime) {
                 this.isFinished = true;
             } else if (this.updateTimer >= 10) {
                 IssueTargetOrderById(target, SMART_ORDER_ID, this.targetWidget);

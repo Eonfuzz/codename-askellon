@@ -172,6 +172,17 @@ gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
 gg_dest_B002_2284 = nil
+gg_rct_FallZoneCargo_Copy_2 = nil
+gg_rct_JumpPassCargo_Copy = nil
+gg_rct_JumpPassCargoVent_Copy = nil
+gg_rct_ShipAirWaveZone2 = nil
+gg_rct_ShipBay05 = nil
+gg_rct_ShipBay06 = nil
+gg_rct_ShipBay07 = nil
+gg_rct_ShipBay08 = nil
+gg_rct_CargoAConveyor_Copy = nil
+gg_rct_Mineral_Crush_Copy = nil
+gg_rct_zonecargob1 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -277,19 +288,8 @@ end
 function CreateAllItems()
     local itemID
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
-    BlzCreateItemWithSkin(FourCC("I00F"), -18510.5, -26318.2, FourCC("I00F"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
-end
-
-function CreateUnitsForPlayer0()
-    local p = Player(0)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("u000"), -18204.5, -26261.8, 177.544, FourCC("u000"))
-    u = BlzCreateUnitWithSkin(p, FourCC("u001"), -18123.7, -26231.1, 227.555, FourCC("u001"))
 end
 
 function CreateUnitsForPlayer20()
@@ -299,12 +299,6 @@ function CreateUnitsForPlayer20()
     local t
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 328.3, -2182.2, 197.837, FourCC("uaco"))
-    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 663.9, -302.4, 250.155, FourCC("uaco"))
-    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 460.5, -541.0, 120.974, FourCC("uaco"))
-    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 396.1, -598.2, 132.774, FourCC("uaco"))
-    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 337.8, -628.5, 305.078, FourCC("uaco"))
-    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 260.3, -658.4, 315.998, FourCC("uaco"))
-    u = BlzCreateUnitWithSkin(p, FourCC("uaco"), 184.7, -671.5, 193.893, FourCC("uaco"))
 end
 
 function CreateBuildingsForPlayer21()
@@ -331,32 +325,15 @@ function CreateUnitsForPlayer21()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -416.0, -96.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -352.0, -224.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -224.0, -224.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -288.0, -96.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22048.0, -25120.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -96.0, -224.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1376.0, 416.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1184.0, 416.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1376.0, 288.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -5632.0, -24064.0, 269.179, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1184.0, 288.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1248.0, 160.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1760.0, 480.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1888.0, 480.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1824.0, 32.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -28000.0, 27.736, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23904.0, -28064.0, 264.949, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 2016.0, -160.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1632.0, -160.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 1568.0, 96.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -25056.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -25120.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -25184.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22560.0, -24992.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22496.0, -24992.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 416.0, -928.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28448.0, -27296.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28384.0, -27296.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -28320.0, -27296.0, 270.000, FourCC("h005"))
@@ -583,8 +560,6 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 3725.9, -403.1, 210.264, FourCC("ntrd"))
-    u = BlzCreateUnitWithSkin(p, FourCC("ntrd"), 3602.9, -115.6, 215.074, FourCC("ntrd"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), -4327.5, -23198.2, 265.400, FourCC("h000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), -5063.5, -22654.2, 265.400, FourCC("h000"))
     u = BlzCreateUnitWithSkin(p, FourCC("h000"), -5639.5, -23582.2, 265.400, FourCC("h000"))
@@ -638,7 +613,6 @@ function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
-    CreateUnitsForPlayer0()
     CreateUnitsForPlayer20()
     CreateUnitsForPlayer21()
 end
@@ -695,7 +669,7 @@ function CreateRegions()
     gg_rct_zonecargoa1 = Rect(-29088.0, -28672.0, -25696.0, -27040.0)
     gg_rct_zonechurch1 = Rect(-24224.0, -28544.0, -21888.0, -24896.0)
     gg_rct_zonechurch2 = Rect(-23328.0, -29344.0, -22720.0, -28512.0)
-    gg_rct_zonebridge1 = Rect(-19392.0, -26528.0, -17472.0, -25280.0)
+    gg_rct_zonebridge1 = Rect(-19072.0, -27200.0, -17152.0, -25952.0)
     gg_rct_zonebridge2 = Rect(-18592.0, -27648.0, -18304.0, -26464.0)
     gg_rct_zonebridge3 = Rect(-18720.0, -28160.0, -18144.0, -27616.0)
     gg_rct_zonebridge4 = Rect(-19104.0, -28576.0, -18528.0, -28128.0)
@@ -722,6 +696,17 @@ function CreateRegions()
     gg_rct_zonearmory3 = Rect(-5536.0, -25792.0, -3392.0, -25056.0)
     gg_rct_zonearmory4 = Rect(-7008.0, -24608.0, -5824.0, -23104.0)
     gg_rct_zonearmory5 = Rect(-5856.0, -24512.0, -4128.0, -22368.0)
+    gg_rct_FallZoneCargo_Copy_2 = Rect(1472.0, -25312.0, 2144.0, -25056.0)
+    gg_rct_JumpPassCargo_Copy = Rect(1088.0, -26144.0, 2208.0, -25312.0)
+    gg_rct_JumpPassCargoVent_Copy = Rect(1408.0, -25120.0, 2176.0, -24256.0)
+    gg_rct_ShipAirWaveZone2 = Rect(-1152.0, -26848.0, 2208.0, -25280.0)
+    gg_rct_ShipBay05 = Rect(-928.0, -26624.0, -736.0, -26208.0)
+    gg_rct_ShipBay06 = Rect(-32.0, -26624.0, 160.0, -26208.0)
+    gg_rct_ShipBay07 = Rect(864.0, -26624.0, 1056.0, -26208.0)
+    gg_rct_ShipBay08 = Rect(1760.0, -26624.0, 1952.0, -26208.0)
+    gg_rct_CargoAConveyor_Copy = Rect(-576.0, -25856.0, 1888.0, -25728.0)
+    gg_rct_Mineral_Crush_Copy = Rect(1888.0, -25888.0, 2080.0, -25632.0)
+    gg_rct_zonecargob1 = Rect(-1184.0, -26848.0, 2208.0, -25216.0)
 end
 
 function Trig_SetKillzones_Actions()

@@ -345,18 +345,6 @@ STRING 95
 |cff808080The last attempt to survive, this unit feels resolve.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
 }
 
-STRING 96
-// Items: I002 (High Polymer Casing), Name (Name)
-{
-High Polymer Casing
-}
-
-STRING 97
-// Items: I002 (High Polymer Casing), Tip (Tooltip - Basic)
-{
-High Polymer Casing
-}
-
 STRING 100
 // Abilities: A009 (High Quality Polymer), Name (Name)
 {
@@ -387,45 +375,21 @@ STRING 108
 }
 
 STRING 109
-// Items: I003 (EMS Rifling), Name (Name)
-{
-EMS Rifling
-}
-
-STRING 110
-// Items: I003 (EMS Rifling), Tip (Tooltip - Basic)
-{
-EMS Rifling
-}
-
-STRING 112
 // Abilities: A00A (EMS Rifling), Tip (Tooltip - Normal)
 {
 EMS Rifling
 }
 
-STRING 114
+STRING 110
 // Abilities: A00A (EMS Rifling), Name (Name)
 {
 EMS Rifling
 }
 
 STRING 116
-// Items: I003 (EMS Rifling), Ubertip (Tooltip - Extended)
-{
-|cff808080Innovative internal components created by EMS industries, these parts greatly improved the efficiency of any weapon that uses them.|r|n|nIncreases range by |cff00ff0020%|r and base damage by |cff00ff005|r.
-}
-
-STRING 117
 // Abilities: A00A (EMS Rifling), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Innovative internal components created by EMS industries, these parts greatly improved the efficiency of any weapon that uses them.|r|n|nIncreases range by |cff00ff0020%|r and base damage by |cff00ff005|r.
-}
-
-STRING 118
-// Items: I002 (High Polymer Casing), Ubertip (Tooltip - Extended)
-{
-|cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r
 }
 
 STRING 119
@@ -1702,12 +1666,6 @@ STRING 398
 Repair Kit
 }
 
-STRING 399
-// Items: I005 (Repair Kit), Description (Description)
-{
-Repairs buildings 100% over 5 seconds
-}
-
 STRING 401
 // Items: I005 (Repair Kit), Ubertip (Tooltip - Extended)
 {
@@ -2099,12 +2057,6 @@ STRING 491
 Purchase Cryo Grenade
 }
 
-STRING 492
-// Items: I009 (Cryo Grenade), Description (Description)
-{
-Prevents emotion for 15 seconds
-}
-
 STRING 493
 // Abilities: A00M (Cryo Grenade), Name (Name)
 {
@@ -2417,12 +2369,6 @@ STRING 584
 // Items: I00A (Trifex), Name (Name)
 {
 Trifex
-}
-
-STRING 587
-// Items: I00A (Trifex), Description (Description)
-{
-Repairs buildings 100% over 5 seconds
 }
 
 STRING 588
@@ -3883,12 +3829,6 @@ STRING 945
 |cff808080Fluff TODO|r|n|nDeals |cff00ff0010 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
 }
 
-STRING 946
-// Items: I00C (Genetic Sampler), Description (Description)
-{
-Repairs buildings 100% over 5 seconds
-}
-
 STRING 947
 // Units: ALI2 (Alien), EditorSuffix (Name - Editor Suffix)
 {
@@ -4031,12 +3971,6 @@ STRING 973
 // Items: I00D (Genetic Sample), Tip (Tooltip - Basic)
 {
 Genetic Sample
-}
-
-STRING 975
-// Items: I00D (Genetic Sample), Description (Description)
-{
-Repairs buildings 100% over 5 seconds
 }
 
 STRING 976
@@ -4243,12 +4177,6 @@ STRING 1016
 Genetic Sample
 }
 
-STRING 1018
-// Items: I00E (Genetic Sample), Description (Description)
-{
-Repairs buildings 100% over 5 seconds
-}
-
 STRING 1019
 // Items: I00E (Genetic Sample), Tip (Tooltip - Basic)
 {
@@ -4354,12 +4282,6 @@ The standard issue rifle; ideal for thinning hordes and can dish out serious dam
 - Each shot does 18 damage
 - Short cooldown|r
 |n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
-}
-
-STRING 1039
-// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Description (Description)
-{
-Weapon: Fires a burst of 6 shots
 }
 
 STRING 1040
@@ -4486,5 +4408,53 @@ STRING 1064
 // Units: u001 (Leech), Name (Name)
 {
 Leech
+}
+
+STRING 1065
+// Items: I005 (Repair Kit), Description (Description)
+{
+Repairs buildings 500 hp over 5 seconds
+}
+
+STRING 1066
+// Items: I008 (25 Credits), Description (Description)
+{
+Money!
+}
+
+STRING 1067
+// Items: I009 (Cryo Grenade), Description (Description)
+{
+A grenade that slows and deals damage
+}
+
+STRING 1068
+// Items: I00A (Trifex), Description (Description)
+{
+Hardcore Drugs
+}
+
+STRING 1069
+// Items: I00C (Genetic Sampler), Description (Description)
+{
+Takes genetic samples
+}
+
+STRING 1070
+// Items: I00D (Genetic Sample), Description (Description)
+{
+A genetic sample
+}
+
+STRING 1071
+// Items: I00E (Genetic Sample), Description (Description)
+{
+A genetic sample
+}
+
+STRING 1072
+// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Description (Description)
+{
+Weapon: Fires a continuous stream of molten lead
 }
 
