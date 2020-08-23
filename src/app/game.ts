@@ -104,8 +104,6 @@ export class Game {
         WeaponEntity.getInstance();
         AbilityEntity.getInstance();
 
-
-        Log.Information("Getting AI entity");
         AIEntity.getInstance();
 
         // Camera follow the main ship

@@ -113,7 +113,7 @@ export class ConveyorEntity extends Entity {
         
         this.unitEnterRegion.addAction(() => {
             const tRegion = GetTriggeringRegion();
-            if (IsUnitType(GetTriggerUnit(), UNIT_TYPE_MECHANICAL)) return false;
+            // if (IsUnitType(GetTriggerUnit(), UNIT_TYPE_MECHANICAL)) return false;
 
             if (tRegion === this.conveyorPushNorthRegion.handle) {
                 this.unitMoveNorth.push(GetTriggerUnit());
@@ -130,7 +130,7 @@ export class ConveyorEntity extends Entity {
         });
         this.unitLeaveRegion.addAction(() => {
             const tRegion = GetTriggeringRegion();
-            if (IsUnitType(GetTriggerUnit(), UNIT_TYPE_MECHANICAL)) return false;
+            // if (IsUnitType(GetTriggerUnit(), UNIT_TYPE_MECHANICAL)) return false;
 
             if (tRegion === this.conveyorPushNorthRegion.handle) {
                 this.unitMoveNorth.splice(this.unitMoveNorth.indexOf(GetTriggerUnit()), 1);

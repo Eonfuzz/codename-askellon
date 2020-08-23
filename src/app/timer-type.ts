@@ -53,7 +53,7 @@ export class Timers {
         TriggerAddAction(this.slowTimer, () => {
             let i = 0;
             while (i < this.slowTimedActionCallbacks.length) {
-               this.slowTimedActionCallbacks[i].time -= 0.01;
+               this.slowTimedActionCallbacks[i].time -= 1;
                if (this.slowTimedActionCallbacks[i].time <= 0) {
                     this.slowTimedActionCallbacks[i].action();
                     this.slowTimedActionCallbacks[i] = this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];

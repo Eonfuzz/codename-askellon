@@ -3,6 +3,9 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { MapPlayer } from "w3ts/index";
 import { ChatHook } from "app/chat/chat-hook-type";
 import { OBSERVER_FORCE_NAME } from "./force-names";
+import { PlayerState } from "../player-type";
+import { PlayerStateFactory } from "../player-state-entity";
+import { Log } from "lib/serilog/serilog";
 
 export class ObserverForce extends ForceType {
     name = OBSERVER_FORCE_NAME;
@@ -23,12 +26,12 @@ export class ObserverForce extends ForceType {
         const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
         FogModifierStart(modifier);
         // Make sure DNC is bright, bug fix for deaths in vents
-        // if (player.handle === GetLocalPlayer()) {
-        //     SetDayNightModels(
-        //         "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
-        //         "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
-        //     );
-        // }
+        if (player.handle === GetLocalPlayer()) {
+            SetDayNightModels(
+                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+                "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+            );
+        }
     }    
     
     /**
@@ -45,7 +48,8 @@ export class ObserverForce extends ForceType {
     */
    public getChatName(chatHook: ChatHook) {
        // Otherwise return default behaviour
-       return chatHook.who.name;
+       const playerState = PlayerStateFactory.get(chatHook.who);
+       return playerState.originalName;
    }
 
    /**

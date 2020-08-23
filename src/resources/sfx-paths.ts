@@ -16,6 +16,9 @@ export const SFX_ALIEN_ACID_BALL = 'Abilities\\Weapons\\ChimaeraAcidMissile\\Chi
 export const SFX_FROST_NOVA = 'Abilities\\Spells\\Undead\\FrostNova\\FrostNovaTarget.mdl';
 export const SFX_SHOCKWAVE = "Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdl";
 export const SFX_CRYO_GRENADE = 'war3mapImported\\Chain Grenade Blue.mdx';
+export const SFX_HELLFIRE_GRENADE = 'Abilities\\Weapons\\GyroCopter\\GyroCopterMissile.mdl';
+
+
 export const SFX_CATAPULT_MISSILE = "abilities\\weapons\\catapult\\catapultmissile.mdl";
 export const SFX_CONFLAGRATE_GREEN = "Conflagrate Green.mdx";
 
@@ -27,6 +30,8 @@ export const SFX_HOWL = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl"
 export const SFX_FIRE = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl';
 export const SFX_LIGHTNING_BOLT = 'Doodads\\Cinematic\\Lightningbolt\\Lightningbolt.mdl';
 export const SFX_PORTAL = "Doodads\\Cinematic\\ShimmeringPortal\\ShimmeringPortal.mdx";
+export const SFX_BUILDING_EXPLOSION = "Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl";
+export const SFX_FIRE_EXPLOSION = "Models\\NewMassiveEX.mdx";
 
 export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
 export const SFX_BLOOD_2 = "Models\\FloorBlood2.mdx";
@@ -52,6 +57,7 @@ Preload(SFX_ACID_AURA);
 Preload(SFX_ALIEN_ACID_BALL);
 Preload(SFX_FROST_NOVA);
 Preload(SFX_CRYO_GRENADE);
+Preload(SFX_HELLFIRE_GRENADE);
 Preload(SFX_SHOCKWAVE);
 Preload(SFX_CATAPULT_MISSILE);
 Preload(SFX_CONFLAGRATE_GREEN);
@@ -62,6 +68,8 @@ Preload(SFX_DARK_SUMMONING);
 Preload(SFX_HOWL);
 Preload(SFX_FIRE);
 Preload(SFX_LIGHTNING_BOLT);
+Preload(SFX_BUILDING_EXPLOSION);
+Preload(SFX_FIRE_EXPLOSION);
 Preload(SFX_BLOOD_1);
 Preload(SFX_BLOOD_2);
 Preload(SFX_BLOOD_3);

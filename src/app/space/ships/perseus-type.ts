@@ -10,6 +10,7 @@ import { ShipState } from "./ship-state-type";
 
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { Timers } from "app/timer-type";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -76,73 +77,81 @@ export class PerseusShip extends ShipWithFuel {
     }
 
     onDeath(killer: Unit) {
-        // first of all eject all our units
-        const allUnits = this.inShip.slice();
-        this.onLeaveShip();
+        try {
+            // first of all eject all our units
+            const allUnits = this.inShip.slice();
+            this.onLeaveShip();
 
-        // Make killer damage them for 400 damage as they were inside the ship
-        allUnits.forEach(u => {
-            // If we're in space we need to destoy the unit's items so they don't stop
-            if (ShipState.inSpace) {
-                for (let index = 0; index < 6; index++) {
-                    const item = u.getItemInSlot(index);
-                    if (item) {
-                        RemoveItem(item);
+            Timers.addTimedAction(0.00, () => {
+                // Make killer damage them for 400 damage as they were inside the ship
+                allUnits.forEach(u => {
+                    // If we're in space we need to destoy the unit's items so they don't stop
+                    if (ShipState.inSpace) {
+                        for (let index = 0; index < 6; index++) {
+                            const item = u.getItemInSlot(index);
+                            if (item) {
+                                RemoveItem(item);
+                            }
+                        }
                     }
+                    killer.damageTarget(
+                        u.handle, 
+                        this.state === ShipState.inSpace ? 99999 : 400,
+                        undefined, 
+                        false, 
+                        false, 
+                        ATTACK_TYPE_SIEGE, 
+                        DAMAGE_TYPE_FIRE, 
+                        WEAPON_TYPE_WHOKNOWS
+                    )
+                });
+
+                // Kill the ship
+                const cX = this.unit.x;
+                const cY = this.unit.y;
+
+                // Create explosive SFX!
+                let sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
+                sfx.scale = this.state === ShipState.inSpace ? 1 : 5;
+                sfx.destroy();
+
+                sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
+                sfx.scale = this.state === ShipState.inSpace ? 0.5 : 1;
+                sfx.destroy();
+
+                sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
+                sfx.scale = this.state === ShipState.inSpace ? 0.75 : 3;
+                sfx.destroy();
+
+                this.unit.destroy();
+
+                // Now we get the ship to explode!
+                // Deal another 400 damage
+                killer.damageAt(
+                    0.2, 
+                    this.state === ShipState.inSpace ? 250 : 500, 
+                    cX, 
+                    cY, 
+                    400, 
+                    false, 
+                    false,
+                    ATTACK_TYPE_SIEGE, 
+                    DAMAGE_TYPE_FIRE, 
+                    WEAPON_TYPE_WHOKNOWS
+                );
+
+                // Null some data
+                this.unit = undefined;
+
+                if (this.engine) {
+                    this.engine.destroy();
+                    this.engine = undefined;
                 }
-            }
-            killer.damageTarget(
-                u.handle, 
-                this.state === ShipState.inSpace ? 99999 : 400,
-                undefined, 
-                false, 
-                false, 
-                ATTACK_TYPE_SIEGE, 
-                DAMAGE_TYPE_FIRE, 
-                WEAPON_TYPE_WHOKNOWS
-            )
-        });
-
-        // Kill the ship
-        const cX = this.unit.x;
-        const cY = this.unit.y;
-
-        // Create explosive SFX!
-        let sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
-        sfx.scale = this.state === ShipState.inSpace ? 1 : 5;
-        sfx.destroy();
-
-        sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
-        sfx.scale = this.state === ShipState.inSpace ? 0.5 : 1;
-        sfx.destroy();
-
-        sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
-        sfx.scale = this.state === ShipState.inSpace ? 0.75 : 3;
-        sfx.destroy();
-
-        this.unit.destroy();
-
-        // Now we get the ship to explode!
-        // Deal another 400 damage
-        killer.damageAt(
-            0.2, 
-            this.state === ShipState.inSpace ? 250 : 500, 
-            cX, 
-            cY, 
-            400, 
-            false, 
-            false,
-            ATTACK_TYPE_SIEGE, 
-            DAMAGE_TYPE_FIRE, 
-            WEAPON_TYPE_WHOKNOWS
-        );
-
-        // Null some data
-        this.unit = undefined;
-
-        if (this.engine) {
-            this.engine.destroy();
-            this.engine = undefined;
+            });
+        } 
+        catch(e) {
+            Log.Error("Ship death failed");
+            Log.Error(e);
         }
     }
 
@@ -175,36 +184,40 @@ export class PerseusShip extends ShipWithFuel {
             PanCameraToTimedForPlayer(u.owner.handle, u.x, u.y, 0);
         });
         
-        // We're leaving space, can we dump off minerals?
-        const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
-        if (!isDeath && unitZone && WorldEntity.getInstance().getUnitZone(this.unit).id === ZONE_TYPE.CARGO_A) {
-            const owningUnit = this.inShip[0];
+        // Drop minerals off
+        // Only continue if we are NOT dying
+        if (!isDeath) {
+            // We're leaving space, can we dump off minerals?
+            const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
+            if (unitZone.id === ZONE_TYPE.CARGO_A) {
+                const owningUnit = this.inShip[0];
+        
+                const mineralItem = this.unit.getItemInSlot(0);
+                const stacks = GetItemCharges(mineralItem);
+                SetItemCharges(mineralItem, 0);
     
-            const mineralItem = this.unit.getItemInSlot(0);
-            const stacks = GetItemCharges(mineralItem);
-            SetItemCharges(mineralItem, 0);
-
-            // Reward money
-            if (owningUnit && stacks > 0) {
-                const pData = PlayerStateFactory.get(owningUnit.owner);
-
-                const crew = pData.getCrewmember();
-                if (crew && crew.unit == owningUnit) {
-                    const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
-                    if (hasRoleOccupationBonus) {
-                        crew.addExperience(stacks * 4);
-                        crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
-                            crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
-                        );
+                // Reward money
+                if (owningUnit && stacks > 0) {
+                    const pData = PlayerStateFactory.get(owningUnit.owner);
+    
+                    const crew = pData.getCrewmember();
+                    if (crew && crew.unit == owningUnit) {
+                        const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
+                        if (hasRoleOccupationBonus) {
+                            crew.addExperience(stacks * 4);
+                            crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
+                                crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
+                            );
+                        }
+                        else {
+                            crew.addExperience(stacks * 3);
+                            crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
+                                crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 5
+                            );
+                        }
                     }
-                    else {
-                        crew.addExperience(stacks * 3);
-                        crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
-                            crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 5
-                        );
-                    }
-                }
-            } 
+                } 
+            }
         }
         
         this.inShip = [];

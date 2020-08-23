@@ -4,7 +4,7 @@ import { vectorFromUnit } from "app/types/vector2";
 import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3 } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
-import { PLAYER_COLOR } from "lib/translators";
+import { PLAYER_COLOR, PlayNewSound } from "lib/translators";
 import { Trigger, MapPlayer, Unit } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundWithCooldown } from "app/types/sound-ref";
@@ -222,6 +222,7 @@ export class AlienForce extends ForceType {
         player.name = pData.originalName;
         player.color = pData.originalColour;
 
+        PlayNewSound("Sounds\\Nazgul.wav", 60);
         Players.forEach(p => {
             DisplayTextToPlayer(p.handle, 0, 0, STR_ALIEN_DEATH(
                 player,
@@ -232,9 +233,12 @@ export class AlienForce extends ForceType {
             );
         });
 
-        // const obsForce = forceEntity.getForce(OBSERVER_FORCE_NAME);
-        // obsForce.addPlayerMainUnit(whichUnit, player);
-        // forceEntity.addPlayerToForce(player, OBSERVER_FORCE_NAME);
+        const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
+
+        obsForce.addPlayer(player);
+        obsForce.addPlayerMainUnit(whichUnit, player);
+        PlayerStateFactory.get(player).setForce(obsForce);
+
         this.removePlayer(player);
 
         // Check victory conds

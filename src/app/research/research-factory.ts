@@ -216,9 +216,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
     }
     
     private rewardResearchXP(force: ForceType, crewmember: Crewmember, player: MapPlayer, techUnlocked: number) {
-        Log.Information("Rewarding XP");
         let baseXp = 250 * this.getMajorUpgradeLevel(techUnlocked);
-
 
         const roles = this.grantsOccupationBonus.get(techUnlocked);
         const hasOccupationBonus = crewmember && roles && roles.indexOf(crewmember.role) >= 0;

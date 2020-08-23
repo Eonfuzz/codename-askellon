@@ -183,8 +183,13 @@ export class GeneEntity extends Entity {
         DisplayTextToPlayer(instance.source.player.handle, 0, 0, messageSuccessful);
         DisplayTextToPlayer(target.player.handle, 0, 0, messageSuccessful);
 
+        const crewmember = PlayerStateFactory.getCrewmember(instance.unitInGeneZone.player);
+
         // Check if its nighteye
         if (castAbil === GENE_INSTALL_NIGHTEYE) {
+            crewmember.setAgiGain( crewmember.getAgiGain() + 1.5);
+            crewmember.setIntGain( crewmember.getIntGain() + 1);
+
             SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1,  1);
             if (!targetIsAlien) {
                 UnitAddAbility(instance.unitInGeneZone.unit.handle, ABIL_GENE_NIGHTEYE);

@@ -3,19 +3,11 @@ import { Hooks } from "lib/Hooks";
 import { BuildGraph } from "./graph-builder";
 import { Log } from "lib/serilog/serilog";
 import { ZONE_TYPE } from "app/world/zone-id";
-import { COL_MISC } from "resources/colours";
 import { Graph } from "./pathfinding/graph";
-import { ActionQueue } from "lib/TreeLib/ActionQueue/ActionQueue";
-import { UnitActionWaypoint } from "lib/TreeLib/ActionQueue/Actions/UnitActionWaypoint";
-import { Vector2 } from "app/types/vector2";
-import { UnitAction } from "lib/TreeLib/ActionQueue/Actions/UnitAction";
-import { WaypointOrders } from "lib/TreeLib/ActionQueue/Actions/WaypointOrders";
-import { UnitActionInteract } from "lib/TreeLib/ActionQueue/Actions/UnitActionInteract";
 import { PlayerAgent } from "./player-agent";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { MapPlayer, Unit } from "w3ts/index";
 import { WorldEntity } from "app/world/world-entity";
-import { Timers } from "app/timer-type";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;

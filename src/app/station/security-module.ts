@@ -8,6 +8,8 @@ import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
 import { UNIT_ID_CRATE } from "resources/unit-ids";
+import { LootTable } from "./loot-table/loot-table";
+import { GUN_LOOT_TABLE, MISC_ITEM_TABLE, MEDICAL_LOOT_TABLE } from "./loot-table/loot";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -164,35 +166,22 @@ export class SecurityFactory {
 
     spawnLootOn(x: number, y: number) {
         const mainSeed = GetRandomInt(0, 1000);
-        const secondarySeed =  GetRandomInt(0, 1000);
-        const tertiarySeed = GetRandomInt(0, 1000);
+
+        let table: LootTable;
 
         // 5% for weapon spawn
-        if (mainSeed >= 950) {
-            if (secondarySeed > 600) CreateItem(BURST_RIFLE_ITEM_ID, x, y);
-            else if (secondarySeed > 200) CreateItem(SHOTGUN_ITEM_ID, x, y);
-            else CreateItem(LASER_ITEM_ID, x, y);
-        }
-        // 15% for weapon attachment
-        else if (mainSeed >= 800) {
-            if (secondarySeed > 500) CreateItem(AT_ITEM_DRAGONFIRE_BLAST, x, y);
-            else CreateItem(SNIPER_ITEM_ID, x, y);
+        if (mainSeed >= 900) {
+            table = GUN_LOOT_TABLE;
         }
         // 50% Chance for 50 coins
-        else if (mainSeed >= 500) {
-            CreateItem(ITEM_ID_25_COINS, x, y);
+        else if (mainSeed >= 300) {
+            table = MISC_ITEM_TABLE;
         }
-        else if (mainSeed >= 400) {
-            CreateItem(ITEM_BARRICADES, x, y);
-        }
-        // Otherwise misc stuff
         else {
-            if (secondarySeed >= 800) CreateItem(ITEM_ID_EMO_INHIB, x, y);
-            else if (secondarySeed >= 600) CreateItem(ITEM_ID_REPAIR, x, y);
-            else if (secondarySeed >= 250) CreateItem(ITEM_ID_NANOMED, x, y);
-            else if (secondarySeed >= 150) CreateItem(ITEM_TRIFEX_ID, x, y);
-            else if (secondarySeed >= 0) CreateItem(ITEM_ID_CRYO_GRENADE, x, y);
+            table = MEDICAL_LOOT_TABLE;
         }
+
+        CreateItem(table.getItem(), x, y);
        
         EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
             source: Unit.fromHandle(GetKillingUnit() || GetDyingUnit()),

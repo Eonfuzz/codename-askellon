@@ -31,7 +31,9 @@ import {
     ABIL_ACTIVATE_SEQUENCER_TEST,
     ABIL_ALIEN_EVOLVE_T3,
     ABIL_ALIEN_NEURAL_TAKEOVER,
-    ABIL_SHIP_CHAINGUN
+    ABIL_SHIP_CHAINGUN,
+    ABIL_ITEM_HELLFIRE_GRENADE,
+    ABIL_ALIEN_FRENZY
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -63,6 +65,8 @@ import { DiodeEjectAbility } from "./human/diode-ejector";
 import { NeuralTakeoverAbility } from "./alien/neural-takeover";
 import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
 import { ShipChaingunAbility } from "./human/ship-chaingun";
+import { HellfireGrenadeAbility } from "./human/hellfire-grenade";
+import { FrenzyAbility } from "./alien/frenzy";
 
 
 
@@ -109,6 +113,7 @@ AbilityHooks.Add(ABIL_TRANSFORM_ALIEN_HUMAN, () => new TransformAbility(false));
 AbilityHooks.Add(ABIL_TRANSFORM_HUMAN_ALIEN, () => new TransformAbility(true));
 AbilityHooks.Add(ABIL_GENE_COSMIC, () => new EmbraceCosmosAbility());
 AbilityHooks.Add(ABIL_ITEM_CRYO_GRENADE, () => new CryoGrenadeAbility());
+AbilityHooks.Add(ABIL_ITEM_HELLFIRE_GRENADE, () => new HellfireGrenadeAbility());
 AbilityHooks.Add(ABIL_WEP_DIODE_EJ, () => new DiodeEjectAbility());
 AbilityHooks.Add(AT_ABILITY_DRAGONFIRE_BLAST, () => new DragonFireBlastAbility());
 AbilityHooks.Add(ABIL_ITEM_EMOTIONAL_DAMP, () => new EmotionalDampenerAbility());
@@ -127,3 +132,4 @@ AbilityHooks.Add(ABIL_ITEM_TRIFEX, () => new TrifexAbility());
 AbilityHooks.Add(ABIL_ITEM_GENETIC_SAMPLER, () => new GeneticSamplerItemAbility());
 AbilityHooks.Add(ABIL_ACTIVATE_SEQUENCER_TEST, () => new GeneticSequenceAbility());
 AbilityHooks.Add(ABIL_ALIEN_NEURAL_TAKEOVER, () => new NeuralTakeoverAbility());
+AbilityHooks.Add(ABIL_ALIEN_FRENZY, () => new FrenzyAbility());

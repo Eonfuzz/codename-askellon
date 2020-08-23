@@ -1,6 +1,6 @@
 import { SoundWithCooldown, SoundRef } from "../../types/sound-ref";
 import { ABIL_ACCURACY_PENALTY_30, ABIL_DESPAIR } from "resources/ability-ids";
-import { BUFF_ID, BUFF_ID_DESPAIR } from "resources/buff-ids";
+import { BUFF_ID, BUFF_ID_DESPAIR, BUFF_ID_SIGNAL_BOOSTER } from "resources/buff-ids";
 import { Unit, MapPlayer } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { EventEntity } from "app/events/event-entity";
@@ -152,6 +152,10 @@ export class Despair extends DynamicBuff {
     
     private processChat(chat: ChatHook) {
         if (chat.who === this.who.owner && chat.name === this.who.nameProper) {
+            // Don't alter chat if the crewmember has a booster active
+            const pCrew = PlayerStateFactory.getCrewmember(chat.who);
+            if (pCrew && UnitHasBuffBJ(pCrew.unit.handle, BUFF_ID_SIGNAL_BOOSTER)) return chat;
+            
             chat.recipients = [this.who.owner];
 
             const randomInt = GetRandomInt(0, 4);

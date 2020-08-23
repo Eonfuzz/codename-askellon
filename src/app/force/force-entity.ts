@@ -24,6 +24,7 @@ import { Hooks } from "lib/Hooks";
 import { ChatEntity } from "app/chat/chat-entity";
 import { Players } from "w3ts/globals/index";
 import { PLAYER_COLOR } from "lib/translators";
+import { Timers } from "app/timer-type";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -251,29 +252,46 @@ export class ForceEntity extends Entity {
         const winningForces = PlayerStateFactory.getInstance().forces.filter(f => f.checkVictoryConditions());
 
         if (winningForces.length === 1) {
-            const winningSound = new SoundRef("Sound\\Interface\\NewTournament.flac", false);
-            const losingSound = new SoundRef("Sound\\Dialogue\\UndeadExpCamp\\Undead02x\\L02Balnazzar06.flac", false);
+            const winningSound = new SoundRef("Sound\\Interface\\NewTournament.flac", false, true);
+            const losingSound = new SoundRef("Sound\\Dialogue\\UndeadExpCamp\\Undead02x\\L02Balnazzar06.flac", false, true);
 
             const winner = winningForces[0];
             const winningPlayers = winner.getPlayers();
             
 
-            if (winningPlayers.indexOf(MapPlayer.fromLocal()) >= 0) {
-                winningSound.playSound();
-            }
-            else {
-                losingSound.playSound();
-            }
+            Timers.addSlowTimedAction(15, () => {
+                if (winningPlayers.indexOf(MapPlayer.fromLocal()) >= 0) {
+                    winningSound.playSound();
+                }
+                else {
+                    losingSound.playSound();
+                }
 
-            // TODO
-            Log.Information("The "+winner.name+" wins but I haven't finished coding it");
+                Timers.addSlowTimedAction(3, () => {
+                    winningPlayers.forEach(winner => {
+                        CustomVictoryBJ(winner.handle, true, true);
+                    });
+                    Timers.addSlowTimedAction(1, () => {
+                        Players.forEach(p => {
+                            if (winner.name === ALIEN_FORCE_NAME)
+                                CustomDefeatBJ(p.handle, "The Askellon is doomed");
+                            else
+                                CustomDefeatBJ(p.handle, "The last alien has been slain!");
+                        });
+                    });
+                });
+            });
         }
         else if (winningForces.length === 0) { 
-            const drawSound = new SoundRef("Sound\\Dialogue\\Extra\\KelThuzadDeath1.flac", false);
+            const drawSound = new SoundRef("Sound\\Dialogue\\Extra\\KelThuzadDeath1.flac", false, true);
             drawSound.playSound();
-
-            // TODO
-            Log.Information("Game is a draw but I haven't finished coding it");
+            Timers.addSlowTimedAction(5, () => {
+                // Log.Information("Slow timed!");
+                Players.forEach(player => {
+                    // Log.Information("Defeat for all!");
+                    CustomDefeatBJ(player.handle, "Draw, Everyone is dead!");
+                });
+            });
         }
         return winningForces.length === 1 ? winningForces[0] : undefined;
     }

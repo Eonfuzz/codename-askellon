@@ -12,6 +12,7 @@ import { BuffInstance } from "app/buff/buff-instance-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { getRandomBlood, getZFromXY, CreateBlood } from "lib/utils";
+import { EventListener } from "app/events/event-type";
 
 export class Crewmember extends ArmableUnit {
     public role: ROLE_TYPES;
@@ -20,6 +21,10 @@ export class Crewmember extends ArmableUnit {
 
     private damageBonusMult: number = 1;
 
+    private levelBonusStr = 0;
+    private levelBonusAgi = 0;
+    private levelBonusInt = 0;
+
     constructor(player: MapPlayer, unit: Unit, force: ForceType, role: ROLE_TYPES) {
         super(unit);
 
@@ -27,12 +32,51 @@ export class Crewmember extends ArmableUnit {
         this.unit = unit;
 
         this.role = role;
+        
+        // Listen to crewmember level ups
+        // Apply bonus stats as needed
+        
+        EventEntity.getInstance().addListener(new EventListener(EVENT_TYPE.HERO_LEVEL_UP, (listener, data) => {
+            if (data.source !== this.unit) return;
+            const heroLevel = data.source.getHeroLevel();
+
+            const strGain = MathRound(this.levelBonusStr*heroLevel) - MathRound(this.levelBonusStr*(heroLevel - 1));
+            const agiGain = MathRound(this.levelBonusAgi*heroLevel) - MathRound(this.levelBonusAgi*(heroLevel - 1));
+            const intGain = MathRound(this.levelBonusInt*heroLevel) - MathRound(this.levelBonusInt*(heroLevel - 1));
+
+            unit.strength = unit.strength + strGain;
+            unit.agility = unit.agility + agiGain;
+            unit.intelligence = unit.intelligence + intGain;
+        })); 
     }
 
     setUnit(unit: Unit) { this.unit = unit; }
     setRole(role: ROLE_TYPES) { this.role = role; }
     setName(name: string) { this.name = name; }
     setPlayer(player: MapPlayer) { this.player = player; }
+
+    setStrGain(to: number) { this.retroStr(this.levelBonusStr, to); this.levelBonusStr = to; }
+    setAgiGain(to: number) { this.retroAgi(this.levelBonusAgi, to); this.levelBonusAgi = to; }
+    setIntGain(to: number) { this.retroInt(this.levelBonusInt, to); this.levelBonusInt = to; }
+    getStrGain() { return this.levelBonusStr; }
+    getAgiGain() { return this.levelBonusAgi; }
+    getIntGain() { return this.levelBonusInt; }
+
+    private retroStr(oldVal: number, newVal: number) {
+        const heroLevel = this.unit.getHeroLevel();
+        const gain = MathRound(newVal*heroLevel) - MathRound(oldVal*heroLevel);
+        this.unit.strength = this.unit.strength + gain;
+    }
+    private retroAgi(oldVal: number, newVal: number) {
+        const heroLevel = this.unit.getHeroLevel();
+        const gain = MathRound(newVal*heroLevel) - MathRound(oldVal*heroLevel);
+        this.unit.agility = this.unit.agility + gain;
+    }
+    private retroInt(oldVal: number, newVal: number) {
+        const heroLevel = this.unit.getHeroLevel();
+        const gain = MathRound(newVal*heroLevel) - MathRound(oldVal*heroLevel);
+        this.unit.intelligence = this.unit.intelligence + gain;
+    }
 
     onWeaponAdd(whichGun: Gun) {
         this.weapon = whichGun;

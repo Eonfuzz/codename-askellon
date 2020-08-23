@@ -1,6 +1,5 @@
 import { COL_GOLD, COL_VENTS, COL_TEAL, COL_ATTATCH, COL_GOOD } from "./colours";
 
-/** @noSelfInFile **/
 export enum ROLE_TYPES {
     CAPTAIN = 'Captain',
     NAVIGATOR = 'Navigator',
@@ -35,7 +34,7 @@ ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.ENGINEER, [
-    "Engineer Fahr", "Engineer Isaac"
+    "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.MAJOR, [

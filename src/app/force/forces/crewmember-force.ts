@@ -81,12 +81,9 @@ export class CrewmemberForce extends ForceType {
             else {
                 const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
 
+                obsForce.addPlayer(player);
                 obsForce.addPlayerMainUnit(whichUnit, player);
                 PlayerStateFactory.get(player).setForce(obsForce);
-    
-                // Also remove their unit from the zone
-                Log.Information("Player died TODO remove from world entity");
-                // WorldEntity.getInstance().removeUnit(whichUnit.unit);
             }
         }
         this.removePlayer(player);

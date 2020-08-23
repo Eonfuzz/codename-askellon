@@ -1503,12 +1503,6 @@ STRING 359
 - GENE
 }
 
-STRING 361
-// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personel. |r|n|n|cff00ffffSplices|r the |cffd45e19Enhanced Mobility|r power into your patient.|nIncreasing their movement speed by |cffd45e1910%|r and enhances the |cffd45e19Sprint|r ability.|nEnhanced |cffd45e19Sprint|r has a |cffff0000reduced |rcooldown, |cffd45e1920%|r faster speed but |cffff0000lower |rduration. Can be used to |cffd45e19jump|r small gaps.
-}
-
 STRING 363
 // Abilities: DIOJ (Fracture Round), Ubertip (Tooltip - Normal - Extended)
 {
@@ -2085,12 +2079,6 @@ STRING 501
 // Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - GENE
-}
-
-STRING 502
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|n|cff00ffffSplices|r the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cffd45e19night vision|r for |cffd45e1930 seconds|r. You are |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
 }
 
 STRING 505
@@ -4516,5 +4504,167 @@ STRING 1083
 // Buffs/Effects: B009 (Stuck), Buffubertip (Tooltip - Extended)
 {
 This unit is stuck
+}
+
+STRING 1084
+// Items: I003 (HX Compound Grenade), Name (Name)
+{
+HX Compound Grenade
+}
+
+STRING 1085
+// Items: I003 (HX Compound Grenade), Ubertip (Tooltip - Extended)
+{
+|cff808080Outlwed across several sectors, this fist sized device is a warcrime waiting to happen.|n|r|nThrows a HX Compound Grenade to target point, dealing |cff00ff0090 damage|r and applying |cffd45e19Burning!|r to all units hit.|n|n|cffd45e19Burning!|r Reduces armour and deals damage over time.|n|n|cff80808020 Seconds Cooldown|r
+}
+
+STRING 1086
+// Items: I003 (HX Compound Grenade), Tip (Tooltip - Basic)
+{
+Purchase HX Compound Grenade
+}
+
+STRING 1087
+// Items: I003 (HX Compound Grenade), Description (Description)
+{
+A grenade that slows and deals damage
+}
+
+STRING 1088
+// Abilities: A01F (HX Compound Grenade), Name (Name)
+{
+HX Compound Grenade
+}
+
+STRING 1089
+// Abilities: A01F (HX Compound Grenade), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 1090
+// Abilities: A01F (HX Compound Grenade), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nLaunches a single, long distance round. Dealing 150 damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown.|r
+}
+
+STRING 1091
+// Abilities: A01F (HX Compound Grenade), Tip (Tooltip - Normal)
+{
+Underbarrel Rail-Rifle
+}
+
+STRING 1092
+// Items: I00G (Signal Booster), Name (Name)
+{
+Signal Booster
+}
+
+STRING 1093
+// Items: I00G (Signal Booster), Tip (Tooltip - Basic)
+{
+Signal Booster
+}
+
+STRING 1095
+// Items: I00G (Signal Booster), Description (Description)
+{
+A large device for boosting radio signals
+}
+
+STRING 1096
+// Abilities: A01G (Signal Booster), Name (Name)
+{
+Signal Booster
+}
+
+STRING 1097
+// Buffs/Effects: B00A (Signal Booster), Bufftip (Tooltip)
+{
+Signal Booster
+}
+
+STRING 1098
+// Buffs/Effects: B00A (Signal Booster), EditorName (Name (Editor Only))
+{
+Signal Booster
+}
+
+STRING 1099
+// Buffs/Effects: B00A (Signal Booster), Buffubertip (Tooltip - Extended)
+{
+This unit can temporarily communcate without any problems
+}
+
+STRING 1100
+// Items: I00G (Signal Booster), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE Todo|r|n|nThis large bulky device increases your |cff00ff00HP |rby |cff00ff0010|r, and can be activated to |cff00ff00allow communication|r even while under the effects of |cff8a6df2Despair|r. Lasts |cff00ff0030 |rseconds|n|n|cff80808045 Seconds Cooldown|r
+}
+
+STRING 1101
+// Abilities: A01H (Item Hit Point Bonus), Name (Name)
+{
+Item Hit Point Bonus
+}
+
+STRING 1102
+// Abilities: A01H (Item Hit Point Bonus), EditorSuffix (Editor Suffix)
+{
+( +10 )
+}
+
+STRING 1103
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nSplices the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cff00ff00night vision|r for |cff00ff0030 seconds|r. You are |cff00ff00immune |rto |cff6f2583Despair|r caused by darkness.|n|nAdditionally, the patient gains |cff00ff00+1.5 Accuracy|r and |cff00ff00+1 Will|r per level.
+}
+
+STRING 1104
+// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personel. |r|n|nSplices the |cffd45e19Enhanced Mobility|r power into your patient; |cff00ff00passively |rincreasing |cff00ff00movement speed|r by |cff00ff0010%|r and |cff00ff00Sprinting |rnow |cff00ff00jumps |rupon expiration.|n|nAdditionally, the patient gains |cff00ff00+1 Vitality|r per level.
+}
+
+STRING 1105
+// Abilities: A01I (Frenzy), Name (Name)
+{
+Frenzy
+}
+
+STRING 1108
+// Abilities: A01I (Frenzy), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Massive adrenal glands pump hormones into the Alien's body, causing other predator adaptions to activate.|r|n|nEnter a terrible rage, gain |cff00ff0060% attack speed|r, |cff00ff0020% movement speed|r and your attacks apply a |cff00ff00slow. |rLasts |cff00ff008|r seconds.|N|n|cff80808030 Second Cooldown|r|n
+}
+
+STRING 1109
+// Abilities: A01I (Frenzy), Tip (Tooltip - Normal)
+{
+Frenzy
+}
+
+STRING 1110
+// Abilities: A01J (Frenzy Slow), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nYour next attack becomes ranged and applies a terrible two part neurotoxin on hit, lasting |cff00ff004 seconds|r and applying a |cff00ff0020% slow|r.|n|nHitting a poisoned enemy with a melee attack alters the chemical makeup of the toxin; |cffc81e1econsuming|r the slow to ministun and deal |cff00ff0030 damage|r a second for |cff00ff004 seconds|r.|n|n|cff8080807 Seconds Cooldown|r
+}
+
+STRING 1111
+// Abilities: A01J (Frenzy Slow), Tip (Tooltip - Normal)
+{
+Xenos Neurotoxin
+}
+
+STRING 1112
+// Abilities: A01J (Frenzy Slow), Name (Name)
+{
+Frenzy Slow
+}
+
+STRING 1113
+// Abilities: A01I (Frenzy), Hotkey (Hotkey - Normal)
+{
+X
 }
 

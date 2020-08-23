@@ -160,7 +160,7 @@ export class SpaceEntity extends Entity {
         // Hook into ship death event
         this.shipDeathEvent.addAction(() => {
             const u = Unit.fromHandle(GetDyingUnit());
-            const k = Unit.fromHandle(GetKillingUnit() || GetDyingUnit());
+            const k =  Unit.fromHandle((UnitAlive(GetKillingUnit()) ? GetKillingUnit() : GetDyingUnit()));
 
             // Log.Information("Ship death!");
 

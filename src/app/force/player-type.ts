@@ -14,6 +14,10 @@ export class PlayerState {
     // The player experience shared across all agents
     private playerExperience: number = 0;
 
+    public levelBonusStrength = 0;
+    public levelBonusAgility = 0;
+    public levelBonusIntelligence = 0;
+
     constructor(player: MapPlayer) {
         this.player = player;
         this.originalName = player.name;

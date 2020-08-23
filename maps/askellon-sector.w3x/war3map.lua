@@ -133,6 +133,7 @@ gg_unit_h004_0046 = nil
 gg_unit_n004_0035 = nil
 gg_item_ratf_0230 = nil
 gg_unit_n002_0032 = nil
+gg_unit_n00D_0226 = nil
 gg_unit_n001_0199 = nil
 gg_unit_h004_0268 = nil
 gg_unit_n001_0051 = nil
@@ -145,7 +146,6 @@ gg_unit_n002_0263 = nil
 gg_unit_n001_0269 = nil
 gg_unit_h004_0048 = nil
 gg_unit_n00A_0222 = nil
-gg_unit_n00D_0226 = nil
 gg_dest_B002_0340 = nil
 gg_dest_B002_0096 = nil
 gg_dest_B002_0097 = nil
@@ -287,7 +287,11 @@ end
 
 function CreateAllItems()
     local itemID
+    BlzCreateItemWithSkin(FourCC("I003"), -18193.1, -26184.2, FourCC("I003"))
+    BlzCreateItemWithSkin(FourCC("I003"), -18187.1, -26351.1, FourCC("I003"))
+    BlzCreateItemWithSkin(FourCC("I003"), -18184.2, -26257.1, FourCC("I003"))
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
+    BlzCreateItemWithSkin(FourCC("I00G"), -18064.6, -26260.7, FourCC("I00G"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
 end
@@ -575,6 +579,7 @@ function CreateNeutralPassiveBuildings()
     local unitID
     local t
     local life
+    u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -13707.2, -24844.1, 270.000, FourCC("nGEN"))
     gg_unit_n002_0032 = BlzCreateUnitWithSkin(p, FourCC("n002"), -5760.0, -20480.0, 270.000, FourCC("n002"))
     gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
     gg_unit_n004_0035 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26113.3, 26361.4, 89.562, FourCC("n004"))
