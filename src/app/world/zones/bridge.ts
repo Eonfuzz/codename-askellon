@@ -76,7 +76,7 @@ export class BridgeZoneVent extends ShipZone {
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             this.operaMusic.playSound();
-            this.operaMusic.setVolume(50);
+            this.operaMusic.setVolume(25);
             SetMusicVolume(10);
         }
     }

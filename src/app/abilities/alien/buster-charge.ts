@@ -1,17 +1,15 @@
 import { Ability } from "../ability-type";
 import { Trigger, Unit, Effect, MapPlayer } from "w3ts";
-import { ABIL_STUN_25, ABIL_ALIEN_CHARGE } from "resources/ability-ids";
+import { ABIL_STUN_25 } from "resources/ability-ids";
 import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
 import { getZFromXY, getAnyBlockers } from "lib/utils";
 import { FilterIsAlive } from "resources/filters";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { Vector3 } from "app/types/vector3";
-import { Log } from "lib/serilog/serilog";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { LeapEntity } from "app/leap-engine/leap-entity";
 import { ForceEntity } from "app/force/force-entity";
 import { DummyCast } from "lib/dummy";
-import { AbilityHooks } from "../ability-hooks";
 
 // Damage increase each second
 const MAX_DISTANCE = 900;

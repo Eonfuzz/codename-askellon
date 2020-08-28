@@ -18,6 +18,7 @@ import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH } from "res
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
+import { Timers } from "app/timer-type";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -263,6 +264,18 @@ export class ChatEntity extends Entity {
                     if (chatData.recipients.indexOf(u) === -1) chatData.recipients.push(u);
                 });
 
+                if (postHookData.recipients.length > 0) {
+                    // Play unit chat animation
+                    const u = force.getPlayerMainUnit(player);
+                    if (u) {
+                        u.unit.setAnimation(5);
+                        const uX = u.unit.x;
+                        const uY = u.unit.y;
+
+                        Timers.addTimedAction(1.4, () => u.unit.x == uX && u.unit.y == uY && u.unit.setAnimation(0));
+                    }
+                }
+
                 this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, undefined, postHookData.sound);
             }
         }
@@ -326,6 +339,7 @@ export class ChatEntity extends Entity {
         if (who.name === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
         if (who.name === 'maddeem#1693') return PRIVS.DEVELOPER;
         if (who.name === 'mayday#12613') return PRIVS.DEVELOPER;
+        if (who.name === 'redaxe#1865') return PRIVS.DEVELOPER;
         // if (who.name === 'pipski#12613') return PRIVS.DEVELOPER;
         if (who.name === 'Local Player') return PRIVS.DEVELOPER;
         // No # means this is a local game

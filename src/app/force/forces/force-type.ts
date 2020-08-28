@@ -57,6 +57,10 @@ export abstract class ForceType {
         VisionFactory.getInstance().setPlayervision(player, VISION_TYPE.HUMAN);
     };
 
+    public getPlayerMainUnit(player: MapPlayer) {
+        return this.playerUnits.get(player);
+    }
+
     public removePlayerMainUnit(whichUnit: Crewmember, player: MapPlayer, killer?: Unit): void {
         this.playerDeathTriggers.get(player).destroy();
         this.playerDeathTriggers.delete(player);
@@ -174,6 +178,6 @@ export abstract class ForceType {
     }
 
     protected onPlayerLevelUp(who: MapPlayer, level: number) {
-        ChatEntity.getInstance().postSystemMessage(who, `Level up! ${COL_GOLD}+30 Income|r`);
+        ChatEntity.getInstance().postSystemMessage(who, `|rLevel up! ${COL_GOLD}+30 Income|r`);
     }
 }

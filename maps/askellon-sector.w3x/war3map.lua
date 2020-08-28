@@ -121,6 +121,7 @@ gg_trg_Untitled_Trigger_001 = nil
 gg_trg_SetConveyors = nil
 gg_unit_n001_0225 = nil
 gg_unit_n004_0229 = nil
+gg_unit_n00A_0222 = nil
 gg_unit_n001_0228 = nil
 gg_unit_n004_0034 = nil
 gg_unit_n001_0055 = nil
@@ -145,7 +146,6 @@ gg_unit_n002_0245 = nil
 gg_unit_n002_0263 = nil
 gg_unit_n001_0269 = nil
 gg_unit_h004_0048 = nil
-gg_unit_n00A_0222 = nil
 gg_dest_B002_0340 = nil
 gg_dest_B002_0096 = nil
 gg_dest_B002_0097 = nil
@@ -287,9 +287,9 @@ end
 
 function CreateAllItems()
     local itemID
-    BlzCreateItemWithSkin(FourCC("I003"), -18193.1, -26184.2, FourCC("I003"))
     BlzCreateItemWithSkin(FourCC("I003"), -18187.1, -26351.1, FourCC("I003"))
     BlzCreateItemWithSkin(FourCC("I003"), -18184.2, -26257.1, FourCC("I003"))
+    BlzCreateItemWithSkin(FourCC("I003"), -18193.1, -26184.2, FourCC("I003"))
     BlzCreateItemWithSkin(FourCC("I007"), -14368.9, -24858.4, FourCC("I007"))
     BlzCreateItemWithSkin(FourCC("I00G"), -18064.6, -26260.7, FourCC("I00G"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14169.9, -27301.7, FourCC("ISHO"))
@@ -1407,19 +1407,19 @@ function config()
     SetPlayers(14)
     SetTeams(14)
     SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
-    DefineStartLocation(0, 0.0, 256.0)
-    DefineStartLocation(1, 0.0, 256.0)
-    DefineStartLocation(2, 0.0, 256.0)
-    DefineStartLocation(3, 0.0, 256.0)
-    DefineStartLocation(4, 0.0, 256.0)
-    DefineStartLocation(5, 0.0, 256.0)
-    DefineStartLocation(6, 0.0, 256.0)
+    DefineStartLocation(0, 17728.0, -15616.0)
+    DefineStartLocation(1, 17728.0, -15616.0)
+    DefineStartLocation(2, 17728.0, -15616.0)
+    DefineStartLocation(3, 17728.0, -15616.0)
+    DefineStartLocation(4, 17728.0, -15616.0)
+    DefineStartLocation(5, 17728.0, -15616.0)
+    DefineStartLocation(6, 17728.0, -15616.0)
     DefineStartLocation(7, -27520.0, 26176.0)
-    DefineStartLocation(8, 0.0, 256.0)
-    DefineStartLocation(9, 0.0, 256.0)
-    DefineStartLocation(10, 0.0, 256.0)
+    DefineStartLocation(8, 17728.0, -15616.0)
+    DefineStartLocation(9, 17728.0, -15616.0)
+    DefineStartLocation(10, 17728.0, -15616.0)
     DefineStartLocation(11, 4032.0, 19776.0)
-    DefineStartLocation(12, 0.0, 256.0)
+    DefineStartLocation(12, 17728.0, -15616.0)
     DefineStartLocation(13, 22336.0, 28672.0)
     InitCustomPlayerSlots()
     InitCustomTeams()

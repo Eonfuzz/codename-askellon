@@ -2076,7 +2076,7 @@ Cosmic Sensitivity
 }
 
 STRING 501
-// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Abilities: A01K (Xenophobic), EditorSuffix (Editor Suffix)
 {
 - GENE
 }
@@ -2115,12 +2115,6 @@ STRING 515
 // Units: h004 (Power Generator|n|cff808080If destroyed a floor will lose power|r), Name (Name)
 {
 Power Generator|n|cff808080If destroyed a floor will lose power|r
-}
-
-STRING 516
-// Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events effect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability
 }
 
 STRING 518
@@ -4614,18 +4608,6 @@ STRING 1102
 ( +10 )
 }
 
-STRING 1103
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nSplices the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cff00ff00night vision|r for |cff00ff0030 seconds|r. You are |cff00ff00immune |rto |cff6f2583Despair|r caused by darkness.|n|nAdditionally, the patient gains |cff00ff00+1.5 Accuracy|r and |cff00ff00+1 Will|r per level.
-}
-
-STRING 1104
-// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personel. |r|n|nSplices the |cffd45e19Enhanced Mobility|r power into your patient; |cff00ff00passively |rincreasing |cff00ff00movement speed|r by |cff00ff0010%|r and |cff00ff00Sprinting |rnow |cff00ff00jumps |rupon expiration.|n|nAdditionally, the patient gains |cff00ff00+1 Vitality|r per level.
-}
-
 STRING 1105
 // Abilities: A01I (Frenzy), Name (Name)
 {
@@ -4666,5 +4648,107 @@ STRING 1113
 // Abilities: A01I (Frenzy), Hotkey (Hotkey - Normal)
 {
 X
+}
+
+STRING 1114
+// Abilities: A01K (Xenophobic), Name (Name)
+{
+Xenophobic
+}
+
+STRING 1116
+// Abilities: A01K (Xenophobic), Tip (Tooltip - Normal)
+{
+Xenophobic
+}
+
+STRING 1117
+// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 1120
+// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personel. |r|n|nSplices the |cffd45e19Enhanced Mobility|r power into your patient; |cff00ff00passively |rincreasing |cff00ff00movement speed|r by |cff00ff0010%|r and |cff00ff00Sprinting |rnow |cff00ff00jumps |rupon expiration.|n|nAttribute Gain: |cff00ff00+1 Vitality|r per level
+}
+
+STRING 1121
+// Abilities: A01L (Xenophobic), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1123
+// Abilities: A01K (Xenophobic), Hotkey (Hotkey - Normal)
+{
+S
+}
+
+STRING 1124
+// Abilities: A01K (Xenophobic), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080"Rot in hell, Alien scum."|r|n|nThe patient undergoes invasive surgery, gaining the |cffd45e19Come Get Some!|r power.|nAllowing them to taunt Aliens, applying |cff8a6df2Despair|r to all nearby Aliens and replacing their weapon with |cffd45e19Fists|r; a weak weapon that increases in power over time. Lasts |cff00ff0020 |rSeconds.|n|n|cff8a6df2Aliens cannot transform while under the effects of Despair|r|n|nAttribute Gain: |cff00ff00+3.5 Vitality|r and |cff00ff00-1 Will|r per level
+}
+
+STRING 1125
+// Abilities: A01L (Xenophobic), Name (Name)
+{
+Xenophobic
+}
+
+STRING 1127
+// Abilities: A01L (Xenophobic), Tip (Tooltip - Normal)
+{
+Come Get Some!
+}
+
+STRING 1128
+// Abilities: A01L (Xenophobic), EditorSuffix (Editor Suffix)
+{
+- Ability
+}
+
+STRING 1130
+// Abilities: A01M (Attack - Fists), Name (Name)
+{
+Attack - Fists
+}
+
+STRING 1131
+// Abilities: A01M (Attack - Fists), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 1132
+// Abilities: A01M (Attack - Fists), Ubertip (Tooltip - Normal - Extended)
+{
+Punch Shit Yo
+}
+
+STRING 1133
+// Abilities: A01M (Attack - Fists), Tip (Tooltip - Normal)
+{
+Fists
+}
+
+STRING 1134
+// Abilities: A01L (Xenophobic), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Years of training as a soldier aren't going to go to waste.|r|n|nGain |cffff8080Resolve|r, replace your weapon with |cffd45e19Fists |rand taunts nearby Aliens, applying a short |cff8a6df2Despair|r. Lasts |cff00ff0030 |rSeconds.|n|n|cff8a6df2Aliens with Despair cannot transform.|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 1135
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nSplices the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cff00ff00night vision|r for |cff00ff0030 seconds|r. You are |cff00ff00immune |rto |cff6f2583Despair|r caused by darkness.|n|nAttribute Gain: |cff00ff00+2.5 Accuracy|r and |cff00ff00+1 Will|r per level.
+}
+
+STRING 1136
+// Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events effect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability.|n|nAttribute Gain: |cff00ff00+3 Will|r and |cff00ff00-2 Accuracy|r per level
 }
 

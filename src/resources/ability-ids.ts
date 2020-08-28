@@ -79,9 +79,12 @@ export const TECH_LATCHED_IN_HUMAN = FourCC('R009');
 export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
 export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');
 export const ABIL_GENE_COSMIC = FourCC('ACSM');
+export const ABIL_GENE_XENOPHOBIC = FourCC('A01L');
 
 export const GENE_INSTALL_MOBILITY = FourCC('AGJP');
 export const GENE_TECH_MOBILITY = FourCC('R001');
+export const GENE_INSTALL_XENOPHOBIC = FourCC('A01K');
+export const ABIL_GENE_XENOPHOBIC_PUNCH = FourCC('A01M');
 
 export const GENE_INSTALL_PSIONIC_POTENCY = FourCC('AGPS');
 export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGCM');

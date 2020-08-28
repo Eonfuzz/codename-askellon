@@ -2,7 +2,7 @@ import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_
 import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ, ABIL_GENE_COSMIC } from "./ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ, ABIL_GENE_COSMIC, ABIL_GENE_XENOPHOBIC_PUNCH } from "./ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { AT_ABILITY_DRAGONFIRE_BLAST } from "app/weapons/weapon-constants";
 
@@ -144,3 +144,16 @@ ${COL_ATTATCH}Their mundane brains buckle under your mental transmissions, but b
 
 ${COL_MISC}80 Seconds Cooldown|r`
 );
+
+export const TOOLTIP_FISTS = new DynamicAbilityTooltip(
+    ABIL_GENE_XENOPHOBIC_PUNCH,
+    undefined,
+    (who: Unit, abilLevel: number, data: any) => `${COL_MISC}Holy shit! He just socked the Alien across the face!|r
+
+Dash forward and strike out with your iron fists, dealing ${COL_GOOD}${30 + MathRound(who.maxLife * 0.1)}|r damage.
+Hitting an ${COL_ALIEN}Alien Player|r ${COL_GOOD}permanently|r increases your max hitpoints by ${COL_GOOD}1|r.
+
+${COL_ORANGE}Dash range scales with accuracy, Punch damage scales with your hitpoints.|r
+
+${COL_MISC}2 Second Cooldown|r
+`);

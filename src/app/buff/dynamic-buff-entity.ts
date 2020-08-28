@@ -82,4 +82,9 @@ export class DynamicBuffEntity extends Entity {
             }
         }
     }
+
+    public static add(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance: boolean = false) {
+        const entity = this.getInstance();
+        return entity.addBuff(buffId, who, instance, isNegativeInstance);
+    }
 }

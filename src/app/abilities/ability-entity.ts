@@ -3,6 +3,7 @@ import { Trigger, Unit, Timer } from "w3ts";
 import { Entity } from "app/entity-type";
 import { Hooks } from "lib/Hooks";
 import { AbilityHooks } from "./ability-hooks";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * Shouldn't really do that much other than initialise ability loops and triggers
@@ -39,8 +40,14 @@ export class AbilityEntity extends Entity {
     checkSpells() {
         const id = GetSpellAbilityId();
         const ability = AbilityHooks.Get(id);
-        if (ability.initialise()) {
-            this.abilityQueue.push(ability);
+        if (ability) {
+            try {
+                if (ability.initialise())
+                    this.abilityQueue.push(ability);
+            }
+            catch(e) {
+                Log.Error(e);
+            }
         }
     }
 

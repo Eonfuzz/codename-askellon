@@ -33,7 +33,9 @@ import {
     ABIL_ALIEN_NEURAL_TAKEOVER,
     ABIL_SHIP_CHAINGUN,
     ABIL_ITEM_HELLFIRE_GRENADE,
-    ABIL_ALIEN_FRENZY
+    ABIL_ALIEN_FRENZY,
+    ABIL_GENE_XENOPHOBIC,
+    ABIL_GENE_XENOPHOBIC_PUNCH
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -67,6 +69,8 @@ import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
 import { ShipChaingunAbility } from "./human/ship-chaingun";
 import { HellfireGrenadeAbility } from "./human/hellfire-grenade";
 import { FrenzyAbility } from "./alien/frenzy";
+import { XenophobicAbility } from "./human/xenophobic";
+import { XenophobicPunchAbility } from "./human/xenophobic-punch";
 
 
 
@@ -133,3 +137,5 @@ AbilityHooks.Add(ABIL_ITEM_GENETIC_SAMPLER, () => new GeneticSamplerItemAbility(
 AbilityHooks.Add(ABIL_ACTIVATE_SEQUENCER_TEST, () => new GeneticSequenceAbility());
 AbilityHooks.Add(ABIL_ALIEN_NEURAL_TAKEOVER, () => new NeuralTakeoverAbility());
 AbilityHooks.Add(ABIL_ALIEN_FRENZY, () => new FrenzyAbility());
+AbilityHooks.Add(ABIL_GENE_XENOPHOBIC, () => new XenophobicAbility());
+AbilityHooks.Add(ABIL_GENE_XENOPHOBIC_PUNCH, () => new XenophobicPunchAbility());

@@ -4,6 +4,8 @@ import { ForceType } from "./forces/force-type";
 import { ChatHook } from "app/chat/chat-hook-type";
 import { Hooks } from "lib/Hooks";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { Players } from "w3ts/globals/index";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * A factory that stores all player data
@@ -22,10 +24,18 @@ export class PlayerStateFactory {
 
     private state = new Map<MapPlayer, PlayerState>();
 
+    public isSnglePlayer = false;
+
     /**
      * Constructor
      */
     constructor() {
+        const playerCount = Players.filter(p => {
+            return p.controller === MAP_CONTROL_USER && p.slotState === PLAYER_SLOT_STATE_PLAYING;
+        });
+        
+        // Log.Information("Player count: "+playerCount.length);
+        this.isSnglePlayer = playerCount.length === 1;
     }
 
     public get(who: MapPlayer) {
@@ -93,5 +103,13 @@ export class PlayerStateFactory {
         hook.message        = force.getChatMessage(hook);
 
         return hook;
+    }
+
+    /**
+     * Returns true if the game is singleplayer
+     */
+    public static isSinglePlayer() {
+        const instance = PlayerStateFactory.getInstance();
+        return instance.isSnglePlayer;
     }
 }

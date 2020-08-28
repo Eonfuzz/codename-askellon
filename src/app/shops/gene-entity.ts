@@ -14,7 +14,9 @@ import { TECH_NO_GENES_TIER_1,
     GENE_INSTALL_COSMIC_SENSITIVITY,
     TECH_MAJOR_HEALTHCARE,
     ABIL_GENE_COSMIC,
-    ABIL_INQUIS_SMITE
+    ABIL_INQUIS_SMITE,
+    GENE_INSTALL_XENOPHOBIC,
+    ABIL_GENE_XENOPHOBIC
 } from "resources/ability-ids";
 import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit, Timer } from "w3ts";
@@ -23,20 +25,15 @@ import { Log } from "lib/serilog/serilog";
 import { STR_GENE_SUCCESSFUL, STR_GENE_ALIEN_SUCCESSFUL } from "resources/strings";
 import { EventListener } from "app/events/event-type";
 import { ROLE_NAMES, ROLE_TYPES } from "resources/crewmember-names";
-import { ForceType } from "app/force/forces/force-type";
-
 import { Entity } from "app/entity-type";
 
 import { EventEntity } from "app/events/event-entity";
 import { ChatEntity } from "app/chat/chat-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
-// import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
-
-import { ForceEntity } from "app/force/force-entity";
 import { ResearchFactory } from "app/research/research-factory";
 import { GetActivePlayers } from "lib/utils";
 import { Hooks } from "lib/Hooks";
@@ -129,6 +126,12 @@ export class GeneEntity extends Entity {
                     return false;
                 }));
     
+
+                // If we are single player add the interactor as a unit in the circle
+                if (units.length === 0 && PlayerStateFactory.isSinglePlayer()) {
+                    units.push(gInstance.source);
+                }
+
                 // Set the unit in splicer tech
                 // > 1 because the circle of power in the region counts
                 instanceOwner.setTechResearched(
@@ -181,13 +184,17 @@ export class GeneEntity extends Entity {
         const messageAlien = STR_GENE_ALIEN_SUCCESSFUL();
         
         DisplayTextToPlayer(instance.source.player.handle, 0, 0, messageSuccessful);
-        DisplayTextToPlayer(target.player.handle, 0, 0, messageSuccessful);
+        // We may be the same player due to singleplayer
+        // Make sure we don't display the message twice
+        if (target.player != instance.source.player) {
+            DisplayTextToPlayer(target.player.handle, 0, 0, messageSuccessful);
+        }
 
         const crewmember = PlayerStateFactory.getCrewmember(instance.unitInGeneZone.player);
 
         // Check if its nighteye
         if (castAbil === GENE_INSTALL_NIGHTEYE) {
-            crewmember.setAgiGain( crewmember.getAgiGain() + 1.5);
+            crewmember.setAgiGain( crewmember.getAgiGain() + 2.5);
             crewmember.setIntGain( crewmember.getIntGain() + 1);
 
             SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1,  1);
@@ -196,12 +203,16 @@ export class GeneEntity extends Entity {
             }
         }
         else if (castAbil === GENE_INSTALL_MOBILITY) {
+            crewmember.setStrGain( crewmember.getStrGain() + 1.0 );
             SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1,  1);
             if (!targetIsAlien) {
                 SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_MOBILITY, 1);
             }
         }
         else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
+            crewmember.setIntGain( crewmember.getIntGain() + 3 );
+            crewmember.setAgiGain( crewmember.getStrGain() - 2 );
+
             SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_2,  1);
             if (!targetIsAlien) {
                 UnitAddAbility(instance.unitInGeneZone.unit.handle, ABIL_GENE_COSMIC);
@@ -220,6 +231,11 @@ export class GeneEntity extends Entity {
                     })
                 );
             }
+        }
+        else if (castAbil === GENE_INSTALL_XENOPHOBIC) {
+            crewmember.setStrGain( crewmember.getStrGain() + 3.5 );
+            crewmember.setIntGain( crewmember.getIntGain() - 1 );
+            instance.unitInGeneZone.unit.addAbility(ABIL_GENE_XENOPHOBIC);
         }
         
         // Now grant XP if installed by doc and medicare 2 was researched
