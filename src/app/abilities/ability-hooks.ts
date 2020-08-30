@@ -35,7 +35,8 @@ import {
     ABIL_ITEM_HELLFIRE_GRENADE,
     ABIL_ALIEN_FRENZY,
     ABIL_GENE_XENOPHOBIC,
-    ABIL_GENE_XENOPHOBIC_PUNCH
+    ABIL_GENE_XENOPHOBIC_PUNCH,
+    ABIL_GENE_INSTANT_HEAL
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -71,6 +72,7 @@ import { HellfireGrenadeAbility } from "./human/hellfire-grenade";
 import { FrenzyAbility } from "./alien/frenzy";
 import { XenophobicAbility } from "./human/xenophobic";
 import { XenophobicPunchAbility } from "./human/xenophobic-punch";
+import { InstantHealAbility } from "./human/instant-heal";
 
 
 
@@ -139,3 +141,4 @@ AbilityHooks.Add(ABIL_ALIEN_NEURAL_TAKEOVER, () => new NeuralTakeoverAbility());
 AbilityHooks.Add(ABIL_ALIEN_FRENZY, () => new FrenzyAbility());
 AbilityHooks.Add(ABIL_GENE_XENOPHOBIC, () => new XenophobicAbility());
 AbilityHooks.Add(ABIL_GENE_XENOPHOBIC_PUNCH, () => new XenophobicPunchAbility());
+AbilityHooks.Add(ABIL_GENE_INSTANT_HEAL, () => new InstantHealAbility());

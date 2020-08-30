@@ -33,6 +33,7 @@ export const SFX_PORTAL = "Doodads\\Cinematic\\ShimmeringPortal\\ShimmeringPorta
 export const SFX_BUILDING_EXPLOSION = "Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl";
 export const SFX_FIRE_EXPLOSION = "Models\\NewMassiveEX.mdx";
 export const SFX_AVATAR = "Abilities\\Spells\\Human\\Avatar\\AvatarCaster.mdl";
+export const SFX_HEAL = "Heal Green.mdx";
 
 export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
 export const SFX_BLOOD_2 = "Models\\FloorBlood2.mdx";
@@ -84,3 +85,4 @@ Preload(SFX_BLOOD_10);
 Preload(SFX_BLOOD_11);
 Preload(SFX_BLOOD_12);
 Preload(SFX_AVATAR);
+Preload(SFX_HEAL);

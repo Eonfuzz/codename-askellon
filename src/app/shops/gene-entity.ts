@@ -1,5 +1,3 @@
-/** @noSelfInFile **/
-import { Game } from "../game";
 import { TECH_NO_GENES_TIER_1, 
     TECH_NO_GENES_TIER_2, 
     TECH_NO_GENES_TIER_3, 
@@ -16,7 +14,9 @@ import { TECH_NO_GENES_TIER_1,
     ABIL_GENE_COSMIC,
     ABIL_INQUIS_SMITE,
     GENE_INSTALL_XENOPHOBIC,
-    ABIL_GENE_XENOPHOBIC
+    ABIL_GENE_XENOPHOBIC,
+    GENE_INSTALL_OSBORNE_GENE,
+    ABIL_GENE_INSTANT_HEAL
 } from "resources/ability-ids";
 import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit, Timer } from "w3ts";
@@ -211,7 +211,7 @@ export class GeneEntity extends Entity {
         }
         else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
             crewmember.setIntGain( crewmember.getIntGain() + 3 );
-            crewmember.setAgiGain( crewmember.getStrGain() - 2 );
+            crewmember.setAgiGain( crewmember.getAgiGain() - 2 );
 
             SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_2,  1);
             if (!targetIsAlien) {
@@ -236,6 +236,12 @@ export class GeneEntity extends Entity {
             crewmember.setStrGain( crewmember.getStrGain() + 3.5 );
             crewmember.setIntGain( crewmember.getIntGain() - 1 );
             instance.unitInGeneZone.unit.addAbility(ABIL_GENE_XENOPHOBIC);
+        }
+        else if (castAbil === GENE_INSTALL_OSBORNE_GENE) {
+            crewmember.setStrGain( crewmember.getStrGain() + 2 );
+            crewmember.setAgiGain( crewmember.getAgiGain() + 2 );
+            crewmember.setIntGain( crewmember.getIntGain() + 1.5 );
+            instance.unitInGeneZone.unit.addAbility(ABIL_GENE_INSTANT_HEAL);
         }
         
         // Now grant XP if installed by doc and medicare 2 was researched

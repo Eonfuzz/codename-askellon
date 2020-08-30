@@ -268,7 +268,7 @@ F
 }
 
 STRING 80
-// Upgrades: R000 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+// Abilities: A01N (Adaptive Regeneration), Name (Name)
 {
 Adaptive Regeneration
 }
@@ -4663,7 +4663,7 @@ Xenophobic
 }
 
 STRING 1117
-// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Abilities: A01N (Adaptive Regeneration), EditorSuffix (Editor Suffix)
 {
 - GENE
 }
@@ -4750,5 +4750,65 @@ STRING 1136
 // Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events effect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability.|n|nAttribute Gain: |cff00ff00+3 Will|r and |cff00ff00-2 Accuracy|r per level
+}
+
+STRING 1138
+// Abilities: A01N (Adaptive Regeneration), Hotkey (Hotkey - Normal)
+{
+S
+}
+
+STRING 1141
+// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 1144
+// Abilities: A01O (Adaptive Regeneration), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1145
+// Abilities: A01O (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nInstantly|cff00ff00 heal 40%|r of your maximum hit points.|n|n|cff80808040 Seconds Cooldown|r
+}
+
+STRING 1147
+// Abilities: A01O (Adaptive Regeneration), EditorSuffix (Editor Suffix)
+{
+- Ability
+}
+
+STRING 1148
+// Abilities: A01N (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nThe patient undergoes invasive surgery, gaining the |cffd45e19Adaptive Regeneration|r power.|nPassively |cff00ff00increases|r all stat gains, and can be activated to instantly |cff00ff00heal 40%|r of your maximum hitpoints.|r|n|nAttribute Gain: |cff00ff00+2 Vitality|r, |cff00ff00+2 Accuracy|r and |cff00ff001.5 Will|r per level
+}
+
+STRING 1149
+// Abilities: A01N (Adaptive Regeneration), Tip (Tooltip - Normal)
+{
+Adaptive Regeneration
+}
+
+STRING 1150
+// Abilities: A01O (Adaptive Regeneration), Name (Name)
+{
+Adaptive Regeneration
+}
+
+STRING 1151
+// Abilities: A01O (Adaptive Regeneration), Tip (Tooltip - Normal)
+{
+Adaptive Regeneration
+}
+
+STRING 1152
+// Upgrades: R000 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Adaptive Regeneration
 }
 

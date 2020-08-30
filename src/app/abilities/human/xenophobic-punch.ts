@@ -16,6 +16,15 @@ import { MapPlayer } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
+
+export const punchMessages = [
+    "Welcome to Earth!",
+    "I came here to kick butt and chew gum, looks like I'm all outta gum",
+    "Eat shit and die",
+    "Smile you son of a bitch",
+    "You are one ugly motherfucker"
+];
+
 export class XenophobicPunchAbility implements Ability {
 
     private unit: Unit | undefined;
@@ -25,7 +34,7 @@ export class XenophobicPunchAbility implements Ability {
 
     private hasDashed = false;
     private dashAt = 0.15;
-    private dashDistance = 200;
+    private dashDistance = 220;
 
     private searchGroup = CreateGroup();
     private unitsHit = CreateGroup();
@@ -79,7 +88,7 @@ export class XenophobicPunchAbility implements Ability {
             
             this.leapInstance = LeapEntity.getInstance().newLeap(
                 this.unit.handle,
-                new Vector3(leapVec.x, leapVec.y, getZFromXY(leapVec.x, leapVec.y)),
+                new Vector3(leapVec.x, leapVec.y, getZFromXY(unitLoc.x, unitLoc.y)),
                 35,
                 2.5
             );
@@ -117,21 +126,19 @@ export class XenophobicPunchAbility implements Ability {
                 this.searchGroup, 
                 loc.x + this.punchSfxOffset.x, 
                 loc.y + this.punchSfxOffset.y,
-                90,
+                45,
                 FilterIsAlive(this.unit.owner)
             );
-
             ForGroup(this.searchGroup, () => {
                 const unit = GetEnumUnit();
                 this.damage(unit);
             });
-
         }
 
         if (this.sfx.length > 0) {
             for (let index = 0; index < this.sfx.length; index++) {
                 const element = this.sfx[index];
-                element.alpha -= 100 * delta;
+                element.alpha -= 220 * delta;
                 if (element.alpha <= 0) {
                     BlzSetSpecialEffectAlpha(element.effect, 0);
                     DestroyEffect(element.effect);

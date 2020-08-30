@@ -36,6 +36,7 @@ import { AIEntity } from "./ai/ai-entity";
 import { PlayerStateFactory } from "./force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "./force/forces/force-names";
 import { AlienForce } from "./force/forces/alien-force";
+import { AntiMetaEntity } from "resources/anti-meta-entity";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -110,6 +111,7 @@ export class Game {
         AbilityEntity.getInstance();
 
         AIEntity.getInstance();
+        AntiMetaEntity.start();
 
         // Camera follow the main ship
         this.followMainShip();
@@ -215,69 +217,6 @@ export class Game {
                 Log.Information("test lobby detected, skipping cinematic")
                 SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
             }
-
-            // // Move move triggers
-            // let isEnabled = false;
-            // let group = CreateGroup();
-
-            // const trigger = new Trigger();
-            // trigger.registerPlayerMouseEvent(MapPlayer.fromLocal(), bj_MOUSEEVENTTYPE_MOVE);
-            // trigger.addAction(() => {
-            //     try {
-            //         // const mouseFocus = BlzGetMouseFocusUnit();
-
-            //         const x = BlzGetTriggerPlayerMouseX();
-            //         const y = BlzGetTriggerPlayerMouseY();
-            //         let foundAlienUnit = false;
-
-            //         GroupEnumUnitsInRange(group, x, y, 128, null);
-            //         let unit = FirstOfGroup(group);
-            //         while (!foundAlienUnit && unit) {                        
-            //             const p = MapPlayer.fromHandle(GetOwningPlayer(unit));
-            //             const pData = PlayerStateFactory.get(p);
-
-            //             // Only enable if we are NOT looking at an ALIEN player
-            //             const force = pData && pData.getForce();
-            //             foundAlienUnit = foundAlienUnit || 
-            //                 (force && force.is(ALIEN_FORCE_NAME) && (force as AlienForce).getAlienFormForPlayer(p).handle === unit);
-            //             GroupRemoveUnit(group, unit);
-            //             unit = FirstOfGroup(group);
-            //         }
-                    
-            //         if (isEnabled !== !foundAlienUnit) {
-            //             // Log.Information("Moused over alien? "+foundAlienUnit);
-            //             isEnabled = !foundAlienUnit;
-            //             EnablePreSelect(true, !foundAlienUnit);
-            //         }
-            //     }
-            //     catch(e) {
-            //         Log.Error(e);
-            //     }
-            // });
-            // InputManager.addKeyboardPressCallback(OSKEY_LEFT, (key) => {
-            //     if (GetLocalPlayer() === key.triggeringPlayer) {
-            //         isEnabled = false;
-            //         EnablePreSelect(true, false);
-            //     }
-            // });
-            // InputManager.addKeyboardPressCallback(OSKEY_UP, (key) => {
-            //     if (GetLocalPlayer() === key.triggeringPlayer) {
-            //         isEnabled = false;
-            //         EnablePreSelect(true, false);
-            //     }
-            // });
-            // InputManager.addKeyboardPressCallback(OSKEY_RIGHT, (key) => {
-            //     if (GetLocalPlayer() === key.triggeringPlayer) {
-            //         isEnabled = false;
-            //         EnablePreSelect(true, false);
-            //     }
-            // });
-            // InputManager.addKeyboardPressCallback(OSKEY_DOWN, (key) => {
-            //     if (GetLocalPlayer() === key.triggeringPlayer) {
-            //         isEnabled = false;
-            //         EnablePreSelect(true, false);
-            //     }
-            // });
         }
         catch (e) {
             Log.Error(e);
