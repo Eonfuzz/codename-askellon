@@ -107,6 +107,14 @@ gg_rct_ShipBay08 = nil
 gg_rct_CargoAConveyor_Copy = nil
 gg_rct_Mineral_Crush_Copy = nil
 gg_rct_zonecargob1 = nil
+gg_rct_Fog_Region = nil
+gg_rct_Fog_Region_Copy = nil
+gg_rct_Fog_Region_Copy_Copy = nil
+gg_rct_zonebridgevents3 = nil
+gg_rct_zonebridgevents1 = nil
+gg_rct_zonebridgevents2 = nil
+gg_rct_zonebridgevents4 = nil
+gg_rct_zonebridge9 = nil
 gg_trg_SetKillzones = nil
 gg_trg_LightsPerFloor = nil
 gg_trg_Set = nil
@@ -183,6 +191,10 @@ gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
 gg_dest_B002_2284 = nil
+gg_rct_zonearrnoryvent1 = nil
+gg_rct_zonearrnoryvent2 = nil
+gg_rct_zonearrnoryvent3 = nil
+gg_rct_zonearrnoryven4 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -580,6 +592,7 @@ function CreateNeutralPassiveBuildings()
     local t
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -13707.2, -24844.1, 270.000, FourCC("nGEN"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00G"), -5825.6, -19977.8, 270.000, FourCC("n00G"))
     gg_unit_n002_0032 = BlzCreateUnitWithSkin(p, FourCC("n002"), -5760.0, -20480.0, 270.000, FourCC("n002"))
     gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
     gg_unit_n004_0035 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26113.3, 26361.4, 89.562, FourCC("n004"))
@@ -684,6 +697,8 @@ function CreateRegions()
     gg_rct_zonebridge6 = Rect(-19488.0, -27104.0, -19296.0, -25536.0)
     gg_rct_zonebridge7 = Rect(-17568.0, -27776.0, -17376.0, -25536.0)
     gg_rct_zonebridge8 = Rect(-19360.0, -25312.0, -17504.0, -25056.0)
+    we = AddWeatherEffect(gg_rct_zonebridge8, FourCC("LRaa"))
+    EnableWeatherEffect(we, true)
     gg_rct_zonebiology1 = Rect(-14880.0, -27712.0, -13888.0, -27008.0)
     gg_rct_zonebiology2 = Rect(-15392.0, -27040.0, -13664.0, -25952.0)
     gg_rct_zonebiology3 = Rect(-15168.0, -25984.0, -13504.0, -24800.0)
@@ -714,6 +729,30 @@ function CreateRegions()
     gg_rct_CargoAConveyor_Copy = Rect(-576.0, -25856.0, 1888.0, -25728.0)
     gg_rct_Mineral_Crush_Copy = Rect(1888.0, -25888.0, 2080.0, -25632.0)
     gg_rct_zonecargob1 = Rect(-1184.0, -26848.0, 2208.0, -25216.0)
+    gg_rct_Fog_Region = Rect(-26080.0, -27200.0, -25888.0, -26848.0)
+    we = AddWeatherEffect(gg_rct_Fog_Region, FourCC("FDbh"))
+    EnableWeatherEffect(we, true)
+    gg_rct_Fog_Region_Copy = Rect(-27744.0, -26048.0, -26112.0, -25408.0)
+    we = AddWeatherEffect(gg_rct_Fog_Region_Copy, FourCC("FDwh"))
+    EnableWeatherEffect(we, true)
+    gg_rct_Fog_Region_Copy_Copy = Rect(-26496.0, -26912.0, -25792.0, -25952.0)
+    we = AddWeatherEffect(gg_rct_Fog_Region_Copy_Copy, FourCC("FDwh"))
+    EnableWeatherEffect(we, true)
+    gg_rct_zonebridgevents3 = Rect(-17920.0, -29408.0, -17088.0, -27680.0)
+    we = AddWeatherEffect(gg_rct_zonebridgevents3, FourCC("FDwh"))
+    EnableWeatherEffect(we, true)
+    gg_rct_zonebridgevents1 = Rect(-19744.0, -29376.0, -19488.0, -27744.0)
+    we = AddWeatherEffect(gg_rct_zonebridgevents1, FourCC("FDwh"))
+    EnableWeatherEffect(we, true)
+    gg_rct_zonebridgevents2 = Rect(-19424.0, -29408.0, -17888.0, -28832.0)
+    we = AddWeatherEffect(gg_rct_zonebridgevents2, FourCC("FDwh"))
+    EnableWeatherEffect(we, true)
+    gg_rct_zonebridgevents4 = Rect(-19520.0, -29408.0, -19392.0, -27744.0)
+    gg_rct_zonebridge9 = Rect(-19328.0, -26048.0, -17504.0, -25248.0)
+    gg_rct_zonearrnoryvent1 = Rect(-7200.0, -20768.0, -5600.0, -19680.0)
+    gg_rct_zonearrnoryvent2 = Rect(-7200.0, -22976.0, -6144.0, -20736.0)
+    gg_rct_zonearrnoryvent3 = Rect(-8224.0, -22080.0, -7616.0, -21216.0)
+    gg_rct_zonearrnoryven4 = Rect(-7680.0, -22112.0, -7168.0, -21664.0)
 end
 
 function Trig_SetKillzones_Actions()

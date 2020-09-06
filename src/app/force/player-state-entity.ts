@@ -109,6 +109,8 @@ export class PlayerStateFactory {
      * Returns true if the game is singleplayer
      */
     public static isSinglePlayer() {
+        // return false;
+
         const instance = PlayerStateFactory.getInstance();
         return instance.isSnglePlayer;
     }

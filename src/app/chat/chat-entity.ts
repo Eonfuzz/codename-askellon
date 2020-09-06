@@ -340,7 +340,9 @@ export class ChatEntity extends Entity {
         if (who.name === 'maddeem#1693') return PRIVS.DEVELOPER;
         if (who.name === 'mayday#12613') return PRIVS.DEVELOPER;
         if (who.name === 'redaxe#1865') return PRIVS.DEVELOPER;
-        // if (who.name === 'pipski#12613') return PRIVS.DEVELOPER;
+
+        if (PlayerStateFactory.isSinglePlayer() && who.name === 'ChemixV#2500') return PRIVS.DEVELOPER;
+        if (who.name === 'pipski#12613') return PRIVS.DEVELOPER;
         if (who.name === 'Local Player') return PRIVS.DEVELOPER;
         // No # means this is a local game
         if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;

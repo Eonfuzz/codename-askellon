@@ -49,6 +49,8 @@ export abstract class Gun {
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
 
+        this.equippedTo.unit.addAnimationProps("alternate", false);
+
         // If we have an attachment make sure it's added to the unit
         if (this.attachment) {
             this.attachment.onEquip(this, caster);
@@ -57,6 +59,7 @@ export abstract class Gun {
 
     public onRemove() {
         if (this.equippedTo) {
+            this.equippedTo.unit.addAnimationProps("alternate", true);
             // Don't care about the mode, always remove cast ability
             this.equippedTo.unit.removeAbility(this.getAbilityId());
             // Don't care about mode, always disable attack ui

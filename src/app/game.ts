@@ -37,6 +37,7 @@ import { PlayerStateFactory } from "./force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "./force/forces/force-names";
 import { AlienForce } from "./force/forces/alien-force";
 import { AntiMetaEntity } from "resources/anti-meta-entity";
+import { UIEntity } from "resources/ui/ui-entity";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -68,8 +69,6 @@ export class Game {
         // SetMusicVolume(20);
         PlayMusic("Music\\MechanicusLostCivilization.mp3");
         SetMusicVolume(30);
-
-        BlzHideOriginFrames(true);
         PauseGameOff();
 
         // Disable preselect
@@ -133,7 +132,7 @@ export class Game {
         warpStormSound.playSound();
 
         const facingData = getYawPitchRollFromVector(new Vector3(1, 1, 0));
-        this.portalSFX = new Effect(SFX_PORTAL, mainShip.unit.x + 1500, mainShip.unit.y + 1500);
+        this.portalSFX = new Effect(SFX_PORTAL, mainShip.unit.x + 1590, mainShip.unit.y + 1590);
 
         this.portalSFX.scale = 2;
         this.portalSFX.z = -600;
@@ -142,11 +141,10 @@ export class Game {
         this.portalSFX.setYaw(facingData.yaw);
         
 
-        BlzHideOriginFrames(true);
-        BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
-        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
+        // BlzHideOriginFrames(true);
+        // BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
+        // BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
 
-        BlzShowTerrain(false);
         GetActivePlayers().forEach(p => {
             const modifier = CreateFogModifierRect(p.handle, FOG_OF_WAR_VISIBLE, gg_rct_Space, true, false);
             FogModifierStart(modifier);
@@ -194,11 +192,7 @@ export class Game {
 
     postOptResults(optResults: OptResult[]) {
         try {
-            // Start opening cinematic
-            BlzHideOriginFrames(false);
-            BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
-            BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0),true);
-            
+            // Start opening cinematic            
             this.stopFollowingMainShip();
 
             // Init forces
@@ -214,9 +208,12 @@ export class Game {
                 this.openingCinematic();
             }
             else {
-                Log.Information("test lobby detected, skipping cinematic")
+                Log.Information("TEST LOBBY DETECTED")
+                Players.forEach(p => p.setState(PLAYER_STATE_RESOURCE_GOLD, 999999));
                 SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
             }
+
+            // UIEntity.start();
         }
         catch (e) {
             Log.Error(e);

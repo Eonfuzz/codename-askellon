@@ -354,7 +354,10 @@ export class ForceEntity extends Entity {
 
         // Start a 15 second timer
         const timer = CreateTimer();
-        StartTimerBJ(timer, false, GetActivePlayers().length > 1 ? 16 : 0.1);
+        if (PlayerStateFactory.isSinglePlayer())
+            StartTimerBJ(timer, false, 0);
+        else
+            StartTimerBJ(timer, false, 16);
 
         const timerTrig = new Trigger();
 

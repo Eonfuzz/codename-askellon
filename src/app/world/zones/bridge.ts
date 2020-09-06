@@ -34,6 +34,7 @@ export class BridgeZone extends ShipZone {
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
             // Play music
+            this.operaMusic.setVolume(50);
             this.operaMusic.playSound();
             SetMusicVolume(5);
 
@@ -75,8 +76,8 @@ export class BridgeZoneVent extends ShipZone {
         const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
-            this.operaMusic.playSound();
             this.operaMusic.setVolume(25);
+            this.operaMusic.playSound();
             SetMusicVolume(10);
         }
     }

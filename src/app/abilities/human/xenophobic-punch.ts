@@ -46,6 +46,9 @@ export class XenophobicPunchAbility implements Ability {
     private punchSfx: effect;
     private punchSfxOffset: Vector2;
 
+    // For X seconds after landing we create afterimages
+    private leapLeeway = 0.2;
+
     constructor() {}
 
     public initialise() {
@@ -101,21 +104,31 @@ export class XenophobicPunchAbility implements Ability {
             });
         }
 
-        if (this.hasDashed && !this.finishedLeaping) {
-            const loc = this.leapInstance.location;
+        if (this.hasDashed && (!this.finishedLeaping || this.leapLeeway > 0)) {
+            let loc = this.leapInstance.location;
+
+            if (this.finishedLeaping) {
+                loc = new Vector3(this.unit.x, this.unit.y, getZFromXY(this.unit.x, this.unit.y));
+                this.leapLeeway -= delta;
+            }
 
             let sfx = AddSpecialEffect("war3mapImported\\testMarine.mdx", loc.x, loc.y);
             BlzSetSpecialEffectColorByPlayer(sfx, this.unit.owner.handle);
             BlzPlaySpecialEffect(sfx, ConvertAnimType(8));
             BlzSetSpecialEffectZ(sfx, loc.z);
-            BlzSetSpecialEffectAlpha(sfx, 80);
+            if (this.finishedLeaping)
+                BlzSetSpecialEffectAlpha(sfx, 30);
+            else
+                BlzSetSpecialEffectAlpha(sfx, 80);
             BlzSetSpecialEffectScale(sfx, 0.7);
             // BlzSetSpecialEffectTimeScale(sfx, 1);
             // BlzSetSpecialEffectTime(sfx, 0.2);
             BlzSetSpecialEffectYaw(sfx, GetUnitFacing(this.unit.handle) * bj_DEGTORAD);
             // DestroyEffect(sfx);
-            Quick.Push(this.sfx, { effect: sfx, alpha: 80 });
-
+            if (this.finishedLeaping)
+                Quick.Push(this.sfx, { effect: sfx, alpha: 30 });
+            else
+                Quick.Push(this.sfx, { effect: sfx, alpha: 80 });
             // Update punch sfx
             BlzSetSpecialEffectX(this.punchSfx, loc.x + this.punchSfxOffset.x);
             BlzSetSpecialEffectY(this.punchSfx, loc.y + this.punchSfxOffset.y);

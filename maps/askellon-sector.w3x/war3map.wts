@@ -4812,3 +4812,9 @@ STRING 1152
 Adaptive Regeneration
 }
 
+STRING 1153
+// Units: n00G (|cff00ffffPurging |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cff00ffffPurging |rTerminal|n|cff808080Right Click to Use|r
+}
+
