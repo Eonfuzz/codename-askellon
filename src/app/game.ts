@@ -3,11 +3,11 @@ import { Log } from "lib/serilog/serilog";
 import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { SoundRef } from "./types/sound-ref";
 import { ZONE_TYPE } from "./world/zone-id";
-import { SFX_PORTAL } from "resources/sfx-paths";
+import { SFX_PORTAL, SFX_BLACK_HOLE } from "resources/sfx-paths";
 import { Vector2 } from "./types/vector2";
 import { Vector3 } from "./types/vector3";
 import { COL_GOOD, COL_ORANGE, COL_ATTATCH } from "resources/colours";
-import { SecurityFactory } from "./station/security-module";
+import { SecurityEntity } from "./station/security-module";
 import { EventEntity } from "./events/event-entity";
 import { TooltipEntity } from "./tooltip/tooltip-module";
 import { DynamicBuffEntity } from "./buff/dynamic-buff-entity";
@@ -70,9 +70,6 @@ export class Game {
         PlayMusic("Music\\MechanicusLostCivilization.mp3");
         SetMusicVolume(30);
         PauseGameOff();
-
-        // Disable preselect
-        EnablePreSelect( true, false );
     }
 
     public startGame() {
@@ -88,7 +85,7 @@ export class Game {
         LeapEntity.getInstance();
 
         ForceEntity.getInstance();
-        SecurityFactory.getInstance();
+        SecurityEntity.getInstance();
 
         // Deps: Force Entity
         ResearchFactory.getInstance();
@@ -126,16 +123,18 @@ export class Game {
         const mainShip = SpaceEntity.getInstance().mainShip;
 
         mainShip.engine.mass = 0;
-        mainShip.engine.velocityForwardMax = 120;
-        mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 600, mainShip.unit.y + 600));
+        mainShip.engine.velocityForwardMax = 100;
+        mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 500, mainShip.unit.y + 500));
 
         warpStormSound.playSound();
 
-        const facingData = getYawPitchRollFromVector(new Vector3(1, 1, 0));
-        this.portalSFX = new Effect(SFX_PORTAL, mainShip.unit.x + 1590, mainShip.unit.y + 1590);
+        const facingData = getYawPitchRollFromVector(new Vector3(1, 1, -0.7));
+        this.portalSFX = new Effect(SFX_BLACK_HOLE, mainShip.unit.x + 1300, mainShip.unit.y + 1300);
 
-        this.portalSFX.scale = 2;
-        this.portalSFX.z = -600;
+        this.portalSFX.scale = 15;
+        this.portalSFX.z = -200;
+        this.portalSFX.setTime(1);
+        this.portalSFX.setTimeScale(0.6);
         this.portalSFX.setPitch(facingData.pitch);
         this.portalSFX.setRoll(facingData.roll);
         this.portalSFX.setYaw(facingData.yaw);
@@ -167,7 +166,7 @@ export class Game {
         new Timer().start(15.25, false, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] DIVERTING`);
-            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 1.5, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 80.00, 70.00, 100.00, 0)
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 1.5, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 40.00, 50.00, 70.00, 0)
         });
     }
 

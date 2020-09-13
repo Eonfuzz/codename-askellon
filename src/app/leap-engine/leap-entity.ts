@@ -119,7 +119,7 @@ export class LeapEntity extends Entity {
         fallingSound.playSoundOnUnit(who, 127);
 
         // After 1.7 seconds unpause the unit
-        Timers.addTimedAction(250, () => {
+        Timers.addTimedAction(0.25, () => {
             // Move the player to the matching location
             if (zoneName) {
                 // Travel the unit as needed
@@ -140,7 +140,7 @@ export class LeapEntity extends Entity {
         });
 
         // After 1.7 seconds unpause the unit
-        Timers.addTimedAction(500, () => {
+        Timers.addTimedAction(0.5, () => {
             // Move unit to here
             SetUnitX(who, locX);
             SetUnitY(who, locY);
@@ -152,7 +152,7 @@ export class LeapEntity extends Entity {
         });
 
         // After 1.7 seconds unpause the unit
-        Timers.addTimedAction(2300, () => {
+        Timers.addTimedAction(2.3, () => {
             // Select
             SelectUnitAddForPlayer(who, player);
             SetUnitFlyHeight(who, 0, 1600);
@@ -160,7 +160,7 @@ export class LeapEntity extends Entity {
         });
 
         // After 1.5 seconds move the unit
-        Timers.addTimedAction(2800, () => {
+        Timers.addTimedAction(2.8, () => {
 
             // Damage the unit by 40% of its current hp
             const damage = GetUnitState(who, UNIT_STATE_LIFE) * 0.4;
@@ -174,7 +174,7 @@ export class LeapEntity extends Entity {
         });
 
         // After 1.7 seconds unpause the unit
-        Timers.addTimedAction(5800, () => {
+        Timers.addTimedAction(5.8, () => {
             BlzPauseUnitEx(who, false);
             UnitRemoveAbility(who, UNIT_IS_FLY);
             SetUnitPathing(who, true);

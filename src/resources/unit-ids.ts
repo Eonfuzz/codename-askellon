@@ -27,3 +27,5 @@ export const ALIEN_MINION_LEECH = FourCC('u001');
 
 export const UNIT_ID_DUMMY_CASTER = FourCC('dumy');
 export const UNIT_ID_CRATE = FourCC('h005');
+
+export const UNIT_ID_MANSION_DOOR = FourCC('n00H');

@@ -30,6 +30,7 @@ export const SFX_HOWL = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl"
 export const SFX_FIRE = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl';
 export const SFX_LIGHTNING_BOLT = 'Doodads\\Cinematic\\Lightningbolt\\Lightningbolt.mdl';
 export const SFX_PORTAL = "Doodads\\Cinematic\\ShimmeringPortal\\ShimmeringPortal.mdx";
+export const SFX_BLACK_HOLE = "Models\\BlackHole.mdx";
 export const SFX_BUILDING_EXPLOSION = "Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl";
 export const SFX_FIRE_EXPLOSION = "Models\\NewMassiveEX.mdx";
 export const SFX_AVATAR = "Abilities\\Spells\\Human\\Avatar\\AvatarCaster.mdl";

@@ -1,4 +1,4 @@
-import { Trigger, Unit, Group, Rectangle } from "w3ts";
+import { Trigger, Unit, Group, Rectangle, MapPlayer } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS, ITEM_ID_CRYO_GRENADE } from "app/weapons/weapon-constants";
 import { ITEM_TRIFEX_ID, ITEM_BARRICADES } from "resources/item-ids";
@@ -7,44 +7,73 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { UNIT_ID_CRATE } from "resources/unit-ids";
+import { UNIT_ID_CRATE, UNIT_ID_MANSION_DOOR } from "resources/unit-ids";
 import { LootTable } from "./loot-table/loot-table";
 import { GUN_LOOT_TABLE, MISC_ITEM_TABLE, MEDICAL_LOOT_TABLE } from "./loot-table/loot";
+import { Door } from "./door";
+import { Entity } from "app/entity-type";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
-export class SecurityFactory {
+export class SecurityEntity extends Entity {
     isDestroyedMap = new Map<Unit, boolean>();
 
-    private static instance: SecurityFactory;
+    private static instance: SecurityEntity;
 
     public static getInstance() {        
         if (this.instance == null) {
-            this.instance = new SecurityFactory();
+            this.instance = new SecurityEntity();
             Hooks.set(this.name, this.instance);
         }
         return this.instance;
     }
 
+    private doors = new Map<Unit, Door>();
+    private doorsIterator: Door[] = [];
+
     constructor() {
+        super();
+        
         const securityDamageTrigger = new Trigger();
 
         // Get all security units on the map
         const uGroup = CreateGroup();
         GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.StationProperty.handle, Filter(() => {
-            const u = GetFilterUnit();
-            const uType = GetUnitTypeId(u);
+            const uType = GetUnitTypeId(GetFilterUnit());
             
             // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
-            if (uType === UNIT_ID_STATION_SECURITY_POWER) return true;
+            if (uType !== UNIT_ID_STATION_SECURITY_POWER &&
+                uType !== UNIT_ID_MANSION_DOOR) return false;
+
+            const u = Unit.fromHandle(GetFilterUnit());
+            securityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
+
+            if (u.typeId === UNIT_ID_MANSION_DOOR) {
+                const door = new Door(u, false);
+                this.doors.set(u, door);
+                this.doorsIterator.push(door)
+            }
+
             return false;
         }));
+        GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.NeutralPassive.handle, Filter(() => {
+            const uType = GetUnitTypeId(GetFilterUnit());
+            
+            // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
+            if (uType !== UNIT_ID_STATION_SECURITY_POWER && 
+                uType !== UNIT_ID_MANSION_DOOR) return false;
 
-        // Now register that the chosen unit is damaged
-        ForGroup(uGroup, () => {
-            const u = GetEnumUnit();
-            securityDamageTrigger.registerUnitEvent(Unit.fromHandle(u), EVENT_UNIT_DAMAGED)  ;
-        });
+            const u = Unit.fromHandle(GetFilterUnit());
+            securityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
+
+            if (u.typeId === UNIT_ID_MANSION_DOOR) {
+                const door = new Door(u, false);
+                this.doors.set(u, door);
+                this.doorsIterator.push(door)
+            }
+
+            return false;
+        }));
 
         securityDamageTrigger.addAction(() => this.onSecurityDamage(
             BlzGetEventDamageTarget(),
@@ -130,6 +159,15 @@ export class SecurityFactory {
                     damaged: Unit.fromHandle(u)
                 }
             });
+        }
+    }
+
+    
+    _timerDelay = 0.5;
+    step() {
+        for (let index = 0; index < this.doorsIterator.length; index++) {
+            const door = this.doorsIterator[index];
+            door.search();
         }
     }
 

@@ -1,4 +1,5 @@
 import { GameTimeElapsed } from "./game-time-elapsed";
+import { getZFromXY } from "lib/utils";
 
 export class SoundRef {
     public sound: sound;
@@ -21,6 +22,18 @@ export class SoundRef {
 
         AttachSoundToUnit(this.sound, unit);
         StartSound(this.sound);
+    }
+
+    public playSoundOnPont(x: number, y: number, volume: number) {
+        SetSoundChannel(this.sound, 0);
+        SetSoundVolume(this.sound, volume);
+        SetSoundPitch(this.sound, 1.0);
+        SetSoundDistances(this.sound, 2000.0, 10000.0);
+        SetSoundDistanceCutoff(this.sound, 4500.0);
+        
+        const loc = Location(x, y);
+        PlaySoundAtPointBJ(this.sound, volume, loc, getZFromXY(x, y));
+        RemoveLocation(loc);
     }
 
     public setVolume(volume: number) {

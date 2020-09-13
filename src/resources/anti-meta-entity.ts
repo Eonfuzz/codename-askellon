@@ -30,11 +30,11 @@ export class AntiMetaEntity {
      * Begin stopping that meta knowledge!
      */
     public init() {
-        Players.forEach(player => {
-            if (player.slotState === PLAYER_SLOT_STATE_PLAYING && player.controller === MAP_CONTROL_USER) {
-                this.hook(player);
-            }
-        });
+        // Players.forEach(player => {
+        //     if (player.slotState === PLAYER_SLOT_STATE_PLAYING && player.controller === MAP_CONTROL_USER) {
+        //         this.hook(player);
+        //     }
+        // });
             // // Move move triggers
             // // let isEnabled = false;
             // let group = CreateGroup();

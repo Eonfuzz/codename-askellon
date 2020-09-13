@@ -4818,3 +4818,27 @@ STRING 1153
 |cff00ffffPurging |rTerminal|n|cff808080Right Click to Use|r
 }
 
+STRING 1154
+// Doodads: D013 (Space Pipes Small), Name (Name)
+{
+Space Pipes Small
+}
+
+STRING 1155
+// Destructibles: B008 (Sliding Door), Name (Name)
+{
+Sliding Door
+}
+
+STRING 1156
+// Units: n00H (Security Door), Name (Name)
+{
+Security Door
+}
+
+STRING 1157
+// Units: n00I (|cff00ff00Reactor Control|r Terminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cff00ff00Reactor Control|r Terminal|n|cff808080Right Click to Use|r
+}
+
