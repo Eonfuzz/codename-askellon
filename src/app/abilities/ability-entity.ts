@@ -4,6 +4,10 @@ import { Entity } from "app/entity-type";
 import { Hooks } from "lib/Hooks";
 import { AbilityHooks } from "./ability-hooks";
 import { Log } from "lib/serilog/serilog";
+import { Quick } from "lib/Quick";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { EventListener } from "app/events/event-type";
 
 /**
  * Shouldn't really do that much other than initialise ability loops and triggers
@@ -29,7 +33,7 @@ export class AbilityEntity extends Entity {
 
         this.triggerAbilityCast = new Trigger();
         this.triggerAbilityCast.registerAnyUnitEvent( EVENT_PLAYER_UNIT_SPELL_EFFECT );
-        this.triggerAbilityCast.addAction(() => this.checkSpells())
+        this.triggerAbilityCast.addAction(() => this.checkSpells());
     }
 
 
@@ -37,7 +41,7 @@ export class AbilityEntity extends Entity {
      * Called by the spell cast event
      * Checks to see if the spell is one of ours
      */
-    checkSpells() {
+    private checkSpells() {
         const id = GetSpellAbilityId();
         const ability = AbilityHooks.Get(id);
         if (ability) {
@@ -49,7 +53,9 @@ export class AbilityEntity extends Entity {
                 Log.Error(e);
             }
         }
+
     }
+
 
     step() {
         // Go through all abilities cast

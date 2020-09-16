@@ -11,6 +11,7 @@ import { ShipState } from "./ship-state-type";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Timers } from "app/timer-type";
+import { ITEM_MINERAL_BLUE } from "resources/item-ids";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -195,28 +196,36 @@ export class PerseusShip extends ShipWithFuel {
                 const mineralItem = this.unit.getItemInSlot(0);
                 const stacks = GetItemCharges(mineralItem);
                 SetItemCharges(mineralItem, 0);
-    
+                
+                if (stacks > 0) {
+
+
+                    const minerals = CreateItem(ITEM_MINERAL_BLUE, this.unit.x, this.unit.y - 200);
+                    SetItemCharges(mineralItem, stacks);
+                    
+                }
+
                 // Reward money
-                if (owningUnit && stacks > 0) {
-                    const pData = PlayerStateFactory.get(owningUnit.owner);
+                // if (owningUnit && stacks > 0) {
+                //     const pData = PlayerStateFactory.get(owningUnit.owner);
     
-                    const crew = pData.getCrewmember();
-                    if (crew && crew.unit == owningUnit) {
-                        const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
-                        if (hasRoleOccupationBonus) {
-                            crew.addExperience(stacks * 4);
-                            crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
-                                crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
-                            );
-                        }
-                        else {
-                            crew.addExperience(stacks * 3);
-                            crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
-                                crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 5
-                            );
-                        }
-                    }
-                } 
+                //     const crew = pData.getCrewmember();
+                //     if (crew && crew.unit == owningUnit) {
+                //         const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
+                //         if (hasRoleOccupationBonus) {
+                //             crew.addExperience(stacks * 4);
+                //             crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
+                //                 crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
+                //             );
+                //         }
+                //         else {
+                //             crew.addExperience(stacks * 3);
+                //             crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
+                //                 crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 5
+                //             );
+                //         }
+                //     }
+                // } 
             }
         }
         

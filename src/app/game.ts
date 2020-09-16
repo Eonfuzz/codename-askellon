@@ -140,9 +140,9 @@ export class Game {
         this.portalSFX.setYaw(facingData.yaw);
         
 
-        // BlzHideOriginFrames(true);
-        // BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
-        // BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
+        BlzHideOriginFrames(true);
+        BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
+        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
 
         GetActivePlayers().forEach(p => {
             const modifier = CreateFogModifierRect(p.handle, FOG_OF_WAR_VISIBLE, gg_rct_Space, true, false);
@@ -184,6 +184,9 @@ export class Game {
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.engine.mass = 800;
         mainShip.engine.velocityForwardMax = 1400;
+
+        BlzHideOriginFrames(false);
+        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), true);
 
         this.portalSFX.destroy();
         Players.forEach(p => mainShip.unit.shareVision(p, false));

@@ -12,6 +12,8 @@ import { LootTable } from "./loot-table/loot-table";
 import { GUN_LOOT_TABLE, MISC_ITEM_TABLE, MEDICAL_LOOT_TABLE } from "./loot-table/loot";
 import { Door } from "./door";
 import { Entity } from "app/entity-type";
+import { MineralCrusherEntity } from "./mineral-crusher";
+import { ConveyorEntity } from "app/conveyor/conveyor-entity";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -89,6 +91,10 @@ export class SecurityEntity extends Entity {
         crateDeath.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
         crateDeath.addCondition(Filter(() => GetUnitTypeId(GetDyingUnit()) === UNIT_ID_CRATE));
         crateDeath.addAction(() => this.onCrateDeath(Unit.fromHandle(GetDyingUnit())));
+
+
+        // Start mineral crusher
+        MineralCrusherEntity.getInstance();
     }
 
     public isUnitDestroyed(u: Unit) {
@@ -219,7 +225,7 @@ export class SecurityEntity extends Entity {
             table = MEDICAL_LOOT_TABLE;
         }
 
-        CreateItem(table.getItem(), x, y);
+        ConveyorEntity.getInstance().checkItem(CreateItem(table.getItem(), x, y));
        
         EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
             source: Unit.fromHandle(GetKillingUnit() || GetDyingUnit()),

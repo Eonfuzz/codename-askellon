@@ -36,16 +36,15 @@ export class Door {
 
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (event, data) => {
             if (data.source === this.unit) {
-                Log.Information("Door dead!");
-                this.canUpdate = true;
                 this.isDead = true;
                 this.update(true);
+                this.canUpdate = false;
             }
         }))
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
             if (data.source === this.unit) {
-                this.canUpdate = true;
                 this.isDead = false;
+                this.canUpdate = true;
                 this.update(false);
             }
         }))

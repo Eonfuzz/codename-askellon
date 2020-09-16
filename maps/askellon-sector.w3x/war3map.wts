@@ -2204,7 +2204,7 @@ Window Large
 }
 
 STRING 547
-// Doodads: D00K (Power Core), Name (Name)
+// Units: h00A (Power Core), Name (Name)
 {
 Power Core
 }
@@ -4840,5 +4840,47 @@ STRING 1157
 // Units: n00I (|cff00ff00Reactor Control|r Terminal|n|cff808080Right Click to Use|r), Name (Name)
 {
 |cff00ff00Reactor Control|r Terminal|n|cff808080Right Click to Use|r
+}
+
+STRING 1158
+// Doodads: D00K (Power Core), Name (Name)
+{
+Power Core
+}
+
+STRING 1159
+// Items: I00H (Maskelynite), Name (Name)
+{
+Maskelynite
+}
+
+STRING 1160
+// Items: I00H (Maskelynite), Description (Description)
+{
+You should not be seeing this
+}
+
+STRING 1161
+// Items: I00H (Maskelynite), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|n|r|nReturn to the Askellon to complete delivery; Each mineral is worth |cff00ff005 credits|r; |cff00ff007 credits|r if you are a pilot.|n|n|cffd45e19Stacks up to 250|r
+}
+
+STRING 1162
+// Items: I00I (Pyroxene), Name (Name)
+{
+Pyroxene
+}
+
+STRING 1163
+// Items: I00I (Pyroxene), Description (Description)
+{
+You should not be seeing this
+}
+
+STRING 1164
+// Items: I00I (Pyroxene), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|n|r|nReturn to the Askellon to complete delivery; Each mineral is worth |cff00ff005 credits|r; |cff00ff007 credits|r if you are a pilot.|n|n|cffd45e19Stacks up to 250|r
 }
 

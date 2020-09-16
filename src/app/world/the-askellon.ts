@@ -51,6 +51,7 @@ export class TheAskellon {
         this.floors.set(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
         this.floors.set(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
         this.floors.set(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
+        this.floors.set(ZONE_TYPE.REACTOR, new ShipZone(ZONE_TYPE.REACTOR));
 
         // Now apply lights to the zones
         const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
