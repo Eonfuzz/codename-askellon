@@ -15,6 +15,9 @@ export const SPACE_UNIT_MINERAL = FourCC('h007');
 export const TERMINAL_RELIGION = FourCC('n00A');
 export const TERMINAL_RELIGION_DUMMY = FourCC('n00B');
 
+export const TERMINAL_REACTOR = FourCC('n00I');
+export const TERMINAL_REACTOR_DUMMY = FourCC('n00J');
+
 export const WORM_ALIEN_FORM = FourCC('N00C');
 export const ZERGLING_ALIEN_FORM = FourCC('ALI1');
 export const ROACH_ALIEN_FORM = FourCC('ALI2');

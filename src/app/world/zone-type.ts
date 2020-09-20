@@ -96,6 +96,10 @@ export class Zone {
         DisplayTextToPlayer(player.handle, 0, 0, `Entering ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}`);
     }
 
+
+    /** Does nothing by default */
+    public step(delta: number) {}
+
     /**
      * Returns all players present in a zone
      */

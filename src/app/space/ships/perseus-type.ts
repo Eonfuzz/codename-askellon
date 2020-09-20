@@ -11,7 +11,7 @@ import { ShipState } from "./ship-state-type";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Timers } from "app/timer-type";
-import { ITEM_MINERAL_BLUE } from "resources/item-ids";
+import { ITEM_MINERALS_REACTIVE_SHIP_ID, ITEM_MINERALS_VALUABLE_SHIP_ID, ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE } from "resources/item-ids";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -25,6 +25,9 @@ export class PerseusShip extends ShipWithFuel {
         
         this.unit.maxMana = this.maxFuel;
         this.shipFuel = this.maxFuel;
+
+        this.unit.addItemById(ITEM_MINERALS_REACTIVE_SHIP_ID);
+        this.unit.addItemById(ITEM_MINERALS_VALUABLE_SHIP_ID);
     }
 
     createEngine() {
@@ -190,20 +193,9 @@ export class PerseusShip extends ShipWithFuel {
         if (!isDeath) {
             // We're leaving space, can we dump off minerals?
             const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
-            if (unitZone.id === ZONE_TYPE.CARGO_A) {
-                const owningUnit = this.inShip[0];
-        
-                const mineralItem = this.unit.getItemInSlot(0);
-                const stacks = GetItemCharges(mineralItem);
-                SetItemCharges(mineralItem, 0);
-                
-                if (stacks > 0) {
-
-
-                    const minerals = CreateItem(ITEM_MINERAL_BLUE, this.unit.x, this.unit.y - 200);
-                    SetItemCharges(mineralItem, stacks);
-                    
-                }
+            if (unitZone.id === ZONE_TYPE.CARGO_A) {        
+                this.dropMineral(this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);
+                this.dropMineral(this.unit.getItemInSlot(1), ITEM_MINERAL_VALUABLE);
 
                 // Reward money
                 // if (owningUnit && stacks > 0) {
@@ -230,5 +222,28 @@ export class PerseusShip extends ShipWithFuel {
         }
         
         this.inShip = [];
+    }
+
+
+    private dropMineral(parentMineral: item, ITEM_ID: number) {
+        const stacks = GetItemCharges(parentMineral);
+        SetItemCharges(parentMineral, 0);
+        
+        if (stacks > 0) {
+            const minerals = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 200 + GetRandomInt(-50, 50));
+            const maxCharges = ITEM_ID === ITEM_MINERAL_REACTIVE ? 10 : 5; 
+            const fullStacks = Math.floor(stacks / maxCharges);
+            const remainder = stacks % maxCharges;
+            
+            SetItemCharges(minerals, remainder);
+
+            let i = 0;
+            while (i < fullStacks) {
+                i++;
+                const nItem = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 200 + GetRandomInt(-50, 50));
+                SetItemCharges(nItem, maxCharges);
+            }
+        }
+
     }
 }

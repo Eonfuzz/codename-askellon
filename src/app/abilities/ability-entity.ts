@@ -4,10 +4,6 @@ import { Entity } from "app/entity-type";
 import { Hooks } from "lib/Hooks";
 import { AbilityHooks } from "./ability-hooks";
 import { Log } from "lib/serilog/serilog";
-import { Quick } from "lib/Quick";
-import { EventEntity } from "app/events/event-entity";
-import { EVENT_TYPE } from "app/events/event-enum";
-import { EventListener } from "app/events/event-type";
 
 /**
  * Shouldn't really do that much other than initialise ability loops and triggers

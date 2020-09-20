@@ -6,8 +6,6 @@ udg_elevator_exits = {}
 udg_hatch_entrances = {}
 udg_hatch_exits = {}
 udg_hatch_exit_zones = __jarray("")
-udg_jump_pass_zones = {}
-udg_jump_pass_zones_name = __jarray("")
 udg_power_generators = {}
 udg_power_generator_zones = __jarray("")
 udg_elevator_exit_zones = __jarray("")
@@ -103,17 +101,16 @@ gg_rct_CargoAConveyor_Copy = nil
 gg_rct_Mineral_Crush_Copy = nil
 gg_rct_zonecargob1 = nil
 gg_rct_Fog_Region = nil
-gg_rct_Fog_Region_Copy = nil
 gg_rct_Fog_Region_Copy_Copy = nil
 gg_rct_zonebridgevents3 = nil
 gg_rct_zonebridgevents1 = nil
 gg_rct_zonebridgevents2 = nil
 gg_rct_zonebridgevents4 = nil
 gg_rct_zonebridge9 = nil
-gg_rct_zonearrnoryvent1 = nil
-gg_rct_zonearrnoryvent2 = nil
-gg_rct_zonearrnoryvent3 = nil
-gg_rct_zonearrnoryven4 = nil
+gg_rct_zonearmoryvent1 = nil
+gg_rct_zonearmoryvent2 = nil
+gg_rct_zonearmoryvent3 = nil
+gg_rct_zonearmoryvent4 = nil
 gg_rct_Region_092 = nil
 gg_rct_cwest1 = nil
 gg_rct_mineralcrusherwest = nil
@@ -124,6 +121,10 @@ gg_rct_mineralcrusherexitwest = nil
 gg_rct_mineralcrusherexiteast = nil
 gg_rct_ceast3 = nil
 gg_rct_cwest3 = nil
+gg_rct_reactoritemleft = nil
+gg_rct_reactoritemright = nil
+gg_rct_powercoresfx = nil
+gg_rct_stationtempvision = nil
 gg_trg_SetKillzones = nil
 gg_trg_LightsPerFloor = nil
 gg_trg_Set = nil
@@ -200,6 +201,10 @@ gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
 gg_dest_B002_2284 = nil
+gg_rct_zonecargoavent1 = nil
+gg_rct_zonecargoavent2 = nil
+gg_rct_zonecargoavent3 = nil
+gg_rct_zonecargoavent4 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -236,12 +241,6 @@ function InitGlobals()
     while (true) do
         if ((i > 1)) then break end
         udg_hatch_exit_zones[i] = ""
-        i = i + 1
-    end
-    i = 0
-    while (true) do
-        if ((i > 1)) then break end
-        udg_jump_pass_zones_name[i] = ""
         i = i + 1
     end
     i = 0
@@ -308,15 +307,6 @@ function CreateAllItems()
     gg_item_ratf_0230 = BlzCreateItemWithSkin(FourCC("ratf"), -6957.4, 6884.6, FourCC("ratf"))
 end
 
-function CreateUnitsForPlayer0()
-    local p = Player(0)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("h00A"), -12608.0, -18784.0, 315.000, FourCC("h00A"))
-end
-
 function CreateBuildingsForPlayer21()
     local p = Player(21)
     local u
@@ -335,6 +325,7 @@ function CreateBuildingsForPlayer21()
     gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
     gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), -6528.0, -22144.0, 270.000, FourCC("h004"))
     gg_unit_h004_0061 = BlzCreateUnitWithSkin(p, FourCC("h004"), -17856.0, -28800.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h00A"), -12608.0, -18784.0, 315.000, FourCC("h00A"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -11456.0, -18624.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -13632.0, -18624.0, 270.000, FourCC("h004"))
     gg_unit_h004_0268 = BlzCreateUnitWithSkin(p, FourCC("h004"), -11136.0, -24704.0, 270.000, FourCC("h004"))
@@ -742,7 +733,6 @@ function CreatePlayerBuildings()
 end
 
 function CreatePlayerUnits()
-    CreateUnitsForPlayer0()
     CreateUnitsForPlayer21()
 end
 
@@ -756,7 +746,7 @@ end
 
 function CreateRegions()
     local we
-    gg_rct_Space = Rect(6336.0, -30176.0, 29920.0, 1216.0)
+    gg_rct_Space = Rect(6592.0, -30176.0, 29920.0, 1216.0)
     gg_rct_FallZone1Land = Rect(-27488.0, 26816.0, -27168.0, 27168.0)
     gg_rct_GeneSplicer = Rect(-14752.0, -25184.0, -14624.0, -25056.0)
     gg_rct_FallZoneCargo = Rect(-26432.0, -27136.0, -25760.0, -26880.0)
@@ -840,10 +830,7 @@ function CreateRegions()
     gg_rct_Fog_Region = Rect(-26080.0, -27200.0, -25888.0, -26848.0)
     we = AddWeatherEffect(gg_rct_Fog_Region, FourCC("FDbh"))
     EnableWeatherEffect(we, true)
-    gg_rct_Fog_Region_Copy = Rect(-27744.0, -26048.0, -26112.0, -25408.0)
-    we = AddWeatherEffect(gg_rct_Fog_Region_Copy, FourCC("FDwh"))
-    EnableWeatherEffect(we, true)
-    gg_rct_Fog_Region_Copy_Copy = Rect(-26496.0, -26912.0, -25792.0, -25952.0)
+    gg_rct_Fog_Region_Copy_Copy = Rect(-26496.0, -26912.0, -25760.0, -26848.0)
     we = AddWeatherEffect(gg_rct_Fog_Region_Copy_Copy, FourCC("FDwh"))
     EnableWeatherEffect(we, true)
     gg_rct_zonebridgevents3 = Rect(-17920.0, -29408.0, -17088.0, -27680.0)
@@ -857,10 +844,10 @@ function CreateRegions()
     EnableWeatherEffect(we, true)
     gg_rct_zonebridgevents4 = Rect(-19520.0, -29408.0, -19392.0, -27744.0)
     gg_rct_zonebridge9 = Rect(-19328.0, -26048.0, -17504.0, -25248.0)
-    gg_rct_zonearrnoryvent1 = Rect(-7200.0, -20768.0, -5600.0, -19680.0)
-    gg_rct_zonearrnoryvent2 = Rect(-7200.0, -22976.0, -6144.0, -20736.0)
-    gg_rct_zonearrnoryvent3 = Rect(-8224.0, -22080.0, -7616.0, -21216.0)
-    gg_rct_zonearrnoryven4 = Rect(-7680.0, -22112.0, -7168.0, -21664.0)
+    gg_rct_zonearmoryvent1 = Rect(-7200.0, -20768.0, -5600.0, -19680.0)
+    gg_rct_zonearmoryvent2 = Rect(-7200.0, -22976.0, -6144.0, -20736.0)
+    gg_rct_zonearmoryvent3 = Rect(-8224.0, -22080.0, -7616.0, -21216.0)
+    gg_rct_zonearmoryvent4 = Rect(-7680.0, -22112.0, -7168.0, -21664.0)
     gg_rct_Region_092 = Rect(-13888.0, -19424.0, -11264.0, -18240.0)
     we = AddWeatherEffect(gg_rct_Region_092, FourCC("FDwl"))
     EnableWeatherEffect(we, true)
@@ -873,6 +860,14 @@ function CreateRegions()
     gg_rct_mineralcrusherexiteast = Rect(-11264.0, -17664.0, -11136.0, -17568.0)
     gg_rct_ceast3 = Rect(-13952.0, -18944.0, -13056.0, -18816.0)
     gg_rct_cwest3 = Rect(-12032.0, -18944.0, -11136.0, -18816.0)
+    gg_rct_reactoritemleft = Rect(-13152.0, -18976.0, -12960.0, -18752.0)
+    gg_rct_reactoritemright = Rect(-12096.0, -18976.0, -11904.0, -18752.0)
+    gg_rct_powercoresfx = Rect(-12608.0, -18848.0, -12544.0, -18784.0)
+    gg_rct_stationtempvision = Rect(-29952.0, -30176.0, 6656.0, -10912.0)
+    gg_rct_zonecargoavent1 = Rect(-26432.0, -27072.0, -25760.0, -25408.0)
+    gg_rct_zonecargoavent2 = Rect(-27968.0, -26080.0, -27328.0, -25024.0)
+    gg_rct_zonecargoavent3 = Rect(-27360.0, -26112.0, -26400.0, -25408.0)
+    gg_rct_zonecargoavent4 = Rect(-26688.0, -25472.0, -26272.0, -25152.0)
 end
 
 function Trig_SetKillzones_Actions()
@@ -902,12 +897,12 @@ function Trig_LightsPerFloor_Actions()
     udg_Lights_Cargo[1] = gg_dest_B002_0097
     udg_Lights_Cargo[2] = gg_dest_B002_0098
     udg_Lights_Cargo[3] = gg_dest_B002_0099
+    udg_Lights_Cargo[4] = gg_dest_B002_0096
     udg_Lights_Cargo[5] = gg_dest_B002_0101
     udg_Lights_Cargo[6] = gg_dest_B002_0102
     udg_Lights_Cargo[7] = gg_dest_B002_0103
     udg_Lights_Cargo[8] = gg_dest_B002_0104
     udg_Lights_Cargo[9] = gg_dest_B002_0105
-    udg_Lights_Cargo[10] = gg_dest_B002_0096
     udg_Lights_Bridge[1] = gg_dest_B002_0267
     udg_Lights_Bridge[2] = gg_dest_B002_0265
     udg_Lights_Bridge[3] = gg_dest_B002_0266
@@ -1028,14 +1023,6 @@ function Trig_SetFall_Actions()
     udg_fall_points[2] = gg_rct_FallZoneCargo
     udg_fall_results[2] = gg_rct_FallZoneCargoLand
     udg_fall_result_zone_names[2] = "SERVICE_TUNNELS"
-    udg_jump_pass_zones[1] = gg_rct_JumpPassCargoVent
-    udg_jump_pass_zones[2] = gg_rct_JumpPassCargo
-    udg_jump_pass_zones_name[1] = "CARGO_A_VENT"
-    udg_jump_pass_zones_name[2] = "CARGO_A"
-    udg_jump_pass_zones[3] = gg_rct_JumpPassBridgeVents
-    udg_jump_pass_zones[4] = gg_rct_JumpBassBridge
-    udg_jump_pass_zones_name[3] = "BRIDGE_VENT"
-    udg_jump_pass_zones_name[4] = "BRIDGE"
 end
 
 function InitTrig_SetFall()

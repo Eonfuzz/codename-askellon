@@ -15,10 +15,10 @@ declare const udg_genetic_test_lights: destructable[];
 
 // Max 4
 export let testerSlots: item[] = [];
-let testerLastActivated = 0.0;
-export const setTesterLastActivatedTo = (val: number) => {
-    testerLastActivated = val;
-}
+// let testerLastActivated = 0.0;
+// export const setTesterLastActivatedTo = (val: number) => {
+//     testerLastActivated = val;
+// }
 let gTicker = 0;
 
 const PlaceSequenceSound = new SoundRef('UI\\Feedback\\CheckpointPopup\\QuestCheckpoint.flac', false);
@@ -118,22 +118,22 @@ export function initTesterInteractions() {
         onCancel: (fromUnit: Unit, targetUnit: Unit) => {
         },
         action: (fromUnit: Unit, targetUnit: Unit) => {
-            const handleId = targetUnit.id;
+            // const handleId = targetUnit.id;
             const uX = targetUnit.x; 
             const uY = targetUnit.y;
             const player = fromUnit.owner;
 
-            const targetUType = targetUnit.typeId;
+            // const targetUType = targetUnit.typeId;
             let unitType = GENETIC_TESTING_FACILITY_SWITCH_DUMMY;
 
             const nUnit = CreateUnit(player.handle, unitType, uX, uY, bj_UNIT_FACING);
             SelectUnitForPlayerSingle(nUnit, player.handle);
             SetPlayerTechResearched(fromUnit.owner.handle, TECH_ITEMS_IN_GENETIC_SEQUENCER, testerSlots.length);
 
-            let timeSinceLastCast = GameTimeElapsed.getTime() - testerLastActivated;
-            if (timeSinceLastCast < 20) {
-                BlzStartUnitAbilityCooldown(nUnit, ABIL_ACTIVATE_SEQUENCER_TEST, 20 - timeSinceLastCast);
-            }
+            // let timeSinceLastCast = GameTimeElapsed.getTime() - testerLastActivated;
+            // if (timeSinceLastCast < 20) {
+            //     BlzStartUnitAbilityCooldown(nUnit, ABIL_ACTIVATE_SEQUENCER_TEST, 20 - timeSinceLastCast);
+            // }
 
             try {
                 // Select events are async

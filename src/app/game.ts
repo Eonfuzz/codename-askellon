@@ -34,10 +34,9 @@ import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { Hooks } from "lib/Hooks";
 import { AIEntity } from "./ai/ai-entity";
 import { PlayerStateFactory } from "./force/player-state-entity";
-import { ALIEN_FORCE_NAME } from "./force/forces/force-names";
-import { AlienForce } from "./force/forces/alien-force";
 import { AntiMetaEntity } from "resources/anti-meta-entity";
 import { UIEntity } from "resources/ui/ui-entity";
+import { AskellonEntity } from "./station/askellon-entity";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -86,7 +85,8 @@ export class Game {
 
         ForceEntity.getInstance();
         SecurityEntity.getInstance();
-
+        AskellonEntity.getInstance();
+        
         // Deps: Force Entity
         ResearchFactory.getInstance();
 
@@ -148,6 +148,10 @@ export class Game {
             const modifier = CreateFogModifierRect(p.handle, FOG_OF_WAR_VISIBLE, gg_rct_Space, true, false);
             FogModifierStart(modifier);
             this.visModifiers.push(modifier);
+
+            const m = CreateFogModifierRect(p.handle, FOG_OF_WAR_VISIBLE, gg_rct_stationtempvision, true, false);
+            FogModifierStart(m);
+            this.visModifiers.push(m);
         });
         
         this.followTimer.start(0.01, true, () => {

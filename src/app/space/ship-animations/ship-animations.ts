@@ -63,6 +63,8 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
     private beganLift = false;
     private beganFlyHigher = false;
 
+    private sound: SoundRef = new SoundRef("Sounds\\EngineFadeInSound1.mp3", false);
+
     public process(delta: number) {
         this.totalTime += delta;
 
@@ -71,8 +73,7 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
          */
         if (this.totalTime == delta && !this.beganLift) {
             this.ship.unit.setTimeScale(1);
-            const sound = PlayNewSoundOnUnit("Sounds\\EngineFadeInSound1.mp3", this.ship.unit, 50);
-            // this.shipFlySound.playSoundOnUnit(this.ship.unit.handle, 127);
+            this.sound.playSoundOnUnit(this.ship.unit.handle, 50);
         }
 
         if (this.totalTime >= 0.5 && !this.beganLift) {
@@ -111,7 +112,7 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
         }
         
         if (this.totalTime > 10) {
-            // this.shipFlySound.stopSound();
+            this.sound.stopSound(true);
             return false;
         }
 

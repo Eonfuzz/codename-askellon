@@ -36,7 +36,8 @@ import {
     ABIL_ALIEN_FRENZY,
     ABIL_GENE_XENOPHOBIC,
     ABIL_GENE_XENOPHOBIC_PUNCH,
-    ABIL_GENE_INSTANT_HEAL
+    ABIL_GENE_INSTANT_HEAL,
+    ABIL_SYSTEM_REACTOR_DIAGNOSTICS
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -73,6 +74,8 @@ import { FrenzyAbility } from "./alien/frenzy";
 import { XenophobicAbility } from "./human/xenophobic";
 import { XenophobicPunchAbility } from "./human/xenophobic-punch";
 import { InstantHealAbility } from "./human/instant-heal";
+import { GlobalCooldownAbilityEntity } from "./global-ability-entity";
+import { ReactorDiagnosticsAbility } from "./station/reactor-diagnostics";
 
 
 
@@ -83,6 +86,13 @@ import { InstantHealAbility } from "./human/instant-heal";
 export class AbilityHooks {
     private abilityHooks = new Map<number, () => Ability>();
     private static instance: AbilityHooks;
+
+    constructor() {
+        // Also start global cooldown entity
+        GlobalCooldownAbilityEntity.getInstance();
+        GlobalCooldownAbilityEntity.register( ABIL_ACTIVATE_SEQUENCER_TEST );
+        GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_DIAGNOSTICS );
+    }
 
     public static getInstance() {
         if (this.instance == null) {
@@ -142,3 +152,4 @@ AbilityHooks.Add(ABIL_ALIEN_FRENZY, () => new FrenzyAbility());
 AbilityHooks.Add(ABIL_GENE_XENOPHOBIC, () => new XenophobicAbility());
 AbilityHooks.Add(ABIL_GENE_XENOPHOBIC_PUNCH, () => new XenophobicPunchAbility());
 AbilityHooks.Add(ABIL_GENE_INSTANT_HEAL, () => new InstantHealAbility());
+AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIAGNOSTICS, () => new ReactorDiagnosticsAbility());

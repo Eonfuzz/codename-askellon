@@ -38,14 +38,16 @@ export class Door {
             if (data.source === this.unit) {
                 this.isDead = true;
                 this.update(true);
-                this.canUpdate = false;
+
+                Log.Information("Door dead!");
             }
         }))
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
             if (data.source === this.unit) {
                 this.isDead = false;
-                this.canUpdate = true;
                 this.update(false);
+
+                Log.Information("Door alive!");
             }
         }))
     }
@@ -96,7 +98,10 @@ export class Door {
      * Searches for nearby units, and opens the door if necessary
      */
     public search() {
+        // Don't auto update it the door is dead
         if (this.isDead) return;
+
+        
         GroupEnumUnitsInRange(this.doorSearchGroup, this.unit.x, this.unit.y, 450, Filter(() => {
             const u = GetFilterUnit();
             const o = GetOwningPlayer(u);

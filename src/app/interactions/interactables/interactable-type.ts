@@ -15,6 +15,7 @@ export interface InteractableData {
 
   onStart?:  (fromUnit: Unit, targetUnit: Unit) => void;
   onCancel?:  (fromUnit: Unit, targetUnit: Unit) => void;
+  onRefocus?: (fromUnit: Unit, targetUnit: Unit) => void;
 
   action: (fromUnit: Unit, targetUnit: Unit) => void;
 }

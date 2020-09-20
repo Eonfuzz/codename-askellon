@@ -107,3 +107,5 @@ export const ABIL_ITEM_GENETIC_SAMPLE_INFESTED = FourCC('A018');
 
 
 export const ABIL_DEFEND = FourCC('Adef');
+
+export const ABIL_SYSTEM_REACTOR_DIAGNOSTICS = FourCC('A01P');

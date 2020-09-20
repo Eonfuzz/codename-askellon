@@ -9,6 +9,7 @@ import { Timers } from "app/timer-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Hooks } from "lib/Hooks";
+import { WorldEntity } from "app/world/world-entity";
 
 /**
  * These locations are declared by the world editor
@@ -16,9 +17,6 @@ import { Hooks } from "lib/Hooks";
 declare const udg_fall_points: rect[];
 declare const udg_fall_results: rect[];
 declare const udg_fall_result_zone_names: string[];
-
-declare const udg_jump_pass_zones: rect[];
-declare const udg_jump_pass_zones_name: string[];
 
 declare const udg_killzones: rect[];
 
@@ -83,13 +81,12 @@ export class LeapEntity extends Entity {
         }
         // Otherwise check to see if we landed in a new zone 
         else {
-            const newZone = this.findInsideRect(udg_jump_pass_zones, unitLoc);
-            const resultZone = !!newZone && udg_jump_pass_zones_name[newZone];
-            if (resultZone) {
+            const newZone = WorldEntity.getInstance().getPointZone(unitLoc.x, unitLoc.y);
+            if (newZone) {
                 // Travel the unit as needed
                 EventEntity.send(EVENT_TYPE.TRAVEL_UNIT_TO, {
                     source: Unit.fromHandle(leap.unit),
-                    data: { zoneName: resultZone }
+                    data: { zoneName: newZone.id }
                 })
             }
         }

@@ -12,8 +12,9 @@ import { EventListener } from "app/events/event-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
+import { Entity } from "app/entity-type";
 
-export class WorldEntity {
+export class WorldEntity extends Entity {
     private static instance: WorldEntity;
 
     public static getInstance() {        
@@ -30,25 +31,39 @@ export class WorldEntity {
 
     // Zones outside of the ship
     private worldZones: Map<ZONE_TYPE, Zone> = new Map();
+    private allZones: Zone[] = [];
     // Map of unit to zone
     private unitLocation: Map<Unit, Zone> = new Map();
 
+    _timerDelay = 0.1;
+
     constructor() {
+        super();
+
         this.askellon = new TheAskellon();
         this.worldZones.set(ZONE_TYPE.SPACE, new SpaceZone(ZONE_TYPE.SPACE));
+        this.allZones.push(this.worldZones.get(ZONE_TYPE.SPACE));
 
         // Listen to unit travel events
         EventEntity.listen(new EventListener(EVENT_TYPE.TRAVEL_UNIT_TO, (listener, data) => {
             const u = data.source;
-            let desiredLoc = data.data.zone || this.getZoneByName(data.data.zoneName);
+            let desiredLoc = data.data.zone as ZONE_TYPE || this.getZoneByName(data.data.zoneName);
             const isSubtravel = !!data.data.subTravel;
-            this.travel(u, desiredLoc, isSubtravel);
+
+            const oldZone = this.getUnitZone(u);
+            if (oldZone && oldZone.id !== desiredLoc)
+                this.travel(u, desiredLoc, isSubtravel);
         }));
 
         EventEntity.listen(new EventListener(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, (self, data) => {
             // Log.Information("World entity caught unit remove")
             this.removeUnit(data.source);
         }));
+    }
+
+    step() {
+        this.worldZones.get(ZONE_TYPE.SPACE).step(this._timerDelay);  
+        this.askellon.step(this._timerDelay);
     }
 
     /**
@@ -168,5 +183,29 @@ export class WorldEntity {
         else {
             // Log.Information("Remove zone failed for "+whichUnit.name);
         }
+    }
+
+    /**
+     * Converts a point to zone
+     * VERY experimental, probably lags or something
+     * @param x 
+     * @param y 
+     */
+    getPointZone(x: number, y: number): Zone | undefined {
+        try {
+            for (let index = 0; index < this.allZones.length; index++) {
+                const zone = this.allZones[index];
+                if (zone.pointIsInZone(x, y)) return zone;
+            }
+            for (let index = 0; index < this.askellon.allFloors.length; index++) {
+                const zone = this.askellon.allFloors[index];
+                if (zone.pointIsInZone(x, y)) return zone;            
+            }
+        }
+        catch(e) {
+            Log.Error("ERROR POINT => ZONE");
+            Log.Error(e);
+        }
+        return undefined;
     }
 }

@@ -2821,28 +2821,10 @@ STRING 702
 |cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser speed increased by 50%|n- Drones now ferry mined ore back to the Askellon|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r|n|n|cff8a6df2Infestation [ALIEN]|n- Chatter may not reach those in space|n- Ore creates infesation upon delivery|r
 }
 
-STRING 703
-// Items: I00B (Minerals), Name (Name)
-{
-Minerals
-}
-
 STRING 704
-// Items: I00B (Minerals), Description (Description)
+// Items: I00B (Mineral Storage - Maskelynite), Description (Description)
 {
 You should not be seeing this
-}
-
-STRING 706
-// Abilities: A00T (Inventory), EditorSuffix (Editor Suffix)
-{
- (1 slot)
-}
-
-STRING 707
-// Items: I00B (Minerals), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|n|r|nReturn to the Askellon to complete delivery; Each mineral is worth |cff00ff005 credits|r; |cff00ff007 credits|r if you are a pilot.|n|n|cffd45e19Stacks up to 250|r
 }
 
 STRING 708
@@ -4843,7 +4825,7 @@ STRING 1157
 }
 
 STRING 1158
-// Doodads: D00K (Power Core), Name (Name)
+// Units: h00B (Power Core), Name (Name)
 {
 Power Core
 }
@@ -4860,12 +4842,6 @@ STRING 1160
 You should not be seeing this
 }
 
-STRING 1161
-// Items: I00H (Maskelynite), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|n|r|nReturn to the Askellon to complete delivery; Each mineral is worth |cff00ff005 credits|r; |cff00ff007 credits|r if you are a pilot.|n|n|cffd45e19Stacks up to 250|r
-}
-
 STRING 1162
 // Items: I00I (Pyroxene), Name (Name)
 {
@@ -4878,9 +4854,105 @@ STRING 1163
 You should not be seeing this
 }
 
-STRING 1164
+STRING 1165
+// Doodads: D00K (Power Core), Name (Name)
+{
+Power Core
+}
+
+STRING 1166
+// Units: n00J (|cff00ff00Reactor Control|r Terminal), Name (Name)
+{
+|cff00ff00Reactor Control|r Terminal
+}
+
+STRING 1167
+// Units: n00J (|cff00ff00Reactor Control|r Terminal), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 1168
+// Abilities: A01P (Reactor Diagnostics), Name (Name)
+{
+Reactor Diagnostics
+}
+
+STRING 1169
+// Abilities: A01P (Reactor Diagnostics), Hotkey (Hotkey - Normal)
+{
+X
+}
+
+STRING 1171
+// Abilities: A01P (Reactor Diagnostics), Tip (Tooltip - Normal)
+{
+Reactor Diagnostics
+}
+
+STRING 1172
+// Abilities: A01P (Reactor Diagnostics), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 1173
+// Abilities: A01P (Reactor Diagnostics), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 1175
+// Abilities: A01P (Reactor Diagnostics), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nRuns Reactor Diagnostics.|n|n|cffd45e19A note is next to the console. "Work ethic KPI's require any engineers on site to run system diagnostics twice every hour" - Management|r|N|n|cff80808060 Seconds Cooldown|r
+}
+
+STRING 1176
+// Items: I00B (Mineral Storage - Maskelynite), Name (Name)
+{
+Mineral Storage - Maskelynite
+}
+
+STRING 1179
 // Items: I00I (Pyroxene), Ubertip (Tooltip - Extended)
 {
-|cff808080LORE TODO|n|r|nReturn to the Askellon to complete delivery; Each mineral is worth |cff00ff005 credits|r; |cff00ff007 credits|r if you are a pilot.|n|n|cffd45e19Stacks up to 250|r
+|cff808080A rare mineral found in a strange sector of space; preliminary scans and tests shows it can be used as a steel substitute.|n|r|nFeed through conveyor belts to repair the Reactor, or it may be manually sold for a larger sum of money.|n|cff00ff00- Repairs 5 HP per stack|n- Sells for 4 Credits per stack|r|n|n|cffd45e19Stacks up to 5|r
+}
+
+STRING 1180
+// Items: I00J (Mineral Storage - Pyroxene), Name (Name)
+{
+Mineral Storage - Pyroxene
+}
+
+STRING 1181
+// Items: I00J (Mineral Storage - Pyroxene), Description (Description)
+{
+You should not be seeing this
+}
+
+STRING 1182
+// Items: I00J (Mineral Storage - Pyroxene), Ubertip (Tooltip - Extended)
+{
+|cff808080A rare mineral found in a strange sector of space; preliminary scans and tests shows it can be used as a steel substitute.|n|r|nFeed through conveyor belts to repair the Reactor, or it may be manually sold for a larger sum of money.|n|cff00ff00- Repairs 5 HP per stack|n- Sells for 4 Credits per stack|r|n|n|cffd45e19Stacks up to 100|nDock on the Askellon to access|r
+}
+
+STRING 1183
+// Abilities: A00T (Inventory), EditorSuffix (Editor Suffix)
+{
+ (2 slot)
+}
+
+STRING 1184
+// Items: I00B (Mineral Storage - Maskelynite), Ubertip (Tooltip - Extended)
+{
+|cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 1 per stack|n- Increases Reactor Generation by 0.01 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 250|nDock on the Askellon to access|r
+}
+
+STRING 1185
+// Items: I00H (Maskelynite), Ubertip (Tooltip - Extended)
+{
+|cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 1 per stack|n- Increases Reactor Generation by 0.01 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 10
 }
 

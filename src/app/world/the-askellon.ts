@@ -13,6 +13,7 @@ import { VisionFactory } from "app/vision/vision-factory";
 import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
 // import { WorldEntity } from "./world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ReactorZone } from "./zones/reactor";
 
 // Small damage
 // Will not cause damage to interior
@@ -38,20 +39,21 @@ declare const udg_elevator_exit_zones: string[];
 
 export class TheAskellon {
     floors: Map<ZONE_TYPE, ShipZone> = new Map();
+    allFloors: Zone[] = [];
 
     private pilot: Crewmember | undefined;
 
     constructor() {
-        this.floors.set(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY, udg_Lights_Armory));
-        this.floors.set(ZONE_TYPE.ARMORY_VENT, new ShipZone(ZONE_TYPE.ARMORY_VENT));
-        this.floors.set(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
-        this.floors.set(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
-        this.floors.set(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
-        this.floors.set(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY,udg_Lights_Biology ));
-        this.floors.set(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
-        this.floors.set(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
-        this.floors.set(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
-        this.floors.set(ZONE_TYPE.REACTOR, new ShipZone(ZONE_TYPE.REACTOR));
+        this.addFloor(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY, udg_Lights_Armory));
+        this.addFloor(ZONE_TYPE.ARMORY_VENT, new ShipZone(ZONE_TYPE.ARMORY_VENT));
+        this.addFloor(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
+        this.addFloor(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
+        this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
+        this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY,udg_Lights_Biology ));
+        this.addFloor(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
+        this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
+        this.addFloor(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
+        this.addFloor(ZONE_TYPE.REACTOR, new ReactorZone(ZONE_TYPE.REACTOR));
 
         // Now apply lights to the zones
         const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
@@ -89,9 +91,19 @@ export class TheAskellon {
 
         });
     }
+    
+    private addFloor(id: ZONE_TYPE, zone: ShipZone) {
+        this.floors.set(id, zone);
+        this.allFloors.push(zone);
+    }
 
     findZone(zone: ZONE_TYPE): ShipZone | undefined {
         return this.floors.get(zone);
+    }
+
+    public step(delta: number) {
+        // For now only step the reactor
+        this.floors.get(ZONE_TYPE.REACTOR).step(delta);
     }
 
     /**

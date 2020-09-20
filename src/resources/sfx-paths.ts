@@ -36,6 +36,9 @@ export const SFX_FIRE_EXPLOSION = "Models\\NewMassiveEX.mdx";
 export const SFX_AVATAR = "Abilities\\Spells\\Human\\Avatar\\AvatarCaster.mdl";
 export const SFX_HEAL = "Heal Green.mdx";
 
+export const SFX_BANSHEE_MISSILE = "Abilities\\Weapons\\BansheeMissile\\BansheeMissile.mdl";
+export const SFX_DEMONHUNTER_MISSILE = "Abilities\\Weapons\\DemonHunterMissile\\DemonHunterMissile.mdl";
+
 export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
 export const SFX_BLOOD_2 = "Models\\FloorBlood2.mdx";
 export const SFX_BLOOD_3 = "Models\\FloorBlood3.mdx";
@@ -87,3 +90,5 @@ Preload(SFX_BLOOD_11);
 Preload(SFX_BLOOD_12);
 Preload(SFX_AVATAR);
 Preload(SFX_HEAL);
+Preload(SFX_BANSHEE_MISSILE);
+Preload(SFX_DEMONHUNTER_MISSILE);

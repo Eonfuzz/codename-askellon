@@ -34,7 +34,7 @@ ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.ENGINEER, [
-    "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware"
+    "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware", "Engineer Zed"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.MAJOR, [

@@ -39,12 +39,13 @@ export class MineralCrusherEntity extends Entity {
 
                 this.itemsAnimating.set(item, true);
                 SetItemVisible(item, false);
-                this.soundEnter.playSoundOnPont(GetRectCenterX(gg_rct_mineralcrusherwest), GetRectCenterY(gg_rct_mineralcrusherwest), 30);
+                this.soundEnter.playSoundOnPont(GetRectCenterX(gg_rct_mineralcrusherwest), GetRectCenterY(gg_rct_mineralcrusherwest), 5);
                 Timers.addTimedAction(10, () => {
                     SetItemVisible(item, true);
                     this.itemsAnimating.delete(item);
                     const x = GetRectCenterX(gg_rct_mineralcrusherexitwest);
                     const y = GetRectCenterY(gg_rct_mineralcrusherexitwest);
+                    this.soundEnter.playSoundOnPont(GetRectCenterX(gg_rct_mineralcrusherexitwest), GetRectCenterY(gg_rct_mineralcrusherexitwest), 5);
                     SetItemPosition(item, x, y);
                     ConveyorEntity.getInstance().checkItem(item);
                 });

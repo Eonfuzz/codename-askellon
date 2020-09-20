@@ -1,4 +1,5 @@
 import { Vector2 } from "./vector2";
+import { getZFromXY } from "lib/utils";
 
 /** @noSelfInFile **/
 
@@ -143,5 +144,15 @@ export class Vector3 {
 
     dot(v: Vector3 | Vector2): number {
         return this.x*v.x + this.y*v.y;
+    }
+
+
+    /**
+     * Static api
+     */
+    public static fromWidget(widget: widget): Vector3 {
+        const x = GetWidgetX(widget);
+        const y=  GetWidgetY(widget);
+        return new Vector3(x, y, getZFromXY(x, y));
     }
 }

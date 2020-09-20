@@ -6,6 +6,7 @@ import { ProgressBar } from "../types/progress-bar";
 import { SMART_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { WORM_ALIEN_FORM } from "resources/unit-ids";
 import { Log } from "lib/serilog/serilog";
+import { InteractableData } from "./interactables/interactable-type";
 
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
@@ -16,9 +17,7 @@ export class InteractionEvent {
   public targetUnit: Unit;
 
   private interactionTrigger: Trigger | undefined;
-  private callback: Function;
-  private startCallback: Function;
-  private cancelCallback: Function;
+  private interactable: InteractableData;
 
   private timeRequired: number;
   private timeRemaining: number;
@@ -33,17 +32,17 @@ export class InteractionEvent {
     targetUnit: unit, 
     interactTime: number, 
     interactDistance: number, 
-    callback: Function, 
-    startCallback: Function, 
-    cancelCallback: Function,
+    interactable: InteractableData,
     showProgressBar: boolean
   ) {
     this.unit = Unit.fromHandle(unit);
     this.targetUnit = Unit.fromHandle(targetUnit);
     this.timeRequired = this.timeRemaining = interactTime;
-    this.callback = callback;
-    this.startCallback = startCallback;
-    this.cancelCallback = cancelCallback;
+
+    this.interactable = interactable;
+
+    // this.startCallback = startCallback;
+    // this.cancelCallback = cancelCallback;
     this.interactDistance = interactDistance;
     this.showProgressBar = showProgressBar;
 
@@ -64,7 +63,11 @@ export class InteractionEvent {
       // Ignore this if trigger unit is ship and stop is issued
       if (o === HOLD_ORDER_ID) return;
 
-      if (o != SMART_ORDER_ID  || (o === SMART_ORDER_ID && GetOrderTargetUnit() != this.targetUnit.handle)) {
+      if (o === SMART_ORDER_ID && GetOrderTargetUnit() === this.targetUnit.handle) {
+        // if (!this.interactable.condition || this.interactable.condition(this.unit, this.targetUnit))
+          this.interactable.onRefocus && this.interactable.onRefocus(this.unit, this.targetUnit);
+      }
+      else if (o !== SMART_ORDER_ID || GetOrderTargetUnit() !== this.targetUnit.handle) {
         this.destroy();
       }
     });
@@ -90,7 +93,8 @@ export class InteractionEvent {
           // Set progress bar speed based on anim time
           BlzSetSpecialEffectTimeScale(this.progressBar.bar, 1 / this.timeRequired);
         }
-        this.startCallback();
+        this.interactable.onStart && this.interactable.onStart(this.unit, this.targetUnit);
+        // this.startCallback();
       }
 
       // alter the delta depending on buffs / debuffs
@@ -123,7 +127,8 @@ export class InteractionEvent {
   }
 
   onInteractionCompletion() {
-    this.callback();
+    // this.callback();
+    this.interactable.action(this.unit, this.targetUnit);
   }
 
   destroy() {
@@ -133,6 +138,6 @@ export class InteractionEvent {
       this.progressBar.destroy();
     }
     this.interactionTrigger = undefined;
-    this.cancelCallback();
+    this.interactable.onCancel && this.interactable.onCancel(this.unit, this.targetUnit);
   }
 }

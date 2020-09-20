@@ -2,7 +2,6 @@ import { InteractionEvent } from "./interaction-event";
 import { initElevators, initHatches, initWeaponsTerminals } from "./interactables/elevator";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
-import { initShipInteractions, initAskellonInteractions } from "./interactables/ship";
 import { initVendingInteraction } from "./interactables/vendor";
 import { initCommandTerminal } from "./interactables/bridge";
 import { Log } from "lib/serilog/serilog";
@@ -10,6 +9,9 @@ import { initTesterInteractions } from "./interactables/genetic-tester";
 import { Entity } from "app/entity-type";
 import { Interactables } from "./interactables/interactables";
 import { Hooks } from "lib/Hooks";
+import { InitMiningInteraction } from "./interactables/ships/mining";
+import { initShipInteractions } from "./interactables/ships/ship";
+import { initAskellonInteractions } from "./interactables/ships/askellon-landing";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -40,11 +42,14 @@ export class InteractionEntity extends Entity {
             initElevators();
             initHatches();
             initWeaponsTerminals();
-            initShipInteractions();
-            initAskellonInteractions();
             initVendingInteraction();
             initCommandTerminal();
             initTesterInteractions();
+
+            // Ship interactions
+            InitMiningInteraction();
+            initShipInteractions();
+            initAskellonInteractions();
         }
         catch (e) {
             Log.Error("Failed setting up interactables");
@@ -79,9 +84,7 @@ export class InteractionEntity extends Entity {
                 GetOrderTargetUnit(), 
                 interactionTime,
                 interactionDistance,
-                () => interact.action(trigUnit, targetUnit),
-                () => interact.onStart && interact.onStart(trigUnit, targetUnit),
-                () => interact.onCancel && interact.onCancel(trigUnit, targetUnit),
+                interact,
                 GetPlayerController(trigUnit.owner.handle) ===  MAP_CONTROL_COMPUTER ? false : !interact.hideInteractionBar
             );
             newInteraction.startInteraction();

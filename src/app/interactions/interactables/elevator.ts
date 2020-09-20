@@ -8,7 +8,7 @@ import { Trigger, MapPlayer, Unit } from "w3ts";
 import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
 import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
 import { syncData } from "lib/utils";
-import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, GENETIC_TESTING_FACILITY_SWITCH_DUMMY, GENETIC_TESTING_FACILITY_SWITCH } from "resources/unit-ids";
+import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, GENETIC_TESTING_FACILITY_SWITCH_DUMMY, GENETIC_TESTING_FACILITY_SWITCH, TERMINAL_REACTOR, TERMINAL_REACTOR_DUMMY } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 // import { GeneEntity } from "app/shops/gene-entity";
 import { Interactables } from "./interactables";
@@ -214,6 +214,9 @@ export const initWeaponsTerminals = () => {
             else if (targetUType === VOID_UPGRADE_TERMINAL) {
                 unitType = FourCC('hVOI');
             }
+            else if (targetUType === TERMINAL_REACTOR) {
+                unitType = TERMINAL_REACTOR_DUMMY;
+            }
             else if (targetUType === GENE_SPLICER_TERMINAL) {
                 // If we haven't got HC 2
                 // Don't do anything
@@ -266,4 +269,5 @@ export const initWeaponsTerminals = () => {
     Interactables.set(GENE_SPLICER_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(VOID_UPGRADE_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(TERMINAL_RELIGION, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_REACTOR, upgradeTerminalProcessing);
 }

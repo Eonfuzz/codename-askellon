@@ -8,7 +8,7 @@ import { Timers } from "app/timer-type";
 let camIterator = 0;
 export function GetPlayerCamLoc(who: MapPlayer, callback: (x: number, y: number) => void) {
     const syncher = syncData(`${camIterator++}`, who, (self, data: string) => {
-        Log.Information(data);
+        // Log.Information(data);
         const x = S2R(data.split(',')[0]);
         const y = S2R(data.split(',')[1]);
     

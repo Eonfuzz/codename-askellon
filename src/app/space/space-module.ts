@@ -11,7 +11,6 @@ import { ABIL_LEAVE_ASKELLON_CONTROLS, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ROLE_TYPES } from "resources/crewmember-names";
-import { ITEM_MINERALS_SHIP_ID } from "resources/item-ids";
 
 import { PerseusShip } from "./ships/perseus-type";
 import { AskellonShip } from "./ships/askellon-type";
@@ -27,6 +26,7 @@ import { ResearchFactory } from "app/research/research-factory";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
+import { SpaceMiningEntity } from "./space-mining-entity";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -60,6 +60,8 @@ export class SpaceEntity extends Entity {
     constructor() {
         super();
 
+        SpaceMiningEntity.getInstance();
+        
         this.ships          = [];
         this.spaceObjects   = [];
         this.shipBays       = [];
@@ -147,7 +149,6 @@ export class SpaceEntity extends Entity {
             this.ships.push(ship);
 
             WorldEntity.getInstance().travel(ship.unit, bay.ZONE);
-            ship.unit.addItemById(ITEM_MINERALS_SHIP_ID);
 
             bay.dockShip(ship);
 

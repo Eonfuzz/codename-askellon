@@ -1,4 +1,4 @@
-import { Trigger, MapPlayer, Timer } from "w3ts";
+import { Trigger, MapPlayer, Timer, Unit } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
@@ -208,11 +208,17 @@ export class ChatEntity extends Entity {
             else if (message == "-tp") {
                 // Log.Information("TP");
                 GetPlayerCamLoc(player, (x, y) => {
-                    Log.Information("Done tp "+x+", "+y);
+                    // Get zone at loc
+                    Log.Information("Moderator Teleporting to "+x,", "+y)
+                    const zone = WorldEntity.getInstance().getPointZone(x, y);
+                    if (zone) Log.Information("Zone: "+ZONE_TYPE[zone.id]);
+                    else Log.Information("No Zone");
+
                     EnumUnitsSelected(player.handle, Filter(() => true), () => {
                         const u = GetEnumUnit();
                         SetUnitX(u, x);
                         SetUnitY(u, y);
+                        if (zone) WorldEntity.getInstance().travel(Unit.fromHandle(u), zone.id);
                     })
                 });
             }

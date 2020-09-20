@@ -58,5 +58,8 @@ export enum EVENT_TYPE {
     ENTITY_INIT_CHAT,
 
     // Called on death, or if a unit is removed
-    UNIT_REMOVED_FROM_GAME
+    UNIT_REMOVED_FROM_GAME,
+
+    SHIP_STARTS_MINING,
+    SHIP_STOPS_MINING
 }
