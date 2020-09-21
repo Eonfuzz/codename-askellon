@@ -28,11 +28,6 @@ const MODREATE_DAMAGE_THRESHOLD = 900;
 // Will cause damage to interior and other ship systems
 const EXTREME_DAMAGE_THRESHOLD = 1800;
 
-declare const udg_Lights_Cargo: destructable[];
-declare const udg_Lights_Bridge: destructable[];
-declare const udg_Lights_Biology: destructable[];
-declare const udg_Lights_Armory: destructable[];
-
 declare const udg_elevator_entrances: unit[];
 declare const udg_elevator_exits: unit[];
 declare const udg_elevator_exit_zones: string[];
@@ -44,16 +39,17 @@ export class TheAskellon {
     private pilot: Crewmember | undefined;
 
     constructor() {
-        this.addFloor(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY, udg_Lights_Armory));
+        this.addFloor(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY));
         this.addFloor(ZONE_TYPE.ARMORY_VENT, new ShipZone(ZONE_TYPE.ARMORY_VENT));
-        this.addFloor(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A, udg_Lights_Cargo));
+        this.addFloor(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A));
         this.addFloor(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
         this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
-        this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY,udg_Lights_Biology ));
-        this.addFloor(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE, udg_Lights_Bridge));
+        this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY ));
+        this.addFloor(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE));
         this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
         this.addFloor(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
         this.addFloor(ZONE_TYPE.REACTOR, new ReactorZone(ZONE_TYPE.REACTOR));
+        this.addFloor(ZONE_TYPE.CARGO_B, new ReactorZone(ZONE_TYPE.CARGO_B));
 
         // Now apply lights to the zones
         const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
@@ -88,7 +84,6 @@ export class TheAskellon {
                 const floor = this.floors.get(zone);
                 floor.addExit(Unit.fromHandle(udg_elevator_exits[index]));
             }
-
         });
     }
     

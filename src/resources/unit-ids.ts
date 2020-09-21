@@ -32,3 +32,9 @@ export const UNIT_ID_DUMMY_CASTER = FourCC('dumy');
 export const UNIT_ID_CRATE = FourCC('h005');
 
 export const UNIT_ID_MANSION_DOOR = FourCC('n00H');
+
+
+export const DESTR_ID_POWERED_LIGHT_BLUE = FourCC('B006');
+export const DESTR_ID_POWERED_LIGHT_GREEN = FourCC('B005');
+export const DESTR_ID_POWERED_LIGHT_RED = FourCC('B003');
+export const DESTR_ID_POWERED_LIGHT_WHITE = FourCC('B002');

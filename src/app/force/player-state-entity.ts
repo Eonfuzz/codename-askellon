@@ -36,6 +36,18 @@ export class PlayerStateFactory {
         
         // Log.Information("Player count: "+playerCount.length);
         this.isSnglePlayer = playerCount.length === 1;
+
+        // Set alien AI colour to all be the same
+        if (!this.isSnglePlayer) {
+            PlayerStateFactory.getAlienAI().forEach(p => {
+                p.color = PLAYER_COLOR_PURPLE;
+            })
+        }
+        else {
+            PlayerStateFactory.AlienAIPlayer1.name = "Alien 1";
+            PlayerStateFactory.AlienAIPlayer2.name = "Alien 2";
+            PlayerStateFactory.AlienAIPlayer3.name = "Alien 3";
+        }
     }
 
     public get(who: MapPlayer) {
@@ -51,7 +63,6 @@ export class PlayerStateFactory {
 
     // Forces
     public forces: Array<ForceType> = [];
-
 
     /**
      * Static API
@@ -79,7 +90,9 @@ export class PlayerStateFactory {
     public static StationProperty = MapPlayer.fromIndex(21);
     public static UnknownPlayer = MapPlayer.fromIndex(23);
 
-    public static AlienAIPlayer = MapPlayer.fromIndex(20);
+    public static AlienAIPlayer1 = MapPlayer.fromIndex(18);
+    public static AlienAIPlayer2 = MapPlayer.fromIndex(19);
+    public static AlienAIPlayer3 = MapPlayer.fromIndex(20);
 
     // Neutrals
     public static NeutralPassive = MapPlayer.fromIndex(PLAYER_NEUTRAL_PASSIVE);
@@ -113,5 +126,13 @@ export class PlayerStateFactory {
 
         const instance = PlayerStateFactory.getInstance();
         return instance.isSnglePlayer;
+    }
+
+    public static isAlienAI(who: MapPlayer) {
+        return who === this.AlienAIPlayer1 || who === this.AlienAIPlayer2 || who === this.AlienAIPlayer3;
+    }
+
+    public static getAlienAI() {
+        return [this.AlienAIPlayer1, this.AlienAIPlayer2, this.AlienAIPlayer3];
     }
 }

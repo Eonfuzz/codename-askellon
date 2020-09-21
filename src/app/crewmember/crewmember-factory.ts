@@ -46,7 +46,7 @@ export class CrewFactory {
         this.crewmemberDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
         this.crewmemberDamageTrigger.addCondition(Condition(() => {
             const player = GetOwningPlayer(GetTriggerUnit());
-            return (GetPlayerId(player) < PlayerStateFactory.AlienAIPlayer.id);
+            return (GetPlayerId(player) < PlayerStateFactory.AlienAIPlayer1.id);
         }));
         this.crewmemberDamageTrigger.addAction(() => {
             const unit = Unit.fromHandle(GetTriggerUnit());

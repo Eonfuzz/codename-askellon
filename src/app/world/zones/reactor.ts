@@ -17,8 +17,8 @@ export class ReactorZone extends ShipZone {
     private sfx: Effect;
 
 
-    constructor(id: ZONE_TYPE, lights?: destructable[], exits?) {
-        super(id, lights, exits);
+    constructor(id: ZONE_TYPE, exits?) {
+        super(id, exits);
 
         this.sfx =  new Effect("Models\\Mythic_Sun.mdx", GetRectCenterX(gg_rct_powercoresfx) + 22, GetRectCenterY(gg_rct_powercoresfx) + 40);
         this.sfx.z = 180;

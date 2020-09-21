@@ -49,7 +49,7 @@ export class GeneticSamplerItemAbility implements Ability {
         else if (PlayerStateFactory.NeutralHostile == player) {
             alliance = GENE_SPLICE_ALLIANCE.HUMAN;
         }
-        else if (PlayerStateFactory.AlienAIPlayer == player) {
+        else if (PlayerStateFactory.isAlienAI(player)) {
             alliance = GENE_SPLICE_ALLIANCE.ALIEN
         }
         else {

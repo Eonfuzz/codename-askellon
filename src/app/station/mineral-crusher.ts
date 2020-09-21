@@ -45,11 +45,30 @@ export class MineralCrusherEntity extends Entity {
                     this.itemsAnimating.delete(item);
                     const x = GetRectCenterX(gg_rct_mineralcrusherexitwest);
                     const y = GetRectCenterY(gg_rct_mineralcrusherexitwest);
-                    this.soundEnter.playSoundOnPont(GetRectCenterX(gg_rct_mineralcrusherexitwest), GetRectCenterY(gg_rct_mineralcrusherexitwest), 5);
+                    this.soundEnter.playSoundOnPont(x, y, 5);
                     SetItemPosition(item, x, y);
                     ConveyorEntity.getInstance().checkItem(item);
                 });
-            })
+            });
+        }
+        if (gg_rct_mineralcrushereast) {
+            EnumItemsInRect(gg_rct_mineralcrushereast, Filter(() => true), () => {
+                const item = GetEnumItem();
+                if (this.itemsAnimating.get(item)) return;
+
+                this.itemsAnimating.set(item, true);
+                SetItemVisible(item, false);
+                this.soundEnter.playSoundOnPont(GetRectCenterX(gg_rct_mineralcrushereast), GetRectCenterY(gg_rct_mineralcrushereast), 5);
+                Timers.addTimedAction(10, () => {
+                    SetItemVisible(item, true);
+                    this.itemsAnimating.delete(item);
+                    const x = GetRectCenterX(gg_rct_mineralcrusherexiteast);
+                    const y = GetRectCenterY(gg_rct_mineralcrusherexiteast);
+                    this.soundEnter.playSoundOnPont(x, y, 5);
+                    SetItemPosition(item, x, y);
+                    ConveyorEntity.getInstance().checkItem(item);
+                });
+            });
         }
     }
 }

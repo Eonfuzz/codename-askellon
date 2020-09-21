@@ -191,8 +191,32 @@ export class ChatEntity extends Entity {
                     const pData = PlayerStateFactory.get(player);
                     const crewUnit = pData.getCrewmember().unit;
 
-                    const zone = WorldEntity.getInstance().getUnitZone(crewUnit);
-                    AIEntity.createAddAgent(ALIEN_MINION_LEECH, x, y, zone.id);
+                    const zone = WorldEntity.getInstance().getPointZone(x, y);
+                    if (zone) {
+                        AIEntity.createAddAgent(ALIEN_MINION_CANITE, x, y, zone.id);
+                    }
+                    else {
+                        Log.Information("No Zone picked");
+                    }
+                });
+                // const unit =
+            }
+            else if (message == "-horde") {
+                // Log.Information("PF "+message);
+                GetPlayerCamLoc(player, (x, y) => {
+                    const pData = PlayerStateFactory.get(player);
+                    const crewUnit = pData.getCrewmember().unit;
+                    for (let index = 0; index < 20; index++) { 
+                        let _x = x + GetRandomReal(-300, 300);
+                        let _y = y + GetRandomReal(-300, 300);
+                        const zone = WorldEntity.getInstance().getPointZone(_x, _y);   
+                        if (zone) {
+                            AIEntity.createAddAgent(ALIEN_MINION_CANITE, _x, _y, zone.id);
+                        }
+                        else {
+                            Log.Information("No Zone picked");
+                        }               
+                    }
                 });
                 // const unit =
             }
@@ -209,7 +233,6 @@ export class ChatEntity extends Entity {
                 // Log.Information("TP");
                 GetPlayerCamLoc(player, (x, y) => {
                     // Get zone at loc
-                    Log.Information("Moderator Teleporting to "+x,", "+y)
                     const zone = WorldEntity.getInstance().getPointZone(x, y);
                     if (zone) Log.Information("Zone: "+ZONE_TYPE[zone.id]);
                     else Log.Information("No Zone");

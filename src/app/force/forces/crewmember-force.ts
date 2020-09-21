@@ -56,7 +56,7 @@ export class CrewmemberForce extends ForceType {
                 killedByAlien = killer === alienUnit;
             }
             else {
-                killedByAlien = killer.owner === PlayerStateFactory.AlienAIPlayer;
+                killedByAlien = PlayerStateFactory.isAlienAI(killer.owner);
             }
 
             // If alien killed us migrate to alien force

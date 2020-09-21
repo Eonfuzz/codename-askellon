@@ -34,10 +34,11 @@ export class AIEntity extends Entity {
         this.playerAgents = [];
 
         // Create agents
-        const alienAI1 = new PlayerAgent(PlayerStateFactory.AlienAIPlayer, this.pathfindingGraph, 33);
-
-        this.playerAgents.push(alienAI1);
-        this.playerToAgent.set(alienAI1.player, alienAI1);
+        PlayerStateFactory.getAlienAI().forEach(p => {
+            const agent = new PlayerAgent(p, this.pathfindingGraph, 33);
+            this.playerAgents.push(agent);
+            this.playerToAgent.set(agent.player, agent);
+        })
     }
 
     /**
@@ -108,7 +109,6 @@ export class AIEntity extends Entity {
             const createFor = instance.getBestPlayerAgent(ignoreLimit);
             
             if (createFor) {
-                // Log.Information("Creating agent!");
                 const unit = CreateUnit(createFor.player.handle, whichUnitType, x, y, bj_UNIT_FACING);
                 WorldEntity.getInstance().handleTravel(Unit.fromHandle(unit), zone);
                 this.addAgent(unit);

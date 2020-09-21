@@ -16,7 +16,7 @@ import { getZFromXY } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { LIGHT_DEST_ID } from "app/types/widget-id";
 import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
-import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, DESTR_ID_POWERED_LIGHT_BLUE, DESTR_ID_POWERED_LIGHT_RED, DESTR_ID_POWERED_LIGHT_WHITE, DESTR_ID_POWERED_LIGHT_GREEN } from "resources/unit-ids";
 import { Vector2 } from "app/types/vector2";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
@@ -50,9 +50,7 @@ export class Zone {
             let namespaceCheck = `${namespaceVarName}${idx++}`;
             while (_G[namespaceCheck]) {
                 const rect = _G[namespaceCheck] as rect;
-                this.zoneRegion.addRect(Rectangle.fromHandle(rect));
-                this.allRects.push(rect);
-
+                this.addRegion(rect);
                 namespaceCheck = `${namespaceVarName}${idx++}`;
             }
         }
@@ -60,6 +58,11 @@ export class Zone {
             Log.Error("Reading regions fail");
             Log.Error(e);
         }
+    }
+
+    protected addRegion(r: rect) {
+        this.zoneRegion.addRect(Rectangle.fromHandle(r));
+        this.allRects.push(r);
     }
 
     public pointIsInZone(x: number, y: number): boolean {
@@ -128,7 +131,7 @@ export class ShipZone extends Zone {
     public alwaysCauseFear: boolean = false;
     private hasOxygen: boolean = true;
 
-    public lightSources: Array<destructable> = [];
+    public lightSources: Array<destructable>;
     public powerGenerators: Array<Unit> = [];
 
     // The exits to and from this zone
@@ -138,8 +141,11 @@ export class ShipZone extends Zone {
     powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false, true);
     powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false, true);
 
-    constructor(id: ZONE_TYPE, lights?: destructable[], exits?: Unit[]) {
+    constructor(id: ZONE_TYPE,  exits?: Unit[]) {
         super(id);
+
+        if (!this.lightSources) this.lightSources = [];
+
 
         // Get get light sources and power gens based on ID
         const matchingIndexes = [];
@@ -158,16 +164,29 @@ export class ShipZone extends Zone {
             new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED,
             (self, data: EventData) => this.onGeneratorRepair(data.data.unit, data.source))
         );
-
-        if (lights) this.lightSources = lights;
     }
-
     public addExit(whichExit: Unit) {
         this.exits.push(whichExit);
     }
 
     public setExits(to: Unit[]) {
         this.exits = to;
+    }
+
+    protected addRegion(r: rect) {
+        super.addRegion(r);
+
+        if (!this.lightSources) this.lightSources = [];
+
+        EnumDestructablesInRectAll(r, () => {
+            const d = GetFilterDestructable();
+            const id = GetDestructableTypeId(d);
+            // Log.Information("Adding region id found: "+id);
+            if (id === DESTR_ID_POWERED_LIGHT_BLUE) this.lightSources.push(d);
+            else if (id === DESTR_ID_POWERED_LIGHT_RED) this.lightSources.push(d);
+            else if (id === DESTR_ID_POWERED_LIGHT_WHITE) this.lightSources.push(d);
+            else if (id === DESTR_ID_POWERED_LIGHT_GREEN) this.lightSources.push(d);
+        });
     }
 
     private onGeneratorDestroy(generator: Unit, source: Unit) {
@@ -249,6 +268,7 @@ export class ShipZone extends Zone {
                 }
 
                 if (!newState) {
+                    Log.Information("Power out, my lights: "+this.lightSources.length);
                     this.lightSources.forEach((lightSource, i) => {
                         const _i = i;
                         const r = GetRandomInt(2, 4);

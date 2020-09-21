@@ -28,6 +28,7 @@ import { Timers } from "app/timer-type";
 import { COL_ALIEN } from "resources/colours";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
+import { PlayerState } from "../player-type";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -57,7 +58,9 @@ export class AlienForce extends ForceType {
             (from: EventListener, data) => {
                 this.getPlayers().forEach(p => data.source.shareVision(p, true));
                 // Reveal for alien AI
-                data.source.shareVision(PlayerStateFactory.AlienAIPlayer, true);
+                PlayerStateFactory.getAlienAI().forEach(p => {
+                    data.source.shareVision(p, true);
+                });
             }));
         
         // Hide vision on despair gain
@@ -75,7 +78,9 @@ export class AlienForce extends ForceType {
                 }
 
                 this.getPlayers().forEach(p => data.source.shareVision(p, false));
-                data.source.shareVision(PlayerStateFactory.AlienAIPlayer, false);
+                PlayerStateFactory.getAlienAI().forEach(p => {
+                    data.source.shareVision(p, false);
+                });
             }));
 
         // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
@@ -319,6 +324,12 @@ export class AlienForce extends ForceType {
             who.name = unitName;
             who.color = PLAYER_COLOR_PURPLE;
 
+            // Remove hostility with alien minions
+            PlayerStateFactory.getAlienAI().forEach(p => {
+                p.setAlliance(who, ALLIANCE_PASSIVE, true);
+                who.setAlliance(p, ALLIANCE_PASSIVE, true);
+            });
+
             // Post event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
         }
@@ -327,6 +338,12 @@ export class AlienForce extends ForceType {
             const pData = PlayerStateFactory.get(who);
             who.name = pData.originalName;
             who.color = pData.originalColour;
+
+            // Restore hostility with alien minions
+            PlayerStateFactory.getAlienAI().forEach(p => {
+                p.setAlliance(who, ALLIANCE_PASSIVE, false);
+                who.setAlliance(p, ALLIANCE_PASSIVE, false);
+            });
 
             // Post event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
@@ -415,7 +432,7 @@ export class AlienForce extends ForceType {
         const damagedPlayer = damagedUnit.owner;
 
         // Hitting alien player
-        const damagedUnitIsAlien = damagedPlayer === PlayerStateFactory.AlienAIPlayer || 
+        const damagedUnitIsAlien = PlayerStateFactory.isAlienAI(damagedPlayer) || 
             // OR hitting alien form
             this.playerAlienUnits.has(damagedPlayer)  && this.playerAlienUnits.get(damagedPlayer) === damagedUnit;
 

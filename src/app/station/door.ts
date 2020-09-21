@@ -35,19 +35,19 @@ export class Door {
         this.updatingPathingBlockers(isOpen);
 
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (event, data) => {
-            if (data.source === this.unit) {
+            if (data.data.unit === this.unit) {
                 this.isDead = true;
                 this.update(true);
 
-                Log.Information("Door dead!");
+                // Log.Information("Door dead!");
             }
         }))
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
-            if (data.source === this.unit) {
+            if (data.data.unit === this.unit) {
                 this.isDead = false;
-                this.update(false);
+                // this.update(false);
 
-                Log.Information("Door alive!");
+                // Log.Information("Door alive!");
             }
         }))
     }
@@ -101,7 +101,7 @@ export class Door {
         // Don't auto update it the door is dead
         if (this.isDead) return;
 
-        
+
         GroupEnumUnitsInRange(this.doorSearchGroup, this.unit.x, this.unit.y, 450, Filter(() => {
             const u = GetFilterUnit();
             const o = GetOwningPlayer(u);

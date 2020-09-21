@@ -512,12 +512,6 @@ STRING 146
 Elevator
 }
 
-STRING 147
-// Destructibles: B002 (Light White), Name (Name)
-{
-Light White
-}
-
 STRING 148
 // Buffs/Effects: B004 (Despair), EditorName (Name (Editor Only))
 {
@@ -546,12 +540,6 @@ STRING 153
 // Units: n002 (Hatch), Name (Name)
 {
 Hatch
-}
-
-STRING 154
-// Destructibles: B003 (Light Red), Name (Name)
-{
-Light Red
 }
 
 STRING 155
@@ -2333,12 +2321,6 @@ STRING 579
 // Doodads: D00V (Pot Plant Plant), Name (Name)
 {
 Pot Plant Plant
-}
-
-STRING 581
-// Destructibles: B005 (Light Green), Name (Name)
-{
-Light Green
 }
 
 STRING 584
@@ -4171,12 +4153,6 @@ STRING 1024
 Window Internal
 }
 
-STRING 1025
-// Destructibles: B006 (Light Blue), Name (Name)
-{
-Light Blue
-}
-
 STRING 1026
 // Doodads: YCx4 (Ruined Ground (1x1)), Name (Name)
 {
@@ -4954,5 +4930,39 @@ STRING 1185
 // Items: I00H (Maskelynite), Ubertip (Tooltip - Extended)
 {
 |cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 1 per stack|n- Increases Reactor Generation by 0.01 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 10
+}
+
+STRING 1186
+{
+Alien:
+}
+
+STRING 1187
+{
+Alien
+}
+
+STRING 1188
+// Destructibles: B002 (Powered Light White), Name (Name)
+{
+Powered Light White
+}
+
+STRING 1189
+// Destructibles: B003 (Powered Light Red), Name (Name)
+{
+Powered Light Red
+}
+
+STRING 1190
+// Destructibles: B005 (Powered Light Green), Name (Name)
+{
+Powered Light Green
+}
+
+STRING 1191
+// Destructibles: B006 (Powered Light Blue), Name (Name)
+{
+Powered Light Blue
 }
 

@@ -14,13 +14,8 @@ udg_collision_rect = nil
 udg_collision_item = nil
 udg_pathing_rect = nil
 udg_killzones = {}
-udg_Lights_Cargo = {}
-udg_Lights_Bridge = {}
-udg_Lights_Biology = {}
 udg_genetic_test_lights = {}
 udg_genetic_sequencer_unit = nil
-udg_Lights_Armory = {}
-udg_i = 0
 gg_rct_Space = nil
 gg_rct_FallZone1Land = nil
 gg_rct_GeneSplicer = nil
@@ -89,16 +84,11 @@ gg_rct_zonearmory2 = nil
 gg_rct_zonearmory3 = nil
 gg_rct_zonearmory4 = nil
 gg_rct_zonearmory5 = nil
-gg_rct_FallZoneCargo_Copy_2 = nil
-gg_rct_JumpPassCargo_Copy = nil
-gg_rct_JumpPassCargoVent_Copy = nil
 gg_rct_ShipAirWaveZone2 = nil
 gg_rct_ShipBay05 = nil
 gg_rct_ShipBay06 = nil
 gg_rct_ShipBay07 = nil
 gg_rct_ShipBay08 = nil
-gg_rct_CargoAConveyor_Copy = nil
-gg_rct_Mineral_Crush_Copy = nil
 gg_rct_zonecargob1 = nil
 gg_rct_Fog_Region = nil
 gg_rct_Fog_Region_Copy_Copy = nil
@@ -125,8 +115,11 @@ gg_rct_reactoritemleft = nil
 gg_rct_reactoritemright = nil
 gg_rct_powercoresfx = nil
 gg_rct_stationtempvision = nil
+gg_rct_zonecargoavent1 = nil
+gg_rct_zonecargoavent2 = nil
+gg_rct_zonecargoavent3 = nil
+gg_rct_zonecargoavent4 = nil
 gg_trg_SetKillzones = nil
-gg_trg_LightsPerFloor = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
 gg_trg_SetFall = nil
@@ -201,10 +194,18 @@ gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
 gg_dest_B002_2284 = nil
-gg_rct_zonecargoavent1 = nil
-gg_rct_zonecargoavent2 = nil
-gg_rct_zonecargoavent3 = nil
-gg_rct_zonecargoavent4 = nil
+gg_unit_n001_0224 = nil
+gg_unit_n001_0400 = nil
+gg_rct_cnorth3 = nil
+gg_rct_ceast4 = nil
+gg_rct_cwest4 = nil
+gg_rct_FallZoneCargo_Copy_2 = nil
+gg_unit_n001_0402 = nil
+gg_unit_n001_0025 = nil
+gg_rct_zonecargob2 = nil
+gg_rct_zonecargob3 = nil
+gg_rct_zonecargob4 = nil
+gg_rct_mineralcrushereast = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -255,48 +256,15 @@ function InitGlobals()
         udg_elevator_exit_zones[i] = ""
         i = i + 1
     end
-    udg_i = 0
 end
 
 function CreateAllDestructables()
     local d
     local t
     local life
-    gg_dest_B002_0340 = BlzCreateDestructableZWithSkin(FourCC("B002"), -14268.8, -25659.7, -25.6, 224.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0096 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28730.8, -27410.6, 201.0, 73.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0097 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28713.7, -28208.7, 201.0, 98.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0098 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28060.4, -27407.3, 201.0, 73.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0099 = BlzCreateDestructableZWithSkin(FourCC("B002"), -28043.3, -28205.4, 201.0, 98.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0101 = BlzCreateDestructableZWithSkin(FourCC("B002"), -27373.5, -28202.8, 201.0, 98.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0105 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26010.6, -28187.3, 201.0, 98.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0104 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26027.7, -27389.2, 201.0, 73.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0103 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26673.7, -28213.1, 201.0, 98.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0102 = BlzCreateDestructableZWithSkin(FourCC("B002"), -26690.8, -27415.0, 201.0, 267.027, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0266 = BlzCreateDestructableZWithSkin(FourCC("B002"), -17920.8, -26258.0, 371.2, 268.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0269 = BlzCreateDestructableZWithSkin(FourCC("B002"), -19703.4, -27262.1, 243.2, 313.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0262 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18839.8, -28247.6, 339.2, 43.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0265 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18948.5, -26241.1, 371.2, 206.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0337 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18427.3, -27110.6, 345.6, 139.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0338 = BlzCreateDestructableZWithSkin(FourCC("B002"), -18431.9, -27871.1, 339.2, 95.182, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0267 = BlzCreateDestructableZWithSkin(FourCC("B002"), -17804.3, -25225.6, 140.8, 132.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0415 = BlzCreateDestructableZWithSkin(FourCC("B002"), -19069.5, -25223.1, 140.8, 132.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0628 = BlzCreateDestructableZWithSkin(FourCC("B002"), -14207.3, -26747.7, 172.8, 343.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0629 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13845.0, -26757.1, 172.8, 49.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0631 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13354.9, -25991.3, 172.8, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1337 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12672.7, -25981.5, 153.6, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1336 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11389.6, -25967.9, 153.6, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1299 = BlzCreateDestructableZWithSkin(FourCC("B002"), -12347.5, -26827.2, 89.6, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1300 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11678.2, -26832.3, 89.6, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_0614 = BlzCreateDestructableZWithSkin(FourCC("B002"), -14323.9, -24773.1, 64.0, 224.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1461 = BlzCreateDestructableZWithSkin(FourCC("B002"), -10501.3, -26520.9, 44.8, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1453 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11905.0, -24118.8, 128.0, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1454 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11905.9, -22313.1, 128.0, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_1452 = BlzCreateDestructableZWithSkin(FourCC("B002"), -11910.7, -25205.8, 128.0, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_2134 = BlzCreateDestructableZWithSkin(FourCC("B002"), -13697.2, -22339.9, 102.4, 118.000, 1.000, 0, FourCC("B002"))
-    gg_dest_B002_2284 = BlzCreateDestructableZWithSkin(FourCC("B002"), -7497.0, -23484.0, 134.4, 251.000, 1.000, 0, FourCC("B002"))
+    gg_dest_B003_2138 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13293.0, -21843.4, 70.4, 37.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2139 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13589.7, -21832.9, 76.8, 234.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2136 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13587.2, -21545.8, 76.8, 88.000, 1.000, 0, FourCC("B003"))
-    gg_dest_B003_2138 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13293.0, -21843.4, 70.4, 37.000, 1.000, 0, FourCC("B003"))
     gg_dest_B003_2137 = BlzCreateDestructableZWithSkin(FourCC("B003"), -13292.5, -21536.1, 64.0, 344.000, 1.000, 0, FourCC("B003"))
 end
 
@@ -339,6 +307,8 @@ function CreateBuildingsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -28225.3, -26988.3, 270.000, FourCC("n00H"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -11456.0, -18240.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -13632.0, -18240.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00H"), 1342.7, -25132.3, 270.000, FourCC("n00H"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n003"), 2.5, -25236.7, 0.486, FourCC("n003"))
 end
 
 function CreateUnitsForPlayer21()
@@ -689,7 +659,7 @@ function CreateNeutralPassiveBuildings()
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -13670.1, -24823.7, 270.000, FourCC("nGEN"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00G"), -5825.6, -19977.8, 270.000, FourCC("n00G"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -11712.0, -16512.0, 270.000, FourCC("n001"))
+    gg_unit_n001_0025 = BlzCreateUnitWithSkin(p, FourCC("n001"), -11712.0, -16512.0, 270.000, FourCC("n001"))
     gg_unit_n001_0026 = BlzCreateUnitWithSkin(p, FourCC("n001"), -13376.0, -16512.0, 270.000, FourCC("n001"))
     gg_unit_n002_0032 = BlzCreateUnitWithSkin(p, FourCC("n002"), -5760.0, -20480.0, 270.000, FourCC("n002"))
     gg_unit_n004_0034 = BlzCreateUnitWithSkin(p, FourCC("n004"), -28673.3, 26617.4, 89.562, FourCC("n004"))
@@ -707,7 +677,7 @@ function CreateNeutralPassiveBuildings()
     u = BlzCreateUnitWithSkin(p, FourCC("nVOI"), -26518.7, -27223.2, 270.000, FourCC("nVOI"))
     gg_unit_n001_0199 = BlzCreateUnitWithSkin(p, FourCC("n001"), -23616.0, -28864.0, 270.000, FourCC("n001"))
     gg_unit_n00A_0222 = BlzCreateUnitWithSkin(p, FourCC("n00A"), -23034.7, -25209.5, 270.000, FourCC("n00A"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -3904.0, -24512.0, 270.000, FourCC("n001"))
+    gg_unit_n001_0224 = BlzCreateUnitWithSkin(p, FourCC("n001"), -3904.0, -24512.0, 270.000, FourCC("n001"))
     gg_unit_n001_0225 = BlzCreateUnitWithSkin(p, FourCC("n001"), -7488.0, -23168.0, 270.000, FourCC("n001"))
     gg_unit_n00D_0226 = BlzCreateUnitWithSkin(p, FourCC("n00D"), -13437.8, -21683.5, 270.000, FourCC("n00D"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00E"), -13050.2, -22006.5, 225.861, FourCC("n00E"))
@@ -726,6 +696,10 @@ function CreateNeutralPassiveBuildings()
     u = BlzCreateUnitWithSkin(p, FourCC("n001"), -6528.0, -19840.0, 270.000, FourCC("n001"))
     gg_unit_n001_0394 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28224.0, -26112.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00I"), -12556.9, -18005.2, 89.946, FourCC("n00I"))
+    gg_unit_n001_0400 = BlzCreateUnitWithSkin(p, FourCC("n001"), 1984.0, -25024.0, 270.000, FourCC("n001"))
+    gg_unit_n001_0402 = BlzCreateUnitWithSkin(p, FourCC("n001"), 1344.0, -24192.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n002"), -1216.0, -25664.0, 270.000, FourCC("n002"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nVOI"), -406.7, -25239.2, 270.000, FourCC("nVOI"))
 end
 
 function CreatePlayerBuildings()
@@ -816,16 +790,11 @@ function CreateRegions()
     gg_rct_zonearmory3 = Rect(-5536.0, -25792.0, -3392.0, -25056.0)
     gg_rct_zonearmory4 = Rect(-7008.0, -24608.0, -5824.0, -23104.0)
     gg_rct_zonearmory5 = Rect(-5856.0, -24512.0, -4128.0, -22368.0)
-    gg_rct_FallZoneCargo_Copy_2 = Rect(1472.0, -25312.0, 2144.0, -25056.0)
-    gg_rct_JumpPassCargo_Copy = Rect(1088.0, -26144.0, 2208.0, -25312.0)
-    gg_rct_JumpPassCargoVent_Copy = Rect(1408.0, -25120.0, 2176.0, -24256.0)
     gg_rct_ShipAirWaveZone2 = Rect(-1152.0, -26848.0, 2208.0, -25280.0)
     gg_rct_ShipBay05 = Rect(-928.0, -26624.0, -736.0, -26208.0)
     gg_rct_ShipBay06 = Rect(-32.0, -26624.0, 160.0, -26208.0)
     gg_rct_ShipBay07 = Rect(864.0, -26624.0, 1056.0, -26208.0)
     gg_rct_ShipBay08 = Rect(1760.0, -26624.0, 1952.0, -26208.0)
-    gg_rct_CargoAConveyor_Copy = Rect(-576.0, -25856.0, 1888.0, -25728.0)
-    gg_rct_Mineral_Crush_Copy = Rect(1888.0, -25888.0, 2080.0, -25632.0)
     gg_rct_zonecargob1 = Rect(-1184.0, -26848.0, 2208.0, -25216.0)
     gg_rct_Fog_Region = Rect(-26080.0, -27200.0, -25888.0, -26848.0)
     we = AddWeatherEffect(gg_rct_Fog_Region, FourCC("FDbh"))
@@ -863,11 +832,19 @@ function CreateRegions()
     gg_rct_reactoritemleft = Rect(-13152.0, -18976.0, -12960.0, -18752.0)
     gg_rct_reactoritemright = Rect(-12096.0, -18976.0, -11904.0, -18752.0)
     gg_rct_powercoresfx = Rect(-12608.0, -18848.0, -12544.0, -18784.0)
-    gg_rct_stationtempvision = Rect(-29952.0, -30176.0, 6656.0, -10912.0)
+    gg_rct_stationtempvision = Rect(-29536.0, -30688.0, 7072.0, -11424.0)
     gg_rct_zonecargoavent1 = Rect(-26432.0, -27072.0, -25760.0, -25408.0)
     gg_rct_zonecargoavent2 = Rect(-27968.0, -26080.0, -27328.0, -25024.0)
     gg_rct_zonecargoavent3 = Rect(-27360.0, -26112.0, -26400.0, -25408.0)
     gg_rct_zonecargoavent4 = Rect(-26688.0, -25472.0, -26272.0, -25152.0)
+    gg_rct_cnorth3 = Rect(608.0, -25728.0, 704.0, -25248.0)
+    gg_rct_ceast4 = Rect(-704.0, -25696.0, 640.0, -25600.0)
+    gg_rct_cwest4 = Rect(672.0, -25696.0, 1568.0, -25600.0)
+    gg_rct_FallZoneCargo_Copy_2 = Rect(-1120.0, -25216.0, -448.0, -24960.0)
+    gg_rct_zonecargob2 = Rect(800.0, -25216.0, 1728.0, -24224.0)
+    gg_rct_zonecargob3 = Rect(1792.0, -25216.0, 2144.0, -24896.0)
+    gg_rct_zonecargob4 = Rect(-1344.0, -25984.0, -1184.0, -25408.0)
+    gg_rct_mineralcrushereast = Rect(576.0, -25280.0, 768.0, -25024.0)
 end
 
 function Trig_SetKillzones_Actions()
@@ -891,47 +868,6 @@ end
 function InitTrig_SetKillzones()
     gg_trg_SetKillzones = CreateTrigger()
     TriggerAddAction(gg_trg_SetKillzones, Trig_SetKillzones_Actions)
-end
-
-function Trig_LightsPerFloor_Actions()
-    udg_Lights_Cargo[1] = gg_dest_B002_0097
-    udg_Lights_Cargo[2] = gg_dest_B002_0098
-    udg_Lights_Cargo[3] = gg_dest_B002_0099
-    udg_Lights_Cargo[4] = gg_dest_B002_0096
-    udg_Lights_Cargo[5] = gg_dest_B002_0101
-    udg_Lights_Cargo[6] = gg_dest_B002_0102
-    udg_Lights_Cargo[7] = gg_dest_B002_0103
-    udg_Lights_Cargo[8] = gg_dest_B002_0104
-    udg_Lights_Cargo[9] = gg_dest_B002_0105
-    udg_Lights_Bridge[1] = gg_dest_B002_0267
-    udg_Lights_Bridge[2] = gg_dest_B002_0265
-    udg_Lights_Bridge[3] = gg_dest_B002_0266
-    udg_Lights_Bridge[4] = gg_dest_B002_0338
-    udg_Lights_Bridge[5] = gg_dest_B002_0262
-    udg_Lights_Bridge[6] = gg_dest_B002_0337
-    udg_Lights_Bridge[7] = gg_dest_B002_0269
-    udg_Lights_Bridge[8] = gg_dest_B002_0415
-    udg_Lights_Biology[1] = gg_dest_B002_0340
-    udg_Lights_Biology[2] = gg_dest_B002_0614
-    udg_Lights_Biology[3] = gg_dest_B002_0631
-    udg_Lights_Biology[4] = gg_dest_B002_1337
-    udg_Lights_Biology[5] = gg_dest_B002_2134
-    udg_Lights_Biology[6] = gg_dest_B002_1299
-    udg_Lights_Biology[7] = gg_dest_B002_1300
-    udg_Lights_Biology[8] = gg_dest_B002_1336
-    udg_Lights_Biology[9] = gg_dest_B002_1461
-    udg_Lights_Biology[10] = gg_dest_B002_1452
-    udg_Lights_Biology[11] = gg_dest_B002_1453
-    udg_Lights_Biology[12] = gg_dest_B002_1454
-    udg_Lights_Biology[13] = gg_dest_B002_0629
-    udg_Lights_Biology[14] = gg_dest_B002_0628
-    udg_i = 1
-    udg_Lights_Armory[udg_i] = gg_dest_B002_2284
-end
-
-function InitTrig_LightsPerFloor()
-    gg_trg_LightsPerFloor = CreateTrigger()
-    TriggerAddAction(gg_trg_LightsPerFloor, Trig_LightsPerFloor_Actions)
 end
 
 function Trig_Set_Actions()
@@ -965,6 +901,18 @@ function Trig_Set_Actions()
     udg_elevator_entrances[10] = gg_unit_n001_0026
     udg_elevator_exits[10] = gg_unit_n001_0394
     udg_elevator_exit_zones[10] = "CARGO_A"
+    udg_elevator_entrances[11] = gg_unit_n001_0224
+    udg_elevator_exits[11] = gg_unit_n001_0400
+    udg_elevator_exit_zones[11] = "CARGO_B"
+    udg_elevator_entrances[12] = gg_unit_n001_0400
+    udg_elevator_exits[12] = gg_unit_n001_0224
+    udg_elevator_exit_zones[12] = "ARMORY"
+    udg_elevator_entrances[13] = gg_unit_n001_0402
+    udg_elevator_exits[13] = gg_unit_n001_0025
+    udg_elevator_exit_zones[13] = "REACTOR"
+    udg_elevator_entrances[14] = gg_unit_n001_0025
+    udg_elevator_exits[14] = gg_unit_n001_0402
+    udg_elevator_exit_zones[14] = "CARGO_B"
 end
 
 function InitTrig_Set()
@@ -1055,6 +1003,10 @@ function Trig_SetShipZones_Actions()
     udg_ship_zones[2] = gg_rct_ShipBay02
     udg_ship_zones[3] = gg_rct_ShipBay03
     udg_ship_zones[4] = gg_rct_ShipBay04
+    udg_ship_zones[5] = gg_rct_ShipBay08
+    udg_ship_zones[6] = gg_rct_ShipBay07
+    udg_ship_zones[7] = gg_rct_ShipBay06
+    udg_ship_zones[8] = gg_rct_ShipBay05
 end
 
 function InitTrig_SetShipZones()
@@ -1119,7 +1071,6 @@ end
 
 function InitCustomTriggers()
     InitTrig_SetKillzones()
-    InitTrig_LightsPerFloor()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()
@@ -1133,7 +1084,6 @@ end
 
 function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetKillzones)
-    ConditionalTriggerExecute(gg_trg_LightsPerFloor)
     ConditionalTriggerExecute(gg_trg_Set)
     ConditionalTriggerExecute(gg_trg_SetHatch)
     ConditionalTriggerExecute(gg_trg_SetFall)
@@ -1204,26 +1154,38 @@ function InitCustomPlayerSlots()
     SetPlayerRacePreference(Player(9), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(9), false)
     SetPlayerController(Player(9), MAP_CONTROL_USER)
-    SetPlayerStartLocation(Player(20), 10)
-    ForcePlayerStartLocation(Player(20), 10)
+    SetPlayerStartLocation(Player(18), 10)
+    ForcePlayerStartLocation(Player(18), 10)
+    SetPlayerColor(Player(18), ConvertPlayerColor(18))
+    SetPlayerRacePreference(Player(18), RACE_PREF_UNDEAD)
+    SetPlayerRaceSelectable(Player(18), false)
+    SetPlayerController(Player(18), MAP_CONTROL_COMPUTER)
+    SetPlayerStartLocation(Player(19), 11)
+    ForcePlayerStartLocation(Player(19), 11)
+    SetPlayerColor(Player(19), ConvertPlayerColor(19))
+    SetPlayerRacePreference(Player(19), RACE_PREF_UNDEAD)
+    SetPlayerRaceSelectable(Player(19), false)
+    SetPlayerController(Player(19), MAP_CONTROL_COMPUTER)
+    SetPlayerStartLocation(Player(20), 12)
+    ForcePlayerStartLocation(Player(20), 12)
     SetPlayerColor(Player(20), ConvertPlayerColor(20))
     SetPlayerRacePreference(Player(20), RACE_PREF_UNDEAD)
     SetPlayerRaceSelectable(Player(20), false)
     SetPlayerController(Player(20), MAP_CONTROL_COMPUTER)
-    SetPlayerStartLocation(Player(21), 11)
-    ForcePlayerStartLocation(Player(21), 11)
+    SetPlayerStartLocation(Player(21), 13)
+    ForcePlayerStartLocation(Player(21), 13)
     SetPlayerColor(Player(21), ConvertPlayerColor(21))
     SetPlayerRacePreference(Player(21), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(21), false)
     SetPlayerController(Player(21), MAP_CONTROL_COMPUTER)
-    SetPlayerStartLocation(Player(22), 12)
-    ForcePlayerStartLocation(Player(22), 12)
+    SetPlayerStartLocation(Player(22), 14)
+    ForcePlayerStartLocation(Player(22), 14)
     SetPlayerColor(Player(22), ConvertPlayerColor(22))
     SetPlayerRacePreference(Player(22), RACE_PREF_HUMAN)
     SetPlayerRaceSelectable(Player(22), false)
     SetPlayerController(Player(22), MAP_CONTROL_COMPUTER)
-    SetPlayerStartLocation(Player(23), 13)
-    ForcePlayerStartLocation(Player(23), 13)
+    SetPlayerStartLocation(Player(23), 15)
+    ForcePlayerStartLocation(Player(23), 15)
     SetPlayerColor(Player(23), ConvertPlayerColor(23))
     SetPlayerRacePreference(Player(23), RACE_PREF_UNDEAD)
     SetPlayerRaceSelectable(Player(23), false)
@@ -1375,11 +1337,33 @@ function InitCustomTeams()
     SetPlayerAllianceStateAllyBJ(Player(22), Player(8), true)
     SetPlayerAllianceStateAllyBJ(Player(22), Player(9), true)
     SetPlayerAllianceStateAllyBJ(Player(22), Player(21), true)
+    SetPlayerTeam(Player(18), 1)
+    SetPlayerTeam(Player(19), 1)
     SetPlayerTeam(Player(20), 1)
     SetPlayerTeam(Player(23), 1)
+    SetPlayerAllianceStateAllyBJ(Player(18), Player(19), true)
+    SetPlayerAllianceStateAllyBJ(Player(18), Player(20), true)
+    SetPlayerAllianceStateAllyBJ(Player(18), Player(23), true)
+    SetPlayerAllianceStateAllyBJ(Player(19), Player(18), true)
+    SetPlayerAllianceStateAllyBJ(Player(19), Player(20), true)
+    SetPlayerAllianceStateAllyBJ(Player(19), Player(23), true)
+    SetPlayerAllianceStateAllyBJ(Player(20), Player(18), true)
+    SetPlayerAllianceStateAllyBJ(Player(20), Player(19), true)
     SetPlayerAllianceStateAllyBJ(Player(20), Player(23), true)
+    SetPlayerAllianceStateAllyBJ(Player(23), Player(18), true)
+    SetPlayerAllianceStateAllyBJ(Player(23), Player(19), true)
     SetPlayerAllianceStateAllyBJ(Player(23), Player(20), true)
+    SetPlayerAllianceStateVisionBJ(Player(18), Player(19), true)
+    SetPlayerAllianceStateVisionBJ(Player(18), Player(20), true)
+    SetPlayerAllianceStateVisionBJ(Player(18), Player(23), true)
+    SetPlayerAllianceStateVisionBJ(Player(19), Player(18), true)
+    SetPlayerAllianceStateVisionBJ(Player(19), Player(20), true)
+    SetPlayerAllianceStateVisionBJ(Player(19), Player(23), true)
+    SetPlayerAllianceStateVisionBJ(Player(20), Player(18), true)
+    SetPlayerAllianceStateVisionBJ(Player(20), Player(19), true)
     SetPlayerAllianceStateVisionBJ(Player(20), Player(23), true)
+    SetPlayerAllianceStateVisionBJ(Player(23), Player(18), true)
+    SetPlayerAllianceStateVisionBJ(Player(23), Player(19), true)
     SetPlayerAllianceStateVisionBJ(Player(23), Player(20), true)
 end
 
@@ -1475,49 +1459,53 @@ function InitAllyPriorities()
     SetStartLocPrio(9, 5, 5, MAP_LOC_PRIO_HIGH)
     SetStartLocPrio(9, 6, 6, MAP_LOC_PRIO_HIGH)
     SetStartLocPrio(9, 7, 8, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(10, 10)
-    SetStartLocPrio(10, 0, 1, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 1, 2, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(10, 2, 3, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 3, 5, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 4, 6, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 5, 7, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 6, 8, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 7, 9, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 8, 12, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(10, 9, 13, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(11, 5)
-    SetStartLocPrio(11, 0, 1, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(11, 1, 4, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(11, 2, 5, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(11, 3, 6, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(11, 4, 7, MAP_LOC_PRIO_LOW)
-    SetEnemyStartLocPrioCount(11, 5)
-    SetEnemyStartLocPrio(11, 0, 1, MAP_LOC_PRIO_LOW)
-    SetEnemyStartLocPrio(11, 1, 4, MAP_LOC_PRIO_LOW)
-    SetEnemyStartLocPrio(11, 2, 5, MAP_LOC_PRIO_LOW)
-    SetEnemyStartLocPrio(11, 3, 6, MAP_LOC_PRIO_LOW)
-    SetEnemyStartLocPrio(11, 4, 7, MAP_LOC_PRIO_LOW)
+    SetStartLocPrioCount(10, 1)
+    SetStartLocPrio(10, 0, 15, MAP_LOC_PRIO_HIGH)
+    SetEnemyStartLocPrioCount(11, 1)
+    SetEnemyStartLocPrio(11, 0, 15, MAP_LOC_PRIO_LOW)
     SetStartLocPrioCount(12, 10)
-    SetStartLocPrio(12, 0, 0, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(12, 1, 1, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(12, 2, 3, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(12, 3, 5, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(12, 4, 7, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(12, 5, 8, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(12, 6, 9, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(12, 7, 10, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(12, 8, 13, MAP_LOC_PRIO_LOW)
-    SetStartLocPrioCount(13, 9)
-    SetStartLocPrio(13, 0, 0, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(13, 1, 2, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(13, 2, 3, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(13, 3, 4, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(13, 4, 5, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(13, 5, 6, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(13, 6, 9, MAP_LOC_PRIO_LOW)
-    SetStartLocPrio(13, 7, 10, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(13, 8, 12, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 0, 1, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 1, 2, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(12, 2, 3, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 3, 5, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 4, 6, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 5, 7, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 6, 8, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 7, 9, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 8, 14, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(12, 9, 15, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(13, 5)
+    SetStartLocPrio(13, 0, 1, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(13, 1, 4, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(13, 2, 5, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(13, 3, 6, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(13, 4, 7, MAP_LOC_PRIO_LOW)
+    SetEnemyStartLocPrioCount(13, 5)
+    SetEnemyStartLocPrio(13, 0, 1, MAP_LOC_PRIO_LOW)
+    SetEnemyStartLocPrio(13, 1, 4, MAP_LOC_PRIO_LOW)
+    SetEnemyStartLocPrio(13, 2, 5, MAP_LOC_PRIO_LOW)
+    SetEnemyStartLocPrio(13, 3, 6, MAP_LOC_PRIO_LOW)
+    SetEnemyStartLocPrio(13, 4, 7, MAP_LOC_PRIO_LOW)
+    SetStartLocPrioCount(14, 10)
+    SetStartLocPrio(14, 0, 0, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(14, 1, 1, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(14, 2, 3, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(14, 3, 5, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(14, 4, 7, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(14, 5, 8, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(14, 6, 9, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(14, 7, 12, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(14, 8, 15, MAP_LOC_PRIO_LOW)
+    SetStartLocPrioCount(15, 9)
+    SetStartLocPrio(15, 0, 0, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(15, 1, 2, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(15, 2, 3, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(15, 3, 4, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(15, 4, 5, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(15, 5, 6, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(15, 6, 9, MAP_LOC_PRIO_LOW)
+    SetStartLocPrio(15, 7, 12, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(15, 8, 14, MAP_LOC_PRIO_LOW)
 end
 
 function main()
@@ -1540,8 +1528,8 @@ end
 function config()
     SetMapName("TRIGSTR_012")
     SetMapDescription("TRIGSTR_014")
-    SetPlayers(14)
-    SetTeams(14)
+    SetPlayers(16)
+    SetTeams(16)
     SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
     DefineStartLocation(0, 17728.0, -15616.0)
     DefineStartLocation(1, 17728.0, -15616.0)
@@ -1553,10 +1541,12 @@ function config()
     DefineStartLocation(7, -27520.0, 26176.0)
     DefineStartLocation(8, 17728.0, -15616.0)
     DefineStartLocation(9, 17728.0, -15616.0)
-    DefineStartLocation(10, 17728.0, -15616.0)
-    DefineStartLocation(11, 4032.0, 19776.0)
+    DefineStartLocation(10, 19648.0, -4864.0)
+    DefineStartLocation(11, 27456.0, -15872.0)
     DefineStartLocation(12, 17728.0, -15616.0)
-    DefineStartLocation(13, 22336.0, 28672.0)
+    DefineStartLocation(13, 4032.0, 19776.0)
+    DefineStartLocation(14, 17728.0, -15616.0)
+    DefineStartLocation(15, 22336.0, 28672.0)
     InitCustomPlayerSlots()
     InitCustomTeams()
     InitAllyPriorities()
