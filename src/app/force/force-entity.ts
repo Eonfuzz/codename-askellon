@@ -104,6 +104,10 @@ export class ForceEntity extends Entity {
      */
     public aggressionBetweenTwoPlayers(player1: MapPlayer, player2: MapPlayer) {
         const validAggression = this.addAggressionLog(player1, player2)
+        
+        // Don't alter some alliances for obvious reasons
+        if (PlayerStateFactory.isAlienAI(player2)) return true;
+        if (player2 === PlayerStateFactory.NeutralHostile) return true;
         // Add the log
         if (validAggression) {
             // Make them enemies
@@ -149,8 +153,10 @@ export class ForceEntity extends Entity {
      * @returns boolean if aggression was allowed
      */
     private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
-        const key = this.canFight(player1, player2) as string;
-        if (!key) return false;
+        const key = this.canFight(player1, player2);
+        if (key === false) return false;
+        // Dont alter alliances if you're attackin alien or neutral hostile
+        if (key === true) return true;
 
         const newItem = {
             id: this.aggressionId++,

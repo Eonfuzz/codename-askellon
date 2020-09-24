@@ -68,7 +68,7 @@ export function initElevators() {
             const targetElevator = elevatorMap.get(handleId);
 
             targetUnit.setAnimation(1);
-            KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\ElevatorOpen.mp3", targetUnit, 90));
+            KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\ElevatorOpen.mp3", targetUnit, 15));
 
             if (targetElevator && targetElevator.to) {
                 KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\ElevatorOpen.mp3", targetElevator.to.unit, 90));
@@ -95,7 +95,7 @@ export function initElevators() {
                 // fromUnit.facing = bj_UNIT_FACING;
                 BlzSetUnitFacingEx(fromUnit.handle, bj_UNIT_FACING);
 
-                if (IsUnitSelected(fromUnit.handle, fromUnit.owner.handle)) {
+                if (true) { //IsUnitSelected(fromUnit.handle, fromUnit.owner.handle)) {
                     PanCameraToTimedForPlayer(fromUnit.owner.handle, fromUnit.x, fromUnit.y, 0);
                 }
                 WorldEntity.getInstance().travel(fromUnit, targetElevator.goes_to);
@@ -145,12 +145,12 @@ export function initHatches() {
             targetUnit.setAnimation(1);
 
             if (targetUnit.typeId === HATCH_TYPE) 
-                KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp33", targetUnit, 40));
+                KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp33", targetUnit, 15));
 
             if (targetElevator && targetElevator.to) {
                 targetElevator.to.unit.setTimeScale(1.4);
                 if (targetElevator.to.unit.typeId === HATCH_TYPE) 
-                    KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 40));
+                    KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 15));
                 targetElevator.to.unit.setAnimation(1);
             }
         },

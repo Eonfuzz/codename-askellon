@@ -31,6 +31,7 @@ export enum EVENT_TYPE {
     HERO_LEVEL_UP,
     WEAPON_EQUIP,
     WEAPON_UNEQUIP,
+    WEAPON_MODE_CHANGE,
 
     // Special event just to check for victory conds
     CHECK_VICTORY_CONDS,

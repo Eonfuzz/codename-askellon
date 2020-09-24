@@ -14,11 +14,12 @@ import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
 import { Timers } from "app/timer-type";
+import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -130,14 +131,22 @@ export class ChatEntity extends Entity {
             //     const dY = S2I(mSplit[2] || "0");
             //     this.game.galaxyModule.navigateToSector(dX, dY);
             // }
-            // else if (message.indexOf("-wa") === 0) {
-            //     this.game.weaponModule.changeWeaponModeTo('ATTACK');
-            // }
-            // else if (message.indexOf("-wc") === 0) {
-            //     this.game.weaponModule.changeWeaponModeTo('CAST');
-            // }
             // else 
-            if (message.indexOf("-god") === 0) {
+            if (message.indexOf("-wa") === 0) {
+                EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, {
+                    source: crew.unit,
+                    crewmember: crew,
+                    data: { mode: WeaponEntityAttackType.ATTACK } 
+                });
+            }
+            else if (message.indexOf("-wc") === 0) {
+                EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, {
+                    source: crew.unit,
+                    crewmember: crew,
+                    data: { mode: WeaponEntityAttackType.CAST } 
+                });
+            }
+            else  if (message.indexOf("-god") === 0) {
                 const idx = this.adminGodUsers.indexOf(player);
                 if (idx >= 0) {
                     this.postMessageFor(this.adminGodUsers, "GAME", COL_GOD, player.name+" exiting god chat");
@@ -211,7 +220,10 @@ export class ChatEntity extends Entity {
                         let _y = y + GetRandomReal(-300, 300);
                         const zone = WorldEntity.getInstance().getPointZone(_x, _y);   
                         if (zone) {
-                            AIEntity.createAddAgent(ALIEN_MINION_CANITE, _x, _y, zone.id);
+                            const i = GetRandomInt(1,10);
+                            if (i >= 10) AIEntity.createAddAgent(ALIEN_MINION_LEECH, _x, _y, zone.id);
+                            else if (i >= 7) AIEntity.createAddAgent(ALIEN_MINION_FORMLESS, _x, _y, zone.id);
+                            else AIEntity.createAddAgent(ALIEN_MINION_CANITE, _x, _y, zone.id);                            
                         }
                         else {
                             Log.Information("No Zone picked");

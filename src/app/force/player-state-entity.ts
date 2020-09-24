@@ -48,6 +48,13 @@ export class PlayerStateFactory {
             PlayerStateFactory.AlienAIPlayer2.name = "Alien 2";
             PlayerStateFactory.AlienAIPlayer3.name = "Alien 3";
         }
+
+        // Disable player help messages
+        Players.forEach(p => {
+            Players.forEach(p2 => {
+                SetPlayerAlliance(p.handle, p2.handle, ALLIANCE_HELP_REQUEST, false);
+            });
+        });
     }
 
     public get(who: MapPlayer) {

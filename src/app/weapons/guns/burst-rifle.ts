@@ -20,7 +20,7 @@ export class BurstRifle extends Gun {
     constructor(item: item, equippedTo: ArmableUnit) {
         super(item, equippedTo);
         // Define spread and bullet distance
-        this.spreadAOE = 240;
+        this.spreadAOE = 180;
         this.bulletDistance = 1400;
     }
 

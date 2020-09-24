@@ -62,10 +62,10 @@ export class CrewmemberForce extends ForceType {
             // If alien killed us migrate to alien force
             if (killedByAlien) {
                 try {
+                    const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
                     // Revive our unit
                     whichUnit.unit.revive(whichUnit.unit.x, whichUnit.unit.y, false);
     
-                    const alienForce = pForce as AlienForce;
                     alienForce.addPlayerMainUnit(whichUnit, player);
                     PlayerStateFactory.get(player).setForce(alienForce);
     

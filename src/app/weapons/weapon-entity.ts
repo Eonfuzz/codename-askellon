@@ -25,6 +25,8 @@ import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { ABIL_WEP_MINIGUN } from "resources/ability-ids";
 import { Minigun } from "./guns/minigun";
 import { Hooks } from "lib/Hooks";
+import { WeaponEntityAttackType } from "./weapon-attack-type";
+import { Timers } from "app/timer-type";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -37,7 +39,6 @@ export class WeaponEntity extends Entity {
         return this.instance;
     }
 
-    WEAPON_MODE: 'CAST' | 'ATTACK' = 'CAST';
     unitsWithWeapon = new Map<unit, Gun>();
     game: Game;
     
@@ -89,6 +90,9 @@ export class WeaponEntity extends Entity {
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.ADD_PROJECTILE, (self, data) => {
             this.addProjectile(data.data.projectile);
+        }));
+        EventEntity.listen(new EventListener(EVENT_TYPE.WEAPON_MODE_CHANGE, (self, data) => {
+            this.changeWeaponModeTo(data.crewmember, data.data.mode);
         }));
     }
 
@@ -456,20 +460,19 @@ export class WeaponEntity extends Entity {
         return undefined;
     }
 
-    changeWeaponModeTo(weaponType: 'CAST' | 'ATTACK') {
+    changeWeaponModeTo(crewmember: Crewmember, weaponType: WeaponEntityAttackType) {
         // Unequip all weapons
         const unitsToRequip = [];
-        const gunsToReEquip = this.guns.filter(gun => {
-            if (gun.equippedTo) {
-                unitsToRequip.push(gun.equippedTo.unit);
-                gun.onRemove();
-                return true;
-            }
-        });
 
-        this.WEAPON_MODE = weaponType;
-
-        // Requip them
-        gunsToReEquip.forEach((g, i) => g.onAdd(unitsToRequip[i]));
+        const equippedGun = this.getGunForUnit(crewmember.unit);
+        if (equippedGun) {
+            unitsToRequip.push(equippedGun.equippedTo.unit);
+            equippedGun.onRemove();
+            PlayerStateFactory.get(crewmember.unit.owner).setAttackType(weaponType);
+            // Requip them
+            Timers.addTimedAction(0, () => {
+                equippedGun.onAdd(crewmember);
+            });
+        }
     }
 }

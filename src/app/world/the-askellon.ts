@@ -44,12 +44,12 @@ export class TheAskellon {
         this.addFloor(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A));
         this.addFloor(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
         this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
-        this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY ));
+        this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY));
         this.addFloor(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE));
         this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
         this.addFloor(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
         this.addFloor(ZONE_TYPE.REACTOR, new ReactorZone(ZONE_TYPE.REACTOR));
-        this.addFloor(ZONE_TYPE.CARGO_B, new ReactorZone(ZONE_TYPE.CARGO_B));
+        this.addFloor(ZONE_TYPE.CARGO_B, new ChurchZone(ZONE_TYPE.CARGO_B));
 
         // Now apply lights to the zones
         const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);

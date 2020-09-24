@@ -1,6 +1,8 @@
 import { MapPlayer, Unit } from "w3ts/index";
 import { ForceType } from "./forces/force-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
+
 
 export class PlayerState {
 
@@ -17,6 +19,8 @@ export class PlayerState {
     public levelBonusStrength = 0;
     public levelBonusAgility = 0;
     public levelBonusIntelligence = 0;
+
+    private attackType = WeaponEntityAttackType.CAST;
 
     constructor(player: MapPlayer) {
         this.player = player;
@@ -51,5 +55,13 @@ export class PlayerState {
 
     getCrewmember() {
         return this.crewmember;
+    }
+
+    getAttackType() {
+        return this.attackType;
+    }
+
+    setAttackType(type: WeaponEntityAttackType) {
+        this.attackType = type;
     }
 }

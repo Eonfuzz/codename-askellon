@@ -50,7 +50,7 @@ export class PerseusShip extends ShipWithFuel {
         this.unit.owner = who.owner;
 
         // If we have the entering unit was selected, select the ship too
-        if (who.isSelected(newOwner)) {
+        if (true) { // who.isSelected(newOwner)) {
             SelectUnitForPlayerSingle(this.unit.handle, newOwner.handle);
         }
         // Hide entering unit

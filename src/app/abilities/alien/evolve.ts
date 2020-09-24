@@ -89,6 +89,8 @@ export class EvolveAbility implements Ability {
         this.timeElapsedSinceSFX += delta;
 
         this.light.z = getZFromXY(this.casterUnit.x, this.casterUnit.y) + 150 + Cos(this.timeElapsed*1.1) * 100;
+        this.effect.x = this.casterUnit.x;
+        this.effect.y = this.casterUnit.y;
 
         // Don't continue if we interrupt
         if (this.castingOrder !== this.casterUnit.currentOrder) {

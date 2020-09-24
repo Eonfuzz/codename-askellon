@@ -182,10 +182,11 @@ export class ShipZone extends Zone {
             const d = GetFilterDestructable();
             const id = GetDestructableTypeId(d);
             // Log.Information("Adding region id found: "+id);
-            if (id === DESTR_ID_POWERED_LIGHT_BLUE) this.lightSources.push(d);
-            else if (id === DESTR_ID_POWERED_LIGHT_RED) this.lightSources.push(d);
-            else if (id === DESTR_ID_POWERED_LIGHT_WHITE) this.lightSources.push(d);
-            else if (id === DESTR_ID_POWERED_LIGHT_GREEN) this.lightSources.push(d);
+            // if (id === DESTR_ID_POWERED_LIGHT_BLUE) this.lightSources.push(d);
+            // else if (id === DESTR_ID_POWERED_LIGHT_RED) this.lightSources.push(d);
+            // else 
+            if (id === DESTR_ID_POWERED_LIGHT_WHITE) this.lightSources.push(d);
+            // else if (id === DESTR_ID_POWERED_LIGHT_GREEN) this.lightSources.push(d);
         });
     }
 
@@ -268,7 +269,6 @@ export class ShipZone extends Zone {
                 }
 
                 if (!newState) {
-                    Log.Information("Power out, my lights: "+this.lightSources.length);
                     this.lightSources.forEach((lightSource, i) => {
                         const _i = i;
                         const r = GetRandomInt(2, 4);

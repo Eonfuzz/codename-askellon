@@ -32,7 +32,7 @@ export class Vector2 {
      */
     applyPolarOffset(angle: number, offset: number) {
         const result = new Vector2(
-            this.x + Cos(angle * bj_DEGTORAD) * offset,
+            this.x + Cos(angle * bj_PI / 180) * offset,
             this.y + Sin(angle * bj_DEGTORAD) * offset
         );
         return result;

@@ -7,6 +7,8 @@ import { TECH_CREWMEMBER_ATTACK_ENABLE } from "../../../resources/ability-ids";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { WeaponEntityAttackType } from "../weapon-attack-type";
 
 export abstract class Gun {
     item: item;
@@ -34,18 +36,19 @@ export abstract class Gun {
         SetPlayerTechResearched(caster.player.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 1);
 
         // Cast mode adds the ability
-        // if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
+        const weaponMode = PlayerStateFactory.get(caster.unit.owner).getAttackType();
+        if (weaponMode === WeaponEntityAttackType.CAST) {
             caster.unit.addAbility(this.getAbilityId());
             BlzStartUnitAbilityCooldown(
                 this.equippedTo.unit.handle, 
                 this.getAbilityId(), 
                 BlzGetAbilityCooldown(this.getAbilityId(), 0)
             );
-        // }
-        // // If we are in attack mode let the user attack
-        // else {
-        //     UnitRemoveAbility(this.equippedTo.unit.handle, FourCC('Abun'));
-        // }
+        }
+        // If we are in attack mode let the user attack
+        else {
+            UnitRemoveAbility(this.equippedTo.unit.handle, FourCC('Abun'));
+        }
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
 
@@ -66,12 +69,14 @@ export abstract class Gun {
             SetPlayerTechResearched(this.equippedTo.unit.owner.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 0);
 
             // If we are cast mode set this remaning cooldown
-            // if (WeaponEntity.getInstance().WEAPON_MODE === 'CAST') {
+            
+            const weaponMode = PlayerStateFactory.get(this.equippedTo.unit.owner).getAttackType();
+            if (weaponMode === WeaponEntityAttackType.CAST) {
                 // this.remainingCooldown = BlzGetUnitAbilityCooldownRemaining(this.equippedTo.unit.handle, this.getAbilityId());
-            // }
-            // else {
-            //     UnitAddAbility(this.equippedTo.unit.handle, FourCC('Abun'));
-            // }
+            }
+            else {
+                UnitAddAbility(this.equippedTo.unit.handle, FourCC('Abun'));
+            }
 
             this.equippedTo.onWeaponRemove(this);
             // Handle no crewmember?

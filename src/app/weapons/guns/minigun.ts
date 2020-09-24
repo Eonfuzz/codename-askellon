@@ -303,7 +303,7 @@ export class Minigun extends Gun {
 
     private onStopShooting() {
         this.endSound.playSoundOnUnit(this.equippedTo.unit.handle, 127);
-        BlzStartUnitAbilityCooldown(this.equippedTo.unit.handle, this.getAbilityId(), 8);
+        BlzStartUnitAbilityCooldown(this.equippedTo.unit.handle, this.getAbilityId(), 5);
         this.shootTimer.pause();
     }
 

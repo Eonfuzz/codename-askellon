@@ -37,6 +37,7 @@ import { PlayerStateFactory } from "./force/player-state-entity";
 import { AntiMetaEntity } from "resources/anti-meta-entity";
 import { UIEntity } from "resources/ui/ui-entity";
 import { AskellonEntity } from "./station/askellon-entity";
+import { Timers } from "./timer-type";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -69,6 +70,15 @@ export class Game {
         PlayMusic("Music\\MechanicusLostCivilization.mp3");
         SetMusicVolume(30);
         PauseGameOff();
+
+        
+        warpStormSound.playSound();
+        CinematicFilterGenericBJ(5, BLEND_MODE_NONE, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0, 0, 0 ,0 ,0);
+        DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 5, `Loading, please wait`);
+        BlzHideOriginFrames(true);
+        BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
+        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
+        // Cinematic
     }
 
     public startGame() {
@@ -109,11 +119,16 @@ export class Game {
         AIEntity.getInstance();
         AntiMetaEntity.start();
 
-        // Camera follow the main ship
-        this.followMainShip();
+        Timers.addTimedAction(5, () => {
 
-        // Start role selection
-        ForceEntity.getInstance().getOpts((optResults) => this.postOptResults(optResults));
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEIN, 1.5, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
+
+            // Camera follow the main ship
+            this.followMainShip();
+    
+            // Start role selection
+            ForceEntity.getInstance().getOpts((optResults) => this.postOptResults(optResults));
+        });
     }
 
     private followTimer = new Timer();
@@ -125,8 +140,6 @@ export class Game {
         mainShip.engine.mass = 0;
         mainShip.engine.velocityForwardMax = 100;
         mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 500, mainShip.unit.y + 500));
-
-        warpStormSound.playSound();
 
         const facingData = getYawPitchRollFromVector(new Vector3(1, 1, -0.7));
         this.portalSFX = new Effect(SFX_BLACK_HOLE, mainShip.unit.x + 1300, mainShip.unit.y + 1300);
@@ -140,9 +153,6 @@ export class Game {
         this.portalSFX.setYaw(facingData.yaw);
         
 
-        BlzHideOriginFrames(true);
-        BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
-        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
 
         GetActivePlayers().forEach(p => {
             const modifier = CreateFogModifierRect(p.handle, FOG_OF_WAR_VISIBLE, gg_rct_Space, true, false);

@@ -282,7 +282,7 @@ export class AlienForce extends ForceType {
         // get the hiding unit's location and facing
         const facing = toHide.facing;
         const pos = vectorFromUnit(toHide.handle);
-        const unitWasSelected = toHide.isSelected(who);
+        const unitWasSelected = true; //toHide.isSelected(who);
         const healthPercent = GetUnitLifePercent(toHide.handle);
 
         // If we are turning into human, add aloc to the hiding unit
@@ -442,8 +442,8 @@ export class AlienForce extends ForceType {
         if (damagedUnitIsAlien && damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagingPlayer)) {
             // If we have roach armor reduce damage received
             if (UnitHasBuffBJ(damagedUnit.handle, BUFF_ID_ROACH_ARMOR)) {
-                BlzSetEventDamage(damageAmount - 10);
-                damageAmount -= 10;
+                BlzSetEventDamage(damageAmount - 7);
+                damageAmount -= 7;
             }
     
             // Okay good, now reward exp based on damage done
@@ -591,7 +591,7 @@ export class AlienForce extends ForceType {
                 // Now get their alien units and replace with the new evo
                 const unit = this.playerAlienUnits.get(player);
                 if (unit) {
-                    const unitIsSelected = unit.isSelected(player);
+                    const unitIsSelected = true;// unit.isSelected(player);
 
 
                     // Get old unit zone

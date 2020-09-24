@@ -147,13 +147,13 @@ export class LatchAbility implements Ability {
         // Force our unit to travel too
         WorldEntity.getInstance().travel(this.unit, newFloor.id);
         // Snap camera
-        if (this.unit.isSelected(this.unit.owner)) {
+        // if (this.unit.isSelected(this.unit.owner)) {
             const t = new Timer();
             t.start(0, false, () => {
                 PanCameraToTimedForPlayer(this.unit.owner.handle, this.targetUnit.x, this.targetUnit.y, 0);
                 t.destroy();
             });
-        }
+        // }
     }
 
     private onDamage() {

@@ -483,7 +483,7 @@ Cliff Collumn
 }
 
 STRING 141
-// Abilities: TF01 (True Form), Hotkey (Hotkey - Normal)
+// Abilities: A008 (Interact and Resolve), Hotkey (Hotkey - Normal)
 {
 T
 }
@@ -555,7 +555,7 @@ STRING 156
 }
 
 STRING 158
-// Abilities: TF02 (Revert), Hotkey (Hotkey - Normal)
+// Abilities: TF01 (True Form), Hotkey (Hotkey - Normal)
 {
 T
 }
@@ -1330,7 +1330,7 @@ STRING 322
 }
 
 STRING 323
-// Abilities: A008 (Interact and Resolve), Hotkey (Hotkey - Normal)
+// Abilities: DIOJ (Fracture Round), Hotkey (Hotkey - Normal)
 {
 F
 }
@@ -1805,13 +1805,13 @@ Fire Armor Debuff
 }
 
 STRING 444
-// Abilities: DIOJ (Fracture Round), Hotkey (Hotkey - Normal)
+// Abilities: ADGN (Dragonfire Blast), Hotkey (Hotkey - Normal)
 {
 F
 }
 
 STRING 445
-// Abilities: ADGN (Dragonfire Blast), Hotkey (Hotkey - Normal)
+// Abilities: A00M (Cryo Grenade), Hotkey (Hotkey - Normal)
 {
 F
 }
@@ -2010,7 +2010,7 @@ Cryo Grenade
 }
 
 STRING 487
-// Abilities: A00M (Cryo Grenade), Hotkey (Hotkey - Normal)
+// Abilities: A01F (HX Compound Grenade), Hotkey (Hotkey - Normal)
 {
 F
 }
@@ -2624,7 +2624,7 @@ STRING 648
 }
 
 STRING 649
-// Abilities: A00Q ("Widower" Missile), Hotkey (Hotkey - Normal)
+// Abilities: TF02 (Revert), Hotkey (Hotkey - Normal)
 {
 T
 }
@@ -4488,12 +4488,6 @@ STRING 1088
 HX Compound Grenade
 }
 
-STRING 1089
-// Abilities: A01F (HX Compound Grenade), Hotkey (Hotkey - Normal)
-{
-F
-}
-
 STRING 1090
 // Abilities: A01F (HX Compound Grenade), Ubertip (Tooltip - Normal - Extended)
 {
@@ -4964,5 +4958,47 @@ STRING 1191
 // Destructibles: B006 (Powered Light Blue), Name (Name)
 {
 Powered Light Blue
+}
+
+STRING 1193
+// Abilities: A01Q (Life Regeneration), Name (Name)
+{
+Life Regeneration
+}
+
+STRING 1194
+// Abilities: A01Q (Life Regeneration), EditorSuffix (Editor Suffix)
+{
+ (+10 Regen)
+}
+
+STRING 1195
+// Units: u000 (Canite), EditorSuffix (Name - Editor Suffix)
+{
+( Minion T1 )
+}
+
+STRING 1196
+// Units: u001 (Leech), EditorSuffix (Name - Editor Suffix)
+{
+( Minion T2 )
+}
+
+STRING 1197
+// Units: u002 (Formless), EditorSuffix (Name - Editor Suffix)
+{
+( Minion T2 )
+}
+
+STRING 1198
+// Units: u002 (Formless), Name (Name)
+{
+Formless
+}
+
+STRING 1199
+// Abilities: A00Q ("Widower" Missile), Hotkey (Hotkey - Normal)
+{
+T
 }
 

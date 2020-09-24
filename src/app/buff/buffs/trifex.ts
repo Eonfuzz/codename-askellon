@@ -28,8 +28,8 @@ export class Trifex extends DynamicBuff {
     private processChat(chat: ChatHook) {
         if (chat.who === this.who.owner) {
             
-            const skipChat = GetRandomInt(0, 10);
-            if (skipChat === 10) {
+            const skipChat = GetRandomInt(0, 15);
+            if (skipChat === 15) {
                 chat.message = "uhh";
                 return chat;
             }
@@ -62,7 +62,7 @@ export class Trifex extends DynamicBuff {
             chat.message = chat.message.replace(" so ", ' so like ');
             chat.message = chat.message.replace(" i ", ' i like ');
             chat.message = chat.message.replace("where", 'huh');
-            chat.message = chat.message.replace("what", 'nani');
+            chat.message = chat.message.replace("what", 'whaaat');
             chat.message = chat.message.replace("this", 'like this');
             chat.message = chat.message.replace("alien", 'dude');
             chat.message = chat.message.replace("evil", 'not a cool dude');
@@ -92,7 +92,7 @@ export class Trifex extends DynamicBuff {
 
             // Now we need to update chat
             // Finally replace the ending randomly
-            const r = GetRandomInt(0, 10);
+            const r = GetRandomInt(0, 15);
             switch (r) {
                 case 1: chat.message += ".. bro!"; break;
                 case 2: chat.message += " seriously dude"; break;

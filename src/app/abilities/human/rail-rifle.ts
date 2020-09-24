@@ -198,8 +198,8 @@ export class RailRifleAbility implements Ability {
 
     public destroy() {
         // Stop the charge sound
-        StopSound(this.sound.sound, true, true);
-        SetSoundVolume(this.sound.sound, 0);
+        StopSound(this.sound.sound, true, false);
+        // SetSoundVolume(this.sound.sound, 0);
         return true;
     };
 }
