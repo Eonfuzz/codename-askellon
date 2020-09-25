@@ -190,7 +190,7 @@ export class GlobalCooldownAbilityEntity extends Entity {
             // Get the ability id
             const ability = this.globalCooldownActiveAbilities[index];
             // update our cooldown
-            const t = this.globalCooldownAbilityRemaining.get(ability) - this._timerDelay;
+            const t = (this.globalCooldownAbilityRemaining.get(ability) || 0) - this._timerDelay;
 
             if (t <= 0) {
                 Quick.Slice(this.globalCooldownActiveAbilities, index--);

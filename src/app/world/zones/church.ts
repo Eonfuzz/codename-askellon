@@ -1,4 +1,4 @@
-import { ShipZone } from "../zone-type";
+import { ShipZone } from "../ship-zone";
 import { Unit } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { PlayerStateFactory } from "app/force/player-state-entity";

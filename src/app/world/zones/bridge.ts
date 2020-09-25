@@ -1,11 +1,8 @@
-import { ShipZone } from "../zone-type";
 import { Unit, Timer } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { ROLE_TYPES } from "resources/crewmember-names";
-import { ZONE_TYPE } from "../zone-id";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-// import { CrewFactory } from "app/crewmember/crewmember-factory";
-
+import { ShipZone } from "../ship-zone";
 export class BridgeZone extends ShipZone {
 
     operaMusic = new SoundRef("Music\\Puccini.mp3", true, true);

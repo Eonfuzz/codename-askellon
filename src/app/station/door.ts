@@ -6,6 +6,8 @@ import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Vector2 } from "app/types/vector2";
 import { SoundRef } from "app/types/sound-ref";
+import { ZONE_TYPE } from "app/world/zone-id";
+import { WorldEntity } from "app/world/world-entity";
 
 const PATHING_BLOCKER_BOTH = FourCC('YTfb');
 
@@ -14,6 +16,7 @@ export class Door {
     public unit: Unit;
     public isOpen: boolean;
     public isDead: boolean = false;
+    public isPowered: boolean = true;
 
     // Can the door receive update requests?
     private canUpdate: boolean = true;
@@ -29,6 +32,8 @@ export class Door {
     private doorOpenSound = new SoundRef("Sounds\\DoorOpen.wav", false, false);
     private doorCloseSound = new SoundRef("Sounds\\DoorClose.wav", false, false);
 
+    private doorFloor: ZONE_TYPE;
+
     constructor(unit: Unit, isOpen = false) {
         this.unit = unit,
         this.isOpen = isOpen;
@@ -38,23 +43,38 @@ export class Door {
             if (data.data.unit === this.unit) {
                 this.isDead = true;
                 this.update(true);
-
-                // Log.Information("Door dead!");
             }
-        }))
+        }));
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
             if (data.data.unit === this.unit) {
                 this.isDead = false;
-                // this.update(false);
-
-                // Log.Information("Door alive!");
             }
-        }))
+        }));
+
+        EventEntity.listen(new EventListener(EVENT_TYPE.FLOOR_GAINS_POWER, (event, data) => {
+            if ((data.data.floor as ZONE_TYPE) === this.doorFloor) {
+                this.isPowered = true;
+            }
+        }));
+        EventEntity.listen(new EventListener(EVENT_TYPE.FLOOR_LOSES_POWER, (event, data) => {
+            if ((data.data.floor as ZONE_TYPE) === this.doorFloor) {
+                this.isPowered = false;
+            }
+        }));
+
+        const inZone = WorldEntity.getInstance().getPointZone(this.unit.x, this.unit.y);
+        if (inZone) {
+            this.doorFloor = inZone.id;
+        }
+        else {
+            Log.Error("Door got no zone, pls fix");
+            this.unit.setVertexColor(255, 0, 0, 120);
+        }
     }
 
 
     update(isOpen: boolean): boolean {
-        if (!this.canUpdate || this.isOpen === isOpen) return false;
+        if (!this.canUpdate || !this.isPowered || this.isOpen === isOpen) return false;
 
         const nearbyUnitGroup = CreateGroup();
         GroupEnumUnitsInRange(nearbyUnitGroup, this.unit.x, this.unit.y, 800, Filter(() => {

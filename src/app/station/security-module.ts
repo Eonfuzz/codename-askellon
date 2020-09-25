@@ -14,6 +14,7 @@ import { Door } from "./door";
 import { Entity } from "app/entity-type";
 import { MineralCrusherEntity } from "./mineral-crusher";
 import { ConveyorEntity } from "app/conveyor/conveyor-entity";
+import { TerminalEntity } from "./terminal/terminal-entity";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -95,6 +96,7 @@ export class SecurityEntity extends Entity {
 
         // Start mineral crusher
         MineralCrusherEntity.getInstance();
+        TerminalEntity.getInstance();
     }
 
     public isUnitDestroyed(u: Unit) {

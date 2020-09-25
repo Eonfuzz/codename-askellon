@@ -1,4 +1,4 @@
-import { Zone, ShipZone } from "../zone-type";
+import { ShipZone } from "../ship-zone";
 import { Unit, Effect, Destructable } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { SoundRef } from "app/types/sound-ref";
@@ -56,6 +56,7 @@ export class ReactorZone extends ShipZone {
     }
 
     public step(delta: number) {
+        super.step(delta);
         EnumItemsInRect(gg_rct_reactoritemleft, Filter(() => true), () => {
             this.processItem(GetEnumItem());
         });

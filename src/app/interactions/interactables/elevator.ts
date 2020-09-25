@@ -3,16 +3,15 @@ import { InteractableData } from "./interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../../world/zone-id";
 import { PlayNewSoundOnUnit, COLOUR, console } from "../../../lib/translators";
-import { COL_FLOOR_1, COL_FLOOR_2, COL_VENTS, COL_MISC } from "../../../resources/colours";
-import { Trigger, MapPlayer, Unit } from "w3ts";
-import { TECH_MAJOR_HEALTHCARE } from "resources/ability-ids";
-import { STR_GENE_REQUIRES_HEALTHCARE } from "resources/strings";
-import { syncData } from "lib/utils";
-import { TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, GENETIC_TESTING_FACILITY_SWITCH_DUMMY, GENETIC_TESTING_FACILITY_SWITCH, TERMINAL_REACTOR, TERMINAL_REACTOR_DUMMY } from "resources/unit-ids";
+import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 // import { GeneEntity } from "app/shops/gene-entity";
 import { Interactables } from "./interactables";
 import { GeneEntity } from "app/shops/gene-entity";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { Unit } from "w3ts/index";
+import { COL_MISC } from "resources/colours";
 
 class Elevator {
     unit: Unit;
@@ -185,10 +184,6 @@ export function initHatches() {
 
 export const initWeaponsTerminals = () => {
     
-    const WEAPONS_UPGRADE_TERMINAL = FourCC('nWEP');
-    const MEDICAL_UPGRADE_TERMINAL = FourCC('nMED');
-    const GENE_SPLICER_TERMINAL = FourCC('nGEN');
-    const VOID_UPGRADE_TERMINAL = FourCC('nVOI');
     let i = 0;
 
     const upgradeTerminalProcessing: InteractableData = {
@@ -198,76 +193,14 @@ export const initWeaponsTerminals = () => {
         onCancel: (fromUnit: Unit, targetUnit: Unit) => {
         },
         action: (fromUnit: Unit, targetUnit: Unit) => {
-            const handleId = targetUnit.id;
-            const uX = targetUnit.x; 
-            const uY = targetUnit.y;
-            const player = fromUnit.owner;
-
-            const targetUType = targetUnit.typeId;
-            let unitType;
-            if (targetUType === WEAPONS_UPGRADE_TERMINAL) {
-                unitType = FourCC('hWEP');
-            }
-            else if (targetUType === MEDICAL_UPGRADE_TERMINAL) {
-                unitType = FourCC('hMED');
-            }
-            else if (targetUType === VOID_UPGRADE_TERMINAL) {
-                unitType = FourCC('hVOI');
-            }
-            else if (targetUType === TERMINAL_REACTOR) {
-                unitType = TERMINAL_REACTOR_DUMMY;
-            }
-            else if (targetUType === GENE_SPLICER_TERMINAL) {
-                // If we haven't got HC 2
-                // Don't do anything
-                if (GetPlayerTechCount(player.handle, TECH_MAJOR_HEALTHCARE, true) < 1) {
-                    DisplayTextToPlayer(player.handle, 0, 0, STR_GENE_REQUIRES_HEALTHCARE);
-                    return false;
-                }
-                unitType = FourCC('hGEN');
-            }
-            else if (targetUType === TERMINAL_RELIGION) {
-                unitType = TERMINAL_RELIGION_DUMMY;
-            }
-            else if (targetUType === GENETIC_TESTING_FACILITY_SWITCH) {
-                unitType = GENETIC_TESTING_FACILITY_SWITCH_DUMMY;
-            }
-            else {
-                unitType = FourCC('hWEP');
-            }
-
-            const nUnit = CreateUnit(player.handle, unitType, uX, uY, bj_UNIT_FACING);
-            SelectUnitForPlayerSingle(nUnit, player.handle);
-
-            try {
-                // Select events are async
-                const syncher = syncData(`INT_SEL_${i++}`, player, (self, data: string) => {
-                    UnitApplyTimedLife(nUnit, FourCC('b001'), 3);
-                });
-
-                const trackUnselectEvent = new Trigger();
-                trackUnselectEvent.registerPlayerUnitEvent(player, EVENT_PLAYER_UNIT_DESELECTED, null);
-                trackUnselectEvent.addAction(() => {
-                    const u = GetTriggerUnit();
-                    if (u === nUnit) {
-                        syncher("Data");
-                    }
-                });
-
-                // Handle gene splicer interact
-                if (targetUType === GENE_SPLICER_TERMINAL) {
-                    GeneEntity.getInstance().addNewGeneInstance(fromUnit, Unit.fromHandle(nUnit));
-                }
-            }
-            catch (e) {
-                Log.Error(e);
-            }
+            EventEntity.send(EVENT_TYPE.INTERACT_TERMINAL, { source: fromUnit, data: { target: targetUnit }});
         }
     }
-    Interactables.set(WEAPONS_UPGRADE_TERMINAL, upgradeTerminalProcessing);
-    Interactables.set(MEDICAL_UPGRADE_TERMINAL, upgradeTerminalProcessing);
-    Interactables.set(GENE_SPLICER_TERMINAL, upgradeTerminalProcessing);
-    Interactables.set(VOID_UPGRADE_TERMINAL, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_WEAPONS, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_MEDICAL, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_GENE, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_VOID, upgradeTerminalProcessing);
     Interactables.set(TERMINAL_RELIGION, upgradeTerminalProcessing);
     Interactables.set(TERMINAL_REACTOR, upgradeTerminalProcessing);
+    Interactables.set(BRIDGE_CAPTAINS_TERMINAL, upgradeTerminalProcessing);
 }

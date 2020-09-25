@@ -3,7 +3,7 @@ import { Unit, Effect } from "w3ts";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 
 const MAX_DURATION = 8;
-const ABILITY_SLOW_ID = FourCC('A001J');
+const ABILITY_SLOW_ID = FourCC('A00W');
 
 export class FrenzyAbility implements Ability {
 

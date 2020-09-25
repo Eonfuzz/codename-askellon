@@ -174,6 +174,9 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_rct_zonereactor1 = nil
+gg_rct_zonecargoa2 = nil
+gg_rct_zonecargoa3 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -809,6 +812,9 @@ function CreateRegions()
     gg_rct_zonecargob3 = Rect(1792.0, -25216.0, 2144.0, -24896.0)
     gg_rct_zonecargob4 = Rect(-1344.0, -25984.0, -1184.0, -25408.0)
     gg_rct_mineralcrushereast = Rect(576.0, -25280.0, 768.0, -25024.0)
+    gg_rct_zonereactor1 = Rect(-14080.0, -19520.0, -11040.0, -13952.0)
+    gg_rct_zonecargoa2 = Rect(-28512.0, -27104.0, -27648.0, -26112.0)
+    gg_rct_zonecargoa3 = Rect(-25728.0, -27904.0, -25504.0, -27232.0)
 end
 
 function Trig_SetKillzones_Actions()

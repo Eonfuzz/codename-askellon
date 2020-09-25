@@ -35,7 +35,7 @@ export class WorldEntity extends Entity {
     // Map of unit to zone
     private unitLocation: Map<Unit, Zone> = new Map();
 
-    _timerDelay = 0.1;
+    _timerDelay = 0.3;
 
     constructor() {
         super();

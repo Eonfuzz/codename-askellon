@@ -3,7 +3,6 @@ import { initElevators, initHatches, initWeaponsTerminals } from "./interactable
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
 import { initVendingInteraction } from "./interactables/vendor";
-import { initCommandTerminal } from "./interactables/bridge";
 import { Log } from "lib/serilog/serilog";
 import { initTesterInteractions } from "./interactables/genetic-tester";
 import { Entity } from "app/entity-type";
@@ -43,7 +42,6 @@ export class InteractionEntity extends Entity {
             initHatches();
             initWeaponsTerminals();
             initVendingInteraction();
-            initCommandTerminal();
             initTesterInteractions();
 
             // Ship interactions

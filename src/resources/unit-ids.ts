@@ -18,6 +18,15 @@ export const TERMINAL_RELIGION_DUMMY = FourCC('n00B');
 export const TERMINAL_REACTOR = FourCC('n00I');
 export const TERMINAL_REACTOR_DUMMY = FourCC('n00J');
 
+export const TERMINAL_WEAPONS = FourCC('nWEP');
+export const TERMINAL_WEAPONS_DUMMY = FourCC('hWEP');
+export const TERMINAL_MEDICAL = FourCC('nMED');
+export const TERMINAL_MEDICAL_DUMMY = FourCC('hMED');
+export const TERMINAL_GENE = FourCC('nGEN');
+export const TERMINAL_GENE_DUMMY = FourCC('nWEP');
+export const TERMINAL_VOID = FourCC('nVOI');
+export const TERMINAL_VOID_DUMMY = FourCC('hVOI');
+
 export const WORM_ALIEN_FORM = FourCC('N00C');
 export const ZERGLING_ALIEN_FORM = FourCC('ALI1');
 export const ROACH_ALIEN_FORM = FourCC('ALI2');

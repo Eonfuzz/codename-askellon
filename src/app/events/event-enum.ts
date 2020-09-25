@@ -21,6 +21,9 @@ export enum EVENT_TYPE {
     // STATION_DAMAGE,
     STATION_SECURITY_DISABLED,
     STATION_SECURITY_ENABLED,
+    STATION_POWER_OUT,
+    FLOOR_LOSES_POWER,
+    FLOOR_GAINS_POWER,
     // STATION_WARP,
     // STATION_ZONE_POWER_OUT,
 
@@ -46,7 +49,7 @@ export enum EVENT_TYPE {
     // When units travel
     TRAVEL_UNIT_TO,
 
-    INTERACT_BRIDGE_TERMINAL,
+    INTERACT_TERMINAL,
 
     // Adds a projectile, data.projectile = projectile to add
     ADD_PROJECTILE,

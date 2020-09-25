@@ -3919,12 +3919,6 @@ STRING 976
 Genetic Sampler Dummy
 }
 
-STRING 977
-// Abilities: A018 (ITEM IS INFESTED), Name (Name)
-{
-ITEM IS INFESTED
-}
-
 STRING 981
 // Units: n00D (|cff00ffffGenetic Sequencer |rFacility|n|cff808080Right Click to Place a sample), Name (Name)
 {
@@ -5000,5 +4994,17 @@ STRING 1199
 // Abilities: A00Q ("Widower" Missile), Hotkey (Hotkey - Normal)
 {
 T
+}
+
+STRING 1200
+// Abilities: A019 (Sequence Genetic Samples), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 1201
+// Abilities: A01P (Reactor Diagnostics), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
 }
 

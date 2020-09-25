@@ -7,7 +7,7 @@ import { MapPlayer } from "w3ts";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
 import { COL_MISC } from "resources/colours";
 
-const MAX_CHAT_MESSAGES = 4;
+const MAX_CHAT_MESSAGES = 6;
 
 export class ChatSystem {
 

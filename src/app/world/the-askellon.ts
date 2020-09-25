@@ -1,19 +1,12 @@
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME, STRING_TO_ZONE_TYPE } from "./zone-id";
-import { Zone, ShipZone } from "./zone-type";
-import { SoundRef } from "../types/sound-ref";
+import { Zone } from "./zone-type";
 import { Log } from "../../lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
 import { MapPlayer, Unit } from "w3ts";
 import { ChurchZone } from "./zones/church";
 import { BridgeZone, BridgeZoneVent } from "./zones/bridge";
-import { VISION_PENALTY } from "app/vision/vision-type";
-
-import { VisionFactory } from "app/vision/vision-factory";
-import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
-// import { WorldEntity } from "./world-entity";
-import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ReactorZone } from "./zones/reactor";
+import { ShipZone } from "./ship-zone";
 
 // Small damage
 // Will not cause damage to interior
@@ -97,8 +90,10 @@ export class TheAskellon {
     }
 
     public step(delta: number) {
-        // For now only step the reactor
-        this.floors.get(ZONE_TYPE.REACTOR).step(delta);
+        for (let index = 0; index < this.allFloors.length; index++) {
+            const floor = this.allFloors[index];
+            floor.step(delta);
+        }
     }
 
     /**
