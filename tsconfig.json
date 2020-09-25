@@ -42,7 +42,7 @@
     ]
   },
   "include": [
-    "src"
+    "src", "src/app/world/.ts"
   ],
   "exclude": [],
   "tstl": {
