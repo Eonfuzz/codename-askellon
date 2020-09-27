@@ -126,7 +126,7 @@ export class Vector3 {
      */
     projectTowardsGunModel(unit: unit) {
         const r = this.projectTowards2D(GetUnitFacing(unit) - 10, 25);
-        r.z += 60;
+        r.z += 70;
         return r;
     }
 

@@ -9,12 +9,13 @@ import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { ArmableUnit } from "./unit-has-weapon";
 import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
 import { getZFromXY } from "lib/utils";
-import { MapPlayer, Force } from "w3ts/index";
+import { MapPlayer, Force, Effect } from "w3ts/index";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
 import { Timers } from "app/timer-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { Log } from "lib/serilog/serilog";
 
 export class BurstRifle extends Gun {
     constructor(item: item, equippedTo: ArmableUnit) {
@@ -59,6 +60,7 @@ export class BurstRifle extends Gun {
         let strayTarget = this.getStrayLocation(targetLocation, caster)
         let deltaTarget = strayTarget.subtract(casterLoc);
 
+        new Effect("war3mapImported\\MuzzleFlash.mdx", caster.unit, "hand, right").destroy();
 
         let projectile = new Projectile(
             unit,
@@ -70,14 +72,18 @@ export class BurstRifle extends Gun {
             .setVelocity(2400)
             .onCollide((projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(projectile, collidesWith)
-            )
-            .addEffect(
-                "war3mapImported\\Bullet.mdx",
-                new Vector3(0, 0, 0),
-                deltaTarget.normalise(),
-                1.4
             );
-
+        Timers.addTimedAction(0.07, () => {
+            // Log.Information("Projctile: "+projectile+" "+projectile.dead);
+            if (projectile.dead === false) {
+                projectile.addEffect(
+                    "war3mapImported\\Bullet.mdx",
+                    new Vector3(0, 0, 0),
+                    deltaTarget.normalise(),
+                    1.4
+                );
+            }
+        });
         EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile: projectile }});
     }
     

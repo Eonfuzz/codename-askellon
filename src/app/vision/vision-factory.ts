@@ -1,7 +1,9 @@
 import { VISION_PENALTY, VISION_STATE, VISION_TYPE } from "./vision-type";
-import { MapPlayer, Unit } from "w3ts/index";
+import { MapPlayer, Unit, Effect } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
 import { Hooks } from "lib/Hooks";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { SFX_FLASHLIGHT } from "resources/sfx-paths";
 
 
 export class VisionFactory {
@@ -20,6 +22,7 @@ export class VisionFactory {
     private playerVisionType = new Map<MapPlayer, VISION_TYPE>();
     // Calculate vision state
     private playerVisionState = new Map<MapPlayer, VISION_STATE>();
+    private playerFlashlightEffect = new Map<MapPlayer, Effect>();
 
     // Vision penalties need to be by player
     private activeModifiers = new Map<MapPlayer, VISION_PENALTY[]>();
@@ -105,14 +108,28 @@ export class VisionFactory {
         if (state === VISION_STATE.NORMAL) {
             p1 = "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl";
             p2 = "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl";
+            const crew = PlayerStateFactory.getCrewmember(forWho);
+            if (crew && this.playerFlashlightEffect.has(forWho)) {
+                const sfx = this.playerFlashlightEffect.get(forWho);
+                sfx.destroy();
+                this.playerFlashlightEffect.delete(forWho);
+            }
         }
         else if (state === VISION_STATE.DARK) {
             p1 = "";
             p2 = "";
+            const crew = PlayerStateFactory.getCrewmember(forWho);
+            if (crew && !this.playerFlashlightEffect.has(forWho)) {
+                this.playerFlashlightEffect.set(forWho, new Effect(SFX_FLASHLIGHT, crew.unit, "hand, right"));
+            }
         }
         else if (state == VISION_STATE.ALIEN_DARK) {
             p1 = "war3mapImported\\NiteVisionModelRed.mdx";
             p2 = "war3mapImported\\NiteVisionModelRed.mdx";
+            const crew = PlayerStateFactory.getCrewmember(forWho);
+            if (crew && !this.playerFlashlightEffect.has(forWho)) {
+                this.playerFlashlightEffect.set(forWho, new Effect(SFX_FLASHLIGHT, crew.unit, "hand, right"));
+            }
         }
 
         if (GetLocalPlayer() === forWho.handle) {

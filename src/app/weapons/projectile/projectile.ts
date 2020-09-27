@@ -30,6 +30,7 @@ export class Projectile {
     private sfx: Array<ProjectileSFX>;
 
     private doDestroy = false;
+    public dead = false;
 
     public filter: filterfunc;
 
@@ -157,6 +158,7 @@ export class Projectile {
     }
 
     public destroy(): boolean {
+        this.dead = true;
         this.onDeathCallback && this.onDeathCallback(this);
         this.sfx.forEach(sfx => sfx.destroy());
         this.sfx = [];

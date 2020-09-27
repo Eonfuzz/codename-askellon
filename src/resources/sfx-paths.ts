@@ -39,6 +39,8 @@ export const SFX_HEAL = "Heal Green.mdx";
 export const SFX_BANSHEE_MISSILE = "Abilities\\Weapons\\BansheeMissile\\BansheeMissile.mdl";
 export const SFX_DEMONHUNTER_MISSILE = "Abilities\\Weapons\\DemonHunterMissile\\DemonHunterMissile.mdl";
 export const SFX_CARRION_SWARM_HIT = "Abilities\\Spells\\Undead\\CarrionSwarm\\CarrionSwarmDamage.mdl";
+export const SFX_FLASHLIGHT = "war3mapImported\\flashlight.mdx";
+
 
 export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
 export const SFX_BLOOD_2 = "Models\\FloorBlood2.mdx";
@@ -94,3 +96,4 @@ Preload(SFX_HEAL);
 Preload(SFX_BANSHEE_MISSILE);
 Preload(SFX_DEMONHUNTER_MISSILE);
 Preload(SFX_CARRION_SWARM_HIT);
+Preload(SFX_FLASHLIGHT);
