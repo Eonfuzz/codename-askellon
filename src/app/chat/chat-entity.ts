@@ -278,6 +278,9 @@ export class ChatEntity extends Entity {
                 }
                 crew.updateTooltips();
             }
+            else if (message === "-d" || message === "-dance") {
+                crew.unit.setAnimation(9);
+            }
         }
     }
 
