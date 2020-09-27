@@ -3,7 +3,7 @@ import { InteractableData } from "./interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../../world/zone-id";
 import { PlayNewSoundOnUnit, COLOUR, console } from "../../../lib/translators";
-import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL } from "resources/unit-ids";
+import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL, TERMINAL_PURGE, WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 // import { GeneEntity } from "app/shops/gene-entity";
 import { Interactables } from "./interactables";
@@ -12,6 +12,8 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit } from "w3ts/index";
 import { COL_MISC } from "resources/colours";
+import { PlayerState } from "app/force/player-type";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 class Elevator {
     unit: Unit;
@@ -62,6 +64,9 @@ export function initElevators() {
 
     const ELEVATOR_TYPE = FourCC('n001');
     const elevatorTest: InteractableData = {
+        getInteractionTime: (fromUnit: Unit, targetUnit: Unit) => {
+            return 2;
+        },
         onStart: (fromUnit: Unit, targetUnit: Unit) => {
             const handleId = targetUnit.id;
             const targetElevator = elevatorMap.get(handleId);
@@ -136,6 +141,15 @@ export function initHatches() {
     const HATCH_TYPE = FourCC('n002');
     const LADDER_TYPE = FourCC('n004');
     const hatchInteractable: InteractableData = {
+        getInteractionTime: (fromUnit: Unit, targetUnit: Unit) => {
+            const type = fromUnit.typeId;
+
+            if (type === WORM_ALIEN_FORM) return 1.5;
+            if (type === ZERGLING_ALIEN_FORM) return 1.5;
+            if (type === ROACH_ALIEN_FORM) return 1.5;
+            if (PlayerStateFactory.isAlienAI(fromUnit.owner)) return 1.5;
+            return 3;
+        },
         onStart: (fromUnit: Unit, targetUnit: Unit) => {
             const handleId = targetUnit.id;    
             const targetElevator = hatchMap.get(handleId);
@@ -203,4 +217,5 @@ export const initWeaponsTerminals = () => {
     Interactables.set(TERMINAL_RELIGION, upgradeTerminalProcessing);
     Interactables.set(TERMINAL_REACTOR, upgradeTerminalProcessing);
     Interactables.set(BRIDGE_CAPTAINS_TERMINAL, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_PURGE, upgradeTerminalProcessing);
 }

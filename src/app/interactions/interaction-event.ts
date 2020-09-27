@@ -40,9 +40,6 @@ export class InteractionEvent {
     this.timeRequired = this.timeRemaining = interactTime;
 
     this.interactable = interactable;
-
-    // this.startCallback = startCallback;
-    // this.cancelCallback = cancelCallback;
     this.interactDistance = interactDistance;
     this.showProgressBar = showProgressBar;
 
@@ -104,7 +101,7 @@ export class InteractionEvent {
       else if (UnitHasBuffBJ(this.unit.handle, SLOW_ID))
         delta = delta / 2;
       else if (this.unit.typeId === WORM_ALIEN_FORM)
-        delta = delta * 2;
+        delta = delta * 1.2;
 
         // Process delta time
       this.timeRemaining -= delta;

@@ -37,7 +37,8 @@ import {
     ABIL_GENE_XENOPHOBIC,
     ABIL_GENE_XENOPHOBIC_PUNCH,
     ABIL_GENE_INSTANT_HEAL,
-    ABIL_SYSTEM_REACTOR_DIAGNOSTICS
+    ABIL_SYSTEM_REACTOR_DIAGNOSTICS,
+    ABIL_SYSTEM_PURGE_VENTS
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -76,6 +77,7 @@ import { XenophobicPunchAbility } from "./human/xenophobic-punch";
 import { InstantHealAbility } from "./human/instant-heal";
 import { GlobalCooldownAbilityEntity } from "./global-ability-entity";
 import { ReactorDiagnosticsAbility } from "./station/reactor-diagnostics";
+import { VentPurgeAbility } from "./station/vent-purge";
 
 
 
@@ -92,6 +94,7 @@ export class AbilityHooks {
         GlobalCooldownAbilityEntity.getInstance();
         GlobalCooldownAbilityEntity.register( ABIL_ACTIVATE_SEQUENCER_TEST );
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_DIAGNOSTICS );
+        GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_PURGE_VENTS );
     }
 
     public static getInstance() {
@@ -153,3 +156,4 @@ AbilityHooks.Add(ABIL_GENE_XENOPHOBIC, () => new XenophobicAbility());
 AbilityHooks.Add(ABIL_GENE_XENOPHOBIC_PUNCH, () => new XenophobicPunchAbility());
 AbilityHooks.Add(ABIL_GENE_INSTANT_HEAL, () => new InstantHealAbility());
 AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIAGNOSTICS, () => new ReactorDiagnosticsAbility());
+AbilityHooks.Add(ABIL_SYSTEM_PURGE_VENTS, () => new VentPurgeAbility());

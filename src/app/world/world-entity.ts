@@ -1,4 +1,4 @@
-import { Zone } from "./zone-type";
+import { Zone } from "./zone-types/zone-type";
 import { TheAskellon } from "./the-askellon";
 import { ZONE_TYPE, STRING_TO_ZONE_TYPE } from "./zone-id";
 import { Trigger, Unit, MapPlayer } from "w3ts";
@@ -35,7 +35,7 @@ export class WorldEntity extends Entity {
     // Map of unit to zone
     private unitLocation: Map<Unit, Zone> = new Map();
 
-    _timerDelay = 0.3;
+    _timerDelay = 0.25;
 
     constructor() {
         super();
@@ -173,15 +173,21 @@ export class WorldEntity extends Entity {
     removeUnit(whichUnit: Unit) {
         const zone = this.getUnitZone(whichUnit);
 
-        if (zone) {
-            // Log.Information("Removing unit "+whichUnit.name+" from "+zone.id);
-            // Force on leave
-            zone.onLeave(whichUnit);
-            // Remove data on it
-            this.unitLocation.delete(whichUnit);
+        try {
+            if (zone) {
+                // Log.Information("Removing unit "+whichUnit.name+" from "+zone.id);
+                // Force on leave
+                zone.onLeave(whichUnit);
+                // Remove data on it
+                this.unitLocation.delete(whichUnit);
+            }
+            else {
+                // Log.Information("Remove zone failed for "+whichUnit.name);
+            }
         }
-        else {
-            // Log.Information("Remove zone failed for "+whichUnit.name);
+        catch(e) {
+            Log.Error("Remove unit failed");
+            Log.Error(e);
         }
     }
 

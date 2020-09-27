@@ -3871,12 +3871,6 @@ STRING 966
 Survival Instincts
 }
 
-STRING 967
-// Abilities: A015 (Latch), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Lore TODO|r|n|nLatches onto the target; Becoming |cff00ff00invisible |rand |cff00ff00communicating|r as them. Any upgrades purchased by them become |cff8a6df2Infested|r.|n|n|cff80808060 Second Cooldown|r
-}
-
 STRING 968
 // Abilities: A0DF (Unit Event Ability), Name (Name)
 {
@@ -4279,25 +4273,25 @@ MG5-27 "Flamesaw" Pattern Minigun
 }
 
 STRING 1053
-// Abilities: A01C (Neural Takeover), Hotkey (Hotkey - Normal)
+// Abilities: A01M (Attack - Fists), Hotkey (Hotkey - Normal)
 {
 A
 }
 
 STRING 1054
-// Abilities: A01C (Neural Takeover), EditorSuffix (Editor Suffix)
+// Abilities: A018 (Neural Takeover), EditorSuffix (Editor Suffix)
 {
  (Worm)
 }
 
 STRING 1055
-// Abilities: A01C (Neural Takeover), Name (Name)
+// Abilities: A018 (Neural Takeover), Tip (Tooltip - Normal)
 {
 Neural Takeover
 }
 
 STRING 1056
-// Abilities: A01C (Neural Takeover), Tip (Tooltip - Normal)
+// Abilities: A018 (Neural Takeover), Name (Name)
 {
 Neural Takeover
 }
@@ -4309,7 +4303,7 @@ Latched inside human host
 }
 
 STRING 1059
-// Abilities: A01C (Neural Takeover), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A018 (Neural Takeover), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080LORE TODO.|r|n|nTake control of your host's actions, forcing them to become hostile and fire any weapon where your mouse currently is. |cffd45e19Their weapon must be able to fire.|r|n|n|cff8080806 Seconds Cooldown|r
 }
@@ -4663,7 +4657,7 @@ Attack - Fists
 }
 
 STRING 1131
-// Abilities: A01M (Attack - Fists), Hotkey (Hotkey - Normal)
+// Abilities: A018 (Neural Takeover), Hotkey (Hotkey - Normal)
 {
 A
 }
@@ -5006,5 +5000,65 @@ STRING 1201
 // Abilities: A01P (Reactor Diagnostics), EditorSuffix (Editor Suffix)
 {
 ( TERMINAL )
+}
+
+STRING 1202
+// Abilities: A015 (Latch), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nLatches onto the target; Becoming |cff00ff00invisible |rand |cff00ff00communicating|r as them. Any upgrades purchased by them become |cff8a6df2Infested|r.|nIf you are latched for the full |cff00ff0060|r seconds, you deal |cff00ff00300 damage|r to the target as you burst out of them.|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1203
+// Units: n00K (|cff00ffffPurging |rTerminal), Name (Name)
+{
+|cff00ffffPurging |rTerminal
+}
+
+STRING 1204
+// Units: n00K (|cff00ffffPurging |rTerminal), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 1205
+// Abilities: A01C (Purge Service Tunnels), Name (Name)
+{
+Purge Service Tunnels
+}
+
+STRING 1206
+// Abilities: A01C (Purge Service Tunnels), Hotkey (Hotkey - Normal)
+{
+X
+}
+
+STRING 1209
+// Abilities: A01C (Purge Service Tunnels), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 1210
+// Abilities: A01C (Purge Service Tunnels), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 1211
+// Abilities: A01C (Purge Service Tunnels), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 1213
+// Abilities: A01C (Purge Service Tunnels), Tip (Tooltip - Normal)
+{
+Purge Service Tunnels
+}
+
+STRING 1214
+// Abilities: A01C (Purge Service Tunnels), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nAfter |cff00ff0010 |rseconds; Fills the vents and service tunnels with an acidic gas, dealing |cff00ff0020 + 2% Max Life damage|r per second to all units inside. Lasts |cff00ff0060 |rseconds.|n|n|cffd45e19Occupational Health and Safety recommends you exit vents immediately after activation.|r|N|n|cff808080300 Seconds Cooldown|r
 }
 

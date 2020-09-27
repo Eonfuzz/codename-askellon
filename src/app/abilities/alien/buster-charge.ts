@@ -15,7 +15,7 @@ import { DummyCast } from "lib/dummy";
 const MAX_DISTANCE = 900;
 const DAMAGE_ON_IMPALE = 25;
 const DAMAGE_ON_COLLIDE = 50;
-const GRAB_DISTANCE = 60;
+const GRAB_DISTANCE = 70;
 
 export class BusterChargeAbility implements Ability {
 

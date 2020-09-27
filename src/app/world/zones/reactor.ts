@@ -1,4 +1,4 @@
-import { ShipZone } from "../ship-zone";
+import { ShipZone } from "../zone-types/ship-zone";
 import { Unit, Effect, Destructable } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { SoundRef } from "app/types/sound-ref";
@@ -17,8 +17,8 @@ export class ReactorZone extends ShipZone {
     private sfx: Effect;
 
 
-    constructor(id: ZONE_TYPE, exits?) {
-        super(id, exits);
+    constructor(id: ZONE_TYPE) {
+        super(id);
 
         this.sfx =  new Effect("Models\\Mythic_Sun.mdx", GetRectCenterX(gg_rct_powercoresfx) + 22, GetRectCenterY(gg_rct_powercoresfx) + 40);
         this.sfx.z = 180;

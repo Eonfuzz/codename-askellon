@@ -16,7 +16,7 @@ import { EventData } from "app/events/event-data";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { AbilityHooks } from "../ability-hooks";
-import { AddGhost, RemoveGhost } from "lib/utils";
+import { AddGhost, RemoveGhost, getZFromXY } from "lib/utils";
 
 
 export class LatchAbility implements Ability {
@@ -37,6 +37,7 @@ export class LatchAbility implements Ability {
     private latchChatHookId: number;
 
     private isCastingSurvivalInstincts: boolean = false;
+    private duration = 0;
 
     constructor() {
     }
@@ -107,6 +108,8 @@ export class LatchAbility implements Ability {
             return false;
         }
 
+        this.duration += delta;
+
         // Otherwise continue...
         this.unit.x = this.targetUnit.x;
         this.unit.y = this.targetUnit.y;
@@ -133,27 +136,33 @@ export class LatchAbility implements Ability {
     private onLatchTravel(data: EventData) {
         if (data.source !== this.targetUnit) return;
 
-        const newFloor = WorldEntity.getInstance().getUnitZone(data.source);
+        try {
+            const newFloor = WorldEntity.getInstance().getUnitZone(data.source);
 
-        if (!newFloor) {
-            return Log.Error("Failed to follow latched unit!");
+            if (!newFloor) {
+                return Log.Error("Failed to follow latched unit!");
+            }
+
+            if (newFloor.id === ZONE_TYPE.SPACE) {
+                Log.Information("Unit entering space, cancelling");
+                return this.forceStop = true;
+            }
+
+            // Force our unit to travel too
+            WorldEntity.getInstance().travel(this.unit, newFloor.id);
+            // Snap camera
+            // if (this.unit.isSelected(this.unit.owner)) {
+                const t = new Timer();
+                t.start(0, false, () => {
+                    PanCameraToTimedForPlayer(this.unit.owner.handle, this.targetUnit.x, this.targetUnit.y, 0);
+                    t.destroy();
+                });
+            // }
         }
-
-        if (newFloor.id === ZONE_TYPE.SPACE) {
-            Log.Information("Unit entering space, cancelling");
-            return this.forceStop = true;
+        catch(e) {
+            Log.Error("Failed to travel with latch!");
+            Log.Error(e);
         }
-
-        // Force our unit to travel too
-        WorldEntity.getInstance().travel(this.unit, newFloor.id);
-        // Snap camera
-        // if (this.unit.isSelected(this.unit.owner)) {
-            const t = new Timer();
-            t.start(0, false, () => {
-                PanCameraToTimedForPlayer(this.unit.owner.handle, this.targetUnit.x, this.targetUnit.y, 0);
-                t.destroy();
-            });
-        // }
     }
 
     private onDamage() {
@@ -178,9 +187,7 @@ export class LatchAbility implements Ability {
     }
 
     private onLatchedGainsXp(data: EventData) {
-        Log.Information("on xp gain");
         if (data.source === this.targetUnit) {
-            Log.Information("on xp gain for the worm");
             const amountGained = data.data.value / 2;
             EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
                 source: this.unit,
@@ -194,7 +201,7 @@ export class LatchAbility implements Ability {
         this.forceStop = true;
 
         // Neural Takeover
-        if (newOrder === 852129) {
+        if (newOrder === 852100) {
             this.forceStop = false;
             return;
         }
@@ -253,6 +260,21 @@ export class LatchAbility implements Ability {
                 this.targetUnit.owner.setTechResearched(TECH_PLAYER_INFESTS, 
                     (this.targetUnit.owner.getTechCount(TECH_PLAYER_INFESTS, true) || 0) - 1
                 );
+
+                if (this.duration >= 55) {
+                    UnitDamageTarget(this.unit.handle, 
+                        this.targetUnit.handle, 
+                        300, 
+                        true, 
+                        true, 
+                        ATTACK_TYPE_MAGIC, 
+                        DAMAGE_TYPE_ACID, 
+                        WEAPON_TYPE_WHOKNOWS
+                    );
+                    const bloodSfx = AddSpecialEffect("Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLargeDeathExplode.mdl", this.targetUnit.x, this.targetUnit.y);
+                    BlzSetSpecialEffectZ(bloodSfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 5);
+                    DestroyEffect(bloodSfx);
+                }
             }
 
             if (this.latchChatHookId) {

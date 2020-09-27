@@ -1,5 +1,5 @@
 import { Edge } from "./edge";
-import { Zone } from "app/world/zone-type";
+import { Zone } from "app/world/zone-types/zone-type";
 
 /**
  * Connections and zone

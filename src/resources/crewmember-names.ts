@@ -80,8 +80,11 @@ ${COL_GOOD}- Receive bonus experience from mining
 - Receive bonus experience for fighting in space
 - All ship abilities cost 1 less mana
 - Ships lose 10% less fuel|r`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.ENGINEER, `The ${COL_GOLD}Engineer|r maintains station integrity and upgrades Reactor.
+${COL_GOOD}- Begin the game with 3 bonus Vitality
+- Begin the game with extra items|r`);
 
-
+ 
 export const ROLE_GUIDES = new Map<ROLE_TYPES, string>();
 // export const CREW_ROLE_DESC = `Restore the ship to its full functional`;
 ROLE_GUIDES.set(ROLE_TYPES.CAPTAIN, `Your role is a work in progress, you gain bonus experience points while on bridge.`);

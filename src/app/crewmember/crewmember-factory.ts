@@ -2,12 +2,12 @@ import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES, ROLE_TYPES } from "../../resources/crewmember-names";
 import { Game } from "../game";
 import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
-import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID } from "../weapons/weapon-constants";
+import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR } from "../weapons/weapon-constants";
 import { ZONE_TYPE } from "../world/zone-id";
 import { ForceType } from "app/force/forces/force-type";
-import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQUIS_SMITE } from "resources/ability-ids";
+import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQUIS_SMITE, ABIL_ITEM_EMOTIONAL_DAMP } from "resources/ability-ids";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
-import { ITEM_GENETIC_SAMPLER } from "resources/item-ids";
+import { ITEM_GENETIC_SAMPLER, ITEM_SIGNAL_BOOSTER } from "resources/item-ids";
 import { AlienForce } from "app/force/forces/alien-force";
 import { ForceEntity } from "app/force/force-entity";
 import { EventEntity } from "app/events/event-entity";
@@ -69,8 +69,9 @@ export class CrewFactory {
             if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
             else if (it === 1) this.allJobs.push(ROLE_TYPES.DOCTOR);
             else if (it === 2) this.allJobs.push(ROLE_TYPES.INQUISITOR);
+            else if (it === 3) this.allJobs.push(ROLE_TYPES.ENGINEER);
             // else if (it === 3) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
-            else if (it < 4) this.allJobs.push(ROLE_TYPES.PILOT);
+            else if (it < 5) this.allJobs.push(ROLE_TYPES.PILOT);
             else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
             it++;
         }      
@@ -168,8 +169,11 @@ export class CrewFactory {
                 data: { item }
             });
             roleGaveWeapons = true;
-            // Now travel the unit to floor 1
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.ARMORY, true);
+            nUnit.x = -22916;
+            nUnit.y = -25386;
+            
+            // Now travel the unit to Church
+            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
         // Doctor begins with extra will and vigor
         else if (crewmember.role === ROLE_TYPES.DOCTOR) {
@@ -184,11 +188,32 @@ export class CrewFactory {
             // Now travel the unit to floor 1
             WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.BIOLOGY, true);
         }
+        // Doctor begins with extra vigour and items
+        else if (crewmember.role === ROLE_TYPES.ENGINEER) {
+            SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+3, true);
+
+            let item = CreateItem(ITEM_SIGNAL_BOOSTER, 0, 0);
+            UnitAddItem(crewmember.unit.handle, item);
+
+            item = CreateItem(ITEM_ID_REPAIR, 0, 0);
+            SetItemCharges(item, 10);
+            UnitAddItem(crewmember.unit.handle, item);
+
+            nUnit.x = -12570.62;
+            nUnit.y = -17582.47;
+
+            // Now travel the unit to floor 1
+            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.REACTOR, true);
+        }
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
             SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
 
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.ARMORY, true);
+            nUnit.x = -22916;
+            nUnit.y = -25386;
+            
+            // Now travel the unit to Church
+            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
         else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
             nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);
@@ -205,6 +230,13 @@ export class CrewFactory {
                 }
             }));    
             
+            nUnit.x = -22916;
+            nUnit.y = -25386;
+            
+            // Now travel the unit to Church
+            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
+        }
+        else {            
             nUnit.x = -22916;
             nUnit.y = -25386;
             

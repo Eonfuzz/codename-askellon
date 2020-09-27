@@ -22,7 +22,7 @@ export const ABIL_ALIEN_LEAP = FourCC('LEAP');
 export const ABIL_ALIEN_SCREAM = FourCC('A00G');
 export const ABIL_ALIEN_CHARGE = FourCC('A00Z');
 export const ABIL_ALIEN_SURVIVAL_INSTINCTS = FourCC('A016');
-export const ABIL_ALIEN_NEURAL_TAKEOVER = FourCC('A01C');
+export const ABIL_ALIEN_NEURAL_TAKEOVER = FourCC('A018');
 export const ABIL_ALIEN_FRENZY = FourCC('A01I');
 
 export const ABIL_ALIEN_EVOLVE_T1 = FourCC('A014');
@@ -109,3 +109,4 @@ export const ABIL_ITEM_GENETIC_SAMPLE_INFESTED = FourCC('A018');
 export const ABIL_DEFEND = FourCC('Adef');
 
 export const ABIL_SYSTEM_REACTOR_DIAGNOSTICS = FourCC('A01P');
+export const ABIL_SYSTEM_PURGE_VENTS = FourCC('A01C');

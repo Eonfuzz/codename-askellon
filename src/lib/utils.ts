@@ -5,6 +5,10 @@ import { Players } from "w3ts/globals/index";
 import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7, SFX_BLOOD_8, SFX_BLOOD_9, SFX_BLOOD_10, SFX_BLOOD_11, SFX_BLOOD_12 } from "resources/sfx-paths";
 import { Timers } from "app/timer-type";
 
+export function MessageAllPlayers(message: string): void {    
+    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, message);
+}
+
 let camIterator = 0;
 export function GetPlayerCamLoc(who: MapPlayer, callback: (x: number, y: number) => void) {
     const syncher = syncData(`${camIterator++}`, who, (self, data: string) => {

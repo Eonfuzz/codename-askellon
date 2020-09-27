@@ -42,7 +42,7 @@ export class Door {
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (event, data) => {
             if (data.data.unit === this.unit) {
                 this.isDead = true;
-                this.update(true);
+                this.update(true, true);
             }
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
@@ -73,8 +73,8 @@ export class Door {
     }
 
 
-    update(isOpen: boolean): boolean {
-        if (!this.canUpdate || !this.isPowered || this.isOpen === isOpen) return false;
+    update(isOpen: boolean, ignoreConditions: boolean = false): boolean {
+        if (!ignoreConditions && (!this.canUpdate || !this.isPowered) || this.isOpen === isOpen) return false;
 
         const nearbyUnitGroup = CreateGroup();
         GroupEnumUnitsInRange(nearbyUnitGroup, this.unit.x, this.unit.y, 800, Filter(() => {

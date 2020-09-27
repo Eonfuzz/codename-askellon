@@ -45,6 +45,7 @@ DisplayEnemyInventory=0
 EtherealDamageBonus=1.00,1.00,1.00,1.00,1.00,1.00,1.00
 IntManaBonus=5.0
 ItemStackingEnabled=1
+MaxHeroLevel=20
 MaxUnitSpeed=522.0
 MinUnitSpeed=0.0
 NeedHeroXP=500

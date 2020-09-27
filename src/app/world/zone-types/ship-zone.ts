@@ -1,5 +1,5 @@
-import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "./zone-id";
-import { Log } from "../../lib/serilog/serilog";
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../zone-id";
+import { Log } from "../../../lib/serilog/serilog";
 
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer, Timer, Region, Rectangle } from "w3ts";
@@ -19,12 +19,13 @@ import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
 import { CREWMEMBER_UNIT_ID, DESTR_ID_POWERED_LIGHT_BLUE, DESTR_ID_POWERED_LIGHT_RED, DESTR_ID_POWERED_LIGHT_WHITE, DESTR_ID_POWERED_LIGHT_GREEN } from "resources/unit-ids";
 import { Vector2 } from "app/types/vector2";
 import { Zone } from "./zone-type";
+import { ZoneWithExits } from "./zone-with-exits";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
 declare const udg_power_generator_zones: Array<string>;
 
-export class ShipZone extends Zone {
+export class ShipZone extends ZoneWithExits {
     private hasPower: boolean = true;
     public alwaysCauseFear: boolean = false;
     private hasOxygen: boolean = true;
@@ -32,21 +33,16 @@ export class ShipZone extends Zone {
     public lightSources: Array<destructable>;
     public powerGenerators: Array<Unit> = [];
 
-    // The exits to and from this zone
-    private exits: Array<Unit> = [];
-    private playerLightingModifiers = new Map<MapPlayer, number>();
-
     // The time remaining until power resumes
     private powerShortRemaining = 0;
 
     powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false, true);
     powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false, true);
 
-    constructor(id: ZONE_TYPE,  exits?: Unit[]) {
+    constructor(id: ZONE_TYPE) {
         super(id);
 
         if (!this.lightSources) this.lightSources = [];
-
 
         // Get get light sources and power gens based on ID
         const matchingIndexes = [];

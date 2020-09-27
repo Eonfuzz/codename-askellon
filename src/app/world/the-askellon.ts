@@ -1,12 +1,15 @@
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME, STRING_TO_ZONE_TYPE } from "./zone-id";
-import { Zone } from "./zone-type";
+import { Zone } from "./zone-types/zone-type";
 import { Log } from "../../lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { MapPlayer, Unit } from "w3ts";
 import { ChurchZone } from "./zones/church";
-import { BridgeZone, BridgeZoneVent } from "./zones/bridge";
+import { BridgeZone } from "./zones/bridge";
 import { ReactorZone } from "./zones/reactor";
-import { ShipZone } from "./ship-zone";
+import { ShipZone } from "./zone-types/ship-zone";
+import { VentZone } from "./zone-types/vent-zone";
+import { ZoneWithExits } from "./zone-types/zone-with-exits";
+import { BridgeZoneVent } from "./zones/bridge-vent";
 
 // Small damage
 // Will not cause damage to interior
@@ -26,46 +29,26 @@ declare const udg_elevator_exits: unit[];
 declare const udg_elevator_exit_zones: string[];
 
 export class TheAskellon {
-    floors: Map<ZONE_TYPE, ShipZone> = new Map();
+    floors: Map<ZONE_TYPE, ZoneWithExits> = new Map();
     allFloors: Zone[] = [];
 
     private pilot: Crewmember | undefined;
 
     constructor() {
         this.addFloor(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY));
-        this.addFloor(ZONE_TYPE.ARMORY_VENT, new ShipZone(ZONE_TYPE.ARMORY_VENT));
         this.addFloor(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A));
-        this.addFloor(ZONE_TYPE.CARGO_A_VENT, new ShipZone(ZONE_TYPE.CARGO_A_VENT));
-        this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new ShipZone(ZONE_TYPE.SERVICE_TUNNELS));
         this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY));
         this.addFloor(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE));
-        this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
         this.addFloor(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
         this.addFloor(ZONE_TYPE.REACTOR, new ReactorZone(ZONE_TYPE.REACTOR));
-        this.addFloor(ZONE_TYPE.CARGO_B, new ChurchZone(ZONE_TYPE.CARGO_B));
+        this.addFloor(ZONE_TYPE.CARGO_B, new ShipZone(ZONE_TYPE.CARGO_B));
 
-        // Now apply lights to the zones
-        const SERVICE_TUNNELS = this.floors.get(ZONE_TYPE.SERVICE_TUNNELS);
-        if (SERVICE_TUNNELS) {
-            SERVICE_TUNNELS.updatePower(false);
-            SERVICE_TUNNELS.alwaysCauseFear = true;
-        }
-        const CARGO_A_VENT = this.floors.get(ZONE_TYPE.CARGO_A_VENT);
-        if (CARGO_A_VENT) {
-            CARGO_A_VENT.updatePower(false);
-            CARGO_A_VENT.alwaysCauseFear = true;
-        }
-        const BRIDGE_VENT = this.floors.get(ZONE_TYPE.BRIDGE_VENT);
-        if (BRIDGE_VENT) {
-            BRIDGE_VENT.updatePower(false);
-            BRIDGE_VENT.alwaysCauseFear = true;
-        }
-        const ARMORY_VENT = this.floors.get(ZONE_TYPE.ARMORY_VENT);
-        if (ARMORY_VENT) {
-            ARMORY_VENT.updatePower(false);
-            ARMORY_VENT.alwaysCauseFear = true;
-        }
-
+        // Vents and others
+        this.addFloor(ZONE_TYPE.ARMORY_VENT, new VentZone(ZONE_TYPE.ARMORY_VENT));
+        this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
+        this.addFloor(ZONE_TYPE.CARGO_A_VENT, new VentZone(ZONE_TYPE.CARGO_A_VENT));
+        this.addFloor(ZONE_TYPE.CARGO_B_VENT, new VentZone(ZONE_TYPE.CARGO_B_VENT));
+        this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new VentZone(ZONE_TYPE.SERVICE_TUNNELS));
 
         // Now apply exits
         udg_elevator_entrances.forEach((u, index) => {
@@ -80,12 +63,12 @@ export class TheAskellon {
         });
     }
     
-    private addFloor(id: ZONE_TYPE, zone: ShipZone) {
+    private addFloor(id: ZONE_TYPE, zone: ZoneWithExits) {
         this.floors.set(id, zone);
         this.allFloors.push(zone);
     }
 
-    findZone(zone: ZONE_TYPE): ShipZone | undefined {
+    findZone(zone: ZONE_TYPE): ZoneWithExits | undefined {
         return this.floors.get(zone);
     }
 

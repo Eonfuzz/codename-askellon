@@ -171,6 +171,7 @@ export class Despair extends DynamicBuff {
             else if (randomInt === 4)
                 chat.message = `${COL_MISC}< interference >|r`;
             chat.sound = chatFailedSound;
+            chat.doContinue = false;
         }
         return chat;
     }

@@ -1,5 +1,5 @@
-import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "./zone-id";
-import { Log } from "../../lib/serilog/serilog";
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../zone-id";
+import { Log } from "../../../lib/serilog/serilog";
 
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer, Timer, Region, Rectangle } from "w3ts";

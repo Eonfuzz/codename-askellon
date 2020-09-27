@@ -15,7 +15,6 @@ declare const udg_genetic_sequencer_unit: unit;
 const SEQUENCE_MAX_DURATION = 10;
 
 const ambienceSoundGeneticSequence = new SoundRef("Sounds\\GeneticSequencerAmbience.mp3", false);
-
 Preload("Sounds\\GeneticSequencerAmbience.mp3");
 
 export class GeneticSequenceAbility implements Ability {

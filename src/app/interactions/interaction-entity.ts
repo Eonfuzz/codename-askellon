@@ -11,6 +11,10 @@ import { Hooks } from "lib/Hooks";
 import { InitMiningInteraction } from "./interactables/ships/mining";
 import { initShipInteractions } from "./interactables/ships/ship";
 import { initAskellonInteractions } from "./interactables/ships/askellon-landing";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
+import { EventListener } from "app/events/event-type";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -28,6 +32,8 @@ export class InteractionEntity extends Entity {
     private interactionBeginTrigger: Trigger;
     private interactions: Array<InteractionEvent> = [];
 
+    private unitInteractionTimeStamp = new Map<Unit, number>();
+
     constructor() {
         super();
 
@@ -36,6 +42,13 @@ export class InteractionEntity extends Entity {
         this.interactionBeginTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
         this.interactionBeginTrigger.addCondition(Condition(() => GetIssuedOrderId() === SMART_ORDER_ID));
         this.interactionBeginTrigger.addAction(() => this.beginInteraction());
+
+        // Listen to unit removal
+        EventEntity.listen(new EventListener(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, (self, ev) => {
+            if (this.unitInteractionTimeStamp.has(ev.source)) {
+                this.unitInteractionTimeStamp.delete(ev.source);
+            }
+        }));
 
         try {
             initElevators();
@@ -68,6 +81,9 @@ export class InteractionEntity extends Entity {
             return;
         }
 
+        // Check our cooldown
+        if (!this.checkCooldown(trigUnit)) return;// Log.Information("Interace cooldown!");
+
         // Check to see if we have it in our interactable data
         const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
@@ -98,10 +114,25 @@ export class InteractionEntity extends Entity {
                 i ++;
             }
             else {
+                // And interact is complete, log it in cooldown
+                this.setInteractTimeStamp(interaction.unit);
+
                 this.interactions[i].destroy();
                 this.interactions[i] = this.interactions[ this.interactions.length - 1];
                 delete this.interactions[this.interactions.length - 1];
             }
         }
+    }
+
+    private checkCooldown(who: Unit) {
+        const ourGameTime = GameTimeElapsed.getTime();
+        const lastInteraction = this.unitInteractionTimeStamp.get(who) || 0;
+
+        return (ourGameTime - lastInteraction) >= 3;
+    }
+
+    private setInteractTimeStamp(who: Unit) {
+        const ourGameTime = GameTimeElapsed.getTime();
+        this.unitInteractionTimeStamp.set(who, ourGameTime);
     }
 }

@@ -1,19 +1,23 @@
-import { Zone } from "../zone-types/zone-type";
-import { Unit } from "w3ts/index";
+import { Unit, Timer } from "w3ts/index";
+import { SoundRef } from "app/types/sound-ref";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { VentZone } from "../zone-types/vent-zone";
 
-export class SpaceZone extends Zone {
+export class BridgeZoneVent extends VentZone {
+
+    operaMusic = new SoundRef("Music\\Puccini.mp3", true);
 
     public onLeave(unit: Unit) {
         super.onLeave(unit);
 
+        // Check if it is a main unit
         const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
         const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
-            SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, bj_mapInitialPlayableArea);
-            BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
-            BlzShowTerrain(true);
+            // Stop Play music
+            this.operaMusic.stopSound();
+            SetMusicVolume(20);
         }
     }
 
@@ -24,9 +28,9 @@ export class SpaceZone extends Zone {
         const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
-            SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, gg_rct_Space);
-            BlzChangeMinimapTerrainTex("minimap-space.blp");
-            BlzShowTerrain(false);
+            this.operaMusic.setVolume(25);
+            this.operaMusic.playSound();
+            SetMusicVolume(10);
         }
     }
 }

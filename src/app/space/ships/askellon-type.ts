@@ -5,7 +5,7 @@ import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { Ship } from "./ship-type";
-import { Zone } from "app/world/zone-type";
+import { Zone } from "app/world/zone-types/zone-type";
 import { ShipState } from "./ship-state-type";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";

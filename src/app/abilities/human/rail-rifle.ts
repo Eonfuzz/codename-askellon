@@ -74,7 +74,7 @@ export class RailRifleAbility implements Ability {
             ).projectTowards2D(unit.facing * bj_DEGTORAD, 30);
 
             let targetLoc = this.targetLoc;
-            const PROJ_SPEED = 2400;
+            const PROJ_SPEED = 2900;
 
             // If we had a unit target try to track them
             if (this.targetUnit) {

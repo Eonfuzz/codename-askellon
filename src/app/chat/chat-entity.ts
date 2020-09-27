@@ -20,6 +20,7 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
 import { Timers } from "app/timer-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
+import { AskellonEntity } from "app/station/askellon-entity";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -146,6 +147,12 @@ export class ChatEntity extends Entity {
                     data: { mode: WeaponEntityAttackType.CAST } 
                 });
             }
+            else if (message.indexOf("-pmax") === 0) {
+                AskellonEntity.addToPower(AskellonEntity.getMaxPower());
+            }
+            else if (message.indexOf("-pmin") === 0) {
+                AskellonEntity.addToPower(-AskellonEntity.getCurrentPower());
+            }
             else  if (message.indexOf("-god") === 0) {
                 const idx = this.adminGodUsers.indexOf(player);
                 if (idx >= 0) {
@@ -245,6 +252,7 @@ export class ChatEntity extends Entity {
                 // Log.Information("TP");
                 GetPlayerCamLoc(player, (x, y) => {
                     // Get zone at loc
+                    Log.Information("Tp: "+x+", "+y);
                     const zone = WorldEntity.getInstance().getPointZone(x, y);
                     if (zone) Log.Information("Zone: "+ZONE_TYPE[zone.id]);
                     else Log.Information("No Zone");
@@ -289,7 +297,8 @@ export class ChatEntity extends Entity {
                 recipients: Players, 
                 color: undefined, 
                 message: message,
-                sound: undefined
+                sound: undefined,
+                doContinue: true,
             });
 
             // Now run through our own hooks
@@ -324,7 +333,7 @@ export class ChatEntity extends Entity {
 
     private applyChatHooks(chatData: ChatHook) {
         let idx = 0;
-        while (idx < this.chatHooks.length) {
+        while (idx < this.chatHooks.length && chatData.doContinue) {
             chatData = this.chatHooks[idx](chatData);
             idx++;
         }
