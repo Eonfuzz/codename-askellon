@@ -407,7 +407,7 @@ export class ForceEntity extends Entity {
         playerLeaveSound.playSound();
 
         Players.forEach(player => {
-            ChatEntity.getInstance().postSystemMessage(player, `${PLAYER_COLOR[player.id]}${player.name}|r has left the game!`);            
+            ChatEntity.getInstance().postSystemMessage(player, `|c${PLAYER_COLOR[who.id]}${who.name}|r has left the game!`);            
         });
 
         // Kill all units they woned

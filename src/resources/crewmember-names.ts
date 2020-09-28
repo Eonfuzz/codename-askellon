@@ -42,7 +42,7 @@ ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
-    "Doctor Dimento", "Doctor Quack", "Doctor Diggus Bickus", "Doctor Who", "Doctor Chemix"
+    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
@@ -50,7 +50,7 @@ ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.PILOT, [
-    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane"
+    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers"
 ]);
 
 
