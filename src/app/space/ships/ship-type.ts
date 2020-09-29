@@ -83,6 +83,8 @@ export abstract class ShipWithFuel extends Ship {
     
     protected fuelUpdateTicker = 1;
     protected fuelUsagePercent = 1;
+
+    protected oldMonentum = 0;
     
     /**
      * Automatically creates a new unit, adds it to bay if possible
@@ -117,14 +119,16 @@ export abstract class ShipWithFuel extends Ship {
             this.shipFuel -= fuelCost * this.fuelUsagePercent;
 
             // Also update some sfx when we update fuel
-            if (momentumLen >= 100) {
+            if (this.oldMonentum < 100 && momentumLen >= 100) {
                 // Set animation
                 SetUnitAnimationByIndex(this.unit.handle, 4);
             }
-            else {
+            else if (this.oldMonentum > 100 && momentumLen <= 100){
                 // Set animation
                 SetUnitAnimationByIndex(this.unit.handle, 3);
             }
+
+            this.oldMonentum = momentumLen;
 
             // Additionally, if we are out of mana damage the ship...
             if (this.shipFuel <= 0) {

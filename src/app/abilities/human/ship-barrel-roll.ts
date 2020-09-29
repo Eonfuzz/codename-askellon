@@ -22,6 +22,8 @@ export class ShipBarrelRoll implements Ability {
     private rollDistance: number = 200;
     private rollLength: number;
 
+    private playingAnim = false;
+
     constructor() {}
 
     public initialise() {
@@ -41,6 +43,14 @@ export class ShipBarrelRoll implements Ability {
     }
 
     public process(delta: number) {
+
+        if (this.playingAnim === false) {
+            this.playingAnim = true;
+            this.unit.pauseEx(true);
+            this.unit.setTimeScale(2);
+            this.unit.setAnimation(this.isRollRight ? 6 : 5);
+        }
+
         this.timeElapsed += delta;
 
         if (!this.ship.engine) return false;
@@ -66,6 +76,8 @@ export class ShipBarrelRoll implements Ability {
 
     public destroy() {
         this.ship.unit.setField(UNIT_RF_MAXIMUM_PITCH_ANGLE_DEGREES, 45);
+        this.unit.pauseEx(false);
+        this.unit.setTimeScale(1);
         return true;
     }
 }
