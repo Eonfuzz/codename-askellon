@@ -50,3 +50,12 @@ export const DESTR_ID_POWERED_LIGHT_BLUE = FourCC('B006');
 export const DESTR_ID_POWERED_LIGHT_GREEN = FourCC('B005');
 export const DESTR_ID_POWERED_LIGHT_RED = FourCC('B003');
 export const DESTR_ID_POWERED_LIGHT_WHITE = FourCC('B002');
+
+
+
+
+// Neutral units
+export const UNIT_ID_NEUTRAL_DOG = FourCC("n00M");
+export const UNIT_ID_NEUTRAL_BEAR = FourCC("n00O");
+export const UNIT_ID_NEUTRAL_RABBIT = FourCC("n00N");
+export const UNIT_ID_NEUTRAL_STAG = FourCC("n00L");

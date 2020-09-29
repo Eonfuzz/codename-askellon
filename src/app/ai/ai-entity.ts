@@ -8,6 +8,10 @@ import { PlayerAgent } from "./player-agent";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { MapPlayer, Unit } from "w3ts/index";
 import { WorldEntity } from "app/world/world-entity";
+import { EventEntity } from "app/events/event-entity";
+import { EventListener } from "app/events/event-type";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE } from "resources/unit-ids";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -39,6 +43,23 @@ export class AIEntity extends Entity {
             this.playerAgents.push(agent);
             this.playerToAgent.set(agent.player, agent);
         })
+
+        /**
+         * Listen to create AI minion requests
+         */
+        EventEntity.listen(new EventListener(EVENT_TYPE.SPAWN_ALIEN_MINION_FOR, (self, ev) => {
+            const forWho = ev.source;
+            const z = WorldEntity.getInstance().getPointZone(forWho.x, forWho.y);
+
+            if (!z) return;
+
+            if (forWho.typeId === UNIT_ID_NEUTRAL_BEAR) {
+                AIEntity.createAddAgent(ALIEN_MINION_FORMLESS  , ev.source.x, ev.source.y, z.id);
+            }
+            else {
+                AIEntity.createAddAgent(ALIEN_MINION_CANITE  , ev.source.x, ev.source.y, z.id);
+            }
+        }))
     }
 
     /**

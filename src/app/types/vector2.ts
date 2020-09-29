@@ -96,10 +96,19 @@ export class Vector2 {
         return where.subtract(this).getLength();
     }
 
+    tileUp() { return new Vector2(this.x, this.y - 128); }
+    tileDown() { return new Vector2(this.x, this.y + 128); }
+    tileLeft() { return new Vector2(this.x - 128, this.y); }
+    tileRight() { return new Vector2(this.x + 128, this.y); }
+
     /**
      * Static api
      */
     public static fromWidget(widget: widget): Vector2 {
         return new Vector2(GetWidgetX(widget), GetWidgetY(widget));
+    }
+
+    public static toTile(x: number, y: number): Vector2 {
+        return new Vector2(Math.round((x + 128/2) / 128) * 128, Math.round((y + 128/2) / 128) * 128);
     }
 }

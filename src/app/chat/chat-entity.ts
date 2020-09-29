@@ -21,6 +21,7 @@ import { AIEntity } from "app/ai/ai-entity";
 import { Timers } from "app/timer-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 import { AskellonEntity } from "app/station/askellon-entity";
+import { CreepEntity } from "app/creep/creep-entity";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -199,6 +200,11 @@ export class ChatEntity extends Entity {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     // KillUnit(GetEnumUnit());
                     UnitDamageTarget(GetEnumUnit(), GetEnumUnit(), 9999999, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS);
+                });
+            }
+            else if (message == "-creep") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    CreepEntity.addCreep(600, x, y);
                 });
             }
             else if (message == "-pf") {

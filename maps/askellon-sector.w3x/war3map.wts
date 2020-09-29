@@ -5062,3 +5062,33 @@ STRING 1214
 |cff808080Lore TODO|r|n|nAfter |cff00ff0010 |rseconds; Fills the vents and service tunnels with an acidic gas, dealing |cff00ff0020 + 2% Max Life damage|r per second to all units inside. Lasts |cff00ff0060 |rseconds.|n|n|cffd45e19Occupational Health and Safety recommends you exit vents immediately after activation.|r|N|n|cff808080300 Seconds Cooldown|r
 }
 
+STRING 1215
+// Units: n00L (Stag), Name (Name)
+{
+Stag
+}
+
+STRING 1216
+// Units: n00N (Rabbit), Name (Name)
+{
+Rabbit
+}
+
+STRING 1217
+// Units: n00O (Bear), Name (Name)
+{
+Bear
+}
+
+STRING 1218
+// Units: u003 (Tentacle), Name (Name)
+{
+Tentacle
+}
+
+STRING 1219
+// Units: u003 (Tentacle), EditorSuffix (Name - Editor Suffix)
+{
+ ( INFESTATION )
+}
+

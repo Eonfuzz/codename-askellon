@@ -2,8 +2,31 @@ import { Vector2 } from "app/types/vector2";
 import { Rectangle, Item, Trigger, MapPlayer, Unit } from "w3ts/index"
 import { Log } from "./serilog/serilog";
 import { Players } from "w3ts/globals/index";
-import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7, SFX_BLOOD_8, SFX_BLOOD_9, SFX_BLOOD_10, SFX_BLOOD_11, SFX_BLOOD_12 } from "resources/sfx-paths";
+import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7, SFX_BLOOD_8, SFX_BLOOD_9, SFX_BLOOD_10, SFX_BLOOD_11, SFX_BLOOD_12, SFX_FIRE } from "resources/sfx-paths";
 import { Timers } from "app/timer-type";
+import { TILE_SIZE } from "resources/data-consts";
+
+/**
+ * Returns evently distributed points in a circle given radius
+ * @param center 
+ * @param distibution 
+ */
+export function searchTiles(center: Vector2, radius: number): Vector2[] {
+    const points = [];
+    for (let j = (center.x-radius); j <= (center.x+radius); j += TILE_SIZE) {
+        for (let k = (center.y-radius); k<=(center.y+radius); k += TILE_SIZE) {
+            if (distance(center.x, center.y, j, k) <= radius) {
+                // AddSpecialEffect(SFX_FIRE, j, k);
+                points.push( new Vector2(j, k) );
+            }
+        }
+    }
+    return points;
+}
+
+export function distance(x1, y1, x2, y2) {
+    return SquareRoot(Pow(x2-x1, 2) + Pow(y2-y1, 2));
+}
 
 export function MessageAllPlayers(message: string): void {    
     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, message);

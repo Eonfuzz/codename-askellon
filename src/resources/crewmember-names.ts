@@ -17,7 +17,7 @@ ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
     "Captain Coloma", "Captain Dallas", "Captain Cutter", "Captain Reynolds", 
     "Captain Willard", "Captain Fodder", "Captain Cookie", "Captain Kimstar",
     "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America",
-    "Captain Sullivan", "Captain Frost", "Captain Shane"
+    "Captain Sullivan", "Captain Frost", "Captain Shane", "Captain Blazkowicz"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.NAVIGATOR, [
@@ -34,7 +34,7 @@ ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.ENGINEER, [
-    "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware", "Engineer Zed"
+    "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware", "Engineer Zed", "Engineer Swann"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
@@ -46,11 +46,11 @@ ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
-    "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus", "Inquisitor Fyre"
+    "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus", "Inquisitor Fyre", "Inquisitor Pariah"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.PILOT, [
-    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers"
+    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers", "Crocodile Jim"
 ]);
 
 

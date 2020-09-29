@@ -10,7 +10,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
-import { DEFAULT_ALIEN_FORM } from "resources/unit-ids";
+import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
@@ -48,6 +48,7 @@ export class AlienForce extends ForceType {
     private alienDeathTrigs = new Map<Unit, Trigger>();
     // private alienTakesDamageTrigger = new Trigger();
     private alienDealsDamageTrigger = new Trigger();
+    private alienKillsTrigger = new Trigger();
 
     constructor() {
         super();
@@ -86,6 +87,20 @@ export class AlienForce extends ForceType {
         // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
         this.alienDealsDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGING);
         this.alienDealsDamageTrigger.addAction(() => this.onAlienDealsDamage());
+
+        // Listen to unit deaths
+        this.alienKillsTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
+        this.alienKillsTrigger.addAction(() => {
+            const dyingUnit = Unit.fromHandle(GetTriggerUnit());
+            const killingUnit = Unit.fromHandle(GetKillingUnit());
+
+            const validKillingPlayer = (this.hasPlayer(killingUnit.owner) || PlayerStateFactory.isAlienAI(killingUnit.owner)) && killingUnit.typeId !== CREWMEMBER_UNIT_ID;
+            const validDyingUnit = !this.hasPlayer(dyingUnit.owner) && !PlayerStateFactory.isAlienAI(dyingUnit.owner) && dyingUnit.typeId !== CREWMEMBER_UNIT_ID;
+            const validDyingType = !IsUnitType(dyingUnit.handle, UNIT_TYPE_MECHANICAL);
+
+            if (validDyingType && validDyingUnit && validKillingPlayer) 
+            EventEntity.send(EVENT_TYPE.SPAWN_ALIEN_MINION_FOR, { source: dyingUnit });
+        })
     }
     
     makeAlien(who: Crewmember, owner: MapPlayer): Unit {
