@@ -5092,3 +5092,15 @@ STRING 1221
 |cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 7|r.
 }
 
+STRING 1222
+// Units: u004 (Larva), Name (Name)
+{
+Larva
+}
+
+STRING 1223
+// Units: u004 (Larva), EditorSuffix (Name - Editor Suffix)
+{
+( Minion T1 )
+}
+
