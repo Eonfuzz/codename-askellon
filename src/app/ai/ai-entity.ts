@@ -12,6 +12,7 @@ import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE } from "resources/unit-ids";
+import { CreepEntity } from "app/creep/creep-entity";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -54,7 +55,7 @@ export class AIEntity extends Entity {
             if (!z) return;
 
             if (forWho.typeId === UNIT_ID_NEUTRAL_BEAR) {
-                AIEntity.createAddAgent(ALIEN_MINION_FORMLESS  , ev.source.x, ev.source.y, z.id);
+                const unit = AIEntity.createAddAgent(ALIEN_MINION_FORMLESS  , ev.source.x, ev.source.y, z.id);
             }
             else {
                 AIEntity.createAddAgent(ALIEN_MINION_CANITE  , ev.source.x, ev.source.y, z.id);
@@ -133,6 +134,10 @@ export class AIEntity extends Entity {
                 const unit = CreateUnit(createFor.player.handle, whichUnitType, x, y, bj_UNIT_FACING);
                 WorldEntity.getInstance().handleTravel(Unit.fromHandle(unit), zone);
                 this.addAgent(unit);
+
+                // If it's a formless we need to add creep sfx
+                if (GetUnitTypeId(unit) === ALIEN_MINION_FORMLESS) CreepEntity.addCreepWithSource(256, Unit.fromHandle(unit));
+
                 return unit;
             }
             else {

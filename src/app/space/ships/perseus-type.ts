@@ -230,7 +230,7 @@ export class PerseusShip extends ShipWithFuel {
         SetItemCharges(parentMineral, 0);
         
         if (stacks > 0) {
-            const minerals = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 200 + GetRandomInt(-50, 50));
+            const minerals = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 300 + GetRandomInt(-50, 50));
             const maxCharges = ITEM_ID === ITEM_MINERAL_REACTIVE ? 10 : 5; 
             const fullStacks = Math.floor(stacks / maxCharges);
             const remainder = stacks % maxCharges;
@@ -240,7 +240,7 @@ export class PerseusShip extends ShipWithFuel {
             let i = 0;
             while (i < fullStacks) {
                 i++;
-                const nItem = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 200 + GetRandomInt(-50, 50));
+                const nItem = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 300 + GetRandomInt(-50, 50));
                 SetItemCharges(nItem, maxCharges);
             }
         }

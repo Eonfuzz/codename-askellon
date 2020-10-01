@@ -3031,12 +3031,6 @@ STRING 765
 Acidic Stigmata
 }
 
-STRING 766
-// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 10|r.
-}
-
 STRING 767
 // Abilities: A014 (Evolve), EditorSuffix (Editor Suffix)
 {
@@ -3845,12 +3839,6 @@ STRING 961
 // Abilities: A016 (Survival Instincts), Name (Name)
 {
 Survival Instincts
-}
-
-STRING 962
-// Abilities: A016 (Survival Instincts), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Lore TODO|r|n|nThe instinct for survival is strong in this prepubescent form; |cff00ff00passively|r granting the following effects:|cff00ff00|n - All interaction times are reduced by 50%|n - Transforming grants invisibility; lasting 2 seconds|n|n|rAdditionally, casting this ability causes the Alien to vomit its internal organs to confuse its prey; granting |cff00ff00invisibility |rfor |cff00ff002 seconds.|r This ability may be cast during |cff8a6df2Latch|r to instead make the |cff8a6df2Latched|r player appear to |cff8a6df2Transform.|r|n|n|cff80808040 Second Cooldown|r
 }
 
 STRING 964
@@ -5090,5 +5078,17 @@ STRING 1219
 // Units: u003 (Tentacle), EditorSuffix (Name - Editor Suffix)
 {
  ( INFESTATION )
+}
+
+STRING 1220
+// Abilities: A016 (Survival Instincts), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nThe instinct for survival is strong in this prepubescent form; |cff00ff00passively|r granting the following effects:|cff00ff00|n - All interaction times are reduced by 30%|n - Transforming grants invisibility; lasting 2 seconds|n|n|rAdditionally, casting this ability causes the Alien to vomit its internal organs to confuse its prey; granting |cff00ff00invisibility |rfor |cff00ff002 seconds.|r This ability may be cast during |cff8a6df2Latch|r to instead make the |cff8a6df2Latched|r player appear to |cff8a6df2Transform.|r|n|n|cff80808040 Second Cooldown|r
+}
+
+STRING 1221
+// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 7|r.
 }
 

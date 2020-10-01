@@ -16,4 +16,8 @@ export class MultiMap<key1, key2, value> {
     delete(k1: key1, k2: key2) {
         if (this.data.has(k1)) this.data.get(k1).delete(k2);
     }
+
+    clear() {
+        this.data.clear();   
+    }
 }
