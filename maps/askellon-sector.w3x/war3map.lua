@@ -184,6 +184,10 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_rct_zonereactor2 = nil
+gg_rct_zonereactor3 = nil
+gg_unit_n001_0497 = nil
+gg_unit_n001_0312 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -271,10 +275,12 @@ function CreateBuildingsForPlayer21()
     gg_unit_h004_0046 = BlzCreateUnitWithSkin(p, FourCC("h004"), -27648.0, -25280.0, 270.000, FourCC("h004"))
     gg_unit_h004_0048 = BlzCreateUnitWithSkin(p, FourCC("h004"), -6528.0, -22144.0, 270.000, FourCC("h004"))
     gg_unit_h004_0061 = BlzCreateUnitWithSkin(p, FourCC("h004"), -17856.0, -28800.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -11968.0, -14656.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00A"), -12608.0, -18784.0, 315.000, FourCC("h00A"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -11456.0, -18624.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -13632.0, -18624.0, 270.000, FourCC("h004"))
     gg_unit_h004_0268 = BlzCreateUnitWithSkin(p, FourCC("h004"), -11136.0, -24640.0, 270.000, FourCC("h004"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h004"), -13120.0, -14656.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("n008"), -13120.0, -24512.0, 270.000, FourCC("n008"))
     u = BlzCreateUnitWithSkin(p, FourCC("n008"), -22144.0, -27008.0, 270.000, FourCC("n008"))
     u = BlzCreateUnitWithSkin(p, FourCC("n009"), -23872.0, -27008.0, 270.000, FourCC("n009"))
@@ -757,7 +763,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n004_0267 = BlzCreateUnitWithSkin(p, FourCC("n004"), -26497.3, 25081.4, 89.562, FourCC("n004"))
     gg_unit_n001_0269 = BlzCreateUnitWithSkin(p, FourCC("n001"), -10432.0, -21824.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -8000.0, -24576.0, 270.000, FourCC("n002"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -6528.0, -19840.0, 270.000, FourCC("n001"))
+    gg_unit_n001_0312 = BlzCreateUnitWithSkin(p, FourCC("n001"), -6528.0, -19840.0, 270.000, FourCC("n001"))
     gg_unit_n001_0394 = BlzCreateUnitWithSkin(p, FourCC("n001"), -28224.0, -26112.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00I"), -12556.9, -18005.2, 89.946, FourCC("n00I"))
     gg_unit_n001_0400 = BlzCreateUnitWithSkin(p, FourCC("n001"), 1984.0, -25024.0, 270.000, FourCC("n001"))
@@ -765,6 +771,8 @@ function CreateNeutralPassiveBuildings()
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -1216.0, -25664.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("nVOI"), -406.7, -25239.2, 270.000, FourCC("nVOI"))
     u = BlzCreateUnitWithSkin(p, FourCC("n002"), -384.0, -23424.0, 270.000, FourCC("n002"))
+    gg_unit_n001_0497 = BlzCreateUnitWithSkin(p, FourCC("n001"), -11072.0, -13440.0, 270.000, FourCC("n001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), -14016.0, -13440.0, 270.000, FourCC("n001"))
 end
 
 function CreatePlayerBuildings()
@@ -910,7 +918,7 @@ function CreateRegions()
     gg_rct_zonecargob3 = Rect(1792.0, -25216.0, 2144.0, -24896.0)
     gg_rct_zonecargob4 = Rect(-1344.0, -25984.0, -1184.0, -25408.0)
     gg_rct_mineralcrushereast = Rect(576.0, -25280.0, 768.0, -25024.0)
-    gg_rct_zonereactor1 = Rect(-14080.0, -19520.0, -11040.0, -13952.0)
+    gg_rct_zonereactor1 = Rect(-14080.0, -19520.0, -11040.0, -14144.0)
     gg_rct_zonecargoa2 = Rect(-28512.0, -27104.0, -27648.0, -26112.0)
     gg_rct_zonecargoa3 = Rect(-25728.0, -27904.0, -25504.0, -27232.0)
     gg_rct_zoneservicetunnels1 = Rect(-11008.0, -24384.0, -10400.0, -23552.0)
@@ -920,6 +928,8 @@ function CreateRegions()
     gg_rct_zonecargobvent2 = Rect(-416.0, -24128.0, 448.0, -23488.0)
     gg_rct_zonecargobvent3 = Rect(448.0, -24128.0, 1088.0, -23072.0)
     gg_rct_zonecargobvent4 = Rect(-640.0, -23488.0, -160.0, -23200.0)
+    gg_rct_zonereactor2 = Rect(-14432.0, -14144.0, -10656.0, -13472.0)
+    gg_rct_zonereactor3 = Rect(-13664.0, -13472.0, -11392.0, -12224.0)
 end
 
 function Trig_SetKillzones_Actions()
@@ -988,6 +998,12 @@ function Trig_Set_Actions()
     udg_elevator_entrances[14] = gg_unit_n001_0025
     udg_elevator_exits[14] = gg_unit_n001_0402
     udg_elevator_exit_zones[14] = "CARGO_B"
+    udg_elevator_entrances[15] = gg_unit_n001_0497
+    udg_elevator_exits[15] = gg_unit_n001_0312
+    udg_elevator_exit_zones[15] = "ARMORY_VENT"
+    udg_elevator_entrances[16] = gg_unit_n001_0312
+    udg_elevator_exits[16] = gg_unit_n001_0497
+    udg_elevator_exit_zones[16] = "REACTOR"
 end
 
 function InitTrig_Set()

@@ -5104,3 +5104,15 @@ STRING 1223
 ( Minion T1 )
 }
 
+STRING 1224
+// Units: u005 (Creep Tumor), Name (Name)
+{
+Creep Tumor
+}
+
+STRING 1225
+// Units: u005 (Creep Tumor), EditorSuffix (Name - Editor Suffix)
+{
+ ( INFESTATION )
+}
+

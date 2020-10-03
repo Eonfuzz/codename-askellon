@@ -41,6 +41,8 @@ export const SFX_DEMONHUNTER_MISSILE = "Abilities\\Weapons\\DemonHunterMissile\\
 export const SFX_CARRION_SWARM_HIT = "Abilities\\Spells\\Undead\\CarrionSwarm\\CarrionSwarmDamage.mdl";
 export const SFX_FLASHLIGHT = "war3mapImported\\flashlight.mdx";
 
+export const SFX_ZERG_BUILDING_DEATH = "Sc2\\Sfx\\sc2-structure-death-splat-mdx-1.4.6.mdl";
+
 
 export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
 export const SFX_BLOOD_2 = "Models\\FloorBlood2.mdx";
@@ -97,3 +99,4 @@ Preload(SFX_BANSHEE_MISSILE);
 Preload(SFX_DEMONHUNTER_MISSILE);
 Preload(SFX_CARRION_SWARM_HIT);
 Preload(SFX_FLASHLIGHT);
+Preload(SFX_ZERG_BUILDING_DEATH);

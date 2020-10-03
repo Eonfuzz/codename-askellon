@@ -14,7 +14,7 @@ import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS, ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
@@ -204,7 +204,8 @@ export class ChatEntity extends Entity {
             }
             else if (message == "-creep") {
                 GetPlayerCamLoc(player, (x, y) => {
-                    CreepEntity.addCreep(600, x, y);
+                    const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, x, y, bj_UNIT_FACING);
+                    CreepEntity.addCreepWithSource(600, tumor);
                 });
             }
             else if (message == "-pf") {

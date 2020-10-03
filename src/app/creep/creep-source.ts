@@ -1,31 +1,88 @@
-import { Unit } from "w3ts/index";
+import { Vector2 } from "app/types/vector2";
+import { MultiMap } from "lib/multi-map";
+import { TILE_SIZE } from "resources/data-consts";
+import { Log } from "lib/serilog/serilog";
+import { searchTiles, distance } from "lib/utils";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { CreepOrigin } from "./creep-origin";
+import { SFX_RED_SINGULARITY, SFX_DARK_RITUAL } from "resources/sfx-paths";
+import { Quick } from "lib/Quick";
 
-export abstract class CreepSource {
-    protected duration: number | undefined;
+export class CreepSource {
+    source: CreepOrigin;
 
-    constructor(duration) { this.duration = duration; }
+    // The radius of the tile
+    private maxRadius: number = 0;
+    private currentRadius: number = 0;
 
-    public abstract x(): number;
-    public abstract y(): number;
-    public dur() { return this.duration; };
-    public step(delta) { if (this.duration) this.duration -= delta; }
-    public isValid() { return this.duration === undefined ? true : (this.duration > 0); }
-}
+    // How far it grows each tick
+    private growthRate: number = TILE_SIZE / 2;
+    private degenerateRate: number = TILE_SIZE / 4;
 
-export class CreepSourceUnit extends CreepSource {
-    private unit: Unit;
-    
-    constructor(source: Unit, duration = undefined) { super(duration); this.unit = source; }
-    x() { return this.unit.x; }
-    y() { return this.unit.y; }
-    public isValid() { return super.isValid() && this.unit.isAlive(); }
-}
+    public oldTilesIterator = [];
+    private oldTileMap = new MultiMap<number, number, boolean>();
 
-export class CreepSourcePoint extends CreepSource {
-    private x_: number;
-    private y_: number;
 
-    constructor(x: number, y: number, duration = undefined) { super(duration); this.x_ = x; this.y_ = y;  }
-    x() { return this.x_; }
-    y() { return this.y_; }
+    constructor(source: CreepOrigin, radius: number = 8 * TILE_SIZE) {
+        this.source = source;
+        this.maxRadius = radius;
+    }
+
+    step(delta: number): boolean {        
+        // We are done shrinking
+        if (!this.source.isValid() && this.currentRadius <= 0) return false;
+
+        // We are growing
+        if (this.source.isValid() && this.currentRadius < this.maxRadius) 
+            this.currentRadius += this.growthRate * delta;
+        // We are shrinking
+        else if (!this.source.isValid()) {
+            this.currentRadius -= this.degenerateRate * delta;
+        }
+         
+        return true;      
+    }
+
+    destroy() {
+        // Log.Information("Killing creep");
+    }
+
+    public updateCreep(): { new: Vector2[], removed: Vector2[] } {
+        const tileMap = new MultiMap<number, number, boolean>();
+
+        const cX = Math.round(this.source.x() / TILE_SIZE) * TILE_SIZE;
+        const cY = Math.round(this.source.y() / TILE_SIZE) * TILE_SIZE;
+        const radius = Math.round(this.currentRadius / TILE_SIZE) * TILE_SIZE;
+
+        // Log.Information(`cX: ${cX} cY: ${cY}`);
+
+        const points = [];
+        const removed = [];
+
+        for (let j = (cX-radius); j <= (cX+radius); j += TILE_SIZE) {
+            for (let k = (cY-radius); k<=(cY+radius); k += TILE_SIZE) {
+                if (distance(cX, cY, j, k) <= radius) {
+                    if (!this.oldTileMap.get(j, k)) {
+                        const vec = new Vector2(j, k);
+                        points.push( vec );
+                        this.oldTilesIterator.push( vec );
+                    }
+                    tileMap.set( j, k, true );
+                }
+            }
+        }
+
+        // Log.Information("UC: Points length: "+this.oldTilesIterator.length);
+
+        for (let index = 0; index < this.oldTilesIterator.length; index++) {
+            const vec = this.oldTilesIterator[index];
+            if (!tileMap.get(vec.x, vec.y)) {
+                removed.push( vec );
+                Quick.Slice(this.oldTilesIterator, index--);
+            }
+        }
+
+        this.oldTileMap = tileMap;
+        return { new: points,  removed: removed };
+    }
 }

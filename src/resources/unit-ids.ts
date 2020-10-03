@@ -38,6 +38,7 @@ export const DEFAULT_ALIEN_FORM = WORM_ALIEN_FORM;
 export const ALIEN_MINION_CANITE = FourCC('u000');
 export const ALIEN_MINION_LEECH = FourCC('u001');
 export const ALIEN_MINION_FORMLESS = FourCC('u002');
+export const ALIEN_STRUCTURE_TUMOR = FourCC('u005');
 
 
 export const UNIT_ID_DUMMY_CASTER = FourCC('dumy');

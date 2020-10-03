@@ -109,6 +109,6 @@ export class Vector2 {
     }
 
     public static toTile(x: number, y: number): Vector2 {
-        return new Vector2(Math.round((x + 128/2) / 128) * 128, Math.round((y + 128/2) / 128) * 128);
+        return new Vector2(Math.round(x / 128) * 128, Math.round(y / 128) * 128);
     }
 }
