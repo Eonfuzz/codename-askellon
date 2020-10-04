@@ -30,6 +30,9 @@ export const ABIL_ALIEN_EVOLVE_T2 = FourCC('A00U');
 export const ABIL_ALIEN_EVOLVE_T3 = FourCC('A00Y');
 export const ABIL_ALIEN_EVOLVE_ARMOR = FourCC('A00V');
 
+export const ABIL_ALIEN_MINION_EVOLVE = FourCC('A01R');
+export const ABIL_ALIEN_MINION_PLACE_EGG = FourCC('A01S');
+
 export const ABIL_SHIP_CHAINGUN = FourCC('A00O');
 export const ABIL_SHIP_DEEP_SCAN = FourCC('A00R');
 export const ABIL_SHIP_BARREL_ROLL_RIGHT = FourCC('A001');

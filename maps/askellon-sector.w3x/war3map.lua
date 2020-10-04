@@ -137,6 +137,12 @@ gg_rct_zonecargobvent1 = nil
 gg_rct_zonecargobvent2 = nil
 gg_rct_zonecargobvent3 = nil
 gg_rct_zonecargobvent4 = nil
+gg_rct_zonereactor2 = nil
+gg_rct_zonereactor3 = nil
+gg_rct_zonereactor4 = nil
+gg_rct_zonereactor5 = nil
+gg_rct_zonereactor6 = nil
+gg_rct_zonereactor7 = nil
 gg_trg_SetKillzones = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -153,6 +159,7 @@ gg_unit_n00A_0222 = nil
 gg_unit_n001_0228 = nil
 gg_unit_n004_0034 = nil
 gg_unit_n001_0055 = nil
+gg_unit_n001_0312 = nil
 gg_unit_n004_0047 = nil
 gg_unit_n004_0244 = nil
 gg_unit_n002_0043 = nil
@@ -180,14 +187,11 @@ gg_unit_n001_0400 = nil
 gg_unit_n001_0402 = nil
 gg_unit_n001_0025 = nil
 gg_unit_n001_0026 = nil
+gg_unit_n001_0497 = nil
 gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
-gg_rct_zonereactor2 = nil
-gg_rct_zonereactor3 = nil
-gg_unit_n001_0497 = nil
-gg_unit_n001_0312 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -918,7 +922,7 @@ function CreateRegions()
     gg_rct_zonecargob3 = Rect(1792.0, -25216.0, 2144.0, -24896.0)
     gg_rct_zonecargob4 = Rect(-1344.0, -25984.0, -1184.0, -25408.0)
     gg_rct_mineralcrushereast = Rect(576.0, -25280.0, 768.0, -25024.0)
-    gg_rct_zonereactor1 = Rect(-14080.0, -19520.0, -11040.0, -14144.0)
+    gg_rct_zonereactor1 = Rect(-13856.0, -17696.0, -11232.0, -16512.0)
     gg_rct_zonecargoa2 = Rect(-28512.0, -27104.0, -27648.0, -26112.0)
     gg_rct_zonecargoa3 = Rect(-25728.0, -27904.0, -25504.0, -27232.0)
     gg_rct_zoneservicetunnels1 = Rect(-11008.0, -24384.0, -10400.0, -23552.0)
@@ -930,6 +934,10 @@ function CreateRegions()
     gg_rct_zonecargobvent4 = Rect(-640.0, -23488.0, -160.0, -23200.0)
     gg_rct_zonereactor2 = Rect(-14432.0, -14144.0, -10656.0, -13472.0)
     gg_rct_zonereactor3 = Rect(-13664.0, -13472.0, -11392.0, -12224.0)
+    gg_rct_zonereactor4 = Rect(-13184.0, -18112.0, -11744.0, -17696.0)
+    gg_rct_zonereactor5 = Rect(-13504.0, -16512.0, -11584.0, -15808.0)
+    gg_rct_zonereactor6 = Rect(-11712.0, -16512.0, -11104.0, -14112.0)
+    gg_rct_zonereactor7 = Rect(-14016.0, -16512.0, -13408.0, -14112.0)
 end
 
 function Trig_SetKillzones_Actions()

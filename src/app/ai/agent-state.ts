@@ -7,4 +7,9 @@ export enum AGENT_STATE {
     TRAVEL,
     // Wanders through the current floor aimlessly
     WANDER,
+
+
+    // Specific states
+    BUILD_TUMOR,
+    EVOLVE,
 }

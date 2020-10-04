@@ -2,6 +2,7 @@ import {UnitAction} from "./UnitAction";
 import {UnitQueue} from "../Queues/UnitQueue";
 import {ImmediateOrders} from "./ImmediateOrders";
 import { Vector2 } from "app/types/vector2";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * Basic immediate action, stop, hold position.
@@ -23,6 +24,7 @@ export class UnitActionImmediate implements UnitAction {
     }
 
     init(target: unit, queue: UnitQueue): void {
+        // Log.Information("Issuing immedaiate order");
         IssueImmediateOrder(target, this.order); //Update order
     }
 

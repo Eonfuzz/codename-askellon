@@ -6,13 +6,14 @@ import { ZONE_TYPE } from "app/world/zone-id";
 import { Graph } from "./pathfinding/graph";
 import { PlayerAgent } from "./player-agent";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { MapPlayer, Unit } from "w3ts/index";
+import { MapPlayer, Unit, Trigger, Group } from "w3ts/index";
 import { WorldEntity } from "app/world/world-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE } from "resources/unit-ids";
+import { UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, ALIEN_STRUCTURE_TUMOR, UNIT_ID_NEUTRAL_RABBIT } from "resources/unit-ids";
 import { CreepEntity } from "app/creep/creep-entity";
+import { Timers } from "app/timer-type";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -31,6 +32,8 @@ export class AIEntity extends Entity {
 
     private playerToAgent: Map<MapPlayer, PlayerAgent>;
     private playerAgents: PlayerAgent[];
+
+    private unitBuildTrigger = new Trigger();
 
     constructor() {
         super();
@@ -57,10 +60,37 @@ export class AIEntity extends Entity {
             if (forWho.typeId === UNIT_ID_NEUTRAL_BEAR) {
                 const unit = AIEntity.createAddAgent(ALIEN_MINION_FORMLESS  , ev.source.x, ev.source.y, z.id);
             }
+            else if (forWho.typeId === UNIT_ID_NEUTRAL_RABBIT) {
+                const unit = AIEntity.createAddAgent(ALIEN_MINION_LARVA  , ev.source.x, ev.source.y, z.id);
+            }
             else {
                 AIEntity.createAddAgent(ALIEN_MINION_CANITE  , ev.source.x, ev.source.y, z.id);
             }
         }))
+
+        this.unitBuildTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH);
+        this.unitBuildTrigger.addAction(() => {
+            const building = Unit.fromHandle(GetConstructedStructure());
+
+            Timers.addTimedAction(0.1, () => {
+                // Look for nearby alien larva
+                const searchGroup = new Group();
+                searchGroup.enumUnitsInRange(building.x, building.y, 150,  Filter(() => true));
+    
+                searchGroup.for(() => {
+                    const unit = GetEnumUnit();
+                    if (GetUnitTypeId(unit) === ALIEN_MINION_LARVA) {
+                        KillUnit(unit);
+                    }
+                });
+            })
+
+
+            // Now see if we need to register it as creep
+            if (GetUnitTypeId(GetConstructedStructure()) === ALIEN_STRUCTURE_TUMOR) {
+                CreepEntity.addCreepWithSource(600, building);
+            }
+        })
     }
 
     /**

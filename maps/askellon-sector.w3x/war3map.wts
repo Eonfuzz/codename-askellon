@@ -3074,7 +3074,7 @@ STRING 773
 }
 
 STRING 774
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A01R (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -3164,7 +3164,7 @@ PERSEUS - Macro Las
 }
 
 STRING 798
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A01S (Place Egg), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -4303,15 +4303,9 @@ Canite
 }
 
 STRING 1062
-// Units: h008 (Egg), Name (Name)
+// Units: u006 (Egg), Name (Name)
 {
 Egg
-}
-
-STRING 1063
-// Units: h008 (Egg), EditorSuffix (Name - Editor Suffix)
-{
-( Canite Alien )
 }
 
 STRING 1064
@@ -4596,12 +4590,6 @@ STRING 1117
 - GENE
 }
 
-STRING 1120
-// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personel. |r|n|nSplices the |cffd45e19Enhanced Mobility|r power into your patient; |cff00ff00passively |rincreasing |cff00ff00movement speed|r by |cff00ff0010%|r and |cff00ff00Sprinting |rnow |cff00ff00jumps |rupon expiration.|n|nAttribute Gain: |cff00ff00+1 Vitality|r per level
-}
-
 STRING 1121
 // Abilities: A01L (Xenophobic), Hotkey (Hotkey - Normal)
 {
@@ -4672,12 +4660,6 @@ STRING 1135
 // Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nSplices the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cff00ff00night vision|r for |cff00ff0030 seconds|r. You are |cff00ff00immune |rto |cff6f2583Despair|r caused by darkness.|n|nAttribute Gain: |cff00ff00+2.5 Accuracy|r and |cff00ff00+1 Will|r per level.
-}
-
-STRING 1136
-// Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events effect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability.|n|nAttribute Gain: |cff00ff00+3 Will|r and |cff00ff00-2 Accuracy|r per level
 }
 
 STRING 1138
@@ -5114,5 +5096,137 @@ STRING 1225
 // Units: u005 (Creep Tumor), EditorSuffix (Name - Editor Suffix)
 {
  ( INFESTATION )
+}
+
+STRING 1226
+// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personnel. |r|n|nSplices the |cffd45e19Enhanced Mobility|r power into your patient; |cff00ff00passively |rincreasing |cff00ff00movement speed|r by |cff00ff0010%|r and |cff00ff00Sprinting |rnow |cff00ff00jumps |rupon expiration.|n|nAttribute Gain: |cff00ff00+1 Vitality|r per level
+}
+
+STRING 1227
+// Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events affect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability.|n|nAttribute Gain: |cff00ff00+3 Will|r and |cff00ff00-2 Accuracy|r per level
+}
+
+STRING 1228
+// Units: u006 (Egg), EditorSuffix (Name - Editor Suffix)
+{
+ ( Evolution )
+}
+
+STRING 1229
+// Abilities: A01R (Evolve), Name (Name)
+{
+Evolve
+}
+
+STRING 1230
+// Abilities: A01R (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+You shouldn't be seeing this
+}
+
+STRING 1231
+// Abilities: A01R (Evolve), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 1232
+// Abilities: A01R (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1233
+// Abilities: A01R (Evolve), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 1234
+// Abilities: A01R (Evolve), EditorSuffix (Editor Suffix)
+{
+- NEUTRAL
+}
+
+STRING 1235
+// Abilities: A01S (Place Egg), Name (Name)
+{
+Place Egg
+}
+
+STRING 1236
+// Abilities: A01S (Place Egg), Ubertip (Tooltip - Normal - Extended)
+{
+You shouldn't be seeing this
+}
+
+STRING 1237
+// Abilities: A01S (Place Egg), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 1238
+// Abilities: A01S (Place Egg), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1239
+// Abilities: A01S (Place Egg), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 1240
+// Abilities: A01S (Place Egg), EditorSuffix (Editor Suffix)
+{
+- Makes Larva
+}
+
+STRING 1241
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1242
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1243
+// Abilities: S000 (Creep Tumor Aura), Name (Name)
+{
+Creep Tumor Aura
+}
+
+STRING 1244
+// Abilities: A01T (Infestation Aura), Tip (Tooltip - Normal)
+{
+Infestation Aura
+}
+
+STRING 1245
+// Abilities: A01T (Infestation Aura), Name (Name)
+{
+Infestation Aura
+}
+
+STRING 1246
+// Buffs/Effects: B00B (), Bufftip (Tooltip)
+{
+Infestation
+}
+
+STRING 1247
+// Buffs/Effects: B00B (), Buffubertip (Tooltip - Extended)
+{
+This unit is under the effects of infestation; Gaining 10% move speed and 20% attack speed.
 }
 

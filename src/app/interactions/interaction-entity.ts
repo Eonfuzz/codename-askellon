@@ -15,6 +15,7 @@ import { GameTimeElapsed } from "app/types/game-time-elapsed";
 import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -132,6 +133,8 @@ export class InteractionEntity extends Entity {
     }
 
     private setInteractTimeStamp(who: Unit) {
+        if (PlayerStateFactory.isAlienAI(who.owner)) return;
+        
         const ourGameTime = GameTimeElapsed.getTime();
         this.unitInteractionTimeStamp.set(who, ourGameTime);
     }

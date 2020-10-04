@@ -52,7 +52,7 @@ export class Despair extends DynamicBuff {
     public addInstance(unit: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
 
         if (instance instanceof BuffInstanceDuration && !isNegativeInstance) {
-            Log.Information("Instance buff duration!");
+            // Log.Information("Instance buff duration!");
 
             if (this.unit.intelligence > 0) {
                 instance.endTimestamp = instance.endTimestamp - MathRound(this.unit.intelligence / 3);
@@ -66,14 +66,14 @@ export class Despair extends DynamicBuff {
         const result =  super.process(gametime, delta);
         if (!this.isActive) return result;
         
-        const currentHealth = this.unit.getState(UNIT_STATE_LIFE);
-        const deltaHealth = currentHealth - this.prevUnitHealth;
+        // const currentHealth = this.unit.getState(UNIT_STATE_LIFE);
+        // const deltaHealth = currentHealth - this.prevUnitHealth;
         this.checkForDespairBuffTicker += delta
 
         // If the unit has gained health reduce it by 50%
-        if (deltaHealth > 0) {
-            this.unit.setState(UNIT_STATE_LIFE, currentHealth - deltaHealth/2);
-        }
+        // if (deltaHealth > 0) {
+        //     this.unit.setState(UNIT_STATE_LIFE, currentHealth - deltaHealth/2);
+        // }
         if (this.checkForDespairBuffTicker >= 1) {
             this.checkForDespairBuffTicker = 0;
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR)) {

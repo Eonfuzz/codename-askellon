@@ -35,9 +35,11 @@ export const ROACH_ALIEN_FORM = FourCC('ALI2');
 export const DEFAULT_ALIEN_FORM = WORM_ALIEN_FORM;
 // export const DEFAULT_ALIEN_FORM = ROACH_ALIEN_FORM;
 
+export const ALIEN_MINION_EGG = FourCC('u006');
 export const ALIEN_MINION_CANITE = FourCC('u000');
 export const ALIEN_MINION_LEECH = FourCC('u001');
 export const ALIEN_MINION_FORMLESS = FourCC('u002');
+export const ALIEN_MINION_LARVA = FourCC('u004');
 export const ALIEN_STRUCTURE_TUMOR = FourCC('u005');
 
 

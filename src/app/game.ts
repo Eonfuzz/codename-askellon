@@ -39,6 +39,8 @@ import { UIEntity } from "resources/ui/ui-entity";
 import { AskellonEntity } from "./station/askellon-entity";
 import { Timers } from "./timer-type";
 import { ShipZone } from "./world/zone-types/ship-zone";
+import { EggInstance } from "./ai/egg-instance";
+import { EggEntity } from "./ai/egg-entity";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export class Game {
@@ -119,6 +121,7 @@ export class Game {
 
         AIEntity.getInstance();
         AntiMetaEntity.start();
+        EggEntity.getInstance();
 
         Timers.addTimedAction(5, () => {
 

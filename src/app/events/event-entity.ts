@@ -7,8 +7,8 @@ import { Log } from "lib/serilog/serilog";
 import { ABIL_DEFEND } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
-import { SFX_ZERG_BUILDING_DEATH } from "resources/sfx-paths";
+import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG } from "resources/unit-ids";
+import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH } from "resources/sfx-paths";
 
 /**
  * Handles and tracks events being passed to and from the game
@@ -69,8 +69,22 @@ export class EventEntity {
                     if (unit.typeId === ALIEN_STRUCTURE_TUMOR) {
                         unit.show = false;
                         const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
+                        BlzSetSpecialEffectScale(sfx, 0.4);
+                        Timers.addTimedAction(2, () => DestroyEffect(sfx));
+                        // DestroyEffect(sfx);
+                    }
+                    else if (unit.typeId === ALIEN_MINION_LARVA) {
+                        unit.show = false;
+                        const sfx = AddSpecialEffect(SFX_ZERG_LARVA_DEATH, unit.x, unit.y);
                         BlzSetSpecialEffectScale(sfx, 0.6);
-                        DestroyEffect(sfx);
+                        Timers.addTimedAction(1, () => DestroyEffect(sfx));
+                    }
+                    else if (unit.typeId === ALIEN_MINION_EGG) {
+                        unit.show = false;
+                        const sfx = AddSpecialEffect(SFX_ZERG_EGG_DEATH, unit.x, unit.y);
+                        BlzSetSpecialEffectScale(sfx, unit.selectionScale);
+                        DestroyEffect(sfx)
+                        // Timers.addTimedAction(1, () => );
                     }
 
                     Timers.addTimedAction(0.00, () => {

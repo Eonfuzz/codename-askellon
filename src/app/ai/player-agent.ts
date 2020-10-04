@@ -20,6 +20,9 @@ import { BUFF_ID_DESPAIR } from "resources/buff-ids";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
+import { ALIEN_MINION_LARVA, ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
+import { UnitActionImmediate } from "lib/TreeLib/ActionQueue/Actions/UnitActionImmediate";
+import { ImmediateOrders } from "lib/TreeLib/ActionQueue/Actions/ImmediateOrders";
 
 /**
  * A player that acts under the AI entity
@@ -72,9 +75,29 @@ export class PlayerAgent {
         }
     }
 
-    private generateState() {
+    private generateState(whichAgent: unit) {
+
+        const uType = GetUnitTypeId(whichAgent);
+
         // first decide the state
         const seed = GetRandomInt(0, 100);
+
+        /**
+         * Larvas either travel to hatch or travel to make tumors
+         */
+        if (uType === ALIEN_MINION_LARVA) {
+            // Log.Information("LARVA");
+            if (seed >= 60) {
+                // Log.Information("BUILD TUMOR");
+                return AGENT_STATE.BUILD_TUMOR;
+            }
+            if (seed >= 30) {
+                // Log.Information("EVOLVE");
+                return AGENT_STATE.EVOLVE;
+            }
+            // Log.Information("TRAVEL");
+            return AGENT_STATE.TRAVEL;
+        }
 
         // 25% to go to a random floor
         if (seed >= 75) {
@@ -92,7 +115,7 @@ export class PlayerAgent {
     }
 
     public addAgent(agent: unit) {
-        const agentState = this.generateState();
+        const agentState = this.generateState(agent);
         // Add it to our agents array
         this.allAgents.push(agent);
 
@@ -137,7 +160,7 @@ export class PlayerAgent {
                     const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
 
                     const attackOrder = new UnitActionWaypoint(Vector2.fromWidget(target.handle), WaypointOrders.attack, 100);
-                    const newOrders = new UnitActionExecuteCode((target, timeStep, queue) => this.enactStateOnAgent(agent, this.generateState()));
+                    const newOrders = new UnitActionExecuteCode((target, timeStep, queue) => this.enactStateOnAgent(agent, this.generateState(agent)));
 
                     const queue = this.sendUnitTo(agent, agentLocation.id, targetLocation.id);
                     if (queue) {
@@ -164,7 +187,7 @@ export class PlayerAgent {
                 }          
             }
             actions.push(new UnitActionExecuteCode((target, timeStep, queue) => {
-                this.enactStateOnAgent(agent, this.generateState());
+                this.enactStateOnAgent(agent, this.generateState(agent));
             }));
 
             const queue = ActionQueue.createUnitQueue(agent, ...actions);
@@ -177,9 +200,52 @@ export class PlayerAgent {
             const queue = this.sendUnitTo(agent, agentLocation.id, randomLocation.zone.id);
             if (queue) {
                 queue.addAction(new UnitActionExecuteCode((target, timeStep, queue) => {
-                    this.enactStateOnAgent(agent, this.generateState());
+                    this.enactStateOnAgent(agent, this.generateState(agent));
                 }));
             }
+        }
+        if (state === AGENT_STATE.BUILD_TUMOR) {
+            // Log.Information("Wander start");
+            const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
+            // We wander a random amount
+            const numWanders = GetRandomInt(1, 2);
+            let i = 0;
+            const actions = [];
+            while (i++ < numWanders) {
+                const point = agentLocation.getRandomPointInZone();
+                if (point) {
+                    actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 450));
+                }          
+            }
+            actions.push(new UnitActionExecuteCode((unit) => {
+                PingMinimap(GetUnitX(unit), GetUnitY(unit), 10);
+            }))
+            actions.push(new UnitActionExecuteCode((target, timeStep, queue) => {                    
+                IssueBuildOrderById(agent, ALIEN_STRUCTURE_TUMOR, GetUnitX(agent), GetUnitY(agent));
+            }));
+            const queue = ActionQueue.createUnitQueue(agent, ...actions);
+        }
+        if (state === AGENT_STATE.EVOLVE) {
+            // Log.Information("Wander start");
+            const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
+            // We wander a random amount
+            const numWanders = GetRandomInt(1, 2);
+            let i = 0;
+            const actions = [];
+            while (i++ < numWanders) {
+                const point = agentLocation.getRandomPointInZone();
+                if (point) {
+                    if (i !== numWanders) actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 450));
+                    if (i === numWanders) {
+                        actions.push(new UnitActionExecuteCode((unit) => {
+                            // Log.Information("Unit evolving!");
+                            PingMinimap(GetUnitX(unit), GetUnitY(unit), 10);
+                        }))
+                        actions.push(new UnitActionImmediate(point, ImmediateOrders.evolve));
+                    }
+                }          
+            }
+            const queue = ActionQueue.createUnitQueue(agent, ...actions);
         }
     }
 

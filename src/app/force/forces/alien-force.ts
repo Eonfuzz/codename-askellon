@@ -345,6 +345,11 @@ export class AlienForce extends ForceType {
                 who.setAlliance(p, ALLIANCE_PASSIVE, true);
             });
 
+            alien.invulnerable = true;
+            Timers.addTimedAction(1, () => {
+                alien.invulnerable = false;
+            })
+
             // Post event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
         }
@@ -620,6 +625,8 @@ export class AlienForce extends ForceType {
 
                     const replacedUnit = GetLastReplacedUnitBJ();
                     const alien = Unit.fromHandle(replacedUnit);
+
+                    this.registerAlienDeath(alien);
 
                     // And handle travel
                     if (oldZone) {

@@ -42,6 +42,8 @@ export const SFX_CARRION_SWARM_HIT = "Abilities\\Spells\\Undead\\CarrionSwarm\\C
 export const SFX_FLASHLIGHT = "war3mapImported\\flashlight.mdx";
 
 export const SFX_ZERG_BUILDING_DEATH = "Sc2\\Sfx\\sc2-structure-death-splat-mdx-1.4.6.mdl";
+export const SFX_ZERG_LARVA_DEATH = "Sc2\\Units\\sc2-zerg-larva-death-1.0.mdl";
+export const SFX_ZERG_EGG_DEATH = "Sc2\\Units\\sc2-zerg-egg-death-1.0.0.mdl";
 
 
 export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
@@ -56,6 +58,8 @@ export const SFX_BLOOD_9 = "Models\\FloorBlood9.mdx";
 export const SFX_BLOOD_10 = "Models\\FloorBlood10.mdx";
 export const SFX_BLOOD_11 = "Models\\FloorBlood11.mdx";
 export const SFX_BLOOD_12 = "Models\\FloorBlood12.mdx";
+export const SFX_HUMAN_BLOOD = "Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLargeDeathExplode.mdl";
+export const SFX_ALIEN_BLOOD = "Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl";
 
 // Preload SFX
 Preload(SFX_WINDWAVE);
@@ -100,3 +104,7 @@ Preload(SFX_DEMONHUNTER_MISSILE);
 Preload(SFX_CARRION_SWARM_HIT);
 Preload(SFX_FLASHLIGHT);
 Preload(SFX_ZERG_BUILDING_DEATH);
+Preload(SFX_ZERG_LARVA_DEATH);
+Preload(SFX_ZERG_EGG_DEATH);
+Preload(SFX_HUMAN_BLOOD);
+Preload(SFX_ALIEN_BLOOD);

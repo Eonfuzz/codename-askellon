@@ -38,7 +38,9 @@ import {
     ABIL_GENE_XENOPHOBIC_PUNCH,
     ABIL_GENE_INSTANT_HEAL,
     ABIL_SYSTEM_REACTOR_DIAGNOSTICS,
-    ABIL_SYSTEM_PURGE_VENTS
+    ABIL_SYSTEM_PURGE_VENTS,
+    ABIL_ALIEN_MINION_EVOLVE,
+    ABIL_ALIEN_MINION_PLACE_EGG
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -78,6 +80,7 @@ import { InstantHealAbility } from "./human/instant-heal";
 import { GlobalCooldownAbilityEntity } from "./global-ability-entity";
 import { ReactorDiagnosticsAbility } from "./station/reactor-diagnostics";
 import { VentPurgeAbility } from "./station/vent-purge";
+import { MinionEvolveAbility } from "./alien/minions/minion-evolve";
 
 
 
@@ -157,3 +160,7 @@ AbilityHooks.Add(ABIL_GENE_XENOPHOBIC_PUNCH, () => new XenophobicPunchAbility())
 AbilityHooks.Add(ABIL_GENE_INSTANT_HEAL, () => new InstantHealAbility());
 AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIAGNOSTICS, () => new ReactorDiagnosticsAbility());
 AbilityHooks.Add(ABIL_SYSTEM_PURGE_VENTS, () => new VentPurgeAbility());
+
+// Alien Minion AI hooks
+AbilityHooks.Add(ABIL_ALIEN_MINION_EVOLVE, () => new MinionEvolveAbility());
+// AbilityHooks.Add(ABIL_ALIEN_MINION_PLACE_EGG, () => new MinionSpawnAbility());
