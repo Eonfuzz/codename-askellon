@@ -6,22 +6,29 @@ import { Vector3 } from "app/types/vector3";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic } from "app/weapons/projectile/projectile-target";
 import { SoundRef } from "app/types/sound-ref";
-import { vectorFromUnit } from "app/types/vector2";
+import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { Timers } from "app/timer-type";
+import { InputManager } from "lib/TreeLib/InputManager/InputManager";
+import { Effect } from "w3ts/index";
+import { SFX_BLUE_BALL, SFX_BLUE_BLAST } from "resources/sfx-paths";
 
 
 export class RailRifleAbility implements Ability {
 
     private unit: Unit;
-    private targetLoc: Vector3;
-    private prevTargetLoc: Vector3;
+    private targetLoc: Vector2;
     private castOrderId: number;
 
-    private targetUnit?: Unit;
     private timeElapsed: number = 0;
     private sound: SoundRef;
+
+    private createSfxTimer = 0;
+    private createSfxEvery = 1;
+
+    private orbEffect: Effect;
+
     constructor() {}
 
     public initialise() {
@@ -30,124 +37,129 @@ export class RailRifleAbility implements Ability {
         this.sound.playSoundOnUnit(this.unit.handle, 30);
 
         this.castOrderId = this.unit.currentOrder;
+
+        const uLoc = Vector2.fromWidget(this.unit.handle);
+        this.targetLoc = new Vector2( GetSpellTargetX(), GetSpellTargetY() );
+        const nLoc = uLoc.applyPolarOffset( uLoc.angleTo(this.targetLoc), 80);
+
+        this.orbEffect = new Effect(SFX_BLUE_BALL, nLoc.x, nLoc.y);
+        this.orbEffect.z = getZFromXY(nLoc.x, nLoc.y) + 80;
+        // this.orbEffect.setTimeScale(0.1);
+        this.orbEffect.scale = 0;
         
-        if (GetSpellTargetUnit()) {
-            this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
-            this.targetLoc = new Vector3(this.targetUnit.x, this.targetUnit.y, getZFromXY(this.targetUnit.x, this.targetUnit.y))
-        }
-        else {
-            this.targetLoc = new Vector3(GetSpellTargetX(), GetSpellTargetY(), 
-                getZFromXY(GetSpellTargetX(), GetSpellTargetY())
-            );
-        }
         return true;
     };
 
     public process(delta: number) {
-        const unit = this.unit;
         this.timeElapsed += delta;
 
         const doCancel = this.unit.currentOrder !== this.castOrderId;
 
         if (doCancel && this.timeElapsed < 0.75) return false;
 
-        // If we have a target unit try to predict where it will be based on movement during channel
-        if (this.targetUnit) {
-            // update target loc for the future
-            this.prevTargetLoc = this.targetLoc;
-            this.targetLoc = new Vector3(
-                this.targetUnit.x, 
-                this.targetUnit.y, 
-                getZFromXY(this.targetUnit.x, this.targetUnit.y)
-            );
-            // Make unit face the target
-            this.unit.facing = vectorFromUnit(this.unit.handle).angleTo(this.targetLoc.to2D());
+        const uLoc = Vector2.fromWidget(this.unit.handle);
+        this.targetLoc = InputManager.getLastMousePosition(this.unit.owner.handle);
+
+        const angleTo = uLoc.angleTo(this.targetLoc);
+        const nLoc = uLoc.applyPolarOffset( angleTo, 80);
+
+        this.unit.facing = angleTo;
+
+        this.orbEffect.x = nLoc.x;
+        this.orbEffect.y = nLoc.y;        
+        this.orbEffect.setTimeScale(0.3);
+        this.orbEffect.scale = 0 + (0.1 * this.timeElapsed / 2);
+        this.orbEffect.z = 75 - 75 * this.orbEffect.scale
+
+        this.createSfxTimer += delta;
+        if (this.createSfxTimer >= this.createSfxEvery / (this.timeElapsed * 2)) {
+            this.createSfxTimer = 0;
+
+            // Create "wind" effect
+
+            const sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", nLoc.x, nLoc.y);
+            BlzSetSpecialEffectHeight(sfx,  this.orbEffect.z);
+            BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360) * bj_DEGTORAD);
+            BlzSetSpecialEffectRoll(sfx, GetRandomInt(0, 360) * bj_DEGTORAD);
+            BlzSetSpecialEffectPitch(sfx, GetRandomInt(0, 360) * bj_DEGTORAD);
+            BlzSetSpecialEffectAlpha(sfx, 40);
+            BlzSetSpecialEffectScale(sfx, 0.7);
+            BlzSetSpecialEffectTimeScale(sfx, 1);
+            BlzSetSpecialEffectTime(sfx, 0.5);
         }
+
 
         // Should we fire?
         if (doCancel) {
-            const sound = PlayNewSoundOnUnit("Sounds\\SniperRifleShoot.mp3", unit, 50);
-            let casterLoc = new Vector3(
-                unit.x,
-                unit.y,
-                getZFromXY(unit.x, unit.y)+50
-            ).projectTowards2D(unit.facing * bj_DEGTORAD, 30);
-
-            let targetLoc = this.targetLoc;
-            const PROJ_SPEED = 2900;
-
-            // If we had a unit target try to track them
-            if (this.targetUnit) {
-                const dVec = this.targetLoc.subtract(this.prevTargetLoc);
-                const dLen = dVec.getLength();
-                const ourDistance = this.targetLoc.subtract(casterLoc).getLength();
-
-                const tTakenToDistance = ourDistance / PROJ_SPEED;
-                const tTakenNewLoc = this.targetLoc.getLength() / PROJ_SPEED;
-                targetLoc = this.targetLoc.add( dVec.normalise().multiplyN(tTakenNewLoc - tTakenToDistance) );
-            }
-
-            let deltaTarget = targetLoc.subtract(casterLoc).normalise();
-            deltaTarget.x *= 6000;
-            deltaTarget.y *= 6000;
-            let collisionRadius = 25;
-            let projectile = new Projectile(
-                unit.handle,
-                casterLoc, 
-                new ProjectileTargetStatic(deltaTarget)
-            );
-            const effect =  projectile.addEffect(
-                "war3mapImported\\Bullet.mdx",
-                new Vector3(0, 0, 0),
-                targetLoc.subtract(casterLoc).normalise(),
-                2.5
-            );
-            // BlzSetSpecialEffectColor(effect, 130, 160, 255);
-
-            WeaponEntity.getInstance().addProjectile(projectile);
-
-            // Create smoke rings every tick if we charged more than 2 seconds
-            if (this.timeElapsed >= 2) this.createSmokeRingsFor(projectile, deltaTarget);
-            if (this.timeElapsed >= 3) {
-                const facingVec = targetLoc.subtract(casterLoc).normalise();
-                collisionRadius = 40;
-                projectile.addEffect(
-                    "war3mapImported\\Bullet.mdx",
-                    new Vector3(15, 0, 0),
-                    facingVec,
-                    2.5
-                );
-                projectile.addEffect(
-                    "war3mapImported\\Bullet.mdx",
-                    new Vector3(-15, 0, 0),
-                    facingVec,
-                    2.5
-                );
-                projectile.addEffect(
-                    "war3mapImported\\Bullet.mdx",
-                    new Vector3(0, 15, 0),
-                    facingVec,
-                    2.5
-                );
-                projectile.addEffect(
-                    "war3mapImported\\Bullet.mdx",
-                    new Vector3(0, -15, 0),
-                    facingVec,
-                    2.5
-                );
-            }
-            
-            projectile
-                .setCollisionRadius(collisionRadius)
-                .setVelocity(PROJ_SPEED)
-                .onCollide((projectile: Projectile, collidesWith: unit) => 
-                    this.onProjectileCollide(projectile, collidesWith)
-                );
+            this.fire();
             return false;
         }
         return true;
     };
 
+    private fire() {
+        const unit = this.unit;
+
+        this.orbEffect.destroy();
+
+        const sound = PlayNewSoundOnUnit("Sounds\\SniperRifleShoot.mp3", unit, 50);
+
+        let targetLoc = new Vector3(this.targetLoc.x, this.targetLoc.y, getZFromXY(this.targetLoc.x, this.targetLoc.y) + 10);
+        const PROJ_SPEED = 3400;
+
+        
+        let casterLoc = new Vector3(
+            unit.x,
+            unit.y,
+            getZFromXY(unit.x, unit.y)+50
+        );
+        
+        const angleTo = casterLoc.angle2Dto(this.targetLoc);
+
+        casterLoc = casterLoc.projectTowards2D(angleTo, 80);
+        let deltaTarget = targetLoc.subtract(casterLoc).normalise();
+
+        const sfx = AddSpecialEffect("Objects\\Spawnmodels\\NightElf\\NECancelDeath\\NECancelDeath.mdl", casterLoc.x, casterLoc.y);
+        const rotData = getYawPitchRollFromVector(deltaTarget);
+        BlzSetSpecialEffectYaw(sfx, rotData.yaw+ 90 * bj_DEGTORAD);
+        BlzSetSpecialEffectRoll(sfx, rotData.roll+ 90 * bj_DEGTORAD);
+        BlzSetSpecialEffectPitch(sfx, rotData.pitch);
+        // BlzSetSpecialEffectHeight(sfx, casterLoc.z);
+        // DestroyEffect(sfx);
+        
+
+        deltaTarget.x *= 6000;
+        deltaTarget.y *= 6000;
+        let collisionRadius = 25;
+        let projectile = new Projectile(
+            unit.handle,
+            casterLoc, 
+            new ProjectileTargetStatic(deltaTarget)
+        );
+        const effect =  projectile.addEffect(
+            SFX_BLUE_BLAST,
+            new Vector3(0, 0, 0),
+            targetLoc.subtract(casterLoc).normalise(),
+            0.4 * this.timeElapsed / 6
+        );
+        // BlzSetSpecialEffectColor(effect, 130, 160, 255);
+
+        WeaponEntity.getInstance().addProjectile(projectile);
+
+        // Create smoke rings every tick if we charged more than 2 seconds
+        if (this.timeElapsed >= 2) this.createSmokeRingsFor(projectile, deltaTarget);
+        if (this.timeElapsed >= 3) {
+            const facingVec = targetLoc.subtract(casterLoc).normalise();
+            collisionRadius = 40;
+        }
+        
+        projectile
+            .setCollisionRadius(collisionRadius)
+            .setVelocity(PROJ_SPEED)
+            .onCollide((projectile: Projectile, collidesWith: unit) => 
+                this.onProjectileCollide(projectile, collidesWith)
+            );
+    }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         // Destroy projectile
@@ -178,7 +190,6 @@ export class RailRifleAbility implements Ability {
                 if (!projectile || projectile.willDestroy()) return true;
                 const position = projectile.getPosition().add(deltaTarget.normalise());
                 const sfxOrientation = getYawPitchRollFromVector(deltaTarget.normalise());
-
                 const sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", position.x, position.y);
                 BlzSetSpecialEffectHeight(sfx, position.z);
                 BlzSetSpecialEffectYaw(sfx, sfxOrientation.yaw + 90 * bj_DEGTORAD);

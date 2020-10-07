@@ -45,6 +45,9 @@ export const SFX_ZERG_BUILDING_DEATH = "Sc2\\Sfx\\sc2-structure-death-splat-mdx-
 export const SFX_ZERG_LARVA_DEATH = "Sc2\\Units\\sc2-zerg-larva-death-1.0.mdl";
 export const SFX_ZERG_EGG_DEATH = "Sc2\\Units\\sc2-zerg-egg-death-1.0.0.mdl";
 
+export const SFX_BLUE_BALL = "Models\\sfx\\blueball.mdx";
+export const SFX_BLUE_BLAST = "Models\\sfx\\blueblast.mdx";
+
 
 export const SFX_BLOOD_1 = "Models\\FloorBlood1.mdx";
 export const SFX_BLOOD_2 = "Models\\FloorBlood2.mdx";
@@ -108,3 +111,5 @@ Preload(SFX_ZERG_LARVA_DEATH);
 Preload(SFX_ZERG_EGG_DEATH);
 Preload(SFX_HUMAN_BLOOD);
 Preload(SFX_ALIEN_BLOOD);
+Preload(SFX_BLUE_BALL);
+Preload(SFX_BLUE_BLAST);
