@@ -1888,12 +1888,6 @@ STRING 461
 Prevents emotion for 15 seconds
 }
 
-STRING 463
-// Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
-{
-|cff808080This industrial bottle contains a thick yellow grease that suspends a simple nano solution; when applied to the skin the machines activate and begin repairing tissue damage. While expensive, this salve is one of the only fool proof methods of re-entering a fight after only a short period of downtime.|r|n|nHeals the target for |cff00ff00400|r HP over |cff00ff005|r seconds.|n|n|cff80808035 Seconds Cooldown|r
-}
-
 STRING 465
 // Items: I007 (Emotion Inhibitor), Tip (Tooltip - Basic)
 {
@@ -5228,5 +5222,11 @@ STRING 1247
 // Buffs/Effects: B00B (), Buffubertip (Tooltip - Extended)
 {
 This unit is under the effects of infestation; Gaining 10% move speed and 20% attack speed.
+}
+
+STRING 1248
+// Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
+{
+|cff808080This industrial bottle contains a thick yellow grease that suspends a simple nano solution; when applied to the skin the machines activate and begin repairing tissue damage. While expensive, this salve is one of the only fool proof methods of re-entering a fight after only a short period of downtime.|r|n|nHeals the target for |cff00ff00400|r HP over |cff00ff0015|r seconds.|n|n|cff80808035 Seconds Cooldown|r
 }
 
