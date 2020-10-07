@@ -79,34 +79,43 @@ export class AskellonEntity extends Entity {
             // Random chance we lose power
             const lostPower = GetRandomReal(power, 70+(30*powerPercent)) <= 50;
             if (lostPower) {
-                try {
-                    this.getInstance().reactorWarningSound.setVolume(80);
-                    this.getInstance().reactorWarningSound.playSound();
-
-                    PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-                    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] REACTOR POWER LEVELS UNSTABLE`);
-
-                    let howManyFloors = power < 10 ? this.poweredFloors.length 
-                        : (power < 20 ? GetRandomInt(1, this.poweredFloors.length) 
-                        : (power < 30 ? GetRandomInt(1, MathRound(this.poweredFloors.length / 2))
-                        : 1)); 
-
-                    Quick.GetRandomFromArray(this.poweredFloors, howManyFloors).forEach(floor => {
-                        let howLong = GetRandomReal(0+20*(1-powerPercent), 10+60*(1-powerPercent));
-
-                        Timers.addTimedAction(GetRandomReal(3,10), () => {                        
-                            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-                            DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] POWER SURGE DETECTED IN ${ZONE_TYPE[floor]}`);
-                            EventEntity.send(EVENT_TYPE.STATION_POWER_OUT, { source: null, data: { zone: floor, duration: howLong }})
-                        });
-                    });
-                }
-                catch(e) {
-                    Log.Information(e);
-                }
+                if (powerPercent < 10) this.causePowerSurge(3);
+                else if (powerPercent < 20) this.causePowerSurge(2);
+                else if (powerPercent < 30) this.causePowerSurge(3);
+                else this.causePowerSurge(0);
+                
                 return false;
             }
         }
         return true;
+    }
+
+    public static causePowerSurge(severity: number = 1) {
+        try {
+            this.getInstance().reactorWarningSound.setVolume(80);
+            this.getInstance().reactorWarningSound.playSound();
+
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] REACTOR POWER LEVELS UNSTABLE`);
+
+            let howManyFloors = severity  === 3 ? this.poweredFloors.length 
+                : (severity  === 2 ? GetRandomInt(1, this.poweredFloors.length) 
+                : (severity  === 1 ? GetRandomInt(1, MathRound(this.poweredFloors.length / 2))
+                : 1)); 
+
+            Quick.GetRandomFromArray(this.poweredFloors, howManyFloors).forEach(floor => {
+                let howLong = GetRandomReal(0+20*(severity/3), 10+60*(severity/3));
+
+                Timers.addTimedAction(GetRandomReal(3,10), () => {                        
+                    PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] POWER SURGE DETECTED IN ${ZONE_TYPE[floor]}`);
+                    EventEntity.send(EVENT_TYPE.STATION_POWER_OUT, { source: null, data: { zone: floor, duration: howLong }})
+                });
+            });
+        }
+        catch(e) {
+            Log.Information(e);
+        }
+
     }
 }

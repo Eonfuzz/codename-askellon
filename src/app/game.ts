@@ -288,11 +288,9 @@ export class Game {
             CameraSetSourceNoise(15, 50);
         });
         new Timer().start(9, false, () => {
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.BRIDGE) as ShipZone).updatePower(false);
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.ARMORY) as ShipZone).updatePower(false);
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.BIOLOGY) as ShipZone).updatePower(false);
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.CHURCH) as ShipZone).updatePower(false);
-            
+            AskellonEntity.poweredFloors.forEach(p => {
+                (WorldEntity.getInstance().askellon.findZone(p) as ShipZone).updatePower(false);
+            });
             CameraSetupSetField(GetCurrentCameraSetup(), CAMERA_FIELD_FARZ, 8000, 0.01);
             SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
             CameraSetSourceNoise(20, 50);
@@ -304,11 +302,9 @@ export class Game {
         });
         new Timer().start(16, false, () => {
             CameraSetSourceNoise(5, 50);
-
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.BRIDGE) as ShipZone).updatePower(true);
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.ARMORY) as ShipZone).updatePower(true);
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.BIOLOGY) as ShipZone).updatePower(true);
-            (WorldEntity.getInstance().askellon.findZone(ZONE_TYPE.CHURCH) as ShipZone).updatePower(true);
+            AskellonEntity.poweredFloors.forEach(p => {
+                (WorldEntity.getInstance().askellon.findZone(p) as ShipZone).updatePower(true);
+            });
         });
         new Timer().start(20, false, () => {
             // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);

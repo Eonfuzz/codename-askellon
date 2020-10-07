@@ -1,5 +1,5 @@
 import { Gun } from "../weapons/guns/gun";
-import { ArmableUnit } from "../weapons/guns/unit-has-weapon";
+import { ArmableUnit, ArmableUnitWithItem } from "../weapons/guns/unit-has-weapon";
 import { ForceType } from "app/force/forces/force-type";
 import { TECH_WEP_DAMAGE } from "resources/ability-ids";
 import { ROLE_TYPES } from "../../resources/crewmember-names";
@@ -13,8 +13,9 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { getRandomBlood, getZFromXY, CreateBlood } from "lib/utils";
 import { EventListener } from "app/events/event-type";
+import { GunItem } from "app/weapons/guns/gun-item";
 
-export class Crewmember extends ArmableUnit {
+export class Crewmember extends ArmableUnitWithItem {
     public role: ROLE_TYPES;
     public name = '';
     public player: MapPlayer;
@@ -78,11 +79,11 @@ export class Crewmember extends ArmableUnit {
         this.unit.intelligence = this.unit.intelligence + gain;
     }
 
-    onWeaponAdd(whichGun: Gun) {
+    onWeaponAdd(whichGun: GunItem) {
         this.weapon = whichGun;
     }
 
-    onWeaponRemove(whichGun: Gun) {
+    onWeaponRemove(whichGun: GunItem) {
         this.weapon = undefined;
     }
 
@@ -160,7 +161,7 @@ export class Crewmember extends ArmableUnit {
     }
 
     updateTooltips() {
-        if (this.weapon) this.weapon.updateTooltip(this);
+        if (this.weapon) this.weapon.updateTooltip(this.unit);
     }
 
     addExperience(amount: number) {

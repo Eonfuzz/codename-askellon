@@ -18,6 +18,7 @@ import { SFX_AVATAR } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
 import { TOOLTIP_FISTS } from "resources/ability-tooltips";
+import { GunItem } from "app/weapons/guns/gun-item";
 
 const comeGetSomePath = "Sounds\\ComeGetSome.mp3";
 Preload(comeGetSomePath);
@@ -31,7 +32,7 @@ export class XenophobicAbility implements Ability {
     private hasGainedResolve: boolean = false;
     private gainResolveAt = 1;
 
-    private equippedGun: Gun;
+    private equippedGun: GunItem;
     private crewmember: Crewmember;
 
     private abilTooltipHandle: number;

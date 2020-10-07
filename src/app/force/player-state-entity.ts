@@ -35,6 +35,7 @@ export class PlayerStateFactory {
         });
         
         // Log.Information("Player count: "+playerCount.length);
+        // this.isSnglePlayer = false; 
         this.isSnglePlayer = playerCount.length === 1;
 
         // Set alien AI colour to all be the same

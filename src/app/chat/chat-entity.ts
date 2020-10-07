@@ -14,7 +14,7 @@ import { PRIVS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS, ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
@@ -235,8 +235,8 @@ export class ChatEntity extends Entity {
                         const zone = WorldEntity.getInstance().getPointZone(_x, _y);   
                         if (zone) {
                             const i = GetRandomInt(1,10);
-                            if (i >= 10) AIEntity.createAddAgent(ALIEN_MINION_LEECH, _x, _y, zone.id);
-                            else if (i >= 7) AIEntity.createAddAgent(ALIEN_MINION_FORMLESS, _x, _y, zone.id);
+                            if (i >= 7) AIEntity.createAddAgent(ALIEN_MINION_LARVA, _x, _y, zone.id);
+                            else if (i >= 5) AIEntity.createAddAgent(ALIEN_MINION_FORMLESS, _x, _y, zone.id);
                             else AIEntity.createAddAgent(ALIEN_MINION_CANITE, _x, _y, zone.id);                            
                         }
                         else {
@@ -296,7 +296,7 @@ export class ChatEntity extends Entity {
         // Is the user in god chat?
         if (this.adminGodUsers.indexOf(player) >= 0) {
             const players = GetActivePlayers();
-            this.postMessageFor(players, player.name, COL_GOD, message, "ADMIN");
+            this.postMessageFor(players, PlayerStateFactory.get(player).originalName, COL_GOD, message, "ADMIN");
         }
         else {
 

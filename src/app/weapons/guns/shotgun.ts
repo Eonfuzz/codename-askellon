@@ -5,46 +5,46 @@ import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
 import { SHOTGUN_EXTENDED, SHOTGUN_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
-import { ArmableUnit } from "./unit-has-weapon";
+import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
 import { SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
 import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
-import { MapPlayer } from "w3ts/index";
+import { MapPlayer, Unit } from "w3ts/index";
 import { SFX_SHOCKWAVE } from "resources/sfx-paths";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { GunItem } from "./gun-item";
 
-export class Shotgun extends Gun {
+export class Shotgun extends GunItem {
 
     private unitsHit = new Map<unit, number>();
 
-    constructor(item: item, equippedTo: ArmableUnit) {
+    constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 240;
         this.bulletDistance = 300;
     }
 
-    public applyWeaponAttackValues(caster: Crewmember) {
-        caster.unit.setAttackCooldown(1.5, 1);
-        this.equippedTo.unit.setBaseDamage(this.getDamage(caster) - 1, 0);
-        caster.unit.acquireRange = 450;
+    public applyWeaponAttackValues(unit: Unit) {
+        unit.setAttackCooldown(1.5, 1);
+        this.equippedTo.unit.setBaseDamage(this.getDamage(unit) - 1, 0);
+        unit.acquireRange = 450;
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, ConvertUnitWeaponIntegerField(FourCC('ua1t')), 0, 2);
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 400);
     }
     
-    public onShoot(caster: Crewmember, targetLocation: Vector3): void {
-        super.onShoot(caster, targetLocation);
+    public onShoot(unit: Unit, targetLocation: Vector3): void {
+        super.onShoot(unit, targetLocation);
 
         // Clear units hit
         this.unitsHit.clear();
 
-        const unit = caster.unit.handle;
-        const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", caster.unit, 50);
+        const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", unit, 50);
         const NUM_BULLETS = 6;
 
-        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
         const angleDeg = casterLoc.angle2Dto(targetLocation);
 
         const deltaLocs = getPointsInRangeWithSpread(
@@ -59,25 +59,24 @@ export class Shotgun extends Gun {
         centerTargetLoc.z = getZFromXY(centerTargetLoc.x, centerTargetLoc.y);
 
         // Do nothing if the central projectile hits
-        this.fireProjectile(caster, centerTargetLoc, true);
+        this.fireProjectile(unit, centerTargetLoc, true);
         
         let bulletsHit = 0;
         deltaLocs.forEach((loc, index) => {
             const nX = casterLoc.x + loc.x;
             const nY = casterLoc.y + loc.y;
             const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
-            this.fireProjectile(caster, targetLoc, false)
+            this.fireProjectile(unit, targetLoc, false)
         });
     };
 
-    private fireProjectile(caster: Crewmember, targetLocation: Vector3, isCentralProjectile: boolean): void {
-        const unit = caster.unit.handle;
+    private fireProjectile(unit: Unit, targetLocation: Vector3, isCentralProjectile: boolean): void {
         // print("Target "+targetLocation.toString())
-        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
         let deltaTarget = targetLocation.subtract(casterLoc);
 
         let projectile = new Projectile(
-            unit,
+            unit.handle,
             casterLoc, 
             new ProjectileTargetStatic(deltaTarget)
         );
@@ -97,51 +96,48 @@ export class Shotgun extends Gun {
                 this.onProjectileCollide(projectile, collidesWith);
             });
         
-        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile }});
+        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: unit, data: { projectile }});
     }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
-            const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.equippedTo.unit);
             const timesUnitHit = this.unitsHit.get(collidesWith) || 0;
             this.unitsHit.set(collidesWith, timesUnitHit + 1);
 
-            if (crewmember) {
-                const damage = this.getDamage(crewmember) / Pow(1.25, timesUnitHit);
-                UnitDamageTarget(
-                    projectile.source, 
-                    collidesWith, 
-                    damage, 
-                    false, 
-                    true, 
-                    ATTACK_TYPE_PIERCE, 
-                    DAMAGE_TYPE_NORMAL, 
-                    WEAPON_TYPE_WOOD_MEDIUM_STAB
-                );
-                ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
-            }
+            const damage = this.getDamage(this.equippedTo.unit) / Pow(1.25, timesUnitHit);
+            UnitDamageTarget(
+                projectile.source, 
+                collidesWith, 
+                damage, 
+                false, 
+                true, 
+                ATTACK_TYPE_PIERCE, 
+                DAMAGE_TYPE_NORMAL, 
+                WEAPON_TYPE_WOOD_MEDIUM_STAB
+            );
+            ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
         }
     }
 
-    protected getTooltip(crewmember: Crewmember) {
-        const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
+    protected getTooltip(unit: Unit) {
+        const minDistance = this.spreadAOE-this.getStrayValue(unit) / 2;
         const newTooltip = SHOTGUN_EXTENDED(
-            this.getDamage(crewmember), 
+            this.getDamage(unit), 
             minDistance, 
             this.spreadAOE
         );
         return newTooltip;
     }
 
-    protected getItemTooltip(crewmember: Crewmember): string {
-        const damage = this.getDamage(crewmember);
+    protected getItemTooltip(unit: Unit): string {
+        const damage = this.getDamage(unit);
         return SHOTGUN_ITEM(this, damage);
     }
 
 
-    public getDamage(caster: Crewmember): number {
-        return MathRound(35 * caster.getDamageBonusMult());
+    public getDamage(unit: Unit): number {
+        return MathRound(35 * this.getDamageBonusMult());
     }
 
     public getAbilityId() { return SHOTGUN_ABILITY_ID; }

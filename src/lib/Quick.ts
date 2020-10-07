@@ -46,7 +46,9 @@ export namespace Quick {
 
     export function GetRandomFromArray(a: any[], howMany: number = 1) {
         let n = Math.min(a.length, howMany);
-        a.slice().sort(() => Math.random() - Math.random()).slice(0, n);
+        a.slice().sort(() => {
+            return (Math.random() - Math.random()) < 0 ? -1 : 1;
+        }).slice(0, n);
         return a;
     }
 }

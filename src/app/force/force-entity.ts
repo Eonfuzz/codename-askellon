@@ -403,11 +403,11 @@ export class ForceEntity extends Entity {
      * @param who 
      */
     private playerLeavesGame(who: MapPlayer) {
-        const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false);
+        const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false, true);
         playerLeaveSound.playSound();
 
         Players.forEach(player => {
-            ChatEntity.getInstance().postSystemMessage(player, `|c${PLAYER_COLOR[who.id]}${who.name}|r has left the game!`);            
+            ChatEntity.getInstance().postSystemMessage(player, `|cff${PLAYER_COLOR[who.id]}${PlayerStateFactory.get(who).originalName}|r has left the game!`);            
         });
 
         // Kill all units they woned

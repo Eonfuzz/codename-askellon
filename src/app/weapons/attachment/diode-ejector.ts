@@ -6,6 +6,7 @@ import { ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { diodeEjectTooltip } from "resources/ability-tooltips";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
+import { GunItem } from "../guns/gun-item";
 
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
@@ -17,7 +18,7 @@ export class DiodeEjector extends Attachment {
     /**
      * Returns true if we did attach successfully
      */
-    protected onAttach(weapon: Gun, crewmember: Crewmember): boolean {
+    protected onAttach(weapon: GunItem, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === LASER_ABILITY_ID) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
@@ -36,7 +37,7 @@ export class DiodeEjector extends Attachment {
         // Should never be de-attached
     };
 
-    public onEquip(weapon: Gun, crewmember: Crewmember) {
+    public onEquip(weapon: GunItem, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             weapon.equippedTo.unit.addAbility(ABIL_WEP_DIODE_EJ);
             TooltipEntity.getInstance().registerTooltip(crewmember, diodeEjectTooltip);
@@ -44,7 +45,7 @@ export class DiodeEjector extends Attachment {
         }
     }
 
-    public onUnequip(weapon: Gun, crewmember: Crewmember) {
+    public onUnequip(weapon: GunItem, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             weapon.equippedTo.unit.removeAbility(ABIL_WEP_DIODE_EJ);
             TooltipEntity.getInstance().unregisterTooltip(crewmember, diodeEjectTooltip);

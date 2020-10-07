@@ -7,7 +7,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { UNIT_ID_CRATE, UNIT_ID_MANSION_DOOR } from "resources/unit-ids";
+import { UNIT_ID_CRATE, UNIT_ID_MANSION_DOOR, UNIT_ID_STATION_SECURITY_TURRET } from "resources/unit-ids";
 import { LootTable } from "./loot-table/loot-table";
 import { GUN_LOOT_TABLE, MISC_ITEM_TABLE, MEDICAL_LOOT_TABLE } from "./loot-table/loot";
 import { Door } from "./door";
@@ -15,6 +15,10 @@ import { Entity } from "app/entity-type";
 import { MineralCrusherEntity } from "./mineral-crusher";
 import { ConveyorEntity } from "app/conveyor/conveyor-entity";
 import { TerminalEntity } from "./terminal/terminal-entity";
+import { WeaponEntity } from "app/weapons/weapon-entity";
+import { DefaultSecurityGun } from "app/weapons/guns/security/default-security-gun";
+import { ArmableUnit, ArmableUnitNoCallbacks } from "app/weapons/guns/unit-has-weapon";
+import { Log } from "lib/serilog/serilog";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -34,51 +38,26 @@ export class SecurityEntity extends Entity {
     private doors = new Map<Unit, Door>();
     private doorsIterator: Door[] = [];
 
+    private stationSecurityDamageTrigger = new Trigger();
     constructor() {
         super();
         
-        const securityDamageTrigger = new Trigger();
-
         // Get all security units on the map
         const uGroup = CreateGroup();
         GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.StationProperty.handle, Filter(() => {
-            const uType = GetUnitTypeId(GetFilterUnit());
-            
-            // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
-            if (uType !== UNIT_ID_STATION_SECURITY_POWER &&
-                uType !== UNIT_ID_MANSION_DOOR) return false;
-
-            const u = Unit.fromHandle(GetFilterUnit());
-            securityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
-
-            if (u.typeId === UNIT_ID_MANSION_DOOR) {
-                const door = new Door(u, false);
-                this.doors.set(u, door);
-                this.doorsIterator.push(door)
-            }
-
+            this.unitIterateSetup(Unit.fromHandle(GetFilterUnit()));
+            return false;
+        }));
+        GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.StationSecurity.handle, Filter(() => {
+            this.unitIterateSetup(Unit.fromHandle(GetFilterUnit()));
             return false;
         }));
         GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.NeutralPassive.handle, Filter(() => {
-            const uType = GetUnitTypeId(GetFilterUnit());
-            
-            // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
-            if (uType !== UNIT_ID_STATION_SECURITY_POWER && 
-                uType !== UNIT_ID_MANSION_DOOR) return false;
-
-            const u = Unit.fromHandle(GetFilterUnit());
-            securityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
-
-            if (u.typeId === UNIT_ID_MANSION_DOOR) {
-                const door = new Door(u, false);
-                this.doors.set(u, door);
-                this.doorsIterator.push(door)
-            }
-
+            this.unitIterateSetup(Unit.fromHandle(GetFilterUnit()));
             return false;
         }));
 
-        securityDamageTrigger.addAction(() => this.onSecurityDamage(
+        this.stationSecurityDamageTrigger.addAction(() => this.onSecurityDamage(
             BlzGetEventDamageTarget(),
             GetEventDamageSource(),
             GetEventDamage()
@@ -97,6 +76,30 @@ export class SecurityEntity extends Entity {
         // Start mineral crusher
         MineralCrusherEntity.getInstance();
         TerminalEntity.getInstance();
+    }
+
+    private unitIterateSetup(u: Unit) {
+        const uType = u.typeId;
+        
+        // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
+        if (uType !== UNIT_ID_STATION_SECURITY_POWER &&
+            uType !== UNIT_ID_MANSION_DOOR &&
+            uType !== UNIT_ID_STATION_SECURITY_TURRET) return false;
+
+            this.stationSecurityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
+
+        if (u.typeId === UNIT_ID_MANSION_DOOR) {
+            const door = new Door(u, false);
+            this.doors.set(u, door);
+            this.doorsIterator.push(door)
+        }
+        else if (u.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
+            // Add a gun to the turret
+            WeaponEntity.getInstance().registerWeaponForUnit(new DefaultSecurityGun( new ArmableUnitNoCallbacks(u) ));
+        }
+
+        return false;
+
     }
 
     public isUnitDestroyed(u: Unit) {
@@ -125,6 +128,14 @@ export class SecurityEntity extends Entity {
                 this.isDestroyedMap.set(unit, true);
                 // Pause the unit
                 unit.paused = true;
+
+                // If unit type is turret play its burrow animation
+                if (unit.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
+                    unit.setTimeScale(0.2);
+                    unit.setAnimation(3);
+                    unit.addAnimationProps('alternate', true);
+                }
+
                 // Publish event that a security object is damaged
                 EventEntity.getInstance().sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
                     source: Unit.fromHandle(source),
@@ -159,6 +170,14 @@ export class SecurityEntity extends Entity {
             SetUnitLifePercentBJ(u, 100);
             // Pause the unit
             unit.paused = false;
+
+            // If unit type is turret play its burrow animation
+            if (unit.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
+                unit.setTimeScale(1);
+                unit.setAnimation(0);
+                unit.addAnimationProps('alternate', false);
+            }
+
             // Publish event that a security object is repaired
             EventEntity.getInstance().sendEvent(EVENT_TYPE.STATION_SECURITY_ENABLED, {
                 source: Unit.fromHandle(source),

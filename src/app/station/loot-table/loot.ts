@@ -20,7 +20,7 @@ export const MEDICAL_LOOT_TABLE = new LootTable(
 export const MISC_ITEM_TABLE = new LootTable(
     { rarity: 30, itemId: ITEM_HELLFIRE_GRENADE },
     { rarity: 30, itemId: ITEM_ID_CRYO_GRENADE },
-    { rarity: 35, itemId: ITEM_BARRICADES },
+    // { rarity: 35, itemId: ITEM_BARRICADES },
     { rarity: 50, itemId: ITEM_ID_REPAIR },
     { rarity: 100, itemId: ITEM_ID_25_COINS },
     { rarity: 3, itemId: ITEM_SIGNAL_BOOSTER } 

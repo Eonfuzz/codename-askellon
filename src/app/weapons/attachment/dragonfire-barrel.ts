@@ -6,6 +6,7 @@ import { Crewmember } from "app/crewmember/crewmember-type";
 import { dragonBreathBlastTooltip } from "resources/ability-tooltips";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { GunItem } from "../guns/gun-item";
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
  */
@@ -16,7 +17,7 @@ export class DragonfireBarrelAttachment extends Attachment {
     /**
      * Returns true if we did attach successfully
      */
-    protected onAttach(weapon: Gun, crewmember: Crewmember): boolean {
+    protected onAttach(weapon: GunItem, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === BURST_RIFLE_ABILITY_ID || 
             weapon.getAbilityId() === SHOTGUN_ABILITY_ID
         ) {
@@ -48,7 +49,7 @@ export class DragonfireBarrelAttachment extends Attachment {
         }
     };
 
-    public onEquip(weapon: Gun, crewmember: Crewmember) {
+    public onEquip(weapon: GunItem, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             UnitAddAbility(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST);
             BlzStartUnitAbilityCooldown(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST, BlzGetAbilityCooldown(AT_ABILITY_DRAGONFIRE_BLAST, 0));
@@ -58,7 +59,7 @@ export class DragonfireBarrelAttachment extends Attachment {
         }
     }
 
-    public onUnequip(weapon: Gun, crewmember: Crewmember) {
+    public onUnequip(weapon: GunItem, crewmember: Crewmember) {
         if (weapon &&  weapon.equippedTo) {
             UnitRemoveAbility(weapon.equippedTo.unit.handle, AT_ABILITY_DRAGONFIRE_BLAST);
             // Add ability tooltip

@@ -94,7 +94,7 @@ export class DiodeEjectAbility implements Ability {
         let spread = PROJECTILE_CONE * (1 + 1 - accuracy);
 
         // Damage numbers
-        const weaponBaseDamage = this.weapon.getDamage(this.crew);
+        const weaponBaseDamage = this.weapon.getDamage(this.crew.unit);
         const diodeDamage = (50 + weaponBaseDamage * 4) / NUM_PROJECTILES;
 
 

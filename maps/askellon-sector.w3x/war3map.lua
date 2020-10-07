@@ -669,8 +669,8 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 288.0, -25248.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 224.0, -25312.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 288.0, -25312.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 928.0, -25248.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 992.0, -25248.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 768.0, -25536.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), 832.0, -25536.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 768.0, -23840.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 640.0, -23648.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 768.0, -23648.0, 270.000, FourCC("h005"))
@@ -701,6 +701,33 @@ function CreateUnitsForPlayer21()
     u = BlzCreateUnitWithSkin(p, FourCC("n00N"), -14165.9, -24028.6, 289.894, FourCC("n00N"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00N"), -14374.5, -23546.9, 289.894, FourCC("n00N"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00N"), -13474.1, -23616.7, 289.894, FourCC("n00N"))
+end
+
+function CreateBuildingsForPlayer22()
+    local p = Player(22)
+    local u
+    local unitID
+    local t
+    local life
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -11584.0, -25792.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -11776.0, -22080.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12032.0, -22080.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -11456.0, -24128.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12352.0, -24128.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -10368.0, -25792.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -6272.0, -24576.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -6656.0, -24576.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -5440.0, -25088.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -4224.0, -24768.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -18624.0, -27712.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -22464.0, -27072.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -23616.0, -27072.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -22720.0, -25792.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -23360.0, -25792.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -27840.0, -27200.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -25664.0, -27456.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -1216.0, -25536.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), 960.0, -25280.0, 270.000, FourCC("h008"))
 end
 
 function CreateNeutralHostileBuildings()
@@ -781,6 +808,7 @@ end
 
 function CreatePlayerBuildings()
     CreateBuildingsForPlayer21()
+    CreateBuildingsForPlayer22()
 end
 
 function CreatePlayerUnits()

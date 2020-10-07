@@ -4,6 +4,8 @@ import { PlayNewSoundOnUnit } from "../../../lib/translators";
 import { Log } from "../../../lib/serilog/serilog";
 import { Item } from "w3ts/handles/item";
 import { Game } from "app/game";
+import { GunItem } from "../guns/gun-item";
+import { ArmableUnitWithItem } from "../guns/unit-has-weapon";
 
 /** @noSelfInFile **/
 
@@ -13,7 +15,7 @@ import { Game } from "app/game";
 export abstract class Attachment {
     public game: Game;
 
-    protected attachedTo: Gun | undefined;
+    protected attachedTo: GunItem | undefined;
     protected item: item | undefined;
     protected itemId: number;
     public name: string = '';
@@ -28,8 +30,8 @@ export abstract class Attachment {
      * Returns true if it successfully equiped
      * @param weapon 
      */
-    public attachTo(weapon: Gun, crewmember: Crewmember): boolean {
-        const canAttach = this.onAttach(weapon, crewmember);
+    public attachTo(weapon: GunItem, unit: ArmableUnitWithItem): boolean {
+        const canAttach = this.onAttach(weapon, unit);
         if (canAttach) {
             if (weapon.equippedTo) {
                 const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", weapon.equippedTo.unit, 50);
@@ -71,7 +73,7 @@ export abstract class Attachment {
     /**
      * Returns true if we did attach successfully
      */
-    protected abstract onAttach(weapon: Gun, crewmember: Crewmember): boolean;
+    protected abstract onAttach(weapon: GunItem, unit: ArmableUnitWithItem): boolean;
 
     /**
      * Removes this from the attached wepaon
@@ -82,11 +84,11 @@ export abstract class Attachment {
      * We are re-eqiupping a weapon with this attachment
      * @param weapon 
      */
-    public abstract onEquip(weapon: Gun, crewmember: Crewmember): void;
+    public abstract onEquip(weapon: GunItem, unit: ArmableUnitWithItem): void;
 
     /**
      * We are re-removing a weapon with this attachment
      * @param weapon 
      */
-    public abstract onUnequip(weapon: Gun, crewmember: Crewmember): void;
+    public abstract onUnequip(weapon: GunItem, crewmember: Crewmember): void;
 }

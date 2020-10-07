@@ -9,62 +9,38 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { WeaponEntityAttackType } from "../weapon-attack-type";
+import { Unit } from "w3ts/index";
 
 export abstract class Gun {
-    item: item;
     equippedTo: ArmableUnit | undefined;
-
-    attachment: Attachment | undefined;
 
     protected spreadAOE: number = 0;
     protected bulletDistance = 1200;
 
     public name = "default";
 
-    constructor(item: item, equippedTo: ArmableUnit) {
-        this.item = item;
+    constructor(equippedTo: ArmableUnit) {
         this.equippedTo = equippedTo;
     }
     
-    public onAdd(caster: Crewmember) {
+    public onAdd(caster: ArmableUnit) {
         this.equippedTo = caster;
         this.equippedTo.onWeaponAdd(this);
 
-        // Always update the tooltip
-        this.updateTooltip(caster);
         // Enable the attack UI
-        SetPlayerTechResearched(caster.player.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 1);
+        SetPlayerTechResearched(caster.unit.owner.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 1);
 
         // Cast mode adds the ability
         const weaponMode = PlayerStateFactory.get(caster.unit.owner).getAttackType();
-        if (weaponMode === WeaponEntityAttackType.CAST) {
-            caster.unit.addAbility(this.getAbilityId());
-            BlzStartUnitAbilityCooldown(
-                this.equippedTo.unit.handle, 
-                this.getAbilityId(), 
-                BlzGetAbilityCooldown(this.getAbilityId(), 0)
-            );
-        }
-        // If we are in attack mode let the user attack
-        else {
-            UnitRemoveAbility(this.equippedTo.unit.handle, FourCC('Abun'));
-        }
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
 
         this.equippedTo.unit.addAnimationProps("alternate", false);
-
-        // If we have an attachment make sure it's added to the unit
-        if (this.attachment) {
-            this.attachment.onEquip(this, caster);
-        }
     }
 
     public onRemove() {
         if (this.equippedTo) {
             this.equippedTo.unit.addAnimationProps("alternate", true);
-            // Don't care about the mode, always remove cast ability
-            this.equippedTo.unit.removeAbility(this.getAbilityId());
             // Don't care about mode, always disable attack ui
             SetPlayerTechResearched(this.equippedTo.unit.owner.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 0);
 
@@ -80,70 +56,32 @@ export abstract class Gun {
 
             this.equippedTo.onWeaponRemove(this);
             // Handle no crewmember?
-            if (this.attachment) this.attachment.onUnequip(this, CrewFactory.getInstance().getCrewmemberForUnit(this.equippedTo.unit) as Crewmember);
             this.equippedTo = undefined;
         }
     }
 
-    public updateTooltip(caster: Crewmember) {
-        // Update the item tooltip
-        const itemTooltip = this.getItemTooltip(caster);
-        BlzSetItemExtendedTooltip(this.item, itemTooltip);
-
-        if (this.equippedTo) {
-            const owner = this.equippedTo.unit.owner;
-
-            // Update the equip tooltip
-            const newTooltip = this.getTooltip(caster);
-            if (GetLocalPlayer() === owner.handle) {
-                BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
-            }
-
-            // Also update our weapon stats
-            this.applyWeaponAttackValues(caster);
-        }
-    }
-
-    protected abstract getTooltip(crewmember: Crewmember): string;
-    protected abstract getItemTooltip(crewmember: Crewmember): string;
-    protected abstract applyWeaponAttackValues(caster: Crewmember): void;
-
-    public onShoot(caster: Crewmember, targetLocation: Vector3): void {
+    public onShoot(caster: Unit, targetLocation: Vector3): void {
         // this.remainingCooldown = weaponModule.game.getTimeStamp();
     }
 
-    abstract getDamage(caster: Crewmember): number;
+    abstract getDamage(caster: Unit): number;
 
 
-    public attach(attachment: Attachment): boolean {
-        if (this.attachment) {
-            this.detach();
-        }
-        this.attachment = attachment;
-        return true;
-    }
-
-    public detach() {
-        if (this.attachment) {
-            this.attachment.unattach();
-            this.attachment = undefined;
-        }
-    }
-
-    abstract getAbilityId(): number;
-    abstract getItemId(): number;
-
-    protected getStrayValue(caster: Crewmember) {
+    protected getAccuracy(caster: Unit) {
         // Accuracy is some number, starting at 100
-        const accuracy = caster.getAccuracy();
-        
+        const crew = PlayerStateFactory.getCrewmember(caster.owner);
+        const accuracy = crew ? crew.getAccuracy() : 80;
+        return accuracy;
+    }
+    protected getStrayValue(caster: Unit) {
+        const accuracy = this.getAccuracy(caster);
         // Make accuracy exponentially effect the weapon
         const accuracyModifier = Pow(100-accuracy, 2) * (accuracy > 100 ? -1 : 1);
         return accuracyModifier;
     }
 
-    protected getStrayLocation(originalLocation: Vector3, caster: Crewmember): Vector3 {
-        const accuracyModifier = this.getStrayValue(caster);
+    protected getStrayLocation(originalLocation: Vector3, unit: Unit): Vector3 {
+        const accuracyModifier = this.getStrayValue(unit);
 
         // Minimum distance for the shot
         const minLength = 0;
@@ -155,8 +93,8 @@ export abstract class Gun {
         const angleSpread = Math.min(30 - accuracyModifier / 40, 10);
 
         // Get the angle back towards the caster
-        const dX = caster.unit.x - originalLocation.x;
-        const dY = caster.unit.y - originalLocation.y;
+        const dX = unit.x - originalLocation.x;
+        const dY = unit.y - originalLocation.y;
         const thetaRadians = Atan2(dY, dX);
 
         // Project the point with a random distance

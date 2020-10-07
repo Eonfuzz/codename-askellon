@@ -1,5 +1,6 @@
 import { Gun } from "../app/weapons/guns/gun";
 import { COL_ATTATCH, COL_GOOD, COL_INFO, COL_GOLD, COL_MISC, COL_BAD, COL_ORANGE } from "./colours";
+import { GunItem } from "app/weapons/guns/gun-item";
 
 export const BURST_RIFLE_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
 `|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
@@ -10,7 +11,7 @@ Fires a short burst of six bullets, each dealing |cff00ff00${damage} damage|r.
 ${COL_MISC}1 Second Cooldown|r
 `;
 
-export const BURST_RIFLE_ITEM = (weapon: Gun, damage: any) => 
+export const BURST_RIFLE_ITEM = (weapon: GunItem, damage: any) => 
 `|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
 Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
 
@@ -40,7 +41,7 @@ ${COL_ATTATCH}Missing a bolt ruins previous calculations and resets damage bonus
 ${COL_MISC}2 Seconds Cooldown|r
 `;
 
-export const LASER_ITEM = (weapon: Gun, damage: any) => 
+export const LASER_ITEM = (weapon: GunItem, damage: any) => 
 `${COL_MISC}The Prismatic Accelerator is a work of engineering art, flash-forging plas rounds to shatter enemy armour, collecting impact data from each shot to enhance the next round. The sheer amount of data being collected means that storage is all but impossible, so an accurate operator and a continual stream of telemetry is vital for good results.|r
 
 Attached: ${COL_ATTATCH}Fracture Round|r
@@ -62,7 +63,7 @@ Every bullet after the first deals 20% less damage.
 
 ${COL_MISC}2 Seconds Cooldown|r`;
 
-export const SHOTGUN_ITEM = (weapon: Gun, damage: any) => 
+export const SHOTGUN_ITEM = (weapon: GunItem, damage: any) => 
 `|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
@@ -84,7 +85,7 @@ Charges for 0.5 seconds and fires a massive bolt of lightning hitting all units 
 ${COL_INFO}Static Shock|r units explode after 1 second, dealing ${damage/10} damage to all other nearby units and applying ${COL_INFO}Static Shock|r.
 `;
 
-export const TESLA_ITEM = (weapon: Gun, damage: any) => 
+export const TESLA_ITEM = (weapon: GunItem, damage: any) => 
 `|cff808080Lore WIP|r
 
 A lightning cannon 
@@ -98,7 +99,7 @@ ${COL_GOOD}- Great Damage
 ${COL_ATTATCH}Electrode Cannon|r ${COL_GOLD}cannot be removed.|r
 }`;
 
-export const MINIGUN_ITEM = (weapon: Gun, damage: any) => 
+export const MINIGUN_ITEM = (weapon: GunItem, damage: any) => 
 `${COL_MISC}No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 
 Hostile targets are obliterated by a hail of high-powered rounds, but the Flamesaw's true source of notoriety is its infamous cooling system, which causes ammunition to engulf targets in flames.|r
 
@@ -120,7 +121,7 @@ ${!weapon.attachment
      : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
 }`;
 
-export const MINIGUN_EXTENDED = (weapon: Gun, damage: any) => 
+export const MINIGUN_EXTENDED = (weapon: GunItem, damage: any) => 
 `${COL_MISC}No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 
 Hostile targets are obliterated by a hail of high-powered rounds, but the Flamesaw's true source of notoriety is its infamous cooling system, which cause ammunition to engulf targets in flames.|r
 

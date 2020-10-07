@@ -5230,3 +5230,9 @@ STRING 1248
 |cff808080This industrial bottle contains a thick yellow grease that suspends a simple nano solution; when applied to the skin the machines activate and begin repairing tissue damage. While expensive, this salve is one of the only fool proof methods of re-entering a fight after only a short period of downtime.|r|n|nHeals the target for |cff00ff00400|r HP over |cff00ff0015|r seconds.|n|n|cff80808035 Seconds Cooldown|r
 }
 
+STRING 1249
+// Units: h008 (Turret), Name (Name)
+{
+Turret
+}
+

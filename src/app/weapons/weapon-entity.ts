@@ -7,7 +7,7 @@ import { Game } from "../game";
 import { Trigger, Unit, Timer, Item, MapPlayer } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
 import { Attachment } from "./attachment/attachment";
-import { ArmableUnit } from "./guns/unit-has-weapon";
+import { ArmableUnit, ArmableUnitWithItem } from "./guns/unit-has-weapon";
 import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, BURST_RIFLE_ABILITY_ID, SHOTGUN_ABILITY_ID } from "./weapon-constants";
 import { LaserRifle } from "./guns/laser-rifle";
 import { Shotgun } from "./guns/shotgun";
@@ -27,6 +27,7 @@ import { Minigun } from "./guns/minigun";
 import { Hooks } from "lib/Hooks";
 import { WeaponEntityAttackType } from "./weapon-attack-type";
 import { Timers } from "app/timer-type";
+import { GunItem } from "./guns/gun-item";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -194,9 +195,9 @@ export class WeaponEntity extends Entity {
         this.projectiles.push(projectile);
     }
     
-    getGunForItem(item: item): Gun | void {
+    getGunForItem(item: item): GunItem | void {
         for (let gun of this.guns) {
-            if (gun.item == item) {
+            if (gun instanceof GunItem && gun.item == item) {
                 return gun;
             }
         }
@@ -278,7 +279,7 @@ export class WeaponEntity extends Entity {
                 // Log.Information("Crew has weapon while attaching");
                 const attachment = this.createAttachmentForId(item);
                 if (attachment) {
-                    attachment.attachTo(crew.weapon, crew);
+                    attachment.attachTo(crew.weapon as GunItem, crew);
                     crew.updateTooltips();
                     
                     // Broadcast item equip event
@@ -313,9 +314,8 @@ export class WeaponEntity extends Entity {
                 targetLoc.z = getZFromXY(targetLoc.x, targetLoc.y);
 
                 // Get unit weapon instance
-                const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
                 const weapon = this.getGunForUnit(unit);
-                if (weapon && crewmember) {
+                if (weapon) {
                     // If we are targeting a unit pass the event over to the force module
                     const targetedUnit = GetSpellTargetUnit();
                     if (targetedUnit) {
@@ -323,7 +323,7 @@ export class WeaponEntity extends Entity {
                     }
                     
                     weapon.onShoot(
-                        crewmember, 
+                        unit, 
                         targetLoc
                     );
                 }
@@ -346,41 +346,42 @@ export class WeaponEntity extends Entity {
             if (!validAggression) IssueImmediateOrder(unit.handle, "stop");
         });
 
-            this.weaponAttackTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
-            this.weaponAttackTrigger.addCondition(Condition(() => BlzGetEventIsAttack()));
-            this.weaponAttackTrigger.addAction(() => {
-                let unit = Unit.fromHandle(GetEventDamageSource());
-                let targetUnit = Unit.fromHandle(BlzGetEventDamageTarget())
+        this.weaponAttackTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
+        this.weaponAttackTrigger.addCondition(Condition(() => BlzGetEventIsAttack()));
+        this.weaponAttackTrigger.addAction(() => {
+            let unit = Unit.fromHandle(GetEventDamageSource());
+            let targetUnit = Unit.fromHandle(BlzGetEventDamageTarget())
 
-                const validAggression = ForceEntity.getInstance().aggressionBetweenTwoPlayers(
-                    unit.owner, 
-                    targetUnit.owner
-                );
+            const validAggression = ForceEntity.getInstance().aggressionBetweenTwoPlayers(
+                unit.owner, 
+                targetUnit.owner
+            );
 
-                if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
+            // Log.Information("Unit takes damage!");
+            if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
 
-                let targetLocation = new Vector3(targetUnit.x, targetUnit.y, targetUnit.z);
-                
-                // Clear and remove all damage taken
-                BlzSetEventDamage(0);
+            // Log.Information("Have damaging unit in struct");
+            
+            let targetLocation = new Vector3(targetUnit.x, targetUnit.y, targetUnit.z);
+            
+            // Clear and remove all damage taken
+            BlzSetEventDamage(0);
 
-                // Get unit weapon instance
-                const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(unit);
-                const weapon = this.getGunForUnit(unit);
-                if (weapon && crewmember) {
-                    // If we are targeting a unit pass the event over to the force module
-                    const targetedUnit = GetSpellTargetUnit();
-                    if (targetedUnit) {
-                        ForceEntity.getInstance().aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
-                    }
-                    
-                    weapon.onShoot(
-                        crewmember, 
-                        targetLocation
-                    );
+            // Get unit weapon instance
+            const weapon = this.getGunForUnit(unit);
+            if (weapon) {
+                // If we are targeting a unit pass the event over to the force module
+                const targetedUnit = GetSpellTargetUnit();
+                if (targetedUnit) {
+                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
                 }
-            })
-        // }
+                
+                weapon.onShoot(
+                    unit, 
+                    targetLocation
+                );
+            }
+        });
     }
 
     weaponDropTrigger = new Trigger();
@@ -401,11 +402,9 @@ export class WeaponEntity extends Entity {
             const pData = PlayerStateFactory.get(MapPlayer.fromEvent());
 
             if (pData) {
-                const crewmember = pData.getCrewmember();
+                const unit = Unit.fromHandle(GetTriggerUnit());
                 const gun = this.getGunForItem(GetManipulatedItem());
-                if (gun && crewmember && crewmember.unit.handle === GetTriggerUnit()) {
-                    gun.updateTooltip(crewmember)
-                }
+                if (gun) gun.updateTooltip(unit)
             }
             return false;
         }));
@@ -437,7 +436,7 @@ export class WeaponEntity extends Entity {
         return false;
     }
 
-    createWeaponForId(item: item, unit: ArmableUnit) : Gun | undefined {
+    createWeaponForId(item: item, unit: ArmableUnitWithItem) : Gun | undefined {
         let itemId = GetItemTypeId(item);
         if (itemId === BURST_RIFLE_ITEM_ID) 
             return new BurstRifle(item, unit);
@@ -474,5 +473,10 @@ export class WeaponEntity extends Entity {
                 equippedGun.onAdd(crewmember);
             });
         }
+    }
+
+    registerWeaponForUnit(gun: Gun) {
+        this.unitsWithWeapon.set(gun.equippedTo.unit.handle, gun);
+        this.guns.push(gun);
     }
 }

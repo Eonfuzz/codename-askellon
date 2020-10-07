@@ -6,7 +6,7 @@ import { ProjectileTargetStatic } from "../projectile/projectile-target";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM, MINIGUN_EXTENDED, MINIGUN_ITEM } from "../../../resources/weapon-tooltips";
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
-import { ArmableUnit } from "./unit-has-weapon";
+import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
 import { BURST_RIFLE_ABILITY_ID, BURST_RIFLE_ITEM_ID, EMS_RIFLING_ABILITY_ID } from "../weapon-constants";
 import { getZFromXY } from "lib/utils";
 import { MapPlayer, Force, Timer, Unit } from "w3ts/index";
@@ -25,8 +25,9 @@ import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { FilterIsAlive } from "resources/filters";
+import { GunItem } from "./gun-item";
 
-export class Minigun extends Gun {
+export class Minigun extends GunItem {
 
     private warmUpSound = new SoundRef("Sounds\\minigun-start.wav", false);
     // Have an array of 5 to make sure sounds dont fail to play
@@ -49,34 +50,33 @@ export class Minigun extends Gun {
     private unallyTicker = 1;
     private unallyGroup = CreateGroup();
 
-    constructor(item: item, equippedTo: ArmableUnit) {
+    constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 375;
         this.bulletDistance = 1875;
     }
 
-    public applyWeaponAttackValues(caster: Crewmember) {
-        caster.unit.setAttackCooldown(1, 1);
-        this.equippedTo.unit.setBaseDamage(this.getDamage(caster) - 1, 0);
-        caster.unit.acquireRange = this.bulletDistance * 0.8;
+    public applyWeaponAttackValues(unit: Unit) {
+        unit.setAttackCooldown(1, 1);
+        this.equippedTo.unit.setBaseDamage(this.getDamage(unit) - 1, 0);
+        unit.acquireRange = this.bulletDistance * 0.8;
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
     }
     
-    public onShoot(caster: Crewmember, targetLocation: Vector3): void {
-        super.onShoot(caster, targetLocation);
+    public onShoot(unit: Unit, targetLocation: Vector3): void {
+        super.onShoot(unit, targetLocation);
 
-        const unit = caster.unit.handle;
         this.flamesawActive = false;
 
         this.spinStacks = 0;
         this.unallyTicker = 1;
-        this.castOrderId = caster.unit.currentOrder;
-        this.warmUpSound.playSoundOnUnit(caster.unit.handle, 127);
+        this.castOrderId = unit.currentOrder;
+        this.warmUpSound.playSoundOnUnit(unit.handle, 127);
 
 
-        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
+        let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
 
         this.targetLoc = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
@@ -84,18 +84,14 @@ export class Minigun extends Gun {
         this.shootTimer.start(0.05, true, () => this.updateFacing(0.05))
 
         Timers.addTimedAction(0.4, () => {
-            this.fireProjectile(caster);
+            this.fireProjectile(unit);
         });
     };
 
-    protected getStrayValue(caster: Crewmember) {
-        // Accuracy is some number, starting at 100
-        const accuracy = caster.getAccuracy() - this.spinStacks * 2.2;
-        // Make accuracy exponentially effect the weapon
-        const accuracyModifier = Pow(100-accuracy, 2) * (accuracy > 100 ? -1 : 1);
-        // Log.Information("Spray: "+accuracyModifier);
-
-        return accuracyModifier;
+    protected getAccuracy(unit: Unit) {
+        const stray = super.getStrayValue(unit);
+        const accuracy = stray - this.spinStacks * 2.2;
+        return accuracy;
     }
 
     // Updates our target location based on facing
@@ -187,34 +183,38 @@ export class Minigun extends Gun {
         }
     }
 
-    private fireProjectile(caster: Crewmember) {
+    private fireProjectile(unit: Unit) {
         // If we have the same order, queue up another shot
-        if (caster.unit.currentOrder !== this.castOrderId) {
+        if (unit.currentOrder !== this.castOrderId) {
             return this.onStopShooting();
         }
             
-        const unit = caster.unit.handle;
-        let casterLoc = new Vector3(caster.unit.x, caster.unit.y, getZFromXY(caster.unit.x, caster.unit.y)).projectTowardsGunModel(unit);
-        let strayTarget = this.getStrayLocation(this.targetLoc, caster);
+        let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
+        let strayTarget = this.getStrayLocation(this.targetLoc, unit);
         let deltaTarget = strayTarget.subtract(casterLoc);
 
-        PlayNewSoundOnUnit("Sounds\\minigun-fire.wav", caster.unit, 45);
+        PlayNewSoundOnUnit("Sounds\\minigun-fire.wav", unit, 45);
 
         let projectile = new Projectile(
-            unit,
+            unit.handle,
             casterLoc, 
             new ProjectileTargetStatic(deltaTarget)
         );
         projectile
             .setCollisionRadius(15)
-            .setVelocity(2100)
-            .addEffect(
-                "war3mapImported\\Bullet.mdx",
-                new Vector3(0, 0, 0),
-                deltaTarget.normalise(),
-                1.2
-            );
-        
+            .setVelocity(2100);
+            
+        Timers.addTimedAction(0.05, () => {
+            // Log.Information("Projctile: "+projectile+" "+projectile.dead);
+            if (projectile.dead === false) {
+                projectile.addEffect(
+                    "war3mapImported\\Bullet.mdx",
+                    new Vector3(0, 0, 0),
+                    deltaTarget.normalise(),
+                    1.2
+                );
+            }
+        });
         if (this.flamesawActive) {
             projectile
             .onCollide((projectile: Projectile, collidesWith: unit) => 
@@ -239,18 +239,18 @@ export class Minigun extends Gun {
             )
         }
 
-        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: caster.unit, data: { projectile: projectile }});
+        EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: unit, data: { projectile: projectile }});
         if (this.spinStacks < this.maxSpinStacks) {
             this.spinStacks++;
         }
         if (this.flamesawActive) {
             Timers.addTimedAction((0.23 / Pow(this.attackSpeedPerStack, this.spinStacks)), () => {
-                this.fireProjectile(caster);
+                this.fireProjectile(unit);
             });
         }
         else {
             Timers.addTimedAction((0.25 / Pow(this.attackSpeedPerStack, this.spinStacks)), () => {
-                this.fireProjectile(caster);
+                this.fireProjectile(unit);
             });
         }
     }
@@ -258,46 +258,40 @@ export class Minigun extends Gun {
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
-            const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.equippedTo.unit);
-            if (crewmember) {
-                UnitDamageTarget(
-                    projectile.source, 
-                    collidesWith, 
-                    this.getDamage(crewmember), 
-                    false, 
-                    true, 
-                    ATTACK_TYPE_PIERCE, 
-                    DAMAGE_TYPE_NORMAL, 
-                    WEAPON_TYPE_WOOD_MEDIUM_STAB
-                );
-                ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
-            }
+            UnitDamageTarget(
+                projectile.source, 
+                collidesWith, 
+                this.getDamage(this.equippedTo.unit), 
+                false, 
+                true, 
+                ATTACK_TYPE_PIERCE, 
+                DAMAGE_TYPE_NORMAL, 
+                WEAPON_TYPE_WOOD_MEDIUM_STAB
+            );
+            ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
         }
     }
 
     private onFlameProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
-            const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.equippedTo.unit);
-            if (crewmember) {
-                UnitDamageTarget(
-                    projectile.source, 
-                    collidesWith, 
-                    MathRound(this.getDamage(crewmember) * 1.1), 
-                    false, 
-                    true, 
-                    ATTACK_TYPE_PIERCE, 
-                    DAMAGE_TYPE_NORMAL, 
-                    WEAPON_TYPE_WOOD_MEDIUM_STAB
-                );
-                ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
-                
-                // Add fire debuff to unit
-                DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
-                    Unit.fromHandle(collidesWith), 
-                    new BuffInstanceDuration(this.equippedTo.unit, 4)
-                );
-            }
+            UnitDamageTarget(
+                projectile.source, 
+                collidesWith, 
+                MathRound(this.getDamage(this.equippedTo.unit) * 1.1), 
+                false, 
+                true, 
+                ATTACK_TYPE_PIERCE, 
+                DAMAGE_TYPE_NORMAL, 
+                WEAPON_TYPE_WOOD_MEDIUM_STAB
+            );
+            ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
+            
+            // Add fire debuff to unit
+            DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
+                Unit.fromHandle(collidesWith), 
+                new BuffInstanceDuration(this.equippedTo.unit, 4)
+            );
         }
     }
 
@@ -307,22 +301,22 @@ export class Minigun extends Gun {
         this.shootTimer.pause();
     }
 
-    protected getTooltip(crewmember: Crewmember) {
+    protected getTooltip(unit: Unit) {
         // const minDistance = this.spreadAOE-this.getStrayValue(crewmember) / 2;
 
-        const damage = this.getDamage(crewmember);
+        const damage = this.getDamage(unit);
         const newTooltip = MINIGUN_EXTENDED(this, damage);
         return newTooltip;
     }
 
-    protected getItemTooltip(crewmember: Crewmember): string {
-        const damage = this.getDamage(crewmember);
+    protected getItemTooltip(unit: Unit): string {
+        const damage = this.getDamage(unit);
         return MINIGUN_ITEM(this, damage);
     }
 
 
-    public getDamage(caster: Crewmember): number {
-        return MathRound( 13 * caster.getDamageBonusMult());
+    public getDamage(unit: Unit): number {
+        return MathRound( 13 * this.getDamageBonusMult());
     }
 
     public getAbilityId() { return ABIL_WEP_MINIGUN; }

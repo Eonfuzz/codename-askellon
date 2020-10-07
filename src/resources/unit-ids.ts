@@ -62,3 +62,5 @@ export const UNIT_ID_NEUTRAL_DOG = FourCC("n00M");
 export const UNIT_ID_NEUTRAL_BEAR = FourCC("n00O");
 export const UNIT_ID_NEUTRAL_RABBIT = FourCC("n00N");
 export const UNIT_ID_NEUTRAL_STAG = FourCC("n00L");
+
+export const UNIT_ID_STATION_SECURITY_TURRET = FourCC('h008');
