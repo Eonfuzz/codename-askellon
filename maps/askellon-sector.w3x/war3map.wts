@@ -3409,20 +3409,8 @@ STRING 859
 ranged
 }
 
-STRING 860
-// Units: n00A (|cffffff00Cathederal |rAltar|n|cff808080Right Click to Use|r), Name (Name)
-{
-|cffffff00Cathederal |rAltar|n|cff808080Right Click to Use|r
-}
-
-STRING 861
-// Units: n00B (|cffffff00Cathederal |rAltar), Name (Name)
-{
-|cffffff00Cathederal |rAltar
-}
-
 STRING 862
-// Units: n00B (|cffffff00Cathederal |rAltar), EditorSuffix (Name - Editor Suffix)
+// Units: n00B (|cffffff00Cathederal |rTerminal), EditorSuffix (Name - Editor Suffix)
 {
 - Invisible
 }
@@ -5234,5 +5222,17 @@ STRING 1249
 // Units: h008 (Turret), Name (Name)
 {
 Turret
+}
+
+STRING 1250
+// Units: n00A (|cffffff00Cathederal |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
+{
+|cffffff00Cathederal |rTerminal|n|cff808080Right Click to Use|r
+}
+
+STRING 1251
+// Units: n00B (|cffffff00Cathederal |rTerminal), Name (Name)
+{
+|cffffff00Cathederal |rTerminal
 }
 
