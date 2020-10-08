@@ -35,32 +35,41 @@ export class TheAskellon {
     private pilot: Crewmember | undefined;
 
     constructor() {
-        this.addFloor(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY));
-        this.addFloor(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A));
-        this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY));
-        this.addFloor(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE));
-        this.addFloor(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
-        this.addFloor(ZONE_TYPE.REACTOR, new ReactorZone(ZONE_TYPE.REACTOR));
-        this.addFloor(ZONE_TYPE.CARGO_B, new ShipZone(ZONE_TYPE.CARGO_B));
 
-        // Vents and others
-        this.addFloor(ZONE_TYPE.ARMORY_VENT, new VentZone(ZONE_TYPE.ARMORY_VENT));
-        this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
-        this.addFloor(ZONE_TYPE.CARGO_A_VENT, new VentZone(ZONE_TYPE.CARGO_A_VENT));
-        this.addFloor(ZONE_TYPE.CARGO_B_VENT, new VentZone(ZONE_TYPE.CARGO_B_VENT));
-        this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new VentZone(ZONE_TYPE.SERVICE_TUNNELS));
+        try {
 
-        // Now apply exits
-        udg_elevator_entrances.forEach((u, index) => {
-            const matchingExitZones = udg_elevator_exit_zones[index];
-            const zone = STRING_TO_ZONE_TYPE.get(matchingExitZones);
+            this.addFloor(ZONE_TYPE.ARMORY, new ShipZone(ZONE_TYPE.ARMORY));
+            this.addFloor(ZONE_TYPE.CARGO_A, new ShipZone(ZONE_TYPE.CARGO_A));
+            this.addFloor(ZONE_TYPE.BIOLOGY, new ShipZone(ZONE_TYPE.BIOLOGY));
+            this.addFloor(ZONE_TYPE.BRIDGE, new BridgeZone(ZONE_TYPE.BRIDGE));
+            this.addFloor(ZONE_TYPE.CHURCH, new ChurchZone(ZONE_TYPE.CHURCH));
+            this.addFloor(ZONE_TYPE.REACTOR, new ReactorZone(ZONE_TYPE.REACTOR));
+            this.addFloor(ZONE_TYPE.CARGO_B, new ShipZone(ZONE_TYPE.CARGO_B));
 
-            // Get our zone
-            if (this.floors.has(zone)) {
-                const floor = this.floors.get(zone);
-                floor.addExit(Unit.fromHandle(udg_elevator_exits[index]));
-            }
-        });
+            // Vents and others
+            this.addFloor(ZONE_TYPE.ARMORY_VENT, new VentZone(ZONE_TYPE.ARMORY_VENT));
+            this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
+            this.addFloor(ZONE_TYPE.CARGO_A_VENT, new VentZone(ZONE_TYPE.CARGO_A_VENT));
+            this.addFloor(ZONE_TYPE.CARGO_B_VENT, new VentZone(ZONE_TYPE.CARGO_B_VENT));
+            this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new VentZone(ZONE_TYPE.SERVICE_TUNNELS));
+            this.addFloor(ZONE_TYPE.CHURCH_VENT, new VentZone(ZONE_TYPE.CHURCH_VENT));
+
+            // Now apply exits
+            udg_elevator_entrances.forEach((u, index) => {
+                const matchingExitZones = udg_elevator_exit_zones[index];
+                const zone = STRING_TO_ZONE_TYPE.get(matchingExitZones);
+
+                // Get our zone
+                if (this.floors.has(zone)) {
+                    const floor = this.floors.get(zone);
+                    floor.addExit(Unit.fromHandle(udg_elevator_exits[index]));
+                }
+            });
+
+        } catch(e) {
+            Log.Error("Failed to init askellon");
+            Log.Error(e);
+        }
     }
     
     private addFloor(id: ZONE_TYPE, zone: ZoneWithExits) {
@@ -142,5 +151,12 @@ export class TheAskellon {
 
     private onSecurityRepair(repairedSecurity: unit, engineer: unit) {
         Log.Information("Ship found security repair!");
+    }
+
+    public onEnterAskellon(who: Unit, whichFloor: Zone) {
+        if (who && who.owner) {
+            SetCameraBoundsToRectForPlayerBJ(who.owner.handle, gg_rct_stationtempvision);
+            if (who.owner.handle === GetLocalPlayer()) BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
+        }
     }
 }

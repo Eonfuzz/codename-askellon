@@ -62,7 +62,10 @@ export class Game {
             Log.Error("Failed to load TOC");
         }
 
-        BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
+        BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
+        Players.forEach(p => {            
+            SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
+        })
         StopSound(bj_nightAmbientSound, true, true);
         StopSound(bj_dayAmbientSound, true, true);
 

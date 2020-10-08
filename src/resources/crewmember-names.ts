@@ -1,4 +1,5 @@
 import { COL_GOLD, COL_VENTS, COL_TEAL, COL_ATTATCH, COL_GOOD } from "./colours";
+import { Vector2 } from "app/types/vector2";
 
 export enum ROLE_TYPES {
     CAPTAIN = 'Captain',
@@ -11,6 +12,15 @@ export enum ROLE_TYPES {
     PILOT = 'Pilot'
 }
 export const ROLE_NAMES = new Map<string, Array<string>>();
+export const ROLE_SPAWN_LOCATIONS = new Map<ROLE_TYPES, Vector2[]>();
+ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.CAPTAIN, [ new Vector2(-13550, -4312) ]);
+ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.DOCTOR, [ new Vector2(-14123, -12005) ]);
+ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.INQUISITOR, [ new Vector2(-20119, -9584) ]);
+ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.ENGINEER, [ new Vector2(-13369, -25256) ]);
+
+ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.PILOT, [ new Vector2(-24900, -18966), new Vector2(-1633, -18966), new Vector2(-13680, -16635) ]);
+
+ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.SEC_GUARD, [ new Vector2(-15730, -16222), new Vector2(-8302, -12228), new Vector2(-5502, -12039), new Vector2(-13300, -21035) ]);
 
 ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
     "Captain Keenest", "Captain Kirk", "Captain Jack Sparrow", "Captain Creed", 
@@ -42,7 +52,7 @@ ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
-    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix"
+    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix", "Doctor Freeman"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
@@ -50,7 +60,7 @@ ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.PILOT, [
-    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers", "Crocodile Jim"
+    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers", "Crocodile Jim", "Jebediah Kerman"
 ]);
 
 

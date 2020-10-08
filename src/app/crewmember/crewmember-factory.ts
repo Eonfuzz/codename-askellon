@@ -1,5 +1,5 @@
 import { Crewmember } from "./crewmember-type";
-import { ROLE_NAMES, ROLE_TYPES } from "../../resources/crewmember-names";
+import { ROLE_NAMES, ROLE_TYPES, ROLE_SPAWN_LOCATIONS } from "../../resources/crewmember-names";
 import { Game } from "../game";
 import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
 import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR } from "../weapons/weapon-constants";
@@ -19,6 +19,8 @@ import { ResearchFactory } from "app/research/research-factory";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
+import { Quick } from "lib/Quick";
+import { Vector2 } from "app/types/vector2";
 
 export class CrewFactory {  
     private static instance: CrewFactory;
@@ -151,13 +153,6 @@ export class CrewFactory {
                 crewmember.unit.getIntelligence(false) + 2, 
                 true
             );
-
-            
-            nUnit.x = -18420;
-            nUnit.y = -25613;
-
-            // Now travel the unit to floor 1
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.BRIDGE, true);
         }
         // Sec guard starts with weapon damage 1 and have shotguns
         else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
@@ -168,12 +163,6 @@ export class CrewFactory {
                 source: crewmember.unit,
                 data: { item }
             });
-            roleGaveWeapons = true;
-            nUnit.x = -22916;
-            nUnit.y = -25386;
-            
-            // Now travel the unit to Church
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
         // Doctor begins with extra will and vigor
         else if (crewmember.role === ROLE_TYPES.DOCTOR) {
@@ -182,11 +171,6 @@ export class CrewFactory {
             const item = CreateItem(ITEM_GENETIC_SAMPLER, 0, 0);
             UnitAddItem(crewmember.unit.handle, item);
 
-            nUnit.x = -13337;
-            nUnit.y = -22229;
-
-            // Now travel the unit to floor 1
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.BIOLOGY, true);
         }
         // Doctor begins with extra vigour and items
         else if (crewmember.role === ROLE_TYPES.ENGINEER) {
@@ -198,22 +182,10 @@ export class CrewFactory {
             item = CreateItem(ITEM_ID_REPAIR, 0, 0);
             SetItemCharges(item, 10);
             UnitAddItem(crewmember.unit.handle, item);
-
-            nUnit.x = -12570.62;
-            nUnit.y = -17582.47;
-
-            // Now travel the unit to floor 1
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.REACTOR, true);
         }
         // Navigator has extra accuracy
         else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
             SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
-
-            nUnit.x = -22916;
-            nUnit.y = -25386;
-            
-            // Now travel the unit to Church
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
         else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
             nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);
@@ -229,19 +201,6 @@ export class CrewFactory {
     
                 }
             }));    
-            
-            nUnit.x = -22916;
-            nUnit.y = -25386;
-            
-            // Now travel the unit to Church
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
-        }
-        else {            
-            nUnit.x = -22916;
-            nUnit.y = -25386;
-            
-            // Now travel the unit to Church
-            WorldEntity.getInstance().travel(crewmember.unit, ZONE_TYPE.CHURCH, true);
         }
 
         if (!roleGaveWeapons) {
@@ -252,6 +211,14 @@ export class CrewFactory {
                 data: { item }
             });
         }
+
+        const spawnLocation = this.getSpawnFor(crewmember.role);
+        const location = WorldEntity.getInstance().getPointZone(spawnLocation.x, spawnLocation.y);
+
+        
+        nUnit.x = spawnLocation.x;
+        nUnit.y = spawnLocation.y;
+        WorldEntity.getInstance().travel(crewmember.unit, location.id, true);
 
         BlzShowUnitTeamGlow(crewmember.unit.handle, false);
         BlzSetUnitName(nUnit.handle, crewmember.role);
@@ -264,6 +231,16 @@ export class CrewFactory {
         return crewmember;
     }
    
+    getSpawnFor(role: ROLE_TYPES): Vector2 {
+        const spawns = ROLE_SPAWN_LOCATIONS.get(role);
+
+        const option = Quick.GetRandomFromArray(spawns, 1) as Vector2[];
+        if (option.length > 0) {
+            const spawn = option[0];
+            Quick.Slice(spawns, spawns.indexOf(spawn));
+            return spawn;
+        }
+    }
 
     getCrewmemberRole() {
         const i = GetRandomInt(0, this.allJobs.length -1);

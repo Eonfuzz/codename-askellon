@@ -22,6 +22,7 @@ export function BuildGraph() {
 
     const nodes = [];
 
+    try {
     // Each elevator is an edge
     udg_elevator_entrances.forEach((elevator, i) => {
         const edge = new Edge();
@@ -113,6 +114,12 @@ export function BuildGraph() {
     // Now develop connections
     graph.nodes.forEach(node => DevelopGraphConnections(node));
     return graph;
+
+    }
+    catch(e) {
+        Log.Error("Error when generating AI pathing map");
+        Log.Error(e);
+    }
 }
 
 function DevelopGraphConnections(node: Node) {

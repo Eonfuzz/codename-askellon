@@ -74,7 +74,7 @@ export class WorldEntity extends Entity {
     public handleTravel(unit: Unit, to: ZONE_TYPE) {
         try {
             const oldZone = this.unitLocation.get(unit);
-            const newZone = this.getZone(to);        
+            const newZone = this.getZone(to);     
 
             // Now call on enter and on leave for the zones
             oldZone && oldZone.onLeave(unit);
@@ -84,6 +84,8 @@ export class WorldEntity extends Entity {
                 // Log.Information("Setting "+unit.name+" to zone "+ZONE_TYPE[newZone.id]);
                 this.unitLocation.set(unit, newZone);
             }
+
+            return newZone;
         }
         catch(e) {
             Log.Error("Handle Travel Failed");
@@ -102,7 +104,8 @@ export class WorldEntity extends Entity {
         // Log.Information("Unit Travel "+unit.name);
 
         // Does the travel work
-        this.handleTravel(unit, to);
+        const oldZone = this.getUnitZone(unit);
+        const nZone = this.handleTravel(unit, to);
         const pData = PlayerStateFactory.get(unit.owner);
 
         // If we dont have player data that means its an AI player
@@ -133,6 +136,14 @@ export class WorldEntity extends Entity {
             if (!isSubTravel && isCrewOrAlien)  {
                 const newLoc = this.getZone(to);
                 newLoc && newLoc.displayEnteringMessage(unit.owner);
+
+                const oldZoneInAskellon = oldZone && this.askellon.findZone(oldZone.id)
+                const newZoneInAskellon = !!this.askellon.findZone(nZone.id);
+
+                Log.Information(`Old ${oldZoneInAskellon} New ${newZoneInAskellon}`);
+                if (!oldZoneInAskellon && newZoneInAskellon) {
+                    this.askellon.onEnterAskellon(crew.unit, nZone);
+                }
 
                 EventEntity.getInstance().sendEvent(
                     EVENT_TYPE.CREW_CHANGES_FLOOR, 
@@ -209,8 +220,8 @@ export class WorldEntity extends Entity {
             }
         }
         catch(e) {
-            Log.Error("ERROR POINT => ZONE");
-            Log.Error(e);
+            // Log.Error("ERROR POINT => ZONE");
+            // Log.Error(e);
         }
         return undefined;
     }
