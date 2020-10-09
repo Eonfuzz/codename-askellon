@@ -51,6 +51,8 @@ export abstract class GunItem extends Gun {
                 this.getAbilityId(), 
                 BlzGetAbilityCooldown(this.getAbilityId(), 0)
             );
+            // Need to update the tooltip
+            this.updateTooltip(caster.unit);
         }
         // If we are in attack mode let the user attack
         else {

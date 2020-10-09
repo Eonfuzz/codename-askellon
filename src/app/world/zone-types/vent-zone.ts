@@ -29,9 +29,6 @@ export class VentZone extends ZoneWithExits {
     private gasActive = false;
     private gasTicker = 0;
     private gasLoopSound = new SoundRef("Sounds\\GasLoop.wav", true, true);
-
-    public powerGenerators: Array<Unit> = [];
-
     private fogEffects = [];
 
 
@@ -39,10 +36,9 @@ export class VentZone extends ZoneWithExits {
         super(id);
 
         // Get get light sources and power gens based on ID
-        const matchingIndexes = [];
-        udg_power_generator_zones.forEach((zone, index) => id === zone && matchingIndexes.push(index));
-        matchingIndexes.forEach(index => {
-            this.powerGenerators.push(Unit.fromHandle(udg_power_generators[index+1]));
+        this.allRects.forEach(r => {
+            this.fogEffects.push(AddWeatherEffect(r, FourCC('FDwh')));
+            EnableWeatherEffect(this.fogEffects[this.fogEffects.length-1], true);
         });
 
         // Listen to gas events
@@ -57,11 +53,19 @@ export class VentZone extends ZoneWithExits {
             });
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.SYSTEM_STARTS_VENT_PURGE, (self, event) => {
+            // Destroy old effects
+            this.fogEffects.forEach(f => {
+                EnableWeatherEffect(f, false);
+                RemoveWeatherEffect(f);
+            });
+            this.fogEffects = [];
+
             this.gasPreparing = false;
             this.gasActive = true;
             this.allRects.forEach(r => {
                 this.fogEffects.push(AddWeatherEffect(r, FourCC('FDgh')));
                 EnableWeatherEffect(this.fogEffects[this.fogEffects.length-1], true);
+                EnableWeatherEffect(GetLastCreatedWeatherEffect(), true);
                 this.fogEffects.push(AddWeatherEffect(r, FourCC('FDrh')));
                 EnableWeatherEffect(this.fogEffects[this.fogEffects.length-1], true);
                 EnableWeatherEffect(GetLastCreatedWeatherEffect(), true);
@@ -76,6 +80,11 @@ export class VentZone extends ZoneWithExits {
                 RemoveWeatherEffect(f);
             });
             this.fogEffects = [];
+            
+            this.allRects.forEach(r => {
+                this.fogEffects.push(AddWeatherEffect(r, FourCC('FDwh')));
+                EnableWeatherEffect(this.fogEffects[this.fogEffects.length-1], true);
+            });
         }));
     }
 

@@ -140,7 +140,7 @@ export class WorldEntity extends Entity {
                 const oldZoneInAskellon = oldZone && this.askellon.findZone(oldZone.id)
                 const newZoneInAskellon = !!this.askellon.findZone(nZone.id);
 
-                Log.Information(`Old ${oldZoneInAskellon} New ${newZoneInAskellon}`);
+                // Log.Information(`Old ${oldZoneInAskellon} New ${newZoneInAskellon}`);
                 if (!oldZoneInAskellon && newZoneInAskellon) {
                     this.askellon.onEnterAskellon(crew.unit, nZone);
                 }

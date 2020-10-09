@@ -62,10 +62,6 @@ export class Game {
             Log.Error("Failed to load TOC");
         }
 
-        BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
-        Players.forEach(p => {            
-            SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
-        })
         StopSound(bj_nightAmbientSound, true, true);
         StopSound(bj_dayAmbientSound, true, true);
 
@@ -234,6 +230,10 @@ export class Game {
                 Log.Information("TEST LOBBY DETECTED")
                 Players.forEach(p => p.setState(PLAYER_STATE_RESOURCE_GOLD, 999999));
                 SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
+                BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
+                Players.forEach(p => {            
+                    SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
+                })
             }
 
             // UIEntity.start();
@@ -248,6 +248,11 @@ export class Game {
         for (let i = 0; i < 12; i++) {
             BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), true);            
         }
+        
+        BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
+        Players.forEach(p => {            
+            SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
+        })
         
         this.cinematicSound.playSound();
         CameraSetSourceNoise(2, 50);

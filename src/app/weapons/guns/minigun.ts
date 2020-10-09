@@ -89,7 +89,7 @@ export class Minigun extends GunItem {
     };
 
     protected getAccuracy(unit: Unit) {
-        const stray = super.getStrayValue(unit);
+        const stray = super.getAccuracy(unit);
         const accuracy = stray - this.spinStacks * 2.2;
         return accuracy;
     }
@@ -189,6 +189,7 @@ export class Minigun extends GunItem {
             return this.onStopShooting();
         }
             
+        DestroyEffect(AddSpecialEffectTarget("war3mapImported\\MuzzleFlash.mdx", unit.handle, "hand, right"));
         let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
         let strayTarget = this.getStrayLocation(this.targetLoc, unit);
         let deltaTarget = strayTarget.subtract(casterLoc);

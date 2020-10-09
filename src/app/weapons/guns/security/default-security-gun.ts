@@ -86,7 +86,7 @@ export class DefaultSecurityGun extends Gun {
         );
         projectile
             .setCollisionRadius(25)
-            .setVelocity(2900)
+            .setVelocity(3100)
             .onCollide((projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(projectile, collidesWith)
             );
@@ -117,6 +117,6 @@ export class DefaultSecurityGun extends Gun {
     }
 
     public getDamage(unit: Unit): number {
-        return MathRound( 36 + GetRandomInt(0,6) );
+        return MathRound( 20 + GetRandomInt(0,6) );
     }
 }

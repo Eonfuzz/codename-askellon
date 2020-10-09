@@ -59,7 +59,7 @@ export class BurstRifle extends GunItem {
         let strayTarget = this.getStrayLocation(targetLocation, unit)
         let deltaTarget = strayTarget.subtract(casterLoc);
 
-        new Effect("war3mapImported\\MuzzleFlash.mdx", unit, "hand, right").destroy();
+        DestroyEffect(AddSpecialEffectTarget("war3mapImported\\MuzzleFlash.mdx", unit.handle, "hand, right"));
 
         let projectile = new Projectile(
             unit.handle,
