@@ -11,6 +11,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { WeaponEntityAttackType } from "../weapon-attack-type";
 import { Gun } from "./gun";
 import { Unit } from "w3ts/index";
+import { Log } from "lib/serilog/serilog";
 
 export abstract class GunItem extends Gun {
     item: item;
@@ -68,10 +69,11 @@ export abstract class GunItem extends Gun {
     public onRemove() {
         const u = this.equippedTo;
         
-        super.onRemove();
-            // Don't care about the mode, always remove cast ability
+        // Don't care about the mode, always remove cast ability
         u.unit.removeAbility(this.getAbilityId());
         if (this.attachment) this.attachment.onUnequip(this, CrewFactory.getInstance().getCrewmemberForUnit(u.unit) as Crewmember);
+        
+        super.onRemove();
     }
 
     protected abstract getTooltip(crewmember: Unit): string;

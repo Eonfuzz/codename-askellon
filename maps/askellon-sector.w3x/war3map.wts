@@ -1966,12 +1966,6 @@ STRING 480
 Church Support Column
 }
 
-STRING 481
-// Units: h005 (Crate), Name (Name)
-{
-Crate
-}
-
 STRING 483
 // Items: I008 (25 Credits), Name (Name)
 {
@@ -2603,12 +2597,6 @@ STRING 646
 // Units: h006 (|cffd45e19Perseus|r|n|cff808080Right Click To Enter|r), Name (Name)
 {
 |cffd45e19Perseus|r|n|cff808080Right Click To Enter|r
-}
-
-STRING 647
-// Units: n007 (|cff00ffffGene Splicer|r|n|cff808080Stand inside and await a Doctor|r), Name (Name)
-{
-|cff00ffffGene Splicer|r|n|cff808080Stand inside and await a Doctor|r
 }
 
 STRING 648
@@ -5240,5 +5228,17 @@ STRING 1252
 // Doodads: D014 (Space Pipes ( Vertical )), Name (Name)
 {
 Space Pipes ( Vertical )
+}
+
+STRING 1253
+// Units: h005 (Crate|n|cff808080Break to get some loot|r), Name (Name)
+{
+Crate|n|cff808080Break to get some loot|r
+}
+
+STRING 1254
+// Units: n007 (|cff00ffffGene Splicer|r|n|cff808080Stand inside and await your Doctor|r), Name (Name)
+{
+|cff00ffffGene Splicer|r|n|cff808080Stand inside and await your Doctor|r
 }
 

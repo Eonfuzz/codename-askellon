@@ -25,6 +25,7 @@ import { ChatEntity } from "app/chat/chat-entity";
 import { Players } from "w3ts/globals/index";
 import { PLAYER_COLOR } from "lib/translators";
 import { Timers } from "app/timer-type";
+import { PlayerState } from "./player-type";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -48,6 +49,9 @@ export class ForceEntity extends Entity {
     // Key is ${p1}::${p2}
     private aggressionLog = new Map<string, Aggression[]>();
     private allAggressionLogs: Aggression[] = [];
+
+    // Are players targeted?
+    private securityTargetState = new Map<MapPlayer, boolean>();
 
     constructor() {
         super();
@@ -94,6 +98,12 @@ export class ForceEntity extends Entity {
         const playerLeavesGameTrigger = new Trigger();
         players.forEach(player => playerLeavesGameTrigger.registerPlayerEvent(player, EVENT_PLAYER_LEAVE));
         playerLeavesGameTrigger.addAction(() => this.playerLeavesGame(MapPlayer.fromHandle(GetTriggerPlayer())));
+
+        eventEntity.addListener(new EventListener(EVENT_TYPE.STATION_SECURITY_TARGETED_PLAYER, (self, data) => 
+            this.setPlayerSecurityTargetState(data.data.who, true)));
+    
+        eventEntity.addListener(new EventListener(EVENT_TYPE.STATION_SECURITY_UNTARGETED_PLAYER, (self, data) => 
+            this.setPlayerSecurityTargetState(data.data.who, false)));
     }
 
     /**
@@ -112,7 +122,10 @@ export class ForceEntity extends Entity {
         if (validAggression) {
             // Make them enemies
             player1.setAlliance(player2, ALLIANCE_PASSIVE, false);
-            player2.setAlliance(player1, ALLIANCE_PASSIVE, false);
+
+            // If player 2 is Security, NEVER make them hostile
+            if (player2 !== PlayerStateFactory.StationSecurity)
+                player2.setAlliance(player1, ALLIANCE_PASSIVE, false);
         }
         return validAggression;
     }
@@ -155,7 +168,7 @@ export class ForceEntity extends Entity {
     private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
         const key = this.canFight(player1, player2);
         if (key === false) return false;
-        // Dont alter alliances if you're attackin alien or neutral hostile
+        // Dont alter alliances if you're attacking alien or neutral hostile
         if (key === true) return true;
 
         const newItem = {
@@ -203,11 +216,16 @@ export class ForceEntity extends Entity {
                 this.aggressionLog.set(key, logs);
 
                 if (logs.length === 0) {
-                    // We have no more combat instances between these two players
-                    // Ally them
-                    instance.aggressor.setAlliance(instance.defendant, ALLIANCE_PASSIVE, true);
-                    instance.defendant.setAlliance(instance.aggressor, ALLIANCE_PASSIVE, true);
-                    // Delete it from aggression log
+                    // If the defendant is station security, we need to make sure we ARE targeted
+                    if (instance.defendant !== PlayerStateFactory.StationSecurity || !this.securityTargetState.get(instance.aggressor)) {
+                        // We have no more combat instances between these two players
+                        // Ally them
+    
+                        instance.aggressor.setAlliance(instance.defendant, ALLIANCE_PASSIVE, true);
+                        instance.defendant.setAlliance(instance.aggressor, ALLIANCE_PASSIVE, true);
+                        // Delete it from aggression log
+
+                    }
                     this.aggressionLog.delete(key);
                 }
             }
@@ -226,6 +244,21 @@ export class ForceEntity extends Entity {
 
         const sortP2First = p2Id < p1Id;
         return sortP2First ? `${p2Id}::${p1Id}` : `${p1Id}::${p2Id}`;
+    }
+
+    private setPlayerSecurityTargetState(who: MapPlayer, isTargeted: boolean) {
+        this.securityTargetState.set(who, isTargeted);
+
+        // If we target, make them hostile
+        if (isTargeted) {
+            PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, false);
+            who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, false);
+        }
+        // Otherwise make them allied
+        else {
+            PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
+            who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
+        }
     }
 
     /**
