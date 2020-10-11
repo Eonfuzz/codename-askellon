@@ -40,7 +40,9 @@ import {
     ABIL_SYSTEM_REACTOR_DIAGNOSTICS,
     ABIL_SYSTEM_PURGE_VENTS,
     ABIL_ALIEN_MINION_EVOLVE,
-    ABIL_ALIEN_MINION_PLACE_EGG
+    ABIL_ALIEN_MINION_PLACE_EGG,
+    ABIL_SECURITY_TARGET_PLAYER_7,
+    ABIL_SECURITY_TARGET_ALL
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -81,6 +83,7 @@ import { GlobalCooldownAbilityEntity } from "./global-ability-entity";
 import { ReactorDiagnosticsAbility } from "./station/reactor-diagnostics";
 import { VentPurgeAbility } from "./station/vent-purge";
 import { MinionEvolveAbility } from "./alien/minions/minion-evolve";
+import { StationSecurityTargetAbility } from "./station/security-targeting";
 
 
 
@@ -160,6 +163,10 @@ AbilityHooks.Add(ABIL_GENE_XENOPHOBIC_PUNCH, () => new XenophobicPunchAbility())
 AbilityHooks.Add(ABIL_GENE_INSTANT_HEAL, () => new InstantHealAbility());
 AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIAGNOSTICS, () => new ReactorDiagnosticsAbility());
 AbilityHooks.Add(ABIL_SYSTEM_PURGE_VENTS, () => new VentPurgeAbility());
+
+ABIL_SECURITY_TARGET_ALL.forEach(a => {
+    AbilityHooks.Add(a, () => new StationSecurityTargetAbility());
+})
 
 // Alien Minion AI hooks
 AbilityHooks.Add(ABIL_ALIEN_MINION_EVOLVE, () => new MinionEvolveAbility());

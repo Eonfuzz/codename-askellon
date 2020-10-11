@@ -50,8 +50,6 @@ export class ForceEntity extends Entity {
     private aggressionLog = new Map<string, Aggression[]>();
     private allAggressionLogs: Aggression[] = [];
 
-    // Are players targeted?
-    private securityTargetState = new Map<MapPlayer, boolean>();
 
     constructor() {
         super();
@@ -217,7 +215,7 @@ export class ForceEntity extends Entity {
 
                 if (logs.length === 0) {
                     // If the defendant is station security, we need to make sure we ARE targeted
-                    if (instance.defendant !== PlayerStateFactory.StationSecurity || !this.securityTargetState.get(instance.aggressor)) {
+                    if (instance.defendant !== PlayerStateFactory.StationSecurity || !PlayerStateFactory.isTargeted(instance.aggressor)) {
                         // We have no more combat instances between these two players
                         // Ally them
     
@@ -247,7 +245,7 @@ export class ForceEntity extends Entity {
     }
 
     private setPlayerSecurityTargetState(who: MapPlayer, isTargeted: boolean) {
-        this.securityTargetState.set(who, isTargeted);
+        PlayerStateFactory.setTargeted(who, isTargeted);
 
         // If we target, make them hostile
         if (isTargeted) {

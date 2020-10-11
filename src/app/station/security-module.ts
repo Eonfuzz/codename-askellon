@@ -174,7 +174,7 @@ export class SecurityEntity extends Entity {
             // If unit type is turret play its burrow animation
             if (unit.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
                 unit.setTimeScale(1);
-                unit.setAnimation(0);
+                unit.setAnimation(1);
                 unit.addAnimationProps('alternate', false);
             }
 

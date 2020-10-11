@@ -25,6 +25,8 @@ export class PlayerStateFactory {
     private state = new Map<MapPlayer, PlayerState>();
 
     public isSnglePlayer = false;
+    // Are players targeted?
+    private securityTargetState = new Map<MapPlayer, boolean>();
 
     /**
      * Constructor
@@ -142,5 +144,13 @@ export class PlayerStateFactory {
 
     public static getAlienAI() {
         return [this.AlienAIPlayer1, this.AlienAIPlayer2, this.AlienAIPlayer3];
+    }
+
+    public static isTargeted(who: MapPlayer) {
+        return this.getInstance().securityTargetState.get(who);
+    }
+
+    public static setTargeted(who: MapPlayer, to: boolean) {
+        this.getInstance().securityTargetState.set(who, to);
     }
 }

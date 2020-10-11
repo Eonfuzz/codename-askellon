@@ -3,7 +3,7 @@ import { InteractableData } from "./interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../../world/zone-id";
 import { PlayNewSoundOnUnit, COLOUR, console } from "../../../lib/translators";
-import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL, TERMINAL_PURGE, WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
+import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL, TERMINAL_PURGE, WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, TERMINAL_SECURITY } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 // import { GeneEntity } from "app/shops/gene-entity";
 import { Interactables } from "./interactables";
@@ -218,4 +218,5 @@ export const initWeaponsTerminals = () => {
     Interactables.set(TERMINAL_REACTOR, upgradeTerminalProcessing);
     Interactables.set(BRIDGE_CAPTAINS_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(TERMINAL_PURGE, upgradeTerminalProcessing);
+    Interactables.set(TERMINAL_SECURITY, upgradeTerminalProcessing);
 }
