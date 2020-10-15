@@ -22,4 +22,8 @@ export class UnitActionExecuteCode implements UnitAction {
     init(target: unit, queue: UnitQueue): void {
     }
 
+    toString(): string {
+        return `ExecuteCode`;
+    }
+
 }

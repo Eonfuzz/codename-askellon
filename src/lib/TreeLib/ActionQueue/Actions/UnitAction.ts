@@ -5,5 +5,5 @@ export interface UnitAction extends Action{
 
     init(target: unit, queue: UnitQueue): void;
     update(target: unit, timeStep: number, queue: UnitQueue): void;
-
+    toString(): string;
 }

@@ -51,7 +51,9 @@ export class TheAskellon {
             this.addFloor(ZONE_TYPE.BRIDGE_VENT, new BridgeZoneVent(ZONE_TYPE.BRIDGE_VENT));
             this.addFloor(ZONE_TYPE.CARGO_A_VENT, new VentZone(ZONE_TYPE.CARGO_A_VENT));
             this.addFloor(ZONE_TYPE.CARGO_B_VENT, new VentZone(ZONE_TYPE.CARGO_B_VENT));
-            this.addFloor(ZONE_TYPE.SERVICE_TUNNELS, new VentZone(ZONE_TYPE.SERVICE_TUNNELS));
+            this.addFloor(ZONE_TYPE.BIOLOGY_VENT, new VentZone(ZONE_TYPE.BIOLOGY_VENT));
+            this.addFloor(ZONE_TYPE.SERVICE_TUNNELS_EAST, new VentZone(ZONE_TYPE.SERVICE_TUNNELS_EAST));
+            this.addFloor(ZONE_TYPE.SERVICE_TUNNELS_WEST, new VentZone(ZONE_TYPE.SERVICE_TUNNELS_WEST));
             this.addFloor(ZONE_TYPE.CHURCH_VENT, new VentZone(ZONE_TYPE.CHURCH_VENT));
 
             // Now apply exits

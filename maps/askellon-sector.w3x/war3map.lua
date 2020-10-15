@@ -85,8 +85,6 @@ gg_rct_ShipBay06 = nil
 gg_rct_ShipBay07 = nil
 gg_rct_ShipBay08 = nil
 gg_rct_zonecargob1 = nil
-gg_rct_Fog_Region = nil
-gg_rct_Fog_Region_Copy_Copy = nil
 gg_rct_zonebridgevents3 = nil
 gg_rct_zonebridgevents1 = nil
 gg_rct_zonebridgevents2 = nil
@@ -125,9 +123,9 @@ gg_rct_mineralcrushereast = nil
 gg_rct_zonereactor1 = nil
 gg_rct_zonecargoa2 = nil
 gg_rct_zonecargoa3 = nil
-gg_rct_zoneservicetunnels1 = nil
-gg_rct_zoneservicetunnels2 = nil
-gg_rct_zoneservicetunnels3 = nil
+gg_rct_zonebiologyvent3 = nil
+gg_rct_zonebiologyvent1 = nil
+gg_rct_zonebiologyvent2 = nil
 gg_rct_zonecargobvent1 = nil
 gg_rct_zonecargobvent2 = nil
 gg_rct_zonecargobvent3 = nil
@@ -152,18 +150,18 @@ gg_rct_Kill_Zone_Copy_Copy_3_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_3_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_3_Copy_2 = nil
 gg_rct_Kill_Zone_Copy_Copy_3_Copy_2_Copy = nil
-gg_rct_zoneservicetunnels4 = nil
-gg_rct_zoneservicetunnels5 = nil
-gg_rct_zoneservicetunnels6 = nil
-gg_rct_zoneservicetunnels7 = nil
-gg_rct_zoneservicetunnels8 = nil
-gg_rct_zoneservicetunnels9 = nil
-gg_rct_zoneservicetunnels10 = nil
-gg_rct_zoneservicetunnels11 = nil
-gg_rct_zoneservicetunnels12 = nil
-gg_rct_zoneservicetunnels13 = nil
-gg_rct_zoneservicetunnels14 = nil
-gg_rct_zoneservicetunnels15 = nil
+gg_rct_zonebiologyvent4 = nil
+gg_rct_zonebiologyvent5 = nil
+gg_rct_zoneservicetunnelseast1 = nil
+gg_rct_zoneservicetunnelseast2 = nil
+gg_rct_zoneservicetunnelswest8 = nil
+gg_rct_zoneservicetunnelswest5 = nil
+gg_rct_zoneservicetunnelswest6 = nil
+gg_rct_zoneservicetunnelswest7 = nil
+gg_rct_zoneservicetunnelswest4 = nil
+gg_rct_zoneservicetunnelswest2 = nil
+gg_rct_zoneservicetunnelswest3 = nil
+gg_rct_zoneservicetunnelswest1 = nil
 gg_trg_SetKillzones = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -432,25 +430,30 @@ function CreateBuildingsForPlayer22()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -11008.0, -15680.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -13376.0, -6336.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -13760.0, -6336.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -21440.0, -11456.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -21184.0, -10176.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -20288.0, -11456.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -20544.0, -10176.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -26176.0, -17728.0, 270.000, FourCC("h008"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -24000.0, -17984.0, 270.000, FourCC("h008"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12224.0, -15680.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -1920.0, -17728.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12736.0, -15680.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12672.0, -11968.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12416.0, -11968.0, 270.000, FourCC("h008"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12096.0, -14016.0, 270.000, FourCC("h008"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12992.0, -14016.0, 270.000, FourCC("h008"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -5952.0, -13568.0, 270.000, FourCC("h008"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -4736.0, -13248.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -11968.0, -12672.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -13120.0, -12672.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -5184.0, -13184.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -5824.0, -13184.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -7168.0, -13056.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -6784.0, -13056.0, 270.000, FourCC("h008"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -3520.0, -17984.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -8704.0, -12480.0, 270.000, FourCC("h008"))
     u = BlzCreateUnitWithSkin(p, FourCC("h008"), -1344.0, -17728.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -12352.0, -15680.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -25600.0, -17728.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -14528.0, -4288.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -20544.0, -12352.0, 270.000, FourCC("h008"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h008"), -21184.0, -12352.0, 270.000, FourCC("h008"))
 end
 
 function CreateNeutralHostileBuildings()
@@ -843,7 +846,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n004_0514 = BlzCreateUnitWithSkin(p, FourCC("n004"), -8449.3, -17798.6, 89.562, FourCC("n004"))
     gg_unit_n004_0515 = BlzCreateUnitWithSkin(p, FourCC("n004"), -10369.3, -15238.6, 89.562, FourCC("n004"))
     gg_unit_n004_0516 = BlzCreateUnitWithSkin(p, FourCC("n004"), -5761.3, -16774.6, 89.562, FourCC("n004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n00P"), -14136.9, -3830.2, 270.000, FourCC("n00P"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00P"), -13752.9, -4726.2, 270.000, FourCC("n00P"))
 end
 
 function CreatePlayerBuildings()
@@ -935,19 +938,13 @@ function CreateRegions()
     gg_rct_ShipBay07 = Rect(-1440.0, -18944.0, -1248.0, -18528.0)
     gg_rct_ShipBay08 = Rect(-544.0, -18944.0, -352.0, -18528.0)
     gg_rct_zonecargob1 = Rect(-3488.0, -19168.0, -96.0, -17536.0)
-    gg_rct_Fog_Region = Rect(-24416.0, -17760.0, -24224.0, -17408.0)
-    we = AddWeatherEffect(gg_rct_Fog_Region, FourCC("FDbh"))
-    EnableWeatherEffect(we, true)
-    gg_rct_Fog_Region_Copy_Copy = Rect(-24832.0, -17472.0, -24096.0, -17408.0)
-    we = AddWeatherEffect(gg_rct_Fog_Region_Copy_Copy, FourCC("FDwh"))
-    EnableWeatherEffect(we, true)
-    gg_rct_zonebridgevents3 = Rect(-13056.0, -8096.0, -12224.0, -6368.0)
+    gg_rct_zonebridgevents3 = Rect(-12960.0, -8096.0, -12224.0, -6368.0)
     we = AddWeatherEffect(gg_rct_zonebridgevents3, FourCC("FDwh"))
     EnableWeatherEffect(we, true)
     gg_rct_zonebridgevents1 = Rect(-14880.0, -8064.0, -14624.0, -6432.0)
     we = AddWeatherEffect(gg_rct_zonebridgevents1, FourCC("FDwh"))
     EnableWeatherEffect(we, true)
-    gg_rct_zonebridgevents2 = Rect(-14560.0, -8096.0, -13024.0, -7520.0)
+    gg_rct_zonebridgevents2 = Rect(-14560.0, -8096.0, -12928.0, -7520.0)
     we = AddWeatherEffect(gg_rct_zonebridgevents2, FourCC("FDwh"))
     EnableWeatherEffect(we, true)
     gg_rct_zonebridgevents4 = Rect(-14656.0, -8096.0, -14528.0, -6432.0)
@@ -972,7 +969,7 @@ function CreateRegions()
     gg_rct_reactoritemright = Rect(-12864.0, -26656.0, -12672.0, -26432.0)
     gg_rct_powercoresfx = Rect(-13376.0, -26528.0, -13312.0, -26464.0)
     gg_rct_stationtempvision = Rect(-27840.0, -29728.0, 288.0, -1600.0)
-    gg_rct_zonecargoavent1 = Rect(-24768.0, -17632.0, -24096.0, -15968.0)
+    gg_rct_zonecargoavent1 = Rect(-24800.0, -17568.0, -24096.0, -15968.0)
     gg_rct_zonecargoavent2 = Rect(-26304.0, -16640.0, -25664.0, -15584.0)
     gg_rct_zonecargoavent3 = Rect(-25696.0, -16672.0, -24736.0, -15968.0)
     gg_rct_zonecargoavent4 = Rect(-25024.0, -16032.0, -24608.0, -15712.0)
@@ -987,9 +984,9 @@ function CreateRegions()
     gg_rct_zonereactor1 = Rect(-14624.0, -25376.0, -12000.0, -24192.0)
     gg_rct_zonecargoa2 = Rect(-26848.0, -17664.0, -25984.0, -16672.0)
     gg_rct_zonecargoa3 = Rect(-24064.0, -18464.0, -23840.0, -17792.0)
-    gg_rct_zoneservicetunnels1 = Rect(-11648.0, -14240.0, -11040.0, -13408.0)
-    gg_rct_zoneservicetunnels2 = Rect(-11712.0, -13216.0, -10272.0, -12544.0)
-    gg_rct_zoneservicetunnels3 = Rect(-11488.0, -13440.0, -11168.0, -13184.0)
+    gg_rct_zonebiologyvent3 = Rect(-11648.0, -14240.0, -11040.0, -13408.0)
+    gg_rct_zonebiologyvent1 = Rect(-11712.0, -13216.0, -10272.0, -12544.0)
+    gg_rct_zonebiologyvent2 = Rect(-11488.0, -13440.0, -11168.0, -13184.0)
     gg_rct_zonecargobvent1 = Rect(-3392.0, -17536.0, -2720.0, -15808.0)
     gg_rct_zonecargobvent2 = Rect(-2720.0, -16448.0, -1856.0, -15808.0)
     gg_rct_zonecargobvent3 = Rect(-1856.0, -16448.0, -1216.0, -15392.0)
@@ -1014,18 +1011,18 @@ function CreateRegions()
     gg_rct_Kill_Zone_Copy_Copy_3_Copy_Copy = Rect(-7968.0, -16224.0, -6976.0, -15904.0)
     gg_rct_Kill_Zone_Copy_Copy_3_Copy_2 = Rect(-21312.0, -19168.0, -19904.0, -18944.0)
     gg_rct_Kill_Zone_Copy_Copy_3_Copy_2_Copy = Rect(-20416.0, -19648.0, -19904.0, -18496.0)
-    gg_rct_zoneservicetunnels4 = Rect(-11040.0, -14272.0, -10112.0, -13408.0)
-    gg_rct_zoneservicetunnels5 = Rect(-10848.0, -15424.0, -10176.0, -14240.0)
-    gg_rct_zoneservicetunnels6 = Rect(-8672.0, -18112.0, -5600.0, -16160.0)
-    gg_rct_zoneservicetunnels7 = Rect(-8000.0, -16160.0, -6112.0, -15424.0)
-    gg_rct_zoneservicetunnels8 = Rect(-20800.0, -20032.0, -19520.0, -18240.0)
-    gg_rct_zoneservicetunnels9 = Rect(-21568.0, -18272.0, -19488.0, -16480.0)
-    gg_rct_zoneservicetunnels10 = Rect(-19488.0, -17408.0, -18176.0, -16096.0)
-    gg_rct_zoneservicetunnels11 = Rect(-19488.0, -17824.0, -18176.0, -17376.0)
-    gg_rct_zoneservicetunnels12 = Rect(-21056.0, -16480.0, -19488.0, -16032.0)
-    gg_rct_zoneservicetunnels13 = Rect(-21696.0, -15968.0, -20480.0, -15456.0)
-    gg_rct_zoneservicetunnels14 = Rect(-21728.0, -16480.0, -21184.0, -15968.0)
-    gg_rct_zoneservicetunnels15 = Rect(-22464.0, -16960.0, -21504.0, -15104.0)
+    gg_rct_zonebiologyvent4 = Rect(-11040.0, -14272.0, -10112.0, -13408.0)
+    gg_rct_zonebiologyvent5 = Rect(-10848.0, -15424.0, -10176.0, -14240.0)
+    gg_rct_zoneservicetunnelseast1 = Rect(-8672.0, -18112.0, -5600.0, -16160.0)
+    gg_rct_zoneservicetunnelseast2 = Rect(-8000.0, -16160.0, -6112.0, -15424.0)
+    gg_rct_zoneservicetunnelswest8 = Rect(-20800.0, -20032.0, -19520.0, -18240.0)
+    gg_rct_zoneservicetunnelswest5 = Rect(-21568.0, -18272.0, -19488.0, -16480.0)
+    gg_rct_zoneservicetunnelswest6 = Rect(-19488.0, -17408.0, -18176.0, -16096.0)
+    gg_rct_zoneservicetunnelswest7 = Rect(-19488.0, -17824.0, -18176.0, -17376.0)
+    gg_rct_zoneservicetunnelswest4 = Rect(-21056.0, -16480.0, -19488.0, -16032.0)
+    gg_rct_zoneservicetunnelswest2 = Rect(-21696.0, -15968.0, -20480.0, -15456.0)
+    gg_rct_zoneservicetunnelswest3 = Rect(-21728.0, -16480.0, -21184.0, -15968.0)
+    gg_rct_zoneservicetunnelswest1 = Rect(-22464.0, -16960.0, -21504.0, -15104.0)
 end
 
 function Trig_SetKillzones_Actions()
@@ -1123,7 +1120,7 @@ function Trig_SetHatch_Actions()
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0045
     udg_hatch_exits[udg_it] = gg_unit_n004_0094
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_WEST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0094
     udg_hatch_exits[udg_it] = gg_unit_n002_0045
@@ -1131,7 +1128,7 @@ function Trig_SetHatch_Actions()
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0046
     udg_hatch_exits[udg_it] = gg_unit_n004_0092
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_WEST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0092
     udg_hatch_exits[udg_it] = gg_unit_n002_0046
@@ -1143,7 +1140,7 @@ function Trig_SetHatch_Actions()
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0267
     udg_hatch_exits[udg_it] = gg_unit_n004_0034
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_WEST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0100
     udg_hatch_exits[udg_it] = gg_unit_n002_0042
@@ -1151,11 +1148,11 @@ function Trig_SetHatch_Actions()
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0042
     udg_hatch_exits[udg_it] = gg_unit_n004_0100
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_WEST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0413
     udg_hatch_exits[udg_it] = gg_unit_n004_0512
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_EAST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0512
     udg_hatch_exits[udg_it] = gg_unit_n002_0413
@@ -1163,7 +1160,7 @@ function Trig_SetHatch_Actions()
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0407
     udg_hatch_exits[udg_it] = gg_unit_n004_0516
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_EAST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0516
     udg_hatch_exits[udg_it] = gg_unit_n002_0407
@@ -1171,7 +1168,7 @@ function Trig_SetHatch_Actions()
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0322
     udg_hatch_exits[udg_it] = gg_unit_n004_0514
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_EAST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0514
     udg_hatch_exits[udg_it] = gg_unit_n002_0322
@@ -1179,11 +1176,11 @@ function Trig_SetHatch_Actions()
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0344
     udg_hatch_exits[udg_it] = gg_unit_n004_0513
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_EAST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0513
     udg_hatch_exits[udg_it] = gg_unit_n002_0344
-    udg_hatch_exit_zones[udg_it] = "ARMORY_VENT"
+    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS_EAST"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0152
     udg_hatch_exits[udg_it] = gg_unit_n004_0323
@@ -1192,12 +1189,10 @@ function Trig_SetHatch_Actions()
     udg_hatch_entrances[udg_it] = gg_unit_n004_0323
     udg_hatch_exits[udg_it] = gg_unit_n002_0152
     udg_hatch_exit_zones[udg_it] = "BIOLOGY_VENT"
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n002_0054
     udg_hatch_exits[udg_it] = gg_unit_n004_0018
     udg_hatch_exit_zones[udg_it] = "BIOLOGY_VENT"
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
     udg_it = (udg_it + 1)
     udg_hatch_entrances[udg_it] = gg_unit_n004_0018
     udg_hatch_exits[udg_it] = gg_unit_n002_0054
@@ -1210,7 +1205,6 @@ function Trig_SetHatch_Actions()
     udg_hatch_entrances[udg_it] = gg_unit_n002_0061
     udg_hatch_exits[udg_it] = gg_unit_n004_0515
     udg_hatch_exit_zones[udg_it] = "BIOLOGY_VENT"
-    udg_hatch_exit_zones[udg_it] = "SERVICE_TUNNELS"
 end
 
 function InitTrig_SetHatch()

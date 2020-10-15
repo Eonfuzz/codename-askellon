@@ -86,8 +86,8 @@ export class ForceEntity extends Entity {
 
         // Init and listen for experience gain calls
         eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_BECOMES_ALIEN, (self, data) => this.repairAllAlliances(data.source.owner)));
-        eventEntity.addListener(new EventListener(EVENT_TYPE.ALIEN_TRANSFORM_CREW, (self, data) => this.repairAllAlliances(data.source.owner)));
-        eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, (self, data) => this.repairAllAlliances(data.source.owner)));
+        // eventEntity.addListener(new EventListener(EVENT_TYPE.ALIEN_TRANSFORM_CREW, (self, data) => this.repairAllAlliances(data.source.owner)));
+        // eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, (self, data) => this.repairAllAlliances(data.source.owner)));
 
         const players = GetActivePlayers();
         // Set up player leaves events
@@ -105,30 +105,6 @@ export class ForceEntity extends Entity {
     }
 
     /**
-     * Handles aggression between two players
-     * default behaviour sets players as enemies
-     * @param player1 
-     * @param player2 
-     */
-    public aggressionBetweenTwoPlayers(player1: MapPlayer, player2: MapPlayer) {
-        const validAggression = this.addAggressionLog(player1, player2)
-        
-        // Don't alter some alliances for obvious reasons
-        if (PlayerStateFactory.isAlienAI(player2)) return true;
-        if (player2 === PlayerStateFactory.NeutralHostile) return true;
-        // Add the log
-        if (validAggression) {
-            // Make them enemies
-            player1.setAlliance(player2, ALLIANCE_PASSIVE, false);
-
-            // If player 2 is Security, NEVER make them hostile
-            if (player2 !== PlayerStateFactory.StationSecurity)
-                player2.setAlliance(player1, ALLIANCE_PASSIVE, false);
-        }
-        return validAggression;
-    }
-
-    /**
      * Can two players aggress upon each other?
      * used to stop teamkilling
      * will return an aggression key (string) if valid
@@ -136,6 +112,7 @@ export class ForceEntity extends Entity {
      * @param player2 
      */
     public canFight(player1: MapPlayer, player2: MapPlayer) : boolean | string {
+        if (player1 === PlayerStateFactory.StationSecurity) return true;
         // We can never have tracked aggression against aliens
         if (PlayerStateFactory.isAlienAI(player2)) return true;
         // You cannot be aggressive against yourself
@@ -184,6 +161,29 @@ export class ForceEntity extends Entity {
         this.allAggressionLogs.push(newItem);
 
         return true;
+    }
+
+    /**
+     * Handles aggression between two players
+     * default behaviour sets players as enemies
+     * @param player1 
+     * @param player2 
+     */
+    public aggressionBetweenTwoPlayers(player1: MapPlayer, player2: MapPlayer) {
+        const validAggression = this.addAggressionLog(player1, player2)
+        // Add the log
+        if (validAggression) {
+            // Make them enemies
+            if (player1 !== PlayerStateFactory.StationSecurity) {
+                player1.setAlliance(player2, ALLIANCE_PASSIVE, false);
+            }
+
+            // If player 2 is Security, NEVER make them hostile
+            if (player2 !== PlayerStateFactory.StationSecurity) {
+                player2.setAlliance(player1, ALLIANCE_PASSIVE, false);
+            }
+        }
+        return validAggression;
     }
 
     /**
@@ -280,6 +280,20 @@ export class ForceEntity extends Entity {
                 p.setAlliance(forPlayer, ALLIANCE_PASSIVE, true);
             }
         });
+
+        // Handle player being targeted
+        const isTargeted = PlayerStateFactory.isTargeted(forPlayer);
+
+        // If we are targeted, make them hostile
+        if (isTargeted) {
+            PlayerStateFactory.StationSecurity.setAlliance(forPlayer, ALLIANCE_PASSIVE, false);
+            forPlayer.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, false);
+        }
+        // Otherwise make them allied
+        else {
+            PlayerStateFactory.StationSecurity.setAlliance(forPlayer, ALLIANCE_PASSIVE, true);
+            forPlayer.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
+        }
     }
 
     /**

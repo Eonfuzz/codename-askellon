@@ -51,4 +51,8 @@ export class UnitActionInteract implements UnitAction {
         this.prevLoc = Vector2.fromWidget(target);
     }
 
+
+    toString(): string {
+        return `InteractWith(${GetUnitName( this.targetWidget as unit )})`;
+    }
 }

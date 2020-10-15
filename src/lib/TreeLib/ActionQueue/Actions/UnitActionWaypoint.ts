@@ -39,4 +39,7 @@ export class UnitActionWaypoint implements UnitAction {
         IssuePointOrder(target, this.order, this.toPoint.x, this.toPoint.y); //Update order
     }
 
+    toString(): string {
+        return `Waypoint(x:${this.toPoint.x},y:${this.toPoint.y})`;
+    }
 }

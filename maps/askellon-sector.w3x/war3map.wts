@@ -5542,3 +5542,35 @@ STRING 1304
 - Invisible
 }
 
+STRING 1305
+// Items: I00K (Holynator), Name (Name)
+{
+Holynator
+}
+
+STRING 1306
+// Items: I00K (Holynator), Ubertip (Tooltip - Extended)
+{
+|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
+Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
+
+A close ranged shotgun that deals good damage
+|cff00ff00- Fires a spread of shots
+- Unaffected by Accuracy
+- Hitting a unit with all 6 shots crits
+- Can be heavily customised|r
+|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
+}
+
+STRING 1307
+// Items: I00K (Holynator), Tip (Tooltip - Basic)
+{
+Purchase Holynator
+}
+
+STRING 1308
+// Items: I00K (Holynator), Description (Description)
+{
+Weapon: Fires a powerful but short range blast
+}
+

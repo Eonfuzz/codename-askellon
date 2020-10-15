@@ -32,4 +32,7 @@ export class UnitActionGoToAction implements UnitAction {
     init(target: unit, queue: UnitQueue): void {
     }
 
+    toString(): string {
+        return `GoTo`;
+    }
 }

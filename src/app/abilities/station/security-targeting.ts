@@ -8,6 +8,8 @@ import { Unit, MapPlayer } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_SECURITY_TARGET_ALL } from "resources/ability-ids";
 import { PlayNewSound, PLAYER_COLOR } from "lib/translators";
+import { PlayerState } from "app/force/player-type";
+import { TARGETING_TOOLTIP, TARGETING_TOOLTIP_EXTENDED } from "resources/strings";
 
 export class StationSecurityTargetAbility implements Ability {
     constructor() {}
@@ -18,6 +20,7 @@ export class StationSecurityTargetAbility implements Ability {
         const idx = ABIL_SECURITY_TARGET_ALL.indexOf(GetSpellAbilityId());
         const who = MapPlayer.fromIndex(idx) ;
         const pCrew = PlayerStateFactory.getCrewmember( who );
+        const isTargeted = PlayerStateFactory.isTargeted(who);
 
         if (!PlayerStateFactory.isTargeted( who )) {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 32);
@@ -30,6 +33,9 @@ export class StationSecurityTargetAbility implements Ability {
             MessageAllPlayers(`${COL_GOOD}Security disengaging |r|cff${PLAYER_COLOR[who.id]}${pCrew.name}|r`);
             EventEntity.send(EVENT_TYPE.STATION_SECURITY_UNTARGETED_PLAYER, { source: u, data: { who: who }});
         }
+
+        BlzSetAbilityTooltip(GetSpellAbilityId(), TARGETING_TOOLTIP(PlayerStateFactory.isTargeted(who), who, pCrew), 0);
+        BlzSetAbilityExtendedTooltip(GetSpellAbilityId(), TARGETING_TOOLTIP_EXTENDED(PlayerStateFactory.isTargeted(who), who, pCrew), 0);
         return true;
     };
 

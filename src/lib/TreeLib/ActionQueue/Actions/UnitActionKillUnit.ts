@@ -33,4 +33,7 @@ export class UnitActionKillUnit implements UnitAction {
         IssueTargetOrder(target, "attack", this.killUnit); //Update order
     }
 
+    toString(): string {
+        return `KillUnit(${GetUnitName( this.killUnit )})`;
+    }
 }

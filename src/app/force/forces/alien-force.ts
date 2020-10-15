@@ -334,8 +334,10 @@ export class AlienForce extends ForceType {
             // forceEntity.repairAllAlliances(who); TODO
 
             // Make enemy of security
-            who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
-            PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
+            who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, false);
+            PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, false);
+
+
             who.name = unitName;
             who.color = PLAYER_COLOR_PURPLE;
 
@@ -358,6 +360,12 @@ export class AlienForce extends ForceType {
             const pData = PlayerStateFactory.get(who);
             who.name = pData.originalName;
             who.color = pData.originalColour;
+
+            // Make ally of security (if untargeted)
+            if (!PlayerStateFactory.isTargeted(who)) {
+                who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
+                PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
+            }
 
             // Restore hostility with alien minions
             PlayerStateFactory.getAlienAI().forEach(p => {

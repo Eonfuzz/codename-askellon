@@ -36,6 +36,7 @@ export class PlayerAgent {
 
     // A list of all agents
     private allAgents: unit[] = [];
+    private actionQueue = new Map<unit, UnitQueue>();
 
     // Agents and their state
     // private stateToUnits = new Map<AGENT_STATE, unit[]>();
@@ -64,6 +65,7 @@ export class PlayerAgent {
         if (idx >= 0) {
             // const unitState = this.unitToState.get(agent);
             Quick.Slice(this.allAgents, idx);
+            this.actionQueue.delete(agent);
             // this.unitToState.delete(agent);
             // this.unitToOrderQueue.delete(agent);
             // const unitsStateList = this.stateToUnits.get(unitState);
@@ -71,7 +73,7 @@ export class PlayerAgent {
             // Log.Information("Remove agent");
         }
         else {
-            Log.Information("Remove agent failed?!");
+            // Log.Information("Remove agent failed?!");
         }
     }
 
@@ -166,9 +168,10 @@ export class PlayerAgent {
                     if (queue) {
                         queue.addAction(attackOrder);
                         queue.addAction(newOrders);
+                        this.actionQueue.set(agent, queue);
                     }
                     else {
-                        ActionQueue.createUnitQueue(agent, attackOrder, newOrders);
+                        this.actionQueue.set(agent, ActionQueue.createUnitQueue(agent, attackOrder, newOrders));
                     }
                 }
             }
@@ -190,7 +193,7 @@ export class PlayerAgent {
                 this.enactStateOnAgent(agent, this.generateState(agent));
             }));
 
-            const queue = ActionQueue.createUnitQueue(agent, ...actions);
+            this.actionQueue.set(agent, ActionQueue.createUnitQueue(agent, ...actions));
         }
         if (state === AGENT_STATE.TRAVEL) {
             const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
@@ -203,6 +206,7 @@ export class PlayerAgent {
                     this.enactStateOnAgent(agent, this.generateState(agent));
                 }));
             }
+            this.actionQueue.set(agent, queue);
         }
         if (state === AGENT_STATE.BUILD_TUMOR) {
             // Log.Information("Wander start");
@@ -217,13 +221,11 @@ export class PlayerAgent {
                     actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 450));
                 }          
             }
-            actions.push(new UnitActionExecuteCode((unit) => {
-                PingMinimap(GetUnitX(unit), GetUnitY(unit), 10);
-            }))
             actions.push(new UnitActionExecuteCode((target, timeStep, queue) => {                    
                 IssueBuildOrderById(agent, ALIEN_STRUCTURE_TUMOR, GetUnitX(agent), GetUnitY(agent));
             }));
             const queue = ActionQueue.createUnitQueue(agent, ...actions);
+            this.actionQueue.set(agent, queue);
         }
         if (state === AGENT_STATE.EVOLVE) {
             // Log.Information("Wander start");
@@ -237,15 +239,12 @@ export class PlayerAgent {
                 if (point) {
                     if (i !== numWanders) actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 450));
                     if (i === numWanders) {
-                        actions.push(new UnitActionExecuteCode((unit) => {
-                            // Log.Information("Unit evolving!");
-                            PingMinimap(GetUnitX(unit), GetUnitY(unit), 10);
-                        }))
                         actions.push(new UnitActionImmediate(point, ImmediateOrders.evolve));
                     }
                 }          
             }
             const queue = ActionQueue.createUnitQueue(agent, ...actions);
+            this.actionQueue.set(agent, queue);
         }
     }
 
@@ -264,6 +263,23 @@ export class PlayerAgent {
                 actions.push(new UnitActionInteract(edge.unit.handle));
             });
             return ActionQueue.createUnitQueue(whichUnit, ...actions);
+        }
+    }
+
+    public debugUnit(whichUnit: unit) {
+        if (this.actionQueue.has(whichUnit)) {
+            const queue = this.actionQueue.get(whichUnit);
+            const uZone = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(whichUnit));
+
+            const pointZone = WorldEntity.getInstance().getPointZone(GetUnitX(whichUnit), GetUnitY(whichUnit));
+            Log.Information(`Agent ${GetUnitName(whichUnit)} for: `+this.player.name+`(${this.player.id}) in ${ uZone ? ZONE_TYPE[uZone.id] : 'invalid' }`);
+            Log.Information(`Point zone is: ${pointZone ? ZONE_TYPE[pointZone.id] : 'invalid'}`)
+            queue.allActions.forEach((action, index) => {
+                Log.Information(`${index}::${action}`)
+            });
+        }
+        else {
+            // Log.Information(`${this.player.name} does not have ${GetUnitName(whichUnit)}`);
         }
     }
 }

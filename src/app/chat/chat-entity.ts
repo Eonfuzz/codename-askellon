@@ -251,6 +251,11 @@ export class ChatEntity extends Entity {
                     UnitResetCooldown(GetEnumUnit());
                 });
             }
+            else if (message == "-checkai") {
+                EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    AIEntity.debugAgent(GetEnumUnit())
+                });
+            }
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
                 FogModifierStart(modifier);

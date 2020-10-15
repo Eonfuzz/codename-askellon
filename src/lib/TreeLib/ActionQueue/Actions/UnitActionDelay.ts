@@ -26,4 +26,7 @@ export class UnitActionDelay implements UnitAction {
         this.timer = 0;
     }
 
+    toString(): string {
+        return `Delay(${this.timer})`;
+    }
 }

@@ -84,6 +84,7 @@ import { ReactorDiagnosticsAbility } from "./station/reactor-diagnostics";
 import { VentPurgeAbility } from "./station/vent-purge";
 import { MinionEvolveAbility } from "./alien/minions/minion-evolve";
 import { StationSecurityTargetAbility } from "./station/security-targeting";
+import { Players } from "w3ts/globals/index";
 
 
 
@@ -101,6 +102,9 @@ export class AbilityHooks {
         GlobalCooldownAbilityEntity.register( ABIL_ACTIVATE_SEQUENCER_TEST );
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_DIAGNOSTICS );
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_PURGE_VENTS );
+        Players.forEach(p => {
+            GlobalCooldownAbilityEntity.register( ABIL_SECURITY_TARGET_ALL[p.id] );
+        });
     }
 
     public static getInstance() {

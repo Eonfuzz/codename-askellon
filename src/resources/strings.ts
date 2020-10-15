@@ -1,6 +1,7 @@
 import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, COL_PINK, COL_MISC, COL_ORANGE, } from "./colours";
 import { MapPlayer, Unit } from "w3ts/index";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { PLAYER_COLOR } from "lib/translators";
 
 export const STR_OPT_MESSAGE = `${COL_BAD}Role Preference|r`;
 export const STR_OPT_HUMAN = `Human`;
@@ -43,3 +44,11 @@ ${COL_MISC}[ ${slot1 ? `|r${GetItemName(slot1)}${COL_MISC}` : `Sample Required`}
 [ ${slot2 ? `|r${GetItemName(slot2)}${COL_MISC}` : `Sample Required`} ]
 [ ${slot3 ? `|r${GetItemName(slot3)}${COL_MISC}` : `Sample Required`} ]
 [ ${slot4 ? `|r${GetItemName(slot4)}${COL_MISC}` : `Sample Required`} ]`;
+
+
+export const TARGETING_TOOLTIP = (isTargeted: boolean, who: MapPlayer, crew: Crewmember) => `${isTargeted ? 'Untarget' : 'Target' } |cff${ PLAYER_COLOR[who.id] }${crew.name}|r`
+export const TARGETING_TOOLTIP_EXTENDED = (isTargeted: boolean, who: MapPlayer, crew: Crewmember) => `${COL_MISC}Used often as a first resort by tyrannical captains, and a last resort by naive captains.|r
+
+Current Status: ${isTargeted ? `${COL_ATTATCH}TARGETED|r` : `${COL_GOOD}UNTARGETED|r`}
+
+Causes the security to attack or ignore the designated crewmember.`

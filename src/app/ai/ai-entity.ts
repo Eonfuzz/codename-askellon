@@ -179,4 +179,14 @@ export class AIEntity extends Entity {
             Log.Error(e);
         }
     }
+
+    /**
+     * Logs all actions a unit is expected to do
+     * @param who 
+     */
+    public static debugAgent(who: unit) {
+        Log.Information("Checking AI...");
+        const i = this.getInstance();
+        i.playerAgents.forEach(a => a.debugUnit(who));
+    }
 }

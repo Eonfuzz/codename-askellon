@@ -23,6 +23,8 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { PlayerState } from "app/force/player-type";
 import { COL_MISC, COL_ATTATCH, COL_GOOD } from "resources/colours";
 import { PLAYER_COLOR } from "lib/translators";
+import { TARGETING_TOOLTIP, TARGETING_TOOLTIP_EXTENDED } from "resources/strings";
+import { GlobalCooldownAbilityEntity } from "app/abilities/global-ability-entity";
 
 export const TERMINAL_TIMEOUT_DISTANCE = 600;
 
@@ -47,14 +49,10 @@ export class SecurityTerminal extends Terminal {
                 const player = PlayerStateFactory.get(p);
                 const crew = player.getCrewmember();
 
-                BlzSetAbilityTooltip(abil, `${isTargeted ? 'Untarget' : 'Target' } |cff${ PLAYER_COLOR[idx] }${crew.name}|r`, 0);
-                BlzSetAbilityExtendedTooltip(abil, `${COL_MISC}Used often as a first resort by tyrannical captains, and a last resort by naive captains.|r
+                BlzSetAbilityTooltip(abil, TARGETING_TOOLTIP(isTargeted, p, crew), 0);
+                BlzSetAbilityExtendedTooltip(abil, TARGETING_TOOLTIP_EXTENDED(isTargeted, p, crew), 0);
 
-Current Status: ${isTargeted ? `${COL_ATTATCH}TARGETED|r` : `${COL_GOOD}UNTARGETED|r`}
-
-Causes the security to attack or ignore the designated crewmember.`, 0);
-
-                // EventEntity.send(EVENT_TYPE.STATION_SECURITY_TARGETED_PLAYER, { source: sourceUnit, { who: p }});
+                GlobalCooldownAbilityEntity.getInstance().onUnitAdd(terminalUnit.handle);
             }
                 
         })

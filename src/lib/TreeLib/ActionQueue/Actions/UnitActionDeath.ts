@@ -23,5 +23,7 @@ export class UnitActionDeath implements UnitAction {
             RemoveUnit(target);
         }
     }
-
+    toString(): string {
+        return `Death`;
+    }
 }

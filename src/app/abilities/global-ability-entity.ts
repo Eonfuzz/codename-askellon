@@ -95,7 +95,7 @@ export class GlobalCooldownAbilityEntity extends Entity {
      * Checks and adds a unit to our array of entries
      * @param u 
      */
-    private onUnitAdd(u: unit) {  
+    public onUnitAdd(u: unit) {  
         // try {
             // Loop through all our entries
             for (let index = 0; index < this.globalCooldownEntries.length; index++) {

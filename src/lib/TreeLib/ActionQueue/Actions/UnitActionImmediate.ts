@@ -28,4 +28,8 @@ export class UnitActionImmediate implements UnitAction {
         IssueImmediateOrder(target, this.order); //Update order
     }
 
+    toString(): string {
+        return `ImmediateOrder(${this.order})`;
+    }
+
 }
