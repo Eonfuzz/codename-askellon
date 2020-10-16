@@ -24,6 +24,7 @@ export class AskellonShip extends Ship {
      */
     constructor(state: ShipState, u: Unit) {
         super(state, u);
+        u.paused = false;
     }
 
     createEngine() {

@@ -9,7 +9,7 @@ import { COL_ATTATCH, COL_PINK } from "resources/colours";
 import { Interactables } from "../interactables";
 
 // Interacting with asteroids
-const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false);
+const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false, true);
 
 export function initShipInteractions() {
     const interaction: InteractableData = {

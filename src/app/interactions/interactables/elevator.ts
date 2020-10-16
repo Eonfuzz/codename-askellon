@@ -2,18 +2,12 @@
 import { InteractableData } from "./interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../../world/zone-id";
-import { PlayNewSoundOnUnit, COLOUR, console } from "../../../lib/translators";
-import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL, TERMINAL_PURGE, WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, TERMINAL_SECURITY } from "resources/unit-ids";
-import { WorldEntity } from "app/world/world-entity";
-// import { GeneEntity } from "app/shops/gene-entity";
+import { PlayNewSoundOnUnit, COLOUR, console } from "../../../lib/translators";import { WorldEntity } from "app/world/world-entity";
 import { Interactables } from "./interactables";
-import { GeneEntity } from "app/shops/gene-entity";
-import { EventEntity } from "app/events/event-entity";
-import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit } from "w3ts/index";
 import { COL_MISC } from "resources/colours";
-import { PlayerState } from "app/force/player-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
 
 class Elevator {
     unit: Unit;
@@ -157,13 +151,15 @@ export function initHatches() {
             targetUnit.setTimeScale(1.4);
             targetUnit.setAnimation(1);
 
-            if (targetUnit.typeId === HATCH_TYPE) 
+            if (targetUnit.typeId === HATCH_TYPE) {
                 KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp33", targetUnit, 15));
-
+            }
+            
             if (targetElevator && targetElevator.to) {
                 targetElevator.to.unit.setTimeScale(1.4);
-                if (targetElevator.to.unit.typeId === HATCH_TYPE) 
-                    KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 15));
+                if (targetElevator.to.unit.typeId === HATCH_TYPE) {
+                    KillSoundWhenDone(PlayNewSoundOnUnit("Sounds\\MetalHatch.mp3", targetElevator.to.unit, 15));                    
+                }
                 targetElevator.to.unit.setAnimation(1);
             }
         },
@@ -194,29 +190,4 @@ export function initHatches() {
     }
     Interactables.set(HATCH_TYPE, hatchInteractable);
     Interactables.set(LADDER_TYPE, hatchInteractable);
-}
-
-export const initWeaponsTerminals = () => {
-    
-    let i = 0;
-
-    const upgradeTerminalProcessing: InteractableData = {
-        onStart: (fromUnit: Unit, targetUnit: Unit) => {
-            // Log.Information("Using terminal");
-        },
-        onCancel: (fromUnit: Unit, targetUnit: Unit) => {
-        },
-        action: (fromUnit: Unit, targetUnit: Unit) => {
-            EventEntity.send(EVENT_TYPE.INTERACT_TERMINAL, { source: fromUnit, data: { target: targetUnit }});
-        }
-    }
-    Interactables.set(TERMINAL_WEAPONS, upgradeTerminalProcessing);
-    Interactables.set(TERMINAL_MEDICAL, upgradeTerminalProcessing);
-    Interactables.set(TERMINAL_GENE, upgradeTerminalProcessing);
-    Interactables.set(TERMINAL_VOID, upgradeTerminalProcessing);
-    Interactables.set(TERMINAL_RELIGION, upgradeTerminalProcessing);
-    Interactables.set(TERMINAL_REACTOR, upgradeTerminalProcessing);
-    Interactables.set(BRIDGE_CAPTAINS_TERMINAL, upgradeTerminalProcessing);
-    Interactables.set(TERMINAL_PURGE, upgradeTerminalProcessing);
-    Interactables.set(TERMINAL_SECURITY, upgradeTerminalProcessing);
 }

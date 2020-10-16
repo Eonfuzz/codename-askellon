@@ -44,7 +44,7 @@ export function PlayNewSoundOnUnit(soundPath: string, unit: Unit, volume: number
     SetSoundChannel(result, 0);
     SetSoundVolume(result, volume);
     SetSoundPitch(result, 1.0);
-    SetSoundDistances(result, 2000.0, 10000.0);
+    SetSoundDistances(result, 2000.0, 5000.0);
     SetSoundDistanceCutoff(result, 4500.0);
     AttachSoundToUnit(result, unit.handle);
     StartSound(result);

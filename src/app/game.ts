@@ -201,6 +201,7 @@ export class Game {
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.engine.mass = 800;
         mainShip.engine.velocityForwardMax = 1400;
+        mainShip.engine.goToAStop();
 
         BlzHideOriginFrames(false);
         BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), true);

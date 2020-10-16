@@ -1,5 +1,5 @@
 import { InteractionEvent } from "./interaction-event";
-import { initElevators, initHatches, initWeaponsTerminals } from "./interactables/elevator";
+import { initElevators, initHatches } from "./interactables/elevator";
 import { SMART_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
 import { initVendingInteraction } from "./interactables/vendor";
@@ -16,6 +16,7 @@ import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { initInteractionTerminals } from "./interactables/terminals";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -54,7 +55,7 @@ export class InteractionEntity extends Entity {
         try {
             initElevators();
             initHatches();
-            initWeaponsTerminals();
+            initInteractionTerminals();
             initVendingInteraction();
             initTesterInteractions();
 

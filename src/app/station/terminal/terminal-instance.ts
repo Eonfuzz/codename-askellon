@@ -4,8 +4,19 @@ import { AskellonEntity } from "../askellon-entity";
 import { Log } from "lib/serilog/serilog";
 import { syncData } from "lib/utils";
 import { Timers } from "app/timer-type";
+import { TERMINAL_REACTOR_DUMMY, TERMINAL_GENE_DUMMY, TERMINAL_RELIGION_DUMMY, TERMINAL_WEAPONS_DUMMY, TERMINAL_MEDICAL_DUMMY, TERMINAL_PURGE_DUMMY, TERMINAL_SECURITY_DUMMY, TERMINAL_VOID_DUMMY, TERMINAL_REACTOR, TERMINAL_GENE, TERMINAL_RELIGION, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_VOID, TERMINAL_PURGE, TERMINAL_SECURITY } from "resources/unit-ids";
 
 export const TERMINAL_TIMEOUT_DISTANCE = 600;
+
+export const terminalTypetoDummy = new Map<number, number>();
+terminalTypetoDummy.set(TERMINAL_REACTOR, TERMINAL_REACTOR_DUMMY);
+terminalTypetoDummy.set(TERMINAL_GENE, TERMINAL_GENE_DUMMY);
+terminalTypetoDummy.set(TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY);
+terminalTypetoDummy.set(TERMINAL_WEAPONS, TERMINAL_WEAPONS_DUMMY);
+terminalTypetoDummy.set(TERMINAL_MEDICAL, TERMINAL_MEDICAL_DUMMY);
+terminalTypetoDummy.set(TERMINAL_VOID, TERMINAL_VOID_DUMMY);
+terminalTypetoDummy.set(TERMINAL_PURGE, TERMINAL_PURGE_DUMMY);
+terminalTypetoDummy.set(TERMINAL_SECURITY, TERMINAL_SECURITY_DUMMY);
 
 /**
  * Does upgrades
@@ -15,26 +26,25 @@ export class Terminal {
 
     public static id: number = 0;
 
-    private sourceUnit: Unit;
-    private baseUnit: Unit;
-    private terminalUnit: Unit;
+    protected sourceUnit: Unit;
+    protected baseUnit: Unit;
+    protected terminalUnit: Unit;
 
-    private terminalCastAbilityTrigger: Trigger;
-    private unselectionTrigger: Trigger;
+    protected terminalCastAbilityTrigger: Trigger;
+    protected unselectionTrigger: Trigger;
     
-    constructor(sourceUnit: Unit, baseUnit: Unit, terminalUnit: Unit) {
+    constructor(sourceUnit: Unit, baseUnit: Unit) {
         this.sourceUnit = sourceUnit;
         this.baseUnit = baseUnit;
-        this.terminalUnit = terminalUnit;
+
+        this.createTerminalUnit(sourceUnit, baseUnit);
 
         this.terminalCastAbilityTrigger = new Trigger();
-        this.terminalCastAbilityTrigger.registerUnitEvent(terminalUnit, EVENT_UNIT_SPELL_CAST);
+        this.terminalCastAbilityTrigger.registerUnitEvent(this.terminalUnit, EVENT_UNIT_SPELL_CAST);
         this.terminalCastAbilityTrigger.addAction(() => this.onCast());
 
         this.unselectionTrigger = new Trigger();
-        const syncher = syncData(`INT_SEL_${Terminal.id++}`, this.sourceUnit.owner, (self, data: string) => {
-            this.terminalUnit.kill();
-        });
+        const syncher = syncData(`INT_SEL_${Terminal.id++}`, this.sourceUnit.owner, (self, data: string) => this.onUnitUnselect());
 
         this.unselectionTrigger.registerPlayerUnitEvent(this.sourceUnit.owner, EVENT_PLAYER_UNIT_DESELECTED, null);
         this.unselectionTrigger.addAction(() => {
@@ -42,16 +52,24 @@ export class Terminal {
             if (u === this.terminalUnit.handle) syncher("Data");
         });
 
-        terminalUnit.maxMana = AskellonEntity.getMaxPower();
-        terminalUnit.mana = AskellonEntity.getCurrentPower();
+    }
+
+    /**
+     * Creates our terminal unit, can be overridden
+     */
+    public createTerminalUnit(sourceUnit: Unit, fromUnit: Unit) {
+        this.terminalUnit = new Unit(sourceUnit.owner, terminalTypetoDummy.get(fromUnit.typeId), fromUnit.x, fromUnit.y, bj_UNIT_FACING);
+        this.terminalUnit.maxMana = AskellonEntity.getMaxPower();
+        this.terminalUnit.mana = AskellonEntity.getCurrentPower();
 
         // Wait a frame and select our unit
         Timers.addTimedAction(0, () => {
-            SelectUnitForPlayerSingle(terminalUnit.handle, terminalUnit.owner.handle);
+            SelectUnitForPlayerSingle(this.terminalUnit.handle, this.terminalUnit.owner.handle);
         });
+
     }
 
-    onCast() {
+    protected onCast() {
         const abil = GetSpellAbilityId();
         const level = GetUnitAbilityLevel(this.terminalUnit.handle, abil);
         const manaCost = BlzGetAbilityManaCost(abil, level-1);
@@ -72,6 +90,10 @@ export class Terminal {
             this.terminalUnit.mana = AskellonEntity.getCurrentPower();
         }
         return true;
+    }
+
+    protected onUnitUnselect() {
+        this.terminalUnit.kill();
     }
 
     onDestroy() {

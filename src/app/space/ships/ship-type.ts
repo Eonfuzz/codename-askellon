@@ -155,4 +155,8 @@ export abstract class ShipWithFuel extends Ship {
         // Now apply the fuel change
         this.unit.mana = this.shipFuel;
     }
+
+    public onFuelUseage(amount: number) {
+        this.shipFuel -= amount;
+    }
 }

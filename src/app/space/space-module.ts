@@ -27,6 +27,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
 import { SpaceMiningEntity } from "./space-mining-entity";
+import { AskellonEntity } from "app/station/askellon-entity";
 
 // For ship bay instansiation
 declare const udg_ship_zones: rect[];
@@ -109,7 +110,12 @@ export class SpaceEntity extends Entity {
         .addListener( new EventListener(EVENT_TYPE.SHIP_ENTERS_SPACE, (self, data) => this.onShipEntersSpace(data.source, data.data.ship)) )
         .addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.goal)) );
     
-        this.initShips();
+        try {
+            this.initShips();
+        }
+        catch(e) {
+            Log.Error(`Failed initing ships ${e}`);
+        }
     }
     
     /**
@@ -118,15 +124,8 @@ export class SpaceEntity extends Entity {
     shipDeathEvent = new Trigger();
     shipMoveEvent = new Trigger();
     initShips() {
-        const spaceX = this.spaceRect.centerX;
-        const spaceY = this.spaceRect.centerY;
 
-        const forceEntity = ForceEntity.getInstance();
-
-        this.mainShip = new AskellonShip(ShipState.inSpace, Unit.fromHandle(
-            CreateUnit(PlayerStateFactory.NeutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING))
-        );
-        this.mainShip.unit.setTimeScale(0.5);
+        this.mainShip = new AskellonShip(ShipState.inSpace, AskellonEntity.getInstance().askellonUnit);
         
         this.shipDeathEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_DEATH);
         this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_ORDER);
@@ -392,28 +391,27 @@ export class SpaceEntity extends Entity {
             else if (castAbilityId === this.shipAfterburnerAbilityId) {
                 ship.engine.engageAfterburner(Unit.fromHandle(unit).owner);
             }
-            else if (castAbilityId === ABIL_LEAVE_ASKELLON_CONTROLS) {
-                ship.onLeaveShip();
-            }
 
-            const pData = PlayerStateFactory.get(ship.inShip[0].owner);
-            const crew = pData.getCrewmember();
 
-            const isPilot = crew && crew.unit === ship.inShip[0] && crew.role === ROLE_TYPES.PILOT;
-            let manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
-            if (isPilot) {
-                manaCost = Math.min(manaCost-1, 0);
-            }
 
             if (ship instanceof ShipWithFuel) {
-                ship.shipFuel -= manaCost;
+                const pData = PlayerStateFactory.get(ship.inShip[0].owner);
+                const crew = pData.getCrewmember();
+               
+                const isPilot = crew && crew.unit === ship.inShip[0] && crew.role === ROLE_TYPES.PILOT;
+                let manaCost = BlzGetUnitAbilityManaCost(u.handle, castAbilityId, GetUnitAbilityLevel(unit, castAbilityId)-1);
+                if (isPilot) {
+                    manaCost = Math.min(manaCost-1, 0);
+                }
+                ship.onFuelUseage( manaCost )
             }
         });
     }
 
     public getShipForUnit(who: Unit) {
-        if (this.mainShip && this.mainShip.unit === who) 
+        if (this.mainShip && this.mainShip.unit.handle === who.handle) {
             return this.mainShip;
+        }
         else if (this.shipUnitDict.has(who)) 
             return this.shipUnitDict.get(who);
     }

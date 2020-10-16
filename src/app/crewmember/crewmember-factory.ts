@@ -218,7 +218,7 @@ export class CrewFactory {
         
         nUnit.x = spawnLocation.x;
         nUnit.y = spawnLocation.y;
-        WorldEntity.getInstance().travel(crewmember.unit, location.id, true);
+        WorldEntity.getInstance().travel(crewmember.unit, location.id);
 
         BlzShowUnitTeamGlow(crewmember.unit.handle, false);
         BlzSetUnitName(nUnit.handle, crewmember.role);

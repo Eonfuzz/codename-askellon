@@ -9,6 +9,9 @@ import { Quick } from "lib/Quick";
 import { SoundRef } from "app/types/sound-ref";
 import { PlayNewSound } from "lib/translators";
 import { COL_ORANGE, COL_ATTATCH } from "resources/colours";
+import { Unit } from "w3ts/index";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 
 /**
  * An interface that holds information about askellon
@@ -34,6 +37,8 @@ export class AskellonEntity extends Entity {
         else {
             this.currentPower += this.powerRegeneration * this._timerDelay;
         }
+        this.askellonUnit.mana = this.currentPower;
+        this.askellonUnit.maxMana = this.maxPower;
     }
 
     // Starts at 100 max power
@@ -44,6 +49,17 @@ export class AskellonEntity extends Entity {
     public currentPower = 0;
 
     public reactorWarningSound = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
+
+    public askellonUnit: Unit;
+
+    constructor() {
+        super();
+
+        const spaceX = GetRectCenterX(gg_rct_Space);
+        const spaceY = GetRectCenterY(gg_rct_Space);
+        this.askellonUnit = Unit.fromHandle(CreateUnit(PlayerStateFactory.NeutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, bj_UNIT_FACING));
+        this.askellonUnit.setTimeScale(0.1);
+    }
 
     /**
      * Static API

@@ -32,6 +32,8 @@ export class TheAskellon {
     floors: Map<ZONE_TYPE, ZoneWithExits> = new Map();
     allFloors: Zone[] = [];
 
+    private playersInAskellon: MapPlayer[] = [];
+
     private pilot: Crewmember | undefined;
 
     constructor() {
@@ -138,14 +140,6 @@ export class TheAskellon {
         return this.pilot;
     }
 
-    /**
-     * Gets a list of players currently on the Aksellon
-     */
-    public getPlayers(): MapPlayer[] {
-        const result: MapPlayer[] = [];
-        Array.from(this.floors).forEach(v => v[1].getPlayersInZone().forEach(p => result.push(p)));
-        return result;
-    }
 
     private onSecurityDamage(destroyedSecurity: unit, vandal: unit) {
         Log.Information("Ship found security damage!");
@@ -155,10 +149,22 @@ export class TheAskellon {
         Log.Information("Ship found security repair!");
     }
 
-    public onEnterAskellon(who: Unit, whichFloor: Zone) {
+    public onEnter(who: Unit, whichFloor: Zone) {
         if (who && who.owner) {
+            // Log.Information("Entering "+who.name);
+            this.playersInAskellon.push(who.owner);
             SetCameraBoundsToRectForPlayerBJ(who.owner.handle, gg_rct_stationtempvision);
             if (who.owner.handle === GetLocalPlayer()) BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
         }
+    }
+
+    public onLeave(who: Unit, whichFloor: Zone) {
+        if (who && who.owner) {
+            this.playersInAskellon.splice( this.playersInAskellon.indexOf(who.owner), 1 );
+        }
+    }
+
+    public getPlayers() {
+        return this.playersInAskellon.slice();
     }
 }

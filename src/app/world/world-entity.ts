@@ -137,12 +137,17 @@ export class WorldEntity extends Entity {
                 const newLoc = this.getZone(to);
                 newLoc && newLoc.displayEnteringMessage(unit.owner);
 
+                // Log.Information("Not subtravel");
+
                 const oldZoneInAskellon = oldZone && this.askellon.findZone(oldZone.id)
                 const newZoneInAskellon = !!this.askellon.findZone(nZone.id);
 
                 // Log.Information(`Old ${oldZoneInAskellon} New ${newZoneInAskellon}`);
                 if (!oldZoneInAskellon && newZoneInAskellon) {
-                    this.askellon.onEnterAskellon(crew.unit, nZone);
+                    this.askellon.onEnter(crew.unit, nZone);
+                }
+                else if (!newZoneInAskellon && oldZoneInAskellon) {
+                    this.askellon.onLeave(crew.unit, nZone);
                 }
 
                 EventEntity.getInstance().sendEvent(
