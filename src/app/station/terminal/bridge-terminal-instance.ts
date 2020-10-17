@@ -26,7 +26,9 @@ export class BridgeTerminal extends Terminal {
         this.terminalUnit = askellonUnit;
         askellonUnit.owner = this.sourceUnit.owner;
 
+        SetCameraFieldForPlayer(this.sourceUnit.owner.handle, CAMERA_FIELD_TARGET_DISTANCE, 600, 0);
         Timers.addTimedAction(0, () => {
+            SetCameraFieldForPlayer(this.sourceUnit.owner.handle, CAMERA_FIELD_TARGET_DISTANCE, 2400, 2);
             SelectUnitForPlayerSingle(this.terminalUnit.handle, this.terminalUnit.owner.handle);
             SetCameraBoundsToRectForPlayerBJ(this.terminalUnit.owner.handle, gg_rct_Space);
             BlzChangeMinimapTerrainTex("minimap-space.blp");
@@ -68,6 +70,7 @@ export class BridgeTerminal extends Terminal {
         if (this.sourceUnit.owner.handle === GetLocalPlayer()) BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
 
         Timers.addTimedAction(0, () => {
+            SetCameraFieldForPlayer(this.sourceUnit.owner.handle, CAMERA_FIELD_TARGET_DISTANCE, bj_CAMERA_DEFAULT_DISTANCE, 1);
             SelectUnitForPlayerSingle(this.sourceUnit.handle, this.sourceUnit.owner.handle);
             SetCameraPositionForPlayer(this.sourceUnit.owner.handle, this.sourceUnit.x, this.sourceUnit.y);
         });

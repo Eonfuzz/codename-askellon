@@ -6,7 +6,6 @@ import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 
-/** @noSelfInFile **/
 const PSIONIC_EYE_DURATION = 5;
 const PSIONIC_EYE_INTERVAL = 1;
 

@@ -18,9 +18,8 @@ import { SFX_LASER_3 } from "resources/sfx-paths";
 import { ABIL_ASKELLON_BROADSIDE_LEFT } from "resources/ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { PlayNewSoundOnUnit } from "lib/translators";
+import { Timers } from "app/timer-type";
 
-export const ventPurgeWarning = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
-export const ventPurgeWarmup = new SoundRef('Sounds\\SequencerActive.mp3', false);
 
 export class LaserBroadsideAbility implements Ability {
     private timeElapsed = 0;
@@ -70,8 +69,16 @@ export class LaserBroadsideAbility implements Ability {
 
                 this.shotTiming.splice(0, 1);
                 this.shotOffset.splice(0, 1);
-
-                PlayNewSoundOnUnit("Sounds\\Laser5.mp3", this.castingUnit, 30);
+                    
+                const snd = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
+                this.shakingPlayers.forEach(p => {
+                    // Log.Information(`Player ${p.name}`)
+                    if (p.handle === GetLocalPlayer()) snd.playSound();
+                });
+                
+                Timers.addTimedAction(0.2, () => {
+                    PlayNewSoundOnUnit("Sounds\\Laser5.mp3", this.castingUnit, 30);
+                })
 
                 const z = getZFromXY(pointOffset.x, pointOffset.y);
                 const bulletLoc = new Vector3(pointOffset.x, pointOffset.y, z+5);

@@ -20,6 +20,9 @@ export abstract class Ship {
     // Units in the ship
     public inShip: Unit[] = [];
 
+    // THe ship ignores commands
+    protected ignoreCommands = false;
+
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
@@ -73,6 +76,13 @@ export abstract class Ship {
     public abstract onDeath(killer: Unit);
     public abstract onMoveOrder(targetLoc: Vector2);
     public abstract onLeaveShip(isDeath?: boolean);
+
+    public stopMovement() {
+        if (this.engine && !this.ignoreCommands) {
+            this.engine.goToAStop();
+        }
+    }
+
 }
 
 export abstract class ShipWithFuel extends Ship {

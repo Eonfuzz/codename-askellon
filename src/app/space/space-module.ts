@@ -208,7 +208,7 @@ export class SpaceEntity extends Entity {
 
             // If we are stopping, just get ship to stop
             if (isStop || isHold) {
-                return ship.engine.goToAStop();
+                return ship.stopMovement();
             }
             if (GetOrderTargetUnit()) targetLoc = new Vector2(GetUnitX(GetOrderTargetUnit()), GetUnitY(GetOrderTargetUnit()));
             else targetLoc = new Vector2(GetOrderPointX(), GetOrderPointY());

@@ -92,6 +92,13 @@ export class Vector2 {
         return Rad2Deg(Atan2(where.y-this.y, where.x-this.x));
     }
 
+    /**
+     * Assumes the vector is getting an angle from 0,0 to this
+     */
+    getAngle() {
+        return Rad2Deg(Atan2(this.y, this.x));
+    }
+
     distanceTo(where: Vector2) {
         return where.subtract(this).getLength();
     }

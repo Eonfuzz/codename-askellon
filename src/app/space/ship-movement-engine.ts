@@ -1,6 +1,7 @@
 import { Vector2 } from "../types/vector2";
 import { Timer, MapPlayer } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
+import { Log } from "lib/serilog/serilog";
 
 interface ShipChemTrail {
     effect: effect;
@@ -28,9 +29,12 @@ export class SpaceMovementEngine {
     private afterburnerTimer = 0;
 
     private velocity = 0.0;
+    private previousMomentum = 0.0;
     public velocityForwardMax = 550.0;
 
-    public maxTurningArc = 60;
+    // How many degrees the unit can turn per second while going 100
+    public baseTurningArc = 10;
+
     // Only used when moving backwards
 
     // Are we moving backwards?
@@ -53,7 +57,20 @@ export class SpaceMovementEngine {
     public updateThrust(deltaTime: number) {
         // Update chem trails        
         // Plot the goal towards our turning arc
-        let thrust = this.goal.normalise();
+        const cThrustAngle = this.thrust.getAngle();
+        const nGoalAngle = this.goal.getAngle();
+
+
+        const d = (nGoalAngle - cThrustAngle + 180) % 360 - 180;
+
+        // Log.Information()
+
+        const interp = d < 0 
+            ? Math.max(d, -(this.baseTurningArc * (this.previousMomentum / 100)))
+            : Math.min(d,  (this.baseTurningArc * (this.previousMomentum / 100)));
+
+        const nAngle = cThrustAngle + interp;
+        let thrust = new Vector2(0, 0).applyPolarOffset(nAngle, 1);
 
         // Now apply velocity
         this.thrust = thrust.multiplyN( this.velocity );
@@ -84,7 +101,7 @@ export class SpaceMovementEngine {
         }
 
         // Update facing angle from momentum
-        if (length > 1) this.updateFacingAngle();
+        if (length > 0) this.updateFacingAngle();
 
         return this;
     }
@@ -100,6 +117,7 @@ export class SpaceMovementEngine {
             const modifier = 1 + (this.afterburnerTimer+1)/2;
             delta = delta.multiplyN(modifier);
         }
+        this.previousMomentum = delta.getLength() / deltaTime;
         this.position = this.position.add(delta);
 
         if (this.position.x < minX) this.position.x = minX;
@@ -126,6 +144,7 @@ export class SpaceMovementEngine {
         if (!this.isMovingBackwards && this.velocity > 0) {
             this.isGoingToStop = true;
         }
+        this.goal = this.thrust.addN(0);
         return this;
     }
 

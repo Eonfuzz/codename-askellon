@@ -10,6 +10,7 @@ import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-targ
 import { Vector3 } from "app/types/vector3";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { UNIT_IS_FLY } from "resources/ability-ids";
+import { Timers } from "app/timer-type";
 
 export abstract class ShipAnimation {
     protected totalTime: number = 0;
@@ -123,7 +124,7 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
 
 export class ShipAnimationEnterStationDock extends ShipAnimation {
 
-    private shipFlySound = new SoundRef("Sounds\\EngineFadeInSound1.mp3", false);
+    private shipshipLandSound = new SoundRef("Sounds\\Ships\\ShipLand.mp3", false);
 
     private timeCounterForDustWave = 0;
 
@@ -157,6 +158,10 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
         this.ship.unit.setflyHeight(180, 120);
         BlzSetUnitFacingEx(this.ship.unit.handle, 90);
         SetUnitAnimationByIndex(this.ship.unit.handle, 4);
+
+        Timers.addTimedAction(1.90, () => {
+            this.shipshipLandSound.playSoundOnUnit(this.ship.unit.handle, 30);
+        });
 
         // huh, we could use the parabolic mover here
         // Flip the axis

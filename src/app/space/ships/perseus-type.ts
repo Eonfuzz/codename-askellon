@@ -2,7 +2,7 @@ import { Unit, Effect } from "w3ts/index";
 import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { UNIT_IS_FLY } from "resources/ability-ids";
+import { UNIT_IS_FLY, HOLD_ORDER_ID } from "resources/ability-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { Ship, ShipWithFuel } from "./ship-type";
@@ -160,11 +160,20 @@ export class PerseusShip extends ShipWithFuel {
     }
 
     public onMoveOrder(targetLoc: Vector2) {
-        if (this.engine) {
+        // Log.Information("Move order!");
+        if (this.engine && !this.ignoreCommands) {
             this.engine.setGoal(targetLoc);
             this.engine.increaseVelocity();
+
+            this.ignoreCommands = true;
+            Timers.addTimedAction(0, () => {
+                this.unit.issueImmediateOrder(HOLD_ORDER_ID);
+                Timers.addTimedAction(0, () => {
+                    this.ignoreCommands = false;
+                });
+            });
         }
-        else {
+        else if (!this.engine) {
             Log.Error("Ship is receiving orders while not piloted WTF");
         }
     }
