@@ -7,7 +7,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { UNIT_ID_CRATE, UNIT_ID_MANSION_DOOR, UNIT_ID_STATION_SECURITY_TURRET } from "resources/unit-ids";
+import { UNIT_ID_CRATE, UNIT_ID_MANSION_DOOR, UNIT_ID_STATION_SECURITY_TURRET, UNIT_ID_STATION_SECURITY_CAMERA } from "resources/unit-ids";
 import { LootTable } from "./loot-table/loot-table";
 import { GUN_LOOT_TABLE, MISC_ITEM_TABLE, MEDICAL_LOOT_TABLE } from "./loot-table/loot";
 import { Door } from "./door";
@@ -84,9 +84,10 @@ export class SecurityEntity extends Entity {
         // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
         if (uType !== UNIT_ID_STATION_SECURITY_POWER &&
             uType !== UNIT_ID_MANSION_DOOR &&
-            uType !== UNIT_ID_STATION_SECURITY_TURRET) return false;
+            uType !== UNIT_ID_STATION_SECURITY_TURRET &&
+            uType !== UNIT_ID_STATION_SECURITY_CAMERA) return false;
 
-            this.stationSecurityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
+        this.stationSecurityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
 
         if (u.typeId === UNIT_ID_MANSION_DOOR) {
             const door = new Door(u, false);
@@ -128,12 +129,17 @@ export class SecurityEntity extends Entity {
                 this.isDestroyedMap.set(unit, true);
                 // Pause the unit
                 unit.paused = true;
+                unit.setTimeScale(0);
 
                 // If unit type is turret play its burrow animation
                 if (unit.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
                     unit.setTimeScale(0.2);
                     unit.setAnimation(3);
                     unit.addAnimationProps('alternate', true);
+                }
+                else if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
+                    unit.setVertexColor(0, 0, 0, 255);
+                    
                 }
 
                 // Publish event that a security object is damaged
@@ -168,6 +174,7 @@ export class SecurityEntity extends Entity {
             this.isDestroyedMap.set(unit, false);
             // Set unit hp to full
             SetUnitLifePercentBJ(u, 100);
+            unit.setTimeScale(1);
             // Pause the unit
             unit.paused = false;
 
@@ -176,6 +183,9 @@ export class SecurityEntity extends Entity {
                 unit.setTimeScale(1);
                 unit.setAnimation(1);
                 unit.addAnimationProps('alternate', false);
+            }
+            else if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
+                unit.setVertexColor(255, 255, 255, 255);
             }
 
             // Publish event that a security object is repaired

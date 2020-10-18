@@ -5994,3 +5994,9 @@ STRING 1390
 Q
 }
 
+STRING 1391
+// Units: h00C (Camera), Name (Name)
+{
+Camera
+}
+

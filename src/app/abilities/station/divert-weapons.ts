@@ -54,10 +54,7 @@ export class DivertToWeaponsAbiility implements Ability {
     };
 
     public destroy() {
-        Log.Information("Weapon end!");
-        Players.forEach(p => {
-            p.setTechResearched(ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS, 0);
-        })
+        Players.forEach(p => p.setTechResearched(ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS, 0))
         return true;
     };
 }

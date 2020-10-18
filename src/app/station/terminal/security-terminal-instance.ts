@@ -7,12 +7,15 @@ import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { TARGETING_TOOLTIP, TARGETING_TOOLTIP_EXTENDED } from "resources/strings";
 import { GlobalCooldownAbilityEntity } from "app/abilities/global-ability-entity";
+import { UNIT_ID_STATION_SECURITY_CAMERA } from "resources/unit-ids";
 
 /**
  * Does upgrades
  * Gets access to station wide abilities
  */
 export class SecurityTerminal extends Terminal {
+
+    private allCameras = CreateGroup();
     constructor(sourceUnit: Unit, baseUnit: Unit) {
         super(sourceUnit, baseUnit);
 
@@ -34,6 +37,25 @@ export class SecurityTerminal extends Terminal {
                 GlobalCooldownAbilityEntity.getInstance().onUnitAdd(this.terminalUnit.handle);
             }
                 
-        })
+        });
+
+        // Add vision of ALL cameras
+        GroupEnumUnitsOfPlayer(this.allCameras, PlayerStateFactory.StationSecurity.handle, Filter(() => {
+            return GetUnitTypeId(GetFilterUnit()) === UNIT_ID_STATION_SECURITY_CAMERA;
+        }));
+
+
+        ForGroup(this.allCameras, () => {
+            UnitShareVision(GetEnumUnit(), this.sourceUnit.owner.handle, true);
+        });
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        ForGroup(this.allCameras, () => {
+            UnitShareVision(GetEnumUnit(), this.sourceUnit.owner.handle, false);
+        });
+
+        DestroyGroup(this.allCameras);
     }
 }
