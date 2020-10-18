@@ -23,7 +23,7 @@ export const SFX_CATAPULT_MISSILE = "abilities\\weapons\\catapult\\catapultmissi
 export const SFX_CONFLAGRATE_GREEN = "Conflagrate Green.mdx";
 
 export const SFX_FLASH_HEAL = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl";
-export const SFX_RED_SINGULARITY = "war3mapImported\\Singularity I Red.mdl";
+export const SFX_RED_SINGULARITY = "war3mapImported\\SingularityRed.mdx";
 export const SFX_DARK_RITUAL = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
 export const SFX_DARK_SUMMONING = "Abilities\\Spells\\Undead\\Darksummoning\\DarkSummonTarget.mdl";
 export const SFX_HOWL = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl";

@@ -70,6 +70,7 @@ export class Game {
         SetMapMusic("Music\\MechanicusLostCivilization.mp3", false, 0);
         // SetMusicVolume(20);
         PlayMusic("Music\\MechanicusLostCivilization.mp3");
+
         SetMusicVolume(30);
         PauseGameOff();
 
@@ -231,7 +232,7 @@ export class Game {
                 Log.Information("TEST LOBBY DETECTED")
                 Players.forEach(p => p.setState(PLAYER_STATE_RESOURCE_GOLD, 999999));
                 SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
-                BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
+                // BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
                 Players.forEach(p => {            
                     SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
                 })
@@ -250,7 +251,7 @@ export class Game {
             BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), true);            
         }
         
-        BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
+        // BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
         Players.forEach(p => {            
             SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
         })

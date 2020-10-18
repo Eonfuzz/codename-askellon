@@ -3,6 +3,7 @@ import { SpaceMovementEngine } from "../ship-movement-engine";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { UNIT_IS_FLY } from "resources/ability-ids";
 import { ShipState } from "./ship-state-type";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * This is the ship people ride yo

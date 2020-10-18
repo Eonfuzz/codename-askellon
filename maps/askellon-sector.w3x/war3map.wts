@@ -929,13 +929,13 @@ W
 }
 
 STRING 237
-// Abilities: AC02 (Target Player 2), Hotkey (Hotkey - Normal)
+// Abilities: A01P (Reactor Diagnostics), Hotkey (Hotkey - Normal)
 {
 W
 }
 
 STRING 238
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: AC02 (Target Player 2), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1097,7 +1097,7 @@ W
 }
 
 STRING 280
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2528,7 +2528,7 @@ W
 }
 
 STRING 630
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3368,7 +3368,7 @@ W
 }
 
 STRING 851
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -4777,7 +4777,7 @@ Reactor Diagnostics
 }
 
 STRING 1169
-// Abilities: A01P (Reactor Diagnostics), Hotkey (Hotkey - Normal)
+// Abilities: A01C (Purge Service Tunnels), Hotkey (Hotkey - Normal)
 {
 X
 }
@@ -4967,7 +4967,7 @@ Purge Service Tunnels
 }
 
 STRING 1206
-// Abilities: A01C (Purge Service Tunnels), Hotkey (Hotkey - Normal)
+// Abilities: AC10 (Target Player 10), Hotkey (Hotkey - Normal)
 {
 X
 }
@@ -5159,7 +5159,7 @@ STRING 1240
 }
 
 STRING 1241
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -5440,12 +5440,6 @@ STRING 1288
 Target Player 10
 }
 
-STRING 1289
-// Abilities: AC10 (Target Player 10), Hotkey (Hotkey - Normal)
-{
-X
-}
-
 STRING 1290
 // Abilities: AC10 (Target Player 10), Ubertip (Tooltip - Normal - Extended)
 {
@@ -5642,6 +5636,360 @@ Magnetic Fusilade
 
 STRING 1321
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1322
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems - Tier 1
+}
+
+STRING 1323
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nRestores Reactor Functionality|n|cff00ff00- Power Generation increased by 0.25/s|n- Enables Diagnostic Tools|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- Power Surges effect 1 less floor|r
+}
+
+STRING 1324
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nEnables Secondary Cores|n|cff00ff00- Maximum Power increased by 25|n- Enables Service Tunnel Purging|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- Purge delay reduced by 3 seconds|r|n|n|cff8a6df2Infestation [ALIEN]|n- Purge damage versus aliens halved|n- Purge damage versus humans doubled|r
+}
+
+STRING 1325
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nConnects to tertiary modules|n|cff00ff00- Maximum Power increased by 25|n- Askellon Armor increased by 2|n- Enables Rotate Shield Frequency|n- Enables Overcharge Lasers|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- Overcharge Lasers also doubles Security Turret attack speed|r|n|n|cff8a6df2Infestation [ALIEN]|n- Overcharge Lasers causes Security Turrets to attack everything|r
+}
+
+STRING 1326
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nConnects to tertiary modules|n|cff00ff00- TODO|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- TODO|r|n|n|cff8a6df2Infestation [ALIEN]|n- TODO|r
+}
+
+STRING 1327
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 1328
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 61%|r|n|cffd45e19New Damage Bonus: 77%|r
+}
+
+STRING 1329
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 77%|r|n|cffd45e19New Damage Bonus: 94%|r
+}
+
+STRING 1330
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 94%|r|n|cffd45e19New Damage Bonus: 115%|r
+}
+
+STRING 1331
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 115%|r|n|cffd45e19New Damage Bonus: 136%|r
+}
+
+STRING 1332
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
+}
+
+STRING 1333
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems - Tier 1
+}
+
+STRING 1334
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems - Tier 2
+}
+
+STRING 1335
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems - Tier 3
+}
+
+STRING 1336
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems - Tier 4
+}
+
+STRING 1337
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 1338
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 1339
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 1340
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 1341
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 1342
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 1343
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems - Tier 2
+}
+
+STRING 1344
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems - Tier 3
+}
+
+STRING 1345
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 1346
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems - Tier 4
+}
+
+STRING 1347
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 1348
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 1349
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 1350
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 1351
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 1352
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1353
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1354
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1355
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1356
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1357
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1358
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1362
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
+{
+ranged
+}
+
+STRING 1364
+// Abilities: A01W (Dissonant Overcharge), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1367
+// Abilities: A01W (Dissonant Overcharge), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 1368
+// Abilities: A01W (Dissonant Overcharge), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 1369
+// Abilities: A01W (Dissonant Overcharge), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 1373
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 1374
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 1375
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 1376
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1378
+// Upgrades: R00B (Barrage), Name (Name)
+{
+DivertPowerToWeaponsUpgrade
+}
+
+STRING 1379
+// Upgrades: R00B (Barrage), effect2 (Effect 2)
+{
+ratr
+}
+
+STRING 1380
+// Upgrades: R00B (Barrage), effect1 (Effect 1)
+{
+rats
+}
+
+STRING 1381
+// Abilities: A01W (Dissonant Overcharge), Name (Name)
+{
+Dissonant Overcharge
+}
+
+STRING 1382
+// Abilities: A01W (Dissonant Overcharge), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080While many scientists built their energy shields to change between many frequencies, only our experts at TheroCorp considered having shields use many different frequencies simultaneously, preventing field collapse with our patented magnetic stabilizers. Contact us and upgrade today!|r|n|nReduces all damage taken by the station from outside sources by |cff00ff0080%|r for |cff00ff0030 seconds.|r|n|n|cffd45e19To prevent catastrophic heat buildup, please only use dissonance mode for short periods. Warranty doesn't cover use of dissonance mode.|r|r|N|n|cff808080300 Seconds Cooldown|r
+}
+
+STRING 1383
+// Abilities: A01W (Dissonant Overcharge), Tip (Tooltip - Normal)
+{
+Dissonant Overcharge
+}
+
+STRING 1384
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Name (Name)
+{
+Reactor-Aided Weapon Reprocessor
+}
+
+STRING 1385
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Here at TheroCorp, we don't see waste; we see opportunity! Our new reprocessors allow your weapons to boost their own capabilities with integrated thermal generators, turning weapon heat normally bound for the heatsinks into greater firepower!|r|n|nSecurity turrets gain |cff00ff00200 |rrange and fire |cff00ff00100% |rfaster for |cff00ff0030 seconds|r. Additionally, all main weapons on the Askellon fire more shots.|n|n|cffd45e19To prevent ammunition explosions, please only use the reprocessors for short periods. Warranty doesn't cover use of reprocessors. - Management|r|N|n|cff808080300 Seconds Cooldown|r
+}
+
+STRING 1386
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Tip (Tooltip - Normal)
+{
+Reactor-Aided Weapon Reprocessor
+}
+
+STRING 1387
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1388
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1389
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1390
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }

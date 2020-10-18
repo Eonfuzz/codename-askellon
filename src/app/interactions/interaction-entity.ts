@@ -117,7 +117,8 @@ export class InteractionEntity extends Entity {
             }
             else {
                 // And interact is complete, log it in cooldown
-                this.setInteractTimeStamp(interaction.unit);
+                if (interaction.isComplete)
+                    this.setInteractTimeStamp(interaction.unit);
 
                 this.interactions[i].destroy();
                 this.interactions[i] = this.interactions[ this.interactions.length - 1];

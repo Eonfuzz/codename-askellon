@@ -15,7 +15,7 @@ import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { SFX_LASER_3 } from "resources/sfx-paths";
-import { ABIL_ASKELLON_BROADSIDE_LEFT } from "resources/ability-ids";
+import { ABIL_ASKELLON_BROADSIDE_LEFT, TECH_DUMMY_DIVERT_WEAPONS } from "resources/ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { Timers } from "app/timer-type";
@@ -40,6 +40,16 @@ export class LaserBroadsideAbility implements Ability {
 
 
         this.isLeft = GetSpellAbilityId() === ABIL_ASKELLON_BROADSIDE_LEFT;
+
+
+        const tLevel = this.castingUnit.owner.getTechCount(TECH_DUMMY_DIVERT_WEAPONS, true);
+        if ( tLevel > 0) {
+            this.shotTiming.push(1.2);
+            this.shotTiming.push(1.4);
+            this.shotOffset.push(-100);
+            this.shotOffset.push(-150);
+        }
+
 
         this.shakingPlayers.forEach(p => {
             // Log.Information(`Player ${p.name}`)

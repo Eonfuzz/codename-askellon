@@ -90,10 +90,22 @@ class MiningEvent {
                 this.beamLaserTargetPoint = nTargetLoc.add(
                     new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).normalise().multiplyN(45 * this.target.selectionScale));
             }
-            const minerals = this.source.getItemInSlot(0);
-            const charges = GetItemCharges(minerals);
-            if (charges < 250) {
-                SetItemCharges(minerals, charges + 1);
+
+            const rng = GetRandomReal(0, 100);
+
+            if (rng > 75) {
+                const minerals = this.source.getItemInSlot(1);
+                const charges = GetItemCharges(minerals);
+                if (charges < 100) {
+                    SetItemCharges(minerals, charges + 1);
+                }
+            }
+            else {
+                const minerals = this.source.getItemInSlot(0);
+                const charges = GetItemCharges(minerals);
+                if (charges < 250) {
+                    SetItemCharges(minerals, charges + 1);
+                }
             }
             UnitDamageTarget(this.source.handle, this.target.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
             if (!UnitAlive(this.target.handle)) return false;
@@ -123,6 +135,7 @@ export class SpaceMiningEntity extends Entity {
         return this.instance;
     }
 
+    private miningUnits = new Map<Unit, MiningEvent>();
     private item: MiningEvent[] = [];
 
     constructor() {
@@ -144,15 +157,22 @@ export class SpaceMiningEntity extends Entity {
     }
 
     private add(source: Unit, target: Unit) {
-        this.item.push( new MiningEvent(source, target) );
+        if (!this.miningUnits.has(source)) {
+            const ev = new MiningEvent(source, target);
+            this.item.push( ev );
+            this.miningUnits.set(source, ev);
+        }
     }
 
     private end(source: Unit, target: Unit) {
-        for (let index = 0; index < this.item.length; index++) {
-            const element = this.item[index];
-            if (element.source === source && element.target === target) {
-                element.destroy();
-                return Quick.Slice(this.item, index);
+        const ev = this.miningUnits.get(source);
+
+        if (ev) {
+            this.miningUnits.delete(source);
+            const idx = this.item.indexOf(ev);
+            ev.destroy();
+            if (idx >= 0) {
+                return Quick.Slice(this.item, idx);
             }
         }
     }

@@ -12,6 +12,9 @@ import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Timers } from "app/timer-type";
 import { ITEM_MINERALS_REACTIVE_SHIP_ID, ITEM_MINERALS_VALUABLE_SHIP_ID, ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE } from "resources/item-ids";
+import { EventEntity } from "app/events/event-entity";
+import { EventListener } from "app/events/event-type";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -28,6 +31,14 @@ export class PerseusShip extends ShipWithFuel {
 
         this.unit.addItemById(ITEM_MINERALS_REACTIVE_SHIP_ID);
         this.unit.addItemById(ITEM_MINERALS_VALUABLE_SHIP_ID);
+
+        EventEntity.listen(new EventListener(EVENT_TYPE.SHIP_STARTS_MINING, (self, ev) => {
+            if (ev.source.handle === this.unit.handle) {
+                this.engine.setGoal(Vector2.fromWidget(ev.data.target.handle));
+                this.engine.increaseVelocity();
+                this.engine.goToAStop();
+            }
+        }))
     }
 
     createEngine() {

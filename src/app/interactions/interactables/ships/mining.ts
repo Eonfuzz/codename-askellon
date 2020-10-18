@@ -32,17 +32,14 @@ export function InitMiningInteraction() {
             return 800;
         },
         onStart: (source: Unit, interactable: Unit) => {
-            // Issue unit "Hold" order
-            source.issueImmediateOrder(HOLD_ORDER_ID);
             EventEntity.send(EVENT_TYPE.SHIP_STARTS_MINING, { source: source, data: { target: interactable }});
         },
         onCancel: (source: Unit, interactable: Unit) => {
             EventEntity.send(EVENT_TYPE.SHIP_STOPS_MINING, { source: source, data: { target: interactable }});
         },
         onRefocus: (source: Unit, interactable: Unit) => {
-            // Issue unit "Hold" order
             if (Vector2.fromWidget(source.handle).distanceTo(Vector2.fromWidget(interactable.handle)) <= this.getInteractionDistance(source, interactable))
-                source.issueImmediateOrder(HOLD_ORDER_ID);
+                EventEntity.send(EVENT_TYPE.SHIP_STARTS_MINING, { source: source, data: { target: interactable }});
         },
         action: (source: Unit, interactable: Unit) => {
             // Set rock anim speed so it dies faster

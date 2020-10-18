@@ -78,7 +78,7 @@ export class ReactorZone extends ShipZone {
             AskellonEntity.getInstance().maxPower += 1 * iStacks;
             // Slight power regeneration increase
             AskellonEntity.getInstance().powerRegeneration += 0.01 * iStacks;
-            Log.Information("Blue minerals : "+iStacks);
+            // Log.Information("Blue minerals : "+iStacks);
         }
         else if (type == ITEM_MINERAL_VALUABLE) {
             // TODO HEAL REACTOR

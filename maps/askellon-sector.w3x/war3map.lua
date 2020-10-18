@@ -170,7 +170,6 @@ gg_trg_SetPowerGenerators = nil
 gg_trg_SetShipZones = nil
 gg_trg_SetCollisionData = nil
 gg_trg_SetGeneticTesterLights = nil
-gg_trg_Hide_Cathederal_Statue = nil
 gg_trg_Untitled_Trigger_001 = nil
 gg_unit_n001_0472 = nil
 gg_unit_n001_0471 = nil
@@ -321,7 +320,7 @@ function CreateBuildingsForPlayer21()
     gg_unit_h004_0069 = BlzCreateUnitWithSkin(p, FourCC("h004"), -25984.0, -15808.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -14400.0, -26304.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -12224.0, -26304.0, 270.000, FourCC("h004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h00A"), -13376.0, -26432.0, 270.000, FourCC("h00A"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h00A"), -13376.0, -26432.0, -43.741, FourCC("h00A"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -13349.2, -13391.0, 0.483, FourCC("n00H"))
     gg_unit_h004_0231 = BlzCreateUnitWithSkin(p, FourCC("h004"), -12992.0, -7424.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -6403.0, -12283.9, 180.797, FourCC("n00H"))
@@ -479,8 +478,8 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14880.0, -17344.0, 180.725, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14880.0, -17440.0, 42.558, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14720.0, -17248.0, 154.285, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -15040.0, -17472.0, 90.777, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -15168.0, -17440.0, 62.911, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14944.0, -17568.0, 90.777, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -15360.0, -17600.0, 62.911, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -15424.0, -17472.0, 78.867, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -26976.0, -18272.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -27040.0, -18272.0, 270.000, FourCC("h005"))
@@ -540,7 +539,7 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -26592.0, -18528.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -26528.0, -18528.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -26720.0, -18592.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -15456.0, -17184.0, 86.185, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14720.0, -17600.0, 86.185, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14272.0, -15328.0, 90.780, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -14368.0, -15328.0, 90.780, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -26656.0, -18592.0, 270.000, FourCC("h005"))
@@ -696,7 +695,7 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1824.0, -18656.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1760.0, -18656.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1696.0, -18656.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1472.0, -17984.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1984.0, -17824.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1696.0, -18592.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1888.0, -18720.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1888.0, -18528.0, 270.000, FourCC("h005"))
@@ -723,7 +722,7 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1536.0, -16096.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1664.0, -16096.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1536.0, -16288.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -1536.0, -17984.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2048.0, -17824.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2720.0, -18528.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2784.0, -18528.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2784.0, -18720.0, 270.000, FourCC("h005"))
@@ -913,7 +912,7 @@ function CreateRegions()
     gg_rct_zonebridge8 = Rect(-14496.0, -4000.0, -12640.0, -3744.0)
     we = AddWeatherEffect(gg_rct_zonebridge8, FourCC("LRaa"))
     EnableWeatherEffect(we, true)
-    gg_rct_zonebiology1 = Rect(-15520.0, -17568.0, -14528.0, -16864.0)
+    gg_rct_zonebiology1 = Rect(-15808.0, -17792.0, -14528.0, -16864.0)
     gg_rct_zonebiology2 = Rect(-16032.0, -16896.0, -14304.0, -15808.0)
     gg_rct_zonebiology3 = Rect(-15808.0, -15840.0, -14144.0, -14656.0)
     gg_rct_zonebiology4 = Rect(-14336.0, -15968.0, -10720.0, -15584.0)
@@ -1295,15 +1294,6 @@ function InitTrig_SetGeneticTesterLights()
     TriggerAddAction(gg_trg_SetGeneticTesterLights, Trig_SetGeneticTesterLights_Actions)
 end
 
-function Trig_Hide_Cathederal_Statue_Actions()
-end
-
-function InitTrig_Hide_Cathederal_Statue()
-    gg_trg_Hide_Cathederal_Statue = CreateTrigger()
-    TriggerRegisterTimerEventSingle(gg_trg_Hide_Cathederal_Statue, 0.00)
-    TriggerAddAction(gg_trg_Hide_Cathederal_Statue, Trig_Hide_Cathederal_Statue_Actions)
-end
-
 function Trig_Untitled_Trigger_001_Conditions()
     if (not (GetUnitTypeId(GetTriggerUnit()) == FourCC("h007"))) then
         return false
@@ -1333,7 +1323,6 @@ function InitCustomTriggers()
     InitTrig_SetShipZones()
     InitTrig_SetCollisionData()
     InitTrig_SetGeneticTesterLights()
-    InitTrig_Hide_Cathederal_Statue()
     InitTrig_Untitled_Trigger_001()
 end
 

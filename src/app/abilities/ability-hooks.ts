@@ -44,7 +44,8 @@ import {
     ABIL_SECURITY_TARGET_PLAYER_7,
     ABIL_SECURITY_TARGET_ALL,
     ABIL_ASKELLON_BROADSIDE_LEFT,
-    ABIL_ASKELLON_BROADSIDE_RIGHT
+    ABIL_ASKELLON_BROADSIDE_RIGHT,
+    ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -88,6 +89,7 @@ import { MinionEvolveAbility } from "./alien/minions/minion-evolve";
 import { StationSecurityTargetAbility } from "./station/security-targeting";
 import { Players } from "w3ts/globals/index";
 import { LaserBroadsideAbility } from "./station/laser-broadside";
+import { DivertToWeaponsAbiility } from "./station/divert-weapons";
 
 
 
@@ -177,6 +179,7 @@ ABIL_SECURITY_TARGET_ALL.forEach(a => {
 
 AbilityHooks.Add(ABIL_ASKELLON_BROADSIDE_LEFT, () => new LaserBroadsideAbility());
 AbilityHooks.Add(ABIL_ASKELLON_BROADSIDE_RIGHT, () => new LaserBroadsideAbility());
+AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS, () => new DivertToWeaponsAbiility());
 
 // Alien Minion AI hooks
 AbilityHooks.Add(ABIL_ALIEN_MINION_EVOLVE, () => new MinionEvolveAbility());

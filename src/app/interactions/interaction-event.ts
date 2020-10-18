@@ -21,6 +21,7 @@ export class InteractionEvent {
 
   private timeRequired: number;
   private timeRemaining: number;
+  public isComplete: boolean = false;
 
   private progressBar: ProgressBar | undefined;
 
@@ -125,6 +126,7 @@ export class InteractionEvent {
 
   onInteractionCompletion() {
     // this.callback();
+    this.isComplete = true;
     this.interactable.action(this.unit, this.targetUnit);
   }
 
