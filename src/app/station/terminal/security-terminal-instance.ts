@@ -8,14 +8,20 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { TARGETING_TOOLTIP, TARGETING_TOOLTIP_EXTENDED } from "resources/strings";
 import { GlobalCooldownAbilityEntity } from "app/abilities/global-ability-entity";
 import { UNIT_ID_STATION_SECURITY_CAMERA } from "resources/unit-ids";
+import { EventListener } from "app/events/event-type";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * Does upgrades
  * Gets access to station wide abilities
  */
 export class SecurityTerminal extends Terminal {
-
+    private evListener: EventListener;
+    private evListenerRepair: EventListener;
     private allCameras = CreateGroup();
+
     constructor(sourceUnit: Unit, baseUnit: Unit) {
         super(sourceUnit, baseUnit);
 
@@ -46,8 +52,25 @@ export class SecurityTerminal extends Terminal {
 
 
         ForGroup(this.allCameras, () => {
-            UnitShareVision(GetEnumUnit(), this.sourceUnit.owner.handle, true);
+            if ( !BlzIsUnitInvulnerable(GetEnumUnit()) ) {
+                UnitShareVision(GetEnumUnit(), this.sourceUnit.owner.handle, true);
+            }
         });
+
+        this.evListener = new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (self, ev) => {
+            const unit = ev.data.unit as Unit;
+            if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
+                UnitShareVision(unit.handle, this.sourceUnit.owner.handle, false);
+            }
+        });
+        EventEntity.listen(this.evListener);
+        this.evListenerRepair = new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (self, ev) => {
+            const unit = ev.data.unit as Unit;
+            if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
+                UnitShareVision(unit.handle, this.sourceUnit.owner.handle, true);
+            }
+        });
+        EventEntity.listen(this.evListenerRepair);
     }
 
     onDestroy() {
@@ -57,5 +80,7 @@ export class SecurityTerminal extends Terminal {
         });
 
         DestroyGroup(this.allCameras);
+        EventEntity.getInstance().removeListener(this.evListener);
+        EventEntity.getInstance().removeListener(this.evListenerRepair);
     }
 }

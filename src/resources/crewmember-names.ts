@@ -18,14 +18,14 @@ ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.DOCTOR, [ new Vector2(-14123, -12005) ]);
 ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.INQUISITOR, [ new Vector2(-20119, -9584) ]);
 ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.ENGINEER, [ new Vector2(-13369, -25256) ]);
 
-ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.PILOT, [ new Vector2(-24900, -18966), new Vector2(-1633, -18966), new Vector2(-13680, -16635) ]);
+ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.PILOT, [ new Vector2(-24900, -18966), new Vector2(-1633, -18966), new Vector2(-12710, -16700) ]);
 
 ROLE_SPAWN_LOCATIONS.set( ROLE_TYPES.SEC_GUARD, [ new Vector2(-15730, -16222), new Vector2(-8302, -12228), new Vector2(-5502, -12039), new Vector2(-13300, -21035) ]);
 
 ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
     "Captain Keenest", "Captain Kirk", "Captain Jack Sparrow", "Captain Creed", 
     "Captain Coloma", "Captain Dallas", "Captain Cutter", "Captain Reynolds", 
-    "Captain Willard", "Captain Fodder", "Captain Cookie", "Captain Kimstar",
+    "Captain Willard", "Captain Fodder", "Captain Cook", "Captain Kimstar",
     "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America",
     "Captain Sullivan", "Captain Frost", "Captain Shane", "Captain Blazkowicz"
 ]);
@@ -44,7 +44,8 @@ ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.ENGINEER, [
-    "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware", "Engineer Zed", "Engineer Swann"
+    "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware", "Engineer Zed", "Engineer Swann", 
+    "Engineer Arhanul", "Engineer Homer",
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
@@ -52,11 +53,12 @@ ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
-    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix", "Doctor Freeman"
+    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix", "Doctor Freeman", "Doctor Kimberly"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
-    "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus", "Inquisitor Fyre", "Inquisitor Pariah"
+    "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus", 
+    "Inquisitor Fyre", "Inquisitor Pariah", "Inquisitor Tosh"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.PILOT, [

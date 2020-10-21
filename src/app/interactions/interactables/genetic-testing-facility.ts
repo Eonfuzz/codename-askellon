@@ -1,28 +1,26 @@
-import { InteractableData } from "./interactable-type";
+
+import { InteractableData } from "../../interactions/interactables/interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
-import { TECH_MAJOR_HEALTHCARE, TECH_ITEMS_IN_GENETIC_SEQUENCER, ABIL_ACTIVATE_SEQUENCER_TEST } from "resources/ability-ids";
-import { STR_GENE_REQUIRES_HEALTHCARE, GENETIC_FACILITY_TOOLTIP } from "resources/strings";
+import { TECH_ITEMS_IN_GENETIC_SEQUENCER } from "resources/ability-ids";
+import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
 import { GENETIC_TESTING_FACILITY, GENETIC_TESTING_FACILITY_SWITCH, GENETIC_TESTING_FACILITY_SWITCH_DUMMY } from "resources/unit-ids";
 import { SoundRef } from "app/types/sound-ref";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { getZFromXY, syncData } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED } from "resources/sfx-paths";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
-import { Interactables } from "./interactables";
+import { Interactables } from "../../interactions/interactables/interactables";
 
 declare const udg_genetic_test_lights: destructable[];
 
+
 // Max 4
 export let testerSlots: item[] = [];
-// let testerLastActivated = 0.0;
-// export const setTesterLastActivatedTo = (val: number) => {
-//     testerLastActivated = val;
-// }
 let gTicker = 0;
 
-const PlaceSequenceSound = new SoundRef('UI\\Feedback\\CheckpointPopup\\QuestCheckpoint.flac', false);
+const PlaceSequenceSound = new SoundRef('Sounds\\QuestCheckpoint.flac', false);
 const SequencerActiveSound = new SoundRef('Sounds\\SequencerActive.mp3', false);
+
 
 export function initTesterInteractions() {
     const interaction: InteractableData = {
@@ -108,52 +106,4 @@ export function initTesterInteractions() {
     }
 
     Interactables.set(GENETIC_TESTING_FACILITY, interaction);
-
-
-
-    const upgradeTerminalProcessing: InteractableData = {
-        onStart: (fromUnit: Unit, targetUnit: Unit) => {
-            // Log.Information("Using terminal");
-        },
-        onCancel: (fromUnit: Unit, targetUnit: Unit) => {
-        },
-        action: (fromUnit: Unit, targetUnit: Unit) => {
-            // const handleId = targetUnit.id;
-            const uX = targetUnit.x; 
-            const uY = targetUnit.y;
-            const player = fromUnit.owner;
-
-            // const targetUType = targetUnit.typeId;
-            let unitType = GENETIC_TESTING_FACILITY_SWITCH_DUMMY;
-
-            const nUnit = CreateUnit(player.handle, unitType, uX, uY, bj_UNIT_FACING);
-            SelectUnitForPlayerSingle(nUnit, player.handle);
-            SetPlayerTechResearched(fromUnit.owner.handle, TECH_ITEMS_IN_GENETIC_SEQUENCER, testerSlots.length);
-
-            // let timeSinceLastCast = GameTimeElapsed.getTime() - testerLastActivated;
-            // if (timeSinceLastCast < 20) {
-            //     BlzStartUnitAbilityCooldown(nUnit, ABIL_ACTIVATE_SEQUENCER_TEST, 20 - timeSinceLastCast);
-            // }
-
-            try {
-                // Select events are async
-                const syncher = syncData(`INT_SEL_${gTicker++}`, player, (self, data: string) => {
-                    UnitApplyTimedLife(nUnit, FourCC('b001'), 3);
-                });
-
-                const trackUnselectEvent = new Trigger();
-                trackUnselectEvent.registerPlayerUnitEvent(player, EVENT_PLAYER_UNIT_DESELECTED, null);
-                trackUnselectEvent.addAction(() => {
-                    const u = GetTriggerUnit();
-                    if (u === nUnit) {
-                        syncher("Data");
-                    }
-                });
-            }
-            catch (e) {
-                Log.Error(e);
-            }
-        }
-    }
-    Interactables.set(GENETIC_TESTING_FACILITY_SWITCH, upgradeTerminalProcessing);
 }

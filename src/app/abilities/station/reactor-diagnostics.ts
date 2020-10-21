@@ -1,13 +1,5 @@
 import { Ability } from "../ability-type";
-import { getZFromXY, GetActivePlayers } from "lib/utils";
-import { LIGHTS_GREEN, LIGHTS_RED, SFX_LIGHTNING_BOLT } from "resources/sfx-paths";
-import { SoundRef } from "app/types/sound-ref";
-import { testerSlots } from "app/interactions/interactables/genetic-tester";
-import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
 import { COL_TEAL, COL_ATTATCH, COL_INFO, COL_MISC, COL_GOOD, COL_ORANGE } from "resources/colours";
-import { SOUND_COMPLEX_BEEP } from "resources/sounds";
-import { ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
-import { ChatEntity } from "app/chat/chat-entity";
 import { Timers } from "app/timer-type";
 import { MapPlayer } from "w3ts/index";
 import { PlayNewSound } from "lib/translators";

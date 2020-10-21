@@ -57,7 +57,7 @@ export class Asteroid extends SpaceObject {
             const darkness = MathRound(255 - 255*(t/3000));
             this.widget.setColor(darkness, darkness, darkness);
         }
-        const scaleFactor = GetRandomReal(0.5, 3);
+        const scaleFactor = GetRandomReal(.8, 1.2);
         this.widget.scale = scaleFactor;
         this.widget.setYaw(GetRandomInt(0, 360));
         this.widget.setTimeScale(GetRandomReal(0.01, 0.1));

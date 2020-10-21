@@ -143,11 +143,6 @@ export class CrewFactory {
         // Handle unique role bonuses
         // Captain starts at level 2
         if (crewmember.role === ROLE_TYPES.CAPTAIN) {
-            // Captain bonus is additional XP
-            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-                source: crewmember.unit,
-                data: { value: 500 }
-            });
             // And slightly higher will
             crewmember.unit.setIntelligence(
                 crewmember.unit.getIntelligence(false) + 2, 

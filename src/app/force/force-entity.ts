@@ -86,8 +86,8 @@ export class ForceEntity extends Entity {
 
         // Init and listen for experience gain calls
         eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_BECOMES_ALIEN, (self, data) => this.repairAllAlliances(data.source.owner)));
-        // eventEntity.addListener(new EventListener(EVENT_TYPE.ALIEN_TRANSFORM_CREW, (self, data) => this.repairAllAlliances(data.source.owner)));
-        // eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, (self, data) => this.repairAllAlliances(data.source.owner)));
+        eventEntity.addListener(new EventListener(EVENT_TYPE.ALIEN_TRANSFORM_CREW, (self, data) => this.repairAllAlliances(data.source.owner)));
+        eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_TRANSFORM_ALIEN, (self, data) => this.repairAllAlliances(data.source.owner)));
 
         const players = GetActivePlayers();
         // Set up player leaves events
@@ -115,6 +115,7 @@ export class ForceEntity extends Entity {
         if (player1 === PlayerStateFactory.StationSecurity) return true;
         // We can never have tracked aggression against aliens
         if (PlayerStateFactory.isAlienAI(player2)) return true;
+        if (PlayerStateFactory.isAlienAI(player1)) return true;
         // You cannot be aggressive against yourself
         if (player1 === player2) return false;
         // You cannot be aggressive against Neutral Hostile

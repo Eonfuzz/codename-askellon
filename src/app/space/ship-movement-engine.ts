@@ -2,6 +2,7 @@ import { Vector2 } from "../types/vector2";
 import { Timer, MapPlayer } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { Log } from "lib/serilog/serilog";
+import { SFX_FIRE } from "resources/sfx-paths";
 
 interface ShipChemTrail {
     effect: effect;
@@ -49,9 +50,13 @@ export class SpaceMovementEngine {
     constructor(startX: number, startY: number, initialGoal: Vector2) {
         this.position   = new Vector2(startX, startY);
         this.momentum   = new Vector2(0, 0);
-        this.thrust     = new Vector2(0, 0);
 
         this.setGoal(initialGoal);
+
+        // AddSpecialEffect( SFX_FIRE, initialGoal.x, initialGoal.y );
+        // AddSpecialEffect( SFX_FIRE, initialGoal.x + this.goal.x, initialGoal.y + this.goal.y );
+
+        this.thrust     = this.goal.normalise();
     }
 
     public updateThrust(deltaTime: number) {
@@ -59,6 +64,9 @@ export class SpaceMovementEngine {
         // Plot the goal towards our turning arc
         const cThrustAngle = this.thrust.getAngle();
         const nGoalAngle = this.goal.getAngle();
+
+        // Log.Information("Angle: "+cThrustAngle);
+        
 
 
         const d = (nGoalAngle - cThrustAngle + 180) % 360 - 180;

@@ -1,5 +1,5 @@
 
-import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL, TERMINAL_PURGE, WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, TERMINAL_SECURITY } from "resources/unit-ids";
+import { TERMINAL_RELIGION, TERMINAL_REACTOR, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_GENE, TERMINAL_VOID, BRIDGE_CAPTAINS_TERMINAL, TERMINAL_PURGE, WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, TERMINAL_SECURITY, GENETIC_TESTING_FACILITY_SWITCH } from "resources/unit-ids";
 
 import { Interactables } from "./interactables";
 import { GeneEntity } from "app/shops/gene-entity";
@@ -32,4 +32,5 @@ export const initInteractionTerminals = () => {
     Interactables.set(BRIDGE_CAPTAINS_TERMINAL, upgradeTerminalProcessing);
     Interactables.set(TERMINAL_PURGE, upgradeTerminalProcessing);
     Interactables.set(TERMINAL_SECURITY, upgradeTerminalProcessing);
+    Interactables.set(GENETIC_TESTING_FACILITY_SWITCH, upgradeTerminalProcessing);
 }

@@ -138,9 +138,9 @@ export class SecurityEntity extends Entity {
                     unit.addAnimationProps('alternate', true);
                 }
                 else if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
-                    unit.setVertexColor(0, 0, 0, 255);
-                    
+                    unit.setVertexColor(120, 120, 120, 255);         
                 }
+                unit.name = unit.name+" - Destroyed";      
 
                 // Publish event that a security object is damaged
                 EventEntity.getInstance().sendEvent(EVENT_TYPE.STATION_SECURITY_DISABLED, {
@@ -185,8 +185,9 @@ export class SecurityEntity extends Entity {
                 unit.addAnimationProps('alternate', false);
             }
             else if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
-                unit.setVertexColor(255, 255, 255, 255);
+                unit.setVertexColor(255, 255, 255, 255);      
             }
+            unit.name = unit.name.replace(" - Destroyed", "");
 
             // Publish event that a security object is repaired
             EventEntity.getInstance().sendEvent(EVENT_TYPE.STATION_SECURITY_ENABLED, {
@@ -257,10 +258,5 @@ export class SecurityEntity extends Entity {
         }
 
         ConveyorEntity.getInstance().checkItem(CreateItem(table.getItem(), x, y));
-       
-        EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-            source: Unit.fromHandle(GetKillingUnit() || GetDyingUnit()),
-            data: { value: 25 }
-        });
     }
 }

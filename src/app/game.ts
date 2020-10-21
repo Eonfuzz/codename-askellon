@@ -123,6 +123,9 @@ export class Game {
         AntiMetaEntity.start();
         EggEntity.getInstance();
 
+        const mainShip = SpaceEntity.getInstance().mainShip;
+        mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 1500, mainShip.unit.y + 1500));
+
         Timers.addTimedAction(5, () => {
 
             CinematicFadeBJ(bj_CINEFADETYPE_FADEIN, 1.5, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
@@ -135,15 +138,14 @@ export class Game {
         });
     }
 
-    private followTimer = new Timer();
     private portalSFX: Effect;
     private visModifiers = [];
     private followMainShip() {
         const mainShip = SpaceEntity.getInstance().mainShip;
-
         mainShip.engine.mass = 0;
         mainShip.engine.velocityForwardMax = 100;
-        mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 500, mainShip.unit.y + 500));
+        mainShip.unit.paused = true;
+        mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 1500, mainShip.unit.y + 1500));
 
         const facingData = getYawPitchRollFromVector(new Vector3(1, 1, -0.7));
         this.portalSFX = new Effect(SFX_BLACK_HOLE, mainShip.unit.x + 1300, mainShip.unit.y + 1300);
@@ -168,11 +170,8 @@ export class Game {
             this.visModifiers.push(m);
         });
         
-        this.followTimer.start(0.01, true, () => {
-            const x = mainShip.unit.x;
-            const y = mainShip.unit.y;
-            PanCameraToTimed(x, y, 0);
-        });
+
+        SetCameraTargetController(mainShip.unit.handle, 0, 0, false);
 
         
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
@@ -189,9 +188,9 @@ export class Game {
     }
 
     private stopFollowingMainShip() {
-        this.followTimer.pause();
-        this.followTimer.destroy();
+        SetCameraTargetController(undefined, 0, 0, false);
         BlzShowTerrain(true);
+
 
         warpStormSound.stopSound();
 
@@ -199,9 +198,11 @@ export class Game {
             FogModifierStop(m);
         })
 
+        Log.Information("stopping main ship!");
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.engine.mass = 800;
         mainShip.engine.velocityForwardMax = 1400;
+        mainShip.unit.paused = false;
         mainShip.engine.goToAStop();
 
         BlzHideOriginFrames(false);

@@ -124,7 +124,6 @@ export class SpaceEntity extends Entity {
     shipDeathEvent = new Trigger();
     shipMoveEvent = new Trigger();
     initShips() {
-
         this.mainShip = new AskellonShip(ShipState.inSpace, AskellonEntity.getInstance().askellonUnit);
         
         this.shipDeathEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_DEATH);
@@ -199,6 +198,8 @@ export class SpaceEntity extends Entity {
             const isHold = order === HOLD_ORDER_ID;
 
             if (!isSmart && !isMove && !isStop && !isHold) return;
+
+            // Log.Information("Ship is issued an order");
 
             const u = Unit.fromHandle(GetOrderedUnit());
             

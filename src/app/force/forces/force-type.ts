@@ -159,7 +159,23 @@ export abstract class ForceType {
      * @param delta 
      */
     public onTick(delta: number) {
+        const percent = delta / 60;
+        this.players.forEach(p => {
+            
+            const details = PlayerStateFactory.get(p);
+            const crew = details.getCrewmember();
 
+            if (crew && crew.unit.isAlive()) {
+                const calculatedIncome = MathRound(percent * crew.getIncome());
+                crew.player.setState(
+                    PLAYER_STATE_RESOURCE_GOLD, 
+                    crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome
+                );
+
+                // Also reward passive experience points
+                crew.addExperience( 200 * percent );
+            }
+        })
     }
 
     /**

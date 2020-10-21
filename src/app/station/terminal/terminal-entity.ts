@@ -5,13 +5,14 @@ import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit } from "w3ts/index";
 import { Terminal } from "./terminal-instance";
-import { TERMINAL_REACTOR, TERMINAL_REACTOR_DUMMY, TERMINAL_GENE, TERMINAL_GENE_DUMMY, TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, TERMINAL_WEAPONS, TERMINAL_WEAPONS_DUMMY, TERMINAL_VOID, TERMINAL_VOID_DUMMY, TERMINAL_PURGE, TERMINAL_PURGE_DUMMY, TERMINAL_MEDICAL, TERMINAL_MEDICAL_DUMMY, TERMINAL_SECURITY, TERMINAL_SECURITY_DUMMY, BRIDGE_CAPTAINS_TERMINAL } from "resources/unit-ids";
+import { TERMINAL_REACTOR, TERMINAL_REACTOR_DUMMY, TERMINAL_GENE, TERMINAL_GENE_DUMMY, TERMINAL_RELIGION, TERMINAL_RELIGION_DUMMY, TERMINAL_WEAPONS, TERMINAL_WEAPONS_DUMMY, TERMINAL_VOID, TERMINAL_VOID_DUMMY, TERMINAL_PURGE, TERMINAL_PURGE_DUMMY, TERMINAL_MEDICAL, TERMINAL_MEDICAL_DUMMY, TERMINAL_SECURITY, TERMINAL_SECURITY_DUMMY, BRIDGE_CAPTAINS_TERMINAL, GENETIC_TESTING_FACILITY_SWITCH } from "resources/unit-ids";
 import { Quick } from "lib/Quick";
 import { GeneEntity } from "app/shops/gene-entity";
 import { SoundRef } from "app/types/sound-ref";
 import { SecurityTerminal } from "./security-terminal-instance";
 import { Log } from "lib/serilog/serilog";
 import { BridgeTerminal } from "./bridge-terminal-instance";
+import { GeneticTerminal } from "./genetic-tester";
 
 const firstTerminalSound = new SoundRef("Sounds\\Captain\\captain_welcome_online.mp3", false, true);
 const terminalSounds = [
@@ -67,6 +68,8 @@ export class TerminalEntity extends Entity {
                 case TERMINAL_SECURITY:
                     instance = new SecurityTerminal(unit, terminal);
                     break;
+                case GENETIC_TESTING_FACILITY_SWITCH:
+                    instance = new GeneticTerminal(unit, terminal);
                 default:
                     instance = new Terminal(unit, terminal);
             }

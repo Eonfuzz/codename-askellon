@@ -184,10 +184,14 @@ export class TransformAbility implements Ability {
                 );
 
                 ForGroup(group, () => {
-                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(
-                        this.casterUnit.owner, 
-                        MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
-                    );
+                    const owningPlayer = MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()));
+
+                    if (!PlayerStateFactory.isAlienAI(owningPlayer)) {
+                        ForceEntity.getInstance().aggressionBetweenTwoPlayers(
+                            this.casterUnit.owner, 
+                            owningPlayer
+                        );
+                    }
                 });
 
                 DestroyGroup(group);

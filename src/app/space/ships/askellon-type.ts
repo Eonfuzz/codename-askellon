@@ -103,7 +103,7 @@ export class AskellonShip extends Ship {
     }
 
     public onMoveOrder(targetLoc: Vector2) {
-        // Log.Information("Move order!");
+        Log.Information("Move order!");
         if (this.engine && !this.ignoreCommands) {
             this.engine.setGoal(targetLoc);
             this.engine.increaseVelocity();

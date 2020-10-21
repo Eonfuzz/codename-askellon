@@ -341,19 +341,14 @@ export class AlienForce extends ForceType {
             who.name = unitName;
             who.color = PLAYER_COLOR_PURPLE;
 
+            // Post event
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
+
             // Remove hostility with alien minions
             PlayerStateFactory.getAlienAI().forEach(p => {
                 p.setAlliance(who, ALLIANCE_PASSIVE, true);
                 who.setAlliance(p, ALLIANCE_PASSIVE, true);
             });
-
-            alien.invulnerable = true;
-            Timers.addTimedAction(1, () => {
-                alien.invulnerable = false;
-            })
-
-            // Post event
-            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
         }
         else {
             // Ensure player name reverts
@@ -367,14 +362,14 @@ export class AlienForce extends ForceType {
                 PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
             }
 
+            // Post event
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
+
             // Restore hostility with alien minions
             PlayerStateFactory.getAlienAI().forEach(p => {
                 p.setAlliance(who, ALLIANCE_PASSIVE, false);
                 who.setAlliance(p, ALLIANCE_PASSIVE, false);
             });
-
-            // Post event
-            EventEntity.getInstance().sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
         }
 
         if (unitWasSelected) SelectUnitAddForPlayer(toShow.handle, who.handle);
@@ -586,20 +581,7 @@ export class AlienForce extends ForceType {
      * @param delta 
      */
     public onTick(delta: number) {
-        const percent = delta / 60;
-        this.players.forEach(p => {
-            
-            const details = PlayerStateFactory.get(p);
-            const crew = details.getCrewmember();
-
-            if (crew) {
-                const calculatedIncome = MathRound(percent * crew.getIncome());
-                crew.player.setState(
-                    PLAYER_STATE_RESOURCE_GOLD, 
-                    crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome
-                );
-            }
-        })
+        super.onTick(delta);
     }
 
     /**

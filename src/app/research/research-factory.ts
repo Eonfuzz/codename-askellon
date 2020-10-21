@@ -116,6 +116,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         if (id === TECH_MAJOR_HEALTHCARE) return true;
         if (id === TECH_MAJOR_VOID) return true;
         if (id === TECH_MAJOR_RELIGION) return true;
+        if (id === TECH_MAJOR_REACTOR) return true;
         return false;
     }
 
