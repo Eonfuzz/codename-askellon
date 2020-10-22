@@ -70,8 +70,8 @@ export const TECH_HERO_LEVEL = FourCC('R003');
 export const TECH_PLAYER_INFESTS = FourCC('R006');
 
 export const TECH_HAS_GENES_TIER_1 = FourCC('RPG1');
-export const TECH_HAS_GENES_TIER_2 = FourCC('RPG1');
-export const TECH_HAS_GENES_TIER_3 = FourCC('RPG1');
+export const TECH_HAS_GENES_TIER_2 = FourCC('RPG2');
+export const TECH_HAS_GENES_TIER_3 = FourCC('RPG3');
 
 export const TECH_ITEMS_IN_GENETIC_SEQUENCER = FourCC('R008');
 export const ABIL_ACTIVATE_SEQUENCER_TEST = FourCC('A019');

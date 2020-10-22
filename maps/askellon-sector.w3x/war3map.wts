@@ -1335,32 +1335,14 @@ STRING 323
 F
 }
 
-STRING 324
-// Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
-{
-No Tier 1 Genes Chosen
-}
-
-STRING 325
-// Upgrades: RGN2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
-{
-No Tier 2 Genes Chosen
-}
-
 STRING 326
-// Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
 
-STRING 327
-// Upgrades: RGN3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
-{
-No Tier 3 Genes Chosen
-}
-
 STRING 328
-// Upgrades: RGN2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -1757,7 +1739,7 @@ Crewmember Attack 1 Enabled
 }
 
 STRING 434
-// Upgrades: RGN3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -2623,12 +2605,6 @@ STRING 652
 Work In Progress
 }
 
-STRING 653
-// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
-{
-- Tier 1
-}
-
 STRING 654
 // Abilities: A00R (Scan), Name (Name)
 {
@@ -2833,12 +2809,6 @@ STRING 714
 R
 }
 
-STRING 715
-// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
-{
-- Tier 1
-}
-
 STRING 716
 // Upgrades: R003 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
@@ -2927,12 +2897,6 @@ STRING 745
 // Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Roach Range Increase
-}
-
-STRING 746
-// Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
-{
-- Tier 1
 }
 
 STRING 747
@@ -5998,5 +5962,29 @@ STRING 1391
 // Units: h00C (Camera), Name (Name)
 {
 Camera
+}
+
+STRING 1392
+// Units: h00D (|cff00ffffGene Splicer|r|n|cff808080Stand inside and await your Doctor|r), Name (Name)
+{
+|cff00ffffGene Splicer|r|n|cff808080Stand inside and await your Doctor|r
+}
+
+STRING 1393
+// Upgrades: RGN1 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Patient has no T1 gene
+}
+
+STRING 1394
+// Upgrades: RGN2 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Patient has no T2 gene
+}
+
+STRING 1395
+// Upgrades: RGN3 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Patient has no T3 gene
 }
 

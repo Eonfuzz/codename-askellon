@@ -17,6 +17,7 @@ udg_killzones = {}
 udg_genetic_test_lights = {}
 udg_genetic_sequencer_unit = nil
 udg_it = 0
+udg_genetic_splicer_unit = nil
 gg_rct_Space = nil
 gg_rct_FallZone1Land = nil
 gg_rct_GeneSplicer = nil
@@ -223,6 +224,7 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_unit_h00D_0253 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -288,7 +290,6 @@ end
 
 function CreateAllItems()
     local itemID
-    BlzCreateItemWithSkin(FourCC("I00F"), -13415.8, -4923.8, FourCC("I00F"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14809.9, -17189.7, FourCC("ISHO"))
     gg_item_desc_0511 = BlzCreateItemWithSkin(FourCC("desc"), -13787.7, -11338.1, FourCC("desc"))
 end
@@ -444,15 +445,6 @@ function CreateBuildingsForPlayer22()
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -23223.8, -11554.6, 270.000, FourCC("h00C"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -6562.2, -11961.3, 177.792, FourCC("h00C"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -19746.2, -9657.3, 177.942, FourCC("h00C"))
-end
-
-function CreateNeutralHostileBuildings()
-    local p = Player(PLAYER_NEUTRAL_AGGRESSIVE)
-    local u
-    local unitID
-    local t
-    local life
-    u = BlzCreateUnitWithSkin(p, FourCC("n007"), -15520.0, -15008.0, 270.000, FourCC("n007"))
 end
 
 function CreateNeutralHostile()
@@ -837,6 +829,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0165 = BlzCreateUnitWithSkin(p, FourCC("n001"), -26560.0, -16640.0, 270.000, FourCC("n001"))
     gg_unit_n001_0227 = BlzCreateUnitWithSkin(p, FourCC("n001"), -11072.0, -11712.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n005"), -13571.9, -4210.1, 0.220, FourCC("n005"))
+    gg_unit_h00D_0253 = BlzCreateUnitWithSkin(p, FourCC("h00D"), -15520.0, -15008.0, 122.414, FourCC("h00D"))
     gg_unit_n002_0267 = BlzCreateUnitWithSkin(p, FourCC("n002"), -23424.0, -9600.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("nMED"), -13417.5, -14400.3, 270.000, FourCC("nMED"))
     u = BlzCreateUnitWithSkin(p, FourCC("nGEN"), -14336.5, -14760.7, 270.000, FourCC("nGEN"))
@@ -875,7 +868,6 @@ function CreatePlayerUnits()
 end
 
 function CreateAllUnits()
-    CreateNeutralHostileBuildings()
     CreateNeutralPassiveBuildings()
     CreatePlayerBuildings()
     CreateNeutralHostile()
@@ -1304,6 +1296,7 @@ function Trig_SetGeneticTesterLights_Actions()
     udg_genetic_test_lights[3] = gg_dest_B003_2139
     udg_genetic_test_lights[4] = gg_dest_B003_2138
     udg_genetic_sequencer_unit = gg_unit_n00D_0031
+    udg_genetic_splicer_unit = gg_unit_h00D_0253
 end
 
 function InitTrig_SetGeneticTesterLights()

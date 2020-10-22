@@ -45,7 +45,8 @@ import {
     ABIL_SECURITY_TARGET_ALL,
     ABIL_ASKELLON_BROADSIDE_LEFT,
     ABIL_ASKELLON_BROADSIDE_RIGHT,
-    ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS
+    ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS,
+    ABIL_SYSTEM_REACTOR_ROTATE_SHIELD_FREQUENCY
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -107,6 +108,8 @@ export class AbilityHooks {
         GlobalCooldownAbilityEntity.register( ABIL_ACTIVATE_SEQUENCER_TEST );
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_DIAGNOSTICS );
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_PURGE_VENTS );
+        GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS );
+        GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_ROTATE_SHIELD_FREQUENCY );
         Players.forEach(p => {
             GlobalCooldownAbilityEntity.register( ABIL_SECURITY_TARGET_ALL[p.id] );
         });

@@ -35,9 +35,14 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
 import { ResearchFactory } from "app/research/research-factory";
-import { GetActivePlayers } from "lib/utils";
+import { GetActivePlayers, getZFromXY } from "lib/utils";
 import { Hooks } from "lib/Hooks";
+import { SFX_RED_SINGULARITY, SFX_HUMAN_BLOOD } from "resources/sfx-paths";
+import { SoundRef } from "app/types/sound-ref";
+import { SOUND_STR_GENE_LOOP } from "resources/sounds";
+import { Timers } from "app/timer-type";
 
+declare const udg_genetic_splicer_unit: unit;
 interface GeneInstance {
     source: Crewmember,
     ui: Unit,
@@ -91,6 +96,12 @@ export class GeneEntity extends Entity {
             // Track it casting abilities
             instance.castTrigger.registerUnitEvent(geneUiUnit, EVENT_UNIT_SPELL_FINISH);
             instance.castTrigger.addAction(() => this.onGeneCast(instance));
+
+            instance.source.player.setTechResearched(TECH_NO_GENES_TIER_1, 0);
+            instance.source.player.setTechResearched(TECH_NO_GENES_TIER_2, 0);
+            instance.source.player.setTechResearched(TECH_NO_GENES_TIER_3, 0);
+        
+
         }
         else {
             geneUiUnit.kill();
@@ -132,12 +143,14 @@ export class GeneEntity extends Entity {
                     units.push(gInstance.source);
                 }
 
+                const validNumberOfUnits = units.length === 1 && !this.isUpgradingAlready;
+
                 // Set the unit in splicer tech
                 // > 1 because the circle of power in the region counts
                 instanceOwner.setTechResearched(
                     TECH_NO_UNIT_IN_SPLICER, 
                     // Multiple units also fail this condition
-                    (units.length === 1) ? 1 : 0
+                    validNumberOfUnits ? 1 : 0
                 );
     
                 if (units.length === 1) {
@@ -147,9 +160,10 @@ export class GeneEntity extends Entity {
                     const unitHasTier1Genes = this.hasTier1Genes(targetedUnit);
                     const unitHasTier2Genes = this.hasTier2Genes(targetedUnit);
                     const unitHasTier3Genes = this.hasTier3Genes(targetedUnit);
-                    gInstance.unitInGeneZone.player.setTechResearched(TECH_NO_GENES_TIER_1,  unitHasTier1Genes ? 0 : 1);
-                    gInstance.unitInGeneZone.player.setTechResearched(TECH_NO_GENES_TIER_2,  unitHasTier2Genes ? 0 : 1);
-                    gInstance.unitInGeneZone.player.setTechResearched(TECH_NO_GENES_TIER_3,  unitHasTier3Genes ? 0 : 1);
+
+                    gInstance.source.player.setTechResearched(TECH_NO_GENES_TIER_1,  (!unitHasTier1Genes && validNumberOfUnits && this.canBuyTier1()) ? 1 : 0);
+                    gInstance.source.player.setTechResearched(TECH_NO_GENES_TIER_2,  (!unitHasTier2Genes && validNumberOfUnits && this.canBuyTier2()) ? 1 : 0);
+                    gInstance.source.player.setTechResearched(TECH_NO_GENES_TIER_3,  (!unitHasTier3Genes && validNumberOfUnits && this.canBuyTier3()) ? 1 : 0);
                 }
             }
             else {
@@ -164,6 +178,14 @@ export class GeneEntity extends Entity {
     hasTier2Genes(who: Crewmember) { return who.player.getTechCount(TECH_HAS_GENES_TIER_2, true) > 0; }
     hasTier3Genes(who: Crewmember) { return who.player.getTechCount(TECH_HAS_GENES_TIER_3, true) > 0; }
 
+    canBuyTier1() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 1; }
+    canBuyTier2() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 2; }
+    canBuyTier3() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 3; }
+
+
+    geneUpgradeSound = new SoundRef(SOUND_STR_GENE_LOOP, true, false);
+    isUpgradingAlready = false;
+
     /**
      * Called on response to the unit event
      */
@@ -175,46 +197,81 @@ export class GeneEntity extends Entity {
         const doGiveBonusXp = researchFactory.techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 2);
         const bonusXpInfested = researchFactory.isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
 
-        if (!instance.unitInGeneZone) return;
+
+        const geneTier = this.getGeneTierFor(castAbil);
+        if (geneTier === 1) {
+            instance.source.player.setTechResearched(TECH_NO_GENES_TIER_1, 0);
+            instance.unitInGeneZone.player.setTechResearched(TECH_HAS_GENES_TIER_1, 1);
+        }
+        else if (geneTier === 2) {
+            instance.source.player.setTechResearched(TECH_NO_GENES_TIER_2, 0);
+            instance.unitInGeneZone.player.setTechResearched(TECH_HAS_GENES_TIER_2, 1);
+        }
+        else  {
+            instance.source.player.setTechResearched(TECH_NO_GENES_TIER_3, 0);
+            instance.unitInGeneZone.player.setTechResearched(TECH_HAS_GENES_TIER_3, 1);
+        }
+
+
+        if (!instance.unitInGeneZone || this.isUpgradingAlready) return;
         const target = instance.unitInGeneZone;
         const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
         const targetIsAlien = alienForce.hasPlayer(target.player);
 
-        const messageSuccessful = STR_GENE_SUCCESSFUL();
-        const messageAlien = STR_GENE_ALIEN_SUCCESSFUL();
-        
-        DisplayTextToPlayer(instance.source.player.handle, 0, 0, messageSuccessful);
-        // We may be the same player due to singleplayer
-        // Make sure we don't display the message twice
-        if (target.player != instance.source.player) {
-            DisplayTextToPlayer(target.player.handle, 0, 0, messageSuccessful);
-        }
+        target.unit.pauseEx(true);
+        this.geneUpgradeSound.playSoundOnUnit(target.unit.handle, 50);
+        target.unit.x = GetRectCenterX(gg_rct_GeneSplicer);
+        target.unit.y = GetRectCenterY(gg_rct_GeneSplicer);
 
-        const crewmember = PlayerStateFactory.getCrewmember(instance.unitInGeneZone.player);
+        SetUnitTimeScale(udg_genetic_splicer_unit, 5);
 
-        // Check if its nighteye
-        if (castAbil === GENE_INSTALL_NIGHTEYE) {
-            crewmember.setAgiGain( crewmember.getAgiGain() + 2.5);
-            crewmember.setIntGain( crewmember.getIntGain() + 1);
+        Timers.addTimedAction(1, () => {
+            const sfx = AddSpecialEffect(SFX_HUMAN_BLOOD, target.unit.x, target.unit.y);
+            BlzSetSpecialEffectZ(sfx, getZFromXY(target.unit.x, target.unit.y));
+            DestroyEffect(sfx);    
+        });
+        Timers.addTimedAction(2, () => {
+            const sfx = AddSpecialEffect(SFX_HUMAN_BLOOD, target.unit.x, target.unit.y);
+            BlzSetSpecialEffectZ(sfx, getZFromXY(target.unit.x, target.unit.y));
+            DestroyEffect(sfx);    
+        });
 
-            SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1,  1);
-            if (!targetIsAlien) {
+        Timers.addTimedAction(3, () => {
+            SetUnitTimeScale(udg_genetic_splicer_unit, 1);
+
+            this.isUpgradingAlready = false;
+            this.geneUpgradeSound.stopSound();
+            target.unit.pauseEx(false);
+
+            const sfx = AddSpecialEffect(SFX_RED_SINGULARITY, target.unit.x, target.unit.y);
+            BlzSetSpecialEffectZ(sfx, getZFromXY(target.unit.x, target.unit.y));
+            DestroyEffect(sfx);
+    
+            const messageSuccessful = STR_GENE_SUCCESSFUL();
+            const messageAlien = STR_GENE_ALIEN_SUCCESSFUL();
+            
+            DisplayTextToPlayer(instance.source.player.handle, 0, 0, messageSuccessful);
+            // We may be the same player due to singleplayer
+            // Make sure we don't display the message twice
+            if (target.player != instance.source.player) {
+                DisplayTextToPlayer(target.player.handle, 0, 0, messageSuccessful);
+            }
+
+            const crewmember = PlayerStateFactory.getCrewmember(instance.unitInGeneZone.player);
+
+            // Check if its nighteye
+            if (castAbil === GENE_INSTALL_NIGHTEYE) {
+                crewmember.setAgiGain( crewmember.getAgiGain() + 2.5);
+                crewmember.setIntGain( crewmember.getIntGain() + 1);
                 UnitAddAbility(instance.unitInGeneZone.unit.handle, ABIL_GENE_NIGHTEYE);
             }
-        }
-        else if (castAbil === GENE_INSTALL_MOBILITY) {
-            crewmember.setStrGain( crewmember.getStrGain() + 1.0 );
-            SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1,  1);
-            if (!targetIsAlien) {
+            else if (castAbil === GENE_INSTALL_MOBILITY) {
+                crewmember.setStrGain( crewmember.getStrGain() + 1.0 );
                 SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_MOBILITY, 1);
             }
-        }
-        else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
-            crewmember.setIntGain( crewmember.getIntGain() + 3 );
-            crewmember.setAgiGain( crewmember.getAgiGain() - 2 );
-
-            SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_2,  1);
-            if (!targetIsAlien) {
+            else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
+                crewmember.setIntGain( crewmember.getIntGain() + 3 );
+                crewmember.setAgiGain( crewmember.getAgiGain() - 2 );
                 UnitAddAbility(instance.unitInGeneZone.unit.handle, ABIL_GENE_COSMIC);
                 TooltipEntity.getInstance().registerTooltip(instance.unitInGeneZone, TOOLTIP_EMBRACE_COSMOS);
                 // Do stuff
@@ -231,58 +288,73 @@ export class GeneEntity extends Entity {
                     })
                 );
             }
-        }
-        else if (castAbil === GENE_INSTALL_XENOPHOBIC) {
-            crewmember.setStrGain( crewmember.getStrGain() + 3.5 );
-            crewmember.setIntGain( crewmember.getIntGain() - 1 );
-            instance.unitInGeneZone.unit.addAbility(ABIL_GENE_XENOPHOBIC);
-        }
-        else if (castAbil === GENE_INSTALL_OSBORNE_GENE) {
-            crewmember.setStrGain( crewmember.getStrGain() + 2 );
-            crewmember.setAgiGain( crewmember.getAgiGain() + 2 );
-            crewmember.setIntGain( crewmember.getIntGain() + 1.5 );
-            instance.unitInGeneZone.unit.addAbility(ABIL_GENE_INSTANT_HEAL);
-        }
-        
-        // Now grant XP if installed by doc and medicare 2 was researched
-        if (instance.source.role === ROLE_TYPES.DOCTOR && doGiveBonusXp) {
-            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-                source: instance.source.unit,
-                data: { value: 100 }
-            });
-            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-                source: instance.unitInGeneZone.unit,
-                data: { value: 100 }
-            });
-        }
-        // INFESTED ugprade
-        // Grant XP for ALL ALiENS
-        else if (bonusXpInfested) {
-
-            let text = "Humans alter their bodies";
-            const alienPlayers = alienForce.getPlayers();
-
-            for (let index = 0; index < alienPlayers.length; index++) {
-                const aPlayer = alienPlayers[index];
-                const pData = PlayerStateFactory.get(aPlayer);
-                EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-                    source: pData.getCrewmember().unit,
-                    data: { value: 100 }
-                });                
-                ChatEntity.getInstance().postMessage(aPlayer, "INFEST", text);
+            else if (castAbil === GENE_INSTALL_XENOPHOBIC) {
+                crewmember.setStrGain( crewmember.getStrGain() + 3.5 );
+                crewmember.setIntGain( crewmember.getIntGain() - 1 );
+                instance.unitInGeneZone.unit.addAbility(ABIL_GENE_XENOPHOBIC);
+            }
+            else if (castAbil === GENE_INSTALL_OSBORNE_GENE) {
+                crewmember.setStrGain( crewmember.getStrGain() + 2 );
+                crewmember.setAgiGain( crewmember.getAgiGain() + 2 );
+                crewmember.setIntGain( crewmember.getIntGain() + 1.5 );
+                instance.unitInGeneZone.unit.addAbility(ABIL_GENE_INSTANT_HEAL);
             }
 
-        }
+        
+            // Now grant XP if installed by doc and medicare 2 was researched
+            if (instance.source.role === ROLE_TYPES.DOCTOR && doGiveBonusXp) {
+                EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                    source: instance.source.unit,
+                    data: { value: 100 }
+                });
+                EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                    source: instance.unitInGeneZone.unit,
+                    data: { value: 100 }
+                });
+            }
+            // INFESTED ugprade
+            // Grant XP for ALL ALiENS
+            else if (bonusXpInfested) {
+    
+                let text = "Humans alter their bodies";
+                const alienPlayers = alienForce.getPlayers();
+    
+                for (let index = 0; index < alienPlayers.length; index++) {
+                    const aPlayer = alienPlayers[index];
+                    const pData = PlayerStateFactory.get(aPlayer);
+                    EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                        source: pData.getCrewmember().unit,
+                        data: { value: 100 }
+                    });                
+                    ChatEntity.getInstance().postMessage(aPlayer, "INFEST", text);
+                }
+    
+            }
+    
+            if (targetIsAlien) {
+                DisplayTextToPlayer(target.player.handle, 0, 0, messageAlien);
+            }
+    
+            // Send gene upgrade event
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.GENE_UPGRADE_INSTALLED, { 
+                source: instance.unitInGeneZone.unit, 
+                crewmember: instance.unitInGeneZone, 
+                data: { gene: castAbil}
+            });
 
-        if (targetIsAlien) {
-            DisplayTextToPlayer(target.player.handle, 0, 0, messageAlien);
-        }
+        })
+    }
 
-        // Send gene upgrade event
-        EventEntity.getInstance().sendEvent(EVENT_TYPE.GENE_UPGRADE_INSTALLED, { 
-            source: instance.unitInGeneZone.unit, 
-            crewmember: instance.unitInGeneZone, 
-            data: { gene: castAbil}
-        });
+
+    getGeneTierFor(abilId: number) {
+        switch (abilId) {
+            case GENE_INSTALL_MOBILITY:
+            case GENE_INSTALL_NIGHTEYE:
+                return 1;
+            case GENE_INSTALL_COSMIC_SENSITIVITY:
+            case GENE_INSTALL_OSBORNE_GENE:
+            case GENE_INSTALL_XENOPHOBIC:
+                return 2;
+        }
     }
 }
