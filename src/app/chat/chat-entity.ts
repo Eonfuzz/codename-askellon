@@ -188,6 +188,12 @@ export class ChatEntity extends Entity {
             else if (message.indexOf("-ss") === 0) {
                 BlzShowTerrain(true);
             }
+            else if (message.indexOf("-a") === 0) {
+                EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    const u = Unit.fromHandle(GetEnumUnit());
+                    u.setAnimation(Number(message.slice(2,5)));
+                });
+            }
             else if (message == "-level") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     const pData = PlayerStateFactory.get(MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit())));

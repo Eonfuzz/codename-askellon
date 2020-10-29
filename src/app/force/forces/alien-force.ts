@@ -414,10 +414,6 @@ export class AlienForce extends ForceType {
         return this.playerAlienUnits.get(who);
     }
 
-    // private registerAlienTakesDamageExperience(alien: Unit) {
-    //     this.alienTakesDamageTrigger.registerUnitEvent(alien, EVENT_UNIT_DAMAGED);
-    // }
-
     private onAlienDealsDamage() {
         const damageSource = Unit.fromHandle(GetEventDamageSource());
         const damagedUnit = Unit.fromHandle(BlzGetEventDamageTarget());

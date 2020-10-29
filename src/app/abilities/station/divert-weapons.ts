@@ -39,7 +39,7 @@ export class DivertToWeaponsAbiility implements Ability {
 
     public destroy() {
         ChatEntity.getInstance().postMessageFor(Players, "Reactor", '00ffff', "Weapon overdrive exceeding safety thresholds. Disabling.", undefined, SOUND_COMPLEX_BEEP);
-        Players.forEach(p => p.setTechResearched(ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS, 0));
+        Players.forEach(p => p.setTechResearched(TECH_DUMMY_DIVERT_WEAPONS, 0));
         return true;
     };
 }

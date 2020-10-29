@@ -9,13 +9,15 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { WeaponEntityAttackType } from "../weapon-attack-type";
-import { Unit } from "w3ts/index";
+import { Unit, Effect } from "w3ts/index";
 
 export abstract class Gun {
     equippedTo: ArmableUnit | undefined;
 
     protected spreadAOE: number = 0;
     protected bulletDistance = 1200;
+
+    protected gunEffect: Effect;
 
     public name = "default";
 
@@ -35,12 +37,16 @@ export abstract class Gun {
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
 
+        this.gunEffect = new Effect("Weapons\\MarineGun.mdx", this.equippedTo.unit, "hand, right");
+        this.gunEffect.scale = this.equippedTo.unit.getField(UNIT_RF_SCALING_VALUE) as number;
         this.equippedTo.unit.addAnimationProps("alternate", false);
     }
 
     public onRemove() {
         if (this.equippedTo) {
+            this.gunEffect.destroy();
             this.equippedTo.unit.addAnimationProps("alternate", true);
+
             // Don't care about mode, always disable attack ui
             SetPlayerTechResearched(this.equippedTo.unit.owner.handle, TECH_CREWMEMBER_ATTACK_ENABLE, 0);
 
