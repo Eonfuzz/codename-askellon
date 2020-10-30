@@ -17,6 +17,7 @@ export abstract class Gun {
     protected spreadAOE: number = 0;
     protected bulletDistance = 1200;
 
+    protected gunPath: string = "Weapons\\MarineGun.mdx";
     protected gunEffect: Effect;
 
     public name = "default";
@@ -37,7 +38,7 @@ export abstract class Gun {
         
         const sound = PlayNewSoundOnUnit("Sounds\\attachToGun.mp3", caster.unit, 50);
 
-        this.gunEffect = new Effect("Weapons\\MarineMinigun.mdx", this.equippedTo.unit, "hand, right");
+        this.gunEffect = new Effect(this.gunPath, this.equippedTo.unit, "hand, right");
         this.gunEffect.scale = this.equippedTo.unit.getField(UNIT_RF_SCALING_VALUE) as number;
         this.equippedTo.unit.addAnimationProps("alternate", false);
     }

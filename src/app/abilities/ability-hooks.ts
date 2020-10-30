@@ -46,7 +46,8 @@ import {
     ABIL_ASKELLON_BROADSIDE_LEFT,
     ABIL_ASKELLON_BROADSIDE_RIGHT,
     ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS,
-    ABIL_SYSTEM_REACTOR_ROTATE_SHIELD_FREQUENCY
+    ABIL_SYSTEM_REACTOR_ROTATE_SHIELD_FREQUENCY,
+    ABIL_DROP_MINERALS
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -91,6 +92,7 @@ import { StationSecurityTargetAbility } from "./station/security-targeting";
 import { Players } from "w3ts/globals/index";
 import { LaserBroadsideAbility } from "./station/laser-broadside";
 import { DivertToWeaponsAbiility } from "./station/divert-weapons";
+import { DropMineralsAbility } from "./items/drop-minerals";
 
 
 
@@ -183,6 +185,7 @@ ABIL_SECURITY_TARGET_ALL.forEach(a => {
 AbilityHooks.Add(ABIL_ASKELLON_BROADSIDE_LEFT, () => new LaserBroadsideAbility());
 AbilityHooks.Add(ABIL_ASKELLON_BROADSIDE_RIGHT, () => new LaserBroadsideAbility());
 AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS, () => new DivertToWeaponsAbiility());
+AbilityHooks.Add(ABIL_DROP_MINERALS, () => new DropMineralsAbility());
 
 // Alien Minion AI hooks
 AbilityHooks.Add(ABIL_ALIEN_MINION_EVOLVE, () => new MinionEvolveAbility());

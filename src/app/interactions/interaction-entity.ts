@@ -99,7 +99,7 @@ export class InteractionEntity extends Entity {
             const newInteraction = new InteractionEvent(
                 GetTriggerUnit(), 
                 GetOrderTargetUnit(), 
-                interactionTime * (1 + 1.5 * (1 - trigUnit.life/trigUnit.maxLife)),
+                interactionTime * (1 + 1 * (1 - trigUnit.life/trigUnit.maxLife)),
                 interactionDistance,
                 interact,
                 GetPlayerController(trigUnit.owner.handle) ===  MAP_CONTROL_COMPUTER ? false : !interact.hideInteractionBar

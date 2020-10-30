@@ -15,6 +15,7 @@ import { ForceEntity } from "app/force/force-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { GunItem } from "./gun-item";
+import { Timers } from "app/timer-type";
 
 export class Shotgun extends GunItem {
 
@@ -68,6 +69,12 @@ export class Shotgun extends GunItem {
             const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
             this.fireProjectile(unit, targetLoc, false)
         });
+
+        Timers.addTimedAction(1.6, () => {
+            if (this.equippedTo && this.equippedTo.unit) {
+                KillSoundWhenDone( PlayNewSoundOnUnit("Sounds\\ShotgunPump.wav", this.equippedTo.unit, 30) );
+            }
+        })
     };
 
     private fireProjectile(unit: Unit, targetLocation: Vector3, isCentralProjectile: boolean): void {

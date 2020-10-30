@@ -35,7 +35,7 @@ export class DragonFireBlastAbility implements Ability {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.unitsHit.clear();
 
-        const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", this.casterUnit, 50);
+        const sound = PlayNewSoundOnUnit("Sounds\\DragonBreathShotgun.wav", this.casterUnit, 50);
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
         this.targetLoc.z = getZFromXY(this.targetLoc.x, this.targetLoc.y);

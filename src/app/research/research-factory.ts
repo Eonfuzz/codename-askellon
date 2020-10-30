@@ -13,6 +13,7 @@ import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Players } from "w3ts/globals/index";
 import { Hooks } from "lib/Hooks";
 import { Log } from "lib/serilog/serilog";
+import { AskellonEntity } from "app/station/askellon-entity";
 
 const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false, true);
 
@@ -161,6 +162,8 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
                 }
             }
         });
+
+        this.onMajorUpgrade(id, level, hasOccupationBonus, isInfested);
     }
 
     /**
@@ -231,5 +234,22 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         }
 
         crewmember.addExperience(baseXp);
+    }
+
+
+    private onMajorUpgrade(upgradeId: number, newLevel: number, hasOccupationBonus: boolean, wasInfested: boolean) {
+        if (upgradeId === TECH_MAJOR_REACTOR) {
+            switch(newLevel) {
+                case 1:
+                    AskellonEntity.getInstance().powerRegeneration += 0.25;
+                    break;
+                case 2:
+                    AskellonEntity.getInstance().maxPower += 25;
+                    break;
+                case 3:
+                    AskellonEntity.getInstance().maxPower += 25;
+                    break;
+            }
+        }
     }
  }

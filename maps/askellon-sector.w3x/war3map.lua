@@ -220,11 +220,11 @@ gg_unit_n004_0513 = nil
 gg_unit_n004_0514 = nil
 gg_unit_n004_0516 = nil
 gg_unit_n004_0515 = nil
+gg_unit_h00D_0253 = nil
 gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
-gg_unit_h00D_0253 = nil
 function InitGlobals()
     local i = 0
     i = 0

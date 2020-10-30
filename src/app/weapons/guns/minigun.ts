@@ -33,6 +33,7 @@ export class Minigun extends GunItem {
     // Have an array of 5 to make sure sounds dont fail to play
     private shootSound = [new SoundRef("Sounds\\minigun-fire.wav", false)];
     private endSound = new SoundRef("Sounds\\minigun-end.wav", false);
+    gunPath = "Weapons\\MarineMinigun.mdx";
 
     private spinStacks = 0;
     private attackSpeedPerStack = 1.3;
@@ -84,7 +85,9 @@ export class Minigun extends GunItem {
         this.shootTimer.start(0.05, true, () => this.updateFacing(0.05))
 
         Timers.addTimedAction(0.4, () => {
-            this.fireProjectile(unit);
+            if (this.equippedTo && this.equippedTo.unit) {
+                this.fireProjectile(unit);
+            }
         });
     };
 

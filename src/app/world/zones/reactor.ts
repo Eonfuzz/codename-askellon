@@ -75,18 +75,18 @@ export class ReactorZone extends ShipZone {
         // If it is blue minerals
         if (type === ITEM_MINERAL_REACTIVE) {
             // Increase max power by 1
-            AskellonEntity.getInstance().maxPower += 1 * iStacks;
+            AskellonEntity.getInstance().maxPower += Math.floor(iStacks / 5);
             // Slight power regeneration increase
-            AskellonEntity.getInstance().powerRegeneration += 0.01 * iStacks;
+            AskellonEntity.getInstance().currentPower += 1;
             // Log.Information("Blue minerals : "+iStacks);
         }
         else if (type == ITEM_MINERAL_VALUABLE) {
             // TODO HEAL REACTOR
             // // Increase max power by 1
-            // AskellonEntity.getInstance().maxPower += 2 * iStacks;
+            AskellonEntity.getInstance().askellonUnit.life += 5 * iStacks;
             // // Slight power regeneration increase
             // AskellonEntity.getInstance().powerRegeneration += 0.05 * iStacks;
-            Log.Information("Green minerals : "+iStacks);
+            // Log.Information("Green minerals : "+iStacks);
         }
         else {
             // Just refund 10 for now, whatever blizzard
