@@ -8,6 +8,7 @@ import { OptSelectOption } from "./opt-select-option-type";
 import { OPT_TYPES } from "./opt-types-enum";
 import { Players } from "w3ts/globals/index";
 import { GetActivePlayers } from "lib/utils";
+import { PlayerStateFactory } from "../player-state-entity";
 // import { ForceEntity } from "../force-entity";
 
 export interface OptResult { player: MapPlayer, role: OptSelectOption };
@@ -68,7 +69,6 @@ export class OptSelection {
         allOpts.push(this.defaultOpt);
 
         this.players = GetActivePlayers();
-        this.players.forEach(p => this.dialog.display(p, true));
 
         PauseGame(false);
         this.dialog.setMessage(STR_OPT_MESSAGE);
@@ -86,7 +86,9 @@ export class OptSelection {
 
         this.clickTrigger.registerDialogEvent(this.dialog);
         this.clickTrigger.addAction(() => this.onDialogClick());
-        this.players.forEach(player => this.dialog.display(player, true));
+        if (!PlayerStateFactory.isSinglePlayer()) {
+            this.players.forEach(player => this.dialog.display(player, true));
+        }
     }
 
     private onDialogClick() {        

@@ -43,6 +43,7 @@ DamageBonusPierce=1.00,0.75,1.00,1.00,1.00,1.00,1.00,1.00
 DamageBonusSiege=1.00,1.00,1.00,1.00,1.25,1.00,1.00,1.00
 DisplayEnemyInventory=0
 EtherealDamageBonus=1.00,1.00,1.00,1.00,1.00,1.00,1.00
+FollowRange=100.0
 IntManaBonus=5.0
 ItemStackingEnabled=1
 MaxHeroLevel=20

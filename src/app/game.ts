@@ -26,10 +26,10 @@ import { SpaceEntity } from "./space/space-module";
 
 import { CrewFactory } from "./crewmember/crewmember-factory";
 import { WeaponEntity } from "./weapons/weapon-entity";
-import { PlayNewSound, getYawPitchRollFromVector } from "lib/translators";
+import { PlayNewSound, getYawPitchRollFromVector, PLAYER_COLOR } from "lib/translators";
 import { OptResult } from "./force/opt/opt-selection-factory";
 import { Players } from "w3ts/globals/index";
-import { GetActivePlayers } from "lib/utils";
+import { GetActivePlayers, MessageAllPlayers } from "lib/utils";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { Hooks } from "lib/Hooks";
 import { AIEntity } from "./ai/ai-entity";
@@ -41,8 +41,15 @@ import { Timers } from "./timer-type";
 import { ShipZone } from "./world/zone-types/ship-zone";
 import { EggInstance } from "./ai/egg-instance";
 import { EggEntity } from "./ai/egg-entity";
+import { GENERIC_CHAT_SOUND_REF } from "./force/forces/force-type";
+import { ROLE_TYPES } from "resources/crewmember-names";
+import { PlayerState } from "./force/player-type";
+import { Quick } from "lib/Quick";
 
 const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
+const labrynthIntro = new SoundRef("Sounds\\Theme\\TheLabrynth.mp3", true, true);
+const warningSound = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
+
 export class Game {
     private static instance: Game;
 
@@ -75,7 +82,8 @@ export class Game {
         PauseGameOff();
 
         
-        warpStormSound.playSound();
+        labrynthIntro.setVolume(80);
+        labrynthIntro.playSound();
         CinematicFilterGenericBJ(5, BLEND_MODE_NONE, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0, 0, 0 ,0 ,0);
         DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 5, `Loading, please wait`);
         BlzHideOriginFrames(true);
@@ -127,6 +135,8 @@ export class Game {
         mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 1500, mainShip.unit.y + 1500));
 
         Timers.addTimedAction(5, () => {
+            // Init chat
+            ChatEntity.getInstance().initialise();
 
             CinematicFadeBJ(bj_CINEFADETYPE_FADEIN, 1.5, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
 
@@ -142,6 +152,11 @@ export class Game {
     private visModifiers = [];
     private followMainShip() {
         const mainShip = SpaceEntity.getInstance().mainShip;
+
+        // Clear game messages
+        ClearTextMessages();
+
+        // mainShip.unit.addAbility(FourCC('Lcst'))
         mainShip.engine.mass = 0;
         mainShip.engine.velocityForwardMax = 100;
         mainShip.unit.paused = true;
@@ -158,6 +173,7 @@ export class Game {
         this.portalSFX.setRoll(facingData.roll);
         this.portalSFX.setYaw(facingData.yaw);
         
+        warpStormSound.playSound();
 
 
         GetActivePlayers().forEach(p => {
@@ -173,17 +189,84 @@ export class Game {
 
         SetCameraTargetController(mainShip.unit.handle, 0, 0, false);
 
-        
-        PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-        DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}INFO|r] Preparing Warp`);
-        new Timer().start(10, false, () => {
-            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Deep-Scan failing`);
+        Timers.addTimedAction(0.5, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Navigator", "4328ef", "They're right behind us!", undefined, GENERIC_CHAT_SOUND_REF);
         });
-        new Timer().start(15.25, false, () => {
+        Timers.addTimedAction(2, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Captain", "FF0000", "Engineer, we need ship diagnostics, now.", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        Timers.addTimedAction(4, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Engineer", "f05b33", "Hopeless. Everything's offline or damaged...", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        Timers.addTimedAction(5, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Engineer", "f05b33", "Only thing left is warp drive.", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        Timers.addTimedAction(7, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] DIVERTING`);
-            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 1.5, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 40.00, 50.00, 70.00, 0)
+            MessageAllPlayers(`[${COL_ATTATCH}INFO|r] Preparing Warp`);
+        });   
+        Timers.addTimedAction(8, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Captain", "FF0000", "To all crew, we're initiating emergency warp procedures.", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+
+        
+        new Timer().start(6, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            MessageAllPlayers(`[${COL_ORANGE}WARNING|r] Scanners detecting unknown entity`);
+        });
+        new Timer().start(13, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Warp shielding offline`);
+        });
+        new Timer().start(16, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Simulation results: VESSEL DAMAGED 80%, VESSEL DESTROYED 19%`);
+        });
+
+        Timers.addTimedAction(6, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Disciples. Gather and pray for salvation.", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        Timers.addTimedAction(9, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Imperator, ora pro nobis peccatoribus", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        Timers.addTimedAction(12, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Nunc et in hora mortis nostrea.", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        // Timers.addTimedAction(12, () => {            
+        //     ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "In hora mortis meae voca me.", undefined, GENERIC_CHAT_SOUND_REF);
+        // });
+        Timers.addTimedAction(14.5, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Captain", "FF0000", "Brace yourselves!", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        // Timers.addTimedAction(14, () => {            
+        //     ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Et iube me venire ad te.", undefined, GENERIC_CHAT_SOUND_REF);
+        // });
+        // Timers.addTimedAction(16, () => {            
+        //     ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Ut cum Sanctis tuis laudem te.", undefined, GENERIC_CHAT_SOUND_REF);
+        // });
+        Timers.addTimedAction(16, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "In saecula saeculorum.", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+        Timers.addTimedAction(20, () => {            
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Ave Imperator.", undefined, GENERIC_CHAT_SOUND_REF);
+        });
+
+        Timers.addTimedAction(15, () => {
+            Players.forEach(p => {                
+                SetCameraFieldForPlayer(p.handle, CAMERA_FIELD_TARGET_DISTANCE, 600, 5);
+            });  
+
+        });
+        new Timer().start(18, false, () => {
+            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+            MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] WARP ENTITY INTERCEPTING VESSEL`);
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
+            // CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 40.00, 50.00, 70.00, 0);
+
+        });
+
+        Timers.addTimedAction(18, () => {            
+            PlayNewSound("Sounds\\ShipDamage\\GroanLong1.mp3", 127);
         });
     }
 
@@ -192,13 +275,11 @@ export class Game {
         BlzShowTerrain(true);
 
 
-        warpStormSound.stopSound();
-
         this.visModifiers.forEach(m => {
             FogModifierStop(m);
         })
 
-        Log.Information("stopping main ship!");
+        // Log.Information("stopping main ship!");
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.engine.mass = 800;
         mainShip.engine.velocityForwardMax = 1400;
@@ -223,20 +304,10 @@ export class Game {
             // Init crew
             CrewFactory.getInstance().initCrew()
 
-            // Init chat
-            ChatEntity.getInstance().initialise();
+            this.openingCinematic();
 
-            if (!PlayerStateFactory.isSinglePlayer()) {
-                this.openingCinematic();
-            }
-            else {
-                Log.Information("TEST LOBBY DETECTED")
+            if (PlayerStateFactory.isSinglePlayer()) {
                 Players.forEach(p => p.setState(PLAYER_STATE_RESOURCE_GOLD, 999999));
-                SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
-                // BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
-                Players.forEach(p => {            
-                    SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
-                })
             }
 
             // UIEntity.start();
@@ -252,11 +323,10 @@ export class Game {
             BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), true);            
         }
         
-        // BlzChangeMinimapTerrainTex("war3mapPreviewAskellon.dds");
         Players.forEach(p => {            
-            SetCameraBoundsToRectForPlayerBJ(p.handle, gg_rct_stationtempvision);
-        })
-        
+            SetCameraFieldForPlayer(p.handle, CAMERA_FIELD_TARGET_DISTANCE, bj_CAMERA_DEFAULT_DISTANCE, 0);
+        });
+                
         this.cinematicSound.playSound();
         CameraSetSourceNoise(2, 50);
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
@@ -265,33 +335,17 @@ export class Game {
 
         new Timer().start(2, false, () => {
             PlayNewSound("Sounds\\ShipDamage\\GroanLong2.mp3", 127);
-            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 2, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 100.00, 100.00, 90.00, 0)
-           
+            CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 2, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 100.00, 100.00, 90.00, 0);           
         })
 
         new Timer().start(3, false, () => {
-            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
-
             SetDayNightModels("DeepFried\\dnclordaeronunit.mdx", "DeepFried\\dnclordaeronunit.mdx");
             CameraSetSourceNoise(5, 50);
             for (let i = 0; i < 12; i++) {
                 BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), false);            
             }
         });
-        // new Timer().start(4, false, () => {
-        //     // PlayNewSound("Sounds\\ShipDamage\\GroanLong1.mp3", 127);
-        //     PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-        //     DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
-        // });
-        // new Timer().start(5, false, () => {
-        //     PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-        //     DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Damage Sustained`);
-        // });
         new Timer().start(6, false, () => {
-            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Power Loss imminent`);
-
             CameraSetSourceNoise(10, 50);
         });
         new Timer().start(7, false, () => {
@@ -299,16 +353,17 @@ export class Game {
             CameraSetSourceNoise(15, 50);
         });
         new Timer().start(9, false, () => {
+            PlayNewSound("Sounds\\ExplosionDistant.mp3", 127);
             AskellonEntity.poweredFloors.forEach(p => {
                 (WorldEntity.getInstance().askellon.findZone(p) as ShipZone).updatePower(false);
             });
             CameraSetupSetField(GetCurrentCameraSetup(), CAMERA_FIELD_FARZ, 8000, 0.01);
             SetSkyModel("war3mapImported\\Skybox3rNoDepth.mdx");
+
+            warpStormSound.stopSound();
             CameraSetSourceNoise(20, 50);
         });
         new Timer().start(14, false, () => {
-            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_GOOD}INFO|r] Rebooting...`);
             CameraSetSourceNoise(10, 50);
         });
         new Timer().start(16, false, () => {
@@ -316,19 +371,96 @@ export class Game {
             AskellonEntity.poweredFloors.forEach(p => {
                 (WorldEntity.getInstance().askellon.findZone(p) as ShipZone).updatePower(true);
             });
+            labrynthIntro.stopSound();
         });
         new Timer().start(20, false, () => {
-            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ORANGE}WARNING|r] Breaches detected`);
-
             CameraSetSourceNoise(0, 0);
         });
-        new Timer().start(21, false, () => {
-            // PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-            // DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Signs of ${COL_ATTATCH}INTRUSION|r. XENOS ON BOARD`);
 
-            ForceEntity.getInstance().startIntroduction();
+        Timers.addTimedAction(21, () => {
+            const chat = ChatEntity.getInstance();
+            let i = 1;
+
+            const messages = ["Here.", "Aye.", "Check.", "Made it", "Yes sir."];
+            let activePlayers = [];
+            Players.forEach((p, index) => {
+                const pData = PlayerStateFactory.get(p);
+                const crew = PlayerStateFactory.getCrewmember(p);
+                if (!crew) return;
+
+                i++;
+                activePlayers.push(p);
+                if (crew.role === ROLE_TYPES.CAPTAIN) {
+                    chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ index ], "We survived. Who made it?", undefined, GENERIC_CHAT_SOUND_REF);
+                }
+                else if (crew.role === ROLE_TYPES.INQUISITOR) {
+                    Timers.addTimedAction(index * 0.3, () => {
+                        chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ index ], "Necessitatibus, I am here", undefined, GENERIC_CHAT_SOUND_REF);
+                    });
+                }
+                else {
+                    Timers.addTimedAction(index * 0.3, () => {
+                        const message = messages[GetRandomInt(0, messages.length-1)];
+                        chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ index ], message, undefined, GENERIC_CHAT_SOUND_REF);
+                    });
+                }
+            });
+
+            if (PlayerStateFactory.isSinglePlayer()) {
+                const captain = PlayerStateFactory.getCrewmember( Players[0] );
+                Timers.addTimedAction(5, () => {
+                    chat.postMessageFor(Players, captain.name, PLAYER_COLOR[ 0 ], "Oh god. I'm alone.", undefined, GENERIC_CHAT_SOUND_REF);
+                });
+            }
+            else {
+                Timers.addTimedAction(i+2, () => {
+                    const randomPlayer = Quick.GetRandomFromArray(activePlayers, 1)[0] as MapPlayer;
+                    const crew = PlayerStateFactory.getCrewmember(randomPlayer);
+
+                    if (crew) {
+                        let message = '';
+                        switch(crew.role) {
+                            case ROLE_TYPES.CAPTAIN:
+                                message = "Crew, logs are indicating a creature boarded our vessel mid warp."
+                                break;
+                            case ROLE_TYPES.ENGINEER:
+                                message = "Saw some creature running around in the tunnels"
+                                break;
+                            case ROLE_TYPES.DOCTOR:
+                                message = "Captain, there's an alien creature here. I saw it while the power was down."
+                                break;
+                            case ROLE_TYPES.PILOT:
+                                message = "Pilot here, a weird slug like thing got inside our ship"
+                                break;
+                            case ROLE_TYPES.INQUISITOR:
+                                message = "Vile xenos onboard my ship! We must purge it"
+                                break;
+                            case ROLE_TYPES.SEC_GUARD:
+                                message = "Missed my shots, there's a damned bug here."
+                                break;
+                            default:
+                                message = "There's an alien around here..."
+                        }
+                        chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ randomPlayer.id ], message, undefined, GENERIC_CHAT_SOUND_REF);
+                    }
+
+                    Timers.addTimedAction(2, () => {
+                        warningSound.playSound();
+                        PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                        MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Diagnostic logs are indicating an unknown alien entity boarded USSR Askellon during warp procedures`);
+
+                        Timers.addTimedAction(1, () => {
+                            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                            MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Required Directives: Destroy entity, restore ship functionality`);
+
+                            new Timer().start(15, false, () => {
+                                ForceEntity.getInstance().startIntroduction();
+                            });
+                        });
+                    });
+                });
+            }
         });
+
     }
-    
 }

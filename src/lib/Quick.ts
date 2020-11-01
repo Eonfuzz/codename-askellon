@@ -1,3 +1,5 @@
+import { Log } from "./serilog/serilog";
+
 //!!!!! KEEP 0 DEPENDENCIES
 export namespace Quick {
 
@@ -44,7 +46,7 @@ export namespace Quick {
         return units;
     }
 
-    export function GetRandomFromArray(a: any[], howMany: number = 1) {
+    export function GetRandomFromArray<T>(a: T[], howMany: number = 1): T[] {
         let n = Math.min(a.length, howMany);
 
         const result = a.slice();

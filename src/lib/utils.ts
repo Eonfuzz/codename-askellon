@@ -32,6 +32,10 @@ export function MessageAllPlayers(message: string): void {
     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, message);
 }
 
+export function MessagePlayer(who: MapPlayer, message: string): void { 
+    DisplayTimedTextToPlayer(who.handle, 0, 0, 10, message);
+}
+
 let camIterator = 0;
 export function GetPlayerCamLoc(who: MapPlayer, callback: (x: number, y: number) => void) {
     const syncher = syncData(`${camIterator++}`, who, (self, data: string) => {

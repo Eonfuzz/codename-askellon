@@ -5,12 +5,31 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ShipZone } from "../zone-types/ship-zone";
 import { Log } from "lib/serilog/serilog";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { ZONE_TYPE } from "../zone-id";
+import { Timers } from "app/timer-type";
 export class BridgeZone extends ShipZone {
 
     operaMusic = new SoundRef("Music\\Puccini.mp3", true, true);
     private musicIsActive = false;
+    private canPlayMusic = false;
 
     private xpTicker = 0;
+
+    constructor(id: ZONE_TYPE) {
+        super(id);
+
+        Timers.addTimedAction(50, () => {
+            this.canPlayMusic = true;
+            const p = this.getPlayersInZone();
+            p.forEach(p => {
+                if (p.handle === GetLocalPlayer()) {
+                    this.operaMusic.setVolume(50);
+                    this.operaMusic.playSound();
+                    SetMusicVolume(5);
+                }
+            });
+        })
+    }
 
     public onLeave(unit: Unit) {
         super.onLeave(unit);
@@ -33,19 +52,12 @@ export class BridgeZone extends ShipZone {
         const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
         const isCrew = crewmember && crewmember.unit === unit;
 
-        try {
+        if (this.canPlayMusic && isCrew && crewmember && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
+            // Play music
+            this.operaMusic.setVolume(50);
+            this.operaMusic.playSound();
+            SetMusicVolume(5);
 
-            if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle && !this.musicIsActive) {
-                // Play music
-                this.operaMusic.setVolume(50);
-                this.operaMusic.playSound();
-                SetMusicVolume(5);
-
-            }
-        }
-        catch(e) {
-            Log.Error("Error entering bridge");
-            Log.Error(e);
         }
     }
 
@@ -62,7 +74,7 @@ export class BridgeZone extends ShipZone {
                     const crewmember = PlayerStateFactory.getCrewmember(u.owner);
                     const isCrew = crewmember && crewmember.unit === u;
                     if (isCrew && crewmember.role === ROLE_TYPES.CAPTAIN) {
-                        crewmember.addExperience(25);
+                        crewmember.addExperience(5);
                     }
                 }
             }

@@ -408,22 +408,28 @@ export class ForceEntity extends Entity {
 
         // Start a 15 second timer
         const timer = CreateTimer();
-        if (PlayerStateFactory.isSinglePlayer())
-            StartTimerBJ(timer, false, 0);
-        else
-            StartTimerBJ(timer, false, 16);
+        StartTimerBJ(timer, false, 20);
 
         const timerTrig = new Trigger();
 
-        const timerDialog = CreateTimerDialog(timer);
-        TimerDialogDisplay(timerDialog, true);
+        if (!PlayerStateFactory.isSinglePlayer()) {
+            const timerDialog = CreateTimerDialog(timer);
+            TimerDialogDisplay(timerDialog, true);
+            timerTrig.addAction(() => {
+                TimerDialogDisplay(timerDialog, false);
+                const results = optSelection.endOptSelection();
+                callback(results);
+            });
+        }
+        else {
+            timerTrig.addAction(() => {
+                const results = optSelection.endOptSelection();
+                callback(results);
+            });
+            
+        }
 
         timerTrig.registerTimerExpireEvent(timer);
-        timerTrig.addAction(() => {
-            TimerDialogDisplay(timerDialog, false);
-            const results = optSelection.endOptSelection();
-            callback(results);
-        });
     }
 
 

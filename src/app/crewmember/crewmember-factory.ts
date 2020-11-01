@@ -21,6 +21,8 @@ import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
 import { Quick } from "lib/Quick";
 import { Vector2 } from "app/types/vector2";
+import { Players } from "w3ts/globals/index";
+import { Log } from "lib/serilog/serilog";
 
 export class CrewFactory {  
     private static instance: CrewFactory;
@@ -58,6 +60,57 @@ export class CrewFactory {
                 crew.onDamage();
             }
         });
+
+        // We need to load in spawn locations
+        this.allJobs = [
+            ROLE_TYPES.CAPTAIN, 
+            ROLE_TYPES.DOCTOR, 
+            ROLE_TYPES.ENGINEER, 
+            ROLE_TYPES.INQUISITOR, 
+            ROLE_TYPES.PILOT,
+            ROLE_TYPES.PILOT,
+            ROLE_TYPES.PILOT,
+            ROLE_TYPES.PILOT,
+            ROLE_TYPES.SEC_GUARD,
+            ROLE_TYPES.SEC_GUARD,
+            ROLE_TYPES.SEC_GUARD,
+            ROLE_TYPES.SEC_GUARD,
+        ]
+
+        // Loop through all of our role options
+        let roleTypesVisited = new Map<ROLE_TYPES, boolean>();
+
+        this.allJobs.forEach(j => {
+            if (!roleTypesVisited.has(j)) {
+                roleTypesVisited.set(j, true);
+                let strId = j.toLowerCase();
+                while (strId.indexOf('_') >= 0) {
+                    strId = strId.replace('_', '');
+                }
+                while (strId.indexOf(' ') >= 0) {
+                    strId = strId.replace(' ', '');
+                }
+
+                const namespaceVarName = `gg_rct_spawn${strId}`;
+    
+                let idx = 1;
+                let namespaceCheck = `${namespaceVarName}${idx++}`;
+                while (_G[namespaceCheck]) {
+                    // Grab the rect center X / Y as the spawn location
+                    const rect = _G[namespaceCheck] as rect;
+                    const oldSpawns = ROLE_SPAWN_LOCATIONS.get(j) || [];
+                    const loc = new Vector2(GetRectCenterX(rect), GetRectCenterY(rect));
+                    oldSpawns.push(loc);
+                    ROLE_SPAWN_LOCATIONS.set(j, oldSpawns);
+                    namespaceCheck = `${namespaceVarName}${idx++}`;
+                }
+
+            }
+        });
+
+        // Now splice the role list depending on our number of players
+        const numPlayers = Players.filter(p => p.slotState === PLAYER_SLOT_STATE_PLAYING && p.controller === MAP_CONTROL_USER).length;
+        this.allJobs.splice(numPlayers);
     }
 
     initCrew() {
@@ -65,23 +118,11 @@ export class CrewFactory {
         let totalPlayers = 0;
 
         forces.forEach(force => totalPlayers += force.getPlayers().length);
-
-        let it = 0;
-        while (it < totalPlayers) {
-            if (it === 0) this.allJobs.push(ROLE_TYPES.CAPTAIN);
-            else if (it === 1) this.allJobs.push(ROLE_TYPES.DOCTOR);
-            else if (it === 2) this.allJobs.push(ROLE_TYPES.INQUISITOR);
-            else if (it === 3) this.allJobs.push(ROLE_TYPES.ENGINEER);
-            // else if (it === 3) this.allJobs.push(ROLE_TYPES.NAVIGATOR);
-            else if (it < 5) this.allJobs.push(ROLE_TYPES.PILOT);
-            else this.allJobs.push(ROLE_TYPES.SEC_GUARD);
-            it++;
-        }      
     
         // Force alien host to transform
         const aForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
 
-        it = 0;
+        let it = 0;
         while (it < forces.length) {
             const force = forces[it];
             const players = force.getPlayers();
@@ -99,7 +140,6 @@ export class CrewFactory {
                     aUnit.pauseEx(false);
                     aUnit.x = crew.unit.x - 20;
                     aUnit.y = crew.unit.y - 300;
-
                     
                     crew.unit.pauseEx(true);
                     aUnit.issueOrderAt("move", crew.unit.x, crew.unit.y);
@@ -120,10 +160,20 @@ export class CrewFactory {
         // this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
     }
 
-    createCrew(player: MapPlayer, force: ForceType): Crewmember {   
-        const role = this.getCrewmemberRole();
+    createCrew(player: MapPlayer, force: ForceType): Crewmember {
+        const role = Quick.GetRandomFromArray(this.allJobs, 1)[0];
         const name = this.getCrewmemberName(role);
-        let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, 0, 0, bj_UNIT_FACING));
+
+        const spawnLocation = this.getSpawnFor(role);
+        
+        const location = WorldEntity.getInstance().getPointZone(spawnLocation.x, spawnLocation.y);
+
+        if (!role) Log.Error(`Failed to create role for ${player.name} in ${force.name} of ${role}`);
+        if (!name) Log.Error(`Failed to create name for ${player.name} in ${force.name} of ${role}`);
+        if (!spawnLocation) Log.Error(`Failed to create spawn location ${player.name} in ${force.name} of ${role}`);
+        if (!location) Log.Error(`Failed to find spawn zone ${player.name} in ${force.name} of ${role} in ${spawnLocation.toString()}`);
+
+        let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING));
         let crewmember = new Crewmember(player, nUnit, force, role);
 
         crewmember.setName(name);
@@ -207,12 +257,8 @@ export class CrewFactory {
             });
         }
 
-        const spawnLocation = this.getSpawnFor(crewmember.role);
-        const location = WorldEntity.getInstance().getPointZone(spawnLocation.x, spawnLocation.y);
 
         
-        nUnit.x = spawnLocation.x;
-        nUnit.y = spawnLocation.y;
         WorldEntity.getInstance().travel(crewmember.unit, location.id);
 
         BlzShowUnitTeamGlow(crewmember.unit.handle, false);
@@ -235,13 +281,6 @@ export class CrewFactory {
             Quick.Slice(spawns, spawns.indexOf(spawn));
             return spawn;
         }
-    }
-
-    getCrewmemberRole() {
-        const i = GetRandomInt(0, this.allJobs.length -1);
-        const role = this.allJobs[i];
-        this.allJobs.splice(i, 1);
-        return role;
     }
     
     getCrewmemberName(role: ROLE_TYPES) {

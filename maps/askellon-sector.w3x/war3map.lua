@@ -225,6 +225,17 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_rct_spawncaptain1 = nil
+gg_rct_spawndoctor1 = nil
+gg_rct_spawninquisitor1 = nil
+gg_rct_spawnengineer1 = nil
+gg_rct_spawnsecurityguard1 = nil
+gg_rct_spawnsecurityguard2 = nil
+gg_rct_spawnsecurityguard3 = nil
+gg_rct_spawnsecurityguard4 = nil
+gg_rct_spawnpilot1 = nil
+gg_rct_spawnpilot2 = nil
+gg_rct_spawnpilot4 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -1031,6 +1042,17 @@ function CreateRegions()
     gg_rct_zoneservicetunnelswest2 = Rect(-21696.0, -15968.0, -20480.0, -15456.0)
     gg_rct_zoneservicetunnelswest3 = Rect(-21728.0, -16480.0, -21184.0, -15968.0)
     gg_rct_zoneservicetunnelswest1 = Rect(-22464.0, -16960.0, -21504.0, -15104.0)
+    gg_rct_spawncaptain1 = Rect(-13632.0, -4384.0, -13504.0, -4288.0)
+    gg_rct_spawndoctor1 = Rect(-15456.0, -16288.0, -15328.0, -16192.0)
+    gg_rct_spawninquisitor1 = Rect(-20160.0, -9728.0, -20032.0, -9632.0)
+    gg_rct_spawnengineer1 = Rect(-13376.0, -25344.0, -13248.0, -25248.0)
+    gg_rct_spawnsecurityguard1 = Rect(-13344.0, -21120.0, -13216.0, -21024.0)
+    gg_rct_spawnsecurityguard2 = Rect(-12608.0, -12544.0, -12480.0, -12448.0)
+    gg_rct_spawnsecurityguard3 = Rect(-8288.0, -12256.0, -8160.0, -12160.0)
+    gg_rct_spawnsecurityguard4 = Rect(-5568.0, -12032.0, -5440.0, -11936.0)
+    gg_rct_spawnpilot1 = Rect(-20928.0, -13504.0, -20800.0, -13408.0)
+    gg_rct_spawnpilot2 = Rect(-25760.0, -18976.0, -25632.0, -18880.0)
+    gg_rct_spawnpilot4 = Rect(-2080.0, -18976.0, -1952.0, -18880.0)
 end
 
 function Trig_SetKillzones_Actions()

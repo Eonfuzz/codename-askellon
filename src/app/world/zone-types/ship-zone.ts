@@ -216,7 +216,7 @@ export class ShipZone extends ZoneWithExits {
                         const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
                         SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
                         SetSoundChannel(result, 1);
-                        SetSoundVolume(result, 127);
+                        SetSoundVolume(result, 30);
                         SetSoundPitch(result, 1.0);
                         SetSoundDistances(result, 2000.0, 10000.0);
                         SetSoundDistanceCutoff(result, 4500.0);
@@ -253,7 +253,7 @@ export class ShipZone extends ZoneWithExits {
                         const result = CreateSound(LIGHT_CLACK, false, true, true, 10, 10, "" )
                         SetSoundDuration(result, GetSoundFileDuration(LIGHT_CLACK));
                         SetSoundChannel(result, 2);
-                        SetSoundVolume(result, 127);
+                        SetSoundVolume(result, 30);
                         SetSoundPitch(result, 1.0);
                         SetSoundDistances(result, 2000.0, 10000.0);
                         SetSoundDistanceCutoff(result, 4500.0);

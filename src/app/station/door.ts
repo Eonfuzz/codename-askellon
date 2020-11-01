@@ -40,13 +40,13 @@ export class Door {
         this.updatingPathingBlockers(isOpen);
 
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (event, data) => {
-            if (data.data.unit === this.unit) {
+            if (data.data.unit.handle === this.unit.handle) {
                 this.isDead = true;
                 this.update(true, true);
             }
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
-            if (data.data.unit === this.unit) {
+            if (data.data.unit.handle === this.unit.handle) {
                 this.isDead = false;
             }
         }));

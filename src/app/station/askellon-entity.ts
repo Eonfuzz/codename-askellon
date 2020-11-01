@@ -89,21 +89,21 @@ export class AskellonEntity extends Entity {
         this.getInstance().currentPower += someVal; 
 
         // If we are losing power..
-        if (someVal < 0) {
-            // Log.Information("Losing power!");
-            const power = this.getCurrentPower();
-            const powerPercent = this.getPowerPercent();
-            // Random chance we lose power
-            const lostPower = GetRandomReal(power, 70+(30*powerPercent)) <= 50;
-            if (lostPower) {
-                if (powerPercent < 10) this.causePowerSurge(3);
-                else if (powerPercent < 20) this.causePowerSurge(2);
-                else if (powerPercent < 30) this.causePowerSurge(3);
-                else this.causePowerSurge(0);
+        // if (someVal < 0) {
+        //     // Log.Information("Losing power!");
+        //     const power = this.getCurrentPower();
+        //     const powerPercent = this.getPowerPercent();
+        //     // Random chance we lose power
+        //     const lostPower = GetRandomReal(power, 70+(30*powerPercent)) <= 50;
+        //     if (lostPower) {
+        //         if (powerPercent < 10) this.causePowerSurge(3);
+        //         else if (powerPercent < 20) this.causePowerSurge(2);
+        //         else if (powerPercent < 30) this.causePowerSurge(3);
+        //         else this.causePowerSurge(0);
                 
-                return false;
-            }
-        }
+        //         return false;
+        //     }
+        // }
         return true;
     }
 

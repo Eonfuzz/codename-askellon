@@ -12,6 +12,7 @@ import { PlayerStateFactory } from "../player-state-entity";
 import { COL_GOLD } from "resources/colours";
 import { EventListener } from "app/events/event-type";
 import { ChatEntity } from "app/chat/chat-entity";
+import { MessageAllPlayers, MessagePlayer } from "lib/utils";
 
 
 export const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
@@ -189,7 +190,7 @@ export abstract class ForceType {
 
         if (GetLocalPlayer() === who.handle) {
             this.introSound.playSound();
-            DisplayTextToPlayer(who.handle, 0, 0, `${COL_GOLD}Your Role |r`+crew.role);
+            MessagePlayer(who, `${COL_GOLD}Your Role |r`+crew.role);
         }
     }
 
