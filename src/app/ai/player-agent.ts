@@ -23,6 +23,7 @@ import { EventEntity } from "app/events/event-entity";
 import { ALIEN_MINION_LARVA, ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
 import { UnitActionImmediate } from "lib/TreeLib/ActionQueue/Actions/UnitActionImmediate";
 import { ImmediateOrders } from "lib/TreeLib/ActionQueue/Actions/ImmediateOrders";
+import { Timers } from "app/timer-type";
 
 /**
  * A player that acts under the AI entity
@@ -223,6 +224,11 @@ export class PlayerAgent {
             }
             actions.push(new UnitActionExecuteCode((target, timeStep, queue) => {                    
                 IssueBuildOrderById(agent, ALIEN_STRUCTURE_TUMOR, GetUnitX(agent), GetUnitY(agent));
+                Timers.addTimedAction(60, () => {
+                    if (UnitAlive(agent)) {
+                        this.enactStateOnAgent(agent, this.generateState(agent));
+                    }
+                })
             }));
             const queue = ActionQueue.createUnitQueue(agent, ...actions);
             this.actionQueue.set(agent, queue);
@@ -231,7 +237,7 @@ export class PlayerAgent {
             // Log.Information("Wander start");
             const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
             // We wander a random amount
-            const numWanders = GetRandomInt(1, 2);
+            const numWanders = GetRandomInt(2, 4);
             let i = 0;
             const actions = [];
             while (i++ < numWanders) {
@@ -281,5 +287,9 @@ export class PlayerAgent {
         else {
             // Log.Information(`${this.player.name} does not have ${GetUnitName(whichUnit)}`);
         }
+    }
+
+    public hasAgent(whichUnit: unit) {
+        return this.actionQueue.has(whichUnit);
     }
 }

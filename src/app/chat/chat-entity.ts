@@ -22,6 +22,7 @@ import { Timers } from "app/timer-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { CreepEntity } from "app/creep/creep-entity";
+import { PlayerState } from "app/force/player-type";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -222,7 +223,8 @@ export class ChatEntity extends Entity {
 
                     const zone = WorldEntity.getInstance().getPointZone(x, y);
                     if (zone) {
-                        AIEntity.createAddAgent(ALIEN_MINION_CANITE, x, y, zone.id);
+                        const aiPlayer = PlayerStateFactory.getAlienAI()[0];
+                        CreateUnit(aiPlayer.handle, ALIEN_MINION_CANITE, x, y, GetRandomInt(0, 360));  
                     }
                     else {
                         Log.Information("No Zone picked");
@@ -234,6 +236,8 @@ export class ChatEntity extends Entity {
                 // Log.Information("PF "+message);
                 GetPlayerCamLoc(player, (x, y) => {
                     const pData = PlayerStateFactory.get(player);
+                    const aiPlayer = PlayerStateFactory.getAlienAI()[0];
+
                     const crewUnit = pData.getCrewmember().unit;
                     for (let index = 0; index < 20; index++) { 
                         let _x = x + GetRandomReal(-300, 300);
@@ -241,9 +245,11 @@ export class ChatEntity extends Entity {
                         const zone = WorldEntity.getInstance().getPointZone(_x, _y);   
                         if (zone) {
                             const i = GetRandomInt(1,10);
-                            if (i >= 7) AIEntity.createAddAgent(ALIEN_MINION_LARVA, _x, _y, zone.id);
-                            else if (i >= 5) AIEntity.createAddAgent(ALIEN_MINION_FORMLESS, _x, _y, zone.id);
-                            else AIEntity.createAddAgent(ALIEN_MINION_CANITE, _x, _y, zone.id);                            
+                            let t: number;
+                            if (i >= 7) t = ALIEN_MINION_LARVA;
+                            else if (i >= 5) t = ALIEN_MINION_FORMLESS;
+                            else t = ALIEN_MINION_CANITE;    
+                            CreateUnit(aiPlayer.handle, t, _x, _y, GetRandomInt(0, 360));                    
                         }
                         else {
                             Log.Information("No Zone picked");

@@ -117,6 +117,6 @@ export class DefaultSecurityGun extends Gun {
     }
 
     public getDamage(unit: Unit): number {
-        return MathRound( 20 + GetRandomInt(0,6) );
+        return MathRound( 10 + GetRandomInt(0,6) );
     }
 }

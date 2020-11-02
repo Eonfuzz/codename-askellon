@@ -37,9 +37,9 @@ ${COL_ALIEN}An Alien has been slain!|r
 export const STR_GENETIC_SAMPLE = (who: MapPlayer, forUnit: Unit) => `${COL_MISC}Mandate :: All staff are to ensure they are regularly tested and immunized. The Askellon cannot afford another quarantine breach.|r
 
 This is a genetic sample of ${COL_GOOD}${forUnit.nameProper}|r.
-Bring this to the ${COL_TEAL}Genetic Sequencer|r to have it tested; if the sample is ${COL_ALIEN}infected|r the Crew will be alerted.`;
+Bring this to the ${COL_TEAL}Blood Tester|r to have it tested; if the sample is ${COL_ALIEN}infected|r the Crew will be alerted.`;
 
-export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffGenetic Sequencing |rFacility
+export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffBlood Testing |rFacility
 ${ slot4 ? `${COL_GOLD}Activate Computer to continue` : `${COL_MISC}Right Click to place a sample inside` }
 ${COL_MISC}[ ${slot1 ? `|r${GetItemName(slot1)}${COL_MISC}` : `Sample Required`} ]
 [ ${slot2 ? `|r${GetItemName(slot2)}${COL_MISC}` : `Sample Required`} ]

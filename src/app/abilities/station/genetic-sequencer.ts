@@ -64,10 +64,10 @@ export class GeneticSequenceAbility implements Ability {
 
         const allPlayers = GetActivePlayers();
         if (hasAlienDNA) {
-            ChatEntity.getInstance().postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', `Result: ${COL_ATTATCH}Contaminants|r detected. Quarantine is recommended.`, undefined, SOUND_COMPLEX_BEEP);
+            ChatEntity.getInstance().postMessageFor(allPlayers, "Blood Tester", '00ffff', `Result: ${COL_ATTATCH}Contaminants|r detected. Quarantine is recommended.`, undefined, SOUND_COMPLEX_BEEP);
         }
         else {
-            ChatEntity.getInstance().postMessageFor(allPlayers, "Genetic Sequencer", '00ffff', "Result: No foreign samples detected.", undefined, SOUND_COMPLEX_BEEP);
+            ChatEntity.getInstance().postMessageFor(allPlayers, "Blood Tester", '00ffff', "Result: No foreign samples detected.", undefined, SOUND_COMPLEX_BEEP);
         }
     }
 

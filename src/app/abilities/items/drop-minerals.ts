@@ -8,6 +8,7 @@ import { ForceEntity } from "app/force/force-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Vector2 } from "app/types/vector2";
+import { ConveyorEntity } from "app/conveyor/conveyor-entity";
 
 export class DropMineralsAbility implements Ability {
 
@@ -32,6 +33,7 @@ export class DropMineralsAbility implements Ability {
                 const minerals = CreateItem(iType, this.targetPoint.x + GetRandomInt(-25, 25), this.targetPoint.y + GetRandomInt(-25, 25));
                 SetItemCharges(minerals, GetItemCharges(item));
                 RemoveItem(item);
+                ConveyorEntity.getInstance().checkItem(minerals);
             }
         }
         return false;

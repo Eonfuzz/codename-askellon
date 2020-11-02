@@ -3835,18 +3835,6 @@ STRING 976
 Genetic Sampler Dummy
 }
 
-STRING 981
-// Units: n00D (|cff00ffffGenetic Sequencer |rFacility|n|cff808080Right Click to Place a sample), Name (Name)
-{
-|cff00ffffGenetic Sequencer |rFacility|n|cff808080Right Click to Place a sample inside|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|r
-}
-
-STRING 983
-// Units: n00E (|cff00ffffGenetic Facility|r Computer|n|cff808080Right Click to Interact|r), Name (Name)
-{
-|cff00ffffGenetic Facility|r Computer|n|cff808080Right Click to Interact|r
-}
-
 STRING 984
 // Units: n00F (|cff00ffffGene Sequencer|r Computer), Name (Name)
 {
@@ -4294,12 +4282,6 @@ STRING 1072
 // Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Description (Description)
 {
 Weapon: Fires a continuous stream of molten lead
-}
-
-STRING 1073
-// Units: n003 (Gun Rack), Name (Name)
-{
-Gun Rack
 }
 
 STRING 1074
@@ -5953,7 +5935,7 @@ Camera
 }
 
 STRING 1392
-// Units: h00D (|cff00ffffGene Splicer|r|n|cff808080Stand inside and await your Doctor|r), Name (Name)
+// Units: n00V (|cff00ffffGene Splicer|r|n|cff808080Stand inside and await your Doctor|r), Name (Name)
 {
 |cff00ffffGene Splicer|r|n|cff808080Stand inside and await your Doctor|r
 }
@@ -6010,5 +5992,29 @@ STRING 1402
 // Items: I00B (Mineral Storage - Maskelynite), Ubertip (Tooltip - Extended)
 {
 |cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 0.1 per stack|n- Powers up reactor by 1 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 250
+}
+
+STRING 1403
+// Units: n003 (Gun Vendor|n|cff808080Buys and Sells guns|r), Name (Name)
+{
+Gun Vendor|n|cff808080Buys and Sells guns|r
+}
+
+STRING 1404
+// Units: n00D (|cff00ffffBlood Testing |rFacility|n|cff808080Right Click to place a sample ins), Name (Name)
+{
+|cff00ffffBlood Testing |rFacility|n|cff808080Right Click to place a sample inside|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|n[ EMPTY SLOT ]|r
+}
+
+STRING 1405
+// Units: n00E (|cff00ffffBlood Testing|r Computer|n|cff808080Right Click to Interact|r), Name (Name)
+{
+|cff00ffffBlood Testing|r Computer|n|cff808080Right Click to Interact|r
+}
+
+STRING 1406
+// Abilities: A01Z (Larva Spawning), Name (Name)
+{
+Larva Spawning
 }
 

@@ -46,27 +46,17 @@ export class AIEntity extends Entity {
             const agent = new PlayerAgent(p, this.pathfindingGraph, 33);
             this.playerAgents.push(agent);
             this.playerToAgent.set(agent.player, agent);
-        })
+        });
 
         /**
          * Listen to create AI minion requests
          */
-        EventEntity.listen(new EventListener(EVENT_TYPE.SPAWN_ALIEN_MINION_FOR, (self, ev) => {
-            const forWho = ev.source;
-            const z = WorldEntity.getInstance().getPointZone(forWho.x, forWho.y);
-
-            if (!z) return;
-
-            if (forWho.typeId === UNIT_ID_NEUTRAL_BEAR) {
-                const unit = AIEntity.createAddAgent(ALIEN_MINION_FORMLESS  , ev.source.x, ev.source.y, z.id);
+        EventEntity.listen(new EventListener(EVENT_TYPE.REGISTER_AS_AI_ENTITY, (self, ev) => {
+            // Log.Information("Register as AI entity called");
+            if (!ev.source.isUnitType( UNIT_TYPE_STRUCTURE )) {
+                AIEntity.addAgent(ev.source.handle);
             }
-            else if (forWho.typeId === UNIT_ID_NEUTRAL_RABBIT) {
-                const unit = AIEntity.createAddAgent(ALIEN_MINION_LARVA  , ev.source.x, ev.source.y, z.id);
-            }
-            else {
-                AIEntity.createAddAgent(ALIEN_MINION_CANITE  , ev.source.x, ev.source.y, z.id);
-            }
-        }))
+        }));
 
         this.unitBuildTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH);
         this.unitBuildTrigger.addAction(() => {
@@ -140,43 +130,32 @@ export class AIEntity extends Entity {
     public static addAgent(whichUnit: unit) {
         const instance = this.getInstance();
 
-        const playerAgent = instance.getAgentforPlayer(MapPlayer.fromHandle(GetOwningPlayer(whichUnit)));
+        // Check this unit currently isn't in the AI database
+        const isAlreadyAgent = !!instance.playerAgents.find(a => a.hasAgent(whichUnit));
 
-        if (playerAgent) {
-            playerAgent.addAgent(whichUnit);
-        }
-    }
+        if (!isAlreadyAgent) {
+            try {
+                const createFor = instance.getBestPlayerAgent();
 
-    /**
-     * Creates the unit type under an agent with empty "control" slots
-     * Returns undefined if all agent slots were full at the time of create request
-     * @param whichUnitType 
-     * @param x 
-     * @param y 
-     * @param ignoreLimit 
-     */
-    public static createAddAgent(whichUnitType: number, x: number, y: number, zone: ZONE_TYPE, ignoreLimit: boolean = false): unit | undefined {
-        try {
-            const instance = this.getInstance();
-            const createFor = instance.getBestPlayerAgent(ignoreLimit);
-            
-            if (createFor) {
-                const unit = CreateUnit(createFor.player.handle, whichUnitType, x, y, bj_UNIT_FACING);
-                WorldEntity.getInstance().handleTravel(Unit.fromHandle(unit), zone);
-                this.addAgent(unit);
+                if (!createFor) return RemoveUnit(whichUnit); 
 
-                // If it's a formless we need to add creep sfx
-                if (GetUnitTypeId(unit) === ALIEN_MINION_FORMLESS) CreepEntity.addCreepWithSource(256, Unit.fromHandle(unit));
+                SetUnitOwner(whichUnit, createFor.player.handle, false);
 
-                return unit;
+                const z = WorldEntity.getInstance().getPointZone(GetUnitX(whichUnit), GetUnitY(whichUnit));
+
+                if (!z) {
+                    return Log.Error("Failed to add AI unit, no zone found "+GetUnitName(whichUnit));
+                }
+                if (GetUnitTypeId(whichUnit) === ALIEN_MINION_FORMLESS) {
+                    CreepEntity.addCreepWithSource(256, Unit.fromHandle(whichUnit));
+                }
+
+                WorldEntity.getInstance().travel(Unit.fromHandle(whichUnit), z.id);
+                createFor.addAgent(whichUnit);
             }
-            else {
-                Log.Information("Failed to create and add agent for player");
+            catch(e) {
+                Log.Error(e);
             }
-        }
-        catch(e) {
-            Log.Error("Error when createAddAgent()");
-            Log.Error(e);
         }
     }
 

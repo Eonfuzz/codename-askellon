@@ -41,6 +41,7 @@ import { SFX_RED_SINGULARITY, SFX_HUMAN_BLOOD } from "resources/sfx-paths";
 import { SoundRef } from "app/types/sound-ref";
 import { SOUND_STR_GENE_LOOP } from "resources/sounds";
 import { Timers } from "app/timer-type";
+import { COL_MISC, COL_TEAL } from "resources/colours";
 
 declare const udg_genetic_splicer_unit: unit;
 interface GeneInstance {
@@ -78,6 +79,10 @@ export class GeneEntity extends Entity {
             p.setTechResearched(TECH_NO_GENES_TIER_2, 1);
             p.setTechResearched(TECH_NO_GENES_TIER_3, 1);
         });
+
+        const u = Unit.fromHandle(udg_genetic_splicer_unit);
+        u.owner = PlayerStateFactory.NeutralPassive;
+        u.name = `${COL_TEAL}Genetic Sequencer|r|n${COL_MISC}Requires two people to use`
     }
 
     addNewGeneInstance(who: Unit, geneUiUnit: Unit) {

@@ -8,6 +8,9 @@ import { Vector2 } from "app/types/vector2";
 import { SoundRef } from "app/types/sound-ref";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { WorldEntity } from "app/world/world-entity";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { COL_MISC } from "resources/colours";
+import { PlayerState } from "app/force/player-type";
 
 const PATHING_BLOCKER_BOTH = FourCC('YTfb');
 
@@ -38,27 +41,32 @@ export class Door {
         this.unit = unit,
         this.isOpen = isOpen;
         this.updatingPathingBlockers(isOpen);
+        this.checkOwnership();
 
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (event, data) => {
             if (data.data.unit.handle === this.unit.handle) {
                 this.isDead = true;
                 this.update(true, true);
+                this.checkOwnership();
             }
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
             if (data.data.unit.handle === this.unit.handle) {
                 this.isDead = false;
+                this.checkOwnership();
             }
         }));
 
         EventEntity.listen(new EventListener(EVENT_TYPE.FLOOR_GAINS_POWER, (event, data) => {
             if ((data.data.floor as ZONE_TYPE) === this.doorFloor) {
                 this.isPowered = true;
+                this.checkOwnership();
             }
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.FLOOR_LOSES_POWER, (event, data) => {
             if ((data.data.floor as ZONE_TYPE) === this.doorFloor) {
                 this.isPowered = false;
+                this.checkOwnership();
             }
         }));
 
@@ -101,16 +109,32 @@ export class Door {
         Timers.addTimedAction(1, () => {
             this.updatingPathingBlockers(isOpen);
             Timers.addTimedAction(0.3, () => {
-                this.canUpdate = true;
-                this.unit.setAnimation(isOpen ? 2 : 0)
-                ForGroup(nearbyUnitGroup, () => {
-                    UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), false);
-                });
-                DestroyGroup(nearbyUnitGroup);
+                // Bug fix, status could change over 1.3 seconds
+                if (this.isOpen === isOpen) {
+                    this.canUpdate = true;
+                    this.unit.addAnimationProps("alternate", isOpen);
+                    this.checkOwnership();
+                    ForGroup(nearbyUnitGroup, () => {
+                        UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), false);
+                    });
+                    DestroyGroup(nearbyUnitGroup);
+                }
             });
         });
 
         return true;
+    }
+
+    private checkOwnership() {
+        this.unit.owner = PlayerStateFactory.NeutralPassive;
+        if (this.isDead || !this.isPowered) {
+            this.unit.name = `Security Door|n${COL_MISC}${this.isDead ? 'Broken' : 'Unpowered'}`;
+        }
+        else {
+            this.unit.name = `Security Door`;
+        }
+        Timers.addTimedAction(0, () => this.unit.owner = PlayerStateFactory.StationProperty);
+        
     }
 
     doorSearchGroup = CreateGroup();

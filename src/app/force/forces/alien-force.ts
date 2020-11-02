@@ -10,7 +10,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
-import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_RABBIT, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
@@ -98,8 +98,18 @@ export class AlienForce extends ForceType {
             const validDyingUnit = !this.hasPlayer(dyingUnit.owner) && !PlayerStateFactory.isAlienAI(dyingUnit.owner) && dyingUnit.typeId !== CREWMEMBER_UNIT_ID;
             const validDyingType = !IsUnitType(dyingUnit.handle, UNIT_TYPE_MECHANICAL);
 
-            if (validDyingType && validDyingUnit && validKillingPlayer) 
-            EventEntity.send(EVENT_TYPE.SPAWN_ALIEN_MINION_FOR, { source: dyingUnit });
+            if (validDyingType && validDyingUnit && validKillingPlayer) {
+
+                let unitToSpawnType: number = undefined;
+
+                if (dyingUnit.typeId === UNIT_ID_NEUTRAL_BEAR) unitToSpawnType = ALIEN_MINION_FORMLESS;
+                else if (dyingUnit.typeId === UNIT_ID_NEUTRAL_STAG) unitToSpawnType = ALIEN_MINION_CANITE;
+                else if (dyingUnit.typeId === UNIT_ID_NEUTRAL_DOG) unitToSpawnType = ALIEN_MINION_CANITE;
+                else unitToSpawnType = ALIEN_MINION_LARVA;
+
+                const aiPlayer = PlayerStateFactory.getAlienAI()[0];
+                CreateUnit(aiPlayer.handle, unitToSpawnType, dyingUnit.x, dyingUnit.y, dyingUnit.facing);
+            }
         })
     }
     
@@ -139,6 +149,7 @@ export class AlienForce extends ForceType {
             // TODO Change how vision is handled
             const pData = PlayerStateFactory.get(owner);
             const crewmember = pData.getCrewmember();
+            alien.owner = PlayerStateFactory.NeutralPassive;
                 
 
             // mark this unit as the alien host
@@ -328,7 +339,10 @@ export class AlienForce extends ForceType {
         if (toAlien) {
             const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
 
-            toShow.nameProper = unitName;
+            toShow.owner = toHide.owner;
+            toShow.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
+            toShow.name = unitName;
+            toShow.color = PLAYER_COLOR_PURPLE;
             // Repair alliances
             // Then make it an enemy of security
             // forceEntity.repairAllAlliances(who); TODO
@@ -355,6 +369,8 @@ export class AlienForce extends ForceType {
             const pData = PlayerStateFactory.get(who);
             who.name = pData.originalName;
             who.color = pData.originalColour;
+            toHide.owner = PlayerStateFactory.NeutralPassive;
+            toHide.nameProper = "Duder";
 
             // Make ally of security (if untargeted)
             if (!PlayerStateFactory.isTargeted(who)) {

@@ -68,13 +68,11 @@ export class CrewFactory {
             ROLE_TYPES.ENGINEER, 
             ROLE_TYPES.INQUISITOR, 
             ROLE_TYPES.PILOT,
+            ROLE_TYPES.SEC_GUARD,
             ROLE_TYPES.PILOT,
+            ROLE_TYPES.SEC_GUARD,
             ROLE_TYPES.PILOT,
-            ROLE_TYPES.PILOT,
-            ROLE_TYPES.SEC_GUARD,
-            ROLE_TYPES.SEC_GUARD,
-            ROLE_TYPES.SEC_GUARD,
-            ROLE_TYPES.SEC_GUARD,
+            ROLE_TYPES.SEC_GUARD
         ]
 
         // Loop through all of our role options
@@ -104,7 +102,6 @@ export class CrewFactory {
                     ROLE_SPAWN_LOCATIONS.set(j, oldSpawns);
                     namespaceCheck = `${namespaceVarName}${idx++}`;
                 }
-
             }
         });
 
@@ -130,10 +127,10 @@ export class CrewFactory {
 
             while (y < players.length) {
                 let player = players[y];
-                let crew = this.createCrew(player, force);
+                let crew = this.createCrew(player, force) as Crewmember;
                 // crew.updateTooltips(this.game.weaponModule);
 
-                if (force === aForce) {
+                if (crew && force === aForce) {
                     const aUnit = aForce.getAlienFormForPlayer(player);
                     // Cancel pause
                     aUnit.show = true;
@@ -151,6 +148,9 @@ export class CrewFactory {
                         aUnit.show = false;
                     })
                 }
+                else if (!crew) {
+                    Log.Error(`Failed to make crew for ${player.name}`);
+                }
 
                 y++;
             }
@@ -160,116 +160,125 @@ export class CrewFactory {
         // this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
     }
 
-    createCrew(player: MapPlayer, force: ForceType): Crewmember {
+    createCrew(player: MapPlayer, force: ForceType): Crewmember | void {
         const role = Quick.GetRandomFromArray(this.allJobs, 1)[0];
+
+        // Remove the role from our list of options
+        this.allJobs.splice(this.allJobs.indexOf(role), 1);
+
         const name = this.getCrewmemberName(role);
 
         const spawnLocation = this.getSpawnFor(role);
         
+
+        if (!role) return Log.Error(`Failed to create role for ${player.name} in ${force.name} of ${role}`);
+        if (!name) return Log.Error(`Failed to create name for ${player.name} in ${force.name} of ${role}`);
+        if (!spawnLocation) return Log.Error(`Failed to create spawn location ${player.name} in ${force.name} of ${role}`);
         const location = WorldEntity.getInstance().getPointZone(spawnLocation.x, spawnLocation.y);
+        if (!location) return Log.Error(`Failed to find spawn zone ${player.name} in ${force.name} of ${role} in ${spawnLocation.toString()}`);
 
-        if (!role) Log.Error(`Failed to create role for ${player.name} in ${force.name} of ${role}`);
-        if (!name) Log.Error(`Failed to create name for ${player.name} in ${force.name} of ${role}`);
-        if (!spawnLocation) Log.Error(`Failed to create spawn location ${player.name} in ${force.name} of ${role}`);
-        if (!location) Log.Error(`Failed to find spawn zone ${player.name} in ${force.name} of ${role} in ${spawnLocation.toString()}`);
+        try { 
 
-        let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING));
-        let crewmember = new Crewmember(player, nUnit, force, role);
+            let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING));
+            let crewmember = new Crewmember(player, nUnit, force, role);
 
-        crewmember.setName(name);
-        crewmember.setPlayer(player);
+            crewmember.setName(name);
+            crewmember.setPlayer(player);
 
-        // Update pData
-        const pData = PlayerStateFactory.get(nUnit.owner);
-        pData.setCrewmember(crewmember);
+            // Update pData
+            const pData = PlayerStateFactory.get(nUnit.owner);
+            pData.setCrewmember(crewmember);
+            
+            this.crewmemberForUnit.set(nUnit, crewmember);        
+
+            // Add the unit to its force
+            force.addPlayerMainUnit(crewmember, player);
+            // SelectUnitAddForPlayer(crewmember.unit.handle, player.handle);
+            
+            let roleGaveWeapons = false;
+            // Handle unique role bonuses
+            // Captain starts at level 2
+            if (crewmember.role === ROLE_TYPES.CAPTAIN) {
+                // And slightly higher will
+                crewmember.unit.setIntelligence(
+                    crewmember.unit.getIntelligence(false) + 2, 
+                    true
+                );
+            }
+            // Sec guard starts with weapon damage 1 and have shotguns
+            else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
+                player.setTechResearched(TECH_WEP_DAMAGE, 1);
+                const item = CreateItem(SHOTGUN_ITEM_ID, 0, 0);
+                UnitAddItem(crewmember.unit.handle, item);
+                EventEntity.send(EVENT_TYPE.DO_EQUIP_WEAPON, {
+                    source: crewmember.unit,
+                    data: { item }
+                });
+            }
+            // Doctor begins with extra will and vigor
+            else if (crewmember.role === ROLE_TYPES.DOCTOR) {
+                SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+2, true);
+                SetHeroInt(nUnit.handle, GetHeroInt(nUnit.handle, false)+4, true);
+                const item = CreateItem(ITEM_GENETIC_SAMPLER, 0, 0);
+                UnitAddItem(crewmember.unit.handle, item);
+
+            }
+            // Doctor begins with extra vigour and items
+            else if (crewmember.role === ROLE_TYPES.ENGINEER) {
+                SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+3, true);
+
+                let item = CreateItem(ITEM_SIGNAL_BOOSTER, 0, 0);
+                UnitAddItem(crewmember.unit.handle, item);
+
+                item = CreateItem(ITEM_ID_REPAIR, 0, 0);
+                SetItemCharges(item, 10);
+                UnitAddItem(crewmember.unit.handle, item);
+            }
+            // Navigator has extra accuracy
+            else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
+                SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
+            }
+            else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
+                nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);
+                nUnit.addAbility(ABIL_INQUIS_SMITE);
+                EventEntity.getInstance().addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+                    if (data.data.researched === TECH_MAJOR_RELIGION) {
+                        const techLevel = data.data.level;
+                        const gotOccupationBonus = ResearchFactory.getInstance().techHasOccupationBonus(data.data.researched, techLevel);
+
+                        if (nUnit && nUnit.isAlive()) {
+                            SetUnitAbilityLevel(nUnit.handle, ABIL_INQUIS_PURITY_SEAL, techLevel + 1);
+                        }
         
-        this.crewmemberForUnit.set(nUnit, crewmember);        
-
-        // Add the unit to its force
-        force.addPlayerMainUnit(crewmember, player);
-        // SelectUnitAddForPlayer(crewmember.unit.handle, player.handle);
-        
-        let roleGaveWeapons = false;
-        // Handle unique role bonuses
-        // Captain starts at level 2
-        if (crewmember.role === ROLE_TYPES.CAPTAIN) {
-            // And slightly higher will
-            crewmember.unit.setIntelligence(
-                crewmember.unit.getIntelligence(false) + 2, 
-                true
-            );
-        }
-        // Sec guard starts with weapon damage 1 and have shotguns
-        else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
-            player.setTechResearched(TECH_WEP_DAMAGE, 1);
-            const item = CreateItem(SHOTGUN_ITEM_ID, 0, 0);
-            UnitAddItem(crewmember.unit.handle, item);
-            EventEntity.send(EVENT_TYPE.DO_EQUIP_WEAPON, {
-                source: crewmember.unit,
-                data: { item }
-            });
-        }
-        // Doctor begins with extra will and vigor
-        else if (crewmember.role === ROLE_TYPES.DOCTOR) {
-            SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+2, true);
-            SetHeroInt(nUnit.handle, GetHeroInt(nUnit.handle, false)+4, true);
-            const item = CreateItem(ITEM_GENETIC_SAMPLER, 0, 0);
-            UnitAddItem(crewmember.unit.handle, item);
-
-        }
-        // Doctor begins with extra vigour and items
-        else if (crewmember.role === ROLE_TYPES.ENGINEER) {
-            SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+3, true);
-
-            let item = CreateItem(ITEM_SIGNAL_BOOSTER, 0, 0);
-            UnitAddItem(crewmember.unit.handle, item);
-
-            item = CreateItem(ITEM_ID_REPAIR, 0, 0);
-            SetItemCharges(item, 10);
-            UnitAddItem(crewmember.unit.handle, item);
-        }
-        // Navigator has extra accuracy
-        else if (crewmember.role === ROLE_TYPES.NAVIGATOR) {
-            SetHeroAgi(nUnit.handle, GetHeroAgi(nUnit.handle, false)+5, true);
-        }
-        else if (crewmember.role === ROLE_TYPES.INQUISITOR) {
-            nUnit.addAbility(ABIL_INQUIS_PURITY_SEAL);
-            nUnit.addAbility(ABIL_INQUIS_SMITE);
-            EventEntity.getInstance().addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
-                if (data.data.researched === TECH_MAJOR_RELIGION) {
-                    const techLevel = data.data.level;
-                    const gotOccupationBonus = ResearchFactory.getInstance().techHasOccupationBonus(data.data.researched, techLevel);
-
-                    if (nUnit && nUnit.isAlive()) {
-                        SetUnitAbilityLevel(nUnit.handle, ABIL_INQUIS_PURITY_SEAL, techLevel + 1);
                     }
-    
-                }
-            }));    
+                }));    
+            }
+
+            if (!roleGaveWeapons) {
+                const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
+                UnitAddItem(crewmember.unit.handle, item);
+                EventEntity.send(EVENT_TYPE.DO_EQUIP_WEAPON, {
+                    source: crewmember.unit,
+                    data: { item }
+                });
+            }
+
+            
+            WorldEntity.getInstance().travel(crewmember.unit, location.id);
+
+            BlzShowUnitTeamGlow(crewmember.unit.handle, false);
+            BlzSetUnitName(nUnit.handle, crewmember.role);
+            BlzSetHeroProperName(nUnit.handle, crewmember.name);
+            SuspendHeroXP(nUnit.handle, true);
+            SetPlayerName(nUnit.owner.handle, crewmember.name);
+            PanCameraToTimedForPlayer(nUnit.owner.handle, nUnit.x, nUnit.y, 0);
+            this.allCrew.push(crewmember);
+
+            return crewmember;
         }
-
-        if (!roleGaveWeapons) {
-            const item = CreateItem(BURST_RIFLE_ITEM_ID, 0, 0);
-            UnitAddItem(crewmember.unit.handle, item);
-            EventEntity.send(EVENT_TYPE.DO_EQUIP_WEAPON, {
-                source: crewmember.unit,
-                data: { item }
-            });
+        catch(e) {
+            Log.Error(`Failed to make crew ${e}`);
         }
-
-
-        
-        WorldEntity.getInstance().travel(crewmember.unit, location.id);
-
-        BlzShowUnitTeamGlow(crewmember.unit.handle, false);
-        BlzSetUnitName(nUnit.handle, crewmember.role);
-        BlzSetHeroProperName(nUnit.handle, crewmember.name);
-        SuspendHeroXP(nUnit.handle, true);
-        SetPlayerName(nUnit.owner.handle, crewmember.name);
-        PanCameraToTimedForPlayer(nUnit.owner.handle, nUnit.x, nUnit.y, 0);
-        this.allCrew.push(crewmember);
-
-        return crewmember;
     }
    
     getSpawnFor(role: ROLE_TYPES): Vector2 {
@@ -280,6 +289,10 @@ export class CrewFactory {
             const spawn = option[0];
             Quick.Slice(spawns, spawns.indexOf(spawn));
             return spawn;
+        }
+        else {
+            Log.Error(`Failed to find spawn for ${role}, max: ${spawns ? spawns.length : 'NIL'}`);
+            return undefined;
         }
     }
     

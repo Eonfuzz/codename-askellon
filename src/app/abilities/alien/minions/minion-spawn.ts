@@ -19,7 +19,7 @@ export class MinionSpawnAbility implements Ability {
             const y = u.y + GetRandomReal(-10, 10);
 
             const zone = WorldEntity.getInstance().getPointZone(x, y);
-            if (zone) AIEntity.createAddAgent(ALIEN_MINION_LARVA, x, y, zone.id);
+            // if (zone) AIEntity.createAddAgent(ALIEN_MINION_LARVA, x, y, zone.id);
         }
         catch(e) {
             Log.Error(e);            

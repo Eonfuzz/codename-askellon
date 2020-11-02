@@ -2,13 +2,14 @@ import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "./event-enum";
 import { EventData } from "./event-data";
 import { Hooks } from "lib/Hooks";
-import { Trigger, Region, Unit } from "w3ts/index";
+import { Trigger, Region, Unit, MapPlayer } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
 import { ABIL_DEFEND } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
 import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG } from "resources/unit-ids";
 import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH } from "resources/sfx-paths";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 /**
  * Handles and tracks events being passed to and from the game
@@ -28,21 +29,41 @@ export class EventEntity {
     eventListeners = new Map<EVENT_TYPE, EventListener[]>();
 
     private onUnitSpawn: Trigger;
+    private onUnitDeath: Trigger;
     private onUnitUndefend: Trigger;
 
     constructor() {
+        const mapArea = CreateRegion();
+        RegionAddRect(mapArea, GetPlayableMapRect());
+        
         // listen to unit create events
         // this is used as a "on unit remove" hack
         this.onUnitSpawn = new Trigger();
-        const mapArea = CreateRegion();
-        RegionAddRect(mapArea, GetPlayableMapRect());
-        this.onUnitSpawn.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
-        // this.onUnitSpawn.registerEnterRegion(mapArea, Condition(() => true));
+        this.onUnitSpawn.registerEnterRegion(mapArea, Condition(() => true));
 
         Players.forEach(player => {
             SetPlayerAbilityAvailable(player.handle, ABIL_DEFEND, false);
         });
         this.onUnitSpawn.addAction(() => {
+            const unit = GetTriggerUnit();
+            const u = GetUnitTypeId(GetTriggerUnit());
+            
+            if (u == UNIT_ID_DUMMY_CASTER) return false;
+            if (u == UNIT_ID_CRATE) return false;
+            if (u == SPACE_UNIT_ASTEROID) return false;
+            if (u == SPACE_UNIT_MINERAL) return false;
+
+            // Check to see if controller is alien AI
+            if (PlayerStateFactory.isAlienAI(MapPlayer.fromHandle(GetOwningPlayer(unit)))) {
+                const source = Unit.fromHandle(unit);
+                EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: source });
+            }
+        })
+
+        this.onUnitDeath = new Trigger();
+        this.onUnitDeath.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
+        this.onUnitDeath.addAction(() => {
+            const unit = GetTriggerUnit();
             const u = GetUnitTypeId(GetTriggerUnit());
             
             if (u == UNIT_ID_DUMMY_CASTER) return false;
@@ -50,6 +71,7 @@ export class EventEntity {
             if (u == SPACE_UNIT_ASTEROID) return false;
             if (u == SPACE_UNIT_MINERAL) return false;
             // if (u == UNIT_) return false;
+
             
             UnitAddAbility(GetTriggerUnit(), ABIL_DEFEND);
         })
