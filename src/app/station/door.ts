@@ -42,6 +42,7 @@ export class Door {
         this.isOpen = isOpen;
         this.updatingPathingBlockers(isOpen);
         this.checkOwnership();
+        this.unit.owner = PlayerStateFactory.NeutralPassive;
 
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (event, data) => {
             if (data.data.unit.handle === this.unit.handle) {
@@ -107,34 +108,34 @@ export class Door {
 
 
         Timers.addTimedAction(1, () => {
+            // Bug fix, status could change over 1.3 seconds
+            if (this.isOpen === isOpen) {
             this.updatingPathingBlockers(isOpen);
-            Timers.addTimedAction(0.3, () => {
-                // Bug fix, status could change over 1.3 seconds
-                if (this.isOpen === isOpen) {
-                    this.canUpdate = true;
-                    this.unit.addAnimationProps("alternate", isOpen);
-                    this.checkOwnership();
-                    ForGroup(nearbyUnitGroup, () => {
-                        UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), false);
-                    });
-                    DestroyGroup(nearbyUnitGroup);
-                }
-            });
+                Timers.addTimedAction(0.3, () => {
+                    // Bug fix, status could change over 1.3 seconds
+                    if (this.isOpen === isOpen) {
+                        this.canUpdate = true;
+                        this.unit.addAnimationProps("alternate", isOpen);
+                        this.checkOwnership();
+                        ForGroup(nearbyUnitGroup, () => {
+                            UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), false);
+                        });
+                        DestroyGroup(nearbyUnitGroup);
+                    }
+                });
+            }
         });
 
         return true;
     }
 
     private checkOwnership() {
-        this.unit.owner = PlayerStateFactory.NeutralPassive;
         if (this.isDead || !this.isPowered) {
             this.unit.name = `Security Door|n${COL_MISC}${this.isDead ? 'Broken' : 'Unpowered'}`;
         }
         else {
             this.unit.name = `Security Door`;
-        }
-        Timers.addTimedAction(0, () => this.unit.owner = PlayerStateFactory.StationProperty);
-        
+        }        
     }
 
     doorSearchGroup = CreateGroup();

@@ -112,6 +112,7 @@ export class ForceEntity extends Entity {
      * @param player2 
      */
     public canFight(player1: MapPlayer, player2: MapPlayer) : boolean | string {
+        // Aggression is always OK by security
         if (player1 === PlayerStateFactory.StationSecurity) return true;
         // We can never have tracked aggression against aliens
         if (PlayerStateFactory.isAlienAI(player2)) return true;
@@ -120,6 +121,7 @@ export class ForceEntity extends Entity {
         if (player1 === player2) return false;
         // You cannot be aggressive against Neutral Hostile
         if (player2 === PlayerStateFactory.NeutralHostile) return true;
+        if (player2 === PlayerStateFactory.NeutralPassive) return true;
 
         const aggressionKey = this.getLogKey(player1, player2);
         
@@ -247,9 +249,13 @@ export class ForceEntity extends Entity {
 
     private setPlayerSecurityTargetState(who: MapPlayer, isTargeted: boolean) {
         PlayerStateFactory.setTargeted(who, isTargeted);
+        
+        const pData = PlayerStateFactory.get(who);
+        const pIsAlienAndTransformed = pData && pData.getForce() && pData.getForce()
+            .is(ALIEN_FORCE_NAME) && (pData.getForce() as AlienForce).isPlayerTransformed(who);
 
         // If we target, make them hostile
-        if (isTargeted) {
+        if (isTargeted || pIsAlienAndTransformed) {
             PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, false);
             who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, false);
         }
@@ -282,11 +288,24 @@ export class ForceEntity extends Entity {
             }
         });
 
-        // Handle player being targeted
-        const isTargeted = PlayerStateFactory.isTargeted(forPlayer);
+        // Other "bug fix" calls
+        // Always be allied to neutral passive
+        PlayerStateFactory.NeutralPassive.setAlliance(forPlayer, ALLIANCE_PASSIVE, true);
+        forPlayer.setAlliance(PlayerStateFactory.NeutralPassive, ALLIANCE_PASSIVE, true);
+        // Always be hostile to neutral hostile
+        PlayerStateFactory.NeutralHostile.setAlliance(forPlayer, ALLIANCE_PASSIVE, false);
+        forPlayer.setAlliance(PlayerStateFactory.NeutralHostile, ALLIANCE_PASSIVE, false);
 
-        // If we are targeted, make them hostile
-        if (isTargeted) {
+        // Are we alien, and are we transformed?
+        const pData = PlayerStateFactory.get(forPlayer);
+        const pIsAlienAndTransformed = pData && pData.getForce() && pData.getForce()
+            .is(ALIEN_FORCE_NAME) && (pData.getForce() as AlienForce).isPlayerTransformed(forPlayer);
+
+        if (pData.getForce()) Log.Information(`${forPlayer.name} Force ${pData.getForce().name} is transformed ${pIsAlienAndTransformed}`);
+
+        // Security state, depends if the player is targeted or not
+        // If we are targeted OR alien form, make them hostile
+        if (PlayerStateFactory.isTargeted(forPlayer) || pIsAlienAndTransformed) {
             PlayerStateFactory.StationSecurity.setAlliance(forPlayer, ALLIANCE_PASSIVE, false);
             forPlayer.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, false);
         }
@@ -295,6 +314,13 @@ export class ForceEntity extends Entity {
             PlayerStateFactory.StationSecurity.setAlliance(forPlayer, ALLIANCE_PASSIVE, true);
             forPlayer.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
         }
+
+        // handle alien minion AI slots
+        PlayerStateFactory.getAlienAI().forEach(alienAISlot => {
+            // IF we are alien AND transformed, ally the players
+            alienAISlot.setAlliance(forPlayer, ALLIANCE_PASSIVE, pIsAlienAndTransformed);
+            forPlayer.setAlliance(alienAISlot, ALLIANCE_PASSIVE, pIsAlienAndTransformed);
+        });
     }
 
     /**
@@ -412,23 +438,14 @@ export class ForceEntity extends Entity {
 
         const timerTrig = new Trigger();
 
-        if (!PlayerStateFactory.isSinglePlayer()) {
-            const timerDialog = CreateTimerDialog(timer);
-            TimerDialogDisplay(timerDialog, true);
-            timerTrig.addAction(() => {
-                TimerDialogDisplay(timerDialog, false);
-                const results = optSelection.endOptSelection();
-                callback(results);
-            });
-        }
-        else {
-            timerTrig.addAction(() => {
-                const results = optSelection.endOptSelection();
-                callback(results);
-            });
-            
-        }
-
+        const timerDialog = CreateTimerDialog(timer);
+        TimerDialogDisplay(timerDialog, true);
+        timerTrig.addAction(() => {
+            TimerDialogDisplay(timerDialog, false);
+            const results = optSelection.endOptSelection();
+            callback(results);
+        });
+        
         timerTrig.registerTimerExpireEvent(timer);
     }
 

@@ -86,9 +86,9 @@ export class OptSelection {
 
         this.clickTrigger.registerDialogEvent(this.dialog);
         this.clickTrigger.addAction(() => this.onDialogClick());
-        if (!PlayerStateFactory.isSinglePlayer()) {
+        // if (!PlayerStateFactory.isSinglePlayer()) {
             this.players.forEach(player => this.dialog.display(player, true));
-        }
+        // }
     }
 
     private onDialogClick() {        
@@ -100,7 +100,7 @@ export class OptSelection {
 
 
         // Back out if the selected button has no variables
-        if (!optType) return Log.Warning("Opt selected with variables");
+        // if (!optType) return Log.Warning("Opt selected with variables");
         
         // Make sure the opt array exists
         if (!this.playersInOpt.has(optType)) this.playersInOpt.set(optType, []);
@@ -123,7 +123,8 @@ export class OptSelection {
             else optsForPlayerList.push(optType);
         }
 
-        this.updateDialog();
+        // Temporarily disabled, don't re-show
+        // this.updateDialog();
     }
 
     /**

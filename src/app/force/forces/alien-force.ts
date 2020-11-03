@@ -25,7 +25,7 @@ import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { WorldEntity } from "app/world/world-entity";
 import { Timers } from "app/timer-type";
-import { COL_ALIEN } from "resources/colours";
+import { COL_ALIEN, COL_TEAL } from "resources/colours";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
 import { PlayerState } from "../player-type";
@@ -166,11 +166,8 @@ export class AlienForce extends ForceType {
                 alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
                 alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
             }
+            alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
 
-            // Additionally force the transform ability to start on cooldown
-            // BlzStartUnitAbilityCooldown(who.unit.handle, ABIL_TRANSFORM_HUMAN_ALIEN,
-            //     who.unit.getAbilityCooldown(ABIL_TRANSFORM_HUMAN_ALIEN, 0)
-            // );
             // Add ability tooltip
             TooltipEntity.getInstance().registerTooltip(who, alienTooltipToAlien);
 
@@ -187,9 +184,19 @@ export class AlienForce extends ForceType {
             SetPlayerTechResearched(alien.owner.handle, TECH_ROACH_DUMMY_UPGRADE, 1);
 
             // Post event
-            if (crewmember)
+            if (crewmember) {
                 EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { source: alien, crewmember: crewmember });
 
+                const oldZone = WorldEntity.getInstance().getUnitZone(crewmember.unit);
+                // And handle travel
+                if (oldZone) {
+                    WorldEntity.getInstance().travel(alien, oldZone.id);
+                }
+            
+            }
+
+            alien.invulnerable = true;
+            Timers.addTimedAction(1, () => alien.invulnerable = false);
             VisionFactory.getInstance().setPlayervision(owner, VISION_TYPE.HUMAN);
             return alien;
         }
@@ -340,52 +347,23 @@ export class AlienForce extends ForceType {
             const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
 
             toShow.owner = toHide.owner;
-            toShow.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
             toShow.name = unitName;
             toShow.color = PLAYER_COLOR_PURPLE;
-            // Repair alliances
-            // Then make it an enemy of security
-            // forceEntity.repairAllAlliances(who); TODO
-
-            // Make enemy of security
-            who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, false);
-            PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, false);
-
 
             who.name = unitName;
             who.color = PLAYER_COLOR_PURPLE;
 
             // Post event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_TRANSFORM_ALIEN, { crewmember: crewmember, source: alien });
-
-            // Remove hostility with alien minions
-            PlayerStateFactory.getAlienAI().forEach(p => {
-                p.setAlliance(who, ALLIANCE_PASSIVE, true);
-                who.setAlliance(p, ALLIANCE_PASSIVE, true);
-            });
         }
         else {
             // Ensure player name reverts
             const pData = PlayerStateFactory.get(who);
             who.name = pData.originalName;
             who.color = pData.originalColour;
-            toHide.owner = PlayerStateFactory.NeutralPassive;
-            toHide.nameProper = "Duder";
-
-            // Make ally of security (if untargeted)
-            if (!PlayerStateFactory.isTargeted(who)) {
-                who.setAlliance(PlayerStateFactory.StationSecurity, ALLIANCE_PASSIVE, true);
-                PlayerStateFactory.StationSecurity.setAlliance(who, ALLIANCE_PASSIVE, true);
-            }
 
             // Post event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
-
-            // Restore hostility with alien minions
-            PlayerStateFactory.getAlienAI().forEach(p => {
-                p.setAlliance(who, ALLIANCE_PASSIVE, false);
-                who.setAlliance(p, ALLIANCE_PASSIVE, false);
-            });
         }
 
         if (unitWasSelected) SelectUnitAddForPlayer(toShow.handle, who.handle);
@@ -395,7 +373,8 @@ export class AlienForce extends ForceType {
     }
 
     isPlayerTransformed(who: MapPlayer) {
-        return !!this.playerIsTransformed.get(who);
+        const playerIsTransformed = this.playerIsTransformed.get(who);
+        return playerIsTransformed;
     }
 
     /**
@@ -594,6 +573,8 @@ export class AlienForce extends ForceType {
      */
     public onTick(delta: number) {
         super.onTick(delta);
+
+        // Every few seconds, ping alien players to all aliens
     }
 
     /**
@@ -613,9 +594,6 @@ export class AlienForce extends ForceType {
                 // Now get their alien units and replace with the new evo
                 const unit = this.playerAlienUnits.get(player);
                 if (unit) {
-                    const unitIsSelected = true;// unit.isSelected(player);
-
-
                     // Get old unit zone
                     const oldZone = worldEnt.getUnitZone(unit);
 
@@ -632,14 +610,15 @@ export class AlienForce extends ForceType {
 
                     // And handle travel
                     if (oldZone) {
-                        worldEnt.handleTravel(alien, oldZone.id);
+                        worldEnt.travel(alien, oldZone.id);
                     }
-                    
-                    if (unitIsSelected) {
-                        SelectUnitForPlayerSingle(alien.handle, player.handle);
-                    }
+                
+                    SelectUnitForPlayerSingle(alien.handle, player.handle);
+
                     this.playerAlienUnits.set(player, alien);
-                    alien.nameProper = 'Alien Host';
+                    alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
+            
+                    alien.name = 'Alien Host';
                     alien.color = PLAYER_COLOR_BROWN;
 
                     // Now we need to also set alien spawn penalties
@@ -652,7 +631,8 @@ export class AlienForce extends ForceType {
                         alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
                         alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
                         alien.removeAbility(ABIL_ALIEN_EVOLVE_T3);
-                        alien.nameProper = 'Alien Spawn';
+                        alien.name = 'Alien Spawn';
+                        
                     }
                     // If a player isn't transformed force the transformation
                     if (!this.playerIsTransformed.get(player)) {
@@ -672,18 +652,25 @@ export class AlienForce extends ForceType {
      * 
      * @param who 
      */
-    public introduction(who: MapPlayer) {
-        super.introduction(who);
+    public introduction(who: MapPlayer, skipDefaultIntro: boolean = false) {
+        if (skipDefaultIntro != true) super.introduction(who);
 
         const pData = PlayerStateFactory.get(who);
         const crew = pData.getCrewmember();
 
         Timers.addTimedAction(4, () => {
+            const isHost = this.getHost() === who;
+
             if (GetLocalPlayer() === who.handle) {
                 SOUND_ALIEN_GROWL.setVolume(127);
                 SOUND_ALIEN_GROWL.playSound();
-                DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}The hive welcomes you, my new Host.|r`);
-                DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}Find the others, hunt them, eat them. Welcome them like I have welcomed you.|r`);
+                if (isHost) {
+                    DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}The hive welcomes you, my new Host.|r`);
+                }
+                else {
+                    DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}The hive welcomes you, my child.|r`);
+                }
+                DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}Spread, go forth and feast on the biomass of the other creatures here. Kill them using your ${COL_TEAL}True Form|r${COL_ALIEN} we have gifted you and you shall build an army.|r`);
             }
         });
     }

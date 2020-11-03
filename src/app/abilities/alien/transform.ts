@@ -173,29 +173,29 @@ export class TransformAbility implements Ability {
                 t.start(2, false, () => RemoveGhost(alien));
             }
 
-            if (this.toAlien) {
-                const group = CreateGroup();
-                GroupEnumUnitsInRange(
-                    group, 
-                    this.casterUnit.x, 
-                    this.casterUnit.y,
-                    1200,
-                    FilterIsAlive(this.casterUnit.owner)
-                );
+            // if (this.toAlien) {
+            //     const group = CreateGroup();
+            //     GroupEnumUnitsInRange(
+            //         group, 
+            //         this.casterUnit.x, 
+            //         this.casterUnit.y,
+            //         1200,
+            //         FilterIsAlive(this.casterUnit.owner)
+            //     );
 
-                ForGroup(group, () => {
-                    const owningPlayer = MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()));
+            //     ForGroup(group, () => {
+            //         const owningPlayer = MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()));
 
-                    if (!PlayerStateFactory.isAlienAI(owningPlayer)) {
-                        ForceEntity.getInstance().aggressionBetweenTwoPlayers(
-                            this.casterUnit.owner, 
-                            owningPlayer
-                        );
-                    }
-                });
+            //         if (!PlayerStateFactory.isAlienAI(owningPlayer)) {
+            //             ForceEntity.getInstance().aggressionBetweenTwoPlayers(
+            //                 this.casterUnit.owner, 
+            //                 owningPlayer
+            //             );
+            //         }
+            //     });
 
-                DestroyGroup(group);
-            }
+            //     DestroyGroup(group);
+            // }
 
             // Delete order trigger
             this.orderTrigger.destroy();

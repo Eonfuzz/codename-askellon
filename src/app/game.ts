@@ -302,7 +302,7 @@ export class Game {
             ForceEntity.getInstance().initForcesFor(optResults);       
 
             // Init crew
-            CrewFactory.getInstance().initCrew()
+            CrewFactory.getInstance().initCrew();
 
             this.openingCinematic();
 
