@@ -72,8 +72,9 @@ export class CrewmemberForce extends ForceType {
                     // Hide our unit
                     whichUnit.unit.show = false;
     
-                    alienForce.addPlayerMainUnit(whichUnit, player);
                     PlayerStateFactory.get(player).setForce(alienForce);
+                    alienForce.addPlayer(player);
+                    alienForce.addPlayerMainUnit(whichUnit, player);
     
                     const fogMod = CreateFogModifierRadius(player.handle, FOG_OF_WAR_VISIBLE, whichUnit.unit.x, whichUnit.unit.y, 600, true, true);
                     FogModifierStart(fogMod);
@@ -82,12 +83,6 @@ export class CrewmemberForce extends ForceType {
                     DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, whichUnit.unit.x, whichUnit.unit.y))
                     Timers.addTimedAction(1, () => {
                         DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, whichUnit.unit.x, whichUnit.unit.y));
-                        // handle alien minion AI slots
-                        PlayerStateFactory.getAlienAI().forEach(alienAISlot => {
-                            // IF we are alien AND transformed, ally the players
-                            alienAISlot.setAlliance(player, ALLIANCE_PASSIVE, true);
-                            player.setAlliance(alienAISlot, ALLIANCE_PASSIVE, true);
-                        });
                     });
                     Timers.addTimedAction(2.2, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, whichUnit.unit.x, whichUnit.unit.y)));
                     Timers.addTimedAction(3, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, whichUnit.unit.x, whichUnit.unit.y)));

@@ -29,6 +29,7 @@ import { COL_ALIEN, COL_TEAL } from "resources/colours";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
 import { PlayerState } from "../player-type";
+import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -148,9 +149,7 @@ export class AlienForce extends ForceType {
 
             // TODO Change how vision is handled
             const pData = PlayerStateFactory.get(owner);
-            const crewmember = pData.getCrewmember();
-            alien.owner = PlayerStateFactory.NeutralPassive;
-                
+            const crewmember = pData.getCrewmember();                
 
             // mark this unit as the alien host
             if (!this.alienHost) {
@@ -345,8 +344,6 @@ export class AlienForce extends ForceType {
         // Update player name
         if (toAlien) {
             const unitName = (who === this.alienHost) ? 'Alien Host' : 'Alien Spawn';
-
-            toShow.owner = toHide.owner;
             toShow.name = unitName;
             toShow.color = PLAYER_COLOR_PURPLE;
 
@@ -571,10 +568,29 @@ export class AlienForce extends ForceType {
      * We need to reward player income
      * @param delta 
      */
+    private deltaTicker = 0;
     public onTick(delta: number) {
         super.onTick(delta);
 
+        this.deltaTicker += delta;
         // Every few seconds, ping alien players to all aliens
+        if (this.deltaTicker >= 30) {
+            this.deltaTicker = 0;
+            // Get alien force
+            this.players.forEach(player1 => {
+                this.players.forEach(player2 => {
+                    if (player1 == player2) return;
+
+                    const u = this.isPlayerTransformed(player2) 
+                        ? this.getAlienFormForPlayer(player2) 
+                        : PlayerStateFactory.getCrewmember(player2).unit;
+
+                    if (GetLocalPlayer() === player1.handle) {
+                        PingMinimapEx(u.x, u.y, 3, 153, 51, 255, false);
+                    }
+                });
+            });
+        }
     }
 
     /**
@@ -619,7 +635,9 @@ export class AlienForce extends ForceType {
                     alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
             
                     alien.name = 'Alien Host';
-                    alien.color = PLAYER_COLOR_BROWN;
+                    alien.color = PLAYER_COLOR_PURPLE;
+
+                    DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
 
                     // Now we need to also set alien spawn penalties
                     if (player !== alienHost) {

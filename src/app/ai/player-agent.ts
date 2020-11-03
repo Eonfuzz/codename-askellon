@@ -55,6 +55,11 @@ export class PlayerAgent {
             // Log.Information("World entity caught unit remove")
             this.removeAgent(data.source.handle);
         }));
+
+        // Reveal the map to the AI agents
+        
+        const m = CreateFogModifierRect(this.player.handle, FOG_OF_WAR_VISIBLE, gg_rct_stationtempvision, true, false);
+        FogModifierStart(m);
     }
 
     public removeAgent(agent: unit) {
