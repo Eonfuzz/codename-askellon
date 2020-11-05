@@ -301,7 +301,7 @@ export class ForceEntity extends Entity {
         const pIsAlienAndTransformed = pData && pData.getForce() && pData.getForce()
             .is(ALIEN_FORCE_NAME) && (pData.getForce() as AlienForce).isPlayerTransformed(forPlayer);
 
-        if (pData.getForce()) Log.Information(`${forPlayer.name} Force ${pData.getForce().name} is transformed ${pIsAlienAndTransformed}`);
+        // if (pData.getForce()) Log.Information(`${forPlayer.name} Force ${pData.getForce().name} is transformed ${pIsAlienAndTransformed}`);
 
         // Security state, depends if the player is targeted or not
         // If we are targeted OR alien form, make them hostile

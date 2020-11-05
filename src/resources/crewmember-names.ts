@@ -1,4 +1,4 @@
-import { COL_GOLD, COL_VENTS, COL_TEAL, COL_ATTATCH, COL_GOOD } from "./colours";
+import { COL_GOLD, COL_VENTS, COL_TEAL, COL_ATTATCH, COL_GOOD, COL_ALIEN } from "./colours";
 import { Vector2 } from "app/types/vector2";
 
 export enum ROLE_TYPES {
@@ -60,33 +60,35 @@ ROLE_NAMES.set(ROLE_TYPES.PILOT, [
 
 export const ROLE_DESCRIPTIONS = new Map<ROLE_TYPES, string>();
 
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `The ${COL_GOLD}Captain|r pilots the Askellon through deep space.
-${COL_GOOD}- Start the game at level 2 and have bonus Will
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `${COL_GOOD}- Guide your crew by using the ${COL_TEAL}Security Terminal|r${COL_GOOD}
+- Eliminate outliers by ${COL_TEAL}targeting|r${COL_GOOD} by terminal
 - Gain bonus experience points while on the bridge|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_GOLD}Navigator|r you must scan deep space and lead your ${COL_GOLD}Captain|r through deep space.|nYou are also in charge of the Cargo Bay's ships.`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `The ${COL_GOLD}Doctor|r researches Genetic enhancement and hunts the Alien.
-${COL_GOOD}- Start the game with +2 Vitality and +4 Will
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `${COL_GOOD}- Use your ${COL_TEAL}Genetic Sampler|r${COL_GOOD} to get Samples
+- Feed samples to the ${COL_TEAL}Blood Tester|r${COL_GOOD} and find the alien
+- Upgrade your allies by usign the ${COL_TEAL}Gene Splicer|r${COL_GOOD}
+- Start the game with +2 Vitality and +4 Will
 - Gain bonus experience points while applying Genetic Splices
-- Gain bonus experience points while Sequencing DNA
-- Start with a Genetic Sampler|r`);
+- Gain bonus experience points while Sequencing DNA|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOLD}Security Guards|r patrols the station to ensure order is upheld.
-${COL_GOOD}- Start the game with +10% bonus damage
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOOD}- Hunt down and eliminate any ${COL_ALIEN}Alien forces|r${COL_GOOD}
+- Start the game with +10% bonus damage
 - Receive bonus experience from combat
 - Starts with Harkon's Blitzer`);
 
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `The ${COL_GOLD}Inquisitor|r hunts down xenos scum.
-${COL_GOOD}- Start the game with Seal of Purity
-- Cannot benefit from Gene Splicing
-- Can upgrade abilities in the Cathederal|r`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.PILOT, `The ${COL_GOLD}Pilot|r patrols the void and mines minerals.
-${COL_GOOD}- Receive bonus experience from mining
-- Receive bonus experience for fighting in space
-- All ship abilities cost 1 less mana
-- Ships lose 10% less fuel|r`);
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.ENGINEER, `The ${COL_GOLD}Engineer|r maintains station integrity and upgrades Reactor.
-${COL_GOOD}- Begin the game with 3 bonus Vitality
-- Begin the game with extra items|r`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `${COL_GOOD}- Bless your brothers with the ${COL_TEAL}Seal of Purity|r${COL_GOOD}
+- Become extremely powerful by upgrading in the ${COL_TEAL}Cathederal|r${COL_GOOD}
+- Gain permanent attribute boosts by using ${COL_TEAL}Seal of Purity|r${COL_ATTATCH}
+- Religion prevents you from ever Gene Splicing|r`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.PILOT, `${COL_GOOD}- Protect the Askellon from harm using ace pilot skills
+- Mine asteroids in space for permanent upgrades
+- Gain bonus experience from dog fights and mining
+- Ship speed is increased by 10%
+- Ship fuel costs reduced by 10%|r`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.ENGINEER, `${COL_GOOD}- Maintain and repair the ${COL_TEAL}Reactor|r${COL_GOOD}
+- Use the ${COL_TEAL}Reactor's|r${COL_GOOD} special abilities to turn the tide of battle
+- Use ${COL_TEAL}Repair Kits|r${COL_GOOD} to remove rubble
+- Begin the game with 3 bonus Vitality, 5 Repairs Kits and a Signal Booster|r`);
 
  
 export const ROLE_GUIDES = new Map<ROLE_TYPES, string>();

@@ -39,9 +39,15 @@ export class Timers {
             while (i < this.timedActionCallbacks.length) {
                this.timedActionCallbacks[i].time -= 0.01;
                if (this.timedActionCallbacks[i].time <= 0) {
-                    this.timedActionCallbacks[i].action();
-                    this.timedActionCallbacks[i] = this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
-                    delete this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
+                   try {
+                        this.timedActionCallbacks[i].action();
+                        this.timedActionCallbacks[i] = this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
+                        delete this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
+                    }
+                    catch (e) {
+                        Log.Error(`FastTimer ${e}`);
+                        delete this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
+                    }
                } 
                else {
                    i++;
@@ -55,9 +61,15 @@ export class Timers {
             while (i < this.slowTimedActionCallbacks.length) {
                this.slowTimedActionCallbacks[i].time -= 1;
                if (this.slowTimedActionCallbacks[i].time <= 0) {
-                    this.slowTimedActionCallbacks[i].action();
-                    this.slowTimedActionCallbacks[i] = this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];
-                    delete this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];
+                    try {
+                        this.slowTimedActionCallbacks[i].action();
+                        this.slowTimedActionCallbacks[i] = this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];
+                        delete this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];
+                    }
+                    catch (e) {
+                        Log.Error(`SlowTimer ${e}`);
+                        delete this.slowTimedActionCallbacks[this.slowTimedActionCallbacks.length - 1];
+                    }
                } 
                else {
                    i++;

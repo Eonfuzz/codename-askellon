@@ -3,7 +3,7 @@ import { EventData } from "./event-data";
 
 export class EventListener {
     eventType: EVENT_TYPE;
-    onEvent: (data: EventData) => void;
+    onEvent: (data: EventData | undefined) => void;
 
     constructor(type: EVENT_TYPE, onEvent: (self: EventListener, data: EventData) => void) {
         this.eventType = type;

@@ -216,28 +216,6 @@ export class PerseusShip extends ShipWithFuel {
             if (unitZone.id === ZONE_TYPE.CARGO_A) {        
                 this.dropMineral(this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);
                 this.dropMineral(this.unit.getItemInSlot(1), ITEM_MINERAL_VALUABLE);
-
-                // Reward money
-                // if (owningUnit && stacks > 0) {
-                //     const pData = PlayerStateFactory.get(owningUnit.owner);
-    
-                //     const crew = pData.getCrewmember();
-                //     if (crew && crew.unit == owningUnit) {
-                //         const hasRoleOccupationBonus = (crew.role === ROLE_TYPES.PILOT);
-                //         if (hasRoleOccupationBonus) {
-                //             crew.addExperience(stacks * 4);
-                //             crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
-                //                 crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 7
-                //             );
-                //         }
-                //         else {
-                //             crew.addExperience(stacks * 3);
-                //             crew.player.setState(PLAYER_STATE_RESOURCE_GOLD, 
-                //                 crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + stacks * 5
-                //             );
-                //         }
-                //     }
-                // } 
             }
         }
         
@@ -251,7 +229,7 @@ export class PerseusShip extends ShipWithFuel {
         
         if (stacks > 0) {
             const minerals = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 300 + GetRandomInt(-50, 50));
-            const maxCharges = ITEM_ID === ITEM_MINERAL_REACTIVE ? 10 : 5; 
+            const maxCharges = ITEM_ID === ITEM_MINERAL_REACTIVE ? 30 : 15; 
             const fullStacks = Math.floor(stacks / maxCharges);
             const remainder = stacks % maxCharges;
             

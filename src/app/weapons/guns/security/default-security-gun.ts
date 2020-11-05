@@ -47,8 +47,9 @@ export class DefaultSecurityGun extends Gun {
             let delay = 0;
             for (let i = 0; i < 4; i++) {
                 Timers.addTimedAction(delay, () => {
-                    this.fireProjectile(unit, newTargetLocation);
-                    return true;
+                    if (this.equippedTo && this.equippedTo.unit && this.equippedTo.unit.isAlive()) {
+                        this.fireProjectile(unit, newTargetLocation);
+                    }
                 });
                 delay = delay + 0.15;
             }   

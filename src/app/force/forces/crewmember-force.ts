@@ -41,81 +41,74 @@ export class CrewmemberForce extends ForceType {
         TooltipEntity.getInstance().registerTooltip(whichUnit, resolveTooltip);
     }
 
-    removePlayerMainUnit(whichUnit: Crewmember, player: MapPlayer, killer?: Unit) {
-        super.removePlayerMainUnit(whichUnit, player);
+    removePlayer(player: MapPlayer, killer: Unit = undefined) {
+        const forceHasPlayer = this.players.indexOf(player) >= 0;
 
-        whichUnit.unit.removeAbility(ABIL_CREWMEMBER_INFO);
-
-        // Remove ability tooltip
-        TooltipEntity.getInstance().unregisterTooltip(whichUnit, resolveTooltip);
-
-        let killedByAlien: boolean = false;
-        if (killer) {
-            const pKiller = PlayerStateFactory.get(killer.owner);
-            const pForce = pKiller.getForce();
+        if (forceHasPlayer) {
+            const playerData = PlayerStateFactory.get(player);
+            const crew = playerData.getCrewmember();
             
-            if (pForce && pForce.is(ALIEN_FORCE_NAME)) {
-                const aForce = pForce as AlienForce;
-                const alienUnit = aForce.getAlienFormForPlayer( killer.owner );
-                killedByAlien = killer === alienUnit;
-            }
-            else {
-                killedByAlien = PlayerStateFactory.isAlienAI(killer.owner);
-            }
+            /**
+             * Handle the removal of RESOLVE passive
+             */
+            crew.unit.removeAbility(ABIL_CREWMEMBER_INFO);
+            // Remove ability tooltip
+            TooltipEntity.getInstance().unregisterTooltip(crew, resolveTooltip);
 
-            // If alien killed us migrate to alien force
-            if (killedByAlien) {
-                try {
+    
+            if (killer) {
+                const pKiller = PlayerStateFactory.get(killer.owner);
+                const pForce = pKiller.getForce();
+                
+                const killedByAlien = 
+                    // Killed by station AI
+                    PlayerStateFactory.isAlienAI(killer.owner) ||
+                    // Or killed by an Alien form Alien player
+                    (pForce && pForce.is(ALIEN_FORCE_NAME) && killer === (pForce as AlienForce).getAlienFormForPlayer( killer.owner ));
+    
+                // If alien killed us migrate to alien force
+                if (killedByAlien) {
                     const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
-                    // Revive our unit
-                    whichUnit.unit.revive(whichUnit.unit.x, whichUnit.unit.y, false);
-                    // Hide our unit
-                    whichUnit.unit.show = false;
+                    // Revive and hide the crewmember
+                    crew.unit.revive(crew.unit.x, crew.unit.y, false);
+                    crew.unit.show = false;
     
                     PlayerStateFactory.get(player).setForce(alienForce);
                     alienForce.addPlayer(player);
-                    alienForce.addPlayerMainUnit(whichUnit, player);
+                    alienForce.addPlayerMainUnit(crew, player);
     
-                    const fogMod = CreateFogModifierRadius(player.handle, FOG_OF_WAR_VISIBLE, whichUnit.unit.x, whichUnit.unit.y, 600, true, true);
+                    const fogMod = CreateFogModifierRadius(player.handle, FOG_OF_WAR_VISIBLE, crew.unit.x, crew.unit.y, 600, true, true);
                     FogModifierStart(fogMod);
 
                     // Force transformation
-                    DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, whichUnit.unit.x, whichUnit.unit.y))
+                    DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, crew.unit.x, crew.unit.y))
                     Timers.addTimedAction(1, () => {
-                        DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, whichUnit.unit.x, whichUnit.unit.y));
+                        DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, crew.unit.x, crew.unit.y));
                     });
-                    Timers.addTimedAction(2.2, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, whichUnit.unit.x, whichUnit.unit.y)));
-                    Timers.addTimedAction(3, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, whichUnit.unit.x, whichUnit.unit.y)));
-                    Timers.addTimedAction(3.6, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, whichUnit.unit.x, whichUnit.unit.y)));
+                    Timers.addTimedAction(2.2, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
+                    Timers.addTimedAction(3, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
+                    Timers.addTimedAction(3.6, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
                     Timers.addTimedAction(4, () => {
-                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, whichUnit.unit.x, whichUnit.unit.y));
+                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y));
                         alienForce.transform(player, true);
                         FogModifierStop(fogMod);
                         DestroyFogModifier(fogMod);
                     });
                     alienForce.introduction(player, true);
                 }
-                catch (e) {
-                    Log.Error("Crew->Death->Alien failed!");
-                    Log.Error(e);
+                // Otherwise make observer
+                else {
+                    const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
+    
+                    obsForce.addPlayer(player);
+                    obsForce.addPlayerMainUnit(crew, player);
+                    PlayerStateFactory.get(player).setForce(obsForce);
                 }
             }
-            // Otherwise make observer
-            else {
-                const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
 
-                obsForce.addPlayer(player);
-                obsForce.addPlayerMainUnit(whichUnit, player);
-                PlayerStateFactory.get(player).setForce(obsForce);
-            }
         }
-        this.removePlayer(player);
-
-        // Check victory conds
-        EventEntity.getInstance().sendEvent(EVENT_TYPE.CHECK_VICTORY_CONDS, {
-            source: whichUnit.unit,
-            crewmember: whichUnit
-        });
+            
+        super.removePlayer(player, killer);
     }    
     
     

@@ -18,13 +18,6 @@ export function initShipInteractions() {
             if (source.typeId === SHIP_VOYAGER_UNIT) {
                 return false;
             }
-            if (GetPlayerTechCount(source.owner.handle, TECH_MAJOR_VOID, true) === 0) {
-                DisplayTimedTextToPlayer(source.owner.handle, 0, 0, 5, `${COL_ATTATCH}ACCESS DENIED|R ${COL_PINK}Void Delving I|r required`);
-                if (source.owner.handle === GetLocalPlayer()) {
-                    noInventorySpace.playSound();
-                }
-                return false;
-            }
             // Make sure ships can't fly ships, lol.
             return true;
         },
@@ -33,6 +26,13 @@ export function initShipInteractions() {
         onCancel: (source: Unit, interactable: Unit) => {
         },
         action: (source: Unit, interactable: Unit) => {
+            if (GetPlayerTechCount(source.owner.handle, TECH_MAJOR_VOID, true) === 0) {
+                DisplayTimedTextToPlayer(source.owner.handle, 0, 0, 5, `${COL_ATTATCH}ACCESS DENIED|R ${COL_PINK}Void Delving I|r required`);
+                if (source.owner.handle === GetLocalPlayer()) {
+                    noInventorySpace.playSound();
+                }
+                return false;
+            }
             EventEntity.getInstance().sendEvent(EVENT_TYPE.ENTER_SHIP, {
                 source: source,
                 data: {

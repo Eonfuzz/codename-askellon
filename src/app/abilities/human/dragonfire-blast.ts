@@ -57,6 +57,7 @@ export class DragonFireBlastAbility implements Ability {
         BlzSetSpecialEffectZ(sfx, casterLoc.z-80);
         BlzSetSpecialEffectScale(sfx, 1);
         BlzSetSpecialEffectTimeScale(sfx, 200);
+        DestroyEffect(sfx);
 
         const deltaLocs = getPointsInRangeWithSpread(
             angleDeg - SPREAD,

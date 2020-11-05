@@ -333,28 +333,25 @@ export class ChatEntity extends Entity {
 
             // Get list of players to send the message to by player force
             const pDetails = PlayerStateFactory.get(player);
-            const force = pDetails.getForce();
 
-            if (force) {
-                // Handle listen mode
-                this.adminListenUsers.forEach(u => {
-                    if (chatData.recipients.indexOf(u) === -1) chatData.recipients.push(u);
-                });
+            // Handle listen mode
+            this.adminListenUsers.forEach(u => {
+                if (chatData.recipients.indexOf(u) === -1) chatData.recipients.push(u);
+            });
 
-                if (postHookData.recipients.length > 0) {
-                    // Play unit chat animation
-                    const u = force.getPlayerMainUnit(player);
-                    if (u) {
-                        u.unit.setAnimation(5);
-                        const uX = u.unit.x;
-                        const uY = u.unit.y;
+            if (postHookData.recipients.length > 0) {
+                // Play unit chat animation
+                const u = pDetails.getUnit();
+                if (u) {
+                    u.setAnimation(5);
+                    const uX = u.x;
+                    const uY = u.y;
 
-                        Timers.addTimedAction(1.4, () => u.unit.x == uX && u.unit.y == uY && u.unit.setAnimation(0));
-                    }
+                    Timers.addTimedAction(1.4, () => u.x == uX && u.y == uY && u.setAnimation(0));
                 }
-
-                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, undefined, postHookData.sound);
             }
+
+            this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, undefined, postHookData.sound);
         }
     }
 

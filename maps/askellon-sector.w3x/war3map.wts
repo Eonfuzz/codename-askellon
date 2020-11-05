@@ -4758,12 +4758,6 @@ STRING 1176
 Mineral Storage - Maskelynite
 }
 
-STRING 1179
-// Items: I00I (Pyroxene), Ubertip (Tooltip - Extended)
-{
-|cff808080A rare mineral found in a strange sector of space; preliminary scans and tests shows it can be used as a steel substitute.|n|r|nFeed through conveyor belts to repair the Reactor, or it may be manually sold for a larger sum of money.|n|cff00ff00- Repairs 5 HP per stack|n- Sells for 4 Credits per stack|r|n|n|cffd45e19Stacks up to 5|r
-}
-
 STRING 1180
 // Items: I00J (Mineral Storage - Pyroxene), Name (Name)
 {
@@ -5958,12 +5952,6 @@ STRING 1395
 Patient has no T3 gene
 }
 
-STRING 1396
-// Items: I00H (Maskelynite), Ubertip (Tooltip - Extended)
-{
-|cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 0.1 per stack|n- Powers up reactor by 1 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 10
-}
-
 STRING 1398
 // Abilities: A01Y (Drop Minerals), Name (Name)
 {
@@ -5988,12 +5976,6 @@ STRING 1401
 [|cffffff00F|r] - Resolve
 }
 
-STRING 1402
-// Items: I00B (Mineral Storage - Maskelynite), Ubertip (Tooltip - Extended)
-{
-|cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 0.1 per stack|n- Powers up reactor by 1 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 250
-}
-
 STRING 1403
 // Units: n003 (Gun Vendor|n|cff808080Buys and Sells guns|r), Name (Name)
 {
@@ -6016,5 +5998,23 @@ STRING 1406
 // Abilities: A01Z (Larva Spawning), Name (Name)
 {
 Larva Spawning
+}
+
+STRING 1407
+// Items: I00B (Mineral Storage - Maskelynite), Ubertip (Tooltip - Extended)
+{
+|cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 0.1 per stack|n- Powers up reactor by 1 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 250|nDock on the Askellon to access|r
+}
+
+STRING 1408
+// Items: I00H (Maskelynite), Ubertip (Tooltip - Extended)
+{
+|cff808080An extremely high yield and dense compound.|n|r|nFeed through conveyor belts to |cffd45e19upgrade |rthe Reactor, or it may be manually sold for a small sum of money.|n|cff00ff00- Increases Reactor Capacity by 0.1 per stack|n- Powers up reactor by 1 per stack|n- Sells for 1 Credit per stack|r|n|n|cffd45e19Stacks up to 30
+}
+
+STRING 1409
+// Items: I00I (Pyroxene), Ubertip (Tooltip - Extended)
+{
+|cff808080A rare mineral found in a strange sector of space; preliminary scans and tests shows it can be used as a steel substitute.|n|r|nFeed through conveyor belts to repair the Reactor, or it may be manually sold for a larger sum of money.|n|cff00ff00- Repairs 5 HP per stack|n- Sells for 4 Credits per stack|r|n|n|cffd45e19Stacks up to 15|r
 }
 

@@ -145,10 +145,13 @@ export class EventEntity {
         return this;
     }
 
-    sendEvent(whichEvent: EVENT_TYPE, data: EventData) {
+    sendEvent(whichEvent: EVENT_TYPE, data?: EventData) {
         // Get the list of listeners
-        const listeners = this.eventListeners.get(whichEvent) || [];
-        listeners.forEach(l => l.onEvent(data));
+        const listeners = this.eventListeners.get(whichEvent);
+        if (listeners) {
+            // Log.Information(`Got event ${EVENT_TYPE[whichEvent]} to ${listeners.length}`);
+            listeners.forEach(l => l.onEvent(data));
+        }
     }
 
     removeListener(listener: EventListener) {

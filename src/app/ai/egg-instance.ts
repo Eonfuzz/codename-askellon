@@ -44,6 +44,7 @@ export class EggInstance {
             // Log.Information("Spawning unit");
             const sfx = AddSpecialEffect(SFX_HUMAN_BLOOD, this.egg.x, this.egg.y);
             BlzSetSpecialEffectZ(sfx, getZFromXY(this.egg.x, this.egg.y));
+            DestroyEffect(sfx);
             // const unit = new Unit(this.egg.owner, this.to, this.egg.x, this.egg.y, this.egg.facing);
 
             const zone = WorldEntity.getInstance().getPointZone(this.egg.x, this.egg.y);
@@ -61,7 +62,7 @@ export class EggInstance {
     step(delta: number) {
         this.timeElapsed += delta;
         // Log.Information("Step!");
-        if (!this.egg.isAlive()) return this.end(false);
+        if (!this.egg.isAlive()) return this.end(true);
         if (this.timeElapsed >= this.duration) return this.end();
         return true;
     }

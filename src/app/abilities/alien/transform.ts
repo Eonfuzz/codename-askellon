@@ -137,6 +137,7 @@ export class TransformAbility implements Ability {
 
             const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
             const alien = alienForce.transform(this.casterUnit.owner, this.toAlien);
+            if (!alien) return;
 
             // Select nearby units and scare 'em
             const scareGroup = CreateGroup();

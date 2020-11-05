@@ -36,8 +36,8 @@ export class ShipBay {
 
     dockShip(ship: Ship, showAnimation?: boolean) {
         // Check for ship dock status
-        if (this.dockedShip) return Log.Error("Trying to dock into bay that already has a ship!");
-        if (this.animating) return Log.Error("Trying to dock into a bay that is animating!");
+        if (this.dockedShip) return;// Log.Error("Trying to dock into bay that already has a ship!");
+        if (this.animating) return;// Log.Error("Trying to dock into a bay that is animating!");
 
         // Set docking animation state
         if (!showAnimation) {

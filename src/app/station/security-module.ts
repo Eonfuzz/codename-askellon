@@ -48,14 +48,17 @@ export class SecurityEntity extends Entity {
             this.unitIterateSetup(Unit.fromHandle(GetFilterUnit()));
             return false;
         }));
+        GroupClear(uGroup);
         GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.StationSecurity.handle, Filter(() => {
             this.unitIterateSetup(Unit.fromHandle(GetFilterUnit()));
             return false;
         }));
+        GroupClear(uGroup);
         GroupEnumUnitsOfPlayer(uGroup, PlayerStateFactory.NeutralPassive.handle, Filter(() => {
             this.unitIterateSetup(Unit.fromHandle(GetFilterUnit()));
             return false;
         }));
+        GroupClear(uGroup);
 
         this.stationSecurityDamageTrigger.addAction(() => this.onSecurityDamage(
             BlzGetEventDamageTarget(),
@@ -87,12 +90,14 @@ export class SecurityEntity extends Entity {
             uType !== UNIT_ID_STATION_SECURITY_TURRET &&
             uType !== UNIT_ID_STATION_SECURITY_CAMERA) return false;
 
-        this.stationSecurityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGED);
+        this.stationSecurityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGING);
 
         if (u.typeId === UNIT_ID_MANSION_DOOR) {
-            const door = new Door(u, false);
-            this.doors.set(u, door);
-            this.doorsIterator.push(door)
+            if (!this.doors. has(u)) {
+                const door = new Door(u, false);
+                this.doors.set(u, door);
+                this.doorsIterator.push(door)
+            }
         }
         else if (u.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
             // Add a gun to the turret
@@ -129,7 +134,6 @@ export class SecurityEntity extends Entity {
                 this.isDestroyedMap.set(unit, true);
                 // Pause the unit
                 unit.paused = true;
-                unit.setTimeScale(0);
 
                 // If unit type is turret play its burrow animation
                 if (unit.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
@@ -138,6 +142,7 @@ export class SecurityEntity extends Entity {
                     unit.addAnimationProps('alternate', true);
                 }
                 else if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
+                    unit.setTimeScale(0);
                     unit.setVertexColor(120, 120, 120, 255);         
                 }
                 unit.name = unit.name+" - Destroyed";      
@@ -174,7 +179,6 @@ export class SecurityEntity extends Entity {
             this.isDestroyedMap.set(unit, false);
             // Set unit hp to full
             SetUnitLifePercentBJ(u, 100);
-            unit.setTimeScale(1);
             // Pause the unit
             unit.paused = false;
 
@@ -185,6 +189,7 @@ export class SecurityEntity extends Entity {
                 unit.addAnimationProps('alternate', false);
             }
             else if (unit.typeId === UNIT_ID_STATION_SECURITY_CAMERA) {
+                unit.setTimeScale(1);
                 unit.setVertexColor(255, 255, 255, 255);      
             }
             unit.name = unit.name.replace(" - Destroyed", "");

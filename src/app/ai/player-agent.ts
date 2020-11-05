@@ -148,7 +148,9 @@ export class PlayerAgent {
 
             allHumans.forEach(human => {
                 const crew = PlayerStateFactory.getCrewmember(human);
-                if (crew && UnitAlive(crew.unit.handle) && (IsUnitVisible(crew.unit.handle, this.player.handle) || UnitHasBuffBJ(crew.unit.handle, BUFF_ID_DESPAIR))) {
+                const targetLocation = crew && WorldEntity.getInstance().getUnitZone(crew.unit);
+                if (crew && UnitAlive(crew.unit.handle) && targetLocation && targetLocation.id != ZONE_TYPE.SPACE &&
+                    (IsUnitVisible(crew.unit.handle, this.player.handle) || UnitHasBuffBJ(crew.unit.handle, BUFF_ID_DESPAIR))) {
                     visibleCrew.push(crew.unit);
                 }
             })

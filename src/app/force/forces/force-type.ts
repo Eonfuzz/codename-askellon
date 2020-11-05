@@ -13,6 +13,7 @@ import { COL_GOLD } from "resources/colours";
 import { EventListener } from "app/events/event-type";
 import { ChatEntity } from "app/chat/chat-entity";
 import { MessageAllPlayers, MessagePlayer } from "lib/utils";
+import { ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 
 
 export const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
@@ -40,34 +41,38 @@ export abstract class ForceType {
         this.players.push(who);
     }
 
-    removePlayer(who: MapPlayer) {
-        const idx = this.players.indexOf(who);
-
-        if (idx >= 0) {
-            this.players.splice(idx, 1);
-        }
-    }
-
     public addPlayerMainUnit(whichUnit: Crewmember, player: MapPlayer): void {
         const trig = new Trigger();
         trig.registerUnitEvent(whichUnit.unit, EVENT_UNIT_DEATH);
-        trig.addAction(() => this.removePlayerMainUnit(whichUnit, player, Unit.fromHandle(GetKillingUnit() || GetDyingUnit())));
+        trig.addAction(() => this.removePlayer(player, Unit.fromHandle(GetKillingUnit() || GetDyingUnit())));
 
         this.playerUnits.set(player, whichUnit);
         this.playerDeathTriggers.set(player, trig);
         VisionFactory.getInstance().setPlayervision(player, VISION_TYPE.HUMAN);
     };
 
-    public getPlayerMainUnit(player: MapPlayer) {
-        return this.playerUnits.get(player);
+    /**
+     * Removes the player from the force entirely
+     * @param player 
+     * @param killer 
+     */
+    public removePlayer(player: MapPlayer, killer: Unit = undefined) {
+        const idx = this.players.indexOf(player);
+
+        if (idx >= 0) {
+            this.players.splice(idx, 1);
+            this.playerDeathTriggers.get(player).destroy();
+            this.playerDeathTriggers.delete(player);
+            this.playerUnits.delete(player);
+
+            // Check victory conds
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.CHECK_VICTORY_CONDS);
+        }
+        else {
+            Log.Error(`${player.name} is already removed from force ${this.name}`);
+        }
+
     }
-
-    public removePlayerMainUnit(whichUnit: Crewmember, player: MapPlayer, killer?: Unit): void {
-        this.playerDeathTriggers.get(player).destroy();
-        this.playerDeathTriggers.delete(player);
-
-        this.playerUnits.delete(player);
-    };
 
     /**
      * Checks the victory conditions of this force
@@ -119,6 +124,13 @@ export abstract class ForceType {
             Log.Error("Failed to get crew name for "+chatEvent.who.name);
             return "Missing Crew Name";
         }
+    }
+
+    /**
+     * Returns the player's currently "active" unit
+     */
+    public getActiveUnitFor(who: MapPlayer) {
+        return this.playerUnits.get(who).unit;
     }
 
     /**
@@ -191,6 +203,7 @@ export abstract class ForceType {
         if (GetLocalPlayer() === who.handle) {
             this.introSound.playSound();
             MessagePlayer(who, `${COL_GOLD}Your Role |r`+crew.role);
+            MessagePlayer(who, ROLE_DESCRIPTIONS.get(crew.role));
         }
     }
 

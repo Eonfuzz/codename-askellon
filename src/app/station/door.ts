@@ -42,19 +42,24 @@ export class Door {
         this.isOpen = isOpen;
         this.updatingPathingBlockers(isOpen);
         this.checkOwnership();
-        this.unit.owner = PlayerStateFactory.NeutralPassive;
 
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_DISABLED, (event, data) => {
-            if (data.data.unit.handle === this.unit.handle) {
+            if (data.data.unit === this.unit) {
                 this.isDead = true;
                 this.update(true, true);
                 this.checkOwnership();
+                this.unit.setVertexColor(100, 100, 100, 255);
+
+                PingMinimap(this.unit.x, this.unit.y, 5);
             }
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
-            if (data.data.unit.handle === this.unit.handle) {
+            if (data.data.unit === this.unit) {
+                Log.Information("Door live message!");
+
                 this.isDead = false;
                 this.checkOwnership();
+                this.unit.setVertexColor(255, 255, 255, 255);
             }
         }));
 
@@ -85,57 +90,58 @@ export class Door {
     update(isOpen: boolean, ignoreConditions: boolean = false): boolean {
         if (!ignoreConditions && (!this.canUpdate || !this.isPowered) || this.isOpen === isOpen) return false;
 
-        const nearbyUnitGroup = CreateGroup();
-        GroupEnumUnitsInRange(nearbyUnitGroup, this.unit.x, this.unit.y, 800, Filter(() => {
-            const u = GetFilterUnit();
-            const o = GetOwningPlayer(u);
-            return GetPlayerId(o) < 20;
-        }));
+        try {
+            const nearbyUnitGroup = CreateGroup();
+            GroupEnumUnitsInRange(nearbyUnitGroup, this.unit.x, this.unit.y, 800, Filter(() => {
+                const u = GetFilterUnit();
+                const o = GetOwningPlayer(u);
+                return GetPlayerId(o) < 20;
+            }));
 
-        this.unit.setAnimation(isOpen ? 1 : 3);
-        this.isOpen = isOpen;
-        this.canUpdate = false;
+            this.unit.setAnimation(isOpen ? 1 : 3);
+            this.isOpen = isOpen;
+            this.canUpdate = false;
 
-        ForGroup(nearbyUnitGroup, () => {
-            UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), true);
-            if (isOpen) {
-                this.doorOpenSound.playSoundOnUnit(GetEnumUnit(), 25);
-            }
-            else {
-                this.doorCloseSound.playSoundOnUnit(GetEnumUnit(), 25);
-            }
-        })
+            ForGroup(nearbyUnitGroup, () => {
+                UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), true);
+                if (isOpen) {
+                    this.doorOpenSound.playSoundOnUnit(GetEnumUnit(), 25);
+                }
+                else {
+                    this.doorCloseSound.playSoundOnUnit(GetEnumUnit(), 25);
+                }
+            })
 
 
-        Timers.addTimedAction(1, () => {
-            // Bug fix, status could change over 1.3 seconds
-            if (this.isOpen === isOpen) {
-            this.updatingPathingBlockers(isOpen);
+            Timers.addTimedAction(1, () => {
+                this.updatingPathingBlockers(isOpen);
                 Timers.addTimedAction(0.3, () => {
-                    // Bug fix, status could change over 1.3 seconds
-                    if (this.isOpen === isOpen) {
-                        this.canUpdate = true;
-                        this.unit.addAnimationProps("alternate", isOpen);
-                        this.checkOwnership();
-                        ForGroup(nearbyUnitGroup, () => {
-                            UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), false);
-                        });
-                        DestroyGroup(nearbyUnitGroup);
-                    }
+                    this.canUpdate = true;
+                    this.unit.addAnimationProps("alternate", isOpen);
+                    this.checkOwnership();
+                    ForGroup(nearbyUnitGroup, () => {
+                        UnitShareVision(this.unit.handle, GetOwningPlayer(GetEnumUnit()), false);
+                    });
+                    DestroyGroup(nearbyUnitGroup);
                 });
-            }
-        });
+            });
+        }
+        catch(e) {
+            Log.Error(e);
+        }
 
         return true;
     }
 
     private checkOwnership() {
+        this.unit.owner = PlayerStateFactory.NeutralPassive;
         if (this.isDead || !this.isPowered) {
             this.unit.name = `Security Door|n${COL_MISC}${this.isDead ? 'Broken' : 'Unpowered'}`;
         }
         else {
             this.unit.name = `Security Door`;
         }        
+        Timers.addTimedAction(0, () => this.unit.owner = PlayerStateFactory.StationProperty);
     }
 
     doorSearchGroup = CreateGroup();
@@ -144,7 +150,10 @@ export class Door {
      */
     public search() {
         // Don't auto update it the door is dead
-        if (this.isDead) return;
+        // Don't update if the door is unpowered
+        if (this.isDead && !this.isOpen) this.update(true, true);
+        else if (this.isDead) return;
+        if (!this.isPowered) return;
 
 
         GroupEnumUnitsInRange(this.doorSearchGroup, this.unit.x, this.unit.y, 450, Filter(() => {

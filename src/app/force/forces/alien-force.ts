@@ -240,62 +240,72 @@ export class AlienForce extends ForceType {
     }
 
 
-    removePlayerMainUnit(whichUnit: Crewmember, player: MapPlayer) {
-        super.removePlayerMainUnit(whichUnit, player);
-        whichUnit.unit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
+    removePlayer(player: MapPlayer, killer?: Unit) {
+        const forceHasPlayer = this.players.indexOf(player) >= 0;
 
-        // Remove ability tooltip
-        TooltipEntity.getInstance().unregisterTooltip(whichUnit, alienTooltipToHuman);
-        TooltipEntity.getInstance().unregisterTooltip(this.getAlienFormForPlayer(player), alienTooltipToHuman);
+        if (forceHasPlayer) {
+            const playerData = PlayerStateFactory.get(player);
+            const crew = playerData.getCrewmember();
+            const alienForm = this.getAlienFormForPlayer(player);
+            
+            crew.unit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
 
-        // As this can be called on alien death we need to make sure both alien and human is dead
-        const alienUnit = this.getAlienFormForPlayer(player);
+            // Remove ability tooltip
+            TooltipEntity.getInstance().unregisterTooltip(crew, alienTooltipToHuman);
+            TooltipEntity.getInstance().unregisterTooltip(this.getAlienFormForPlayer(player), alienTooltipToHuman);
 
-        whichUnit.unit.kill();
-        alienUnit.kill();
+            // As this can be called on alien death we need to make sure both alien and human is dead
+            const alienUnit = this.getAlienFormForPlayer(player);
+            const deathTrig = this.alienDeathTrigs.get(alienUnit);
+            deathTrig.destroy();
+            this.alienDeathTrigs.delete(alienUnit);
+            
+            const transformed = this.isPlayerTransformed(player);
 
-        // Ensure player name reverts
-        const pData = PlayerStateFactory.get(player);
-        player.name = pData.originalName;
-        player.color = pData.originalColour;
+            if (transformed) {
+                crew.unit.x = alienUnit.x;
+                crew.unit.y = alienUnit.y;
+            }
+            else {
+                alienUnit.x = crew.unit.x; 
+                alienUnit.y = crew.unit.y; 
+            }
 
-        PlayNewSound("Sounds\\Nazgul.wav", 60);
-        Players.forEach(p => {
-            DisplayTextToPlayer(p.handle, 0, 0, STR_ALIEN_DEATH(
-                player,
-                PLAYER_COLOR[player.id],
-                whichUnit, 
-                alienUnit, 
-                this.getHost() === player)
-            );
-        });
+            crew.unit.kill();
+            alienUnit.kill();
 
-        const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
+            // Ensure player name reverts
+            const pData = PlayerStateFactory.get(player);
+            player.name = pData.originalName;
+            player.color = pData.originalColour;
 
-        obsForce.addPlayer(player);
-        obsForce.addPlayerMainUnit(whichUnit, player);
-        PlayerStateFactory.get(player).setForce(obsForce);
+            PlayNewSound("Sounds\\Nazgul.wav", 60);
+            Players.forEach(p => {
+                DisplayTextToPlayer(p.handle, 0, 0, STR_ALIEN_DEATH(
+                    player,
+                    PLAYER_COLOR[player.id],
+                    crew, 
+                    alienUnit, 
+                    this.getHost() === player)
+                );
+            });
 
-        this.removePlayer(player);
+            const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
 
-        // Check victory conds
-        EventEntity.getInstance().sendEvent(EVENT_TYPE.CHECK_VICTORY_CONDS, {
-            source: whichUnit.unit,
-            crewmember: whichUnit
-        });
+            obsForce.addPlayer(player);
+            obsForce.addPlayerMainUnit(crew, player);
+            PlayerStateFactory.get(player).setForce(obsForce);
+        }
+
+        super.removePlayer(player, killer);        
     }
 
     removePlayerAlienUnit(whichUnit: Unit) {
-        // Remove tracking trigger
-        this.alienDeathTrigs.delete(whichUnit);
-
-        this.removePlayerMainUnit(
-            PlayerStateFactory.get(whichUnit.owner).getCrewmember(), 
-            whichUnit.owner
-        );
+        // Also need to call remove player as the alien unit dying will also kill the palyer
+        this.removePlayer(whichUnit.owner);
     }
 
-    transform(who: MapPlayer, toAlien: boolean): Unit {
+    transform(who: MapPlayer, toAlien: boolean): Unit | void {
         this.playerIsTransformed.set(who, toAlien);
 
         const alien = this.playerAlienUnits.get(who);
@@ -388,18 +398,19 @@ export class AlienForce extends ForceType {
         // Do the same to the alien
         const alien = this.playerAlienUnits.get(whichUnit.player);
         if (!alien) return; // Do nothing if no alien for player
-
-        let levelBefore = alien.level;
         
         // Apply XP gain to alien form
         alien.suspendExperience(false);
         alien.setExperience(MathRound(newTotal), false);
         alien.suspendExperience(true);
-    
-        if (levelBefore !== alien.level) {
-            this.onPlayerLevelUp(whichUnit.unit.owner, alien.level);
-            EventEntity.getInstance().sendEvent(EVENT_TYPE.HERO_LEVEL_UP, { source: alien });
-        }
+    }
+
+    /**
+     * Returns the player's currently "active" unit
+     */
+    public getActiveUnitFor(who: MapPlayer) {
+        if (this.playerIsTransformed.get(who)) return this.getAlienFormForPlayer(who);
+        return super.getActiveUnitFor(who);
     }
 
     public getAlienFormForPlayer(who: MapPlayer) {

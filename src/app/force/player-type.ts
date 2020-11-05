@@ -64,4 +64,12 @@ export class PlayerState {
     setAttackType(type: WeaponEntityAttackType) {
         this.attackType = type;
     }
+
+    /**
+     * Gets the currently controlled "main" unit
+     * not always a crewmember
+     */
+    getUnit() {
+        return this.force.getActiveUnitFor(this.player);
+    }
 }
