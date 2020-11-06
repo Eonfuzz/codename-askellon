@@ -45,7 +45,7 @@ ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
-    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix", "Doctor Freeman", "Doctor Kimberly"
+    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix", "Doctor Freeman", "Doctor Kimberly", "Doctor Strange"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [

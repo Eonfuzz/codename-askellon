@@ -6018,3 +6018,21 @@ STRING 1409
 |cff808080A rare mineral found in a strange sector of space; preliminary scans and tests shows it can be used as a steel substitute.|n|r|nFeed through conveyor belts to repair the Reactor, or it may be manually sold for a larger sum of money.|n|cff00ff00- Repairs 5 HP per stack|n- Sells for 4 Credits per stack|r|n|n|cffd45e19Stacks up to 15|r
 }
 
+STRING 1410
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Advanced Gene Splicer [|cffffcc003/4|r]
+}
+
+STRING 1411
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Prototype Splicing [|cffffcc004/4|r]
+}
+
+STRING 1412
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+Totally WIP this gives nothing but XP
+}
+
