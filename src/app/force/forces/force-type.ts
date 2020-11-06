@@ -210,4 +210,8 @@ export abstract class ForceType {
     protected onPlayerLevelUp(who: MapPlayer, level: number) {
         ChatEntity.getInstance().postSystemMessage(who, `|rLevel up! ${COL_GOLD}+30 Income|r`);
     }
+
+
+    public onDealDamage(who: MapPlayer, target: MapPlayer, damagingUnit: unit, damagedUnit: unit) {}
+    public onTakeDamage(who: MapPlayer, attacker: MapPlayer, damagedUnit: unit, damagingUnit: unit) {}
 }

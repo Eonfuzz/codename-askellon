@@ -1,4 +1,4 @@
-import { Unit, Effect } from "w3ts/index";
+import { Unit, Effect, MapPlayer } from "w3ts/index";
 import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
@@ -191,6 +191,7 @@ export class PerseusShip extends ShipWithFuel {
 
     onLeaveShip(isDeath?: boolean) {
         const newOwner = PlayerStateFactory.NeutralHostile;
+        const oldOwner = this.unit.owner;
         this.unit.owner = newOwner;
         SetUnitAnimationByIndex(this.unit.handle, 3);
 
@@ -214,8 +215,8 @@ export class PerseusShip extends ShipWithFuel {
             // We're leaving space, can we dump off minerals?
             const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
             if (unitZone.id === ZONE_TYPE.CARGO_A) {        
-                this.dropMineral(this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);
-                this.dropMineral(this.unit.getItemInSlot(1), ITEM_MINERAL_VALUABLE);
+                this.dropMineral(oldOwner, this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);
+                this.dropMineral(oldOwner, this.unit.getItemInSlot(1), ITEM_MINERAL_VALUABLE);
             }
         }
         
@@ -223,7 +224,7 @@ export class PerseusShip extends ShipWithFuel {
     }
 
 
-    private dropMineral(parentMineral: item, ITEM_ID: number) {
+    private dropMineral(oldOwner: MapPlayer, parentMineral: item, ITEM_ID: number) {
         const stacks = GetItemCharges(parentMineral);
         SetItemCharges(parentMineral, 0);
         
@@ -240,6 +241,7 @@ export class PerseusShip extends ShipWithFuel {
                 i++;
                 const nItem = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 300 + GetRandomInt(-50, 50));
                 SetItemCharges(nItem, maxCharges);
+                SetItemUserData(nItem, oldOwner.id);
             }
         }
 

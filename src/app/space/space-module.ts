@@ -7,7 +7,7 @@ import { ShipBay } from "./ship-bay";
 import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 import { EventListener } from "app/events/event-type";
 import { Ship, ShipWithFuel } from "./ships/ship-type";
-import { ABIL_LEAVE_ASKELLON_CONTROLS, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN } from "resources/ability-ids";
+import { ABIL_LEAVE_ASKELLON_CONTROLS, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN, TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { Vector2 } from "app/types/vector2";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ROLE_TYPES } from "resources/crewmember-names";
@@ -221,6 +221,16 @@ export class SpaceEntity extends Entity {
         
         // Listen to ugprade events
         EventEntity.listen(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+            if (data.data.reseached === TECH_MINERALS_PROGRESS) {
+                if (data.data.level === 1) {
+                    this.mainShip.engine.mass = 800;
+                    this.mainShip.engine.velocityForwardMax = 1400;
+
+                                
+                    this.mainShip.engine.mass = 400;
+                    this.mainShip.engine.velocityForwardMax = 520;
+                }
+            }
             if (data.data.researched === TECH_MAJOR_VOID) {
                 const techLevel = data.data.level;
 

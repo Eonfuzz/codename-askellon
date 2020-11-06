@@ -342,7 +342,7 @@ export class ChatEntity extends Entity {
             if (postHookData.recipients.length > 0) {
                 // Play unit chat animation
                 const u = pDetails.getUnit();
-                if (u) {
+                if (u && u.typeId === CREWMEMBER_UNIT_ID) {
                     u.setAnimation(5);
                     const uX = u.x;
                     const uY = u.y;

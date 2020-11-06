@@ -16,6 +16,7 @@ export const ABIL_TRANSFORM_HUMAN_ALIEN = FourCC('TF01');
 export const ABIL_TRANSFORM_ALIEN_HUMAN = FourCC('TF02');
 
 export const ABIL_ALIEN_LATCH = FourCC('A015');
+export const ABIL_ALIEN_BRAIN_FEAST = FourCC('A020');
 export const ABIL_ALIEN_ACID_POOL = FourCC('ACID');
 export const ABIL_ALIEN_ACID_HURL = FourCC('ASPI');
 export const ABIL_ALIEN_LEAP = FourCC('LEAP');
@@ -63,6 +64,7 @@ export const TECH_MAJOR_REACTOR = FourCC('R00A');
 
 
 export const TECH_NO_UNIT_IN_SPLICER = FourCC('RGEN');
+export const TECH_MINERALS_PROGRESS = FourCC('R00E');
 export const TECH_NO_GENES_TIER_1 = FourCC('RGN1');
 export const TECH_NO_GENES_TIER_2 = FourCC('RGN2');
 export const TECH_NO_GENES_TIER_3 = FourCC('RGN3');
@@ -79,6 +81,8 @@ export const ABIL_ACTIVATE_SEQUENCER_TEST = FourCC('A019');
 export const TECH_20_RANGE_UPGRADE = FourCC('R004');
 export const TECH_ROACH_DUMMY_UPGRADE = FourCC('R005');
 export const TECH_LATCHED_IN_HUMAN = FourCC('R009');
+export const TECH_LATCHED_IN_WHATEVER = FourCC('R00C');
+export const TECH_CREW_ARMOR_HITPOINTS_INCREASE = FourCC('R00D');
 
 export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
 export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');

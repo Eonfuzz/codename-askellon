@@ -8,6 +8,9 @@ import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Quick } from "lib/Quick";
 import { SFX_BANSHEE_MISSILE, SFX_DEMONHUNTER_MISSILE } from "resources/sfx-paths";
+import { Log } from "lib/serilog/serilog";
+import { ResearchFactory } from "app/research/research-factory";
+import { TECH_MAJOR_VOID } from "resources/ability-ids";
 
 class MiningEvent {
     drillStartSound = new SoundRef("Sounds\\Ships\\LaserDrillStart.wav", false, false);
@@ -29,6 +32,9 @@ class MiningEvent {
     beamStartEffect: Effect;
     beamEndEffect: Effect;
 
+    hasSpeedUpgrade = false;
+    
+
     constructor(source: Unit, target: Unit) {
         this.source = source;
         this.target = target;
@@ -37,7 +43,7 @@ class MiningEvent {
         this.beamOrigin.z = 100;
 
         this.beamLaserCurrentPoint = Vector3.fromWidget(target.handle);
-        this.beamLaserTargetPoint = Vector3.fromWidget(target.handle).multiply( new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).multiplyN(50));;
+        this.beamLaserTargetPoint = Vector3.fromWidget(target.handle).multiply( new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).multiplyN(50));
 
         this.beam = AddLightningEx("SPNL", false, 
             this.beamOrigin.x, this.beamOrigin.x, this.beamOrigin.z, 
@@ -51,6 +57,8 @@ class MiningEvent {
 
         this.beamEndEffect = new Effect(SFX_DEMONHUNTER_MISSILE, this.beamLaserCurrentPoint.x, this.beamLaserCurrentPoint.y);
         this.beamEndEffect.z = this.beamLaserCurrentPoint.z;
+
+        if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3) this.hasSpeedUpgrade = true;
     }
 
     step(delta) {
@@ -78,14 +86,14 @@ class MiningEvent {
         this.beamEndEffect.z = this.beamLaserCurrentPoint.z;
 
 
-        this.beamLaserTicker += delta;
+        this.beamLaserTicker += delta * (this.hasSpeedUpgrade ? 1.5 : 1);
         // Update target loc
         if (this.beamLaserTicker > 0.5) {
             this.beamLaserTicker -= 0.5;
             this.beamTicks += 1;
 
             if (this.beamTicks > 4) {
-                this.beamMoveSpeed = 20;
+                this.beamMoveSpeed = this.hasSpeedUpgrade ? 60 : 20;
                 const nTargetLoc = Vector3.fromWidget(this.target.handle);
                 this.beamLaserTargetPoint = nTargetLoc.add(
                     new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).normalise().multiplyN(45 * this.target.selectionScale));
@@ -108,7 +116,7 @@ class MiningEvent {
                 }
             }
             UnitDamageTarget(this.source.handle, this.target.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
-            if (!UnitAlive(this.target.handle)) return false;
+            if (!UnitAlive(this.target.handle)) return;
         }
         return true;
     }

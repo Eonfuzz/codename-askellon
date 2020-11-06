@@ -4870,12 +4870,6 @@ STRING 1201
 ( TERMINAL )
 }
 
-STRING 1202
-// Abilities: A015 (Latch), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Lore TODO|r|n|nLatches onto the target; Becoming |cff00ff00invisible |rand |cff00ff00communicating|r as them. Any upgrades purchased by them become |cff8a6df2Infested|r.|nIf you are latched for the full |cff00ff0060|r seconds, you deal |cff00ff00300 damage|r to the target as you burst out of them.|n|n|cff80808060 Second Cooldown|r
-}
-
 STRING 1203
 // Units: n00K (|cff00ffffPurging |rTerminal), Name (Name)
 {
@@ -6034,5 +6028,101 @@ STRING 1412
 // Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
 {
 Totally WIP this gives nothing but XP
+}
+
+STRING 1413
+// Abilities: A020 (The Feast), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1414
+// Abilities: A020 (The Feast), Unhotkey (Hotkey - Turn Off)
+{
+E
+}
+
+STRING 1415
+// Abilities: A020 (The Feast), Tip (Tooltip - Normal)
+{
+The Feast
+}
+
+STRING 1416
+// Abilities: A020 (The Feast), Name (Name)
+{
+The Feast
+}
+
+STRING 1419
+// Abilities: A015 (Latch), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nLatches onto the target; Becoming |cff00ff00invisible |rand |cff00ff00communicating|r as them. Any upgrades purchased by them become |cff8a6df2Infested|r.|n|n|cffd45e19Your host can remove you by using a healing item.|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1420
+// Abilities: A021 (Apply The Feast), Name (Name)
+{
+Apply The Feast
+}
+
+STRING 1421
+// Buffs/Effects: B00C (The Feast), Bufftip (Tooltip)
+{
+The Feast
+}
+
+STRING 1422
+// Buffs/Effects: B00C (The Feast), Buffubertip (Tooltip - Extended)
+{
+A parasite is eating its way to your brain; |cff00ff00Use a healing item to remove it|r!
+}
+
+STRING 1423
+// Buffs/Effects: B00C (The Feast), EditorName (Name (Editor Only))
+{
+The Feast
+}
+
+STRING 1424
+// Buffs/Effects: B00D (), Bufftip (Tooltip)
+{
+Nano-Med
+}
+
+STRING 1425
+// Upgrades: R00C (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Latched inside host
+}
+
+STRING 1426
+// Abilities: A020 (The Feast), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Insticts drive you towards the source of your hunger.|r|n|nBegin eating towards your host's cortex, |cffc81e1erevealing your presence|r and causing immense. While eating you deal |cff00ff005 damage|r per second. This ability may be cast again, increasing the damage dealt by a further |cff00ff005|r|r.|n|n|cffd45e19While eating you rapidly earn experience up to your host's level.|r|n|n|cff8080809 Seconds Cooldown|r
+}
+
+STRING 1427
+// Upgrades: R00D (Iron Plating,Steel Plating,Mithril Plating), Name (Name)
+{
+Crew Armor and Health Bonus
+}
+
+STRING 1428
+// Upgrades: R00D (Iron Plating,Steel Plating,Mithril Plating), effect1 (Effect 1)
+{
+rhpx
+}
+
+STRING 1429
+// Upgrades: R00D (Iron Plating,Steel Plating,Mithril Plating), effect2 (Effect 2)
+{
+rarm
+}
+
+STRING 1430
+// Upgrades: R00E (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Mineral / Upgrade Progress Tech
 }
 

@@ -21,15 +21,13 @@ export function InitMiningInteraction() {
         },
         getInteractionTime:  (source: Unit, interactable: Unit) => {
             // Takes time based on asteroids remaining HP
-            if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 3)
-                return interactable.life / 100 + 0.3;
-            return interactable.life / 50 + 0.6;
+            return 20;
         },
         getInteractionDistance:  (source: Unit, interactable: Unit) => {
             if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 2) {
-                return 800 * 1.33;
+                return 400 * 1.33;
             }
-            return 800;
+            return 400;
         },
         onStart: (source: Unit, interactable: Unit) => {
             EventEntity.send(EVENT_TYPE.SHIP_STARTS_MINING, { source: source, data: { target: interactable }});

@@ -102,6 +102,26 @@ export class ForceEntity extends Entity {
     
         eventEntity.addListener(new EventListener(EVENT_TYPE.STATION_SECURITY_UNTARGETED_PLAYER, (self, data) => 
             this.setPlayerSecurityTargetState(data.data.who, false)));
+
+            
+        // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
+        const forceTakesOrDealsDamage = new Trigger();
+        forceTakesOrDealsDamage.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGING);
+        forceTakesOrDealsDamage.addAction(() => this.onForceTakeOrDealDamage(
+            GetEventDamageSource(),
+            BlzGetEventDamageTarget()
+        ));
+    }
+
+    public onForceTakeOrDealDamage(damagingUnit: unit, damagedUnit: unit) {
+        const damagingPlayer = MapPlayer.fromHandle(GetOwningPlayer(damagingUnit));
+        const damagedPlayer = MapPlayer.fromHandle(GetOwningPlayer(damagedUnit));
+
+        const p1Data = PlayerStateFactory.get(damagingPlayer);
+        const p2Data = PlayerStateFactory.get(damagedPlayer);
+
+        if (p2Data && p2Data.getForce()) p2Data.getForce().onTakeDamage(damagedPlayer, damagingPlayer, damagedUnit, damagingUnit);
+        if (p1Data && p1Data.getForce()) p1Data.getForce().onDealDamage(damagingPlayer, damagedPlayer, damagingUnit, damagedUnit);
     }
 
     /**

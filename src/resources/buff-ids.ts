@@ -12,3 +12,4 @@ export const BUFF_ID_RESOLVE = FourCC('B001');
 export const BUFF_ID_ROACH_ARMOR = FourCC('B006');
 export const BUFF_ID_PURITY_SEAL = FourCC('B008');
 export const BUFF_ID_SIGNAL_BOOSTER = FourCC('B00A');
+export const BUFF_ID_NANOMED = FourCC('B00D');

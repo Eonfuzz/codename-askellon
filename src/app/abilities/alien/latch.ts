@@ -1,7 +1,7 @@
 import { Ability } from "../ability-type";
 import { Unit, Timer, Trigger, MapPlayer } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
-import { ABIL_ALIEN_LATCH, TECH_PLAYER_INFESTS, TECH_LATCHED_IN_HUMAN } from "resources/ability-ids";
+import { ABIL_ALIEN_LATCH, TECH_PLAYER_INFESTS, TECH_LATCHED_IN_HUMAN, TECH_LATCHED_IN_WHATEVER } from "resources/ability-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { FilterIsAlive } from "resources/filters";
 import { PLAYER_COLOR } from "lib/translators";
@@ -17,6 +17,8 @@ import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { AbilityHooks } from "../ability-hooks";
 import { AddGhost, RemoveGhost, getZFromXY } from "lib/utils";
+import { DummyCast } from "lib/dummy";
+import { BUFF_ID_NANOMED, BUFF_ID_TRIFEX } from "resources/buff-ids";
 
 
 export class LatchAbility implements Ability {
@@ -38,6 +40,9 @@ export class LatchAbility implements Ability {
 
     private isCastingSurvivalInstincts: boolean = false;
     private duration = 0;
+
+    private damageTicker = 0;
+    private eatAbilStackCount = 0;
 
     constructor() {
     }
@@ -85,6 +90,13 @@ export class LatchAbility implements Ability {
             this.latchChatHookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.processChat(hook));
             this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
         }
+        /**
+         * Helps testing and debugging
+         */
+        if (PlayerStateFactory.isSinglePlayer()) {
+            this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
+        }
+        this.unit.owner.setTechResearched(TECH_LATCHED_IN_WHATEVER, 1);
 
         // Clear any aggression
         ForceEntity.getInstance().repairAllAlliances(this.unit.owner);
@@ -113,6 +125,29 @@ export class LatchAbility implements Ability {
         // Otherwise continue...
         this.unit.x = this.targetUnit.x;
         this.unit.y = this.targetUnit.y;
+
+        // Need to check for buffs on host
+        if (UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_NANOMED) || UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_TRIFEX)) {
+            this.forceStop = true;
+        }
+
+        // Deal eat damage if relevant
+        this.damageTicker += delta;
+        if (this.eatAbilStackCount > 0 && this.damageTicker >= 1) {
+            this.damageTicker = 0;
+
+            if (ForceEntity.getInstance().canFight(this.unit.owner, this.targetUnit.owner)) {
+                UnitDamageTarget(this.unit.handle, 
+                    this.targetUnit.handle, 
+                    5 * this.eatAbilStackCount, 
+                    true, 
+                    true, 
+                    ATTACK_TYPE_MAGIC, 
+                    DAMAGE_TYPE_ACID, 
+                    WEAPON_TYPE_WHOKNOWS
+                );
+            }
+        }
 
         return true;
     };
@@ -144,7 +179,6 @@ export class LatchAbility implements Ability {
             }
 
             if (newFloor.id === ZONE_TYPE.SPACE) {
-                Log.Information("Unit entering space, cancelling");
                 return this.forceStop = true;
             }
 
@@ -200,10 +234,29 @@ export class LatchAbility implements Ability {
         const newOrder = GetIssuedOrderId();
         this.forceStop = true;
 
+        Log.Information("Order id: "+newOrder);
+
         // Neural Takeover
         if (newOrder === 852100) {
             this.forceStop = false;
             return;
+        }
+        // The Feast order ID
+        else if (newOrder === 852090) {
+            this.forceStop = false;
+            this.eatAbilStackCount += 1;
+
+            const bloodSfx = AddSpecialEffect("Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLargeDeathExplode.mdl", this.targetUnit.x, this.targetUnit.y);
+            BlzSetSpecialEffectZ(bloodSfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 5);
+            DestroyEffect(bloodSfx);
+
+            if (this.eatAbilStackCount == 1) {
+                DummyCast((dummy) => {
+                    SetUnitX(dummy, this.unit.x);
+                    SetUnitY(dummy, this.unit.y + 50);
+                    IssueTargetOrder(dummy, "faeriefire", this.targetUnit.handle);
+                }, FourCC('A021'));
+            }
         }
         // Our survival instincts order
         else if (newOrder === 852252) {
@@ -260,27 +313,13 @@ export class LatchAbility implements Ability {
                 this.targetUnit.owner.setTechResearched(TECH_PLAYER_INFESTS, 
                     (this.targetUnit.owner.getTechCount(TECH_PLAYER_INFESTS, true) || 0) - 1
                 );
-
-                if (this.duration >= 55) {
-                    UnitDamageTarget(this.unit.handle, 
-                        this.targetUnit.handle, 
-                        300, 
-                        true, 
-                        true, 
-                        ATTACK_TYPE_MAGIC, 
-                        DAMAGE_TYPE_ACID, 
-                        WEAPON_TYPE_WHOKNOWS
-                    );
-                    const bloodSfx = AddSpecialEffect("Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLargeDeathExplode.mdl", this.targetUnit.x, this.targetUnit.y);
-                    BlzSetSpecialEffectZ(bloodSfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 5);
-                    DestroyEffect(bloodSfx);
-                }
             }
 
             if (this.latchChatHookId) {
                 ChatEntity.getInstance().removeHook(this.latchChatHookId);
             }
             this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 0);
+            this.unit.owner.setTechResearched(TECH_LATCHED_IN_WHATEVER, 0);
         }
         catch(e) {
             Log.Error(e);

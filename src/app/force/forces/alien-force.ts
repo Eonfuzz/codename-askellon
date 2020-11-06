@@ -20,7 +20,7 @@ import { TooltipEntity } from "app/tooltip/tooltip-module";
 import { VisionFactory } from "app/vision/vision-factory";
 import { ChatHook } from "app/chat/chat-hook-type";
 import { PlayerStateFactory } from "../player-state-entity";
-import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME, ALIEN_CHAT_COLOR } from "./force-names";
+import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME, ALIEN_CHAT_COLOR, CREW_FORCE_NAME } from "./force-names";
 import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { WorldEntity } from "app/world/world-entity";
@@ -30,6 +30,7 @@ import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
 import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
+import { CrewmemberForce } from "./crewmember-force";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -47,8 +48,6 @@ export class AlienForce extends ForceType {
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
     private alienDeathTrigs = new Map<Unit, Trigger>();
-    // private alienTakesDamageTrigger = new Trigger();
-    private alienDealsDamageTrigger = new Trigger();
     private alienKillsTrigger = new Trigger();
 
     constructor() {
@@ -85,17 +84,17 @@ export class AlienForce extends ForceType {
                 });
             }));
 
-        // this.alienTakesDamageTrigger.addAction(() => this.onAlienTakesDamage());
-        this.alienDealsDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGING);
-        this.alienDealsDamageTrigger.addAction(() => this.onAlienDealsDamage());
-
         // Listen to unit deaths
         this.alienKillsTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
         this.alienKillsTrigger.addAction(() => {
             const dyingUnit = Unit.fromHandle(GetTriggerUnit());
             const killingUnit = Unit.fromHandle(GetKillingUnit());
 
-            const validKillingPlayer = (this.hasPlayer(killingUnit.owner) || PlayerStateFactory.isAlienAI(killingUnit.owner)) && killingUnit.typeId !== CREWMEMBER_UNIT_ID;
+            const validKillingPlayer = 
+                // If it's an AI killer
+                (this.hasPlayer(killingUnit.owner) || PlayerStateFactory.isAlienAI(killingUnit.owner))
+                // If it's a player killer
+                && this.getAlienFormForPlayer(killingUnit.owner) === killingUnit;
             const validDyingUnit = !this.hasPlayer(dyingUnit.owner) && !PlayerStateFactory.isAlienAI(dyingUnit.owner) && dyingUnit.typeId !== CREWMEMBER_UNIT_ID;
             const validDyingType = !IsUnitType(dyingUnit.handle, UNIT_TYPE_MECHANICAL);
 
@@ -417,75 +416,6 @@ export class AlienForce extends ForceType {
         return this.playerAlienUnits.get(who);
     }
 
-    private onAlienDealsDamage() {
-        const damageSource = Unit.fromHandle(GetEventDamageSource());
-        const damagedUnit = Unit.fromHandle(BlzGetEventDamageTarget());
-        const damagingPlayer = damageSource.owner;
-        const damagedPlayer = damagedUnit.owner;
-
-        // If the damaging unit isn't alien that means we're taking damage
-        if (!this.playerAlienUnits.has(damagingPlayer)) return this.onAlienTakesDamage();
-        // Check to make sure you aren't damaging alien stuff
-        if (damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagedPlayer)) {
-            const damageAmount = GetEventDamage();
-            let xpGained: number;
-
-            // Now handle this different
-            // If we are damaging station property gain less XP
-            const damagingSecurity = damagedPlayer == PlayerStateFactory.StationProperty || damagedPlayer == PlayerStateFactory.StationSecurity;
-            const isAlienForm = this.playerIsTransformed.get(damagingPlayer);
-            // Reward slightly less xp for being in human form
-            xpGained = damagingSecurity ? 0 : (isAlienForm ? damageAmount * 1 : damageAmount * 0.4);
-
-            if (xpGained > 0) {
-                EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-                    source: damageSource,
-                    data: { value: xpGained }
-                });
-            }
-        }
-    }
-
-    private onAlienTakesDamage() {
-        let damageAmount = GetEventDamage();
-        const damageSource = Unit.fromHandle(GetEventDamageSource());
-        const damagedUnit = Unit.fromHandle(BlzGetEventDamageTarget());
-        const damagingPlayer = damageSource.owner;
-        const damagedPlayer = damagedUnit.owner;
-
-        // Hitting alien player
-        const damagedUnitIsAlien = PlayerStateFactory.isAlienAI(damagedPlayer) || 
-            // OR hitting alien form
-            this.playerAlienUnits.has(damagedPlayer)  && this.playerAlienUnits.get(damagedPlayer) === damagedUnit;
-
-        // Ensure that they are different owners
-        // No farming xp on yourself!
-        // Also check to make sure they aren't both alien players
-        if (damagedUnitIsAlien && damagingPlayer !== damagedPlayer && !this.playerAlienUnits.has(damagingPlayer)) {
-            // If we have roach armor reduce damage received
-            if (UnitHasBuffBJ(damagedUnit.handle, BUFF_ID_ROACH_ARMOR)) {
-                BlzSetEventDamage(damageAmount - 7);
-                damageAmount -= 7;
-            }
-    
-            // Okay good, now reward exp based on damage done
-            const pDetails = PlayerStateFactory.get(damagingPlayer);
-            const crew = pDetails.getCrewmember();
-            
-            let xpAmount = damageAmount;
-
-            if (crew && crew.role === ROLE_TYPES.SEC_GUARD) {
-                xpAmount *= 1.3;
-            }
-
-            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-                source: damageSource,
-                data: { value: xpAmount }
-            });
-        }
-    }
-
-
     /**
      * Gets a list of who can see the chat messages
      * Unless overridden returns all the players
@@ -709,6 +639,37 @@ export class AlienForce extends ForceType {
 
         if (level === 4) {
             ChatEntity.getInstance().postSystemMessage(who, `${COL_ALIEN}You are powerful enough to evolve|r`);
+        }
+    }
+
+    public onDealDamage(who: MapPlayer, target: MapPlayer, damagingUnit: unit, damagedUnit: unit) {
+        // Reward XP if we are damaging Alien AI
+ 
+        // Check to see if it is a human
+        const tData = PlayerStateFactory.get(target);
+        if (tData && tData.getForce() && tData.getForce().is(CREW_FORCE_NAME)) {
+            const crewForce = tData.getForce() as CrewmemberForce;
+            const targetIsHuman = crewForce.getActiveUnitFor(target).handle === damagedUnit;
+
+            if (targetIsHuman) {
+                const pData = PlayerStateFactory.get(who);
+                const crew = pData.getCrewmember() 
+                const xpMultiplier = (crew && crew.role === ROLE_TYPES.SEC_GUARD) ? 1.5 : 1;
+    
+                const damageAmount = GetEventDamage();
+                
+                EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                    source: crew.unit,
+                    data: { value: damageAmount * xpMultiplier }
+                });
+            }
+        }
+
+    }
+ 
+    public onTakeDamage(who: MapPlayer, attacker: MapPlayer, damagedUnit: unit, damagingUnit: unit) {
+        if (UnitHasBuffBJ(damagedUnit, BUFF_ID_ROACH_ARMOR)) {
+            BlzSetEventDamage(GetEventDamage() - 7);
         }
     }
 }

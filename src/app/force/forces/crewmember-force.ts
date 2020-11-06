@@ -17,6 +17,7 @@ import { SFX_ALIEN_BLOOD, SFX_HUMAN_BLOOD } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 
 export class CrewmemberForce extends ForceType {
@@ -119,5 +120,36 @@ export class CrewmemberForce extends ForceType {
     */
    public onTick(delta: number) {
        super.onTick(delta);
+   }
+
+   public onDealDamage(who: MapPlayer, target: MapPlayer, damagingUnit: unit, damagedUnit: unit) {
+       // Reward XP if we are damaging Alien AI
+
+       let targetIsAlien = PlayerStateFactory.isAlienAI(target);
+
+        // If we aren't shooting alien minions...
+        if (!targetIsAlien) {
+            // Check to see if it is an alien form player
+            const tData = PlayerStateFactory.get(target);
+            if (tData && tData.getForce() && tData.getForce().is(ALIEN_FORCE_NAME)) {
+                const alienForce = tData.getForce() as AlienForce;
+                targetIsAlien = alienForce.isPlayerTransformed(target) && alienForce.getActiveUnitFor(target).handle === damagedUnit;
+            }
+        }
+        if (PlayerStateFactory.isAlienAI(target)) {
+            const pData = PlayerStateFactory.get(who);
+            const crew = pData.getCrewmember() 
+            const xpMultiplier = (crew && crew.role === ROLE_TYPES.SEC_GUARD) ? 1.5 : 1;
+
+            const damageAmount = GetEventDamage();
+            
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
+                source: crew.unit,
+                data: { value: damageAmount * xpMultiplier }
+            });
+        }
+   }
+
+   public onTakeDamage(who: MapPlayer, attacker: MapPlayer, damagedUnit: unit, damagingUnit: unit) {
    }
 }
