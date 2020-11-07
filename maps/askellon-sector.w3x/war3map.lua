@@ -304,6 +304,7 @@ end
 
 function CreateAllItems()
     local itemID
+    BlzCreateItemWithSkin(FourCC("I00L"), -13362.0, -4885.2, FourCC("I00L"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14809.9, -17189.7, FourCC("ISHO"))
     gg_item_desc_0511 = BlzCreateItemWithSkin(FourCC("desc"), -12569.9, -13303.7, FourCC("desc"))
 end

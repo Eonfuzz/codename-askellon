@@ -21,13 +21,14 @@ import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { EventListener } from "app/events/event-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { ITEM_WEP_MINIGUN } from "resources/item-ids";
-import { ABIL_WEP_MINIGUN } from "resources/ability-ids";
+import { ITEM_WEP_MINIGUN, ITEM_WEP_NEOKATANA } from "resources/item-ids";
+import { ABIL_WEP_MINIGUN, ABIL_WEP_NEOKATANA } from "resources/ability-ids";
 import { Minigun } from "./guns/minigun";
 import { Hooks } from "lib/Hooks";
 import { WeaponEntityAttackType } from "./weapon-attack-type";
 import { Timers } from "app/timer-type";
 import { GunItem } from "./guns/gun-item";
+import { WepNeokatana } from "./guns/neokatana";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -74,6 +75,10 @@ export class WeaponEntity extends Entity {
         // Init minigun
         this.weaponItemIds.push(ITEM_WEP_MINIGUN);
         this.weaponAbilityIds.push(ABIL_WEP_MINIGUN);
+
+        // Init katana
+        this.weaponItemIds.push(ITEM_WEP_NEOKATANA);
+        this.weaponAbilityIds.push(ABIL_WEP_NEOKATANA);
 
         /**
          * Now initialise all weapon systems
@@ -425,6 +430,7 @@ export class WeaponEntity extends Entity {
         if (itemId === LASER_ITEM_ID) return true;
         if (itemId === SHOTGUN_ITEM_ID) return true;
         if (itemId === ITEM_WEP_MINIGUN) return true;
+        if (itemId === ITEM_WEP_NEOKATANA) return true;
         return false;
     }
 
@@ -446,6 +452,8 @@ export class WeaponEntity extends Entity {
             return new Shotgun(item, unit);
         else if (itemId === ITEM_WEP_MINIGUN) 
             return new Minigun(item, unit);
+        else if (itemId === ITEM_WEP_NEOKATANA) 
+            return new WepNeokatana(item, unit);
         return undefined;
     }
 

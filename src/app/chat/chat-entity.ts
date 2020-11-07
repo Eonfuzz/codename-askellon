@@ -23,6 +23,7 @@ import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { CreepEntity } from "app/creep/creep-entity";
 import { PlayerState } from "app/force/player-type";
+import { ITEM_WEP_NEOKATANA } from "resources/item-ids";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -257,6 +258,11 @@ export class ChatEntity extends Entity {
                     }
                 });
                 // const unit =
+            }
+            else if (message == "-test katana") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    CreateItem(ITEM_WEP_NEOKATANA, x, y);
+                });
             }
             else if (message == "-cd") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {

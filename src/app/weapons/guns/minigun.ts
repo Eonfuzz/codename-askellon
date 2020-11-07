@@ -16,7 +16,7 @@ import { Timers } from "app/timer-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { SoundRef } from "app/types/sound-ref";
-import { ABIL_WEP_MINIGUN } from "resources/ability-ids";
+import { ABIL_WEP_MINIGUN, ABIL_WEP_MINIGUN_OVERSIZED } from "resources/ability-ids";
 import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { Log } from "lib/serilog/serilog";
@@ -65,6 +65,18 @@ export class Minigun extends GunItem {
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
     }
+
+    
+    public onAdd(caster: ArmableUnitWithItem) {
+        super.onAdd(caster);
+        this.equippedTo.unit.addAbility(ABIL_WEP_MINIGUN_OVERSIZED);
+    }
+
+    public onRemove() {
+        this.equippedTo.unit.removeAbility(ABIL_WEP_MINIGUN_OVERSIZED);
+        super.onRemove();
+    }
+
     
     public onShoot(unit: Unit, targetLocation: Vector3): void {
         super.onShoot(unit, targetLocation);

@@ -6126,3 +6126,55 @@ STRING 1430
 Mineral / Upgrade Progress Tech
 }
 
+STRING 1431
+// Items: I00L (Neokatana), Name (Name)
+{
+Neokatana
+}
+
+STRING 1432
+// Items: I00L (Neokatana), Ubertip (Tooltip - Extended)
+{
+|cff808080Lore TODO|r
+
+A legendary blade
+|cff00ff00- is sword|r
+|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
+}
+
+STRING 1433
+// Items: I00L (Neokatana), Tip (Tooltip - Basic)
+{
+Purchase Neokatana
+}
+
+STRING 1434
+// Items: I00L (Neokatana), Description (Description)
+{
+Weapon: Fires a powerful but short range blast
+}
+
+STRING 1435
+// Abilities: A022 (Attack - Neokatana), Name (Name)
+{
+Attack - Neokatana
+}
+
+STRING 1436
+// Abilities: A022 (Attack - Neokatana), Hotkey (Hotkey - Normal)
+{
+A
+}
+
+STRING 1437
+// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 1438
+// Abilities: A022 (Attack - Neokatana), Tip (Tooltip - Normal)
+{
+Katana
+}
+

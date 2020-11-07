@@ -308,14 +308,19 @@ export class AlienForce extends ForceType {
         this.playerIsTransformed.set(who, toAlien);
 
         const alien = this.playerAlienUnits.get(who);
-        const unit = this.playerUnits.get(who);
+        let unit = this.playerUnits.get(who);
 
         const crewmember = PlayerStateFactory.get(who).getCrewmember();
 
-        //@ts-ignore
         if (!alien) return Log.Error("AlienForce::transform No alien for player!");
-        //@ts-ignore
-        if (!unit) return Log.Error("AlienForce::transform No human for player!");
+        if (!unit) {
+            if (crewmember && crewmember.unit) {
+                this.playerUnits.set(who, unit);
+                unit = this.playerUnits.get(who);
+            }
+            if (!unit) return Log.Error("AlienForce::transform No human for player!");
+        }
+
 
         const toHide = toAlien ? unit.unit : alien;
         const toShow = toAlien ? alien : unit.unit;

@@ -19,6 +19,7 @@ import { Log } from "lib/serilog/serilog";
 import { GunItem } from "./gun-item";
 
 export class BurstRifle extends GunItem {
+    gunPath = "Weapons\\MarineGun.mdx";
 
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(item, equippedTo);

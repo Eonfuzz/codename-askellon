@@ -1,17 +1,11 @@
-import { Vector3 } from "../../types/vector3";
 import { Crewmember } from "../../crewmember/crewmember-type";
 import { Attachment } from "../attachment/attachment";
 import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
-import { PlayNewSoundOnUnit } from "../../../lib/translators";
-import { TECH_CREWMEMBER_ATTACK_ENABLE } from "../../../resources/ability-ids";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
-import { EventEntity } from "app/events/event-entity";
-import { EVENT_TYPE } from "app/events/event-enum";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { WeaponEntityAttackType } from "../weapon-attack-type";
 import { Gun } from "./gun";
 import { Unit } from "w3ts/index";
-import { Log } from "lib/serilog/serilog";
 
 export abstract class GunItem extends Gun {
     item: item;
