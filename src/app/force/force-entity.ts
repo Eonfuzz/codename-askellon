@@ -17,7 +17,7 @@ import { PlayerStateFactory } from "./player-state-entity";
 import { OPT_TYPES } from "./opt/opt-types-enum";
 import { CrewmemberForce } from "./forces/crewmember-force";
 import { ObserverForce } from "./forces/observer-force";
-import { CREW_FORCE_NAME, ALIEN_FORCE_NAME } from "./forces/force-names";
+import { CREW_FORCE_NAME, ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "./forces/force-names";
 import { AlienForce } from "./forces/alien-force";
 import { GetActivePlayers } from "lib/utils";
 import { Hooks } from "lib/Hooks";
@@ -492,6 +492,11 @@ export class ForceEntity extends Entity {
      * @param who 
      */
     private playerLeavesGame(who: MapPlayer) {
+
+        // Check to see if they were originally in obs force
+        const pData = PlayerStateFactory.get(who);
+        if (pData && pData.getForce() && pData.getForce().is(OBSERVER_FORCE_NAME)) return false;
+
         const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false, true);
         playerLeaveSound.playSound();
 

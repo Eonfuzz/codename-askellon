@@ -19,6 +19,9 @@ import { WeaponEntity } from "app/weapons/weapon-entity";
 import { DefaultSecurityGun } from "app/weapons/guns/security/default-security-gun";
 import { ArmableUnit, ArmableUnitNoCallbacks } from "app/weapons/guns/unit-has-weapon";
 import { Log } from "lib/serilog/serilog";
+import { EventListener } from "app/events/event-type";
+import { TECH_MAJOR_SECURITY, TECH_INCREASE_SECURITY_VISION_HEALTH } from "resources/ability-ids";
+import { Players } from "w3ts/globals/index";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -79,6 +82,14 @@ export class SecurityEntity extends Entity {
         // Start mineral crusher
         MineralCrusherEntity.getInstance();
         TerminalEntity.getInstance();
+
+        EventEntity.listen(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
+            if (data.data.researched === TECH_MAJOR_SECURITY && data.data.level > 1) {
+                Players.forEach(p => {
+                    SetPlayerTechResearched(p.handle, TECH_INCREASE_SECURITY_VISION_HEALTH, data.data.level - 1);
+                })
+            }
+        }));
     }
 
     private unitIterateSetup(u: Unit) {

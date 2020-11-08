@@ -49,14 +49,10 @@ export class Door {
                 this.update(true, true);
                 this.checkOwnership();
                 this.unit.setVertexColor(100, 100, 100, 255);
-
-                PingMinimap(this.unit.x, this.unit.y, 5);
             }
         }));
         EventEntity.listen(new EventListener(EVENT_TYPE.STATION_SECURITY_ENABLED, (event, data) => {
             if (data.data.unit === this.unit) {
-                Log.Information("Door live message!");
-
                 this.isDead = false;
                 this.checkOwnership();
                 this.unit.setVertexColor(255, 255, 255, 255);

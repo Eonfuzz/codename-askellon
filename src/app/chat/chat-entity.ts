@@ -4,7 +4,7 @@ import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import {  SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE } from "resources/colours";
-import { syncData, GetActivePlayers, GetPlayerCamLoc } from "lib/utils";
+import { syncData, GetActivePlayers, GetPlayerCamLoc, MessagePlayer } from "lib/utils";
 import { ChatHook } from "./chat-hook-type";
 import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
@@ -24,6 +24,7 @@ import { AskellonEntity } from "app/station/askellon-entity";
 import { CreepEntity } from "app/creep/creep-entity";
 import { PlayerState } from "app/force/player-type";
 import { ITEM_WEP_NEOKATANA } from "resources/item-ids";
+import { PLAYER_COLOR } from "lib/translators";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -310,6 +311,21 @@ export class ChatEntity extends Entity {
             }
             else if (message === "-d" || message === "-dance") {
                 crew.unit.setAnimation(9);
+            }
+            else if (message === "-clear" || message === "-c") {
+                if (player.handle === GetLocalPlayer()) ClearTextMessages();
+            }
+            else if (message === "-h" || message === "-handles" || message === "-p" || message === "-players") {
+                let str = '';
+                Players.forEach(p => {
+                    const pData = PlayerStateFactory.get(p);
+                    const crew = PlayerStateFactory.getCrewmember(p);
+
+                    if (crew) {
+                        str += `#${p.id}: |cff${PLAYER_COLOR[p.id]}${crew.name}|r ${pData.originalName}`
+                    }
+                });
+                MessagePlayer(player, str);
             }
         }
     }

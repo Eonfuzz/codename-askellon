@@ -63,8 +63,10 @@ export const TECH_MAJOR_HEALTHCARE = FourCC('RMED');
 export const TECH_MAJOR_VOID = FourCC('RSPC');
 export const TECH_MAJOR_RELIGION = FourCC('R007');
 export const TECH_MAJOR_REACTOR = FourCC('R00A');
+export const TECH_MAJOR_SECURITY = FourCC('R00F');
 
 
+export const TECH_INCREASE_SECURITY_VISION_HEALTH = FourCC('R00G');
 export const TECH_NO_UNIT_IN_SPLICER = FourCC('RGEN');
 export const TECH_MINERALS_PROGRESS = FourCC('R00E');
 export const TECH_NO_GENES_TIER_1 = FourCC('RGN1');
@@ -142,6 +144,8 @@ export const ABIL_SECURITY_TARGET_PLAYER_12 = FourCC('AC12');
 export const ABIL_ASKELLON_BROADSIDE_LEFT = FourCC('A01U');
 export const ABIL_ASKELLON_BROADSIDE_RIGHT = FourCC('A01V');
 
+export const ABIL_ACTIVATE_SCAN_CREW = FourCC('A023');
+export const ABIL_ACTIVATE_SCAN_ALIENS = FourCC('A024');
 
 export const ABIL_SECURITY_TARGET_ALL = [
     ABIL_SECURITY_TARGET_PLAYER_1,

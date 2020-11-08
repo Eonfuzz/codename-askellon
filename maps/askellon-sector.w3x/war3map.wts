@@ -941,31 +941,31 @@ W
 }
 
 STRING 239
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A023 (Scan for Humans), Hotkey (Hotkey - Normal)
 {
 W
 }
 
 STRING 240
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 241
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 242
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 243
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -1073,31 +1073,31 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 276
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 277
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 278
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 279
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 280
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -1109,25 +1109,25 @@ W
 }
 
 STRING 282
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 283
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 284
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 285
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2222,7 +2222,7 @@ Dodge Roll Right
 }
 
 STRING 562
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2492,25 +2492,25 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 627
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 628
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 629
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 630
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2522,31 +2522,31 @@ W
 }
 
 STRING 632
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 633
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 634
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 635
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 636
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2888,7 +2888,7 @@ STRING 742
 }
 
 STRING 744
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3320,37 +3320,37 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 849
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 850
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 851
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 852
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 853
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 854
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3374,19 +3374,19 @@ Q
 }
 
 STRING 871
-// Abilities: AC01 (Target Player 1), Hotkey (Hotkey - Normal)
+// Abilities: A019 (Sequence Genetic Samples), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
 STRING 872
-// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Hotkey (Hotkey - Normal)
+// Abilities: AC01 (Target Player 1), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
 STRING 873
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -3781,12 +3781,6 @@ STRING 964
 Q
 }
 
-STRING 965
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
 STRING 966
 // Abilities: A016 (Survival Instincts), Tip (Tooltip - Normal)
 {
@@ -3854,7 +3848,7 @@ Sequence Genetic Samples
 }
 
 STRING 987
-// Abilities: A019 (Sequence Genetic Samples), Hotkey (Hotkey - Normal)
+// Abilities: A01I (Frenzy), Hotkey (Hotkey - Normal)
 {
 X
 }
@@ -4483,7 +4477,7 @@ Frenzy Slow
 }
 
 STRING 1113
-// Abilities: A01I (Frenzy), Hotkey (Hotkey - Normal)
+// Abilities: A01C (Purge Service Tunnels), Hotkey (Hotkey - Normal)
 {
 X
 }
@@ -4723,7 +4717,7 @@ Reactor Diagnostics
 }
 
 STRING 1169
-// Abilities: A01C (Purge Service Tunnels), Hotkey (Hotkey - Normal)
+// Abilities: AC10 (Target Player 10), Hotkey (Hotkey - Normal)
 {
 X
 }
@@ -4886,12 +4880,6 @@ STRING 1205
 // Abilities: A01C (Purge Service Tunnels), Name (Name)
 {
 Purge Service Tunnels
-}
-
-STRING 1206
-// Abilities: AC10 (Target Player 10), Hotkey (Hotkey - Normal)
-{
-X
 }
 
 STRING 1209
@@ -5428,12 +5416,6 @@ STRING 1300
 Q
 }
 
-STRING 1301
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
 STRING 1302
 // Units: n00P (|cff80ff80Security Targeting|r Terminal|n|cff808080Right Click to Use|r), Name (Name)
 {
@@ -5742,48 +5724,6 @@ STRING 1351
 Upgrade Weapon Damage [10/10]
 }
 
-STRING 1352
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 1353
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 1354
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 1355
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 1356
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 1357
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 1358
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
 STRING 1362
 // Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
 {
@@ -5893,7 +5833,7 @@ Reactor-Aided Weapon Reprocessor
 }
 
 STRING 1387
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6176,5 +6116,281 @@ STRING 1438
 // Abilities: A022 (Attack - Neokatana), Tip (Tooltip - Normal)
 {
 Katana
+}
+
+STRING 1439
+// Abilities: A023 (Scan for Humans), Name (Name)
+{
+Scan for Humans
+}
+
+STRING 1440
+// Abilities: A023 (Scan for Humans), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The suits of armor Crewmembers are outfitted with are state of the art, and contain internal tracking software.|r|n|nAfter |cff00ff006 seconds|r the Scan completes, pinging all living Crewmembers.|N|n|cff808080180 Seconds Cooldown|r
+}
+
+STRING 1441
+// Abilities: A023 (Scan for Humans), Tip (Tooltip - Normal)
+{
+Scan for Crew
+}
+
+STRING 1442
+// Abilities: A023 (Scan for Humans), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 1443
+// Abilities: A023 (Scan for Humans), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 1444
+// Abilities: A023 (Scan for Humans), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 1445
+// Abilities: A024 (Scan for Aliens), Name (Name)
+{
+Scan for Aliens
+}
+
+STRING 1446
+// Abilities: A024 (Scan for Aliens), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1447
+// Abilities: A024 (Scan for Aliens), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080By adapting earlier scanning techonology, one can scan for Alien tissue.|r|n|nAfter |cff00ff006 seconds|r the Scan completes, pinging all Aliens.|N|n|cff808080180 Seconds Cooldown|r
+}
+
+STRING 1448
+// Abilities: A024 (Scan for Aliens), Tip (Tooltip - Normal)
+{
+Scan for Aliens
+}
+
+STRING 1449
+// Abilities: A024 (Scan for Aliens), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff8080802 Seconds Cooldown|r
+}
+
+STRING 1450
+// Abilities: A024 (Scan for Aliens), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 1451
+// Abilities: A024 (Scan for Aliens), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 1452
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1454
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Security [1/4]
+}
+
+STRING 1455
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 1456
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Reboot Security Mainframe [|cffffcc001/4|r]
+}
+
+STRING 1457
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Lore TODO|r|n|n|cffffcc00Reboot Security Mainframe [1/4]|r|nRepairs and reboots the Security Mainframe.|n|cff00ff00- Crew may be flagged as a target from the|cff00ffff Bridge|r|r|n|cff00ff00- Damage upgrades now available|r|n|n|cff6f2583Infested|n- None|r
+}
+
+STRING 1458
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Security [2/4]
+}
+
+STRING 1459
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Security [3/4]
+}
+
+STRING 1460
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Security [4/4]
+}
+
+STRING 1461
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 1462
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 1463
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 1464
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1465
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1466
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1467
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Restore Security Mainframe [|cffffcc002/4|r]
+}
+
+STRING 1468
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Improved Security Mainframe [|cffffcc003/4|r]
+}
+
+STRING 1469
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Lore TODO|r|n|n|cffffcc00Restore Security Mainframe [2/4]|r|nRestores Security priviliges.|n|cff00ff00- |cff00ffffScan for Crew|r |cff00ff00now available|r|r|n|cff00ff00- Sight range for Station Security increased by 50|n- Hit Points for Station Security increased by 50|r|n|n|cff6f2583Infested|n- None|r
+}
+
+STRING 1470
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Lore TODO|r|n|n|cffffcc00Improved Security Mainframe [3/4]|r|nUpgrades currently available software and hardware.|n|cff00ff00- |cff00ffffScan for Alien|r |cff00ff00now available|r|r|n|cff00ff00- Sight range for Station Security increased by 50|n- Hit Points for Station Security increased by 50|r|n|n|cff6f2583Infested|n- None|r
+}
+
+STRING 1471
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Restricted Clearance Security [|cffffcc004/4|r]
+}
+
+STRING 1472
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+Totally WIP this gives nothing but XP
+}
+
+STRING 1473
+// Upgrades: R00G (Iron Plating,Steel Plating,Mithril Plating), Name (Name)
+{
+Security Vision and Health
+}
+
+STRING 1474
+// Upgrades: R00G (Iron Plating,Steel Plating,Mithril Plating), effect1 (Effect 1)
+{
+rhpx
+}
+
+STRING 1475
+// Upgrades: R00G (Iron Plating,Steel Plating,Mithril Plating), effect2 (Effect 2)
+{
+rsig
+}
+
+STRING 1476
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1477
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1478
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1479
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1480
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1481
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1482
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1483
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1484
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1485
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
 }
 

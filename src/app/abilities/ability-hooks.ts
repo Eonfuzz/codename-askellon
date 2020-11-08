@@ -47,7 +47,9 @@ import {
     ABIL_ASKELLON_BROADSIDE_RIGHT,
     ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS,
     ABIL_SYSTEM_REACTOR_ROTATE_SHIELD_FREQUENCY,
-    ABIL_DROP_MINERALS
+    ABIL_DROP_MINERALS,
+    ABIL_ACTIVATE_SCAN_CREW,
+    ABIL_ACTIVATE_SCAN_ALIENS
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -93,6 +95,7 @@ import { Players } from "w3ts/globals/index";
 import { LaserBroadsideAbility } from "./station/laser-broadside";
 import { DivertToWeaponsAbiility } from "./station/divert-weapons";
 import { DropMineralsAbility } from "./items/drop-minerals";
+import { StationSecurityScanForPlayer } from "./station/scan-for-player";
 
 
 
@@ -112,6 +115,8 @@ export class AbilityHooks {
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_PURGE_VENTS );
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS );
         GlobalCooldownAbilityEntity.register( ABIL_SYSTEM_REACTOR_ROTATE_SHIELD_FREQUENCY );
+        GlobalCooldownAbilityEntity.register( ABIL_ACTIVATE_SCAN_ALIENS );
+        GlobalCooldownAbilityEntity.register( ABIL_ACTIVATE_SCAN_CREW );
         Players.forEach(p => {
             GlobalCooldownAbilityEntity.register( ABIL_SECURITY_TARGET_ALL[p.id] );
         });
@@ -187,6 +192,8 @@ AbilityHooks.Add(ABIL_ASKELLON_BROADSIDE_RIGHT, () => new LaserBroadsideAbility(
 AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS, () => new DivertToWeaponsAbiility());
 AbilityHooks.Add(ABIL_DROP_MINERALS, () => new DropMineralsAbility());
 
+AbilityHooks.Add(ABIL_ACTIVATE_SCAN_CREW, () => new StationSecurityScanForPlayer(false));
+AbilityHooks.Add(ABIL_ACTIVATE_SCAN_ALIENS, () => new StationSecurityScanForPlayer(true));
 // Alien Minion AI hooks
 AbilityHooks.Add(ABIL_ALIEN_MINION_EVOLVE, () => new MinionEvolveAbility());
 // AbilityHooks.Add(ABIL_ALIEN_MINION_PLACE_EGG, () => new MinionSpawnAbility());

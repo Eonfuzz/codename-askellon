@@ -157,7 +157,7 @@ export class GlobalCooldownAbilityEntity extends Entity {
      * @param u 
      * @param a 
      */
-    private onAbilityCast(u: unit, a: number) {
+    public onAbilityCast(u: unit, a: number) {
         // Is it in our registry
         const unitsListeningToAbility = this.abilitiesOnUnits.get(a);
         if (!unitsListeningToAbility || unitsListeningToAbility.length == 0) return;

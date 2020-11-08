@@ -1,6 +1,6 @@
 import { Trigger, Unit, MapPlayer } from "w3ts";
-import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID, TECH_HERO_LEVEL, TECH_MAJOR_RELIGION, TECH_PLAYER_INFESTS, TECH_MAJOR_REACTOR } from "resources/ability-ids";
-import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_NAME_RELIGION, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID, STR_OCCUPATION_BONUS, STR_UPGRADE_NAME_REACTOR } from "resources/strings";
+import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID, TECH_HERO_LEVEL, TECH_MAJOR_RELIGION, TECH_PLAYER_INFESTS, TECH_MAJOR_REACTOR, TECH_MAJOR_SECURITY } from "resources/ability-ids";
+import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_NAME_RELIGION, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID, STR_OCCUPATION_BONUS, STR_UPGRADE_NAME_REACTOR, STR_UPGRADE_NAME_SECURITY } from "resources/strings";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/forces/force-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
@@ -46,6 +46,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         this.grantsOccupationBonus.set(TECH_MAJOR_HEALTHCARE, [ROLE_TYPES.DOCTOR]);
         this.grantsOccupationBonus.set(TECH_MAJOR_RELIGION, [ROLE_TYPES.INQUISITOR]);
         this.grantsOccupationBonus.set(TECH_MAJOR_REACTOR, [ROLE_TYPES.ENGINEER]);
+        this.grantsOccupationBonus.set(TECH_MAJOR_SECURITY, [ROLE_TYPES.SEC_GUARD]);
 
         // Update player "Level x" research when a player levels up
         EventEntity.getInstance().addListener(new EventListener(EVENT_TYPE.HERO_LEVEL_UP, (self, data) => {
@@ -118,6 +119,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
         if (id === TECH_MAJOR_VOID) return true;
         if (id === TECH_MAJOR_RELIGION) return true;
         if (id === TECH_MAJOR_REACTOR) return true;
+        if (id === TECH_MAJOR_SECURITY) return true;
         return false;
     }
 
@@ -180,6 +182,8 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
             return STR_UPGRADE_NAME_RELIGION(level);
         if (id === TECH_MAJOR_REACTOR)
             return STR_UPGRADE_NAME_REACTOR(level);
+        if (id === TECH_MAJOR_SECURITY)
+            return STR_UPGRADE_NAME_SECURITY(level);
         return '';
     }
 

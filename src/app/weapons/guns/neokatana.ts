@@ -117,8 +117,8 @@ export class WepNeokatana extends GunItem {
     }
 
     public onRemove() {
-        super.onRemove();        
         this.equippedTo.unit.addAnimationProps("swim", false);
+        super.onRemove();
     }
 
     protected getTooltip(unit: Unit) {
