@@ -44,7 +44,7 @@ gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2_Copy_Copy_2 = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = nil
 gg_rct_pathingRect = nil
-gg_rct_FallZoneCargo_Copy = nil
+gg_rct_FallZoneArmory = nil
 gg_rct_cnorth1 = nil
 gg_rct_ceast2 = nil
 gg_rct_cwest2 = nil
@@ -116,7 +116,7 @@ gg_rct_zonecargoavent4 = nil
 gg_rct_cnorth3 = nil
 gg_rct_ceast4 = nil
 gg_rct_cwest4 = nil
-gg_rct_FallZoneCargo_Copy_2 = nil
+gg_rct_FallZoneCargoB = nil
 gg_rct_zonecargob2 = nil
 gg_rct_zonecargob3 = nil
 gg_rct_zonecargob4 = nil
@@ -239,6 +239,10 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_rct_FallZoneBio = nil
+gg_rct_FallZoneCargoB_Copy = nil
+gg_rct_FallZoneCargoB_Copy_2 = nil
+gg_rct_FallZoneBridge_Copy = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -457,7 +461,7 @@ function CreateBuildingsForPlayer22()
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -14524.2, -21283.2, 270.000, FourCC("h00C"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -7593.1, -8513.2, 270.000, FourCC("h00C"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -21986.2, -9593.3, 359.150, FourCC("h00C"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -27358.9, -17867.2, -7.721, FourCC("h00C"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -27358.9, -17867.2, 352.279, FourCC("h00C"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -13784.6, -6511.5, 0.000, FourCC("h00C"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -23223.8, -11554.6, 270.000, FourCC("h00C"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00C"), -6562.2, -11961.3, 177.792, FourCC("h00C"))
@@ -922,7 +926,7 @@ function CreateRegions()
     gg_rct_ShipBay03 = Rect(-25376.0, -19008.0, -25184.0, -18592.0)
     gg_rct_ShipBay04 = Rect(-24480.0, -19008.0, -24288.0, -18592.0)
     gg_rct_CollisionCheckZone = Rect(416.0, 96.0, 480.0, 160.0)
-    gg_rct_FallZoneBridge = Rect(-13024.0, -6784.0, -12192.0, -6464.0)
+    gg_rct_FallZoneBridge = Rect(-13024.0, -6688.0, -12192.0, -6368.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2 = Rect(-13376.0, -5984.0, -12704.0, -5408.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy = Rect(-14400.0, -6080.0, -13728.0, -5344.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_2 = Rect(-15200.0, -3712.0, -12032.0, -2880.0)
@@ -933,7 +937,7 @@ function CreateRegions()
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy = Rect(-14336.0, -6208.0, -13856.0, -5248.0)
     gg_rct_Kill_Zone_Copy_Copy_Copy_Copy_2_Copy_Copy_Copy = Rect(-13280.0, -6144.0, -12800.0, -5184.0)
     gg_rct_pathingRect = Rect(0.0, 0.0, 256.0, 256.0)
-    gg_rct_FallZoneCargo_Copy = Rect(-7072.0, -11680.0, -6400.0, -11424.0)
+    gg_rct_FallZoneArmory = Rect(-7072.0, -11680.0, -6400.0, -11424.0)
     gg_rct_cnorth1 = Rect(-4928.0, -12896.0, -4800.0, -11136.0)
     gg_rct_ceast2 = Rect(-6208.0, -12896.0, -4832.0, -12800.0)
     gg_rct_cwest2 = Rect(-6176.0, -11200.0, -4800.0, -11040.0)
@@ -1015,7 +1019,7 @@ function CreateRegions()
     gg_rct_cnorth3 = Rect(-1696.0, -18080.0, -1600.0, -17600.0)
     gg_rct_ceast4 = Rect(-2976.0, -18080.0, -1664.0, -17984.0)
     gg_rct_cwest4 = Rect(-1632.0, -18080.0, -736.0, -17984.0)
-    gg_rct_FallZoneCargo_Copy_2 = Rect(-3424.0, -17536.0, -2752.0, -17280.0)
+    gg_rct_FallZoneCargoB = Rect(-3392.0, -17696.0, -2720.0, -17440.0)
     gg_rct_zonecargob2 = Rect(-1504.0, -17536.0, -576.0, -16544.0)
     gg_rct_zonecargob3 = Rect(-512.0, -17536.0, -160.0, -17216.0)
     gg_rct_zonecargob4 = Rect(-3648.0, -18304.0, -3488.0, -17728.0)
@@ -1076,6 +1080,10 @@ function CreateRegions()
     gg_rct_spawnpilot4 = Rect(-2944.0, -18944.0, -2816.0, -18848.0)
     gg_rct_zonebiology16 = Rect(-14176.0, -11488.0, -13248.0, -10496.0)
     gg_rct_zonebiology17 = Rect(-13248.0, -11808.0, -11808.0, -10176.0)
+    gg_rct_FallZoneBio = Rect(-11680.0, -14304.0, -11008.0, -14048.0)
+    gg_rct_FallZoneCargoB_Copy = Rect(-7904.0, -17984.0, -7584.0, -17696.0)
+    gg_rct_FallZoneCargoB_Copy_2 = Rect(-7584.0, -11296.0, -6912.0, -11040.0)
+    gg_rct_FallZoneBridge_Copy = Rect(-11072.0, -13920.0, -10240.0, -13600.0)
 end
 
 function Trig_SetKillzones_Actions()
@@ -1266,12 +1274,21 @@ function InitTrig_SetHatch()
 end
 
 function Trig_SetFall_Actions()
-    udg_fall_points[1] = gg_rct_FallZoneCargo_Copy
+    udg_fall_points[1] = gg_rct_FallZoneArmory
     udg_fall_results[1] = gg_rct_FallZone1Land
-    udg_fall_result_zone_names[1] = "SERVICE_TUNNELS"
+    udg_fall_result_zone_names[1] = "SERVICE_TUNNELS_WEST"
     udg_fall_points[2] = gg_rct_FallZoneCargo
     udg_fall_results[2] = gg_rct_FallZoneCargoLand
-    udg_fall_result_zone_names[2] = "SERVICE_TUNNELS"
+    udg_fall_result_zone_names[2] = "SERVICE_TUNNELS_WEST"
+    udg_fall_points[3] = gg_rct_FallZoneCargoB
+    udg_fall_results[3] = gg_rct_FallZoneCargoB_Copy
+    udg_fall_result_zone_names[3] = "SERVICE_TUNNELS_EAST"
+    udg_fall_points[4] = gg_rct_FallZoneBio
+    udg_fall_results[4] = gg_rct_FallZoneCargoB_Copy_2
+    udg_fall_result_zone_names[4] = "ARMORY_VENT"
+    udg_fall_points[5] = gg_rct_FallZoneBridge
+    udg_fall_results[5] = gg_rct_FallZoneBridge_Copy
+    udg_fall_result_zone_names[5] = "BIOLOGY_VENT"
 end
 
 function InitTrig_SetFall()

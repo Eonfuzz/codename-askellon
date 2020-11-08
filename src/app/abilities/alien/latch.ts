@@ -18,7 +18,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { AbilityHooks } from "../ability-hooks";
 import { AddGhost, RemoveGhost, getZFromXY } from "lib/utils";
 import { DummyCast } from "lib/dummy";
-import { BUFF_ID_NANOMED, BUFF_ID_TRIFEX } from "resources/buff-ids";
+import { BUFF_ID_NANOMED, BUFF_ID_TRIFEX, BUFF_ID_FEAST } from "resources/buff-ids";
 
 
 export class LatchAbility implements Ability {
@@ -70,11 +70,6 @@ export class LatchAbility implements Ability {
         this.targetUnit.owner.setTechResearched(TECH_PLAYER_INFESTS, 
             this.targetUnit.owner.getTechCount(TECH_PLAYER_INFESTS, true) + 1
         );
-
-
-        this.unitTakesDamageTrigger = new Trigger();
-        this.unitTakesDamageTrigger.registerUnitEvent(this.unit, EVENT_UNIT_DAMAGED);
-        this.unitTakesDamageTrigger.addAction(() => this.onDamage());
 
         this.onUnitchangeOrder = new Trigger();
         this.onUnitchangeOrder.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_ORDER);
@@ -129,6 +124,7 @@ export class LatchAbility implements Ability {
         // Need to check for buffs on host
         if (UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_NANOMED) || UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_TRIFEX)) {
             this.forceStop = true;
+            return false;
         }
 
         // Deal eat damage if relevant
@@ -199,27 +195,6 @@ export class LatchAbility implements Ability {
         }
     }
 
-    private onDamage() {
-        this.forceStop = true;
-
-
-        if (!this.unit.paused) {
-            // Mini stun to end channels
-            this.unit.paused = true;
-            // Worm takes bonus damage
-            UnitDamageTarget(GetEventDamageSource(), 
-                this.unit.handle, 
-                25, 
-                true, 
-                true, 
-                ATTACK_TYPE_MAGIC, 
-                DAMAGE_TYPE_ACID, 
-                WEAPON_TYPE_WHOKNOWS
-            );
-            this.unit.paused = false;
-        }
-    }
-
     private onLatchedGainsXp(data: EventData) {
         if (data.source === this.targetUnit) {
             const amountGained = data.data.value / 2;
@@ -233,8 +208,6 @@ export class LatchAbility implements Ability {
     private onOrderChange() {
         const newOrder = GetIssuedOrderId();
         this.forceStop = true;
-
-        Log.Information("Order id: "+newOrder);
 
         // Neural Takeover
         if (newOrder === 852100) {
@@ -293,6 +266,7 @@ export class LatchAbility implements Ability {
 
     public destroy() { 
         try {
+            UnitRemoveBuffBJ(BUFF_ID_FEAST, this.unit.handle);
             if (this.unit && this.unit.isAlive()) {
                 // Set cooldowns
                 BlzStartUnitAbilityCooldown(this.unit.handle, ABIL_ALIEN_LATCH, 60);

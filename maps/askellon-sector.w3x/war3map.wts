@@ -2009,12 +2009,6 @@ STRING 493
 Cryo Grenade
 }
 
-STRING 496
-// Items: I009 (Cryo Grenade), Ubertip (Tooltip - Extended)
-{
-|cff808080A solid isotope of LN2 developed on board the Askellon, originally designed to flash freeze specimens for study further study.|n|r|nThrows a Cryo Grenade to target point, dealing |cff00ff0020 damage|r and applying |cff00ffffFlash Freeze|r to all units hit.|n|n|cff00ffffFlash Freeze:|r Massively slows move speed and turn rate over|cff00ff00 7 seconds|r.|n|n|cff80808020 Seconds Cooldown|r
-}
-
 STRING 497
 // Abilities: AGCM (Cosmic Sensitivity), Name (Name)
 {
@@ -6392,5 +6386,11 @@ STRING 1485
 // Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 A
+}
+
+STRING 1486
+// Items: I009 (Cryo Grenade), Ubertip (Tooltip - Extended)
+{
+|cff808080A solid isotope of LN2 developed on board the Askellon, originally designed to flash freeze specimens for further study.|n|r|nThrows a Cryo Grenade to target point, dealing |cff00ff0020 damage|r and applying |cff00ffffFlash Freeze|r to all units hit.|n|n|cff00ffffFlash Freeze:|r Massively slows move speed and turn rate over|cff00ff00 7 seconds|r.|n|n|cff80808020 Seconds Cooldown|r
 }
 

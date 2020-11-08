@@ -18,6 +18,8 @@ import { getZFromXY } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ROLE_TYPES } from "resources/crewmember-names";
+import { ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
+import { CreepEntity } from "app/creep/creep-entity";
 
 
 export class CrewmemberForce extends ForceType {
@@ -94,6 +96,9 @@ export class CrewmemberForce extends ForceType {
                         alienForce.transform(player, true);
                         FogModifierStop(fogMod);
                         DestroyFogModifier(fogMod);
+
+                        const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, crew.unit.x, crew.unit.y, bj_UNIT_FACING);
+                        CreepEntity.addCreepWithSource(600, tumor);
                     });
                     alienForce.introduction(player, true);
                 }

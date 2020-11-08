@@ -15,7 +15,7 @@ export class VentPurgeAbility implements Ability {
 
     private warmupTime = 10;
 
-    private purgeMaxDuration = 30;
+    private purgeMaxDuration = 90;
 
 
     constructor() {}

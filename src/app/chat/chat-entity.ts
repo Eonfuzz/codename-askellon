@@ -316,16 +316,14 @@ export class ChatEntity extends Entity {
                 if (player.handle === GetLocalPlayer()) ClearTextMessages();
             }
             else if (message === "-h" || message === "-handles" || message === "-p" || message === "-players") {
-                let str = '';
                 Players.forEach(p => {
                     const pData = PlayerStateFactory.get(p);
                     const crew = PlayerStateFactory.getCrewmember(p);
 
                     if (crew) {
-                        str += `#${p.id}: |cff${PLAYER_COLOR[p.id]}${crew.name}|r ${pData.originalName}`
+                        MessagePlayer(player, `#${p.id}: |cff${PLAYER_COLOR[p.id]}${crew.name}|r ${pData.originalName}`);
                     }
                 });
-                MessagePlayer(player, str);
             }
         }
     }

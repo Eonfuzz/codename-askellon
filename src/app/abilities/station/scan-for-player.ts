@@ -1,7 +1,7 @@
 import { Ability } from "../ability-type";
 import { SoundRef } from "app/types/sound-ref";
 import { MessageAllPlayers } from "lib/utils";
-import { COL_ORANGE, COL_INFO, COL_ATTATCH, COL_GOOD, COL_GOLD } from "resources/colours";
+import { COL_ORANGE, COL_INFO, COL_ATTATCH, COL_GOOD, COL_GOLD, COL_ALIEN } from "resources/colours";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit, MapPlayer } from "w3ts/index";
@@ -33,7 +33,7 @@ export class StationSecurityScanForPlayer implements Ability {
         GlobalCooldownAbilityEntity.getInstance().onAbilityCast(u.handle, ABIL_ACTIVATE_SCAN_ALIENS);
 
 
-        MessageAllPlayers(`Activating ${COL_GOLD}Scanners|r: Searching for any ${this.isScanningForAliens ? 'Alien' : 'Crew'}`);
+        MessageAllPlayers(`Activating ${COL_GOLD}Scanners|r: Searching for ${this.isScanningForAliens ? `${COL_ALIEN}Alien Signatures|r` : 'Crew Signals'}`);
         Timers.addTimedAction(5.5, () => {
             scanSound.playSound();
         });
@@ -42,13 +42,20 @@ export class StationSecurityScanForPlayer implements Ability {
             MessageAllPlayers(`Scan Complete.`);
             if (!this.isScanningForAliens) {
                 Players.forEach(p => {
-                    const crew = PlayerStateFactory.getCrewmember(p);
-                    if (crew) {
-                        const pData = PlayerStateFactory.get(p);
-                        const pMain = PlayerStateFactory.get(p).getUnit();
-                        if (pMain && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
-                            const c = PLAYER_RGB[p.id];
-                            PingMinimapEx(u.x, u.y, 6, c[0], c[1], c[2], false);
+                    if (p.slotState != PLAYER_SLOT_STATE_EMPTY && p.controller == MAP_CONTROL_USER) {
+                        const crew = PlayerStateFactory.getCrewmember(p);
+                        if (crew) {
+                            const pData = PlayerStateFactory.get(p);
+                            const pMain = PlayerStateFactory.get(p).getUnit();
+                            if (pMain && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
+                                if (p.id < PLAYER_RGB.length) {
+                                    const c = PLAYER_RGB[p.id];
+                                    PingMinimapEx(u.x, u.y, 6, c[0], c[1], c[2], false);
+                                }
+                                else {
+                                    Log.Warning(`${p.id} not in rgb colour array`);
+                                }
+                            }
                         }
                     }
                 })

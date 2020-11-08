@@ -22,17 +22,23 @@ export class ObserverForce extends ForceType {
      * TODO
      */
     addPlayerMainUnit(whichUnit: Crewmember, player: MapPlayer) {
+    }    
+
+    addPlayer(who: MapPlayer) {
         // Give vision of everything
-        const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
+        const modifier = CreateFogModifierRect(who.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
         FogModifierStart(modifier);
         // Make sure DNC is bright, bug fix for deaths in vents
-        if (player.handle === GetLocalPlayer()) {
+        if (who.handle === GetLocalPlayer()) {
             SetDayNightModels(
                 "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
                 "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
             );
+            BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
         }
-    }    
+
+        SetCameraBoundsToRectForPlayerBJ(who.handle, bj_mapInitialCameraBounds);
+    }
     
     /**
     * Gets a list of who can see the chat messages

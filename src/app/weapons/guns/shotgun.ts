@@ -25,7 +25,7 @@ export class Shotgun extends GunItem {
         super(item, equippedTo);
         // Define spread and bullet distance
         this.spreadAOE = 240;
-        this.bulletDistance = 300;
+        this.bulletDistance = 240;
     }
 
     public applyWeaponAttackValues(unit: Unit) {
@@ -33,7 +33,7 @@ export class Shotgun extends GunItem {
         this.equippedTo.unit.setBaseDamage(this.getDamage(unit) - 1, 0);
         unit.acquireRange = 450;
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, ConvertUnitWeaponIntegerField(FourCC('ua1t')), 0, 2);
-        BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 400);
+        BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance+20);
     }
     
     public onShoot(unit: Unit, targetLocation: Vector3): void {
@@ -62,7 +62,6 @@ export class Shotgun extends GunItem {
         // Do nothing if the central projectile hits
         this.fireProjectile(unit, centerTargetLoc, true);
         
-        let bulletsHit = 0;
         deltaLocs.forEach((loc, index) => {
             const nX = casterLoc.x + loc.x;
             const nY = casterLoc.y + loc.y;
