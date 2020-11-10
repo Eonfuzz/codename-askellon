@@ -13,6 +13,8 @@ import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { MessageAllPlayers } from "lib/utils";
 import { COL_GOLD, COL_TEAL } from "resources/colours";
 import { ResearchFactory } from "app/research/research-factory";
+import { PlayerState } from "app/force/player-type";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 declare const gg_rct_reactoritemleft: rect;
 declare const gg_rct_reactoritemright: rect;
@@ -82,6 +84,7 @@ export class ReactorZone extends ShipZone {
         const itemOwner = MapPlayer.fromIndex( GetItemUserData(item) );
         const oldMineralCount = AskellonEntity.getInstance().mineralsDelivered;
 
+        const ownerCrewmember = PlayerStateFactory.getCrewmember(itemOwner);
         // If it is blue minerals
         if (type === ITEM_MINERAL_REACTIVE) {
             // Increase max power by 1
@@ -94,7 +97,9 @@ export class ReactorZone extends ShipZone {
                 PLAYER_STATE_RESOURCE_GOLD, 
                 itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 1 * iStacks
             );
-            // Log.Information("Blue minerals : "+iStacks);
+            if (ownerCrewmember && ownerCrewmember.role === ROLE_TYPES.PILOT) {
+                ownerCrewmember.addExperience(iStacks);
+            }
         }
         else if (type == ITEM_MINERAL_VALUABLE) {
             // TODO HEAL REACTOR
@@ -106,9 +111,9 @@ export class ReactorZone extends ShipZone {
                 PLAYER_STATE_RESOURCE_GOLD, 
                 itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 4 * iStacks
             );
-            // // Slight power regeneration increase
-            // AskellonEntity.getInstance().powerRegeneration += 0.05 * iStacks;
-            // Log.Information("Green minerals : "+iStacks);
+            if (ownerCrewmember && ownerCrewmember.role === ROLE_TYPES.PILOT) {
+                ownerCrewmember.addExperience(iStacks * 2);
+            }
         }
         else {
             // Just refund 10 for now, whatever blizzard

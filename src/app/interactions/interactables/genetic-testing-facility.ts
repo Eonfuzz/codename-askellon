@@ -11,6 +11,7 @@ import { getZFromXY, syncData, MessagePlayer } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED } from "resources/sfx-paths";
 import { Interactables } from "../../interactions/interactables/interactables";
 import { SendMessage } from "lib/translators";
+import { COL_ATTATCH } from "resources/colours";
 
 declare const udg_genetic_test_lights: destructable[];
 
@@ -19,6 +20,7 @@ export let testerSlots: item[] = [];
 
 const PlaceSequenceSound = new SoundRef('Sounds\\QuestCheckpoint.flac', false);
 const SequencerActiveSound = new SoundRef('Sounds\\SequencerActive.mp3', false);
+const testerIsBrokenSound = new SoundRef("Sounds\\DeniedBeep.mp3", false, true);
 
 
 export function initTesterInteractions() {
@@ -31,7 +33,10 @@ export function initTesterInteractions() {
         },
         action: (source: Unit, interactable: Unit) => {
             if (GetPlayerTechCount(source.owner.handle, TECH_MINERALS_PROGRESS, true) < 1) {
-                MessagePlayer(source.owner, `Blood Tester must first be repaired`);
+                MessagePlayer(source.owner, `The Blood Tester is ${COL_ATTATCH}broken|r. Deposit minerals into Reactor to repair`);
+                if (source.owner.handle === GetLocalPlayer()) {
+                    testerIsBrokenSound.playSound();
+                }
                 return false;
             }
 

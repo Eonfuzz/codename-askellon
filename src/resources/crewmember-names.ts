@@ -82,7 +82,7 @@ ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `${COL_GOOD}- Bless your brothers w
 - Religion prevents you from ever Gene Splicing|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.PILOT, `${COL_GOOD}- Protect the Askellon from harm using ace pilot skills
 - Mine asteroids in space for permanent upgrades
-- Gain bonus experience from dog fights and mining
+- Gain bonus experience for depositing minerals
 - Ship speed is increased by 10%
 - Ship fuel costs reduced by 10%|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.ENGINEER, `${COL_GOOD}- Maintain and repair the ${COL_TEAL}Reactor|r${COL_GOOD}

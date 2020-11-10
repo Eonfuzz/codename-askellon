@@ -23,6 +23,7 @@ import { EventListener } from "app/events/event-type";
 import { TECH_MAJOR_SECURITY, TECH_INCREASE_SECURITY_VISION_HEALTH, TECH_MINERALS_PROGRESS, TECH_CREW_ARMOR_HITPOINTS_INCREASE } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { GENETIC_FACILITY_TOOLTIP, GENETIC_FACILITY_TOOLTIP_DAMAGED } from "resources/strings";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -95,7 +96,13 @@ export class SecurityEntity extends Entity {
             }
             if (data.data.researched === TECH_MINERALS_PROGRESS && data.data.level === 2) {
                 Players.forEach(p => {
-                    SetPlayerTechResearched(p.handle, TECH_CREW_ARMOR_HITPOINTS_INCREASE, 1);
+                    const crew = PlayerStateFactory.getCrewmember(p);
+                    if (crew && crew.role === ROLE_TYPES.PILOT) {
+                        SetPlayerTechResearched(p.handle, TECH_CREW_ARMOR_HITPOINTS_INCREASE, 2);
+                    }
+                    else {
+                        SetPlayerTechResearched(p.handle, TECH_CREW_ARMOR_HITPOINTS_INCREASE, 1);
+                    }
                 })
             }
         }));
