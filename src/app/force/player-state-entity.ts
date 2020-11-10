@@ -25,6 +25,7 @@ export class PlayerStateFactory {
     private state = new Map<MapPlayer, PlayerState>();
 
     public isSnglePlayer = false;
+    public playerCount = 0;
     // Are players targeted?
     private securityTargetState = new Map<MapPlayer, boolean>();
 
@@ -39,6 +40,7 @@ export class PlayerStateFactory {
         // Log.Information("Player count: "+playerCount.length);
         // this.isSnglePlayer = false; 
         this.isSnglePlayer = playerCount.length === 1;
+        this.playerCount = playerCount.length;
 
         // Set alien AI colour to all be the same
         if (!this.isSnglePlayer) {
@@ -61,6 +63,7 @@ export class PlayerStateFactory {
     }
 
     public get(who: MapPlayer) {
+        if (!who) return;
         if (this.state.has(who)) {
             return this.state.get(who);
         }

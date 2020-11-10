@@ -11,19 +11,17 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { MessageAllPlayers } from "lib/utils";
-import { COL_GOLD } from "resources/colours";
+import { COL_GOLD, COL_TEAL } from "resources/colours";
+import { ResearchFactory } from "app/research/research-factory";
 
 declare const gg_rct_reactoritemleft: rect;
 declare const gg_rct_reactoritemright: rect;
 declare const gg_rct_powercoresfx: rect;
 
-const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false, true);
 export class ReactorZone extends ShipZone {
 
     private reactorLoop = new SoundRef("Sounds\\ReactorLoop.ogg", true, true);
     private sfx: Effect;
-
-    private totalMineralsFed: number = 0;
 
 
     constructor(id: ZONE_TYPE) {
@@ -82,7 +80,7 @@ export class ReactorZone extends ShipZone {
         const type = GetItemTypeId(item);
         const iStacks = GetItemCharges(item);
         const itemOwner = MapPlayer.fromIndex( GetItemUserData(item) );
-        const oldMineralCount = this.totalMineralsFed;
+        const oldMineralCount = AskellonEntity.getInstance().mineralsDelivered;
 
         // If it is blue minerals
         if (type === ITEM_MINERAL_REACTIVE) {
@@ -91,7 +89,7 @@ export class ReactorZone extends ShipZone {
             // Slight power regeneration increase
             AskellonEntity.getInstance().currentPower += 1;
 
-            this.totalMineralsFed += iStacks;
+            AskellonEntity.getInstance().mineralsDelivered += iStacks;
             itemOwner.setState(
                 PLAYER_STATE_RESOURCE_GOLD, 
                 itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 1 * iStacks
@@ -103,10 +101,10 @@ export class ReactorZone extends ShipZone {
             // // Increase max power by 1
             AskellonEntity.getInstance().askellonUnit.life += 5 * iStacks;
             
-            this.totalMineralsFed += iStacks;
+            AskellonEntity.getInstance().mineralsDelivered += iStacks;
             itemOwner.setState(
                 PLAYER_STATE_RESOURCE_GOLD, 
-                itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 2 * iStacks
+                itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 4 * iStacks
             );
             // // Slight power regeneration increase
             // AskellonEntity.getInstance().powerRegeneration += 0.05 * iStacks;
@@ -119,11 +117,14 @@ export class ReactorZone extends ShipZone {
             AskellonEntity.addToPower(5);
         }
 
-        if (this.totalMineralsFed >= 200 && oldMineralCount < 200) {
-            EventEntity.send(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { source: undefined, data: { researched: TECH_MINERALS_PROGRESS, level: 1 }});
-            majorResarchSound.playSound();
-            MessageAllPlayers(`${COL_GOLD}RAW MATERIALS QUOTA REACHED [200/200]|r`);
-            MessageAllPlayers(`${COL_GOLD}RESTORING ASKELLON ENGINE FUNCTIONALITY|r`);
+        const minerals = AskellonEntity.getInstance().mineralsDelivered;
+        if (minerals >= 200 && oldMineralCount < 200) {
+            ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 1);
+        }
+        if (minerals >= 400 && oldMineralCount < 400) {
+            ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 2);
+            MessageAllPlayers(`RAW MATERIALS QUOTA [${COL_GOLD}400/400|r] Reached`);
+            MessageAllPlayers(`Restoring ${COL_GOLD}Askellon|r Engine functionality`);
         }
 
         RemoveItem(item);

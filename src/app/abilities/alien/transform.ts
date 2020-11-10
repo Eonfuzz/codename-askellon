@@ -30,7 +30,7 @@ const SFX_BLOOD_EXPLODE = "Units\\Undead\\Abomination\\AbominationExplosion.mdl"
 
 const MEAT_AOE = 450;
 const MEAT_AOE_MIN = 150;
-const DURATION_TO_ALIEN = 2;
+const DURATION_TO_ALIEN = 0.5;
 const DURATION_TO_HUMAN = 0.5;
 
 export class TransformAbility implements Ability {
@@ -128,7 +128,7 @@ export class TransformAbility implements Ability {
 
     private bloodSplash(where: Vector3) {
         // Create a blood effect
-        CreateBlood(where.x, where.y);
+        // CreateBlood(where.x, where.y);
         return true;
     }
     

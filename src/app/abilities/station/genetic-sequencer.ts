@@ -9,9 +9,6 @@ import { ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { ChatEntity } from "app/chat/chat-entity";
 import { testerSlots } from "app/interactions/interactables/genetic-testing-facility";
 
-declare const udg_genetic_test_lights: destructable[];
-declare const udg_genetic_sequencer_unit: unit;
-
 const SEQUENCE_MAX_DURATION = 10;
 
 const ambienceSoundGeneticSequence = new SoundRef("Sounds\\GeneticSequencerAmbience.mp3", false);

@@ -33,7 +33,6 @@ export class LatchAbility implements Ability {
     private unitExperienceSteal: EventListener;
 
     private onUnitchangeOrder: Trigger;
-    private unitTakesDamageTrigger: Trigger;
 
     // Is a latch hook id
     private latchChatHookId: number;
@@ -299,7 +298,6 @@ export class LatchAbility implements Ability {
             Log.Error(e);
         }
         this.onUnitchangeOrder.destroy();
-        this.unitTakesDamageTrigger.destroy();
         EventEntity.getInstance().removeListener(this.travelListener);
         EventEntity.getInstance().removeListener(this.unitExperienceSteal);
         return true;

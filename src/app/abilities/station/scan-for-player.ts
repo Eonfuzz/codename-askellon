@@ -50,7 +50,7 @@ export class StationSecurityScanForPlayer implements Ability {
                             if (pMain && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
                                 if (p.id < PLAYER_RGB.length) {
                                     const c = PLAYER_RGB[p.id];
-                                    PingMinimapEx(u.x, u.y, 6, c[0], c[1], c[2], false);
+                                    if (c) PingMinimapEx(u.x, u.y, 6, c[0], c[1], c[2], false);
                                 }
                                 else {
                                     Log.Warning(`${p.id} not in rgb colour array`);

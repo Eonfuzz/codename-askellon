@@ -947,7 +947,7 @@ W
 }
 
 STRING 240
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A026 (Evolve), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1109,7 +1109,7 @@ W
 }
 
 STRING 282
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2516,7 +2516,7 @@ W
 }
 
 STRING 632
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2774,13 +2774,13 @@ Evolve
 }
 
 STRING 710
-// Abilities: A00U (Evolve), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A00Y (Evolve), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080LORE TODO.|r|n|nEvolve to your next Alien form. Takes |cff00ff0040 seconds|r to complete your evolution. |cffc81e1eInterrupting any evolution costs 500 experience.|r|r|n|n|cff808080120 Seconds Cooldown|r
 }
 
 STRING 711
-// Abilities: A00U (Evolve), Tip (Tooltip - Normal)
+// Abilities: A00Y (Evolve), Name (Name)
 {
 Evolve
 }
@@ -2798,7 +2798,7 @@ Magnetic Fusilade
 }
 
 STRING 714
-// Abilities: A014 (Evolve), Hotkey (Hotkey - Normal)
+// Abilities: A01R (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2971,26 +2971,14 @@ STRING 765
 Acidic Stigmata
 }
 
-STRING 767
-// Abilities: A014 (Evolve), EditorSuffix (Editor Suffix)
-{
-- To Tier 2
-}
-
 STRING 768
-// Abilities: A00Y (Evolve), Name (Name)
+// Abilities: A00Y (Evolve), Tip (Tooltip - Normal)
 {
 Evolve
 }
 
-STRING 769
-// Abilities: A00Y (Evolve), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080LORE TODO.|r|n|nEvolve to your next Alien form. Takes |cff00ff0040 seconds|r to complete your evolution. |cffc81e1eInterrupting any evolution costs 500 experience.|r|r|n|n|cff808080120 Seconds Cooldown|r
-}
-
 STRING 770
-// Abilities: A00Y (Evolve), Tip (Tooltip - Normal)
+// Abilities: A014 (Evolve), Name (Name)
 {
 Evolve
 }
@@ -3014,7 +3002,7 @@ STRING 773
 }
 
 STRING 774
-// Abilities: A01R (Evolve), Hotkey (Hotkey - Normal)
+// Abilities: A01S (Place Egg), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -3104,7 +3092,7 @@ PERSEUS - Macro Las
 }
 
 STRING 798
-// Abilities: A01S (Place Egg), Hotkey (Hotkey - Normal)
+// Abilities: AC04 (Target Player 4), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -3314,7 +3302,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 849
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3362,25 +3350,25 @@ STRING 862
 }
 
 STRING 870
-// Abilities: A015 (Latch), Hotkey (Hotkey - Normal)
+// Abilities: A014 (Evolve), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
 STRING 871
-// Abilities: A019 (Sequence Genetic Samples), Hotkey (Hotkey - Normal)
+// Abilities: A015 (Latch), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
 STRING 872
-// Abilities: AC01 (Target Player 1), Hotkey (Hotkey - Normal)
+// Abilities: A019 (Sequence Genetic Samples), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
 STRING 873
-// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Hotkey (Hotkey - Normal)
+// Abilities: AC01 (Target Player 1), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -3710,19 +3698,13 @@ STRING 949
 }
 
 STRING 950
-// Abilities: A014 (Evolve), Name (Name)
+// Abilities: A01R (Evolve), Name (Name)
 {
 Evolve
 }
 
-STRING 951
-// Abilities: A014 (Evolve), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080LORE TODO.|r|n|nEvolve to your next Alien form. Takes |cff00ff0040 seconds|r to complete your evolution. |cffc81e1eInterrupting any evolution costs 500 experience.|r|r|n|n|cff808080120 Seconds Cooldown|r
-}
-
 STRING 952
-// Abilities: A014 (Evolve), Tip (Tooltip - Normal)
+// Abilities: A01R (Evolve), Tip (Tooltip - Normal)
 {
 Evolve
 }
@@ -3740,7 +3722,7 @@ Magnetic Fusilade
 }
 
 STRING 955
-// Abilities: AC04 (Target Player 4), Hotkey (Hotkey - Normal)
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -3770,7 +3752,7 @@ Survival Instincts
 }
 
 STRING 964
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -4013,12 +3995,6 @@ STRING 1020
 // Items: I00D (Genetic Sample), Ubertip (Tooltip - Extended)
 {
 |cff808080Fluff TODO|r|n|nDeals |cff00ff0035 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
-}
-
-STRING 1021
-// Items: I00C (Genetic Sampler), Ubertip (Tooltip - Extended)
-{
-|cff808080A somewhat medieval approach to extracting genetic tissue; This device quickly tears the top layer of the skin and seals it in a portal hermetic container.|r|n|nExtracts a |cff00ff00Genetic Sample|r from the target; dealing |cff00ff0035 damage|r and applying a ministun.|n|n|cff80808025 Seconds Cooldown|r
 }
 
 STRING 1022
@@ -4991,7 +4967,7 @@ STRING 1228
 }
 
 STRING 1229
-// Abilities: A01R (Evolve), Name (Name)
+// Abilities: A01S (Place Egg), Tip (Tooltip - Normal)
 {
 Evolve
 }
@@ -5003,7 +4979,7 @@ You shouldn't be seeing this
 }
 
 STRING 1231
-// Abilities: A01R (Evolve), Tip (Tooltip - Normal)
+// Abilities: A025 (Evolutions - Tier 1), Tip (Tooltip - Normal)
 {
 Evolve
 }
@@ -5039,7 +5015,7 @@ You shouldn't be seeing this
 }
 
 STRING 1237
-// Abilities: A01S (Place Egg), Tip (Tooltip - Normal)
+// Abilities: A026 (Evolve), Name (Name)
 {
 Evolve
 }
@@ -5063,13 +5039,13 @@ STRING 1240
 }
 
 STRING 1241
-// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Hotkey (Hotkey - Normal)
+// Abilities: A025 (Evolutions - Tier 1), Hotkey (Hotkey - Normal)
 {
 R
 }
 
 STRING 1242
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A028 (Evolutions - Tier 2 Aggressive), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -5833,7 +5809,7 @@ Q
 }
 
 STRING 1388
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6257,7 +6233,7 @@ STRING 1463
 }
 
 STRING 1464
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 R
 }
@@ -6392,5 +6368,197 @@ STRING 1486
 // Items: I009 (Cryo Grenade), Ubertip (Tooltip - Extended)
 {
 |cff808080A solid isotope of LN2 developed on board the Askellon, originally designed to flash freeze specimens for further study.|n|r|nThrows a Cryo Grenade to target point, dealing |cff00ff0020 damage|r and applying |cff00ffffFlash Freeze|r to all units hit.|n|n|cff00ffffFlash Freeze:|r Massively slows move speed and turn rate over|cff00ff00 7 seconds|r.|n|n|cff80808020 Seconds Cooldown|r
+}
+
+STRING 1487
+// Abilities: A014 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Hunt them, eat them, consume them.|r|n|nEvolve down the path of Aggression|n|cff00ff00- Extremely powerful in combat|n- Powerful early game|r|n|cffc81e1e- Little to no Deception powers|n- Requires fast Evolutions to keep up in power|r|n|nTakes |cff00ff0040 seconds|r to complete your evolution. |r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 1488
+// Abilities: A014 (Evolve), Tip (Tooltip - Normal)
+{
+Aggression Evolution
+}
+
+STRING 1489
+// Abilities: A014 (Evolve), EditorSuffix (Editor Suffix)
+{
+- T1 to Zergling
+}
+
+STRING 1490
+// Abilities: A025 (Evolutions - Tier 1), Name (Name)
+{
+Evolutions - Tier 1
+}
+
+STRING 1491
+// Abilities: A025 (Evolutions - Tier 1), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Consume biomass, learn prey behaviours and become stronger.|r|n|nBegin evolving into your selected Evolution. Takes |cff00ff0040 seconds|r to complete your evolution.|r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 1492
+// Abilities: A027 (Evolve), Name (Name)
+{
+Evolve
+}
+
+STRING 1493
+// Abilities: A026 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Spread our influence. Consume their ships.|r|n|nEvolve down the path of Infestation|n|cff00ff00- Easily spreads infestation|n- Traps are very powerful|r|n|cffc81e1e- Very weak in straight combat|n- Traps require setup time|r|n|nTakes |cff00ff0040 seconds|r to complete your evolution. |r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 1494
+// Abilities: A026 (Evolve), Tip (Tooltip - Normal)
+{
+Infestation Evolution
+}
+
+STRING 1495
+// Abilities: A026 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1496
+// Abilities: A026 (Evolve), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 1497
+// Abilities: A026 (Evolve), EditorSuffix (Editor Suffix)
+{
+- T1 to Infestor
+}
+
+STRING 1498
+// Abilities: A028 (Evolutions - Tier 2 Aggressive), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 1499
+// Abilities: A027 (Evolve), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1500
+// Abilities: A027 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080This power that aids us. It can be used.|r|n|nEvolve down the path of Psionic Powers|n|cff00ff00- Human and Alien form gain access to new powers|n- Extremely powerful throughout the game|n- Killing Crew improves your psionic powers|r|n|cffc81e1e- Cannot infest players|n- Killed players become spirits|n- Hard to achieve this evolution early game|r|n|nTakes |cff00ff0040 seconds|r to complete your evolution. |r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 1501
+// Abilities: A027 (Evolve), Tip (Tooltip - Normal)
+{
+Psionic Evolution
+}
+
+STRING 1502
+// Abilities: A027 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1503
+// Abilities: A027 (Evolve), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 1504
+// Abilities: A027 (Evolve), EditorSuffix (Editor Suffix)
+{
+- T1 to Psionic
+}
+
+STRING 1505
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1506
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1507
+// Upgrades: R00H (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Has Psionic Potency genetic power
+}
+
+STRING 1508
+// Upgrades: R00I (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Discovered the sector secret
+}
+
+STRING 1509
+// Abilities: A00U (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Their bullets cannot hurt us.|r|n|nEvolve down the path of the Hammer|n|cff00ff00- Extremely powerful in combat|n- Takes no damage from small arms|n- Can Stun with its powerful charge|r|n|cffc81e1e- Little to no Deception powers|n- Requires fast Evolutions to keep up in power|r|n|nTakes |cff00ff0040 seconds|r to complete your evolution. |r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 1510
+// Abilities: A00U (Evolve), Tip (Tooltip - Normal)
+{
+Hammer Evolution
+}
+
+STRING 1511
+// Abilities: A028 (Evolutions - Tier 2 Aggressive), Name (Name)
+{
+Evolutions - Tier 2 Aggressive
+}
+
+STRING 1512
+// Abilities: A028 (Evolutions - Tier 2 Aggressive), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Consume biomass, learn prey behaviours and become stronger.|r|n|nBegin evolving into your selected Evolution. Takes |cff00ff0040 seconds|r to complete your evolution.|r|r|n|n|cff808080120 Seconds Cooldown|r
+}
+
+STRING 1513
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1514
+// Items: I00C (Genetic Sampler), Ubertip (Tooltip - Extended)
+{
+|cff808080A somewhat medieval approach to extracting genetic tissue; This device quickly tears the top layer of the skin and seals it in a portal hermetic container.|r|n|nExtracts a |cff00ff00Genetic Sample|r from the target; dealing |cff00ff0035 damage|r and applying a ministun.|n|nCan be used on Animals to extract a |cff00ff00Pure Genetic Sample|r.|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 1515
+// Items: I00M (Pure Genetic Sample), Name (Name)
+{
+Pure Genetic Sample
+}
+
+STRING 1516
+// Items: I00M (Pure Genetic Sample), Tip (Tooltip - Basic)
+{
+Pure Genetic Sample
+}
+
+STRING 1517
+// Items: I00M (Pure Genetic Sample), Ubertip (Tooltip - Extended)
+{
+|cff808080Earth animals are often used as the basis of various tests. Here it is no different.|r|n|nDeals |cff00ff0035 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 1518
+// Items: I00M (Pure Genetic Sample), Description (Description)
+{
+A genetic sample
 }
 

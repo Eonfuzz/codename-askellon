@@ -221,14 +221,11 @@ export class SpaceEntity extends Entity {
         
         // Listen to ugprade events
         EventEntity.listen(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
-            if (data.data.reseached === TECH_MINERALS_PROGRESS) {
-                if (data.data.level === 1) {
-                    this.mainShip.engine.mass = 800;
-                    this.mainShip.engine.velocityForwardMax = 1400;
-
-                                
-                    this.mainShip.engine.mass = 400;
-                    this.mainShip.engine.velocityForwardMax = 520;
+            if (data.data.researched === TECH_MINERALS_PROGRESS) {
+                if (data.data.level === 3) {
+                    this.mainShip.engine.mass = 250;
+                    this.mainShip.engine.velocityForwardMax = 300;
+                    this.mainShip.engine.baseTurningArc = 4;
                 }
             }
             if (data.data.researched === TECH_MAJOR_VOID) {

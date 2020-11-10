@@ -48,6 +48,8 @@ export class AskellonEntity extends Entity {
     // Our current power
     public currentPower = 0;
 
+    public mineralsDelivered = 0;
+
     public reactorWarningSound = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
 
     public askellonUnit: Unit;

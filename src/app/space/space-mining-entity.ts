@@ -11,6 +11,7 @@ import { SFX_BANSHEE_MISSILE, SFX_DEMONHUNTER_MISSILE } from "resources/sfx-path
 import { Log } from "lib/serilog/serilog";
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MAJOR_VOID } from "resources/ability-ids";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 class MiningEvent {
     drillStartSound = new SoundRef("Sounds\\Ships\\LaserDrillStart.wav", false, false);
@@ -105,14 +106,14 @@ class MiningEvent {
                 const minerals = this.source.getItemInSlot(1);
                 const charges = GetItemCharges(minerals);
                 if (charges < 100) {
-                    SetItemCharges(minerals, charges + 1);
+                    SetItemCharges(minerals, charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1));
                 }
             }
             else {
                 const minerals = this.source.getItemInSlot(0);
                 const charges = GetItemCharges(minerals);
                 if (charges < 250) {
-                    SetItemCharges(minerals, charges + 1);
+                    SetItemCharges(minerals, charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1));
                 }
             }
             UnitDamageTarget(this.source.handle, this.target.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);

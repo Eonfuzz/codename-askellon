@@ -1,6 +1,6 @@
 import { Trigger, Unit, MapPlayer } from "w3ts";
-import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID, TECH_HERO_LEVEL, TECH_MAJOR_RELIGION, TECH_PLAYER_INFESTS, TECH_MAJOR_REACTOR, TECH_MAJOR_SECURITY } from "resources/ability-ids";
-import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_NAME_RELIGION, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID, STR_OCCUPATION_BONUS, STR_UPGRADE_NAME_REACTOR, STR_UPGRADE_NAME_SECURITY } from "resources/strings";
+import { TECH_MAJOR_WEAPONS_PRODUCTION, TECH_WEP_DAMAGE, TECH_MAJOR_HEALTHCARE, TECH_MAJOR_VOID, TECH_HERO_LEVEL, TECH_MAJOR_RELIGION, TECH_PLAYER_INFESTS, TECH_MAJOR_REACTOR, TECH_MAJOR_SECURITY, TECH_MINERALS_PROGRESS } from "resources/ability-ids";
+import { STR_UPGRADE_NAME_WEAPONS, STR_UPGRADE_NAME_RELIGION, STR_UPGRADE_COMPLETE_HEADER, STR_UPGRADE_COMPLETE_SUBTITLE, STR_UPGRADE_COMPLETE_INFESTATION, STR_UPGRADE_NAME_HEALTHCARE, STR_UPGRADE_NAME_VOID, STR_OCCUPATION_BONUS, STR_UPGRADE_NAME_REACTOR, STR_UPGRADE_NAME_SECURITY, STR_UPGRADE_MINERALS_PROGRESS } from "resources/strings";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ForceType } from "app/force/forces/force-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
@@ -14,6 +14,7 @@ import { Players } from "w3ts/globals/index";
 import { Hooks } from "lib/Hooks";
 import { Log } from "lib/serilog/serilog";
 import { AskellonEntity } from "app/station/askellon-entity";
+import { MessagePlayer } from "lib/utils";
 
 const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete.mp3", false, true);
 
@@ -73,20 +74,7 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
             if (this.techIsMajor(techUnlocked)) {
                 try {
                     // Process the tech upgrade yo
-                    this.processMajorUpgrade(player, techUnlocked, levelTech);
-                    // Brilliant, now reward the player with experience
-                    const pData = PlayerStateFactory.get(player);
-                    const pForce = pData.getForce();
-
-                    const crewmember = pData.getCrewmember();
-
-                    if (pForce && crewmember) this.rewardResearchXP(pForce, crewmember, player, techUnlocked);
-
-                    majorResarchSound.playSound();
-                    // Broadcast item equip event
-                    EventEntity.getInstance().sendEvent(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { 
-                        source: unit, data: { researched: techUnlocked, level: levelTech }
-                    });
+                    this.processMajorUpgrade(techUnlocked, levelTech, player);
                 }
                 catch(e) {
                     Log.Error(e);
@@ -126,46 +114,64 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
     /**
      * Grants upgrades, unlocks things and others!
      */
-    processMajorUpgrade(player: MapPlayer, id: number, level: number) {
-        const isInfested = player.getTechCount(TECH_PLAYER_INFESTS, true) > 0;
+    public processMajorUpgrade(id: number, level: number, player?: MapPlayer) {
+        try {
+            const isInfested = player && player.getTechCount(TECH_PLAYER_INFESTS, true) > 0;
 
-        // Go through all players and grant the tech at the tech at the same level
-        Players.forEach(p => p.setTechResearched(id, level));
+            // Go through all players and grant the tech at the tech at the same level
+            Players.forEach(p => p.setTechResearched(id, level));
 
-        // Now send message to all players
-        // Get all players on the ship
-        // const pAlert = this.game.worldModule.askellon.getPlayers();
-        const techName = this.getTechName(id, level);
-        this.majorUpgradeLevels.set(id, level);
+            // Now send message to all players
+            // Get all players on the ship
+            // const pAlert = this.game.worldModule.askellon.getPlayers();
+            const techName = this.getTechName(id, level);
+            this.majorUpgradeLevels.set(id, level);
 
-        const crewmember = PlayerStateFactory.get(player).getCrewmember();
-        if (isInfested) this.setUpgradeAsInfested(id, level, true);
+            const crewmember = PlayerStateFactory.getCrewmember(player);
+            if (isInfested) this.setUpgradeAsInfested(id, level, true);
 
-        // Handle occupation bonuses
-        const roles = this.grantsOccupationBonus.get(id);
-        const hasOccupationBonus = crewmember && roles && roles.indexOf(crewmember.role) >= 0;
-        this.setHasOccupationBonus(id, level, hasOccupationBonus);
+            // Handle occupation bonuses
+            const roles = this.grantsOccupationBonus.get(id);
+            const hasOccupationBonus = crewmember && roles && roles.indexOf(crewmember.role) >= 0;
+            this.setHasOccupationBonus(id, level, hasOccupationBonus);
 
-        Players.forEach(p => {
-            DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_HEADER());
-            DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_SUBTITLE(techName));
-            if (hasOccupationBonus) {
-                // Play upgrade complete sound
-                DisplayTextToPlayer(p.handle, 0, 0, STR_OCCUPATION_BONUS());
-            }
-
-            const pData = PlayerStateFactory.get(p);
-            const pForce = pData.getForce();
-            if (pData && pForce) {
-
-                if (isInfested && pForce.is(ALIEN_FORCE_NAME)) {
-                    DisplayTextToPlayer(p.handle, 0, 0, STR_UPGRADE_COMPLETE_INFESTATION());
-                    // Play infestation complete sound
+            Players.forEach(p => {
+                MessagePlayer(p, STR_UPGRADE_COMPLETE_HEADER());
+                MessagePlayer(p, STR_UPGRADE_COMPLETE_SUBTITLE(techName));
+                if (hasOccupationBonus) {
+                    // Play upgrade complete sound
+                    MessagePlayer(p, STR_OCCUPATION_BONUS());
                 }
-            }
-        });
 
-        this.onMajorUpgrade(id, level, hasOccupationBonus, isInfested);
+                const pData = PlayerStateFactory.get(p);
+                const pForce = pData.getForce();
+                if (pData && pForce) {
+
+                    if (isInfested && pForce.is(ALIEN_FORCE_NAME)) {
+                        MessagePlayer(p, STR_UPGRADE_COMPLETE_INFESTATION());
+                        // Play infestation complete sound
+                    }
+                }
+            });
+
+            this.onMajorUpgrade(id, level, hasOccupationBonus, isInfested);
+
+            // Brilliant, now reward the player with experience
+            if (crewmember) {
+                const pData = PlayerStateFactory.get(player);
+                const pForce = pData.getForce();
+                this.rewardResearchXP(pForce, crewmember, player, id);
+            }
+
+            majorResarchSound.playSound();
+            // Broadcast item equip event
+            EventEntity.getInstance().sendEvent(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, { 
+                source: undefined, data: { researched: id, level: level }
+            });
+        }
+        catch(e) {
+            Log.Error(`Failed processing major upgrade ${e}`);
+        }
     }
 
     /**
@@ -184,6 +190,8 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
             return STR_UPGRADE_NAME_REACTOR(level);
         if (id === TECH_MAJOR_SECURITY)
             return STR_UPGRADE_NAME_SECURITY(level);
+        if (id === TECH_MINERALS_PROGRESS)
+            return STR_UPGRADE_MINERALS_PROGRESS(level);
         return '';
     }
 

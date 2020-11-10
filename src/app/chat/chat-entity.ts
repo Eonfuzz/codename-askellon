@@ -25,6 +25,9 @@ import { CreepEntity } from "app/creep/creep-entity";
 import { PlayerState } from "app/force/player-type";
 import { ITEM_WEP_NEOKATANA } from "resources/item-ids";
 import { PLAYER_COLOR } from "lib/translators";
+import { ResearchFactory } from "app/research/research-factory";
+import { STR_UPGRADE_MINERALS_PROGRESS } from "resources/strings";
+import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -269,6 +272,15 @@ export class ChatEntity extends Entity {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     UnitResetCooldown(GetEnumUnit());
                 });
+            }
+            else if (message == "-min1") {
+                ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 1);
+            }
+            else if (message == "-min2") {
+                ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 2);
+            }
+            else if (message == "-min3") {
+                ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 3);
             }
             else if (message == "-checkai") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {

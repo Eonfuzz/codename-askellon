@@ -16,10 +16,15 @@ export const STR_GENE_REQUIRES_HEALTHCARE = `${COL_TEAL}Gene Splicer|r ${COL_GOL
 
 export const STR_UPGRADE_NAME_WEAPONS = (researchLevel: number) => `${COL_ATTATCH}WEAPONS PRODUCTION|r${COL_GOLD} TIER ${researchLevel}|r`;
 export const STR_UPGRADE_NAME_HEALTHCARE = (researchLevel: number) => `${COL_INFO}HEALTHCARE|r${COL_GOLD} TIER ${researchLevel}|r`;
-export const STR_UPGRADE_NAME_VOID = (researchLevel: number) => `${COL_PINK}VOID FARING|r${COL_GOLD} TIER ${researchLevel}|r`;
+export const STR_UPGRADE_NAME_VOID = (researchLevel: number) => `${COL_PINK}VOID DELVING|r${COL_GOLD} TIER ${researchLevel}|r`;
 export const STR_UPGRADE_NAME_RELIGION = (researchLevel: number) => `${COL_PINK}RELIGIOUS DOGMA|r${COL_GOLD} TIER ${researchLevel}|r`;
 export const STR_UPGRADE_NAME_REACTOR = (researchLevel: number) => `${COL_PINK}REACTOR SYSTEMS|r${COL_GOLD} TIER ${researchLevel}|r`; 
 export const STR_UPGRADE_NAME_SECURITY = (researchLevel: number) => `${COL_PINK}SECURITY MAINFRAME|r${COL_GOLD} TIER ${researchLevel}|r`; 
+export const STR_UPGRADE_MINERALS_PROGRESS = (researchLevel: number) => `RAW MATERIALS QUOTA [${COL_GOLD}${researchLevel * 200}/${researchLevel * 200}|r] ${
+    researchLevel === 1 ? `${COL_TEAL}Blood Tester|r Repaired and functional` : 
+    researchLevel === 2 ? `${COL_ATTATCH}Crewmember|r Health and Amror improved` : 
+    `${COL_GOLD}Askellon Engines|r reactivated`
+}`;
 
 
 export const STR_UPGRADE_COMPLETE_HEADER = () => `${COL_GOLD}-= STATION FUNCTIONALITY RESTORED =-|r`;
@@ -37,10 +42,22 @@ ${COL_ALIEN}An Alien has been slain!|r
 
 export const STR_GENETIC_SAMPLE = (who: MapPlayer, forUnit: Unit) => `${COL_MISC}Mandate :: All staff are to ensure they are regularly tested and immunized. The Askellon cannot afford another quarantine breach.|r
 
-This is a genetic sample of ${COL_GOOD}${forUnit.nameProper}|r.
-Bring this to the ${COL_TEAL}Blood Tester|r to have it tested; if the sample is ${COL_ALIEN}infected|r the Crew will be alerted.`;
+This is a genetic sample of |cff${PLAYER_COLOR[forUnit.owner.id]}${forUnit.nameProper}|r.
+Bring this to the ${COL_TEAL}Blood Tester|r to have it tested; if the sample is ${COL_ALIEN}infected|r the Crew will be alerted.
 
-export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffBlood Testing |rFacility
+${COL_ORANGE}Ethics requires you to get consent before extracting sample|r`;
+export const STR_GENETIC_SAMPLE_PURE = (who: MapPlayer, forUnit: Unit) => `${COL_MISC}Mandate :: All staff are to ensure they are regularly tested and immunized. The Askellon cannot afford another quarantine breach.|r
+
+A pure, uncontanimated sample of a |cff${PLAYER_COLOR[forUnit.owner.id]}${forUnit.name}|r.
+Bring this to the ${COL_TEAL}Blood Tester|r to have it tested; A ${COL_GOOD}Pure|r sample may be inserted multiple times.
+
+${COL_ORANGE}Animals were harmed during the making of this. You monster.|r`;
+
+export const GENETIC_FACILITY_TOOLTIP_DAMAGED = () => `|cff00ffffBlood Testing|rFacility
+${COL_MISC}This facility is |r${COL_ATTATCH}Broken|r${COL_MISC}
+Deliver raw minerals to Reactor to repair|r`;
+
+export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffBlood Testing|r Facility
 ${ slot4 ? `${COL_GOLD}Activate Computer to continue` : `${COL_MISC}Right Click to place a sample inside` }
 ${COL_MISC}[ ${slot1 ? `|r${GetItemName(slot1)}${COL_MISC}` : `Sample Required`} ]
 [ ${slot2 ? `|r${GetItemName(slot2)}${COL_MISC}` : `Sample Required`} ]

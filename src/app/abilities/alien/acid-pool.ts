@@ -61,7 +61,7 @@ export class AcidPoolAbility implements Ability {
             this.casterUnit.handle,
             startLoc,
             new ProjectileTargetStatic(deltaTarget),
-            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(GetRandomReal(45,80)))
+            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(35))
         )
         .onDeath((proj: Projectile) => { return this.createPool(proj.getPosition()); })
         .onCollide(() => true);

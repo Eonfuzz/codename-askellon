@@ -82,14 +82,14 @@ export function getRandomBlood() {
 
 export function CreateBlood(x: number, y: number) {
     
-    const bloodSfx = AddSpecialEffect(getRandomBlood(), x, y);
-    BlzSetSpecialEffectZ(bloodSfx, getZFromXY(x, y)+5);
-    BlzSetSpecialEffectYaw(bloodSfx, GetRandomInt(0, 360));
-    BlzSetSpecialEffectScale(bloodSfx, GetRandomReal(0.8, 1.8));
+    // const bloodSfx = AddSpecialEffect(getRandomBlood(), x, y);
+    // BlzSetSpecialEffectZ(bloodSfx, getZFromXY(x, y)+5);
+    // BlzSetSpecialEffectYaw(bloodSfx, GetRandomInt(0, 360));
+    // BlzSetSpecialEffectScale(bloodSfx, GetRandomReal(0.8, 1.8));
 
-    Timers.addSlowTimedAction(GetRandomInt(10, 200), () => {
-        DestroyEffect(bloodSfx);
-    });
+    // Timers.addSlowTimedAction(GetRandomInt(10, 200), () => {
+    //     DestroyEffect(bloodSfx);
+    // });
 }
 
 export function AddGhost(toWho: Unit) {

@@ -2,21 +2,20 @@
 import { InteractableData } from "../../interactions/interactables/interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
-import { TECH_ITEMS_IN_GENETIC_SEQUENCER } from "resources/ability-ids";
+import { TECH_ITEMS_IN_GENETIC_SEQUENCER, TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
 import { GENETIC_TESTING_FACILITY, GENETIC_TESTING_FACILITY_SWITCH, GENETIC_TESTING_FACILITY_SWITCH_DUMMY } from "resources/unit-ids";
 import { SoundRef } from "app/types/sound-ref";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
-import { getZFromXY, syncData } from "lib/utils";
+import { getZFromXY, syncData, MessagePlayer } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED } from "resources/sfx-paths";
 import { Interactables } from "../../interactions/interactables/interactables";
+import { SendMessage } from "lib/translators";
 
 declare const udg_genetic_test_lights: destructable[];
 
-
 // Max 4
 export let testerSlots: item[] = [];
-let gTicker = 0;
 
 const PlaceSequenceSound = new SoundRef('Sounds\\QuestCheckpoint.flac', false);
 const SequencerActiveSound = new SoundRef('Sounds\\SequencerActive.mp3', false);
@@ -31,6 +30,10 @@ export function initTesterInteractions() {
             return testerSlots.length != 4;
         },
         action: (source: Unit, interactable: Unit) => {
+            if (GetPlayerTechCount(source.owner.handle, TECH_MINERALS_PROGRESS, true) < 1) {
+                MessagePlayer(source.owner, `Blood Tester must first be repaired`);
+                return false;
+            }
 
             // Get the first genetic thing in the units inventory
             const hasGeneticSample = UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE) || UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE_INFESTED);

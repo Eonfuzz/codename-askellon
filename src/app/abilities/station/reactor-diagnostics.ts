@@ -34,7 +34,7 @@ export class ReactorDiagnosticsAbility implements Ability {
         });
         Timers.addTimedAction(4.25, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 30);
-            DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 17.75, `${COL_MISC}------->|r Radiation Scrubbers: ${COL_GOOD}Clean|r`);
+            DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 17.75, `${COL_MISC}------->|r Minerals Delivered: ${COL_GOOD}${AskellonEntity.getInstance().mineralsDelivered}|r`);
         });
         Timers.addTimedAction(5.75, () => {
             const p = AskellonEntity.getPowerPercent();
