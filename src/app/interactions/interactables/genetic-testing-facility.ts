@@ -6,7 +6,7 @@ import { TECH_ITEMS_IN_GENETIC_SEQUENCER, TECH_MINERALS_PROGRESS } from "resourc
 import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
 import { GENETIC_TESTING_FACILITY, GENETIC_TESTING_FACILITY_SWITCH, GENETIC_TESTING_FACILITY_SWITCH_DUMMY } from "resources/unit-ids";
 import { SoundRef } from "app/types/sound-ref";
-import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
+import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_GENETIC_SAMPLE_PURE } from "resources/item-ids";
 import { getZFromXY, syncData, MessagePlayer } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED } from "resources/sfx-paths";
 import { Interactables } from "../../interactions/interactables/interactables";
@@ -41,7 +41,9 @@ export function initTesterInteractions() {
             }
 
             // Get the first genetic thing in the units inventory
-            const hasGeneticSample = UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE) || UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE_INFESTED);
+            const hasGeneticSample = UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE) 
+                || UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE_INFESTED)
+                || UnitHasItemOfTypeBJ(source.handle, ITEM_GENETIC_SAMPLE_PURE);
 
             if (hasGeneticSample && testerSlots.length < 4) {
 
@@ -49,9 +51,29 @@ export function initTesterInteractions() {
                 let item: item;
                 let i = 0;
                 while (!item) {
-                    const tempItem = UnitItemInSlot(source.handle, i++);
-                    if (GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE || GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE_INFESTED) {
-                        item = tempItem;
+                    const tempItem = UnitItemInSlot(source.handle, i);
+                    const pOwnerIndex = GetItemUserData(tempItem);
+                    const itemIsValidType = GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE 
+                        || GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE_INFESTED 
+                        || GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE_PURE;
+                    
+                    if (itemIsValidType) {
+                        // If pOwner index is undefined this is a pure sample
+                        if (GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE_PURE) {
+                            item = tempItem;
+                        }
+                        // If it isn't a pure sample check to see if there are nay matching samples
+                        else {
+                            const matches = testerSlots.filter(i => GetItemUserData(i) === pOwnerIndex);
+                            if (matches.length === 0) item = tempItem;
+                            else {
+                                MessagePlayer(source.owner, `${COL_ATTATCH}Duplicate Sample Detected${COL_ATTATCH}`);
+                                MessagePlayer(source.owner, `Please insert Pure or Unique sample`);
+                                if (source.owner.handle === GetLocalPlayer()) {
+                                    testerIsBrokenSound.playSound();
+                                }
+                            }
+                        }
                     }
                 }
                 // We have the item

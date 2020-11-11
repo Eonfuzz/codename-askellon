@@ -69,7 +69,7 @@ ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `${COL_GOOD}- Use your ${COL_TEAL}Genet
 - Upgrade your allies by usign the ${COL_TEAL}Gene Splicer|r${COL_GOOD}
 - Start the game with +2 Vitality and +4 Will
 - Gain bonus experience points while applying Genetic Splices
-- Gain bonus experience points while Sequencing DNA|r`);
+- Gain bonus experience points while ${COL_TEAL}Blood Testing|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.MAJOR, `Major is WIP`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOOD}- Hunt down and eliminate any ${COL_ALIEN}Alien forces|r${COL_GOOD}
 - Start the game with +10% bonus damage
@@ -83,6 +83,7 @@ ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `${COL_GOOD}- Bless your brothers w
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.PILOT, `${COL_GOOD}- Protect the Askellon from harm using ace pilot skills
 - Mine asteroids in space for permanent upgrades
 - Gain bonus experience for depositing minerals
+- Also receive the Selling Reward when depositing minerals 
 - Ship speed is increased by 10%
 - Ship fuel costs reduced by 10%|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.ENGINEER, `${COL_GOOD}- Maintain and repair the ${COL_TEAL}Reactor|r${COL_GOOD}

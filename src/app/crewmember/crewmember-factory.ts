@@ -63,7 +63,7 @@ export class CrewFactory {
 
         // We need to load in spawn locations
         this.allJobs = [
-            ROLE_TYPES.CAPTAIN, 
+            // ROLE_TYPES.CAPTAIN, 
             ROLE_TYPES.DOCTOR, 
             ROLE_TYPES.ENGINEER, 
             ROLE_TYPES.INQUISITOR, 

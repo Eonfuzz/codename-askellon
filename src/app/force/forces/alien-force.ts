@@ -258,6 +258,8 @@ export class AlienForce extends ForceType {
             const deathTrig = this.alienDeathTrigs.get(alienUnit);
             deathTrig.destroy();
             this.alienDeathTrigs.delete(alienUnit);
+            // Now remove our existing death trigs for human
+            super.removePlayer(player, killer);  
             
             const transformed = this.isPlayerTransformed(player);
 
@@ -294,9 +296,7 @@ export class AlienForce extends ForceType {
             obsForce.addPlayer(player);
             obsForce.addPlayerMainUnit(crew, player);
             PlayerStateFactory.get(player).setForce(obsForce);
-        }
-
-        super.removePlayer(player, killer);        
+        }      
     }
 
     removePlayerAlienUnit(whichUnit: Unit) {

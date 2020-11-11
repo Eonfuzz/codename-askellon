@@ -20,6 +20,7 @@ import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
 import { CreepEntity } from "app/creep/creep-entity";
+import { ObserverForce } from "./observer-force";
 
 
 export class CrewmemberForce extends ForceType {
@@ -63,6 +64,9 @@ export class CrewmemberForce extends ForceType {
                 const pKiller = PlayerStateFactory.get(killer.owner);
                 const pForce = pKiller.getForce();
                 
+                // Remove our crew trackers
+                super.removePlayer(player, killer);
+                
                 const killedByAlien = 
                     // Killed by station AI
                     PlayerStateFactory.isAlienAI(killer.owner) ||
@@ -104,7 +108,7 @@ export class CrewmemberForce extends ForceType {
                 }
                 // Otherwise make observer
                 else {
-                    const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME);
+                    const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
     
                     obsForce.addPlayer(player);
                     obsForce.addPlayerMainUnit(crew, player);
@@ -113,8 +117,6 @@ export class CrewmemberForce extends ForceType {
             }
 
         }
-            
-        super.removePlayer(player, killer);
     }    
     
     

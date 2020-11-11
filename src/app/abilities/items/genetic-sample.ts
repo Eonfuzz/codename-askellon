@@ -8,6 +8,8 @@ import { ForceEntity } from "app/force/force-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { PlayerState } from "app/force/player-type";
+import { PLAYER_RGB } from "lib/translators";
+import { Log } from "lib/serilog/serilog";
 
 export enum GENE_SPLICE_ALLIANCE {
     HUMAN,
@@ -83,7 +85,17 @@ export class GeneticSamplerItemAbility implements Ability {
         }
         else {
             BlzSetItemExtendedTooltip(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
-            BlzSetItemDescription(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));            
+            BlzSetItemDescription(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));     
+            SetItemUserData(item, this.targetUnit.owner.id);
+            
+
+            const pColor = PLAYER_RGB[this.targetUnit.owner.id];
+            if (pColor) {
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_RED, pColor[0]);       
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_BLUE, pColor[1]);
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_GREEN, pColor[2]);
+            }
+
         }
 
         if (unitHasSpareItemSlot) {

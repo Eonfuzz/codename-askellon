@@ -130,7 +130,7 @@ export abstract class ForceType {
      * Returns the player's currently "active" unit
      */
     public getActiveUnitFor(who: MapPlayer) {
-        return this.playerUnits.get(who).unit;
+        return this.playerUnits.has(who) && this.playerUnits.get(who).unit;
     }
 
     /**

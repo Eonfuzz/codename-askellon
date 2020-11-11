@@ -360,6 +360,8 @@ export class ChatEntity extends Entity {
                 doContinue: true,
             });
 
+            // Log.Information("Who: "+chatData.name+" to "+chatData.recipients.map(p => p.name).join(','));
+
             // Now run through our own hooks
             const postHookData = this.applyChatHooks(chatData);
 
@@ -371,19 +373,26 @@ export class ChatEntity extends Entity {
                 if (chatData.recipients.indexOf(u) === -1) chatData.recipients.push(u);
             });
 
-            if (postHookData.recipients.length > 0) {
-                // Play unit chat animation
-                const u = pDetails.getUnit();
-                if (u && u.typeId === CREWMEMBER_UNIT_ID) {
-                    u.setAnimation(5);
-                    const uX = u.x;
-                    const uY = u.y;
+            try {
+                    
+                if (postHookData.recipients.length > 0) {
+                    // Play unit chat animation
+                    const u = pDetails.getUnit();
+                    if (u && u.typeId === CREWMEMBER_UNIT_ID) {
+                        u.setAnimation(5);
+                        const uX = u.x;
+                        const uY = u.y;
 
-                    Timers.addTimedAction(1.4, () => u.x == uX && u.y == uY && u.setAnimation(0));
+                        Timers.addTimedAction(1.4, () => u.x == uX && u.y == uY && u.setAnimation(0));
+                    }
                 }
-            }
 
-            this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, undefined, postHookData.sound);
+                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, undefined, postHookData.sound);
+            
+            }
+            catch(e) {
+                Log.Error(`Chat failed ${e}`);
+            }
         }
     }
 

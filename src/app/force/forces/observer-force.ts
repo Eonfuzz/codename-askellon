@@ -21,8 +21,8 @@ export class ObserverForce extends ForceType {
     /**
      * TODO
      */
-    addPlayerMainUnit(whichUnit: Crewmember, player: MapPlayer) {
-    }    
+    public addPlayerMainUnit(whichUnit: Crewmember, player: MapPlayer): void {
+    };
 
     addPlayer(who: MapPlayer) {
         // Give vision of everything
@@ -38,6 +38,7 @@ export class ObserverForce extends ForceType {
         }
 
         SetCameraBoundsToRectForPlayerBJ(who.handle, bj_mapInitialCameraBounds);
+        super.addPlayer(who);
     }
     
     /**
@@ -46,6 +47,7 @@ export class ObserverForce extends ForceType {
     */
    public getChatRecipients(chatHook: ChatHook) {       
        // Otherwise return default behaviour
+    //    Log.Information("Getting chat recipients: "+this.players.map(p => p.name).join(','));
        return this.players;
    }
 

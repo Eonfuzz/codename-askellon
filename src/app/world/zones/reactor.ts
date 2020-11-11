@@ -93,11 +93,11 @@ export class ReactorZone extends ShipZone {
             AskellonEntity.getInstance().currentPower += 1;
 
             AskellonEntity.getInstance().mineralsDelivered += iStacks;
-            itemOwner.setState(
-                PLAYER_STATE_RESOURCE_GOLD, 
-                itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 1 * iStacks
-            );
             if (ownerCrewmember && ownerCrewmember.role === ROLE_TYPES.PILOT) {
+                itemOwner.setState(
+                    PLAYER_STATE_RESOURCE_GOLD, 
+                    itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 1 * iStacks
+                );
                 ownerCrewmember.addExperience(iStacks);
             }
         }
@@ -107,11 +107,11 @@ export class ReactorZone extends ShipZone {
             AskellonEntity.getInstance().askellonUnit.life += 5 * iStacks;
             
             AskellonEntity.getInstance().mineralsDelivered += iStacks;
-            itemOwner.setState(
-                PLAYER_STATE_RESOURCE_GOLD, 
-                itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 4 * iStacks
-            );
             if (ownerCrewmember && ownerCrewmember.role === ROLE_TYPES.PILOT) {
+                itemOwner.setState(
+                    PLAYER_STATE_RESOURCE_GOLD, 
+                    itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 4 * iStacks
+                );
                 ownerCrewmember.addExperience(iStacks * 2);
             }
         }

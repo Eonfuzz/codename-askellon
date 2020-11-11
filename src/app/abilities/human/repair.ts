@@ -21,8 +21,15 @@ export class ItemRepairAbility implements Ability {
     constructor() {}
 
     public initialise() {
+        // We are targeting a destructible
+        if (GetSpellTargetDestructable()) {
+            KillDestructable(GetSpellTargetDestructable());
+            return false;
+        }
+        
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
+
 
         this.castOrderId = GetUnitCurrentOrder(this.unit.handle);
         return true;

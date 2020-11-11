@@ -8,6 +8,9 @@ import { SOUND_COMPLEX_BEEP } from "resources/sounds";
 import { ITEM_GENETIC_SAMPLE_INFESTED } from "resources/item-ids";
 import { ChatEntity } from "app/chat/chat-entity";
 import { testerSlots } from "app/interactions/interactables/genetic-testing-facility";
+import { MapPlayer } from "w3ts/index";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 const SEQUENCE_MAX_DURATION = 10;
 
@@ -21,6 +24,16 @@ export class GeneticSequenceAbility implements Ability {
 
     public initialise() {
         ambienceSoundGeneticSequence.playSoundOnUnit(udg_genetic_sequencer_unit, 30);
+
+        // Reward bonus XP to doctor ( if caster is doctor )
+        const castingPlayer = MapPlayer.fromHandle(GetOwningPlayer(GetTriggerUnit()));
+
+        if (castingPlayer) {
+            const pCrew = PlayerStateFactory.getCrewmember(castingPlayer);
+            if (pCrew && pCrew.role === ROLE_TYPES.DOCTOR) {
+                pCrew.addExperience(200);
+            }
+        }
         // setTesterLastActivatedTo(GameTimeElapsed.getTime());
         return true;
     };

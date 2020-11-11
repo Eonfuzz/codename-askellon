@@ -2563,12 +2563,6 @@ STRING 643
 Medical Supplies
 }
 
-STRING 644
-// Units: n009 (Everyday Store), Name (Name)
-{
-Everyday Store
-}
-
 STRING 646
 // Units: h006 (|cffd45e19Perseus|r|n|cff808080Right Click To Enter|r), Name (Name)
 {
@@ -6560,5 +6554,11 @@ STRING 1518
 // Items: I00M (Pure Genetic Sample), Description (Description)
 {
 A genetic sample
+}
+
+STRING 1519
+// Units: n009 (Mechanic Store|n|cff808080Buys and Sells Mechanical Items|r), Name (Name)
+{
+Mechanic Store|n|cff808080Buys and Sells Mechanical Items|r
 }
 
