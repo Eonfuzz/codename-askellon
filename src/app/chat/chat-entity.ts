@@ -282,6 +282,11 @@ export class ChatEntity extends Entity {
             else if (message == "-min3") {
                 ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 3);
             }
+            else if (message == "-control") {
+                EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    SetUnitOwner(GetEnumUnit(), player.handle, false);
+                });
+            }
             else if (message == "-checkai") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     AIEntity.debugAgent(GetEnumUnit())
@@ -304,6 +309,22 @@ export class ChatEntity extends Entity {
                         const u = GetEnumUnit();
                         SetUnitX(u, x);
                         SetUnitY(u, y);
+                        if (zone) WorldEntity.getInstance().travel(Unit.fromHandle(u), zone.id);
+                    })
+                });
+            }
+            else if (message == "-tp2") {
+                // Log.Information("TP");
+                GetPlayerCamLoc(player, (x, y) => {
+                    // Get zone at loc
+                    Log.Information("Tp: "+x+", "+y);
+                    const zone = WorldEntity.getInstance().getPointZone(x, y);
+                    if (zone) Log.Information("Zone: "+ZONE_TYPE[zone.id]);
+                    else Log.Information("No Zone");
+
+                    EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                        const u = GetEnumUnit();
+                        SetUnitPosition(u, x, y);
                         if (zone) WorldEntity.getInstance().travel(Unit.fromHandle(u), zone.id);
                     })
                 });

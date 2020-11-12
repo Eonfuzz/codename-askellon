@@ -24,6 +24,7 @@ import { ALIEN_MINION_LARVA, ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
 import { UnitActionImmediate } from "lib/TreeLib/ActionQueue/Actions/UnitActionImmediate";
 import { ImmediateOrders } from "lib/TreeLib/ActionQueue/Actions/ImmediateOrders";
 import { Timers } from "app/timer-type";
+import { COL_MISC, COL_GOOD } from "resources/colours";
 
 /**
  * A player that acts under the AI entity
@@ -272,7 +273,7 @@ export class PlayerAgent {
                 if (!IsUnitVisible(edge.unit.handle, this.player.handle)) {
                     UnitShareVision(edge.unit.handle, this.player.handle, true);
                 }
-                actions.push(new UnitActionWaypoint(Vector2.fromWidget(edge.unit.handle), WaypointOrders.attack, 200));
+                actions.push(new UnitActionWaypoint(Vector2.fromWidget(edge.unit.handle), WaypointOrders.attack, 450));
                 actions.push(new UnitActionInteract(edge.unit.handle));
             });
             return ActionQueue.createUnitQueue(whichUnit, ...actions);
@@ -285,10 +286,12 @@ export class PlayerAgent {
             const uZone = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(whichUnit));
 
             const pointZone = WorldEntity.getInstance().getPointZone(GetUnitX(whichUnit), GetUnitY(whichUnit));
-            Log.Information(`Agent ${GetUnitName(whichUnit)} for: `+this.player.name+`(${this.player.id}) in ${ uZone ? ZONE_TYPE[uZone.id] : 'invalid' }`);
-            Log.Information(`Point zone is: ${pointZone ? ZONE_TYPE[pointZone.id] : 'invalid'}`)
+            Log.Information(`${GetUnitName(whichUnit)} ${this.player.id}:`+this.player.name+` in ${ uZone ? ZONE_TYPE[uZone.id] : 'invalid' }`);
+            Log.Information(`Location: ${pointZone ? ZONE_TYPE[pointZone.id] : 'invalid'}`)
+            
             queue.allActions.forEach((action, index) => {
-                Log.Information(`${index}::${action}`)
+                let isActive = queue.currentActionIndex === index;
+                Log.Information(`[${isActive ? COL_GOOD : COL_MISC}${index}|r] ${action}`)
             });
         }
         else {

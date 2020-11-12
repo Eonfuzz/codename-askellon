@@ -1,6 +1,6 @@
 import { InteractionEvent } from "./interaction-event";
 import { initElevators, initHatches } from "./interactables/elevator";
-import { SMART_ORDER_ID } from "resources/ability-ids";
+import { SMART_ORDER_ID, MOVE_ORDER_ID } from "resources/ability-ids";
 import { Trigger, Unit, Timer } from "w3ts";
 import { initVendingInteraction } from "./interactables/vendor";
 import { Log } from "lib/serilog/serilog";
@@ -42,7 +42,10 @@ export class InteractionEntity extends Entity {
         // Now track when a user *might* start an interaction
         this.interactionBeginTrigger = new Trigger();
         this.interactionBeginTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
-        this.interactionBeginTrigger.addCondition(Condition(() => GetIssuedOrderId() === SMART_ORDER_ID));
+        this.interactionBeginTrigger.addCondition(Condition(() => {
+            const oId = GetIssuedOrderId();
+            return oId === SMART_ORDER_ID || oId === MOVE_ORDER_ID;
+        }));
         this.interactionBeginTrigger.addAction(() => this.beginInteraction());
 
         // Listen to unit removal

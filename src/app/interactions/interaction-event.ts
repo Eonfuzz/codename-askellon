@@ -28,6 +28,8 @@ export class InteractionEvent {
   private interactDistance: number;
   private showProgressBar: boolean = true;
 
+  private orderId: number;
+
   constructor(
     unit: unit, 
     targetUnit: unit, 
@@ -43,6 +45,7 @@ export class InteractionEvent {
     this.interactable = interactable;
     this.interactDistance = interactDistance;
     this.showProgressBar = showProgressBar;
+    this.orderId = GetIssuedOrderId();
 
     if (this.showProgressBar) {
       this.progressBar = new ProgressBar();
@@ -61,11 +64,11 @@ export class InteractionEvent {
       // Ignore this if trigger unit is ship and stop is issued
       if (o === HOLD_ORDER_ID) return;
 
-      if (o === SMART_ORDER_ID && GetOrderTargetUnit() === this.targetUnit.handle) {
+      if (o === this.orderId && GetOrderTargetUnit() === this.targetUnit.handle) {
         // if (!this.interactable.condition || this.interactable.condition(this.unit, this.targetUnit))
           this.interactable.onRefocus && this.interactable.onRefocus(this.unit, this.targetUnit);
       }
-      else if (o !== SMART_ORDER_ID || GetOrderTargetUnit() !== this.targetUnit.handle) {
+      else if (o !== this.orderId || GetOrderTargetUnit() !== this.targetUnit.handle) {
         this.destroy();
       }
     });
