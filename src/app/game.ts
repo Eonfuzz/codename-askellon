@@ -81,6 +81,7 @@ export class Game {
         SetMusicVolume(30);
         PauseGameOff();
 
+        SuspendTimeOfDay(true);
         
         labrynthIntro.setVolume(80);
         labrynthIntro.playSound();

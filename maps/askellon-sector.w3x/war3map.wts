@@ -5442,12 +5442,6 @@ STRING 1310
 ASKELLON - BROADSIDE LEFT
 }
 
-STRING 1311
-// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
-}
-
 STRING 1312
 // Abilities: A01U (ASKELLON - BROADSIDE LEFT), Tip (Tooltip - Normal)
 {
@@ -5476,12 +5470,6 @@ STRING 1316
 // Abilities: A01V (ASKELLON - BROADSIDE RIGHT), Hotkey (Hotkey - Normal)
 {
 E
-}
-
-STRING 1317
-// Abilities: A01V (ASKELLON - BROADSIDE RIGHT), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0020 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
 }
 
 STRING 1318
@@ -6560,5 +6548,17 @@ STRING 1519
 // Units: n009 (Mechanic Store|n|cff808080Buys and Sells Mechanical Items|r), Name (Name)
 {
 Mechanic Store|n|cff808080Buys and Sells Mechanical Items|r
+}
+
+STRING 1520
+// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Askellon is a science vessel armed with state of the art Macro-Las batteries on both sides of her hull.|r|n|nFires |cff00ff003 Macro-Las|r rounds, each dealing |cff00ff00200 damage|r. While the Askellon is |cff00ffffOvercharged|r, it instead fires |cff00ff005 Macro-Las|r rounds.|r|n|n|cffd45e19Armed for deep space espionage and research, the Askellon is not as defenseless as it appears.|r|n|n|cff8080808 Seconds Cooldown|r
+}
+
+STRING 1521
+// Abilities: A01V (ASKELLON - BROADSIDE RIGHT), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Askellon is a science vessel armed with state of the art Macro-Las batteries on both sides of her hull.|r|n|nFires |cff00ff003 Macro-Las|r rounds, each dealing |cff00ff00200 damage|r. While the Askellon is |cff00ffffOvercharged|r, it instead fires |cff00ff005 Macro-Las|r rounds.|r|n|n|cffd45e19Armed for deep space espionage and research, the Askellon is not as defenseless as it appears.|r|n|n|cff8080808 Seconds Cooldown|r
 }
 

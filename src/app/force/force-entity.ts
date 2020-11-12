@@ -458,10 +458,10 @@ export class ForceEntity extends Entity {
 
         const timerTrig = new Trigger();
 
-        const timerDialog = CreateTimerDialog(timer);
-        TimerDialogDisplay(timerDialog, true);
+        // const timerDialog = CreateTimerDialog(timer);
+        // TimerDialogDisplay(timerDialog, true);
         timerTrig.addAction(() => {
-            TimerDialogDisplay(timerDialog, false);
+            // TimerDialogDisplay(timerDialog, false);
             const results = optSelection.endOptSelection();
             callback(results);
         });

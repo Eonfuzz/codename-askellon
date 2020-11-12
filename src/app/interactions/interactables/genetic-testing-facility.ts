@@ -49,9 +49,9 @@ export function initTesterInteractions() {
 
                 // Fetch the item
                 let item: item;
-                let i = 0;
+                let i = -1;
                 while (!item) {
-                    const tempItem = UnitItemInSlot(source.handle, i);
+                    const tempItem = UnitItemInSlot(source.handle, i++);
                     const pOwnerIndex = GetItemUserData(tempItem);
                     const itemIsValidType = GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE 
                         || GetItemTypeId(tempItem) === ITEM_GENETIC_SAMPLE_INFESTED 
@@ -75,6 +75,7 @@ export function initTesterInteractions() {
                             }
                         }
                     }
+                    if (i > UnitInventorySize(source.handle)) return false;
                 }
                 // We have the item
                 // Now do stuff
