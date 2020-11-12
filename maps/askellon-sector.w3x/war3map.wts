@@ -6562,3 +6562,21 @@ STRING 1521
 |cff808080The Askellon is a science vessel armed with state of the art Macro-Las batteries on both sides of her hull.|r|n|nFires |cff00ff003 Macro-Las|r rounds, each dealing |cff00ff00200 damage|r. While the Askellon is |cff00ffffOvercharged|r, it instead fires |cff00ff005 Macro-Las|r rounds.|r|n|n|cffd45e19Armed for deep space espionage and research, the Askellon is not as defenseless as it appears.|r|n|n|cff8080808 Seconds Cooldown|r
 }
 
+STRING 1522
+// Doodads: D015 (Stasis Tube Alien), Name (Name)
+{
+Stasis Tube Alien
+}
+
+STRING 1523
+// Doodads: D016 (Stasis Tube Empty), Name (Name)
+{
+Stasis Tube Empty
+}
+
+STRING 1524
+// Doodads: D017 (Dissection Table), Name (Name)
+{
+Dissection Table
+}
+
