@@ -18,7 +18,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { AbilityHooks } from "../ability-hooks";
 import { AddGhost, RemoveGhost, getZFromXY } from "lib/utils";
 import { DummyCast } from "lib/dummy";
-import { BUFF_ID_NANOMED, BUFF_ID_TRIFEX, BUFF_ID_FEAST } from "resources/buff-ids";
+import { BUFF_ID_NANOMED, BUFF_ID_TRIFEX, BUFF_ID_FEAST, BUFF_ID_REGENERATION } from "resources/buff-ids";
 
 
 export class LatchAbility implements Ability {
@@ -121,7 +121,9 @@ export class LatchAbility implements Ability {
         this.unit.y = this.targetUnit.y;
 
         // Need to check for buffs on host
-        if (UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_NANOMED) || UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_TRIFEX)) {
+        if (UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_NANOMED) 
+            || UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_TRIFEX)
+            || UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_REGENERATION)) {
             this.forceStop = true;
             return false;
         }
@@ -265,7 +267,7 @@ export class LatchAbility implements Ability {
 
     public destroy() { 
         try {
-            UnitRemoveBuffBJ(BUFF_ID_FEAST, this.unit.handle);
+            UnitRemoveBuffBJ(BUFF_ID_FEAST, this.targetUnit.handle);
             if (this.unit && this.unit.isAlive()) {
                 // Set cooldowns
                 BlzStartUnitAbilityCooldown(this.unit.handle, ABIL_ALIEN_LATCH, 60);

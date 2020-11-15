@@ -73,6 +73,7 @@ export class TransformAbility implements Ability {
         this.timeElapsedSinceSFX += delta;
 
         if (this.casterUnit.isAlive() === false) return false;
+        if (this.casterUnit.show === false) return false;
 
         if (this.timeElapsedSinceSFX >= CREATE_SFX_EVERY && this.casterUnit) {
             this.timeElapsedSinceSFX = 0;
@@ -133,7 +134,7 @@ export class TransformAbility implements Ability {
     }
     
     public destroy() {
-        if (this.casterUnit && this.casterUnit.isAlive()) {
+        if (this.casterUnit && this.casterUnit.isAlive() && this.casterUnit.show) {
 
             const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
             const alien = alienForce.transform(this.casterUnit.owner, this.toAlien);

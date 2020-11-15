@@ -6580,3 +6580,33 @@ STRING 1524
 Dissection Table
 }
 
+STRING 1525
+// Doodads: D018 (Korhal Cliff 0), Name (Name)
+{
+Korhal Cliff 0
+}
+
+STRING 1526
+// Doodads: D019 (Korhal Cliff 1), Name (Name)
+{
+Korhal Cliff 1
+}
+
+STRING 1527
+// Doodads: D01A (Korhal Cliff 2), Name (Name)
+{
+Korhal Cliff 2
+}
+
+STRING 1528
+// Doodads: D01B (Korhal Cliff 3), Name (Name)
+{
+Korhal Cliff 3
+}
+
+STRING 1529
+// Doodads: D01C (Terminal Small), Name (Name)
+{
+Terminal Small
+}
+

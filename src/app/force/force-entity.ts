@@ -511,8 +511,6 @@ export class ForceEntity extends Entity {
             const u = GetEnumUnit();
             KillUnit(u);
         });
-
-        PlayerStateFactory.get(who).getForce().removePlayer(who);
     }
 
     public startIntroduction() {

@@ -240,6 +240,7 @@ export class AlienForce extends ForceType {
 
 
     removePlayer(player: MapPlayer, killer?: Unit) {
+        Log.Information(`Remove player unit called on ${player.name}`);
         const forceHasPlayer = this.players.indexOf(player) >= 0;
 
         if (forceHasPlayer) {
@@ -300,6 +301,7 @@ export class AlienForce extends ForceType {
     }
 
     removePlayerAlienUnit(whichUnit: Unit) {
+        Log.Information(`Remove alien unit called on ${whichUnit.owner.name}`);
         // Also need to call remove player as the alien unit dying will also kill the palyer
         this.removePlayer(whichUnit.owner);
     }
@@ -555,6 +557,16 @@ export class AlienForce extends ForceType {
             this.players.forEach(player => {
                 // Now get their alien units and replace with the new evo
                 const unit = this.playerAlienUnits.get(player);
+                const crew = PlayerStateFactory.getCrewmember(player);
+                
+                const isHiddenButNotTransformed = crew && crew.unit && !crew.unit.show && !this.playerIsTransformed.get(player);
+                
+                // If the current alien is hidden, skip this player
+                if (crew && !crew.unit.isAlive()) 
+                    return Log.Information(`EVOLVE ATTEMPT Crewmember for ${player.name} is dead`);
+                // If the current crew is hidden... don't evolve
+                if (crew && !crew.unit.show) return;
+
                 if (unit) {
                     // Get old unit zone
                     const oldZone = worldEnt.getUnitZone(unit);
@@ -578,12 +590,13 @@ export class AlienForce extends ForceType {
                     SelectUnitForPlayerSingle(alien.handle, player.handle);
 
                     this.playerAlienUnits.set(player, alien);
-                    alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
+                    alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
             
                     alien.name = 'Alien Host';
                     alien.color = PLAYER_COLOR_PURPLE;
 
-                    DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
+                    if (!isHiddenButNotTransformed)
+                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
 
                     // Now we need to also set alien spawn penalties
                     if (player !== alienHost) {
@@ -618,10 +631,6 @@ export class AlienForce extends ForceType {
      */
     public introduction(who: MapPlayer, skipDefaultIntro: boolean = false) {
         if (skipDefaultIntro != true) super.introduction(who);
-
-        const pData = PlayerStateFactory.get(who);
-        const crew = pData.getCrewmember();
-
         Timers.addTimedAction(4, () => {
             const isHost = this.getHost() === who;
 

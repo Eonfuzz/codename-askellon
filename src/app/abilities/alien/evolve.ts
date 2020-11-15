@@ -85,6 +85,12 @@ export class EvolveAbility implements Ability {
     };
 
     public process(delta: number) {
+
+        // Is the unit dead?
+        if (!this.casterUnit.isAlive() || !this.casterUnit.show) {
+            return false;
+        }
+
         this.timeElapsed += delta;
         this.timeElapsedSinceSFX += delta;
 
