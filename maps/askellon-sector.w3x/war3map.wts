@@ -6634,3 +6634,15 @@ STRING 1533
 Lava Fall
 }
 
+STRING 1534
+// Doodads: D01H (Lava Glow), Name (Name)
+{
+Lava Glow
+}
+
+STRING 1535
+// Destructibles: B009 (Catwalk), Name (Name)
+{
+Catwalk
+}
+
