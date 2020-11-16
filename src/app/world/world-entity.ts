@@ -13,6 +13,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
 import { Entity } from "app/entity-type";
+import { PlanetZone } from "./zones/planet";
 
 export class WorldEntity extends Entity {
     private static instance: WorldEntity;
@@ -42,7 +43,10 @@ export class WorldEntity extends Entity {
 
         this.askellon = new TheAskellon();
         this.worldZones.set(ZONE_TYPE.SPACE, new SpaceZone(ZONE_TYPE.SPACE));
+        this.worldZones.set(ZONE_TYPE.PLANET, new PlanetZone(ZONE_TYPE.PLANET));
+
         this.allZones.push(this.worldZones.get(ZONE_TYPE.SPACE));
+        this.allZones.push(this.worldZones.get(ZONE_TYPE.PLANET));
 
         // Listen to unit travel events
         EventEntity.listen(new EventListener(EVENT_TYPE.TRAVEL_UNIT_TO, (listener, data) => {

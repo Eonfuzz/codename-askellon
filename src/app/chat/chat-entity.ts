@@ -295,6 +295,29 @@ export class ChatEntity extends Entity {
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
                 FogModifierStart(modifier);
+                SetCameraBoundsToRectForPlayerBJ(player.handle, bj_mapInitialPlayableArea);
+                SetDayNightModels(
+                    "Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", 
+                    "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl"
+                );
+                BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
+            }
+            else if (message.indexOf("-dark") === 0) {
+                const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
+                FogModifierStart(modifier);
+                SetCameraBoundsToRectForPlayerBJ(player.handle, bj_mapInitialPlayableArea);
+                SetDayNightModels(
+                    "", 
+                    ""
+                );
+                BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
+            }
+            else if (message.indexOf("-light") === 0) {
+                const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
+                FogModifierStart(modifier);
+                SetCameraBoundsToRectForPlayerBJ(player.handle, bj_mapInitialPlayableArea);
+                SetDayNightModels("DeepFried\\dnclordaeronunit.mdx", "DeepFried\\dnclordaeronunit.mdx");
+                BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
             }
             else if (message == "-tp") {
                 // Log.Information("TP");

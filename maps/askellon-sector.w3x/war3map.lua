@@ -181,6 +181,7 @@ gg_rct_FallZoneBio = nil
 gg_rct_FallZoneCargoB_Copy = nil
 gg_rct_FallZoneCargoB_Copy_2 = nil
 gg_rct_FallZoneBridge_Copy = nil
+gg_rct_zoneplanet1 = nil
 gg_trg_SetKillzones = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -339,7 +340,7 @@ function CreateBuildingsForPlayer21()
     gg_unit_h004_0231 = BlzCreateUnitWithSkin(p, FourCC("h004"), -12992.0, -7424.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -6403.0, -12283.9, 180.797, FourCC("n00H"))
     gg_unit_h004_0367 = BlzCreateUnitWithSkin(p, FourCC("h004"), -7040.0, -10624.0, 270.000, FourCC("h004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n00H"), 24190.7, 26579.7, 270.000, FourCC("n00H"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00H"), 24766.7, 26131.7, 270.000, FourCC("n00H"))
     gg_unit_h004_0408 = BlzCreateUnitWithSkin(p, FourCC("h004"), -1536.0, -15808.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -961.3, -17580.3, 270.000, FourCC("n00H"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -13302.3, -24596.8, 270.000, FourCC("n00H"))
@@ -868,6 +869,7 @@ function CreateNeutralPassiveBuildings()
     gg_unit_n001_0366 = BlzCreateUnitWithSkin(p, FourCC("n001"), -4416.0, -12992.0, 270.000, FourCC("n001"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00G"), -6337.6, -8457.8, 270.000, FourCC("n00G"))
     u = BlzCreateUnitWithSkin(p, FourCC("nVOI"), -2688.3, -17742.5, 270.000, FourCC("nVOI"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n001"), 24384.0, 29120.0, 270.000, FourCC("n001"))
     gg_unit_n002_0407 = BlzCreateUnitWithSkin(p, FourCC("n002"), -2688.0, -15872.0, 270.000, FourCC("n002"))
     u = BlzCreateUnitWithSkin(p, FourCC("n003"), -2173.5, -17748.7, 0.486, FourCC("n003"))
     gg_unit_n002_0413 = BlzCreateUnitWithSkin(p, FourCC("n002"), -3520.0, -18112.0, 270.000, FourCC("n002"))
@@ -1077,6 +1079,7 @@ function CreateRegions()
     gg_rct_FallZoneCargoB_Copy = Rect(-7904.0, -17984.0, -7584.0, -17696.0)
     gg_rct_FallZoneCargoB_Copy_2 = Rect(-7584.0, -11296.0, -6912.0, -11040.0)
     gg_rct_FallZoneBridge_Copy = Rect(-11072.0, -13920.0, -10240.0, -13600.0)
+    gg_rct_zoneplanet1 = Rect(20096.0, 22528.0, 30016.0, 29760.0)
 end
 
 function Trig_SetKillzones_Actions()

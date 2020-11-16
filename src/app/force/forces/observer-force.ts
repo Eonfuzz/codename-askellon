@@ -71,7 +71,7 @@ export class ObserverForce extends ForceType {
 
         this.deltaTicker += delta;
         // Every few seconds, ping all players to obs
-        if (this.deltaTicker >= 30) {
+        if (this.deltaTicker >= 15) {
             this.deltaTicker = 0;
 
             // Loop through all game players

@@ -6646,3 +6646,33 @@ STRING 1535
 Catwalk
 }
 
+STRING 1536
+// Doodads: D01I (Lava Planet Rock 1), Name (Name)
+{
+Lava Planet Rock 1
+}
+
+STRING 1537
+// Doodads: D01J (Lava Planet Rock 2), Name (Name)
+{
+Lava Planet Rock 2
+}
+
+STRING 1538
+// Doodads: D01K (Lava Planet Rock 3), Name (Name)
+{
+Lava Planet Rock 3
+}
+
+STRING 1539
+// Upgrades: R00J (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Is Alien Host
+}
+
+STRING 1540
+// Upgrades: R00J (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Is Alien Host
+}
+

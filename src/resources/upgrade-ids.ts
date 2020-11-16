@@ -1,0 +1,1 @@
+export const UPGR_DUMMY_IS_ALIEN_HOST = FourCC('R00J');

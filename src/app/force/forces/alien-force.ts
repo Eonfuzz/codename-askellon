@@ -10,7 +10,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
-import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_RABBIT, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA } from "resources/unit-ids";
+import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_RABBIT, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, WORM_ALIEN_FORM } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
@@ -32,6 +32,8 @@ import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { CrewmemberForce } from "./crewmember-force";
 import { MessagePlayer } from "lib/utils";
+import { Quick } from "lib/Quick";
+import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -247,7 +249,6 @@ export class AlienForce extends ForceType {
 
 
     removePlayer(player: MapPlayer, killer?: Unit) {
-        Log.Information(`Remove player unit called on ${player.name}`);
         const forceHasPlayer = this.players.indexOf(player) >= 0;
 
         if (forceHasPlayer) {
@@ -304,7 +305,37 @@ export class AlienForce extends ForceType {
             obsForce.addPlayer(player);
             obsForce.addPlayerMainUnit(crew, player);
             PlayerStateFactory.get(player).setForce(obsForce);
+
+            if (player === this.alienHost) {
+                this.repickHost();
+            }
         }      
+    }
+
+    /**
+     * Repicks the alien host
+     */
+    repickHost() {
+        // Let the players know the host died... a second time
+        Timers.addTimedAction(5, () => {
+            this.players.forEach(p => {
+                MessagePlayer(p, `${COL_ALIEN}Children, your ${COL_TEAL}Host|r${COL_ALIEN} may be dead but you are still alive. The hive will promote one of you.`);
+            });
+        });
+        // Now try the actual repickening
+        Timers.addTimedAction(60, () => {
+            const alienHost = Quick.GetRandomFromArray(this.players, 1)[0];
+
+            if (alienHost) {
+                const pData = PlayerStateFactory.get(alienHost);
+                const crew = PlayerStateFactory.getCrewmember(alienHost);
+
+                this.players.forEach(p => {
+                    MessagePlayer(p, `|cff${pData.originalColour}${crew.name}|r${COL_ALIEN} is your new host.`);
+                });
+            }
+
+        });
     }
 
     removePlayerAlienUnit(whichUnit: Unit) {
@@ -630,16 +661,33 @@ export class AlienForce extends ForceType {
     }
 
     private applyAlienMinionHost(alien: Unit, isHost: boolean) {
+        const wasHost = alien.owner === this.alienHost;
+
         if (!isHost) {
             alien.maxLife = MathRound(alien.maxLife * 0.75);
             alien.strength = MathRound(alien.strength * 0.75);
             alien.intelligence = MathRound(alien.intelligence * 0.75);
             alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
             alien.setScale(0.8, 0.8, 0.8);
-            alien.removeAbility(ABIL_ALIEN_EVOLVE_T1_SPELLBOOK);
-            alien.removeAbility(ABIL_ALIEN_EVOLVE_T2_SPELLBOOK);
-            alien.removeAbility(ABIL_ALIEN_EVOLVE_T3_SPELLBOOK);
             alien.name = 'Alien Spawn';
+            SetPlayerTechResearched(alien.owner.handle, UPGR_DUMMY_IS_ALIEN_HOST, 0);
+        }
+        else {
+            alien.name = 'Alien Host';
+            alien.setScale(1, 1, 1);
+
+            // If we were not Alien Host
+            // We need to undo the stat penalties
+            if (!wasHost) {
+                alien.maxLife = MathRound(alien.maxLife * 1.33);
+                alien.strength = MathRound(alien.strength * 1.33);
+                alien.intelligence = MathRound(alien.intelligence * 1.33);
+                alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 1.25), 0);
+            }
+
+            this.setHost(alien.owner);
+            SetPlayerTechResearched(alien.owner.handle, UPGR_DUMMY_IS_ALIEN_HOST, 1);
+            
         }
     } 
     
