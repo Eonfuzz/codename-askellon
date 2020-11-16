@@ -2,10 +2,11 @@ import { ForceType } from "./force-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { MapPlayer } from "w3ts/index";
 import { ChatHook } from "app/chat/chat-hook-type";
-import { OBSERVER_FORCE_NAME } from "./force-names";
+import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME } from "./force-names";
 import { PlayerState } from "../player-type";
 import { PlayerStateFactory } from "../player-state-entity";
 import { Log } from "lib/serilog/serilog";
+import { Players } from "w3ts/globals/index";
 
 export class ObserverForce extends ForceType {
     name = OBSERVER_FORCE_NAME;
@@ -64,7 +65,35 @@ export class ObserverForce extends ForceType {
     * Does this force do anything on tick
     * @param delta 
     */
-   public onTick(delta: number) {
-    return;
-   }
+    private deltaTicker = 0;
+    public onTick(delta: number) {
+        super.onTick(delta);
+
+        this.deltaTicker += delta;
+        // Every few seconds, ping all players to obs
+        if (this.deltaTicker >= 30) {
+            this.deltaTicker = 0;
+
+            // Loop through all game players
+            this.players.forEach( obs => {
+                Players.forEach( p => {
+                    if (p.slotState !== PLAYER_SLOT_STATE_PLAYING) return;
+                    if (p.controller !== MAP_CONTROL_USER) return;
+                    if (obs == p) return;       
+                    
+                    const pData = PlayerStateFactory.get(p);
+                    if (obs.handle === GetLocalPlayer() && pData && pData.getForce()) {
+                        const force = pData.getForce();
+                        const u = pData.getUnit();
+                        if (force.is(ALIEN_FORCE_NAME)) {
+                            PingMinimapEx(u.x, u.y, 3, 153, 51, 255, false);
+                        }
+                        else {
+                            PingMinimapEx(u.x, u.y, 3, 102, 255, 51, false);
+                        }
+                    }
+                });
+            })
+        }
+    }
 }

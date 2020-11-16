@@ -379,6 +379,7 @@ export class ChatEntity extends Entity {
                 message: message,
                 sound: undefined,
                 doContinue: true,
+                chatTag: undefined,
             });
 
             // Log.Information("Who: "+chatData.name+" to "+chatData.recipients.map(p => p.name).join(','));
@@ -408,7 +409,7 @@ export class ChatEntity extends Entity {
                     }
                 }
 
-                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, undefined, postHookData.sound);
+                this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, postHookData.chatTag, postHookData.sound);
             
             }
             catch(e) {

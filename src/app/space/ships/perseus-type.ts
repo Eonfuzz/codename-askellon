@@ -20,6 +20,8 @@ export class PerseusShip extends ShipWithFuel {
 
     maxFuel = 150;
 
+    private mineralListener: EventListener;
+
     /**
      * Automatically creates a new unit, adds it to bay if possible
      */
@@ -32,13 +34,15 @@ export class PerseusShip extends ShipWithFuel {
         this.unit.addItemById(ITEM_MINERALS_REACTIVE_SHIP_ID);
         this.unit.addItemById(ITEM_MINERALS_VALUABLE_SHIP_ID);
 
-        EventEntity.listen(new EventListener(EVENT_TYPE.SHIP_STARTS_MINING, (self, ev) => {
+        this.mineralListener = new EventListener(EVENT_TYPE.SHIP_STARTS_MINING, (self, ev) => {
             if (ev.source.handle === this.unit.handle) {
                 this.engine.setGoal(Vector2.fromWidget(ev.data.target.handle));
                 this.engine.increaseVelocity();
                 this.engine.goToAStop();
             }
-        }))
+        });
+
+        EventEntity.listen(this.mineralListener);
     }
 
     createEngine() {
@@ -93,6 +97,7 @@ export class PerseusShip extends ShipWithFuel {
 
     onDeath(killer: Unit) {
         try {
+            EventEntity.getInstance().removeListener(this.mineralListener);
             // first of all eject all our units
             const allUnits = this.inShip.slice();
             this.onLeaveShip();

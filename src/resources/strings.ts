@@ -10,7 +10,7 @@ export const STR_OPT_CULT = `Cultist`;
 
 export const STR_CHAT_ALIEN_HOST = 'Alien Host';
 export const STR_CHAT_ALIEN_SPAWN = 'Alien Spawn';
-export const STR_CHAT_ALIEN_TAG = '[ALIEN]';
+export const STR_CHAT_ALIEN_TAG = 'ALIEN';
 
 export const STR_GENE_REQUIRES_HEALTHCARE = `${COL_TEAL}Gene Splicer|r ${COL_GOLD}requires Healthcare 2.0|r`
 

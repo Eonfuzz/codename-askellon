@@ -8,6 +8,7 @@ export interface ChatHook {
     color: string, 
     message: string,
     sound: SoundWithCooldown | undefined,
+    chatTag: string,
 
     // If false no otehr chat hooks can be processed
     doContinue: boolean

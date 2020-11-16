@@ -76,7 +76,7 @@ export class ChatSystem {
     private generateMessage(playerName: string, playerColor: string, message: string, messageTag?: string): string {
         // Append an empty string if this isn't the local player
         if (GetLocalPlayer() === this.player.handle) {
-            return `[${COL_MISC}${this.getChatTimeTag()}|r${messageTag ? `::${messageTag}` : ''}] ${this.getChatUser(playerName, playerColor)}: ${message}`;
+            return `[${COL_MISC}${this.getChatTimeTag()}${messageTag ? `::${messageTag}` : ''}|r] ${this.getChatUser(playerName, playerColor)}: ${message}`;
         }
         return ``;
     }

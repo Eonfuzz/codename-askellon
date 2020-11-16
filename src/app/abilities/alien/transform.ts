@@ -72,8 +72,14 @@ export class TransformAbility implements Ability {
         this.timeElapsed += delta;
         this.timeElapsedSinceSFX += delta;
 
-        if (this.casterUnit.isAlive() === false) return false;
-        if (this.casterUnit.show === false) return false;
+        if (this.casterUnit.isAlive() === false) {
+            // Log.Information("Cast isn't alive");
+            return false;
+        }
+        if (this.casterUnit.show === false) {
+            // Log.Information("Cast isn't visible");
+            return false;
+        }
 
         if (this.timeElapsedSinceSFX >= CREATE_SFX_EVERY && this.casterUnit) {
             this.timeElapsedSinceSFX = 0;

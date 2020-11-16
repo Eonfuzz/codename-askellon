@@ -29,21 +29,22 @@ export class SecurityTerminal extends Terminal {
         Players.forEach(p => {
             const idx = p.id;
 
-            if (p.controller === MAP_CONTROL_USER && (p.slotState == PLAYER_SLOT_STATE_PLAYING || p.slotState === PLAYER_SLOT_STATE_LEFT)) {
+            if (p.controller === MAP_CONTROL_USER) {
                 const abil = ABIL_SECURITY_TARGET_ALL[idx];
                 this.terminalUnit.addAbility(abil);
                 const isTargeted = PlayerStateFactory.isTargeted(p);
 
-                const player = PlayerStateFactory.get(p);
-                const crew = player.getCrewmember();
-
-                BlzSetAbilityTooltip(abil, TARGETING_TOOLTIP(isTargeted, p, crew), 0);
-                BlzSetAbilityExtendedTooltip(abil, TARGETING_TOOLTIP_EXTENDED(isTargeted, p, crew), 0);
-
-                GlobalCooldownAbilityEntity.getInstance().onUnitAdd(this.terminalUnit.handle);
+                const pData = PlayerStateFactory.get(p);
+                if (pData && pData.getCrewmember()) {
+                    const crew = pData.getCrewmember();
+    
+                    BlzSetAbilityTooltip(abil, TARGETING_TOOLTIP(isTargeted, p, crew), 0);
+                    BlzSetAbilityExtendedTooltip(abil, TARGETING_TOOLTIP_EXTENDED(isTargeted, p, crew), 0);
+                }
             }
                 
         });
+        GlobalCooldownAbilityEntity.getInstance().onUnitAdd(this.terminalUnit.handle);
 
         // Add vision of ALL cameras
         GroupEnumUnitsOfPlayer(this.allCameras, PlayerStateFactory.StationSecurity.handle, Filter(() => {

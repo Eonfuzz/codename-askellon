@@ -86,6 +86,7 @@ export class RailRifleAbility implements Ability {
             BlzSetSpecialEffectScale(sfx, 0.7);
             BlzSetSpecialEffectTimeScale(sfx, 1);
             BlzSetSpecialEffectTime(sfx, 0.5);
+            DestroyEffect(sfx);
         }
 
 
@@ -124,6 +125,7 @@ export class RailRifleAbility implements Ability {
         BlzSetSpecialEffectYaw(sfx, rotData.yaw+ 90 * bj_DEGTORAD);
         BlzSetSpecialEffectRoll(sfx, rotData.roll+ 90 * bj_DEGTORAD);
         BlzSetSpecialEffectPitch(sfx, rotData.pitch);
+        DestroyEffect(sfx);
         // BlzSetSpecialEffectHeight(sfx, casterLoc.z);
         // DestroyEffect(sfx);
         

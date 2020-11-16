@@ -1,7 +1,7 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
 import { vectorFromUnit } from "app/types/vector2";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3 } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_EVOLVE_T1_SPELLBOOK, ABIL_ALIEN_EVOLVE_T2_SPELLBOOK, ABIL_ALIEN_EVOLVE_T3_SPELLBOOK } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { PLAYER_COLOR, PlayNewSound } from "lib/translators";
@@ -25,12 +25,13 @@ import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { WorldEntity } from "app/world/world-entity";
 import { Timers } from "app/timer-type";
-import { COL_ALIEN, COL_TEAL } from "resources/colours";
+import { COL_ALIEN, COL_TEAL, COL_GOLD } from "resources/colours";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
 import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { CrewmemberForce } from "./crewmember-force";
+import { MessagePlayer } from "lib/utils";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -114,92 +115,98 @@ export class AlienForce extends ForceType {
     }
     
     makeAlien(who: Crewmember, owner: MapPlayer): Unit {
-        const unitLocation = vectorFromUnit(who.unit.handle);
-        // const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
+        try {
+            const unitLocation = vectorFromUnit(who.unit.handle);
+            // const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
 
-        let alien = this.playerAlienUnits.get(owner);
-        // Is this unit being added to aliens for the first time
-        if (!alien) {
-            // Set player infesting to true
-            owner.setTechResearched(TECH_PLAYER_INFESTS, 1);
+            let alien = this.playerAlienUnits.get(owner);
+            // Is this unit being added to aliens for the first time
+            if (!alien) {
+                // Set player infesting to true
+                owner.setTechResearched(TECH_PLAYER_INFESTS, 1);
 
-            // Add the transform ability
-            who.unit.addAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
-            alien = Unit.fromHandle(CreateUnit(owner.handle, 
-                this.currentAlienEvolution, 
-                unitLocation.x, 
-                unitLocation.y, 
-                who.unit.facing
-            ));
-            alien.invulnerable = true;
-            alien.pauseEx(true);
-            alien.show = false;
-            alien.experience = who.unit.experience;
-            alien.suspendExperience(true);
+                // Add the transform ability
+                who.unit.addAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
+                alien = Unit.fromHandle(CreateUnit(owner.handle, 
+                    this.currentAlienEvolution, 
+                    unitLocation.x, 
+                    unitLocation.y, 
+                    who.unit.facing
+                ));
+                alien.invulnerable = true;
+                alien.pauseEx(true);
+                alien.show = false;
+                alien.experience = who.unit.experience;
+                alien.suspendExperience(true);
 
-            // Register it for damage event
-            // this.registerAlienTakesDamageExperience(alien);
-            TooltipEntity.getInstance().registerTooltip(who, alienTooltipToHuman);
+                // Register it for damage event
+                // this.registerAlienTakesDamageExperience(alien);
+                TooltipEntity.getInstance().registerTooltip(who, alienTooltipToHuman);
 
-            this.registerAlienDeath(alien);
-            // Also register the crewmember for the event
-            // this.registerAlienDealsDamage(who);
+                this.registerAlienDeath(alien);
+                // Also register the crewmember for the event
+                // this.registerAlienDealsDamage(who);
 
 
-            // TODO Change how vision is handled
-            const pData = PlayerStateFactory.get(owner);
-            const crewmember = pData.getCrewmember();                
+                // TODO Change how vision is handled
+                const pData = PlayerStateFactory.get(owner);
+                const crewmember = pData.getCrewmember();                
 
-            // mark this unit as the alien host
-            if (!this.alienHost) {
-                this.setHost(owner);
-            }
-            // Otherwise this is not the host, weaken it.
-            else {
-                alien.maxLife = MathRound(alien.maxLife * 0.75);
-                alien.strength = MathRound(alien.strength * 0.75);
-                alien.intelligence = MathRound(alien.intelligence * 0.75);
-                alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
-                alien.setScale(0.8, 0.8, 0.8);
-                alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
-                alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
-            }
-            alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
-
-            // Add ability tooltip
-            TooltipEntity.getInstance().registerTooltip(who, alienTooltipToAlien);
-
-            // Make brown
-            alien.color = PLAYER_COLOR_BROWN;
-            
-            // Now create an alien for player
-            this.playerAlienUnits.set(owner, alien);
-
-            // Hiding life bars
-            if (MAKE_UNCLICKABLE) alien.addAbility(FourCC('Aloc'));
-
-            // Other things (dummy upgrades etc)
-            SetPlayerTechResearched(alien.owner.handle, TECH_ROACH_DUMMY_UPGRADE, 1);
-
-            // Post event
-            if (crewmember) {
-                EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { source: alien, crewmember: crewmember });
-
-                const oldZone = WorldEntity.getInstance().getUnitZone(crewmember.unit);
-                // And handle travel
-                if (oldZone) {
-                    WorldEntity.getInstance().travel(alien, oldZone.id);
+                // mark this unit as the alien host
+                if (!this.alienHost) {
+                    this.setHost(owner);
                 }
-            
-            }
 
-            alien.invulnerable = true;
-            Timers.addTimedAction(1, () => alien.invulnerable = false);
-            VisionFactory.getInstance().setPlayervision(owner, VISION_TYPE.HUMAN);
+                this.applyAlienMinionHost(alien, owner === this.alienHost);
+                alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
+
+                // Add ability tooltip
+                TooltipEntity.getInstance().registerTooltip(who, alienTooltipToAlien);
+
+                // Make brown
+                alien.color = PLAYER_COLOR_BROWN;
+                
+                // Now create an alien for player
+                this.playerAlienUnits.set(owner, alien);
+
+                // Hiding life bars
+                if (MAKE_UNCLICKABLE) 
+                    alien.addAbility(FourCC('Aloc'));
+
+                // Other things (dummy upgrades etc)
+                SetPlayerTechResearched(alien.owner.handle, TECH_ROACH_DUMMY_UPGRADE, 1);
+
+                // Post event
+                if (crewmember) {
+                    EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_BECOMES_ALIEN, { source: alien, crewmember: crewmember });
+
+                    const oldZone = WorldEntity.getInstance().getUnitZone(crewmember.unit);
+                    // And handle travel
+                    if (oldZone) {
+                        WorldEntity.getInstance().travel(alien, oldZone.id);
+                    }
+                
+                    // If this is the second alien display messages to alien players
+                    this.players.forEach(p => {
+                        if (p !== owner) {
+                            MessagePlayer(p, `|cff${PLAYER_COLOR[owner.id]}${crewmember.name}|r ${COL_ALIEN} has become an Alien. Send messages starting with ${COL_GOLD}.|r${COL_ALIEN} to communicate only with aliens.|r`);
+                        }
+                    })
+                }
+
+                alien.invulnerable = true;
+                Timers.addTimedAction(1, () => alien.invulnerable = false);
+                VisionFactory.getInstance().setPlayervision(owner, VISION_TYPE.HUMAN);
+
+                
+                return alien;
+            }
             return alien;
         }
-        
-        return alien;
+        catch(e) {
+            Log.Error("Error making alien");
+            Log.Error(e);
+        }
     }
 
     public registerAlienDeath(who: Unit) {
@@ -429,7 +436,7 @@ export class AlienForce extends ForceType {
      */
     public getChatRecipients(chatEvent: ChatHook) {
         // If the player is transformed return a list of all alien players
-        if (this.isPlayerTransformed(chatEvent.who) && this.playerIsAlienAlliesOnly.get(chatEvent.who)) {
+        if (chatEvent.message[0] == ".") {
             return this.players;
         }
         
@@ -443,7 +450,7 @@ export class AlienForce extends ForceType {
     public getChatName(chatEvent: ChatHook) {
         // Log.Information("Alien is chatting? "+this.isPlayerTransformed(who));
         // If player is transformed return an alien name
-        if (this.isPlayerTransformed(chatEvent.who)) {
+        if (chatEvent.message[0] !== "." && this.isPlayerTransformed(chatEvent.who)) {
             return this.alienHost === chatEvent.who ? STR_CHAT_ALIEN_HOST : STR_CHAT_ALIEN_SPAWN;
         }
         
@@ -457,7 +464,7 @@ export class AlienForce extends ForceType {
      */
     public getChatColor(chatEvent: ChatHook): string {
         // If player is transformed return an alien name
-        if (this.isPlayerTransformed(chatEvent.who)) {
+        if (chatEvent.message[0] == "." || this.isPlayerTransformed(chatEvent.who)) {
             return ALIEN_CHAT_COLOR;
         }
         
@@ -471,12 +478,20 @@ export class AlienForce extends ForceType {
      */
     public getChatSoundRef(chatEvent: ChatHook): SoundWithCooldown {
         // If player is transformed return an alien name
-        if (this.isPlayerTransformed(chatEvent.who)) {
+        if (chatEvent.message[0] == "." || this.isPlayerTransformed(chatEvent.who)) {
             return SOUND_ALIEN_GROWL;
         }
         
         // Otherwise return default behaviour
         return super.getChatSoundRef(chatEvent);
+    }
+
+    public getChatMessage(chatEvent: ChatHook): string {
+        if (chatEvent.message[0] == ".") {
+            chatEvent.message = chatEvent.message.slice(1, chatEvent.message.length);
+            chatEvent.doContinue = false;
+        }
+        return super.getChatMessage(chatEvent);
     }
     
     /**
@@ -484,7 +499,7 @@ export class AlienForce extends ForceType {
      */
     public getChatTag(chatEvent: ChatHook): string | undefined { 
         // If player is transformed return an alien name
-        if (this.playerIsAlienAlliesOnly.get(chatEvent.who)) {
+        if (chatEvent.message[0] == "." || this.playerIsAlienAlliesOnly.get(chatEvent.who)) {
             return STR_CHAT_ALIEN_TAG;
         }
         
@@ -599,18 +614,8 @@ export class AlienForce extends ForceType {
                         DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
 
                     // Now we need to also set alien spawn penalties
-                    if (player !== alienHost) {
-                        alien.maxLife = MathRound(alien.maxLife * 0.75);
-                        alien.strength = MathRound(alien.strength * 0.75);
-                        alien.intelligence = MathRound(alien.intelligence * 0.75);
-                        alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
-                        alien.setScale(0.8, 0.8, 0.8);
-                        alien.removeAbility(ABIL_ALIEN_EVOLVE_T1);
-                        alien.removeAbility(ABIL_ALIEN_EVOLVE_T2);
-                        alien.removeAbility(ABIL_ALIEN_EVOLVE_T3);
-                        alien.name = 'Alien Spawn';
-                        
-                    }
+                    this.applyAlienMinionHost(alien, player === alienHost);
+
                     // If a player isn't transformed force the transformation
                     if (!this.playerIsTransformed.get(player)) {
                         this.transform(player, true);
@@ -624,6 +629,19 @@ export class AlienForce extends ForceType {
         }
     }
 
+    private applyAlienMinionHost(alien: Unit, isHost: boolean) {
+        if (!isHost) {
+            alien.maxLife = MathRound(alien.maxLife * 0.75);
+            alien.strength = MathRound(alien.strength * 0.75);
+            alien.intelligence = MathRound(alien.intelligence * 0.75);
+            alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
+            alien.setScale(0.8, 0.8, 0.8);
+            alien.removeAbility(ABIL_ALIEN_EVOLVE_T1_SPELLBOOK);
+            alien.removeAbility(ABIL_ALIEN_EVOLVE_T2_SPELLBOOK);
+            alien.removeAbility(ABIL_ALIEN_EVOLVE_T3_SPELLBOOK);
+            alien.name = 'Alien Spawn';
+        }
+    } 
     
     /**
      * 
@@ -638,12 +656,15 @@ export class AlienForce extends ForceType {
                 SOUND_ALIEN_GROWL.setVolume(127);
                 SOUND_ALIEN_GROWL.playSound();
                 if (isHost) {
-                    DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}The hive welcomes you, my new Host.|r`);
+                    MessagePlayer(who, `${COL_ALIEN}The hive welcomes you, my new Host.|r`);
                 }
                 else {
-                    DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}The hive welcomes you, my child.|r`);
+                    MessagePlayer(who, `${COL_ALIEN}The hive welcomes you, my child.|r`);
                 }
-                DisplayTextToPlayer(who.handle, 0, 0, `${COL_ALIEN}Spread, go forth and feast on the biomass of the other creatures here. Kill them using your ${COL_TEAL}True Form|r${COL_ALIEN} we have gifted you and you shall build an army.|r`);
+                MessagePlayer(who, `${COL_ALIEN}Spread, go forth and feast on the biomass of the other creatures here. Kill them using your ${COL_TEAL}True Form|r${COL_ALIEN} we have gifted you and you shall build an army.|r`);
+                if (!isHost) {
+                    MessagePlayer(who, `- ${COL_ALIEN}Send messages starting with ${COL_GOLD}.|r${COL_ALIEN} to communicate only with aliens.|r`);
+                }
             }
         });
     }
@@ -652,6 +673,9 @@ export class AlienForce extends ForceType {
         super.onPlayerLevelUp(who, level);
 
         if (level === 4) {
+            ChatEntity.getInstance().postSystemMessage(who, `${COL_ALIEN}You are powerful enough to evolve|r`);
+        }
+        if (level === 7) {
             ChatEntity.getInstance().postSystemMessage(who, `${COL_ALIEN}You are powerful enough to evolve|r`);
         }
     }

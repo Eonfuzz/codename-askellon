@@ -20,8 +20,9 @@ export class BridgeTerminal extends Terminal {
     createTerminalUnit() {
         const askellonUnit = AskellonEntity.getInstance().askellonUnit;
 
-        if (askellonUnit.owner !== PlayerStateFactory.NeutralPassive) 
+        if (askellonUnit.owner !== PlayerStateFactory.NeutralPassive) {
             throw new Error("Askellon unit already being controlled");
+        }
         
         this.terminalUnit = askellonUnit;
         askellonUnit.owner = this.sourceUnit.owner;

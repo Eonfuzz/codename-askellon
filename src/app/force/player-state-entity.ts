@@ -125,7 +125,7 @@ export class PlayerStateFactory {
         hook.name           = force.getChatName(hook);
         hook.color          = force.getChatColor(hook);
         hook.sound          = force.getChatSoundRef(hook);
-        // hook. = force.getChatTag(player);
+        hook.chatTag        = force.getChatTag(hook);
         hook.message        = force.getChatMessage(hook);
 
         return hook;

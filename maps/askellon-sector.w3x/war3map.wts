@@ -6610,3 +6610,27 @@ STRING 1529
 Terminal Small
 }
 
+STRING 1530
+// Doodads: D01D (Lava), Name (Name)
+{
+Lava
+}
+
+STRING 1531
+// Doodads: D01E (Lava Light), Name (Name)
+{
+Lava Light
+}
+
+STRING 1532
+// Doodads: D01F (Rock Spires Large), Name (Name)
+{
+Rock Spires Large
+}
+
+STRING 1533
+// Doodads: D01G (Lava Fall), Name (Name)
+{
+Lava Fall
+}
+

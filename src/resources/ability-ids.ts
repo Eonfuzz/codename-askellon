@@ -27,8 +27,11 @@ export const ABIL_ALIEN_NEURAL_TAKEOVER = FourCC('A018');
 export const ABIL_ALIEN_FRENZY = FourCC('A01I');
 
 export const ABIL_ALIEN_EVOLVE_T1 = FourCC('A014');
+export const ABIL_ALIEN_EVOLVE_T1_SPELLBOOK = FourCC('A025');
 export const ABIL_ALIEN_EVOLVE_T2 = FourCC('A00U');
+export const ABIL_ALIEN_EVOLVE_T2_SPELLBOOK = FourCC('A028');
 export const ABIL_ALIEN_EVOLVE_T3 = FourCC('A00Y');
+export const ABIL_ALIEN_EVOLVE_T3_SPELLBOOK = FourCC('A00Y');
 export const ABIL_ALIEN_EVOLVE_ARMOR = FourCC('A00V');
 
 export const ABIL_ALIEN_MINION_EVOLVE = FourCC('A01R');
