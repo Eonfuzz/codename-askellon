@@ -74,6 +74,8 @@ export class ObserverForce extends ForceType {
         if (this.deltaTicker >= 15) {
             this.deltaTicker = 0;
 
+            if (this.players.length === 0) return;
+
             // Loop through all game players
             this.players.forEach( obs => {
                 Players.forEach( p => {
@@ -85,11 +87,13 @@ export class ObserverForce extends ForceType {
                     if (obs.handle === GetLocalPlayer() && pData && pData.getForce()) {
                         const force = pData.getForce();
                         const u = pData.getUnit();
-                        if (force.is(ALIEN_FORCE_NAME)) {
-                            PingMinimapEx(u.x, u.y, 3, 153, 51, 255, false);
-                        }
-                        else {
-                            PingMinimapEx(u.x, u.y, 3, 102, 255, 51, false);
+                        if (u) {
+                            if (force.is(ALIEN_FORCE_NAME)) {
+                                PingMinimapEx(u.x, u.y, 3, 153, 51, 255, false);
+                            }
+                            else {
+                                PingMinimapEx(u.x, u.y, 3, 102, 255, 51, false);
+                            }
                         }
                     }
                 });

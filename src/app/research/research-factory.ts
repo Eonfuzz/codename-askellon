@@ -144,10 +144,10 @@ const majorResarchSound = new SoundRef("Sounds\\Station\\major_research_complete
                 }
 
                 const pData = PlayerStateFactory.get(p);
-                const pForce = pData.getForce();
-                if (pData && pForce) {
+                if (pData) {
+                    const pForce = pData.getForce();
 
-                    if (isInfested && pForce.is(ALIEN_FORCE_NAME)) {
+                    if (pForce && isInfested && pForce.is(ALIEN_FORCE_NAME)) {
                         MessagePlayer(p, STR_UPGRADE_COMPLETE_INFESTATION());
                         // Play infestation complete sound
                     }

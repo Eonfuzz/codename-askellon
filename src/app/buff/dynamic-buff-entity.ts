@@ -14,6 +14,7 @@ import { PuritySeal } from "./buffs/purity-seal";
 import { onFire } from "./buffs/fire";
 import { DynamicBuffState } from "./dynamic-buff-state";
 import { Hooks } from "lib/Hooks";
+import { VoidSickness } from "./buffs/void-sickness";
 
 export class DynamicBuffEntity extends Entity {
 
@@ -47,6 +48,7 @@ export class DynamicBuffEntity extends Entity {
         if (id === BUFF_ID.DESPAIR) return new Despair(who);
         if (id === BUFF_ID.RESOLVE) return new Resolve(who);
         if (id === BUFF_ID.PURITY_SEAL) return new PuritySeal();
+        if (id === BUFF_ID.VOID_SICKNESS) return new VoidSickness();
         Log.Error("Creating new buff no instance for ID "+id);
     }
 

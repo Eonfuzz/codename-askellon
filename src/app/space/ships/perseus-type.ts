@@ -15,6 +15,10 @@ import { ITEM_MINERALS_REACTIVE_SHIP_ID, ITEM_MINERALS_VALUABLE_SHIP_ID, ITEM_MI
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { BUFF_ID } from "resources/buff-ids";
+import { BuffInstance } from "app/buff/buff-instance-type";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -212,6 +216,7 @@ export class PerseusShip extends ShipWithFuel {
             // If we have the entering unit was selected, select the ship too
             SelectUnitForPlayerSingle(u.handle, u.owner.handle);
             PanCameraToTimedForPlayer(u.owner.handle, u.x, u.y, 0);
+            DynamicBuffEntity.add(BUFF_ID.VOID_SICKNESS, u, new BuffInstanceDuration(u, 30));
         });
         
         // Drop minerals off

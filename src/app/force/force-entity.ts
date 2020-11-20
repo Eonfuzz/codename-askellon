@@ -497,8 +497,8 @@ export class ForceEntity extends Entity {
         const pData = PlayerStateFactory.get(who);
         if (pData && pData.getForce() && pData.getForce().is(OBSERVER_FORCE_NAME)) return false;
 
-        const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false, true);
-        playerLeaveSound.playSound();
+        // const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false, true);
+        // playerLeaveSound.playSound();
 
         Players.forEach(player => {
             ChatEntity.getInstance().postSystemMessage(player, `|cff${PLAYER_COLOR[who.id]}${PlayerStateFactory.get(who).originalName}|r has left the game!`);            

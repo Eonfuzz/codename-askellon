@@ -7,6 +7,10 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { InteractableData } from "../interactable-type";
 import { COL_ATTATCH, COL_PINK } from "resources/colours";
 import { Interactables } from "../interactables";
+import { BUFF_ID_VOID_SICKNESS } from "resources/buff-ids";
+import { MessagePlayer } from "lib/utils";
+import { Log } from "lib/serilog/serilog";
+import { UPGR_DUMMY_VOID_SICKNESS } from "resources/upgrade-ids";
 
 // Interacting with asteroids
 const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false, true);
@@ -31,6 +35,11 @@ export function initShipInteractions() {
                 if (source.owner.handle === GetLocalPlayer()) {
                     noInventorySpace.playSound();
                 }
+                return false;
+            }
+
+            if (GetPlayerTechCount(source.owner.handle, UPGR_DUMMY_VOID_SICKNESS, true) !== 0) {
+                MessagePlayer(source.owner, `You feel too ${COL_ATTATCH}sick|r to use this right now.`)
                 return false;
             }
             EventEntity.getInstance().sendEvent(EVENT_TYPE.ENTER_SHIP, {

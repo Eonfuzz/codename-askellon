@@ -34,6 +34,7 @@ import { CrewmemberForce } from "./crewmember-force";
 import { MessagePlayer } from "lib/utils";
 import { Quick } from "lib/Quick";
 import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
+import { ZONE_TYPE } from "app/world/zone-id";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -170,6 +171,7 @@ export class AlienForce extends ForceType {
                 
                 // Now create an alien for player
                 this.playerAlienUnits.set(owner, alien);
+                
 
                 // Hiding life bars
                 if (MAKE_UNCLICKABLE) 
@@ -339,7 +341,7 @@ export class AlienForce extends ForceType {
     }
 
     removePlayerAlienUnit(whichUnit: Unit) {
-        Log.Information(`Remove alien unit called on ${whichUnit.owner.name}`);
+        // Log.Information(`Remove alien unit called on ${whichUnit.owner.name}`);
         // Also need to call remove player as the alien unit dying will also kill the palyer
         this.removePlayer(whichUnit.owner);
     }
@@ -352,13 +354,13 @@ export class AlienForce extends ForceType {
 
         const crewmember = PlayerStateFactory.get(who).getCrewmember();
 
-        if (!alien) return Log.Error("AlienForce::transform No alien for player!");
+        if (!alien) return Log.Error("AlienForce::transform No alien for "+who.name+"!");
         if (!unit) {
             if (crewmember && crewmember.unit) {
                 this.playerUnits.set(who, unit);
                 unit = this.playerUnits.get(who);
             }
-            if (!unit) return Log.Error("AlienForce::transform No human for player!");
+            if (!unit) return Log.Error("AlienForce::transform No human for "+who.name+"!");
         }
 
 
@@ -592,72 +594,102 @@ export class AlienForce extends ForceType {
      */
     public onEvolve(newForm: number) {
 
-        try {
-            // Increment current evo
-            this.currentAlienEvolution = newForm;
-            const alienHost = this.getHost();
-            // const forceEnt = ForceEntity.getInstance();
-            const worldEnt = WorldEntity.getInstance();
+        // Log.Information("On evolution called");
+        // Log.Information(`Current players: ${this.players.length}`);
+
+        // Timers.addTimedAction(3, () => {
+                // Increment current evo
+                this.currentAlienEvolution = newForm;
+                const alienHost = this.getHost();
+                // const forceEnt = ForceEntity.getInstance();
+                const worldEnt = WorldEntity.getInstance();
+                
+                // TODO FIXME host might be dead, keep for debbuging purposes though
+                const pHost = PlayerStateFactory.get(this.getHost());
+                Log.Information("Alien ho/st: "+`${pHost.originalName}`)
+
+                this.players.forEach((player, i) => {
+
+                    // TODO Remove delayed timers?
+                    // Log.Information(`For ${i}`);
+                    // Timers.addTimedAction(i * 5, () => {
+                        try {
+                            // Log.Information(`Starting ${i} ${player.name}`);
+                            // Now get their alien units and replace with the new evo
+                            const unit = this.playerAlienUnits.get(player);
+                            const pData = PlayerStateFactory.get(player);
+                            const crew = PlayerStateFactory.getCrewmember(player);
+                            
+                            if (!unit) {
+                                Log.Information("wtf no unit for alien")
+                            }
+                            const transformationOnHiddenUnits = this.playerIsTransformed.get(player) ? (crew && crew.unit && !crew.unit.show) : (!unit.show);
+                            
+                            // If the current alien is hidden, skip this player
+                            if (crew && !crew.unit.isAlive()) 
+                                return Log.Information(`EVOLVE ATTEMPT Crewmember for ${player.name} is dead`);
+        
+                            if (unit) {
+                                // Get old unit zone
+                                const oldZone = worldEnt.getUnitZone(unit);
+        
+                                // Remove the old unit from the zone
+                                if (oldZone) {
+                                    // Log.Information("[OPTIONAL] Removing old world entity "+ZONE_TYPE[oldZone.id]);
+                                    worldEnt.removeUnit(unit);
+                                }
+
+                                // Log.Information(`${pData.originalName} Replacing alien`);
+                                // Remove old alien death
+                                const oldAlienDeath = this.alienDeathTrigs.get(unit);
+                                oldAlienDeath.destroy();
+                                this.alienDeathTrigs.delete(unit);
+                                // Now call replace func
+                                ReplaceUnitBJ(unit.handle, newForm, 1);
+        
+                                const replacedUnit = GetLastReplacedUnitBJ();
+                                const alien = Unit.fromHandle(replacedUnit);
+        
+                                // Log.Information(`${pData.originalName} Registering alien death`);
+                                this.registerAlienDeath(alien);
+        
+                                // And handle travel
+                                if (oldZone) {
+                                    // Log.Information("[OPTIONAL] Travel to new zone "+ZONE_TYPE[oldZone.id]);
+                                    worldEnt.travel(alien, oldZone.id);
+                                }
+                            
+                                SelectUnitForPlayerSingle(alien.handle, player.handle);
+        
+                                Log.Information(`${pData.originalName} Setting player unit `);
+                                this.playerAlienUnits.set(player, alien);
+                                alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
+                        
+                                alien.name = 'Alien Host';
+                                alien.color = PLAYER_COLOR_PURPLE;
+        
+                                if (!transformationOnHiddenUnits) {
+                                    DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
             
-            // Get all players
-            this.players.forEach(player => {
-                // Now get their alien units and replace with the new evo
-                const unit = this.playerAlienUnits.get(player);
-                const crew = PlayerStateFactory.getCrewmember(player);
-                
-                const isHiddenButNotTransformed = crew && crew.unit && !crew.unit.show && !this.playerIsTransformed.get(player);
-                
-                // If the current alien is hidden, skip this player
-                if (crew && !crew.unit.isAlive()) 
-                    return Log.Information(`EVOLVE ATTEMPT Crewmember for ${player.name} is dead`);
-                // If the current crew is hidden... don't evolve
-                if (crew && !crew.unit.show) return;
-
-                if (unit) {
-                    // Get old unit zone
-                    const oldZone = worldEnt.getUnitZone(unit);
-
-                    // Remove the old unit from the zone
-                    if (oldZone) {
-                        worldEnt.removeUnit(unit);
-                    }
-                    ReplaceUnitBJ(unit.handle, newForm, 1);
-
-                    const replacedUnit = GetLastReplacedUnitBJ();
-                    const alien = Unit.fromHandle(replacedUnit);
-
-                    this.registerAlienDeath(alien);
-
-                    // And handle travel
-                    if (oldZone) {
-                        worldEnt.travel(alien, oldZone.id);
-                    }
-                
-                    SelectUnitForPlayerSingle(alien.handle, player.handle);
-
-                    this.playerAlienUnits.set(player, alien);
-                    alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
+                                    // Log.Information(`${pData.originalName} Applying minion host effects`);
+                                    // Now we need to also set alien spawn penalties
+                                    this.applyAlienMinionHost(alien, player === alienHost);
             
-                    alien.name = 'Alien Host';
-                    alien.color = PLAYER_COLOR_PURPLE;
-
-                    if (!isHiddenButNotTransformed)
-                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
-
-                    // Now we need to also set alien spawn penalties
-                    this.applyAlienMinionHost(alien, player === alienHost);
-
-                    // If a player isn't transformed force the transformation
-                    if (!this.playerIsTransformed.get(player)) {
-                        this.transform(player, true);
-                    }
-                }
-            })
-        }
-        catch (e) {
-            Log.Error("Evolution failed!");
-            Log.Error(e);
-        }
+                                    // If a player isn't transformed force the transformation
+                                    if (!transformationOnHiddenUnits && !this.playerIsTransformed.get(player)) {
+                                        // Log.Information(`${pData.originalName} Transforming player!`);
+                                        this.transform(player, true);
+                                    }
+                                }
+                            }
+                        }
+                        catch (e) {
+                            Log.Error("Evolution failed!");
+                            Log.Error(e);
+                        }
+                    // });
+                });
+        // });
     }
 
     private applyAlienMinionHost(alien: Unit, isHost: boolean) {

@@ -103,11 +103,6 @@ export const MINIGUN_ITEM = (weapon: GunItem, damage: any) =>
 `${COL_MISC}No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 
 Hostile targets are obliterated by a hail of high-powered rounds, but the Flamesaw's true source of notoriety is its infamous cooling system, which causes ammunition to engulf targets in flames.|r
 
-Attached: ${weapon.attachment 
-    ? `${COL_GOLD}${weapon.attachment.name}`
-    : `${COL_ATTATCH}Nothing`
-}|r
-
 A heavy weapon designed for holding down corridors
 ${COL_GOOD}- Great Damage
 - Sets targets alight while ${COL_ORANGE}Flamesaw|r${COL_GOOD} is active

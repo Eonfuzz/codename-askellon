@@ -524,12 +524,6 @@ STRING 149
 Despair
 }
 
-STRING 150
-// Buffs/Effects: B004 (Despair), Buffubertip (Tooltip - Extended)
-{
-You've been spooked! You are visible to the |cff6f2583Alien |rand have reduced armor.
-}
-
 STRING 151
 // Abilities: A00D (Apply Despair), Name (Name)
 {
@@ -4061,19 +4055,6 @@ STRING 1037
 Purchase Minigun
 }
 
-STRING 1038
-// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Ubertip (Tooltip - Extended)
-{
-|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
-Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
-
-The standard issue rifle; ideal for thinning hordes and can dish out serious damage up close.
-|cff00ff00- 6 shot burst
-- Each shot does 18 damage
-- Short cooldown|r
-|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
-}
-
 STRING 1040
 // Abilities: A01A (Attack - Minigun), Name (Name)
 {
@@ -4552,12 +4533,6 @@ STRING 1144
 // Abilities: A01O (Adaptive Regeneration), Hotkey (Hotkey - Normal)
 {
 E
-}
-
-STRING 1145
-// Abilities: A01O (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080LORE TODO|r|n|nInstantly|cff00ff00 heal 40%|r of your maximum hit points.|n|n|cff80808040 Seconds Cooldown|r
 }
 
 STRING 1147
@@ -6674,5 +6649,62 @@ STRING 1540
 // Upgrades: R00J (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
 {
 Is Alien Host
+}
+
+STRING 1541
+// Items: I00F (MG5-27 "Flamesaw" Pattern Minigun), Ubertip (Tooltip - Extended)
+{
+|cff808080No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 
+Hostile targets are obliterated by a hail of high-powered rounds, but the Flamesaw's true source of notoriety is its infamous cooling system, which causes ammunition to engulf targets in flames.|r
+
+A heavy weapon designed for holding down corridors
+|cff00ff00- Great Damage
+- Sets targets alight while|r |cffd45e19Flamesaw|r|cff00ff00 is active
+- Fires up to 250 rounds over 15 seconds|r
+|cffc81e1e- Must stand still
+- Turning reduces attack speed
+- Unallies all units in the cone of fire|r
+}
+
+STRING 1542
+// Abilities: A029 (Apply Void Sickness), Name (Name)
+{
+Apply Void Sickness
+}
+
+STRING 1543
+// Buffs/Effects: B00E (Void Sickness), EditorName (Name (Editor Only))
+{
+Void Sickness
+}
+
+STRING 1544
+// Buffs/Effects: B00E (Void Sickness), Bufftip (Tooltip)
+{
+Void Sickness
+}
+
+STRING 1547
+// Buffs/Effects: B00E (Void Sickness), Buffubertip (Tooltip - Extended)
+{
+|cff808080Eugh you feel sick|r|nUnable to enter ships for |cffc81e1e30 seconds|r.
+}
+
+STRING 1548
+// Abilities: A01O (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nInstantly|cff00ff00 heal 40%|r of your maximum hit points.|n|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 1549
+// Buffs/Effects: B004 (Despair), Buffubertip (Tooltip - Extended)
+{
+|cff808080What was that?!|r|n|cff8a6df2Aliens smell your fear|r and have |cffc81e1evision of you|r. Your |cffc81e1eaccuracy is reduced|r and you |cffc81e1ecannot communicate|r.
+}
+
+STRING 1550
+// Upgrades: R00K (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Void Sickness
 }
 

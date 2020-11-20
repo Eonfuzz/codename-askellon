@@ -12,6 +12,7 @@ import { Log } from "lib/serilog/serilog";
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MAJOR_VOID } from "resources/ability-ids";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { SPACE_UNIT_MINERAL } from "resources/unit-ids";
 
 class MiningEvent {
     drillStartSound = new SoundRef("Sounds\\Ships\\LaserDrillStart.wav", false, false);
@@ -47,7 +48,7 @@ class MiningEvent {
         this.beamLaserTargetPoint = Vector3.fromWidget(target.handle).multiply( new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).multiplyN(50));
 
         this.beam = AddLightningEx("SPNL", false, 
-            this.beamOrigin.x, this.beamOrigin.x, this.beamOrigin.z, 
+            this.beamOrigin.x, this.beamOrigin.y, this.beamOrigin.z, 
             this.beamLaserCurrentPoint.x, this.beamLaserCurrentPoint.y, this.beamLaserCurrentPoint.z
         );
         this.drillStartSound.playSoundOnPont(this.beamOrigin.x, this.beamOrigin.y, 15);
@@ -66,6 +67,7 @@ class MiningEvent {
         // Increase move speed of the beam
         this.beamMoveSpeed += 10 * delta;
 
+
         // Set beam origin
         this.beamOrigin = Vector3.fromWidget(this.source.handle).projectTowards2D(this.source.facing, 45);
         this.beamOrigin.z = 90;
@@ -76,6 +78,10 @@ class MiningEvent {
 
         const deltaPoint = this.beamLaserTargetPoint.subtract(this.beamLaserCurrentPoint).normalise().multiplyN(this.beamMoveSpeed * delta);
         this.beamLaserCurrentPoint = this.beamLaserCurrentPoint.add(deltaPoint);
+
+        // Prevent ships from flying away while mining
+        if (this.beamLaserCurrentPoint.subtract(this.beamOrigin).getLength() > 900) 
+            return false;
 
         // Move lightning
         const s = this.beamOrigin;
@@ -100,7 +106,7 @@ class MiningEvent {
                     new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).normalise().multiplyN(45 * this.target.selectionScale));
             }
 
-            const rng = GetRandomReal(0, 100);
+            const rng = (this.target.typeId === SPACE_UNIT_MINERAL) ? 100 : 0;
 
             if (rng > 75) {
                 const minerals = this.source.getItemInSlot(1);

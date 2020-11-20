@@ -38,6 +38,7 @@ export abstract class ForceType {
     }
 
     addPlayer(who: MapPlayer) {
+        // Log.Information(`Adding ${who.name} to ${this.name}`);
         this.players.push(who);
     }
 

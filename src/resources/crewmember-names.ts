@@ -9,7 +9,8 @@ export enum ROLE_TYPES {
     MAJOR = 'Major',
     DOCTOR = 'Doctor',
     INQUISITOR = 'Inquisitor',
-    PILOT = 'Pilot'
+    PILOT = 'Pilot',
+    XENOBIOLOGIST = 'Xenobiologist'
 }
 export const ROLE_NAMES = new Map<string, Array<string>>();
 export const ROLE_SPAWN_LOCATIONS = new Map<ROLE_TYPES, Vector2[]>();
@@ -19,12 +20,13 @@ ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
     "Captain Coloma", "Captain Dallas", "Captain Cutter", "Captain Reynolds", 
     "Captain Willard", "Captain Fodder", "Captain Cook", "Captain Kimstar",
     "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America",
-    "Captain Sullivan", "Captain Frost", "Captain Shane", "Captain Blazkowicz"
+    "Captain Sullivan", "Captain Frost", "Captain Shane", "Captain Blazkowicz",
+    "Captain Xerxes", "Captain Alex Hawthorne"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.NAVIGATOR, [
     "Admiral Ackbar", "Admiral Doubt", "Admiral Hansel", "Admiral Gretel", "Admiral Jones", "Admiral Aedus",
-    "Admiral Alex", "Navigator Stanley"
+    "Admiral Alex", "Navigator Stanley", "Adminal Mayday"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
@@ -32,12 +34,12 @@ ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [
     "Pvt. Riley", "Pvt. Blake", "Pvt. Vasquez", "Pvt. Allen", "Pvt. Jenkins", "Pvt. Summers",
     "Pvt. Pyle", "Pvt. Harding", "Pvt. Hudson", "Cpl. Baker", "Cpl. Hicks", "Cpl. Emerich",
     "Cpl. Dilan", "Cpl. Collins", "Cpl. Duncan", "Cpl. Farquaad", "Pvt. Parts", "Pvt Fuzz",
-    "Pvt Chapman", "Pvt Piggy", "Col. Harkon",
+    "Pvt Chapman", "Pvt Piggy", "Col. Harkon", "Pvt. Bucky", "Cpl. Korgoth"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.ENGINEER, [
     "Engineer Fahr", "Engineer Isaac", "Engineer \"Support\" Ware", "Engineer Zed", "Engineer Swann", 
-    "Engineer Arhanul", "Engineer Homer",
+    "Engineer Arhanul", "Engineer Homer", "Engineer Galileo"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
@@ -45,16 +47,19 @@ ROLE_NAMES.set(ROLE_TYPES.MAJOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.DOCTOR, [
-    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix", "Doctor Freeman", "Doctor Kimberly", "Doctor Strange"
+    "Doctor Dimento", "Doctor Quack", "Doctor Who", "Doctor Chemix", "Doctor Freeman", "Doctor Kimberly", "Doctor Strange", "Doctor Frederik Grimm",
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
     "Inquisitor Ithuriel", "Inquisitor Sapharax", "Inquisitor Eisenhorn", "Inquisitor Rhasan", "Inquisitor Lazarus", 
-    "Inquisitor Fyre", "Inquisitor Pariah", "Inquisitor Tosh"
+    "Inquisitor Fyre", "Inquisitor Pariah", "Inquisitor Tosh", "Ordinator Ravenbrand"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.PILOT, [
-    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers", "Crocodile Jim", "Jebediah Kerman", "Jaeger \"Ace\" Ventura"
+    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers", "Crocodile Jim", "Jebediah Kerman", "Jaeger \"Ace\" Ventura", "Pilot Fury"
+]);
+ROLE_NAMES.set(ROLE_TYPES.XENOBIOLOGIST, [
+    "Phineas Welles"
 ]);
 
 

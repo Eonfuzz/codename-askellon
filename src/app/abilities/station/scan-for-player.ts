@@ -42,20 +42,18 @@ export class StationSecurityScanForPlayer implements Ability {
             MessageAllPlayers(`Scan Complete.`);
             if (!this.isScanningForAliens) {
                 Players.forEach(p => {
-                    if (p.slotState != PLAYER_SLOT_STATE_EMPTY && p.controller == MAP_CONTROL_USER) {
-                        const crew = PlayerStateFactory.getCrewmember(p);
-                        if (crew) {
-                            const pData = PlayerStateFactory.get(p);
-                            const pMain = PlayerStateFactory.get(p).getUnit();
-                            if (pMain && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
-                                if (p.id < PLAYER_RGB.length) {
-                                    const c = PLAYER_RGB[p.id];
-                                    if (c) PingMinimapEx(u.x, u.y, 6, c[0], c[1], c[2], false);
-                                }
-                                else {
-                                    Log.Warning(`${p.id} not in rgb colour array`);
-                                }
-                            }
+                    const pData = PlayerStateFactory.get(p);
+                    if (!pData) return;
+                    
+                    const crew = pData.getCrewmember();
+                    const pMain = pData.getUnit();
+                    if (pData && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
+                        if (p.id < PLAYER_RGB.length) {
+                            const c = PLAYER_RGB[p.id];
+                            if (c) PingMinimapEx(pMain.x, pMain.y, 6, c[0], c[1], c[2], false);
+                        }
+                        else {
+                            Log.Warning(`${p.id} not in rgb colour array`);
                         }
                     }
                 })
