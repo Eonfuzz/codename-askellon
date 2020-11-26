@@ -132,7 +132,7 @@ export class PlayerAgent {
     }
 
     public hasMaximumAgents() {
-        return this.allAgents.length > 33;
+        return this.allAgents.length > 45;
     }
 
     public getCurrentAgents() {

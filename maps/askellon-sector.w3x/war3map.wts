@@ -2707,12 +2707,6 @@ STRING 701
 Deep Scan
 }
 
-STRING 702
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser speed increased by 50%|n- Drones now ferry mined ore back to the Askellon|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r|n|n|cff8a6df2Infestation [ALIEN]|n- Chatter may not reach those in space|n- Ore creates infesation upon delivery|r
-}
-
 STRING 704
 // Items: I00B (Mineral Storage - Maskelynite), Description (Description)
 {
@@ -6778,5 +6772,11 @@ STRING 1575
 // Units: n00R (|cffffff00Cathederal|r Altar|n|cff808080Right click to Pray|r), Name (Name)
 {
 |cffffff00Cathederal|r Altar|n|cff808080Right click to Pray|r
+}
+
+STRING 1577
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser speed increased by 50%|n- Drones now ferry mined ore back to the Askellon|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r|n|n|cff8a6df2Infestation [ALIEN]|n- Deliver 250 more Minerals to cause a disaster
 }
 

@@ -244,6 +244,13 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_rct_MineralInfestationSpawn1 = nil
+gg_rct_MineralInfestationSpawn3 = nil
+gg_rct_MineralInfestationSpawn4 = nil
+gg_rct_MineralInfestationSpawn2 = nil
+gg_rct_MineralInfestationSpawn5 = nil
+gg_rct_MineralInfestationSpawn6 = nil
+gg_rct_MineralInfestationSpawn7 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -1081,6 +1088,13 @@ function CreateRegions()
     gg_rct_FallZoneCargoB_Copy_2 = Rect(-7584.0, -11296.0, -6912.0, -11040.0)
     gg_rct_FallZoneBridge_Copy = Rect(-11072.0, -13920.0, -10240.0, -13600.0)
     gg_rct_zoneplanet1 = Rect(20096.0, 22528.0, 30016.0, 29760.0)
+    gg_rct_MineralInfestationSpawn1 = Rect(-14112.0, -23808.0, -12480.0, -23584.0)
+    gg_rct_MineralInfestationSpawn3 = Rect(-14368.0, -25216.0, -12160.0, -24640.0)
+    gg_rct_MineralInfestationSpawn4 = Rect(-14336.0, -21408.0, -12288.0, -20832.0)
+    gg_rct_MineralInfestationSpawn2 = Rect(-26112.0, -18080.0, -25792.0, -17664.0)
+    gg_rct_MineralInfestationSpawn5 = Rect(-1856.0, -17984.0, -1440.0, -17664.0)
+    gg_rct_MineralInfestationSpawn6 = Rect(-26848.0, -18336.0, -24192.0, -18048.0)
+    gg_rct_MineralInfestationSpawn7 = Rect(-3072.0, -18240.0, -416.0, -17952.0)
 end
 
 function Trig_SetKillzones_Actions()
