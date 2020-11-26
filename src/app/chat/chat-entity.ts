@@ -1,9 +1,9 @@
-import { Trigger, MapPlayer, Timer, Unit } from "w3ts";
+import { Trigger, MapPlayer, Timer, Unit, playerColors } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import {  SoundWithCooldown } from "app/types/sound-ref";
-import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE } from "resources/colours";
+import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE, COL_ALIEN } from "resources/colours";
 import { syncData, GetActivePlayers, GetPlayerCamLoc, MessagePlayer } from "lib/utils";
 import { ChatHook } from "./chat-hook-type";
 import { Entity } from "app/entity-type";
@@ -22,12 +22,10 @@ import { Timers } from "app/timer-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { CreepEntity } from "app/creep/creep-entity";
-import { PlayerState } from "app/force/player-type";
 import { ITEM_WEP_NEOKATANA } from "resources/item-ids";
-import { PLAYER_COLOR } from "lib/translators";
 import { ResearchFactory } from "app/research/research-factory";
-import { STR_UPGRADE_MINERALS_PROGRESS } from "resources/strings";
 import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -372,12 +370,14 @@ export class ChatEntity extends Entity {
                 if (player.handle === GetLocalPlayer()) ClearTextMessages();
             }
             else if (message === "-h" || message === "-handles" || message === "-p" || message === "-players") {
+                const pIsAlien = PlayerStateFactory.get(player).getForce().is(ALIEN_FORCE_NAME);
                 Players.forEach(p => {
                     const pData = PlayerStateFactory.get(p);
                     const crew = PlayerStateFactory.getCrewmember(p);
+                    const showIsAlien = pIsAlien && pData.getForce().is(ALIEN_FORCE_NAME);
 
                     if (crew) {
-                        MessagePlayer(player, `#${p.id}: |cff${PLAYER_COLOR[p.id]}${crew.name}|r ${pData.originalName}`);
+                        MessagePlayer(player, `#${p.id}: |cff${playerColors[p.id].code}${crew.name}|r ${pData.originalName} ${showIsAlien ? `${COL_ALIEN}( ALIEN )|r` : ''}`);
                     }
                 });
             }

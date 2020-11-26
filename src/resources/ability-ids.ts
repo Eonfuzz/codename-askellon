@@ -3,6 +3,7 @@ export const ABIL_HUMAN_SPRINT = FourCC('A003');
 export const ABIL_INQUIS_PURITY_SEAL = FourCC('A012');
 export const ABIL_INQUIS_PURITY_SEAL_DUMMY = FourCC('A011');
 export const ABIL_INQUIS_SMITE = FourCC('A013');
+export const ABIL_INQUIS_CHURCH_CONSECRATED_AREA = FourCC('A02A');
 
 export const ABIL_LEAVE_ASKELLON_CONTROLS = FourCC('A00N');
 export const ABIL_DESPAIR = FourCC('A00D');
@@ -91,6 +92,9 @@ export const TECH_ROACH_DUMMY_UPGRADE = FourCC('R005');
 export const TECH_LATCHED_IN_HUMAN = FourCC('R009');
 export const TECH_LATCHED_IN_WHATEVER = FourCC('R00C');
 export const TECH_CREW_ARMOR_HITPOINTS_INCREASE = FourCC('R00D');
+
+// Infested Genetics Abilities
+export const GENE_INFESTED_1 = FourCC('A02C');
 
 export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
 export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');

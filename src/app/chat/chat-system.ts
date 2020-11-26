@@ -34,7 +34,7 @@ export class ChatSystem {
      * @param playerId 
      */
     public getChatColor(playerColor: string): string {
-        return `|cff${playerColor}`;
+        return playerColor;
     }
 
     /**

@@ -1,7 +1,6 @@
 import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, COL_PINK, COL_MISC, COL_ORANGE, } from "./colours";
-import { MapPlayer, Unit } from "w3ts/index";
+import { MapPlayer, Unit, playerColors } from "w3ts/index";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { PLAYER_COLOR } from "lib/translators";
 
 export const STR_OPT_MESSAGE = `${COL_BAD}Role Preference|r`;
 export const STR_OPT_HUMAN = `Human`;
@@ -33,7 +32,6 @@ export const STR_UPGRADE_COMPLETE_INFESTATION = () => `${COL_ALIEN}INFESTATION C
 export const STR_OCCUPATION_BONUS = () => `${COL_ATTATCH}OCCUPATION BONUS UNLOCKED|r`;
 
 export const STR_GENE_SUCCESSFUL = () => `${COL_INFO}Gene Splicing:|r ${COL_GOOD}SUCCESSFUL|r`
-export const STR_GENE_ALIEN_SUCCESSFUL = () => `${COL_ALIEN}Mimicking human genome response|r`
 
 export const STR_ALIEN_DEATH = (who: MapPlayer, whoColor: string, crew: Crewmember, alien: Unit, isAlienHost: boolean) => `
 ${COL_ALIEN}An Alien has been slain!|r
@@ -42,13 +40,13 @@ ${COL_ALIEN}An Alien has been slain!|r
 
 export const STR_GENETIC_SAMPLE = (who: MapPlayer, forUnit: Unit) => `${COL_MISC}Mandate :: All staff are to ensure they are regularly tested and immunized. The Askellon cannot afford another quarantine breach.|r
 
-This is a genetic sample of |cff${PLAYER_COLOR[forUnit.owner.id]}${forUnit.nameProper}|r.
+This is a genetic sample of ${playerColors[forUnit.owner.id].code}${forUnit.nameProper}|r.
 Bring this to the ${COL_TEAL}Blood Tester|r to have it tested; if the sample is ${COL_ALIEN}infected|r the Crew will be alerted.
 
 ${COL_ORANGE}Ethics requires you to get consent before extracting sample|r`;
 export const STR_GENETIC_SAMPLE_PURE = (who: MapPlayer, forUnit: Unit) => `${COL_MISC}Mandate :: All staff are to ensure they are regularly tested and immunized. The Askellon cannot afford another quarantine breach.|r
 
-A pure, uncontanimated sample of a |cff${PLAYER_COLOR[forUnit.owner.id]}${forUnit.name}|r.
+A pure, uncontanimated sample of a ${playerColors[forUnit.owner.id].code}${forUnit.name}|r.
 Bring this to the ${COL_TEAL}Blood Tester|r to have it tested; A ${COL_GOOD}Pure|r sample may be inserted multiple times.
 
 ${COL_ORANGE}Animals were harmed during the making of this. You monster.|r`;
@@ -65,7 +63,7 @@ ${COL_MISC}[ ${slot1 ? `|r${GetItemName(slot1)}${COL_MISC}` : `Sample Required`}
 [ ${slot4 ? `|r${GetItemName(slot4)}${COL_MISC}` : `Sample Required`} ]`;
 
 
-export const TARGETING_TOOLTIP = (isTargeted: boolean, who: MapPlayer, crew: Crewmember) => `${isTargeted ? 'Untarget' : 'Target' } |cff${ PLAYER_COLOR[who.id] }${crew.name}|r`
+export const TARGETING_TOOLTIP = (isTargeted: boolean, who: MapPlayer, crew: Crewmember) => `${isTargeted ? 'Untarget' : 'Target' } ${ playerColors[who.id].code }${crew.name}|r`
 export const TARGETING_TOOLTIP_EXTENDED = (isTargeted: boolean, who: MapPlayer, crew: Crewmember) => `${COL_MISC}Used often as a first resort by tyrannical captains, and a last resort by naive captains.|r
 
 Current Status: ${isTargeted ? `${COL_ATTATCH}TARGETED|r` : `${COL_GOOD}UNTARGETED|r`}

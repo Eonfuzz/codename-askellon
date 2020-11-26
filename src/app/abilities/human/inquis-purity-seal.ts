@@ -34,13 +34,6 @@ export class PuritySealAbility implements Ability {
         const tLevel = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION);
         const hasIncreasedDuration = ResearchFactory.getInstance().techHasOccupationBonus(TECH_MAJOR_RELIGION, 2);
         
-        DummyCast((dummy: unit) => {
-            SetUnitAbilityLevel(dummy, ABIL_INQUIS_PURITY_SEAL_DUMMY, tLevel+1);
-            SetUnitX(dummy, this.unit.x);
-            SetUnitY(dummy, this.unit.y + 50);
-            IssueTargetOrder(dummy, "innerfire", this.targetUnit.handle);
-        }, ABIL_INQUIS_PURITY_SEAL_DUMMY);
-
         const buffFound = DynamicBuffEntity.getInstance().addBuff(
             BUFF_ID.PURITY_SEAL, 
             this.targetUnit,

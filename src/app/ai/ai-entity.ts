@@ -11,7 +11,7 @@ import { WorldEntity } from "app/world/world-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, ALIEN_STRUCTURE_TUMOR, UNIT_ID_NEUTRAL_RABBIT } from "resources/unit-ids";
+import {  ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA } from "resources/unit-ids";
 import { CreepEntity } from "app/creep/creep-entity";
 import { Timers } from "app/timer-type";
 

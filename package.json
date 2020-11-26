@@ -12,7 +12,7 @@
     "build:defs": "ts-node scripts/dev"
   },
   "dependencies": {
-    "w3ts": "^2.0.0"
+    "w3ts": "github:cipherxof/w3ts"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.1.0",
@@ -28,7 +28,7 @@
     "tsutils": "^3.17.1",
     "typescript-to-lua": "^0.31.0",
     "war3-transformer": "^1.0.1",
-    "war3-types": "^1.0.2",
+    "war3-types": "^1.0.4",
     "war3tstlhelper": "^1.0.1",
     "winston": "^3.2.1"
   },

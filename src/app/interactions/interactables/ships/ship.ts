@@ -1,6 +1,6 @@
 import { Unit, Timer } from "w3ts";
 import { TECH_MAJOR_VOID, HOLD_ORDER_ID } from "resources/ability-ids";
-import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
+import { SHIP_VOYAGER_UNIT, CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
@@ -19,6 +19,7 @@ export function initShipInteractions() {
     const interaction: InteractableData = {
         condition:  (source: Unit, interactable: Unit) => {
 
+            if (source.typeId !== CREWMEMBER_UNIT_ID) return false;
             if (source.typeId === SHIP_VOYAGER_UNIT) {
                 return false;
             }

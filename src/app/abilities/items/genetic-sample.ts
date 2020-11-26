@@ -1,15 +1,11 @@
 import { Ability } from "../ability-type";
-import { Unit } from "w3ts/index";
+import { Unit, playerColors } from "w3ts/index";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_GENETIC_SAMPLE_PURE } from "resources/item-ids";
 import { STR_GENETIC_SAMPLE, STR_GENETIC_SAMPLE_PURE } from "resources/strings";
 import { COL_MISC, COL_RESOLVE } from "resources/colours";
 import { getZFromXY } from "lib/utils";
-import { ForceEntity } from "app/force/force-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
-import { PlayerState } from "app/force/player-type";
-import { PLAYER_RGB } from "lib/translators";
-import { Log } from "lib/serilog/serilog";
 
 export enum GENE_SPLICE_ALLIANCE {
     HUMAN,
@@ -89,11 +85,11 @@ export class GeneticSamplerItemAbility implements Ability {
             SetItemUserData(item, this.targetUnit.owner.id);
             
 
-            const pColor = PLAYER_RGB[this.targetUnit.owner.id];
+            const pColor = playerColors[this.targetUnit.owner.id];
             if (pColor) {
-                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_RED, pColor[0]);       
-                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_BLUE, pColor[1]);
-                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_GREEN, pColor[2]);
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_RED, pColor.red);       
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_BLUE, pColor.green);
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_GREEN, pColor.blue);
             }
 
         }

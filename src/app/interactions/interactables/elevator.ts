@@ -1,8 +1,7 @@
-/** @noSelfInFile **/
 import { InteractableData } from "./interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
 import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../../world/zone-id";
-import { PlayNewSoundOnUnit, COLOUR, console } from "../../../lib/translators";import { WorldEntity } from "app/world/world-entity";
+import { PlayNewSoundOnUnit, } from "../../../lib/translators";import { WorldEntity } from "app/world/world-entity";
 import { Interactables } from "./interactables";
 import { Unit } from "w3ts/index";
 import { COL_MISC } from "resources/colours";

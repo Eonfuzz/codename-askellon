@@ -99,19 +99,6 @@ export class Util {
         PEANUT: 23,
     };
 
-    public static isUnitCreep(u: unit): boolean {
-        const ownerID: COLOUR = GetPlayerId(GetOwningPlayer(u));
-        switch (ownerID) {
-            case COLOUR.NAVY:
-            case COLOUR.TURQUOISE:
-            case COLOUR.VOILET:
-            case COLOUR.WHEAT:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     public static ColourString(colour: string, str: string): string {
         return `|cFF${colour}${str}|r`;
     }
@@ -190,91 +177,6 @@ export class Util {
         return Math.floor(x + 0.5 - (x + 0.5) % 1);
     }
 }
-
-
-// reference: https://docs.google.com/spreadsheets/d/1wzWIYzRW9pqpo1ZuEcU-qJTg-H4z5-PaTnHIXPezaRQ/edit#gid=1812483906
-
-export enum COLOUR {
-    RED,
-    BLUE,
-    TEAL,
-    PURPLE,
-    YELLOW,
-    ORANGE,
-    GREEN,
-    PINK,
-    GRAY,
-    LIGHT_BLUE,
-    DARK_GREEN,
-    BROWN,
-    MAROON,
-    NAVY,
-    TURQUOISE,
-    VOILET,
-    WHEAT,
-    PEACH,
-    MINT,
-    LAVENDER,
-    COAL,
-    SNOW,
-    EMERALD,
-    PEANUT,
-}
-
-export const PLAYER_COLOR = [
-    'ff0303',
-    '0042ff',
-    '1ce6b9',
-    '540081',
-    'fffc00',
-    'fe8a0e',
-    '20c000',
-    'e55bb0',
-    '959697',
-    '7ebff1',
-    '106246',
-    '4a2a04',
-    '9b0000',
-    '0000c3',
-    '00eaff',
-    'be00fe',
-    'ebcd87',
-    'f8a48b',
-    'bfff80',
-    'dcb9eb',
-    '282828',
-    'ebf0ff',
-    '00781e',
-    'a46f33'
-];
-
-export const PLAYER_RGB = [
-    [255, 3, 3],
-    [0, 66, 255],
-    [25, 232, 185],
-    [84, 0, 129],
-    [255, 252, 1],
-    [254, 138, 14],
-    [32, 192, 0],
-    [230, 90, 176],
-    [149, 150, 151],
-    [126, 191, 241],
-    [16, 98, 70],
-    [78, 42, 4],
-    [155, 0, 0],
-    [0, 0, 195],
-    [0, 234, 255],
-    [190, 0, 254],
-    [235, 205, 135],
-    [248, 164, 139],
-    [191, 255, 128],
-    [220, 185, 235],
-    [40, 40, 40],
-    [235, 240, 255],
-    [0, 120, 30],
-    [164, 111, 51],
-    [164, 111, 51]
-]
 
 export enum CREEP_TYPE {
     NORMAL,

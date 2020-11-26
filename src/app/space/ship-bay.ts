@@ -52,8 +52,8 @@ export class ShipBay {
 
     launchShip(forWho: Unit) {
         // Check for dock status
-        if (!this.dockedShip) return Log.Error("Trying to launch ship from dock but no ship exists");
-        if (this.animating) return Log.Error("Trying to launch from bay that is already animating!");
+        if (!this.dockedShip) return;// Log.Error("Trying to launch ship from dock but no ship exists");
+        if (this.animating) return;// Log.Error("Trying to launch from bay that is already animating!");
 
         this.animating = true;
         this.dockedShip.onEnterShip(forWho);

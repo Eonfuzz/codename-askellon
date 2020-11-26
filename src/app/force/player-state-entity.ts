@@ -6,6 +6,7 @@ import { Hooks } from "lib/Hooks";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Players } from "w3ts/globals/index";
 import { Log } from "lib/serilog/serilog";
+import { ROLE_TYPES } from "resources/crewmember-names";
 
 /**
  * A factory that stores all player data
@@ -156,5 +157,14 @@ export class PlayerStateFactory {
 
     public static setTargeted(who: MapPlayer, to: boolean) {
         this.getInstance().securityTargetState.set(who, to);
+    }
+
+    public static getCrewOfRole(role: ROLE_TYPES): Crewmember[] {
+        let result = [];
+        Players.forEach(p => {
+            const crew = this.getCrewmember(p);
+            if (crew && crew.role === role) result.push(crew);
+        });
+        return result;
     }
 }

@@ -20,6 +20,6 @@ export const COL_BRIDGE = COL_GOLD;
 
 export const COL_VENTS = `|cff666633`;
 
-export const COL_GOD = 'ffcc00';
-export const COL_SYS = 'c81e1e';
-export const COL_MISC_MESSAGE = '00ffff';
+export const COL_GOD = '|cffffcc00';
+export const COL_SYS = '|cffc81e1e';
+export const COL_MISC_MESSAGE = '|cff00ffff';

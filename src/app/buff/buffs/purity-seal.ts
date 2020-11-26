@@ -2,7 +2,7 @@ import { BUFF_ID, BUFF_ID_RESOLVE, BUFF_ID_PURITY_SEAL } from "resources/buff-id
 import { Unit, Trigger } from "w3ts/index";
 import { SFX_FLASH_HEAL } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
-import { TECH_MAJOR_RELIGION } from "resources/ability-ids";
+import { TECH_MAJOR_RELIGION, ABIL_INQUIS_PURITY_SEAL_DUMMY } from "resources/ability-ids";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventEntity } from "app/events/event-entity";
@@ -11,6 +11,7 @@ import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { ChatEntity } from "app/chat/chat-entity";
 import { BuffInstance } from "../buff-instance-type";
+import { DummyCast } from "lib/dummy";
 
 export class PuritySeal extends DynamicBuff {
     id = BUFF_ID.PURITY_SEAL;
@@ -51,7 +52,8 @@ export class PuritySeal extends DynamicBuff {
     public onStatusChange(newStatus: boolean) {
         if (newStatus) {
 
-            this.doHealWhileLow = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION) >= 2;
+            const tLevel = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION)
+            this.doHealWhileLow = tLevel >= 2;
 
             // Do stuff
             this.damageTracker = new Trigger();
@@ -62,6 +64,13 @@ export class PuritySeal extends DynamicBuff {
                 EVENT_TYPE.HERO_LEVEL_UP, 
                 (self, data) => this.onUnitLevelup(data.source)
             );
+
+            DummyCast((dummy: unit) => {
+                SetUnitAbilityLevel(dummy, ABIL_INQUIS_PURITY_SEAL_DUMMY, tLevel+1);
+                SetUnitX(dummy, this.who.x);
+                SetUnitY(dummy, this.who.y + 50);
+                IssueTargetOrder(dummy, "innerfire", this.who.handle);
+            }, ABIL_INQUIS_PURITY_SEAL_DUMMY);
 
             EventEntity.getInstance().addListener(this.levelUpTracker);
         }

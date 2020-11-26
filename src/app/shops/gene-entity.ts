@@ -16,13 +16,14 @@ import { TECH_NO_GENES_TIER_1,
     GENE_INSTALL_XENOPHOBIC,
     ABIL_GENE_XENOPHOBIC,
     GENE_INSTALL_OSBORNE_GENE,
-    ABIL_GENE_INSTANT_HEAL
+    ABIL_GENE_INSTANT_HEAL,
+    GENE_INFESTED_1
 } from "resources/ability-ids";
 import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit, Timer } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Log } from "lib/serilog/serilog";
-import { STR_GENE_SUCCESSFUL, STR_GENE_ALIEN_SUCCESSFUL } from "resources/strings";
+import { STR_GENE_SUCCESSFUL } from "resources/strings";
 import { EventListener } from "app/events/event-type";
 import { ROLE_NAMES, ROLE_TYPES } from "resources/crewmember-names";
 import { Entity } from "app/entity-type";
@@ -42,6 +43,7 @@ import { SoundRef } from "app/types/sound-ref";
 import { SOUND_STR_GENE_LOOP } from "resources/sounds";
 import { Timers } from "app/timer-type";
 import { COL_MISC, COL_TEAL } from "resources/colours";
+import { UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH } from "resources/upgrade-ids";
 
 declare const udg_genetic_splicer_unit: unit;
 interface GeneInstance {
@@ -90,6 +92,14 @@ export class GeneEntity extends Entity {
         const crew = pData.getCrewmember();
 
         if (crew && crew.unit === who) {
+
+            if (pData && pData.getForce().is(ALIEN_FORCE_NAME)) {
+                const infestedGenes1 = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
+                if (infestedGenes1) {
+                    geneUiUnit.addAbility( GENE_INFESTED_1 );
+                }            
+            }
+            
             const instance = {
                 source: crew,
                 ui: geneUiUnit,
@@ -207,6 +217,11 @@ export class GeneEntity extends Entity {
         if (geneTier === 1) {
             instance.source.player.setTechResearched(TECH_NO_GENES_TIER_1, 0);
             instance.unitInGeneZone.player.setTechResearched(TECH_HAS_GENES_TIER_1, 1);
+
+            // Check for infestation
+            if (instance.ui.getAbilityLevel( GENE_INFESTED_1 ) > 0) {
+                instance.unitInGeneZone.player.setTechResearched(UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH, 1);
+            }
         }
         else if (geneTier === 2) {
             instance.source.player.setTechResearched(TECH_NO_GENES_TIER_2, 0);
@@ -253,7 +268,6 @@ export class GeneEntity extends Entity {
             DestroyEffect(sfx);
     
             const messageSuccessful = STR_GENE_SUCCESSFUL();
-            const messageAlien = STR_GENE_ALIEN_SUCCESSFUL();
             
             DisplayTextToPlayer(instance.source.player.handle, 0, 0, messageSuccessful);
             // We may be the same player due to singleplayer
@@ -335,11 +349,7 @@ export class GeneEntity extends Entity {
                 }
     
             }
-    
-            if (targetIsAlien) {
-                DisplayTextToPlayer(target.player.handle, 0, 0, messageAlien);
-            }
-    
+        
             // Send gene upgrade event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.GENE_UPGRADE_INSTALLED, { 
                 source: instance.unitInGeneZone.unit, 

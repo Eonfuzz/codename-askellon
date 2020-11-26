@@ -23,14 +23,14 @@ export class ScreamAbility implements Ability {
 
         const world = WorldEntity.getInstance();
         // Get out current unit's zone
-        const zone = world.getUnitZone(this.casterUnit);
+        const zone = world.getPointZone(this.casterUnit.x, this.casterUnit.y) || world.getUnitZone(this.casterUnit);
 
         if (zone) {
             const pInZone = zone.getPlayersInZone();
             SOUND_ALIEN_SCREAM.setVolume(40);
             pInZone.forEach(player => {
                 const pData = PlayerStateFactory.get(player);
-                if (pData && pData.getCrewmember()) {
+                if (pData) {
                     const crew = pData.getCrewmember();
                     if (crew && crew.unit.isAlive()) {
                         crew.addDespair(new BuffInstanceDuration(this.casterUnit, 30));

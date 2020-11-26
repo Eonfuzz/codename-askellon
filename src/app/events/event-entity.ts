@@ -166,7 +166,16 @@ export class EventEntity {
         EventEntity.getInstance().sendEvent(whichEvent, data);
     } 
 
-    public static listen(listener: EventListener) {
-        EventEntity.getInstance().addListener(listener)
+    public static listen(listener: EventListener)
+    public static listen(event: EVENT_TYPE, cb: (self: EventListener, data: EventData) => void)
+    public static listen(listener: EventListener | EVENT_TYPE, cb?: (self: EventListener, data: EventData) => void) {
+        try {
+            if (listener instanceof EventListener) {
+                EventEntity.getInstance().addListener(listener)
+            }
+        }
+        catch(e) {
+            EventEntity.getInstance().addListener(new EventListener(listener as EVENT_TYPE, cb));
+        }
     } 
 }

@@ -1,8 +1,7 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { PLAYER_COLOR, PlayNewSound } from "lib/translators";
 import { SoundWithCooldown, SoundRef } from "app/types/sound-ref";
-import { MapPlayer, Unit, Trigger } from "w3ts";
+import { MapPlayer, Unit, Trigger, playerColors } from "w3ts";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { EventEntity } from "app/events/event-entity";
 import { VisionFactory } from "app/vision/vision-factory";
@@ -139,7 +138,7 @@ export abstract class ForceType {
      * @param who 
      */
     public getChatColor(chatEvent: ChatHook): string {
-        return PLAYER_COLOR[chatEvent.who.id];
+        return playerColors[chatEvent.who.id].code;
     }
 
     /**

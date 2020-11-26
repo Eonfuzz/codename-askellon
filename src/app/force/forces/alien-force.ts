@@ -4,8 +4,8 @@ import { vectorFromUnit } from "app/types/vector2";
 import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_EVOLVE_T1_SPELLBOOK, ABIL_ALIEN_EVOLVE_T2_SPELLBOOK, ABIL_ALIEN_EVOLVE_T3_SPELLBOOK } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
-import { PLAYER_COLOR, PlayNewSound } from "lib/translators";
-import { Trigger, MapPlayer, Unit } from "w3ts";
+import { PlayNewSound } from "lib/translators";
+import { Trigger, MapPlayer, Unit, playerColors } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
@@ -95,10 +95,10 @@ export class AlienForce extends ForceType {
             const killingUnit = Unit.fromHandle(GetKillingUnit());
 
             const validKillingPlayer = 
-                // If it's an AI killer
-                (this.hasPlayer(killingUnit.owner) || PlayerStateFactory.isAlienAI(killingUnit.owner))
+                // If it's an alien AI killer
+                PlayerStateFactory.isAlienAI(killingUnit.owner) ||
                 // If it's a player killer
-                && this.getAlienFormForPlayer(killingUnit.owner) === killingUnit;
+                (this.hasPlayer(killingUnit.owner) && this.getAlienFormForPlayer(killingUnit.owner) === killingUnit);
             const validDyingUnit = !this.hasPlayer(dyingUnit.owner) && !PlayerStateFactory.isAlienAI(dyingUnit.owner) && dyingUnit.typeId !== CREWMEMBER_UNIT_ID;
             const validDyingType = !IsUnitType(dyingUnit.handle, UNIT_TYPE_MECHANICAL);
 
@@ -193,7 +193,7 @@ export class AlienForce extends ForceType {
                     // If this is the second alien display messages to alien players
                     this.players.forEach(p => {
                         if (p !== owner) {
-                            MessagePlayer(p, `|cff${PLAYER_COLOR[owner.id]}${crewmember.name}|r ${COL_ALIEN} has become an Alien. Send messages starting with ${COL_GOLD}.|r${COL_ALIEN} to communicate only with aliens.|r`);
+                            MessagePlayer(p, `${playerColors[owner.id].code}${crewmember.name}|r ${COL_ALIEN} has become an Alien. Send messages starting with ${COL_GOLD}.|r${COL_ALIEN} to communicate only with aliens.|r`);
                         }
                     })
                 }
@@ -295,7 +295,7 @@ export class AlienForce extends ForceType {
             Players.forEach(p => {
                 DisplayTextToPlayer(p.handle, 0, 0, STR_ALIEN_DEATH(
                     player,
-                    PLAYER_COLOR[player.id],
+                    playerColors[player.id].code,
                     crew, 
                     alienUnit, 
                     this.getHost() === player)
@@ -606,7 +606,7 @@ export class AlienForce extends ForceType {
                 
                 // TODO FIXME host might be dead, keep for debbuging purposes though
                 const pHost = PlayerStateFactory.get(this.getHost());
-                Log.Information("Alien ho/st: "+`${pHost.originalName}`)
+                // Log.Information("Alien ho/st: "+`${pHost.originalName}`)
 
                 this.players.forEach((player, i) => {
 
@@ -661,7 +661,7 @@ export class AlienForce extends ForceType {
                             
                                 SelectUnitForPlayerSingle(alien.handle, player.handle);
         
-                                Log.Information(`${pData.originalName} Setting player unit `);
+                                // Log.Information(`${pData.originalName} Setting player unit `);
                                 this.playerAlienUnits.set(player, alien);
                                 alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
                         

@@ -1,4 +1,4 @@
-import { Trigger, MapPlayer, Timer, Effect } from "w3ts";
+import { Trigger, MapPlayer, Timer, Effect, playerColors } from "w3ts";
 import { Log } from "lib/serilog/serilog";
 import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { SoundRef } from "./types/sound-ref";
@@ -26,7 +26,7 @@ import { SpaceEntity } from "./space/space-module";
 
 import { CrewFactory } from "./crewmember/crewmember-factory";
 import { WeaponEntity } from "./weapons/weapon-entity";
-import { PlayNewSound, getYawPitchRollFromVector, PLAYER_COLOR } from "lib/translators";
+import { PlayNewSound, getYawPitchRollFromVector } from "lib/translators";
 import { OptResult } from "./force/opt/opt-selection-factory";
 import { Players } from "w3ts/globals/index";
 import { GetActivePlayers, MessageAllPlayers } from "lib/utils";
@@ -191,23 +191,23 @@ export class Game {
         SetCameraTargetController(mainShip.unit.handle, 0, 0, false);
 
         Timers.addTimedAction(0.5, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Navigator", "4328ef", "They're right behind us!", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Navigator", "|cff4328ef", "They're right behind us!", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(2, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Captain", "FF0000", "Engineer, we need ship diagnostics, now.", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Captain", "|cffFF0000", "Engineer, we need ship diagnostics, now.", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(4, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Engineer", "f05b33", "Hopeless. Everything's offline or damaged...", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Engineer", "|cfff05b33", "Hopeless. Everything's offline or damaged...", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(5, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Engineer", "f05b33", "Only thing left is warp drive.", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Engineer", "|cfff05b33", "Only thing left is warp drive.", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(7, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             MessageAllPlayers(`[${COL_ATTATCH}INFO|r] Preparing Warp`);
         });   
         Timers.addTimedAction(8, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Captain", "FF0000", "To all crew, we're initiating emergency warp procedures.", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Captain", "|cffFF0000", "To all crew, we're initiating emergency warp procedures.", undefined, GENERIC_CHAT_SOUND_REF);
         });
 
         
@@ -225,19 +225,19 @@ export class Game {
         });
 
         Timers.addTimedAction(6, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Disciples. Gather and pray for salvation.", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "|cff6a0dad", "Disciples. Gather and pray for salvation.", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(9, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Imperator, ora pro nobis peccatoribus", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "|cff6a0dad", "Imperator, ora pro nobis peccatoribus", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(12, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Nunc et in hora mortis nostrea.", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "|cff6a0dad", "Nunc et in hora mortis nostrea.", undefined, GENERIC_CHAT_SOUND_REF);
         });
         // Timers.addTimedAction(12, () => {            
         //     ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "In hora mortis meae voca me.", undefined, GENERIC_CHAT_SOUND_REF);
         // });
         Timers.addTimedAction(14.5, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Captain", "FF0000", "Brace yourselves!", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Captain", "|cffFF0000", "Brace yourselves!", undefined, GENERIC_CHAT_SOUND_REF);
         });
         // Timers.addTimedAction(14, () => {            
         //     ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Et iube me venire ad te.", undefined, GENERIC_CHAT_SOUND_REF);
@@ -246,10 +246,10 @@ export class Game {
         //     ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Ut cum Sanctis tuis laudem te.", undefined, GENERIC_CHAT_SOUND_REF);
         // });
         Timers.addTimedAction(16, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "In saecula saeculorum.", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "|cff6a0dad", "In saecula saeculorum.", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(20, () => {            
-            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "6a0dad", "Ave Imperator.", undefined, GENERIC_CHAT_SOUND_REF);
+            ChatEntity.getInstance().postMessageFor(Players, "Inquisitor", "|cff6a0dad", "Ave Imperator.", undefined, GENERIC_CHAT_SOUND_REF);
         });
 
         Timers.addTimedAction(15, () => {
@@ -392,17 +392,17 @@ export class Game {
                 i++;
                 activePlayers.push(p);
                 if (crew.role === ROLE_TYPES.CAPTAIN) {
-                    chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ index ], "We survived. Who made it?", undefined, GENERIC_CHAT_SOUND_REF);
+                    chat.postMessageFor(Players, crew.name, playerColors[index].code, "We survived. Who made it?", undefined, GENERIC_CHAT_SOUND_REF);
                 }
                 else if (crew.role === ROLE_TYPES.INQUISITOR) {
                     Timers.addTimedAction(index * 0.3, () => {
-                        chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ index ], "Necessitatibus, I am here", undefined, GENERIC_CHAT_SOUND_REF);
+                        chat.postMessageFor(Players, crew.name, playerColors[index].code, "Necessitatibus, I am here", undefined, GENERIC_CHAT_SOUND_REF);
                     });
                 }
                 else {
                     Timers.addTimedAction(index * 0.3, () => {
                         const message = messages[GetRandomInt(0, messages.length-1)];
-                        chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ index ], message, undefined, GENERIC_CHAT_SOUND_REF);
+                        chat.postMessageFor(Players, crew.name, playerColors[index].code, message, undefined, GENERIC_CHAT_SOUND_REF);
                     });
                 }
             });
@@ -410,7 +410,7 @@ export class Game {
             if (PlayerStateFactory.isSinglePlayer()) {
                 const captain = PlayerStateFactory.getCrewmember( Players[0] );
                 Timers.addTimedAction(5, () => {
-                    chat.postMessageFor(Players, captain.name, PLAYER_COLOR[ 0 ], "Oh god. I'm alone.", undefined, GENERIC_CHAT_SOUND_REF);
+                    chat.postMessageFor(Players, captain.name, playerColors[0].code, "Oh god. I'm alone.", undefined, GENERIC_CHAT_SOUND_REF);
                 });
             }
             else {
@@ -442,7 +442,7 @@ export class Game {
                             default:
                                 message = "There's an alien around here..."
                         }
-                        chat.postMessageFor(Players, crew.name, PLAYER_COLOR[ randomPlayer.id ], message, undefined, GENERIC_CHAT_SOUND_REF);
+                        chat.postMessageFor(Players, crew.name, playerColors[randomPlayer.id].code, message, undefined, GENERIC_CHAT_SOUND_REF);
                     }
 
                     Timers.addTimedAction(2, () => {

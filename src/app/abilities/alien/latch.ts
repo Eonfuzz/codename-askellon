@@ -1,10 +1,9 @@
 import { Ability } from "../ability-type";
-import { Unit, Timer, Trigger, MapPlayer } from "w3ts/index";
+import { Unit, Timer, Trigger, MapPlayer, playerColors } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
 import { ABIL_ALIEN_LATCH, TECH_PLAYER_INFESTS, TECH_LATCHED_IN_HUMAN, TECH_LATCHED_IN_WHATEVER } from "resources/ability-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { FilterIsAlive } from "resources/filters";
-import { PLAYER_COLOR } from "lib/translators";
 import { GENERIC_CHAT_SOUND_REF } from "app/force/forces/force-type";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
@@ -157,7 +156,7 @@ export class LatchAbility implements Ability {
 
             if (crew) {
                 hook.name = crew.name;
-                hook.color = PLAYER_COLOR[crew.unit.owner.id];
+                hook.color = playerColors[crew.unit.owner.id].code;
                 hook.sound = GENERIC_CHAT_SOUND_REF;
             }
         }

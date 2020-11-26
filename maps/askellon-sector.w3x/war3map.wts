@@ -664,18 +664,6 @@ STRING 184
 W
 }
 
-STRING 186
-// Abilities: A00G (Roar), Tip (Tooltip - Normal)
-{
-Screech
-}
-
-STRING 188
-// Abilities: A00G (Roar), Ubertip (Tooltip - Normal - Extended)
-{
-|cff000000|cff808080Fear is pain arising from the anticipation of evil.|r|n|nThe |cff666633Alien|r roars, causing it and nearby |cff666633alien|r to deal 50% bonus damage. Additionally, all |cff00ffffhumans|r are filled with |cff666633Despair|r for 30 seconds, reducing their |cffc81e1earmor, accuracy|r and granting you |cffc81e1evision|r of them.|n|n|cff80808060 Second Cooldown|r|r
-}
-
 STRING 189
 // Abilities: A00H (Attack - Laser), Name (Name)
 {
@@ -1876,22 +1864,10 @@ STRING 468
 Reboot Healthcare [|cffffcc001/4|r]
 }
 
-STRING 469
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [1/4]|r|nReboots medical vendors and durg production.|n|cff00ff00- Nano-Meds now purchasable|r|n|cff00ff00- Emotion Inhibitors now Purchasable|r|n|n|cff6f2583Infested|n- Despair still grants vision while under Emotion Inhibitors|r
-}
-
 STRING 470
 // Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
 {
 Reboot Gene Splicer [|cffffcc002/4|r]
-}
-
-STRING 471
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [2/4]|r|nReboots the Gene Splicer.|n|cff00ff00- Gene Splicer is now online|r|n|cff00ff00- Tier 1 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Gene Splicing now grants bonus XP to both patient and sugeon|r|n|n|cff6f2583Infested|n- Any Splicing grants the Alien Host bonus XP|r
 }
 
 STRING 473
@@ -1904,12 +1880,6 @@ STRING 474
 // Items: I007 (Emotion Inhibitor), Name (Name)
 {
 Emotion Inhibitor
-}
-
-STRING 475
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [3/4]|r|nReboots the Gene Splicer.|n|cff00ff00- Tier 2 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Emotion Inhibitor no longer prevents Resolve|r|n|n|cff6f2583Infested|n- Any Splicing grants the Alien Host bonus XP|r
 }
 
 STRING 476
@@ -2803,12 +2773,6 @@ STRING 718
 E
 }
 
-STRING 720
-// Abilities: ACID (Acid Pool), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Caustic enzymes found in the Alien's stomach can dissolve the strongest of compounds.|r|n|nHurls a blob of acid that explodes at target point, dealing |cff00ff0025|r damage and leaving a pool of acid; lasts |cff00ffff10|r seconds and deals |cff00ff0035|r damage per second.|n|n|cff80808025 Second Cooldown|r
-}
-
 STRING 721
 // Abilities: A00V (Evolution Egg Armor), Name (Name)
 {
@@ -3169,12 +3133,6 @@ STRING 818
 Seal of Purity
 }
 
-STRING 822
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nFanaticize religious dogma|n|cff00ff00- Can now pray at the altar to gain |cffd45e19Purity Seal|r|n|cff00ff00- Seal Health Regeneration is increased by 30%|r|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- Gain the |cffd45e19Smite Heathen|r |cff00ff00ability
-}
-
 STRING 823
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
@@ -3371,18 +3329,6 @@ STRING 877
 // Abilities: A013 (Punishing Smite), Tip (Tooltip - Normal)
 {
 Seal of Purity
-}
-
-STRING 878
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nReinstates religious dogma|n|cff00ff00- |cffd45e19Purity Seals|r |cff00ff00grant that unit 1 permanent vitality when levelling up|n- Being in the Cathederal heals 1 health a second|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- The Inquisitor gains 1 vitality whenever a unit with a |cffd45e19Purity Seal|r |cff00ff00levels up|r
-}
-
-STRING 879
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nProsthelytize religious dogma|n|cff00ff00-|cffd45e19 Purity Seals|r|cff00ff00 now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff00ff00Regeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- |cffd45e19Purity Seal|r|cff00ff00 duration increased by 60 seconds|r
 }
 
 STRING 881
@@ -4509,12 +4455,6 @@ STRING 1134
 // Abilities: A01L (Xenophobic), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Years of training as a soldier aren't going to go to waste.|r|n|nGain |cffff8080Resolve|r, replace your weapon with |cffd45e19Fists |rand taunts nearby Aliens, applying a short |cff8a6df2Despair|r. Lasts |cff00ff0030 |rSeconds.|n|n|cff8a6df2Aliens with Despair cannot transform.|r|n|n|cff808080120 Seconds Cooldown|r
-}
-
-STRING 1135
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nSplices the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cff00ff00night vision|r for |cff00ff0030 seconds|r. You are |cff00ff00immune |rto |cff6f2583Despair|r caused by darkness.|n|nAttribute Gain: |cff00ff00+2.5 Accuracy|r and |cff00ff00+1 Will|r per level.
 }
 
 STRING 1138
@@ -5855,12 +5795,6 @@ STRING 1405
 |cff00ffffBlood Testing|r Computer|n|cff808080Right Click to Interact|r
 }
 
-STRING 1406
-// Abilities: A01Z (Larva Spawning), Name (Name)
-{
-Larva Spawning
-}
-
 STRING 1407
 // Items: I00B (Mineral Storage - Maskelynite), Ubertip (Tooltip - Extended)
 {
@@ -6706,5 +6640,143 @@ STRING 1550
 // Upgrades: R00K (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Void Sickness
+}
+
+STRING 1551
+// Abilities: A00G (Roar), Ubertip (Tooltip - Normal - Extended)
+{
+|cff000000|cff808080Fear is pain arising from the anticipation of evil.|r|n|nYour Roar, increasing your damage by |cff00ff0050%|r for |cff00ff0015 seconds|r. Any humans on the same floor gain |cff8a6df2Despair|r for |cff00ff0030 seconds.|r|n|n|cff8a6df2Despair|r removes communication, causes them to take bonus damage and be visible on the map.|n|n|cff80808060 Second Cooldown|r|r
+}
+
+STRING 1552
+// Abilities: ACID (Acid Pool), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Caustic enzymes found in the Alien's stomach can dissolve the strongest of compounds.|r|n|nHurls a blob of acid that explodes at target point, dealing |cff00ff0025|r damage and leaving a pool of acid; lasts |cff00ff0010 seconds|r and deals |cff00ff0035|r damage per second.|n|n|cff80808025 Second Cooldown|r
+}
+
+STRING 1553
+// Abilities: A02A (Consecrated Cathederal), Name (Name)
+{
+Consecrated Cathederal
+}
+
+STRING 1555
+// Buffs/Effects: B00F (), Buffubertip (Tooltip - Extended)
+{
+Ave imperator! Health regeneration increased by 1
+}
+
+STRING 1556
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nReinstates religious dogma|n|cff00ff00- |cffd45e19Purity Seals|r |cff00ff00grant that unit 1 permanent vitality when levelling up|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- The Inquisitor gains 1 vitality whenever a unit with a |cffd45e19Purity Seal|r |cff00ff00levels up|r
+}
+
+STRING 1557
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nConsecration of Sacred Ground|n|cff00ff00- Crew can pray at the altar to gain |cffd45e19Purity Seal|r|cff00ff00|n- Being in the Cathederal heals 1 health a second|n-|cffd45e19 Purity Seals|r|cff00ff00 now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff00ff00Regeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- |cffd45e19Purity Seal|r|cff00ff00 duration increased by 60 seconds|r
+}
+
+STRING 1558
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nFanaticize religious dogma|n|cff00ff00|cff00ff00- Seal Health Regeneration is increased by 30%|r|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- Gain the |cffd45e19Smite Heathen|r |cff00ff00ability
+}
+
+STRING 1560
+// Buffs/Effects: B00F (), Bufftip (Tooltip)
+{
+Consecrated Cathederal
+}
+
+STRING 1561
+// Abilities: A01Z (Larva Spawning ( 45s )), Name (Name)
+{
+Larva Spawning ( 45s )
+}
+
+STRING 1562
+// Abilities: A01Z (Larva Spawning ( 45s )), Tip (Tooltip - Normal)
+{
+Spawn Larva ( 45s )
+}
+
+STRING 1563
+// Abilities: A01Z (Larva Spawning ( 45s )), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns larva every 45 seconds
+}
+
+STRING 1564
+// Abilities: A02B (Canite Spawning ( 25s )), Name (Name)
+{
+Canite Spawning ( 25s )
+}
+
+STRING 1565
+// Abilities: A02B (Canite Spawning ( 25s )), Tip (Tooltip - Normal)
+{
+Spawn Canite ( 25s )
+}
+
+STRING 1566
+// Abilities: A02B (Canite Spawning ( 25s )), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns canite every 25 seconds
+}
+
+STRING 1567
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nSplices the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cff00ff00night vision|r for |cff00ff0030 seconds|r. You are |cff00ff00immune |rto |cff8a6df2Despair|r caused by darkness.|n|nAttribute Gain: |cff00ff00+2.5 Accuracy|r and |cff00ff00+1 Will|r per level.
+}
+
+STRING 1568
+// Abilities: A02C (Genetics INFESTATION - Perma Spawn), Name (Name)
+{
+Genetics INFESTATION - Perma Spawn
+}
+
+STRING 1569
+// Abilities: A02C (Genetics INFESTATION - Perma Spawn), Tip (Tooltip - Normal)
+{
+[ PASSIVE ] Mutated Genetics
+}
+
+STRING 1570
+// Abilities: A02C (Genetics INFESTATION - Perma Spawn), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080What is man but a bundle of easily manipulatable genetics?|r|n|nCompleting a |cff00ff00Tier 1 Genetic Splice|r now causes the target to turn into an |cff8a6df2Alien upon death|r, no matter the source|cffc81e1e ( Only effects non-alien players )|r.|n|n|cffd45e19You've unlocked this by Infesting Healthcare|r
+}
+
+STRING 1571
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [1/4]|r|nReboots medical vendors and durg production.|n|cff00ff00- Nano-Meds now purchasable|r|n|cff00ff00- Emotion Inhibitors now Purchasable|r|n|n|cff8a6df2Infested|n- Despair still grants vision while under Emotion Inhibitors|r
+}
+
+STRING 1572
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [2/4]|r|nReboots the Gene Splicer.|n|cff00ff00- Gene Splicer is now online|r|n|cff00ff00- Tier 1 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Gene Splicing now grants bonus XP to both patient and sugeon|r|n|n|cff8a6df2Infested|n- Unlocks first genetic infestation|r
+}
+
+STRING 1573
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff808080Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [3/4]|r|nReboots the Gene Splicer.|n|cff00ff00- Tier 2 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Emotion Inhibitor no longer prevents Resolve|r|n|n|cff8a6df2Infested|n- Any Splicing grants the Alien Host bonus XP|r
+}
+
+STRING 1574
+// Upgrades: R00L (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Will Become Alien On Death
+}
+
+STRING 1575
+// Units: n00R (|cffffff00Cathederal|r Altar|n|cff808080Right click to Pray|r), Name (Name)
+{
+|cffffff00Cathederal|r Altar|n|cff808080Right click to Pray|r
 }
 

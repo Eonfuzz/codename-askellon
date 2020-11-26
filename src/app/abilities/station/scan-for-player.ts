@@ -4,10 +4,9 @@ import { MessageAllPlayers } from "lib/utils";
 import { COL_ORANGE, COL_INFO, COL_ATTATCH, COL_GOOD, COL_GOLD, COL_ALIEN } from "resources/colours";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { Unit, MapPlayer } from "w3ts/index";
+import { Unit, MapPlayer, playerColors } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_SECURITY_TARGET_ALL, ABIL_ACTIVATE_SCAN_CREW, ABIL_ACTIVATE_SCAN_ALIENS } from "resources/ability-ids";
-import { PlayNewSound, PLAYER_COLOR, PLAYER_RGB } from "lib/translators";
 import { PlayerState } from "app/force/player-type";
 import { TARGETING_TOOLTIP, TARGETING_TOOLTIP_EXTENDED } from "resources/strings";
 import { Players } from "w3ts/globals/index";
@@ -48,9 +47,9 @@ export class StationSecurityScanForPlayer implements Ability {
                     const crew = pData.getCrewmember();
                     const pMain = pData.getUnit();
                     if (pData && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
-                        if (p.id < PLAYER_RGB.length) {
-                            const c = PLAYER_RGB[p.id];
-                            if (c) PingMinimapEx(pMain.x, pMain.y, 6, c[0], c[1], c[2], false);
+                        if (p.id < playerColors.length) {
+                            const c = playerColors[p.id];
+                            if (c) PingMinimapEx(pMain.x, pMain.y, 6, c.red, c.green, c.blue, false);
                         }
                         else {
                             Log.Warning(`${p.id} not in rgb colour array`);

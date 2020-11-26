@@ -21,6 +21,9 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { ALIEN_STRUCTURE_TUMOR } from "resources/unit-ids";
 import { CreepEntity } from "app/creep/creep-entity";
 import { ObserverForce } from "./observer-force";
+import { UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH } from "resources/upgrade-ids";
+import { WorldEntity } from "app/world/world-entity";
+import { ZONE_TYPE } from "app/world/zone-id";
 
 
 export class CrewmemberForce extends ForceType {
@@ -63,11 +66,15 @@ export class CrewmemberForce extends ForceType {
             if (killer) {
                 const pKiller = PlayerStateFactory.get(killer.owner);
                 const pForce = pKiller.getForce();
+
+                const pZone = WorldEntity.getInstance().getPointZone(crew.unit.x, crew.unit.y);
                 
                 // Remove our crew trackers
                 super.removePlayer(player, killer);
                 
                 const killedByAlien = 
+                    // Gene infested T1
+                    (pZone && pZone.id !== ZONE_TYPE.SPACE && player.getTechCount(UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH, true) > 0) ||
                     // Killed by station AI
                     PlayerStateFactory.isAlienAI(killer.owner) ||
                     // Or killed by an Alien form Alien player

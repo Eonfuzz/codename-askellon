@@ -1,6 +1,6 @@
 import { Log } from "../../lib/serilog/serilog";
 import { ForceType } from "./forces/force-type";
-import { Trigger, MapPlayer, Timer, Unit } from "w3ts";
+import { Trigger, MapPlayer, Timer, Unit, playerColors } from "w3ts";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 import { SoundRef } from "app/types/sound-ref";
 import { Aggression } from "./alliance/aggression-type";
@@ -23,7 +23,6 @@ import { GetActivePlayers } from "lib/utils";
 import { Hooks } from "lib/Hooks";
 import { ChatEntity } from "app/chat/chat-entity";
 import { Players } from "w3ts/globals/index";
-import { PLAYER_COLOR } from "lib/translators";
 import { Timers } from "app/timer-type";
 import { PlayerState } from "./player-type";
 
@@ -499,9 +498,9 @@ export class ForceEntity extends Entity {
 
         // const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false, true);
         // playerLeaveSound.playSound();
-
+        const c = playerColors[who.id].code;
         Players.forEach(player => {
-            ChatEntity.getInstance().postSystemMessage(player, `|cff${PLAYER_COLOR[who.id]}${PlayerStateFactory.get(who).originalName}|r has left the game!`);            
+            ChatEntity.getInstance().postSystemMessage(player, `${c}${PlayerStateFactory.get(who).originalName}|r has left the game!`);            
         });
 
         // Kill all units they woned
