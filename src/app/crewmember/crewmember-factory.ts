@@ -23,6 +23,10 @@ import { Quick } from "lib/Quick";
 import { Vector2 } from "app/types/vector2";
 import { Players } from "w3ts/globals/index";
 import { Log } from "lib/serilog/serilog";
+import { ChatEntity } from "app/chat/chat-entity";
+import { PRIVS } from "app/chat/chat-privs-enum";
+
+const crwSkins = [FourCC('Crw0'), FourCC('Crw1')];
 
 export class CrewFactory {  
     private static instance: CrewFactory;
@@ -179,7 +183,7 @@ export class CrewFactory {
 
         try { 
 
-            let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING));
+            let nUnit = Unit.fromHandle(BlzCreateUnitWithSkin(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING, this.getSkinFor(player)));
             let crewmember = new Crewmember(player, nUnit, force, role);
 
             crewmember.setName(name);
@@ -310,5 +314,11 @@ export class CrewFactory {
 
     getCrewmemberForUnit(unit: Unit): Crewmember | void {
         return this.crewmemberForUnit.has(unit) && this.crewmemberForUnit.get(unit);
+    }
+
+    getSkinFor(who: MapPlayer) {        
+        const isVeteran = ChatEntity.getInstance().getUserPrivs(who) >= PRIVS.MODERATOR;
+        const skin = isVeteran ? crwSkins[1] : crwSkins[0];
+        return skin;
     }
 }

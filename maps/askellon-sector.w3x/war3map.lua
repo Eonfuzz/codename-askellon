@@ -182,6 +182,13 @@ gg_rct_FallZoneCargoB_Copy = nil
 gg_rct_FallZoneCargoB_Copy_2 = nil
 gg_rct_FallZoneBridge_Copy = nil
 gg_rct_zoneplanet1 = nil
+gg_rct_MineralInfestationSpawn1 = nil
+gg_rct_MineralInfestationSpawn3 = nil
+gg_rct_MineralInfestationSpawn4 = nil
+gg_rct_MineralInfestationSpawn2 = nil
+gg_rct_MineralInfestationSpawn5 = nil
+gg_rct_MineralInfestationSpawn6 = nil
+gg_rct_MineralInfestationSpawn7 = nil
 gg_trg_SetKillzones = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -244,13 +251,6 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
-gg_rct_MineralInfestationSpawn1 = nil
-gg_rct_MineralInfestationSpawn3 = nil
-gg_rct_MineralInfestationSpawn4 = nil
-gg_rct_MineralInfestationSpawn2 = nil
-gg_rct_MineralInfestationSpawn5 = nil
-gg_rct_MineralInfestationSpawn6 = nil
-gg_rct_MineralInfestationSpawn7 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -328,7 +328,6 @@ function CreateBuildingsForPlayer21()
     local life
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -26561.3, -17516.3, 270.000, FourCC("n00H"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -13888.0, -22336.0, 270.000, FourCC("h004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("n003"), 1024.0, 896.0, 270.000, FourCC("n003"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -12544.6, -14225.1, 270.000, FourCC("n00H"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -14925.4, -15624.4, 270.000, FourCC("n00H"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -12480.0, -11772.1, 270.000, FourCC("n00H"))

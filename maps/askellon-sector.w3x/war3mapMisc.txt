@@ -23,6 +23,16 @@ file=asteroids\var4
 skinnableID=Ast4
 skinType=unit
 
+[Crw0]
+file=war3mapImported\testMarine
+skinnableID=H001
+skinType=unit
+
+[Crw1]
+file=war3mapImported\testMarineVeteran
+skinnableID=H001
+skinType=unit
+
 [Min1]
 file=Sc2\Doodads\mineral cluster 01
 skinnableID=Min1

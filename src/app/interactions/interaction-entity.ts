@@ -97,7 +97,7 @@ export class InteractionEntity extends Entity {
 
         if (interact && (!interact.condition || interact.condition(trigUnit, targetUnit))) {
             const interactionTime = interact.getInteractionTime !== undefined
-                ? interact.getInteractionTime(trigUnit, targetUnit) : 1.5;
+                ? interact.getInteractionTime(trigUnit, targetUnit) : 1.3;
             const interactionDistance = interact.getInteractionDistance !== undefined
                 ? interact.getInteractionDistance(trigUnit, targetUnit) : 350;
 

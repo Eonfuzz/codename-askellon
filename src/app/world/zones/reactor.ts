@@ -20,6 +20,7 @@ import { ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_CANITE, ALIEN_MINION_FORMLESS } fro
 import { Timers } from "app/timer-type";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { PlayNewSound } from "lib/translators";
+import { CreepEntity } from "app/creep/creep-entity";
 
 declare const gg_rct_reactoritemleft: rect;
 declare const gg_rct_reactoritemright: rect;
@@ -142,8 +143,8 @@ export class ReactorZone extends ShipZone {
             AskellonEntity.addToPower(5);
         }
 
-        if (this.infestedOreDeliveryCounter >= 50) {
-            this.infestedOreDeliveryCounter -= 50;
+        if (this.infestedOreDeliveryCounter >= 250) {
+            this.infestedOreDeliveryCounter -= 250;
 
             MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Reactor foreign contaminants exceeding safety thresholds`);
             Timers.addTimedAction(1, () => {
@@ -162,7 +163,8 @@ export class ReactorZone extends ShipZone {
     
                     Timers.addTimedAction(GetRandomReal(2, 6), () => {
                         DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, x, y));
-                        CreateUnit(PlayerStateFactory.AlienAIPlayer1.handle, ALIEN_STRUCTURE_TUMOR, x, y, bj_UNIT_FACING);
+                        const tumor = CreateUnit(PlayerStateFactory.AlienAIPlayer1.handle, ALIEN_STRUCTURE_TUMOR, x, y, bj_UNIT_FACING);
+                        CreepEntity.addCreepWithSource(600, Unit.fromHandle(tumor));
                     })
                 }
                 for (let index = 0; index < GetRandomInt(6, 10); index++) {

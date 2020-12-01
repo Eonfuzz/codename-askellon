@@ -25,7 +25,7 @@ import { CreepEntity } from "app/creep/creep-entity";
 import { ITEM_WEP_NEOKATANA } from "resources/item-ids";
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
-import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
+import { ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "app/force/forces/force-names";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -371,14 +371,26 @@ export class ChatEntity extends Entity {
             }
             else if (message === "-h" || message === "-handles" || message === "-p" || message === "-players") {
                 const pIsAlien = PlayerStateFactory.get(player).getForce().is(ALIEN_FORCE_NAME);
+                const isObserver = PlayerStateFactory.get(player).getForce().is(OBSERVER_FORCE_NAME);
+
                 Players.forEach(p => {
                     const pData = PlayerStateFactory.get(p);
                     const crew = PlayerStateFactory.getCrewmember(p);
-                    const showIsAlien = pIsAlien && pData.getForce().is(ALIEN_FORCE_NAME);
+                    const showIsAlien = pIsAlien && pData && pData.getForce().is(ALIEN_FORCE_NAME);
 
                     if (crew) {
-                        MessagePlayer(player, `#${p.id}: |cff${playerColors[p.id].code}${crew.name}|r ${pData.originalName} ${showIsAlien ? `${COL_ALIEN}( ALIEN )|r` : ''}`);
+                        const pStr = `#${p.id}: ${playerColors[p.id].code}${crew.name}|r ${pData.originalName}`
+                        if (isObserver) {
+                            MessagePlayer(player,  `${pStr} ( ${pData.getForce().name} )`);
+                        }
+                        else if (pIsAlien && showIsAlien) {
+                            MessagePlayer(player,  `${pStr} ( ${pData.getForce().name} )`);
+                        }
+                        else {
+                            MessagePlayer(player,  pStr);
+                        }
                     }
+                        
                 });
             }
         }

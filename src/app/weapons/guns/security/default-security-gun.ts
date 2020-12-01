@@ -18,7 +18,7 @@ import { ProjectileTargetStatic } from "app/weapons/projectile/projectile-target
 import { SoundRef } from "app/types/sound-ref";
 
 export class DefaultSecurityGun extends Gun {
-    shootRef = new SoundRef("Sounds\\Station\\TurretShoot.ogg", false, true);
+    shootRef = new SoundRef("Sounds\\Station\\turretShoot.mp3", false, true);
     constructor(equippedTo: ArmableUnit) {
         super(equippedTo);
         // Define spread and bullet distance
@@ -38,7 +38,7 @@ export class DefaultSecurityGun extends Gun {
         super.onShoot(unit, targetLocation);
 
         try {
-            const sound = PlayNewSoundOnUnit("Sounds\\turretShoot.wav", unit, 20);
+            const sound = PlayNewSoundOnUnit("Sounds\\turretShoot.mp3", unit, 20);
             let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y) + 30).projectTowards2D(unit.facing, 20);
             let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
 

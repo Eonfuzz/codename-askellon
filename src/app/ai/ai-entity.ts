@@ -144,7 +144,7 @@ export class AIEntity extends Entity {
                 const z = WorldEntity.getInstance().getPointZone(GetUnitX(whichUnit), GetUnitY(whichUnit));
 
                 if (!z) {
-                    return Log.Error("Failed to add AI unit, no zone found "+GetUnitName(whichUnit));
+                    return; //Log.Error("Failed to add AI unit, no zone found "+GetUnitName(whichUnit));
                 }
                 if (GetUnitTypeId(whichUnit) === ALIEN_MINION_FORMLESS) {
                     CreepEntity.addCreepWithSource(256, Unit.fromHandle(whichUnit));
