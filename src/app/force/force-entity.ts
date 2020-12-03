@@ -359,6 +359,12 @@ export class ForceEntity extends Entity {
             
 
             Timers.addSlowTimedAction(15, () => {
+                // has only one force one?
+                const winningForces2 = PlayerStateFactory.getInstance().forces.filter(f => f.checkVictoryConditions());
+
+                if (winningForces2.length > 1) return;
+                if (winner !== winningForces2[0]) return;
+                
                 if (winningPlayers.indexOf(MapPlayer.fromLocal()) >= 0) {
                     winningSound.playSound();
                 }

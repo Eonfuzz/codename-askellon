@@ -707,7 +707,7 @@ rlev
 }
 
 STRING 202
-// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+// Abilities: ASPI (Acidic Stigmata), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1260%|r for |cffd45e122 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
 }
@@ -2819,12 +2819,6 @@ STRING 739
 // Abilities: ASPI (Acidic Stigmata), Tip (Tooltip - Normal)
 {
 [|cffffff00W|r] - Sprint
-}
-
-STRING 742
-// Abilities: ASPI (Acidic Stigmata), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1260%|r for |cffd45e122 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
 }
 
 STRING 744
@@ -6778,5 +6772,47 @@ STRING 1577
 // Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
 |cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Dodging costs no mana|n- Damage of Autocannons increased by 50%|n- Mining Laser speed increased by 50%|n- Drones now ferry mined ore back to the Askellon|r|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|r|n|n|cff8a6df2Infestation [ALIEN]|n- Deliver 250 more Minerals to cause a disaster
+}
+
+STRING 1578
+// Doodads: D01L (Ubersplat Danger), Name (Name)
+{
+Ubersplat Danger
+}
+
+STRING 1579
+// Abilities: A02D (Fuller Auto), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 1580
+// Abilities: A02D (Fuller Auto), Unhotkey (Hotkey - Turn Off)
+{
+F
+}
+
+STRING 1581
+// Abilities: A02D (Fuller Auto), Tip (Tooltip - Normal)
+{
+Fuller Auto
+}
+
+STRING 1582
+// Abilities: A02D (Fuller Auto), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080They told me it couldn't be done. I made it be done.|n|n|rActivates the |cff00ff00Fuller than Full Auto|r mode on the Flamesaw, dramatically increasing attack speed. Lasts 10 seconds.|n|n|cff80808090 Seconds Cooldown|r
+}
+
+STRING 1584
+// Abilities: A02D (Fuller Auto), Name (Name)
+{
+Fuller Auto
+}
+
+STRING 1585
+// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1250%|r for |cffd45e127 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
 }
 

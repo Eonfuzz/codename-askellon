@@ -16,7 +16,7 @@ import { Timers } from "app/timer-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { SoundRef } from "app/types/sound-ref";
-import { ABIL_WEP_MINIGUN, ABIL_WEP_MINIGUN_OVERSIZED } from "resources/ability-ids";
+import { ABIL_WEP_MINIGUN, ABIL_WEP_MINIGUN_OVERSIZED, ABIL_WEP_MINIGUN_FULLER_AUTO } from "resources/ability-ids";
 import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { Log } from "lib/serilog/serilog";
@@ -48,6 +48,8 @@ export class Minigun extends GunItem {
     private maxTurnSpeed = 110;
     private shootTimer = new Timer();
 
+    public fullerAutoActive = false;
+
     private unallyTicker = 1;
     private unallyGroup = CreateGroup();
 
@@ -70,10 +72,13 @@ export class Minigun extends GunItem {
     public onAdd(caster: ArmableUnitWithItem) {
         super.onAdd(caster);
         this.equippedTo.unit.addAbility(ABIL_WEP_MINIGUN_OVERSIZED);
+        this.equippedTo.unit.addAbility(ABIL_WEP_MINIGUN_FULLER_AUTO);
+        this.equippedTo.unit.startAbilityCooldown(ABIL_WEP_MINIGUN_FULLER_AUTO, 60);
     }
 
     public onRemove() {
         this.equippedTo.unit.removeAbility(ABIL_WEP_MINIGUN_OVERSIZED);
+        this.equippedTo.unit.removeAbility(ABIL_WEP_MINIGUN_FULLER_AUTO);
         super.onRemove();
     }
 
@@ -209,7 +214,7 @@ export class Minigun extends GunItem {
         let strayTarget = this.getStrayLocation(this.targetLoc, unit);
         let deltaTarget = strayTarget.subtract(casterLoc);
 
-        PlayNewSoundOnUnit("Sounds\\minigun-fire.wav", unit, 45);
+        PlayNewSoundOnUnit("Sounds\\minigun-fire.wav", unit, 25);
 
         let projectile = new Projectile(
             unit.handle,
@@ -236,12 +241,6 @@ export class Minigun extends GunItem {
             .onCollide((projectile: Projectile, collidesWith: unit) => 
                 this.onFlameProjectileCollide(projectile, collidesWith)
             ).addEffect(
-                SFX_FIRE,
-                new Vector3(0, 0, 0),
-                deltaTarget.normalise(),
-                0.5
-            )
-            projectile.addEffect(
                 SFX_LASER_2,
                 new Vector3(0, 0, 0),
                 deltaTarget.normalise(),
@@ -259,16 +258,13 @@ export class Minigun extends GunItem {
         if (this.spinStacks < this.maxSpinStacks) {
             this.spinStacks++;
         }
-        if (this.flamesawActive) {
-            Timers.addTimedAction((0.23 / Pow(this.attackSpeedPerStack, this.spinStacks)), () => {
-                this.fireProjectile(unit);
-            });
-        }
-        else {
-            Timers.addTimedAction((0.25 / Pow(this.attackSpeedPerStack, this.spinStacks)), () => {
-                this.fireProjectile(unit);
-            });
-        }
+        let shootTimer = (0.25 / Pow(this.attackSpeedPerStack, this.spinStacks));
+
+        if (this.fullerAutoActive) shootTimer /= 2;
+
+        Timers.addTimedAction(shootTimer, () => {
+            this.fireProjectile(unit);
+        });
     }
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {

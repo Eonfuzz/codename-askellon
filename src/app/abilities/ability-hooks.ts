@@ -49,7 +49,8 @@ import {
     ABIL_SYSTEM_REACTOR_ROTATE_SHIELD_FREQUENCY,
     ABIL_DROP_MINERALS,
     ABIL_ACTIVATE_SCAN_CREW,
-    ABIL_ACTIVATE_SCAN_ALIENS
+    ABIL_ACTIVATE_SCAN_ALIENS,
+    ABIL_WEP_MINIGUN_FULLER_AUTO
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -96,6 +97,7 @@ import { LaserBroadsideAbility } from "./station/laser-broadside";
 import { DivertToWeaponsAbiility } from "./station/divert-weapons";
 import { DropMineralsAbility } from "./items/drop-minerals";
 import { StationSecurityScanForPlayer } from "./station/scan-for-player";
+import { MinigunFullerAutoAbility } from "./human/minigun-fuller-auto";
 
 
 
@@ -182,6 +184,7 @@ AbilityHooks.Add(ABIL_GENE_XENOPHOBIC_PUNCH, () => new XenophobicPunchAbility())
 AbilityHooks.Add(ABIL_GENE_INSTANT_HEAL, () => new InstantHealAbility());
 AbilityHooks.Add(ABIL_SYSTEM_REACTOR_DIAGNOSTICS, () => new ReactorDiagnosticsAbility());
 AbilityHooks.Add(ABIL_SYSTEM_PURGE_VENTS, () => new VentPurgeAbility());
+AbilityHooks.Add(ABIL_WEP_MINIGUN_FULLER_AUTO, () => new MinigunFullerAutoAbility());
 
 ABIL_SECURITY_TARGET_ALL.forEach(a => {
     AbilityHooks.Add(a, () => new StationSecurityTargetAbility());

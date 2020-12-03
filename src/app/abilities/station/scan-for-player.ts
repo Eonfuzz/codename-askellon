@@ -49,7 +49,7 @@ export class StationSecurityScanForPlayer implements Ability {
                     if (pData && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
                         if (p.id < playerColors.length) {
                             const c = playerColors[p.id];
-                            if (c) PingMinimapEx(pMain.x, pMain.y, 6, c.red, c.green, c.blue, false);
+                            if (c) PingMinimapEx(pMain.x, pMain.y, 15, c.red, c.green, c.blue, false);
                         }
                         else {
                             Log.Warning(`${p.id} not in rgb colour array`);
@@ -63,7 +63,7 @@ export class StationSecurityScanForPlayer implements Ability {
                 PlayerStateFactory.getAlienAI().forEach(p => {
                     GroupEnumUnitsOfPlayer(uGroup, p.handle, Filter(() => {
                         const u = GetFilterUnit();
-                        PingMinimapEx( GetUnitX(u), GetUnitY(u), 3, 153, 51, 255, false);
+                        PingMinimapEx( GetUnitX(u), GetUnitY(u), 15, 153, 51, 255, false);
                         return false;
                     }));
                     GroupClear(uGroup);
@@ -75,7 +75,7 @@ export class StationSecurityScanForPlayer implements Ability {
                 alienForce.getPlayers().forEach(p => {
                     if (alienForce.isPlayerTransformed(p)) {
                         const u = alienForce.getActiveUnitFor(p);
-                        PingMinimapEx(u.x, u.y, 3, 153, 51, 255, false);
+                        PingMinimapEx(u.x, u.y, 15, 153, 51, 255, false);
                     }
                 });
             }

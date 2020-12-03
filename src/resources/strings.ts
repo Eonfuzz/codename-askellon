@@ -35,7 +35,7 @@ export const STR_GENE_SUCCESSFUL = () => `${COL_INFO}Gene Splicing:|r ${COL_GOOD
 
 export const STR_ALIEN_DEATH = (who: MapPlayer, whoColor: string, crew: Crewmember, alien: Unit, isAlienHost: boolean) => `
 ${COL_ALIEN}An Alien has been slain!|r
-|cff${whoColor}${crew.name}|r${COL_ALIEN} was ${isAlienHost ? 'the Alien Host' : 'an Alien Spawn'}|r`;
+${whoColor}${crew.name}|r${COL_ALIEN} was ${isAlienHost ? 'the Alien Host' : 'an Alien Spawn'}|r`;
 
 
 export const STR_GENETIC_SAMPLE = (who: MapPlayer, forUnit: Unit) => `${COL_MISC}Mandate :: All staff are to ensure they are regularly tested and immunized. The Askellon cannot afford another quarantine breach.|r

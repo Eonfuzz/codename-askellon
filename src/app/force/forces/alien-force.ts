@@ -31,10 +31,11 @@ import { ChatEntity } from "app/chat/chat-entity";
 import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { CrewmemberForce } from "./crewmember-force";
-import { MessagePlayer } from "lib/utils";
+import { MessagePlayer, MessageAllPlayers } from "lib/utils";
 import { Quick } from "lib/Quick";
 import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
+import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -53,6 +54,8 @@ export class AlienForce extends ForceType {
 
     private alienDeathTrigs = new Map<Unit, Trigger>();
     private alienKillsTrigger = new Trigger();
+
+    private isPickingAnotherAlienHost = false;
 
     constructor() {
         super();
@@ -308,8 +311,33 @@ export class AlienForce extends ForceType {
             obsForce.addPlayerMainUnit(crew, player);
             PlayerStateFactory.get(player).setForce(obsForce);
 
-            if (player === this.alienHost) {
+            if (player === this.alienHost && this.players.length > 0) {
                 this.repickHost();
+            }
+            // Otherwise if the game time is less than five minutes, pick a new host
+            else if (this.players.length === 0 && GameTimeElapsed.getTime() <= 5*60) {
+                const crewForce = PlayerStateFactory.getForce(CREW_FORCE_NAME) as CrewmemberForce;
+                if (crewForce.getPlayers().length > 1) {
+                    this.isPickingAnotherAlienHost = true;
+                    Timers.addTimedAction(10, () => {
+                        // Lastly check the player count
+                        if (crewForce.getPlayers().length <= 1) return;
+                        MessageAllPlayers(`Alien died too early; Repicking ${COL_ALIEN}Alien Host|r.`);
+                        
+                        const crwPlayers = crewForce.getPlayers();
+                        const pickedPlayer = Quick.GetRandomFromArray(crwPlayers, 1)[0];
+
+                        crewForce.removePlayer(pickedPlayer);
+                        
+                        const crewPickedPlayer = PlayerStateFactory.getCrewmember(pickedPlayer);
+        
+                        PlayerStateFactory.get(pickedPlayer).setForce(this);
+                        this.addPlayer(pickedPlayer);
+                        this.addPlayerMainUnit(crewPickedPlayer, pickedPlayer);
+                        this.repickHost();
+                        this.isPickingAnotherAlienHost = false;
+                    });
+                }
             }
         }      
     }

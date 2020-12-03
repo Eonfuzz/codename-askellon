@@ -22,10 +22,12 @@ import { Timers } from "app/timer-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { CreepEntity } from "app/creep/creep-entity";
-import { ITEM_WEP_NEOKATANA } from "resources/item-ids";
+import { ITEM_WEP_NEOKATANA, ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "app/force/forces/force-names";
+import { PlayerState } from "app/force/player-type";
+import { PlayNewSoundOnUnit } from "lib/translators";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -266,6 +268,11 @@ export class ChatEntity extends Entity {
                     CreateItem(ITEM_WEP_NEOKATANA, x, y);
                 });
             }
+            else if (message == "-test minigun") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    CreateItem(ITEM_WEP_MINIGUN, x, y);
+                });
+            }
             else if (message == "-cd") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     UnitResetCooldown(GetEnumUnit());
@@ -367,6 +374,22 @@ export class ChatEntity extends Entity {
                 crew.unit.setAnimation(9);
             }
             else if (message === "-clear" || message === "-c") {
+                if (player.handle === GetLocalPlayer()) ClearTextMessages();
+            }
+            else if (message === "-lol" || message === "-l" || message === "-l") {
+                const pData = PlayerStateFactory.get(player);
+                const crew = PlayerStateFactory.getCrewmember(player);
+                if (crew && pData.getUnit() === crew.unit) {    
+                    const u = crew.unit;                
+                    if (u && u.typeId === CREWMEMBER_UNIT_ID) {
+                        PlayNewSoundOnUnit("Sounds\\minigun_fullerauto_2.mp3", u, 60);
+                        u.setAnimation(5);
+                        const uX = u.x;
+                        const uY = u.y;
+
+                        Timers.addTimedAction(1.4, () => u.x == uX && u.y == uY && u.setAnimation(0));
+                    }
+                }
                 if (player.handle === GetLocalPlayer()) ClearTextMessages();
             }
             else if (message === "-h" || message === "-handles" || message === "-p" || message === "-players") {
