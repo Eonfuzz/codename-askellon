@@ -196,6 +196,11 @@ export class ReactorZone extends ShipZone {
         if (minerals >= 400 && oldMineralCount < 400) {
             ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 2);
             MessageAllPlayers(`RAW MATERIALS QUOTA [${COL_GOLD}400/400|r] Reached`);
+            MessageAllPlayers(`Improving Crew Armor`);
+        }
+        if (minerals >= 600 && oldMineralCount < 600) {
+            ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 3);
+            MessageAllPlayers(`RAW MATERIALS QUOTA [${COL_GOLD}600/600|r] Reached`);
             MessageAllPlayers(`Restoring ${COL_GOLD}Askellon|r Engine functionality`);
         }
 

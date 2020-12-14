@@ -1,6 +1,6 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
-import { vectorFromUnit } from "app/types/vector2";
+import { vectorFromUnit, Vector2 } from "app/types/vector2";
 import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_EVOLVE_T1_SPELLBOOK, ABIL_ALIEN_EVOLVE_T2_SPELLBOOK, ABIL_ALIEN_EVOLVE_T3_SPELLBOOK } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
@@ -25,17 +25,18 @@ import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { WorldEntity } from "app/world/world-entity";
 import { Timers } from "app/timer-type";
-import { COL_ALIEN, COL_TEAL, COL_GOLD } from "resources/colours";
+import { COL_ALIEN, COL_TEAL, COL_GOLD, COL_MISC } from "resources/colours";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
 import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { CrewmemberForce } from "./crewmember-force";
-import { MessagePlayer, MessageAllPlayers } from "lib/utils";
+import { MessagePlayer, MessageAllPlayers, CreateBlood } from "lib/utils";
 import { Quick } from "lib/Quick";
 import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
+import { ITEM_HUMAN_CORPSE } from "resources/item-ids";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -263,6 +264,27 @@ export class AlienForce extends ForceType {
             
             crew.unit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
 
+            if (crew.unit.show) {
+                // Place a corpse
+                BlzSetUnitFacingEx(crew.unit.handle, 270);
+                const cFacing = 270;
+                const cLoc = Vector2.fromWidget(crew.unit.handle).applyPolarOffset(cFacing, -30);
+                
+                for (let index = 0; index < GetRandomInt(3, 5); index++) {
+                    CreateBlood(cLoc.x + GetRandomReal(-40, 40), cLoc.y + GetRandomReal(-40, 40))                
+                }
+
+                // const i = CreateItem(ITEM_HUMAN_CORPSE, cLoc.x, cLoc.y);
+                // SetItemPlayer(i, player.handle, true);
+
+                // BlzSetItemExtendedTooltip(i, `${COL_MISC}His cold, lifeless eyes stare beyond the cosmos|r|n|nThis is the body of ${playerColors[player.id].code}${crew.name}|r`);
+                
+                // SetItemVisible(i, false);
+                // Timers.addTimedAction(1.2, () => {
+                //     SetItemVisible(i, true);
+                // });
+            }
+
             // Remove ability tooltip
             TooltipEntity.getInstance().unregisterTooltip(crew, alienTooltipToHuman);
             TooltipEntity.getInstance().unregisterTooltip(this.getAlienFormForPlayer(player), alienTooltipToHuman);
@@ -322,7 +344,7 @@ export class AlienForce extends ForceType {
                     Timers.addTimedAction(10, () => {
                         // Lastly check the player count
                         if (crewForce.getPlayers().length <= 1) return;
-                        MessageAllPlayers(`Alien died too early; Repicking ${COL_ALIEN}Alien Host|r.`);
+                        MessageAllPlayers(`Alien died too early... Repicking the ${COL_ALIEN}Alien Host|r.`);
                         
                         const crwPlayers = crewForce.getPlayers();
                         const pickedPlayer = Quick.GetRandomFromArray(crwPlayers, 1)[0];
@@ -359,7 +381,10 @@ export class AlienForce extends ForceType {
             if (alienHost) {
                 const pData = PlayerStateFactory.get(alienHost);
                 const crew = PlayerStateFactory.getCrewmember(alienHost);
+                const alienUnit = this.getAlienFormForPlayer(alienHost);
 
+                this.setHost(alienHost);
+                this.applyAlienMinionHost(alienUnit, true);
                 this.players.forEach(p => {
                     MessagePlayer(p, `|cff${pData.originalColour}${crew.name}|r${COL_ALIEN} is your new host.`);
                 });

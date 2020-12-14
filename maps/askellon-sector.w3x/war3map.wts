@@ -249,14 +249,8 @@ STRING 72
 Tree HQ
 }
 
-STRING 76
-// Abilities: A008 (Interact and Resolve), Name (Name)
-{
-Interact and Resolve
-}
-
 STRING 78
-// Abilities: A008 (Interact and Resolve), Tip (Tooltip - Normal)
+// Abilities: A008 (Crewmember), Tip (Tooltip - Normal)
 {
 [|cffffff00F|r] - Resolve
 }
@@ -334,7 +328,7 @@ Resolve
 }
 
 STRING 94
-// Abilities: A008 (Interact and Resolve), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A008 (Crewmember), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
 }
@@ -345,26 +339,8 @@ STRING 95
 |cff808080The last attempt to survive, this unit feels resolve.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
 }
 
-STRING 100
-// Abilities: A009 (High Quality Polymer), Name (Name)
-{
-High Quality Polymer
-}
-
-STRING 102
-// Abilities: A009 (High Quality Polymer), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080These lighter polymers allow for enhanced mobility; however the fragile material cannot support other systems.|r|n|nDash 30% further, and unlock |cff00ff00Sprint Burst|r.|n|cff00ff00- Movement Speed is increased by 40% for 3.5 seconds.|r|n|n|cffc81e1eAttachment: High Quality Polymer|r
-}
-
-STRING 104
-// Abilities: A009 (High Quality Polymer), Tip (Tooltip - Normal)
-{
-[|cffffff00R|r] - High Quality Polymers
-}
-
 STRING 105
-// Abilities: A009 (High Quality Polymer), Hotkey (Hotkey - Normal)
+// Abilities: A00N (ASKELLON - Exit Ship Controls), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -483,7 +459,7 @@ Cliff Collumn
 }
 
 STRING 141
-// Abilities: A008 (Interact and Resolve), Hotkey (Hotkey - Normal)
+// Abilities: A008 (Crewmember), Hotkey (Hotkey - Normal)
 {
 T
 }
@@ -1264,19 +1240,19 @@ STRING 312
 }
 
 STRING 313
-// Abilities: A00N (ASKELLON - Exit Ship Controls), Hotkey (Hotkey - Normal)
-{
-R
-}
-
-STRING 314
 // Abilities: A00O (PERSEUS - Auto-cannon), Hotkey (Hotkey - Normal)
 {
 R
 }
 
-STRING 315
+STRING 314
 // Abilities: A00U (Evolve), Hotkey (Hotkey - Normal)
+{
+R
+}
+
+STRING 315
+// Abilities: A00Y (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2210,7 +2186,7 @@ Magnetic Fusilade
 }
 
 STRING 572
-// Abilities: A00Y (Evolve), Hotkey (Hotkey - Normal)
+// Abilities: A01R (Evolve), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2750,7 +2726,7 @@ Magnetic Fusilade
 }
 
 STRING 714
-// Abilities: A01R (Evolve), Hotkey (Hotkey - Normal)
+// Abilities: A01S (Place Egg), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -2789,12 +2765,6 @@ STRING 724
 // Units: ALI2 (Alien), Name (Name)
 {
 Alien
-}
-
-STRING 725
-// Units: ALI1 (Alien), EditorSuffix (Name - Editor Suffix)
-{
-- Tier 2
 }
 
 STRING 727
@@ -2942,7 +2912,7 @@ STRING 773
 }
 
 STRING 774
-// Abilities: A01S (Place Egg), Hotkey (Hotkey - Normal)
+// Abilities: AC04 (Target Player 4), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -3032,7 +3002,7 @@ PERSEUS - Macro Las
 }
 
 STRING 798
-// Abilities: AC04 (Target Player 4), Hotkey (Hotkey - Normal)
+// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -3601,12 +3571,6 @@ STRING 945
 |cff808080Fluff TODO|r|n|nDeals |cff00ff0010 damage|r and takes a |cff00ff00Genetic Sample|r from target unit.|n|n|cff80808025 Seconds Cooldown|r
 }
 
-STRING 947
-// Units: ALI2 (Alien), EditorSuffix (Name - Editor Suffix)
-{
-- Tier 3
-}
-
 STRING 948
 // Units: N00C (Alien), Name (Name)
 {
@@ -3644,7 +3608,7 @@ Magnetic Fusilade
 }
 
 STRING 955
-// Abilities: A01X (Reactor-Aided Weapon Reprocessor), Hotkey (Hotkey - Normal)
+// Abilities: A025 (Evolutions - Tier 1), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -4649,6 +4613,7 @@ Alien:
 }
 
 STRING 1187
+// Units: N00S (Alien), Name (Name)
 {
 Alien
 }
@@ -4936,13 +4901,13 @@ STRING 1240
 }
 
 STRING 1241
-// Abilities: A025 (Evolutions - Tier 1), Hotkey (Hotkey - Normal)
+// Abilities: A028 (Evolutions - Tier 2 Aggressive), Hotkey (Hotkey - Normal)
 {
 R
 }
 
 STRING 1242
-// Abilities: A028 (Evolutions - Tier 2 Aggressive), Hotkey (Hotkey - Normal)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 R
 }
@@ -6112,7 +6077,7 @@ STRING 1463
 }
 
 STRING 1464
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 R
 }
@@ -6403,12 +6368,6 @@ STRING 1512
 // Abilities: A028 (Evolutions - Tier 2 Aggressive), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Consume biomass, learn prey behaviours and become stronger.|r|n|nBegin evolving into your selected Evolution. Takes |cff00ff0040 seconds|r to complete your evolution.|r|r|n|n|cff808080120 Seconds Cooldown|r
-}
-
-STRING 1513
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
-{
-R
 }
 
 STRING 1514
@@ -6814,5 +6773,201 @@ STRING 1585
 // Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1250%|r for |cffd45e127 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
+}
+
+STRING 1587
+{
+Alien
+}
+
+STRING 1588
+// Units: ALI1 (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- T2 Canite
+}
+
+STRING 1589
+// Units: ALI2 (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- T3 Canite
+}
+
+STRING 1590
+// Units: N00S (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- T2 Defiler
+}
+
+STRING 1591
+// Abilities: A02E (Defiler Infestation Spawning), Name (Name)
+{
+Defiler Infestation Spawning
+}
+
+STRING 1592
+// Abilities: A02E (Defiler Infestation Spawning), Tip (Tooltip - Normal)
+{
+Infestation Form
+}
+
+STRING 1593
+// Abilities: A02E (Defiler Infestation Spawning), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The abdomen conceals large birthing sacs.|r|n|nYour attacks coat the enemy in a terrible toxin, dealing |cff00ff005 damage|r a second lasting |cff00ff0010 seconds|r. Also passively spawns a |cff8a6defCanite|r every 25 seconds.|r|r|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 1595
+// Abilities: A02F (Defiler Neurotoxin), Tip (Tooltip - Normal)
+{
+Xenos Neurotoxin
+}
+
+STRING 1596
+// Abilities: A02F (Defiler Neurotoxin), Name (Name)
+{
+Defiler Neurotoxin
+}
+
+STRING 1597
+// Abilities: A02F (Defiler Neurotoxin), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The abdomen conceals large birthing sacs.|r|n|nYour attacks coat the enemy in a terrible toxin, dealing |cff00ff005 damage|r a second lasting |cff00ff0010 seconds|r. Also passively spawns a |cff8a6defCanite|r every 25 seconds.|r|r|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 1598
+// Abilities: A02G (Defiler Infestation Spawning 2), Name (Name)
+{
+Defiler Infestation Spawning 2
+}
+
+STRING 1599
+// Abilities: A02G (Defiler Infestation Spawning 2), Tip (Tooltip - Normal)
+{
+Infestation Form
+}
+
+STRING 1600
+// Abilities: A02G (Defiler Infestation Spawning 2), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The abdomen conceals large birthing sacs.|r|n|nYour attacks coat the enemy in a terrible toxin, dealing |cff00ff005 damage|r a second lasting |cff00ff0010 seconds|r. Also passively spawns a |cff8a6defCanite|r every 25 seconds.|r|r|n|n|cff80808025 Seconds Cooldown|r
+}
+
+STRING 1601
+// Items: I00N (Corpse), Name (Name)
+{
+Corpse
+}
+
+STRING 1602
+// Items: I00N (Corpse), Ubertip (Tooltip - Extended)
+{
+It's a corpse bruh
+}
+
+STRING 1603
+// Items: I00N (Corpse), Tip (Tooltip - Basic)
+{
+Corpse
+}
+
+STRING 1604
+// Items: I00N (Corpse), Description (Description)
+{
+It's a body
+}
+
+STRING 1605
+// Abilities: A02H (Corpse Slow), Name (Name)
+{
+Corpse Slow
+}
+
+STRING 1606
+// Abilities: A02H (Corpse Slow), Tip (Tooltip - Normal)
+{
+Oversized Autoloader
+}
+
+STRING 1607
+// Abilities: A02H (Corpse Slow), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nEach bullet fired increases attack speed by |cff00ff005%|r, |cff00ff00stacking |rup to |cff00ff0080%|r. The heavy loading mechanism |cffff0000passively reduces|r your movement speed by |cff00ff0030|r.
+}
+
+STRING 1609
+// Abilities: A008 (Crewmember), Name (Name)
+{
+Crewmember
+}
+
+STRING 1610
+// Abilities: A008 (Crewmember), EditorSuffix (Editor Suffix)
+{
+ [ ROLE INFO ]
+}
+
+STRING 1611
+// Abilities: A02I (Cultist), Name (Name)
+{
+Cultist
+}
+
+STRING 1612
+// Abilities: A02I (Cultist), Tip (Tooltip - Normal)
+{
+Cultist
+}
+
+STRING 1613
+// Abilities: A02I (Cultist), EditorSuffix (Editor Suffix)
+{
+ [ ALTAR / ROLE INFO ]
+}
+
+STRING 1614
+// Abilities: A02I (Cultist), Hotkey (Hotkey - Normal)
+{
+T
+}
+
+STRING 1615
+// Abilities: A009 (Cultist), Name (Name)
+{
+Cultist
+}
+
+STRING 1616
+// Abilities: A009 (Cultist), Hotkey (Hotkey - Normal)
+{
+T
+}
+
+STRING 1617
+// Abilities: A009 (Cultist), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
+}
+
+STRING 1618
+// Abilities: A009 (Cultist), Tip (Tooltip - Normal)
+{
+[|cffffff00F|r] - Resolve
+}
+
+STRING 1619
+// Abilities: A009 (Cultist), EditorSuffix (Editor Suffix)
+{
+ [ ROLE INFO ]
+}
+
+STRING 1620
+{
+Cultists
+}
+
+STRING 1622
+// Units: n00T (Circle of Carrion), Name (Name)
+{
+Circle of Carrion
 }
 

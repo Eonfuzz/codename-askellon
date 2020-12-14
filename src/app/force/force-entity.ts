@@ -17,7 +17,7 @@ import { PlayerStateFactory } from "./player-state-entity";
 import { OPT_TYPES } from "./opt/opt-types-enum";
 import { CrewmemberForce } from "./forces/crewmember-force";
 import { ObserverForce } from "./forces/observer-force";
-import { CREW_FORCE_NAME, ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "./forces/force-names";
+import { CREW_FORCE_NAME, ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME, CULT_FORCE_NAME } from "./forces/force-names";
 import { AlienForce } from "./forces/alien-force";
 import { GetActivePlayers } from "lib/utils";
 import { Hooks } from "lib/Hooks";
@@ -25,6 +25,7 @@ import { ChatEntity } from "app/chat/chat-entity";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
 import { PlayerState } from "./player-type";
+import { CultistForce } from "./forces/cultist/cultist-force";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -41,7 +42,7 @@ export class ForceEntity extends Entity {
         return this.instance;
     }
 
-    _timerDelay = 5.0;
+    _timerDelay = 0.3;
 
     // new id for the next aggresison item
     private aggressionId = 0;
@@ -418,6 +419,9 @@ export class ForceEntity extends Entity {
         let force = PlayerStateFactory.getForce(name);
         if (!force) {
             switch(name) {
+                case CULT_FORCE_NAME:
+                    force = new CultistForce(); 
+                    break;
                 case ALIEN_FORCE_NAME:
                     force = new AlienForce(); 
                     break;
@@ -447,13 +451,26 @@ export class ForceEntity extends Entity {
         // Add alien
         optSelection.addOpt({
             name: ALIEN_FORCE_NAME,
-            isRequired: true,
+            isRequired: PlayerStateFactory.isSinglePlayer() ? false : true,
             text: STR_OPT_ALIEN,
             hotkey: "a",
             type: OPT_TYPES.ANTAGONST,
             chanceToExist: 100,
             count: 1
         });
+
+        if (PlayerStateFactory.isSinglePlayer()) {
+            optSelection.addOpt({
+                name: CULT_FORCE_NAME,
+                isRequired: false,
+                text: STR_OPT_CULT,
+                hotkey: "c",
+                type: OPT_TYPES.ANTAGONST,
+                chanceToExist: 100,
+                count: (PlayerStateFactory.getInstance().playerCount > 8) ? 2 : 1
+            });
+        }
+        
         // Now ask for opts
         optSelection.askPlayerOpts();
 
@@ -472,6 +489,10 @@ export class ForceEntity extends Entity {
         });
         
         timerTrig.registerTimerExpireEvent(timer);
+
+        // We will always have Alien and Crewmember forces
+        PlayerStateFactory.getInstance().forces.push(new AlienForce());
+        PlayerStateFactory.getInstance().forces.push(new CrewmemberForce());
     }
 
 

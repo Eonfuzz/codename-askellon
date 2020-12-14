@@ -14,3 +14,5 @@ export const ITEM_MINERALS_REACTIVE_SHIP_ID = FourCC('I00B');
 export const ITEM_MINERALS_VALUABLE_SHIP_ID = FourCC('I00J');
 export const ITEM_MINERAL_REACTIVE = FourCC('I00H');
 export const ITEM_MINERAL_VALUABLE = FourCC('I00I');
+
+export const ITEM_HUMAN_CORPSE = FourCC('I00N');

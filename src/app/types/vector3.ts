@@ -18,6 +18,11 @@ export class Vector3 {
         return SquareRoot( this.x*this.x + this.y*this.y + this.z*this.z );
     }
 
+    distanceTo(where: Vector3) {
+        return where.subtract(this).getLength();
+    }
+
+
     normalise(): Vector3 {
         let len = this.getLength();
 

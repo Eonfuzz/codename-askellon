@@ -10,7 +10,7 @@ import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { PRIVS } from "./chat-privs-enum";
+import { PRIVS, VETERAN_USERS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
@@ -22,12 +22,14 @@ import { Timers } from "app/timer-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { CreepEntity } from "app/creep/creep-entity";
-import { ITEM_WEP_NEOKATANA, ITEM_WEP_MINIGUN } from "resources/item-ids";
+import { ITEM_WEP_NEOKATANA, ITEM_WEP_MINIGUN, ITEM_HUMAN_CORPSE } from "resources/item-ids";
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "app/force/forces/force-names";
-import { PlayerState } from "app/force/player-type";
 import { PlayNewSoundOnUnit } from "lib/translators";
+import { Quick } from "lib/Quick";
+import { BUFF_ID } from "resources/buff-ids";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -132,7 +134,7 @@ export class ChatEntity extends Entity {
         const priv = this.getUserPrivs(player);
 
         // Priv 2 === DEVELOPER
-        if (priv >= 2) {
+        if (priv >= PRIVS.DEVELOPER) {
             // if (message.indexOf("-m") === 0) {
             //     const mSplit = message.split(" ");
             //     const dX = S2I(mSplit[1] || "0");
@@ -273,6 +275,23 @@ export class ChatEntity extends Entity {
                     CreateItem(ITEM_WEP_MINIGUN, x, y);
                 });
             }
+            else if (message == "-test corpse") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    const i = CreateItem(ITEM_HUMAN_CORPSE, x, y);
+                    SetItemPlayer(i, Quick.GetRandomFromArray(Players, 1)[0].handle, true);
+                });
+            }
+            else if (message == "-test madness") {
+                EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    const u = Unit.fromHandle(GetEnumUnit());
+                    EventEntity.send(EVENT_TYPE.ADD_BUFF_INSTANCE, { source: u, data: { 
+                        buffId: BUFF_ID.MADNESS,
+                        instance: new BuffInstanceDuration(u, 300),
+                        target: u
+                    }});
+                    // DynamicBuffEntity.add(BUFF_ID.MADNESS, u, new BuffInstanceDuration(u, 60));
+                });
+            }
             else if (message == "-cd") {
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
                     UnitResetCooldown(GetEnumUnit());
@@ -359,11 +378,11 @@ export class ChatEntity extends Entity {
             }
         }
         // Priv 1 === MODERATOR
-        if (priv >= 1) {
+        if (priv >= PRIVS.MODERATOR) {
 
         }
         // Priv 0 === NORMIE
-        if (priv >= 0) {
+        if (priv >= PRIVS.USER) {
             if (message === "-u" && crew) {
                 if (crew.weapon) {
                     crew.weapon.detach();
@@ -412,8 +431,7 @@ export class ChatEntity extends Entity {
                         else {
                             MessagePlayer(player,  pStr);
                         }
-                    }
-                        
+                    }                        
                 });
             }
         }
@@ -439,8 +457,6 @@ export class ChatEntity extends Entity {
                 doContinue: true,
                 chatTag: undefined,
             });
-
-            // Log.Information("Who: "+chatData.name+" to "+chatData.recipients.map(p => p.name).join(','));
 
             // Now run through our own hooks
             const postHookData = this.applyChatHooks(chatData);
@@ -542,6 +558,11 @@ export class ChatEntity extends Entity {
         // No # means this is a local game
         if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
         else if (GetActivePlayers().length === 1) return PRIVS.MODERATOR;
+
+        else if (VETERAN_USERS.indexOf(who.name.toLowerCase()) >= 0) {
+            return PRIVS.VETERAN;
+        }
+
         return PRIVS.USER;
     }
 }

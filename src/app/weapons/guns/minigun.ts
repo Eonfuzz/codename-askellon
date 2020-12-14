@@ -116,6 +116,8 @@ export class Minigun extends GunItem {
 
     // Updates our target location based on facing
     private updateFacing(delta: number) {
+        if (!this || !this.equippedTo || !this.equippedTo.unit) return;
+        
         const oldLength = this.targetLoc.getLength(); 
         const unit = this.equippedTo.unit;
 
@@ -269,7 +271,7 @@ export class Minigun extends GunItem {
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
-        if (this.equippedTo) {
+        if (this && this.equippedTo) {
             UnitDamageTarget(
                 projectile.source, 
                 collidesWith, 
@@ -286,7 +288,7 @@ export class Minigun extends GunItem {
 
     private onFlameProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
-        if (this.equippedTo) {
+        if (this && this.equippedTo) {
             UnitDamageTarget(
                 projectile.source, 
                 collidesWith, 
@@ -308,8 +310,10 @@ export class Minigun extends GunItem {
     }
 
     private onStopShooting() {
-        this.endSound.playSoundOnUnit(this.equippedTo.unit.handle, 127);
-        BlzStartUnitAbilityCooldown(this.equippedTo.unit.handle, this.getAbilityId(), 5);
+        if (this.equippedTo && this.equippedTo.unit) {
+            this.endSound.playSoundOnUnit(this.equippedTo.unit.handle, 127);
+            BlzStartUnitAbilityCooldown(this.equippedTo.unit.handle, this.getAbilityId(), 5);
+        }
         this.shootTimer.pause();
     }
 

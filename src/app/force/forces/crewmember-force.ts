@@ -2,7 +2,7 @@ import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
 import { ABIL_CREWMEMBER_INFO } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { MapPlayer, Unit, W3TS_HOOK } from "w3ts";
+import { MapPlayer, Unit, W3TS_HOOK, playerColors } from "w3ts";
 import { resolveTooltip } from "resources/ability-tooltips";
 import { EVENT_TYPE } from "app/events/event-enum";
 
@@ -14,7 +14,7 @@ import { CREW_FORCE_NAME, ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "./force-
 import { AlienForce } from "./alien-force";
 import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD, SFX_HUMAN_BLOOD } from "resources/sfx-paths";
-import { getZFromXY } from "lib/utils";
+import { getZFromXY, CreateBlood } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ROLE_TYPES } from "resources/crewmember-names";
@@ -24,6 +24,9 @@ import { ObserverForce } from "./observer-force";
 import { UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH } from "resources/upgrade-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
+import { ITEM_HUMAN_CORPSE } from "resources/item-ids";
+import { Vector2 } from "app/types/vector2";
+import { COL_MISC } from "resources/colours";
 
 
 export class CrewmemberForce extends ForceType {
@@ -62,15 +65,37 @@ export class CrewmemberForce extends ForceType {
             // Remove ability tooltip
             TooltipEntity.getInstance().unregisterTooltip(crew, resolveTooltip);
 
-    
+
+            if (crew.unit.show) {
+                // Place a corpse
+                BlzSetUnitFacingEx(crew.unit.handle, 270);
+                const cFacing = 270;
+                const cLoc = Vector2.fromWidget(crew.unit.handle).applyPolarOffset(cFacing, -30);
+                
+                for (let index = 0; index < GetRandomInt(3, 5); index++) {
+                    CreateBlood(cLoc.x + GetRandomReal(-40, 40), cLoc.y + GetRandomReal(-40, 40))                
+                }
+
+                const i = CreateItem(ITEM_HUMAN_CORPSE, cLoc.x, cLoc.y);
+                SetItemPlayer(i, player.handle, true);
+                BlzSetItemExtendedTooltip(i, `${COL_MISC}His cold, lifeless eyes stare beyond the cosmos|r|n|nThis is the body of ${playerColors[player.id].code}${crew.name}|r`);
+                
+                SetItemVisible(i, false);
+                Timers.addTimedAction(1.2, () => {
+                    SetItemVisible(i, true);
+                });
+            }
+
+
+            // Remove our crew trackers
+            super.removePlayer(player, killer);
+
             if (killer) {
                 const pKiller = PlayerStateFactory.get(killer.owner);
                 const pForce = pKiller.getForce();
 
                 const pZone = WorldEntity.getInstance().getPointZone(crew.unit.x, crew.unit.y);
                 
-                // Remove our crew trackers
-                super.removePlayer(player, killer);
                 
                 const killedByAlien = 
                     // Gene infested T1
@@ -122,7 +147,6 @@ export class CrewmemberForce extends ForceType {
                     PlayerStateFactory.get(player).setForce(obsForce);
                 }
             }
-
         }
     }    
     

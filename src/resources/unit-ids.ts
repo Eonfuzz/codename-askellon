@@ -34,6 +34,7 @@ export const TERMINAL_SECURITY_DUMMY = FourCC('n00Q');
 
 export const WORM_ALIEN_FORM = FourCC('N00C');
 export const ZERGLING_ALIEN_FORM = FourCC('ALI1');
+export const DEFILER_ALIEN_FORM = FourCC('N00S');
 export const ROACH_ALIEN_FORM = FourCC('ALI2');
 export const DEFAULT_ALIEN_FORM = WORM_ALIEN_FORM;
 // export const DEFAULT_ALIEN_FORM = ROACH_ALIEN_FORM;
@@ -65,3 +66,5 @@ export const UNIT_ID_NEUTRAL_STAG = FourCC("n00L");
 
 export const UNIT_ID_STATION_SECURITY_TURRET = FourCC('h008');
 export const UNIT_ID_STATION_SECURITY_CAMERA = FourCC('h00C');
+
+export const UNIT_ID_CULTIST_ALTAR = FourCC('n00T');

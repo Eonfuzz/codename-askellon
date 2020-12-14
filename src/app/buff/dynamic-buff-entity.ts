@@ -15,6 +15,9 @@ import { onFire } from "./buffs/fire";
 import { DynamicBuffState } from "./dynamic-buff-state";
 import { Hooks } from "lib/Hooks";
 import { VoidSickness } from "./buffs/void-sickness";
+import { Madness } from "./buffs/madness";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
 
 export class DynamicBuffEntity extends Entity {
 
@@ -28,6 +31,17 @@ export class DynamicBuffEntity extends Entity {
         return this.instance;
     }
 
+    constructor() {
+        super();
+
+        EventEntity.listen(EVENT_TYPE.ADD_BUFF_INSTANCE, (self, data) => {
+            const id = data.data.buffId;
+            const instance = data.data.instance;
+            const target = data.data.target;
+
+            this.addBuff(id, target, instance);
+        });
+    }
 
     addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
         let matchingBuff = DynamicBuffState.unitHasBuff(buffId, who);
@@ -49,6 +63,7 @@ export class DynamicBuffEntity extends Entity {
         if (id === BUFF_ID.RESOLVE) return new Resolve(who);
         if (id === BUFF_ID.PURITY_SEAL) return new PuritySeal();
         if (id === BUFF_ID.VOID_SICKNESS) return new VoidSickness();
+        if (id === BUFF_ID.MADNESS) return new Madness(who);
         Log.Error("Creating new buff no instance for ID "+id);
     }
 

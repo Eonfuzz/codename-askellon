@@ -317,7 +317,7 @@ export class CrewFactory {
     }
 
     getSkinFor(who: MapPlayer) {        
-        const isVeteran = ChatEntity.getInstance().getUserPrivs(who) >= PRIVS.MODERATOR;
+        const isVeteran = ChatEntity.getInstance().getUserPrivs(who) >= PRIVS.VETERAN;
         const skin = isVeteran ? crwSkins[1] : crwSkins[0];
         return skin;
     }

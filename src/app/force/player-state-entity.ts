@@ -105,6 +105,8 @@ export class PlayerStateFactory {
     public static StationProperty = MapPlayer.fromIndex(21);
     public static UnknownPlayer = MapPlayer.fromIndex(23);
 
+    public static CultistAIPlayer = MapPlayer.fromIndex(17);
+
     public static AlienAIPlayer1 = MapPlayer.fromIndex(18);
     public static AlienAIPlayer2 = MapPlayer.fromIndex(19);
     public static AlienAIPlayer3 = MapPlayer.fromIndex(20);

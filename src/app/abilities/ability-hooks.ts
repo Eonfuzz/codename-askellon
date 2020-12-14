@@ -50,7 +50,8 @@ import {
     ABIL_DROP_MINERALS,
     ABIL_ACTIVATE_SCAN_CREW,
     ABIL_ACTIVATE_SCAN_ALIENS,
-    ABIL_WEP_MINIGUN_FULLER_AUTO
+    ABIL_WEP_MINIGUN_FULLER_AUTO,
+    ABIL_ALIEN_EVOLVE_T2_DEFILER
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -80,7 +81,7 @@ import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { DiodeEjectAbility } from "./human/diode-ejector";
 import { NeuralTakeoverAbility } from "./alien/neural-takeover";
-import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM } from "resources/unit-ids";
+import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, DEFILER_ALIEN_FORM } from "resources/unit-ids";
 import { ShipChaingunAbility } from "./human/ship-chaingun";
 import { HellfireGrenadeAbility } from "./human/hellfire-grenade";
 import { FrenzyAbility } from "./alien/frenzy";
@@ -151,6 +152,8 @@ AbilityHooks.Add(ABIL_ALIEN_ACID_HURL, () => new AcidStigmataAbility());
 AbilityHooks.Add(ABIL_ALIEN_CHARGE, () => new BusterChargeAbility());
 AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T1, () => new EvolveAbility(ZERGLING_ALIEN_FORM));
 AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T2, () => new EvolveAbility(ROACH_ALIEN_FORM));
+
+AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T2_DEFILER, () => new EvolveAbility(DEFILER_ALIEN_FORM));
 AbilityHooks.Add(ABIL_ALIEN_LATCH, () => new LatchAbility());
 AbilityHooks.Add(ABIL_ALIEN_LEAP, () => new LeapAbility());
 AbilityHooks.Add(ABIL_ALIEN_SCREAM, () => new ScreamAbility());

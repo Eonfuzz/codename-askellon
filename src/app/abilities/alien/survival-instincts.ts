@@ -119,7 +119,7 @@ export class SurvivalInstinctsAbility implements Ability {
     }
 
     private bloodSplash(where: Vector3) {
-        CreateBlood(where.x, where.y);
+        // CreateBlood(where.x, where.y);
         return false;
     }
     

@@ -77,5 +77,8 @@ export enum EVENT_TYPE {
 
     // Registers a passed unit as an AI entity
     REGISTER_AS_AI_ENTITY,
-    SPAWN_ALIEN_EGG_FOR
+    SPAWN_ALIEN_EGG_FOR,
+
+
+    ADD_BUFF_INSTANCE
 }

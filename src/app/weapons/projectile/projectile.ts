@@ -35,8 +35,8 @@ export class Projectile {
     public filter: filterfunc;
 
     // Callbacks
-    private onCollideCallback: ((projectile: Projectile, who: unit) => void) | undefined;
-    private onDeathCallback: ((projectile: Projectile) => void) | undefined;
+    private onCollideCallback: ((projectile: Projectile, who: unit) => boolean | void) | undefined;
+    private onDeathCallback: ((projectile: Projectile) => boolean | void) | undefined;
 
     constructor(source: unit, startPosition: Vector3, target: ProjectileTarget, projectileMover?: ProjectileMover) {
         this.position = startPosition;
@@ -68,6 +68,10 @@ export class Projectile {
         _sfx.setScale(scale);
         this.sfx.push(_sfx);
         return _sfx.getEffect();
+    }
+
+    public getSfx() {
+        return this.sfx
     }
 
     /**
@@ -109,12 +113,12 @@ export class Projectile {
         return this;
     }
 
-    public onCollide(callback: (projectile: Projectile, who: unit) => void): Projectile {
+    public onCollide(callback: (projectile: Projectile, who: unit) => boolean | void): Projectile {
         this.onCollideCallback = callback;
         return this;
     }
 
-    public onDeath(callback: (projectile: Projectile) => boolean): Projectile {
+    public onDeath(callback: (projectile: Projectile) => boolean | void): Projectile {
         this.onDeathCallback = callback;
         return this;
     }
@@ -158,11 +162,24 @@ export class Projectile {
     }
 
     public destroy(): boolean {
-        this.dead = true;
-        this.onDeathCallback && this.onDeathCallback(this);
-        this.sfx.forEach(sfx => sfx.destroy());
-        this.sfx = [];
-        return true;
+        if (this.onDeathCallback) {
+            let result = this.onDeathCallback(this);
+            if (result == false) {
+                this.dead = result 
+            }
+            else {
+                this.dead = true;
+            }
+        }
+        else {
+            this.dead = true;
+        }
+        
+        if (this.dead) {
+            this.sfx.forEach(sfx => sfx.destroy());
+            this.sfx = [];
+        }
+        return this.dead;
     }
 
     public getDoodadChecker() {

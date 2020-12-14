@@ -6,6 +6,7 @@ export enum BUFF_ID {
     TRIFEX,
     PURITY_SEAL,
     VOID_SICKNESS,
+    MADNESS
 }
 export const BUFF_ID_FEAST = FourCC('B00C');
 export const BUFF_ID_TRIFEX = FourCC('B005');

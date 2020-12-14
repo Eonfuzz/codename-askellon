@@ -31,6 +31,7 @@ export const ABIL_ALIEN_FRENZY = FourCC('A01I');
 export const ABIL_ALIEN_EVOLVE_T1 = FourCC('A014');
 export const ABIL_ALIEN_EVOLVE_T1_SPELLBOOK = FourCC('A025');
 export const ABIL_ALIEN_EVOLVE_T2 = FourCC('A00U');
+export const ABIL_ALIEN_EVOLVE_T2_DEFILER = FourCC('A026');
 export const ABIL_ALIEN_EVOLVE_T2_SPELLBOOK = FourCC('A028');
 export const ABIL_ALIEN_EVOLVE_T3 = FourCC('A00Y');
 export const ABIL_ALIEN_EVOLVE_T3_SPELLBOOK = FourCC('A00Y');
@@ -172,3 +173,7 @@ export const ABIL_SECURITY_TARGET_ALL = [
 ];
 
 export const ABIL_DROP_MINERALS = FourCC('A01Y');
+
+
+export const ABIL_CULTIST_INFO = FourCC('A02I');
+export const ABIL_CULTIST_INFO_POST_BUILD = FourCC('A009');
