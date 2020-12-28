@@ -5,14 +5,8 @@ import { Node } from "./pathfinding/node";
 import { Unit } from "w3ts/index";
 import { WorldEntity } from "app/world/world-entity";
 import { Log } from "lib/serilog/serilog";
-
-declare const udg_elevator_entrances: unit[];
-declare const udg_elevator_exits: unit[];
-declare const udg_elevator_exit_zones: string[];
-
-declare const udg_hatch_entrances: unit[];
-declare const udg_hatch_exits: unit[];
-declare const udg_hatch_exit_zones: string[];
+import { ZoneWithExits } from "app/world/zone-types/zone-with-exits";
+import { Zone } from "app/world/zone-types/zone-type";
 
 export function BuildGraph() {
     const graph = new Graph();
@@ -20,93 +14,56 @@ export function BuildGraph() {
     const edgeForUnit = new Map<Unit, Edge>();
     const nodeForZoneType = new Map<ZONE_TYPE, Node>();
 
-    const nodes = [];
+    const nodes: Node[] = [];
 
     try {
-    // Each elevator is an edge
-    udg_elevator_entrances.forEach((elevator, i) => {
-        const edge = new Edge();
-        edge.unit = Unit.fromHandle(elevator);
-        edgeForUnit.set(edge.unit, edge);
-    });
-
-    // Each elevator is an edge
-    udg_hatch_entrances.forEach((hatch, i) => {
-        const edge = new Edge();
-        edge.unit = Unit.fromHandle(hatch);
-        edgeForUnit.set(edge.unit, edge);
-    });
-
-    // Loop again and apply exits
-    udg_elevator_entrances.forEach((elevator, i) => {
-        const edge = edgeForUnit.get(Unit.fromHandle(elevator));
-        const exit = udg_elevator_exits[i];
-        edge.exit = edgeForUnit.get(Unit.fromHandle(exit));
-    });
-
-    // Loop again and apply exits
-    udg_hatch_entrances.forEach((hatch, i) => {
-        const edge = edgeForUnit.get(Unit.fromHandle(hatch));
-        const exit = udg_hatch_exits[i];
-        edge.exit = edgeForUnit.get(Unit.fromHandle(exit));
-    });
-
-
-    
-    // Loop again and apply exits
-    const world = WorldEntity.getInstance();
-    udg_elevator_exits.forEach((exit, i) => {
-        const edge = edgeForUnit.get(Unit.fromHandle(exit));
-        const zoneName = udg_elevator_exit_zones[i];
-
-        
-        const zoneType = world.getZoneByName(zoneName);
-
-        let node : Node;
-
-        // If node is not defined, create it
-        if (!nodeForZoneType.has(zoneType)) {
-            const zone = world.getZone(zoneType);
-            node = new Node();
+        // Loop through all the zones
+        const world = WorldEntity.getInstance();
+        world.getAllZones().forEach((zone: Zone) => {
+            const node = new Node();
             node.zone = zone;
-            nodeForZoneType.set(zoneType, node);
+            nodeForZoneType.set(zone.id, node);
             nodes.push(node);
-        }
-        else {
-            node = nodeForZoneType.get(zoneType);
-        }
-
-        // Now add the edge to zone
-        node.pathways.push(edge);
-        // Add edge zone
-        edge.node = node;
-    });
-    udg_hatch_exits.forEach((exit, i) => {
-        const edge = edgeForUnit.get(Unit.fromHandle(exit));
-        const zoneName = udg_hatch_exit_zones[i];
-
+        });
         
-        const zoneType = world.getZoneByName(zoneName);
 
-        let node : Node;
+        // After creating "node" map
+        // Populate pathways and edges
+        nodes.forEach((node: Node) => {
 
-        // If node is not defined, create it
-        if (!nodeForZoneType.has(zoneType)) {
-            const zone = world.getZone(zoneType);
-            node = new Node();
-            node.zone = zone;
-            nodeForZoneType.set(zoneType, node);
-            nodes.push(node);
-        }
-        else {
-            node = nodeForZoneType.get(zoneType);
-        }
+            if (node.zone instanceof ZoneWithExits) {
+                const paths = node.zone.getPathways();
+                paths.forEach(exit => {
+                    // We may already have an edge for this unit
+                    const edge = edgeForUnit.get(exit.entrance) ||  new Edge();
 
-        // Now add the edge to zone
-        node.pathways.push(edge);
-        // Add edge zone
-        edge.node = node;
-    });
+                    edge.node = node;
+                    edge.unit = exit.entrance;
+                    edgeForUnit.set(edge.unit, edge);
+                    node.pathways.push(edge);
+
+                    // now set it for the exit
+                    const exitEdge = edgeForUnit.get(exit.exit) || new Edge();
+                    edgeForUnit.set(exit.exit, exitEdge);
+                    edge.exit = exitEdge;
+                });
+            }
+            else {
+                // Log.Information(node.zone.id +" Is not a connected node");
+            }
+        });
+
+        // Populate shallow connections
+        nodes.forEach(node => {
+            node.pathways.forEach(p => {
+                node.connectedNodes.push(p.exit.node);
+            });
+        });
+    }
+    catch(e) {
+        Log.Error("Graph Builder Error");
+        Log.Error(e);
+    }
 
     graph.nodes = nodes;
     graph.nodeDict = nodeForZoneType;
@@ -114,12 +71,6 @@ export function BuildGraph() {
     // Now develop connections
     graph.nodes.forEach(node => DevelopGraphConnections(node));
     return graph;
-
-    }
-    catch(e) {
-        Log.Error("Error when generating AI pathing map");
-        Log.Error(e);
-    }
 }
 
 function DevelopGraphConnections(node: Node) {

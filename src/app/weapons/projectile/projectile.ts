@@ -25,7 +25,6 @@ export class Projectile {
     public source: unit;
 
     private collisionRadius: number = 30;
-    public velocity: number = 10;
 
     private sfx: Array<ProjectileSFX>;
 
@@ -33,6 +32,10 @@ export class Projectile {
     public dead = false;
 
     public filter: filterfunc;
+
+
+    private stopAtGroundCollision = true;
+    private stopAtGoal = false;
 
     // Callbacks
     private onCollideCallback: ((projectile: Projectile, who: unit) => boolean | void) | undefined;
@@ -43,7 +46,7 @@ export class Projectile {
         this.target = target;
         this.sfx = [];
 
-        this.mover = projectileMover || new ProjectileMoverLinear();
+        this.mover = projectileMover || new ProjectileMoverLinear(startPosition, target.getTargetVector());
 
         this.source = source;
         this.filter = DEFAULT_FILTER(this);
@@ -137,8 +140,7 @@ export class Projectile {
      * @param deltaTime 
      */
     update(deltaTime: number): Vector3 {
-
-        let velocityToApply = this.mover.move(this.position, this.getTarget().getTargetVector(), this.velocity, deltaTime);
+        let velocityToApply = this.mover.move(this.getTarget().getTargetVector(), deltaTime);
         let newPosition = this.position.add(velocityToApply);
         this.position = newPosition;
 
@@ -151,14 +153,29 @@ export class Projectile {
     }
 
     public setVelocity(velocity: number): Projectile {
-        this.velocity = velocity;
+        this.mover.setVelocity(velocity);
         return this;
     }
 
     private reachedEnd(targetVector: Vector3): boolean {
-        let z = getZFromXY(this.position.x, this.position.y);
-        // let location = GLOBAL_LOCATION
-        return (this.position.z <= z);
+        if (this.stopAtGoal) {
+            return this.mover.reachedGoal();
+        }
+        if (this.stopAtGroundCollision) {
+            let z = getZFromXY(this.position.x, this.position.y);
+            // let location = GLOBAL_LOCATION
+            return (this.position.z <= z);
+        }
+        return true;
+    }
+
+    public doStopAtGoal(state: boolean) {
+        this.stopAtGoal = state;
+        return this;
+    }
+    public doStopAtGroundCollision(state: boolean) {
+        this.stopAtGroundCollision = state;
+        return this;
     }
 
     public destroy(): boolean {

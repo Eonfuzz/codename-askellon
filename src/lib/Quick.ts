@@ -3,6 +3,37 @@ import { Log } from "./serilog/serilog";
 //!!!!! KEEP 0 DEPENDENCIES
 export namespace Quick {
 
+
+    export function Tokenize(val: string) {
+        const result = [];
+        const str = string.gmatch(val, "%S+");
+
+        for (const [x, y, z] of str) {
+            // Log.Information(`${x} ${y} ${z}`)
+            result.push(x);
+        }
+        return result;
+    }
+
+    export function ReplaceVowelWith(str: string, fnc: (char: string) => string) {
+        let result = '';
+        for (let index = 0; index < str.length-1; index++) {
+            const c = str[index].toLowerCase();
+            if (c === "a" || c === "e" || c === "o" || c === "i" || c === "y" || c === "u") {
+                if (str[index] === c) {
+                    result += fnc(c);
+                }
+                else {
+                    result += fnc(c).toUpperCase();
+                }
+            }
+            else {
+                result += str[index];
+            }
+        }
+        return result;
+    }
+
     export function Slice(arr: any[], index: number) {
         arr[index] = arr[arr.length - 1];
         delete arr[arr.length - 1];

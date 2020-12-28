@@ -113,7 +113,6 @@ export class HellfireGrenadeAbility implements Ability {
             this.casterUnit.damageTarget(
                 unit.handle, 
                 EXPLOSION_BASE_DAMAGE * damageMult, 
-                0,
                 true, 
                 true, 
                 ATTACK_TYPE_MAGIC, 

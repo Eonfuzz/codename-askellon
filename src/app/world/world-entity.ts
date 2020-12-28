@@ -66,7 +66,9 @@ export class WorldEntity extends Entity {
     }
 
     step() {
-        this.worldZones.get(ZONE_TYPE.SPACE).step(this._timerDelay);  
+        this.allZones.forEach(z => {
+            z.step(this._timerDelay);
+        });
         this.askellon.step(this._timerDelay);
     }
 
@@ -233,5 +235,15 @@ export class WorldEntity extends Entity {
             // Log.Error(e);
         }
         return undefined;
+    }
+
+    /**
+     * Does what you think it do
+     */
+    public getAllZones() {
+        const result = [];
+        this.allZones.forEach(z => result.push(z));
+        this.askellon.allFloors.forEach(z => result.push(z));
+        return result;
     }
 }

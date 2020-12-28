@@ -4,7 +4,7 @@ import { Asteroid } from "./space-objects/asteroid";
 import { Mineral } from "./space-objects/mineral";
 import { Log } from "lib/serilog/serilog";
 import { ShipBay } from "./ship-bay";
-import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON } from "resources/unit-ids";
+import { SHIP_VOYAGER_UNIT, SHIP_MAIN_ASKELLON, UNIT_ID_LAVA_PLANET } from "resources/unit-ids";
 import { EventListener } from "app/events/event-type";
 import { Ship, ShipWithFuel } from "./ships/ship-type";
 import { ABIL_LEAVE_ASKELLON_CONTROLS, SMART_ORDER_ID, MOVE_ORDER_ID, STOP_ORDER_ID, HOLD_ORDER_ID, TECH_MAJOR_VOID, ABIL_SHIP_BARREL_ROLL_LEFT, ABIL_SHIP_BARREL_ROLL_RIGHT, ABIL_SHIP_CHAINGUN, ABIL_SHIP_LASER, ABIL_SHIP_DEEP_SCAN, TECH_MINERALS_PROGRESS } from "resources/ability-ids";
@@ -28,9 +28,11 @@ import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
 import { SpaceMiningEntity } from "./space-mining-entity";
 import { AskellonEntity } from "app/station/askellon-entity";
+import { Quick } from "lib/Quick";
+import { getRectsGivenNamespace } from "lib/utils";
+import { PlayerState } from "app/force/player-type";
 
 // For ship bay instansiation
-declare const udg_ship_zones: rect[];
 declare const gg_rct_Space: rect;
 
 export class SpaceEntity extends Entity {
@@ -55,6 +57,7 @@ export class SpaceEntity extends Entity {
     private shipUnitDict = new Map<Unit, ShipWithFuel>();
 
     public mainShip: AskellonShip;
+    public planet: Unit;
 
     public shipBays: ShipBay[];
 
@@ -95,6 +98,11 @@ export class SpaceEntity extends Entity {
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
                 new Asteroid(rX, rY, SpaceObjectType.foreground).load();
             }
+            // Create planet
+            const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
+            const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
+            this.planet = Unit.fromHandle(CreateUnit(PlayerStateFactory.NeutralPassive.handle, UNIT_ID_LAVA_PLANET, rX, rY, bj_UNIT_FACING));
+            this.planet.setTimeScale(0.3);
         // }
         // catch (e) {
         //     Log.Error(e);
@@ -131,29 +139,40 @@ export class SpaceEntity extends Entity {
         this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
         this.shipMoveEvent.registerUnitEvent(this.mainShip.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
 
+        const shipBays = getRectsGivenNamespace("ShipBay");
+
         /**
          * Also insansiate ships
          */
-        udg_ship_zones.forEach(rect => {
-            const bay = new ShipBay(rect)
+        shipBays.forEach(rect => {
+            const zone = WorldEntity.getInstance().getPointZone(GetRectCenterX(rect), GetRectCenterY(rect));
+
+            if (!zone) return Log.Error(`Failed to create bay for ${rect} zone does not exist!`);
+
+            const bay = new ShipBay(rect, zone.id);
             this.shipBays.push(bay);
-            bay.ZONE = ZONE_TYPE.CARGO_A;
 
-            // Also for now create a ship to sit in the dock
-            const ship = new PerseusShip(ShipState.inBay, Unit.fromHandle(
-                CreateUnit(PlayerStateFactory.NeutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
-            );
-            this.shipUnitDict.set(ship.unit, ship);
-            this.ships.push(ship);
+            // Log.Information(`New bay for ${zone.id}`);
 
-            WorldEntity.getInstance().travel(ship.unit, bay.ZONE);
+            // Only spawn ships for these places
+            if (zone.id === ZONE_TYPE.CARGO_A || zone.id === ZONE_TYPE.CARGO_B) {
 
-            bay.dockShip(ship);
+                // Also for now create a ship to sit in the dock
+                const ship = new PerseusShip(ShipState.inBay, Unit.fromHandle(
+                    CreateUnit(PlayerStateFactory.NeutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
+                );
+                this.shipUnitDict.set(ship.unit, ship);
+                this.ships.push(ship);
 
-            this.shipDeathEvent.registerUnitEvent(ship.unit, EVENT_UNIT_DEATH);
-            this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_ORDER);
-            this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
-            this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
+                WorldEntity.getInstance().travel(ship.unit, bay.ZONE);
+
+                bay.dockShip(ship);
+
+                this.shipDeathEvent.registerUnitEvent(ship.unit, EVENT_UNIT_DEATH);
+                this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_ORDER);
+                this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
+                this.shipMoveEvent.registerUnitEvent(ship.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
+            }
         });
 
         // Hook into ship death event
@@ -281,8 +300,18 @@ export class SpaceEntity extends Entity {
         // const rect = Rectangle.fromHandle(gg_rct_Space);
 
         // Get mainship x,y
-        ship.unit.x = this.mainShip.unit.x;
-        ship.unit.y = this.mainShip.unit.y;
+        // Depends on where we come from
+        // Get old zone
+        const oldZone = WorldEntity.getInstance().getUnitZone(ship.unit);
+
+        if (!oldZone || oldZone.id !== ZONE_TYPE.PLANET) {
+            ship.unit.x = this.mainShip.unit.x;
+            ship.unit.y = this.mainShip.unit.y;
+        }
+        else {
+            ship.unit.x = this.planet.x;
+            ship.unit.y = this.planet.y;
+        }
         // who.setTimeScale(0.1);
 
         ship.onEnterSpace();
@@ -312,10 +341,16 @@ export class SpaceEntity extends Entity {
 
         let bays: ShipBay[];
 
-        if (goal.typeId == SHIP_MAIN_ASKELLON) bays = this.shipBays;
+        if (goal.typeId == SHIP_MAIN_ASKELLON) {
+            bays = this.shipBays.filter(b => b.ZONE === ZONE_TYPE.CARGO_A || b.ZONE === ZONE_TYPE.CARGO_B);
+        }
+        else if (goal.typeId === UNIT_ID_LAVA_PLANET) {
+            bays = this.shipBays.filter(b => b.ZONE === ZONE_TYPE.PLANET);
+            Log.Information(`Landing on planet, bays: ${bays.length}`);
+        }
 
         // We need to find a "free" dock
-        const freeBay = this.shipBays.find(bay => bay.canDockShip());
+        const freeBay = Quick.GetRandomFromArray(bays.filter(bay => bay.canDockShip()), 1)[0];
         if (!freeBay) {
             // Display the warning to the pilot
             return DisplayTextToPlayer(unit.owner.handle, 0, 0, `No free ship bays`);

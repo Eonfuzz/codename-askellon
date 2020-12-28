@@ -10,6 +10,7 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Hooks } from "lib/Hooks";
 import { WorldEntity } from "app/world/world-entity";
+import { ZONE_TYPE } from "app/world/zone-id";
 
 /**
  * These locations are declared by the world editor
@@ -83,6 +84,14 @@ export class LeapEntity extends Entity {
         else {
             const newZone = WorldEntity.getInstance().getPointZone(unitLoc.x, unitLoc.y);
             if (newZone) {
+                // Special planet check
+                if (newZone.id === ZONE_TYPE.PLANET) {
+                    const height = GetTerrainCliffLevel(unitLoc.x, unitLoc.y);
+                    if (height < 2) {
+                        KillUnit(leap.unit);
+                        return false;
+                    }
+                }
                 // Travel the unit as needed
                 EventEntity.send(EVENT_TYPE.TRAVEL_UNIT_TO, {
                     source: Unit.fromHandle(leap.unit),

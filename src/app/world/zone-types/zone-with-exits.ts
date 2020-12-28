@@ -7,21 +7,28 @@ import { VisionFactory } from "app/vision/vision-factory";
 import { CREWMEMBER_UNIT_ID, DESTR_ID_POWERED_LIGHT_BLUE, DESTR_ID_POWERED_LIGHT_RED, DESTR_ID_POWERED_LIGHT_WHITE, DESTR_ID_POWERED_LIGHT_GREEN } from "resources/unit-ids";
 import { Zone } from "./zone-type";
 
+export interface pathway { entrance: Unit, exit: Unit, leadsTo: Zone };
+
 export abstract class ZoneWithExits extends Zone {
     // The exits to and from this zone
-    protected exits: Array<Unit> = [];
+    protected pathway: Array<pathway> = [];
     protected playerLightingModifiers = new Map<MapPlayer, number>();
 
 
     constructor(id: ZONE_TYPE) {
         super(id);
     }
-    public addExit(whichExit: Unit) {
-        this.exits.push(whichExit);
+
+    public getPathways() {
+        return this.pathway;
     }
 
-    public setExits(to: Unit[]) {
-        this.exits = to;
+    public addPathway(whichExit: pathway) {
+        this.pathway.push(whichExit);
+    }
+
+    public setPathways(to: pathway[]) {
+        this.pathway = to;
     }
 
     protected addRegion(r: rect) {
@@ -44,9 +51,9 @@ export abstract class ZoneWithExits extends Zone {
             // TODO
             // If no power remove power loss
             // Remove shared vision of exits
-            this.exits.forEach(exit => {
+            this.pathway.forEach(pathway => {
                 // Log.Information("Removing exit vision "+exit.name);
-                exit.shareVision(unit.owner, false);
+                pathway.entrance.shareVision(unit.owner, false);
             });
         }
     }
@@ -56,9 +63,9 @@ export abstract class ZoneWithExits extends Zone {
 
         if (unit.typeId === CREWMEMBER_UNIT_ID) {
             // Log.Information("Sharing exit vision");
-            this.exits.forEach(exit => {
+            this.pathway.forEach(pathway => {
                 // Log.Information(exit.name);
-                exit.shareVision(unit.owner, true);
+                pathway.entrance.shareVision(unit.owner, true);
             });
         }
     }

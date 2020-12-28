@@ -8,7 +8,7 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventData } from "app/events/event-data";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
+import { ABIL_DISARM_USER, ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
 import { VisionFactory } from "app/vision/vision-factory";
 import { VISION_PENALTY } from "app/vision/vision-type";
 import { SoundRef } from "app/types/sound-ref";
@@ -39,6 +39,8 @@ export class ShipZone extends ZoneWithExits {
     powerDownSound = new SoundRef("Sounds\\PowerDown.mp3", false, true);
     powerUpSound = new SoundRef("Sounds\\powerUp.mp3", false, true);
 
+    private turrets: Unit[] = [];
+
     constructor(id: ZONE_TYPE) {
         super(id);
 
@@ -66,13 +68,6 @@ export class ShipZone extends ZoneWithExits {
             new EventListener(EVENT_TYPE.STATION_POWER_OUT,
             (self, data: EventData) => this.onPowerOut(data.data.zone, data.data.duration))
         );
-    }
-    public addExit(whichExit: Unit) {
-        this.exits.push(whichExit);
-    }
-
-    public setExits(to: Unit[]) {
-        this.exits = to;
     }
 
     protected addRegion(r: rect) {
@@ -129,37 +124,12 @@ export class ShipZone extends ZoneWithExits {
 
     public onLeave(unit: Unit) {
         super.onLeave(unit);
-
-        if (unit.typeId === CREWMEMBER_UNIT_ID) {
-
-            // Remove the existing modifier (if any)
-            if (this.playerLightingModifiers.has(unit.owner)) {
-                const mod = this.playerLightingModifiers.get(unit.owner);
-                this.playerLightingModifiers.delete(unit.owner);
-                VisionFactory.getInstance().removeVisionModifier(mod);
-            }
-
-            // If no oxy remove oxy loss
-            // TODO
-            // If no power remove power loss
-            // Remove shared vision of exits
-            this.exits.forEach(exit => {
-                // Log.Information("Removing exit vision "+exit.name);
-                exit.shareVision(unit.owner, false);
-            });
-        }
     }
 
     public onEnter(unit: Unit) {
         super.onEnter(unit);
 
         if (unit.typeId === CREWMEMBER_UNIT_ID) {
-            // Log.Information("Sharing exit vision");
-            this.exits.forEach(exit => {
-                // Log.Information(exit.name);
-                exit.shareVision(unit.owner, true);
-            });
-
             // If no oxy apply oxy loss
             // TODO
             // If no power apply power loss
@@ -200,6 +170,8 @@ export class ShipZone extends ZoneWithExits {
         if (this.hasPower === newState) return;
         try {
             if (!newState) {
+                // Disable all turrets
+                this.turrets.forEach(t => t.addAbility(ABIL_DISARM_USER));
                 // Apply power change to all players
                 this.getPlayersInZone().map(p => this.applyPowerChange(p, newState, true));
                 this.lightSources.forEach((lightSource, i) => {
@@ -235,6 +207,8 @@ export class ShipZone extends ZoneWithExits {
             }
             // Otherwise we need to reset the lights
             else {
+                // Disable all turrets
+                this.turrets.forEach(t => t.removeAbility(ABIL_DISARM_USER));
                 Timers.addSlowTimedAction(4, () => {
                     // Apply power change to all players
                     this.getPlayersInZone().map(p => this.applyPowerChange(p, newState, true));
@@ -312,6 +286,8 @@ export class ShipZone extends ZoneWithExits {
                 VisionFactory.getInstance().addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
             );
         }
+
+        // We are start power up
         if (hasPower && justChanged && GetLocalPlayer() === player.handle) {
             this.powerUpSound.playSound();
         }
@@ -321,4 +297,8 @@ export class ShipZone extends ZoneWithExits {
     }
 
     public doCauseFear() { return !this.hasPower || this.alwaysCauseFear; }
+
+    public addTurret(turret: Unit) {
+        this.turrets.push(turret);
+    }
 }

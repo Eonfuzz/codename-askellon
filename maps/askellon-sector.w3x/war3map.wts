@@ -23,7 +23,7 @@ STRING 14
 {
 Survive deep space as your Crew is terrorised by creatures unimaginable.
 
-Currently a work in progress by Boar.
+Currently a work in progress by Eonfuzz.
 Join my discord at: 
 |cff627781https://discord.gg/nDMpQZm|r
 Please use |cff692929Reforged Graphics|r for the best experience
@@ -31,7 +31,7 @@ Please use |cff692929Reforged Graphics|r for the best experience
 
 STRING 15
 {
-Boar
+Eonfuzz
 }
 
 STRING 16
@@ -1858,12 +1858,6 @@ STRING 474
 Emotion Inhibitor
 }
 
-STRING 476
-// Items: I001 (Rail-Rifle), Ubertip (Tooltip - Extended)
-{
-|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|nAn attachment for |cffc81e1eKinetic|r weapons.|n|nLaunches a single, long distance round. Dealing up to |cff00ff00500|r damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown|r
-}
-
 STRING 477
 // Items: IDGN (Dragonfire Barrel), Ubertip (Tooltip - Extended)
 {
@@ -3344,7 +3338,7 @@ Seal of Purity
 }
 
 STRING 896
-// Buffs/Effects: B008 (), Bufftip (Tooltip)
+// Abilities: A02K (Ceremonial Dagger), Tip (Tooltip - Normal)
 {
 Seal of Purity
 }
@@ -4780,12 +4774,6 @@ STRING 1220
 |cff808080Lore TODO|r|n|nThe instinct for survival is strong in this prepubescent form; |cff00ff00passively|r granting the following effects:|cff00ff00|n - All interaction times are reduced by 30%|n - Transforming grants invisibility; lasting 2 seconds|n|n|rAdditionally, casting this ability causes the Alien to vomit its internal organs to confuse its prey; granting |cff00ff00invisibility |rfor |cff00ff002 seconds.|r This ability may be cast during |cff8a6df2Latch|r to instead make the |cff8a6df2Latched|r player appear to |cff8a6df2Transform.|r|n|n|cff80808040 Second Cooldown|r
 }
 
-STRING 1221
-// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 7|r.
-}
-
 STRING 1222
 // Units: u004 (Larva), Name (Name)
 {
@@ -4907,7 +4895,7 @@ R
 }
 
 STRING 1242
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A02O (Egg Hatch), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -6077,7 +6065,7 @@ STRING 1463
 }
 
 STRING 1464
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 R
 }
@@ -6149,7 +6137,7 @@ rsig
 }
 
 STRING 1476
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A02N (Repair Neokatana), Hotkey (Hotkey - Normal)
 {
 A
 }
@@ -6969,5 +6957,626 @@ STRING 1622
 // Units: n00T (Circle of Carrion), Name (Name)
 {
 Circle of Carrion
+}
+
+STRING 1623
+// Units: n00U (|cffffff00Uncharted Planet|r|n|cff808080Right Click to Land|r), Name (Name)
+{
+|cffffff00Uncharted Planet|r|n|cff808080Right Click to Land|r
+}
+
+STRING 1624
+// Doodads: D01M (Light Flicker), Name (Name)
+{
+Light Flicker
+}
+
+STRING 1625
+// Destructibles: B00A (Pathing Blocker (Walkability)), Name (Name)
+{
+Pathing Blocker (Walkability)
+}
+
+STRING 1626
+// Abilities: A02J (Apply Madness), Name (Name)
+{
+Apply Madness
+}
+
+STRING 1629
+// Buffs/Effects: B00G (Insanity), Buffubertip (Tooltip - Extended)
+{
+|cff808080The oldest and strongest emotion of mankind is fear and the oldest and strongest kind of fear is fear of the unknown.|r|nThe |cffc81e1cCircle of Carrion|r knows.
+}
+
+STRING 1630
+// Items: I00O (Ceremonial Dagger), Name (Name)
+{
+Ceremonial Dagger
+}
+
+STRING 1631
+// Items: I00O (Ceremonial Dagger), Tip (Tooltip - Basic)
+{
+Ceremonial Dagger
+}
+
+STRING 1633
+// Items: I00O (Ceremonial Dagger), Description (Description)
+{
+Takes genetic samples
+}
+
+STRING 1635
+// Units: n00W (Circle of Carrion), Name (Name)
+{
+Circle of Carrion
+}
+
+STRING 1636
+// Units: n00W (Circle of Carrion), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 1637
+// Abilities: A02K (Ceremonial Dagger), Name (Name)
+{
+Ceremonial Dagger
+}
+
+STRING 1638
+// Abilities: A02K (Ceremonial Dagger), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1639
+// Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1640
+// Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1641
+// Abilities: A02K (Ceremonial Dagger), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 1642
+// Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1643
+// Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1644
+// Abilities: A02K (Ceremonial Dagger), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 1645
+// Abilities: A02K (Ceremonial Dagger), Tip (Tooltip - Normal)
+{
+Seal of Purity
+}
+
+STRING 1646
+// Buffs/Effects: B008 (), Bufftip (Tooltip)
+{
+Seal of Purity
+}
+
+STRING 1647
+// Abilities: A02L (Altar of Carrion), Name (Name)
+{
+Altar of Carrion
+}
+
+STRING 1649
+// Abilities: A02L (Altar of Carrion), Tip (Tooltip - Normal)
+{
+Altar of Carrion
+}
+
+STRING 1650
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Eldritch Ritual - Initiation
+}
+
+STRING 1652
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nEnables Secondary Cores|n|cff00ff00- Maximum Power increased by 25|n- Enables Service Tunnel Purging|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- Purge delay reduced by 3 seconds|r|n|n|cff8a6df2Infestation [ALIEN]|n- Purge damage versus aliens halved|n- Purge damage versus humans doubled|r
+}
+
+STRING 1653
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nConnects to tertiary modules|n|cff00ff00- Maximum Power increased by 25|n- Askellon Armor increased by 2|n- Enables Rotate Shield Frequency|n- Enables Overcharge Lasers|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- Overcharge Lasers also doubles Security Turret attack speed|r|n|n|cff8a6df2Infestation [ALIEN]|n- Overcharge Lasers causes Security Turrets to attack everything|r
+}
+
+STRING 1654
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nConnects to tertiary modules|n|cff00ff00- TODO|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- TODO|r|n|n|cff8a6df2Infestation [ALIEN]|n- TODO|r
+}
+
+STRING 1655
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+todo
+}
+
+STRING 1656
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 61%|r|n|cffd45e19New Damage Bonus: 77%|r
+}
+
+STRING 1657
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 77%|r|n|cffd45e19New Damage Bonus: 94%|r
+}
+
+STRING 1658
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 94%|r|n|cffd45e19New Damage Bonus: 115%|r
+}
+
+STRING 1659
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 115%|r|n|cffd45e19New Damage Bonus: 136%|r
+}
+
+STRING 1660
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
+}
+
+STRING 1662
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Eldritch Ritual - Ascention
+}
+
+STRING 1663
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Eldritch Ritual - Exaltation
+}
+
+STRING 1664
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Eldritch Ritual - Apotheosis
+}
+
+STRING 1665
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Weapons Tech Upgrade
+}
+
+STRING 1666
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 1667
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 1668
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 1669
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 1670
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 1671
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Eldritch Ritual - Ascention
+}
+
+STRING 1672
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Eldritch Ritual - Exaltation
+}
+
+STRING 1673
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Weapons Tech Upgrade
+}
+
+STRING 1674
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Eldritch Ritual - Apotheosis
+}
+
+STRING 1675
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [6/10]
+}
+
+STRING 1676
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [7/10]
+}
+
+STRING 1677
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [8/10]
+}
+
+STRING 1678
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [9/10]
+}
+
+STRING 1679
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Upgrade Weapon Damage [10/10]
+}
+
+STRING 1680
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1681
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1682
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1683
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1684
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1685
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1686
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1687
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1688
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1689
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1690
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
+{
+ranged
+}
+
+STRING 1692
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Rite of Initiation
+}
+
+STRING 1693
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
+}
+
+STRING 1694
+// Abilities: A02L (Altar of Carrion), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A dais slick with rot and keening with hunger. In a thousand little voices it promises you great rewards for but a little satiation.|r|n|nPeriodically converts mana into |cffb52166Worship|r. |nPlace |cffb52166corpses|r nearby to speed up the conversion.|n|n|cff808080180 Seconds Cooldown|r
+}
+
+STRING 1695
+// Items: I00O (Ceremonial Dagger), Ubertip (Tooltip - Extended)
+{
+|cff808080A stained blade of snapped bone and wrapped sinew. It looks simple, but the altar promises that it is sharp enough for its chosen prey.|r|n|nSlices through an |cffb52166Insane|r player's soul, dealing 300 damage; if this would kill the target:|n|cff18bc9c- Gain 1 bonus worship immediately|n- Permanently gain 7 Vitality and 5 Will|n- Cannot be punished by the Carrion One for this kill|r|n|NIf they are not |cffb52166Insane|r this instead only does 30 damage.|n|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 1696
+// Units: o000 (Occult Fetish), Name (Name)
+{
+Occult Fetish
+}
+
+STRING 1697
+// Buffs/Effects: B00G (Insanity), EditorName (Name (Editor Only))
+{
+Insanity
+}
+
+STRING 1698
+// Buffs/Effects: B00G (Insanity), Bufftip (Tooltip)
+{
+Insanity
+}
+
+STRING 1699
+// Items: I001 (Rail-Rifle), Ubertip (Tooltip - Extended)
+{
+|cff808080A minaturised version of weapons used in planetary seiges, the Rail Rifle uses two rows of magnets to send ammunition soaring well above super sonic speeds.|r|n|n|cffffcc00An attachment for |r|cffc81e1eKinetic|r|cffffcc00 weapons.|r|n|nLaunches a single, long distance round. Dealing up to |cff00ff00500|r damage to the first target it hits.|n|N|cff80808035 Seconds Cooldown|r
+}
+
+STRING 1700
+// Items: I00P ("Meteor" Crowd Dispersal Canister), Name (Name)
+{
+"Meteor" Crowd Dispersal Canister
+}
+
+STRING 1701
+// Items: I00P ("Meteor" Crowd Dispersal Canister), Tip (Tooltip - Basic)
+{
+"Meteor" Crowd Dispersal Canister
+}
+
+STRING 1703
+// Items: I00P ("Meteor" Crowd Dispersal Canister), Description (Description)
+{
+Attachment: Charges up and fires a high powered shot
+}
+
+STRING 1704
+// Abilities: A02M (Meteor Round), Name (Name)
+{
+Meteor Round
+}
+
+STRING 1705
+// Abilities: A02M (Meteor Round), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 1706
+// Abilities: A02M (Meteor Round), Tip (Tooltip - Normal)
+{
+Meteor Round
+}
+
+STRING 1707
+// Units: u007 (Egg), Name (Name)
+{
+Egg
+}
+
+STRING 1708
+// Units: u007 (Egg), EditorSuffix (Name - Editor Suffix)
+{
+ ( Auto Hatch )
+}
+
+STRING 1709
+// Units: u008 (Egg), Name (Name)
+{
+Egg
+}
+
+STRING 1710
+// Units: u008 (Egg), EditorSuffix (Name - Editor Suffix)
+{
+ ( Auto Hatch. Large )
+}
+
+STRING 1711
+// Items: I00Q (Broken Blade), Name (Name)
+{
+Broken Blade
+}
+
+STRING 1712
+// Items: I00Q (Broken Blade), Ubertip (Tooltip - Extended)
+{
+|cff808080This blade is shattered into two halves, the internal cybertech seems like it will be functional after small amounts of repairs.|r
+
+This blade is broken. If you had the right components this could be repaired into a legendary weapon.
+|n|cffd45e19Left click to repair|r
+}
+
+STRING 1713
+// Items: I00Q (Broken Blade), Tip (Tooltip - Basic)
+{
+Broken Blade
+}
+
+STRING 1714
+// Items: I00Q (Broken Blade), Description (Description)
+{
+Weapon: Fires a powerful but short range blast
+}
+
+STRING 1715
+// Abilities: A02N (Repair Neokatana), Name (Name)
+{
+Repair Neokatana
+}
+
+STRING 1716
+// Abilities: A02N (Repair Neokatana), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 1717
+// Abilities: A02N (Repair Neokatana), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - SI Battle Rifle
+}
+
+STRING 1718
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1719
+// Doodads: D01N (Blood 1), Name (Name)
+{
+Blood 1
+}
+
+STRING 1720
+// Doodads: D01O (Blood 2), Name (Name)
+{
+Blood 2
+}
+
+STRING 1721
+// Doodads: D01P (Blood 3), Name (Name)
+{
+Blood 3
+}
+
+STRING 1722
+// Doodads: D01Q (Blood 4), Name (Name)
+{
+Blood 4
+}
+
+STRING 1723
+// Units: u009 (Lurker), Name (Name)
+{
+Lurker
+}
+
+STRING 1724
+// Units: u009 (Lurker), EditorSuffix (Name - Editor Suffix)
+{
+( Minion T2 )
+}
+
+STRING 1725
+// Abilities: A02O (Egg Hatch), Name (Name)
+{
+Egg Hatch
+}
+
+STRING 1726
+// Abilities: A02O (Egg Hatch), Ubertip (Tooltip - Normal - Extended)
+{
+You shouldn't be seeing this
+}
+
+STRING 1727
+// Abilities: A02O (Egg Hatch), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 1728
+// Abilities: A02O (Egg Hatch), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1729
+// Abilities: A02O (Egg Hatch), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 1730
+// Abilities: A02O (Egg Hatch), EditorSuffix (Editor Suffix)
+{
+- NEUTRAL
+}
+
+STRING 1731
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1732
+// Units: n00X (Spire), Name (Name)
+{
+Spire
+}
+
+STRING 1733
+// Items: I00P ("Meteor" Crowd Dispersal Canister), Ubertip (Tooltip - Extended)
+{
+|cff808080A heavily iterated weapon, the MCDC has been consistantly proven to be useful to peacefully disperse protestors and rioters.|r|n|n|cffffcc00An attachment for |r|cffc81e1eKinetic|r|cffffcc00 weapons.|r|n|nFires an airburst canister that rains down |cff00ff005 waves|r of |cff00ff0025 damage|r, slowing for |cff00ff0030%|r. |n|N|cff80808035 Seconds Cooldown|r
+}
+
+STRING 1734
+// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 5|r.
 }
 

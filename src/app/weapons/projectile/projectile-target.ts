@@ -41,17 +41,41 @@ export class ProjectileTargetUnit implements ProjectileTarget {
 }
 
 export interface ProjectileMover {
-    move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3
+    move(goal: Vector3, delta: number): Vector3
     getDoodadChecker(): (minX: number, minY: number, maxX: number, maxY: number) => destructable[];
+    reachedGoal(): boolean;
+    setVelocity(velocity: number);
 }
 
 export class ProjectileMoverLinear implements ProjectileMover {
-    move(currentPostion: Vector3, goal: Vector3, velocity: number, delta: number): Vector3 {
-        let velocityVector = goal.normalise().multiplyN(velocity * delta);
+    private timerToGoal: number;
+    private velocity: number;
+
+    private goal: Vector3;
+    private startPos: Vector3;
+    
+    constructor(currentPosition: Vector3, goal: Vector3, velocity?: number) {
+        this.velocity = velocity;
+        this.startPos = currentPosition;
+        this.goal = goal;
+
+        if (this.velocity) {
+            this.timerToGoal = goal.subtract(currentPosition).getLength() / this.velocity;
+        }
+    }
+    move(goal: Vector3, delta: number): Vector3 {
+        let velocityVector = goal.normalise().multiplyN(this.velocity * delta);
         return velocityVector;
     }
     getDoodadChecker() {
         return getGroundBlockers;
+    }
+    reachedGoal() {
+        return this.timerToGoal <= 0;
+    }
+    setVelocity(velocity: number) {
+        this.velocity = velocity;
+        this.timerToGoal = this.goal.subtract(this.startPos).getLength() / this.velocity;
     }
 }
 
@@ -67,16 +91,19 @@ export class ProjectileMoverParabolic implements ProjectileMover {
     velocity: number = 0;
     timeElapsed: number = 0;
 
+    timescale: number;
+
     /**
      * 
      * @param originalPosition 
      * @param goal 
      * @param angle radians
      */
-    constructor(originalPosition: Vector3, goal: Vector3, radians: number) {
+    constructor(originalPosition: Vector3, goal: Vector3, radians: number, timescale: number = 1) {
         this.originalPos = originalPosition;
         this.originalDelta = goal.subtract(originalPosition);
         const dLen = this.originalDelta.to2D().getLength();
+        this.timescale = timescale;
 
         // Calculate velocity given goal and angle
         const velocity = SquareRoot(
@@ -89,7 +116,7 @@ export class ProjectileMoverParabolic implements ProjectileMover {
         this.velocity = velocity;
     }
     
-    move(currentPostion: Vector3, goal: Vector3, velocity: number, deltaTime: number): Vector3 {
+    move(goal: Vector3, deltaTime: number): Vector3 {
         const direction = this.originalDelta.normalise();
 
         const totalXY = this.velocity * this.timeElapsed * Cos(this.angle);
@@ -101,7 +128,7 @@ export class ProjectileMoverParabolic implements ProjectileMover {
 
         this.distanceTravelled += xyDelta;
         this.distanceTravelledVertically += zDelta;
-        this.timeElapsed += deltaTime;
+        this.timeElapsed += deltaTime * this.timescale;
 
         return new Vector3(
             direction.x * xyDelta,
@@ -109,7 +136,16 @@ export class ProjectileMoverParabolic implements ProjectileMover {
             0 + zDelta
         );
     }
+
     getDoodadChecker() {
         return getAirBlockers;
+    }
+
+    setVelocity(velocity: number) {
+        this.velocity = velocity;
+    }
+
+    reachedGoal() {
+        return this.originalDelta.getLength() < this.distanceTravelled;
     }
 }

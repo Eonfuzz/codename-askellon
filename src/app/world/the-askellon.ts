@@ -60,13 +60,20 @@ export class TheAskellon {
 
             // Now apply exits
             udg_elevator_entrances.forEach((u, index) => {
-                const matchingExitZones = udg_elevator_exit_zones[index];
-                const zone = STRING_TO_ZONE_TYPE.get(matchingExitZones);
+                const entranceZone = this.allFloors.find(z => z.pointIsInZone(GetUnitX(u), GetUnitY(u)));
 
-                // Get our zone
-                if (this.floors.has(zone)) {
-                    const floor = this.floors.get(zone);
-                    floor.addExit(Unit.fromHandle(udg_elevator_exits[index]));
+                if (entranceZone instanceof ZoneWithExits) {
+                    const exitUnit = udg_elevator_exits[index];
+                    const exitZone = this.allFloors.find(z => z.pointIsInZone(GetUnitX(exitUnit), GetUnitY(exitUnit)));
+
+                    entranceZone.addPathway({ 
+                        entrance: Unit.fromHandle(u), 
+                        exit: Unit.fromHandle(udg_elevator_exits[index]),
+                        leadsTo: exitZone
+                    });
+                }
+                else {
+                    Log.Information((entranceZone ? entranceZone.id : GetUnitName(u)) + " has no exits ");
                 }
             });
 

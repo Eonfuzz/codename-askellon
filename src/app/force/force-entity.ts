@@ -136,7 +136,14 @@ export class ForceEntity extends Entity {
         if (player1 === PlayerStateFactory.StationSecurity) return true;
         // We can never have tracked aggression against aliens
         if (PlayerStateFactory.isAlienAI(player2)) return true;
-        if (PlayerStateFactory.isAlienAI(player1)) return true;
+        if (PlayerStateFactory.isAlienAI(player1)) {
+            const defenderPData = PlayerStateFactory.get(player2);
+            const defenderForce = defenderPData ? defenderPData.getForce() : undefined;
+
+            if (!defenderForce) return true;
+            else if (defenderForce.is(ALIEN_FORCE_NAME) && (defenderForce as AlienForce).isPlayerTransformed(player2)) return false;
+            return true;
+        }
         // You cannot be aggressive against yourself
         if (player1 === player2) return false;
         // You cannot be aggressive against Neutral Hostile

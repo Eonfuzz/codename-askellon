@@ -2,6 +2,7 @@ import { ProjectileMoverParabolic } from "app/weapons/projectile/projectile-targ
 import { Vector3 } from "app/types/vector3";
 import { UNIT_IS_FLY } from "resources/ability-ids";
 import { getAirBlockers, getZFromXY } from "lib/utils";
+import { Vector2 } from "app/types/vector2";
 
 export class Leap {
     unit: unit;
@@ -9,6 +10,10 @@ export class Leap {
     location: Vector3;
     initalLocation: Vector3;
     timescale: number;
+
+    // Will we end the leap based on targeted point?
+    endBasedOnPlotPoint: boolean = false;
+    distanceToPoint: number;
 
     // The leap is finished
     // Called BEFORE falling down to the abyss
@@ -29,6 +34,8 @@ export class Leap {
             Deg2Rad(angle)
         );
 
+        this.distanceToPoint = this.location.distanceTo(toWhere);
+
         BlzPauseUnitEx(who, true);
         UnitAddAbility(who, UNIT_IS_FLY);
         BlzUnitDisableAbility(who, UNIT_IS_FLY, true, true);
@@ -39,13 +46,15 @@ export class Leap {
         this.onFinishCallback = (entry) => cb(entry);
     }
 
+    endAtVirtualGoal() {
+        this.endBasedOnPlotPoint = true;
+    }
+
     update(delta: number) {
 
         // Log.Information("Updating leap");
         const posDelta = this.mover.move(
-            this.mover.originalPos, 
-            this.mover.originalDelta, 
-            this.mover.velocity, 
+            this.mover.originalDelta,
             delta*this.timescale
         );
 
@@ -70,6 +79,12 @@ export class Leap {
         }
 
         this.location = unitLoc;
+
+        if (this.endBasedOnPlotPoint && this.mover.distanceTravelled > this.distanceToPoint) {
+            // Check to see our goal point vs our current point
+            return false;
+        }
+
         const terrainZ = getZFromXY(unitLoc.x, unitLoc.y);
 
         // Check to see if we would collide, if so don't update unit location

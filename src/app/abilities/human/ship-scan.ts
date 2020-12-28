@@ -22,6 +22,7 @@ export class ShipDeepScanAbility implements Ability {
         this.ship = spaceEntity.getShipForUnit(this.unit);
 
         const mainShip = spaceEntity.mainShip
+        const planet = spaceEntity.planet;
 
         if (GetLocalPlayer() == this.unit.owner.handle) {
             deepScanSound.playSound();
@@ -29,6 +30,9 @@ export class ShipDeepScanAbility implements Ability {
 
         if (mainShip && mainShip.unit && mainShip.unit.isAlive()) {
             PingMinimapForPlayer(this.unit.owner.handle, mainShip.unit.x, mainShip.unit.y, 3);
+        }
+        if (planet && planet.isAlive()) {
+            PingMinimapForPlayer(this.unit.owner.handle, planet.x, planet.y, 3);
         }
         
         spaceEntity.ships.forEach(ship => {

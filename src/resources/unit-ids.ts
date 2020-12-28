@@ -43,6 +43,7 @@ export const ALIEN_MINION_EGG = FourCC('u006');
 export const ALIEN_MINION_CANITE = FourCC('u000');
 export const ALIEN_MINION_LEECH = FourCC('u001');
 export const ALIEN_MINION_FORMLESS = FourCC('u002');
+export const ALIEN_MINION_HYDRA = FourCC('u009');
 export const ALIEN_MINION_LARVA = FourCC('u004');
 export const ALIEN_STRUCTURE_TUMOR = FourCC('u005');
 
@@ -68,3 +69,7 @@ export const UNIT_ID_STATION_SECURITY_TURRET = FourCC('h008');
 export const UNIT_ID_STATION_SECURITY_CAMERA = FourCC('h00C');
 
 export const UNIT_ID_CULTIST_ALTAR = FourCC('n00T');
+export const UNIT_ID_CULTIST_ALTAR_TERMINAL = FourCC('n00W');
+export const UNIT_ID_LAVA_PLANET = FourCC(`n00U`);
+export const UNIT_ID_EGG_AUTO_HATCH = FourCC('u007');
+export const UNIT_ID_EGG_AUTO_HATCH_LARGE = FourCC('u008');

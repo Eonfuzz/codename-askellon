@@ -18,3 +18,4 @@ export const BUFF_ID_SIGNAL_BOOSTER = FourCC('B00A');
 export const BUFF_ID_NANOMED = FourCC('B00D');
 export const BUFF_ID_REGENERATION = FourCC('BIrl');
 export const BUFF_ID_VOID_SICKNESS = FourCC('B00E');
+export const BUFF_ID_MADNESS = FourCC('B00G');

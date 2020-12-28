@@ -18,6 +18,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { initInteractionTerminals } from "./interactables/terminals";
 import { initTesterInteractions } from "./interactables/genetic-testing-facility";
 import { intAltarInteraction } from "./interactables/cathederal-altar";
+import { initPlanetLandingInteraction } from "./interactables/ships/planet-landing";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -69,6 +70,7 @@ export class InteractionEntity extends Entity {
             InitMiningInteraction();
             initShipInteractions();
             initAskellonInteractions();
+            initPlanetLandingInteraction();
         }
         catch (e) {
             Log.Error("Failed setting up interactables");

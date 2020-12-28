@@ -51,7 +51,9 @@ import {
     ABIL_ACTIVATE_SCAN_CREW,
     ABIL_ACTIVATE_SCAN_ALIENS,
     ABIL_WEP_MINIGUN_FULLER_AUTO,
-    ABIL_ALIEN_EVOLVE_T2_DEFILER
+    ABIL_ALIEN_EVOLVE_T2_DEFILER,
+    ABIL_ITEM_ATTACH_METEOR_CANISTER,
+    ABIL_EGG_HATCH_NEUTRAL
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -99,6 +101,8 @@ import { DivertToWeaponsAbiility } from "./station/divert-weapons";
 import { DropMineralsAbility } from "./items/drop-minerals";
 import { StationSecurityScanForPlayer } from "./station/scan-for-player";
 import { MinigunFullerAutoAbility } from "./human/minigun-fuller-auto";
+import { MeteorCanisterAbility } from "./human/meteor-canister";
+import { MinionEggHatchAbility } from "./alien/minions/minion-egg-hatch";
 
 
 
@@ -203,3 +207,5 @@ AbilityHooks.Add(ABIL_ACTIVATE_SCAN_ALIENS, () => new StationSecurityScanForPlay
 // Alien Minion AI hooks
 AbilityHooks.Add(ABIL_ALIEN_MINION_EVOLVE, () => new MinionEvolveAbility());
 // AbilityHooks.Add(ABIL_ALIEN_MINION_PLACE_EGG, () => new MinionSpawnAbility());
+AbilityHooks.Add(ABIL_ITEM_ATTACH_METEOR_CANISTER, () => new MeteorCanisterAbility());
+AbilityHooks.Add(ABIL_EGG_HATCH_NEUTRAL, () => new MinionEggHatchAbility());

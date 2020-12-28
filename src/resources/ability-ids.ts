@@ -157,6 +157,8 @@ export const ABIL_ASKELLON_BROADSIDE_RIGHT = FourCC('A01V');
 export const ABIL_ACTIVATE_SCAN_CREW = FourCC('A023');
 export const ABIL_ACTIVATE_SCAN_ALIENS = FourCC('A024');
 
+export const ABIL_ITEM_ATTACH_METEOR_CANISTER = FourCC('A02M');
+
 export const ABIL_SECURITY_TARGET_ALL = [
     ABIL_SECURITY_TARGET_PLAYER_1,
     ABIL_SECURITY_TARGET_PLAYER_2,
@@ -177,3 +179,9 @@ export const ABIL_DROP_MINERALS = FourCC('A01Y');
 
 export const ABIL_CULTIST_INFO = FourCC('A02I');
 export const ABIL_CULTIST_INFO_POST_BUILD = FourCC('A009');
+export const ABIL_APPLY_MADNESS = FourCC('A02J');
+export const ABIL_ALTAR_IS_BUILT = FourCC('A02L');
+export const ABIL_DISARM_USER = FourCC('Abun');
+export const ABIL_CULTIST_CEREMONIAL_DAGGER = FourCC('A02K');
+export const ABIL_REPAIR_NEOKATANA = FourCC('A02N');
+export const ABIL_EGG_HATCH_NEUTRAL = FourCC('A02O');

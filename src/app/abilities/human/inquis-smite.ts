@@ -3,7 +3,7 @@ import { Unit } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { ABILITY_SLOW_ID, ABIL_STUN_25 } from "resources/ability-ids";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
-import { SFX_RED_SINGULARITY, SFX_DARK_RITUAL, SFX_DARK_SUMMONING, SFX_HOWL } from "resources/sfx-paths";
+import { SFX_RED_SINGULARITY, SFX_DARK_RITUAL, SFX_DARK_SUMMONING, SFX_HOWL, SFX_SMITE } from "resources/sfx-paths";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { getZFromXY } from "lib/utils";
 import { ForceEntity } from "app/force/force-entity";
@@ -38,9 +38,11 @@ export class SmiteAbility implements Ability {
 
         smiteSound.playSoundOnUnit(this.targetUnit.handle, 127);
 
-        this.smiteSfx = AddSpecialEffect(SFX_DARK_SUMMONING, this.targetUnit.x, this.targetUnit.y);
+        this.smiteSfx = AddSpecialEffect(SFX_SMITE, this.targetUnit.x, this.targetUnit.y);
+        BlzSetSpecialEffectTimeScale(this.smiteSfx, 0.36);
+        BlzSetSpecialEffectScale(this.smiteSfx, 0.6);
         BlzSetSpecialEffectZ(this.smiteSfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
-        BlzSetSpecialEffectTimeScale(this.smiteSfx, 0.5);
+        // BlzSetSpecialEffectTimeScale(this.smiteSfx, 0.5);
 
         return true;
     };
@@ -64,6 +66,7 @@ export class SmiteAbility implements Ability {
                 127
             );
 
+            BlzSetSpecialEffectTimeScale(this.smiteSfx, 1.3);
             let sfx = AddSpecialEffect(SFX_HOWL, this.targetUnit.x, this.targetUnit.y);
             BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
             BlzSetSpecialEffectZ(sfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);

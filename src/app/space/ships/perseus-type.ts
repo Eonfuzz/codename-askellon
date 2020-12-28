@@ -1,4 +1,4 @@
-import { Unit, Effect, MapPlayer } from "w3ts/index";
+import { Unit, Effect, MapPlayer, Item } from "w3ts/index";
 import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
@@ -114,14 +114,13 @@ export class PerseusShip extends ShipWithFuel {
                         for (let index = 0; index < 6; index++) {
                             const item = u.getItemInSlot(index);
                             if (item) {
-                                RemoveItem(item);
+                                item.destroy();
                             }
                         }
                     }
                     killer.damageTarget(
                         u.handle, 
                         this.state === ShipState.inSpace ? 99999 : 400,
-                        undefined, 
                         false, 
                         false, 
                         ATTACK_TYPE_SIEGE, 
@@ -234,9 +233,9 @@ export class PerseusShip extends ShipWithFuel {
     }
 
 
-    private dropMineral(oldOwner: MapPlayer, parentMineral: item, ITEM_ID: number) {
-        const stacks = GetItemCharges(parentMineral);
-        SetItemCharges(parentMineral, 0);
+    private dropMineral(oldOwner: MapPlayer, parentMineral: Item, ITEM_ID: number) {
+        const stacks = parentMineral.charges;
+        parentMineral.charges = 0;
         
         if (stacks > 0) {
             const minerals = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 300 + GetRandomInt(-50, 50));

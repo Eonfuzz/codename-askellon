@@ -49,6 +49,7 @@ export class ChatEntity extends Entity {
     private adminListenUsers: MapPlayer[] = [];
 
     private chatHooks: Array<(data: ChatHook) => ChatHook> = []; 
+    private previousMessages: string[] = [];
 
     constructor() {
         super();
@@ -186,6 +187,7 @@ export class ChatEntity extends Entity {
             }
             else if (message.indexOf("-cheat") === 0) {
                 player.setState(PLAYER_STATE_RESOURCE_GOLD, 999999);
+                player.setState(PLAYER_STATE_RESOURCE_LUMBER, 999999);
             }
             else if (message.indexOf("-help") === 0) {
                 this.postSystemMessage(player, "Commands: -god, -listen, -wa, -wc, -cheat, -kill, -cd, -vision");
@@ -270,6 +272,17 @@ export class ChatEntity extends Entity {
                     CreateItem(ITEM_WEP_NEOKATANA, x, y);
                 });
             }
+            else if (message == "-checkzone") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    const z = WorldEntity.getInstance().getPointZone(x, y);
+                    if (z) {
+                        Log.Information(`Zone check: ${z.id}`);
+                    }
+                    else {
+                        Log.Information(`Zone check: No Zone`);
+                    }
+                });
+            }
             else if (message == "-test minigun") {
                 GetPlayerCamLoc(player, (x, y) => {
                     CreateItem(ITEM_WEP_MINIGUN, x, y);
@@ -282,7 +295,9 @@ export class ChatEntity extends Entity {
                 });
             }
             else if (message == "-test madness") {
+                // Log.Information("Madness test!");
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {
+                    // Log.Information("aaa");
                     const u = Unit.fromHandle(GetEnumUnit());
                     EventEntity.send(EVENT_TYPE.ADD_BUFF_INSTANCE, { source: u, data: { 
                         buffId: BUFF_ID.MADNESS,
@@ -421,7 +436,7 @@ export class ChatEntity extends Entity {
                     const showIsAlien = pIsAlien && pData && pData.getForce().is(ALIEN_FORCE_NAME);
 
                     if (crew) {
-                        const pStr = `#${p.id}: ${playerColors[p.id].code}${crew.name}|r ${pData.originalName}`
+                        const pStr = `#${p.id+1}: ${playerColors[p.id].code}${crew.name}|r ${pData.originalName}`
                         if (isObserver) {
                             MessagePlayer(player,  `${pStr} ( ${pData.getForce().name} )`);
                         }
@@ -482,6 +497,9 @@ export class ChatEntity extends Entity {
                         Timers.addTimedAction(1.4, () => u.x == uX && u.y == uY && u.setAnimation(0));
                     }
                 }
+                if (postHookData.recipients.length > 1) {
+                    this.previousMessages.push(postHookData.message);
+                }
 
                 this.postMessageFor(postHookData.recipients, postHookData.name, postHookData.color, postHookData.message, postHookData.chatTag, postHookData.sound);
             
@@ -490,6 +508,10 @@ export class ChatEntity extends Entity {
                 Log.Error(`Chat failed ${e}`);
             }
         }
+    }
+
+    public getPreviousMessages() {
+        return this.previousMessages;
     }
 
     private applyChatHooks(chatData: ChatHook) {

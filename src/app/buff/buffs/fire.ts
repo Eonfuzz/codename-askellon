@@ -39,7 +39,7 @@ export class onFire extends DynamicBuff {
             UnitDamageTarget(
                 damageSource.handle, 
                 this.who.handle, 
-                5,
+                7,
                 false, 
                 false, 
                 ATTACK_TYPE_HERO, 

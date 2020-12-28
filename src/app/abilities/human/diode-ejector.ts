@@ -119,8 +119,7 @@ export class DiodeEjectAbility implements Ability {
                 new Vector3(projStartLoc.x, projStartLoc.y, projStartLoc.z),
                 new ProjectileTargetStatic(
                     targetLoc.subtract(projStartLoc),
-                ),
-                new ProjectileMoverLinear()
+                )
             )
             .setVelocity(PROJECTILE_SPEED)
             .onCollide((projectile, who) => {

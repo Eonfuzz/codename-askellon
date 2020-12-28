@@ -65,8 +65,7 @@ export class ShipChaingunAbility implements Ability {
             const projectile = new Projectile(
                 this.unit.handle,
                 bulletLoc,
-                new ProjectileTargetStatic(deltaTarget),
-                new ProjectileMoverLinear()
+                new ProjectileTargetStatic(deltaTarget)
             )
             .setVelocity(1500)
             .overrideFilter((projectile: Projectile) => {

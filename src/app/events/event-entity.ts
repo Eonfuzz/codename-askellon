@@ -4,10 +4,10 @@ import { EventData } from "./event-data";
 import { Hooks } from "lib/Hooks";
 import { Trigger, Region, Unit, MapPlayer } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
-import { ABIL_DEFEND } from "resources/ability-ids";
+import { ABIL_DEFEND, ABIL_EGG_HATCH_NEUTRAL } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE } from "resources/unit-ids";
+import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH } from "resources/unit-ids";
 import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 
@@ -105,7 +105,7 @@ export class EventEntity {
                         BlzSetSpecialEffectScale(sfx, 0.6);
                         DestroyEffect(sfx);
                     }
-                    else if (unit.typeId === ALIEN_MINION_EGG) {
+                    else if (unit.typeId === ALIEN_MINION_EGG || unit.typeId === UNIT_ID_EGG_AUTO_HATCH || unit.typeId == UNIT_ID_EGG_AUTO_HATCH_LARGE) {
                         unit.show = false;
                         const sfx = AddSpecialEffect(SFX_ZERG_EGG_DEATH, unit.x, unit.y);
                         BlzSetSpecialEffectScale(sfx, unit.selectionScale);
@@ -151,6 +151,7 @@ export class EventEntity {
     sendEvent(whichEvent: EVENT_TYPE, data?: EventData) {
         // Get the list of listeners
         const listeners = this.eventListeners.get(whichEvent);
+        // Log.Information(`Sending event: ${EVENT_TYPE[whichEvent]} count ${listeners && listeners.length}`)
         if (listeners) {
             // Log.Information(`Got event ${EVENT_TYPE[whichEvent]} to ${listeners.length}`);
             listeners.forEach(l => l.onEvent(data));
@@ -172,12 +173,10 @@ export class EventEntity {
     public static listen(listener: EventListener)
     public static listen(event: EVENT_TYPE, cb: (self: EventListener, data: EventData) => void)
     public static listen(listener: EventListener | EVENT_TYPE, cb?: (self: EventListener, data: EventData) => void) {
-        try {
-            if (listener instanceof EventListener) {
-                EventEntity.getInstance().addListener(listener)
-            }
+        if (listener instanceof EventListener) {
+            EventEntity.getInstance().addListener(listener)
         }
-        catch(e) {
+        else {
             EventEntity.getInstance().addListener(new EventListener(listener as EVENT_TYPE, cb));
         }
     } 

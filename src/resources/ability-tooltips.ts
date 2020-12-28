@@ -2,7 +2,7 @@ import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_
 import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ, ABIL_GENE_COSMIC, ABIL_GENE_XENOPHOBIC_PUNCH } from "./ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ, ABIL_GENE_COSMIC, ABIL_GENE_XENOPHOBIC_PUNCH, ABIL_ITEM_ATTACH_METEOR_CANISTER } from "./ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { AT_ABILITY_DRAGONFIRE_BLAST } from "app/weapons/weapon-constants";
 
@@ -127,6 +127,16 @@ ${COL_INFO}Firing this at full power causes you to be sent flying back.|r
 ${COL_MISC}45 Second Cooldown|r`
 );
 
+export const meteorCanisterTooltip = new DynamicAbilityTooltip(
+    ABIL_ITEM_ATTACH_METEOR_CANISTER,
+    undefined,
+    (who: Crewmember, abilLevel: number, data: any) => 
+    `${COL_MISC}A heavily iterated weapon, the MCDC has been consistantly proven to be useful to peacefully disperse protestors and rioters.|r
+
+Fires an airburst canister, raining down shrapnel for ${COL_GOOD}5 waves|r of ${COL_GOOD}${25 * who.getDamageBonusMult()} damage|r and slowing for ${COL_GOOD}30%|r.
+
+${COL_MISC}35 Seconds Cooldown|r`
+);
 
 export const TOOLTIP_EMBRACE_COSMOS = new DynamicAbilityTooltip(
     ABIL_GENE_COSMIC,

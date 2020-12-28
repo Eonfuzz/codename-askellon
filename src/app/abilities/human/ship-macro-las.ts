@@ -63,8 +63,7 @@ export class ShipMacroLasAbility implements Ability {
         const projLeft = new Projectile(
             this.unit.handle,
             bulletLeftLoc,
-            new ProjectileTargetStatic(deltaLeft),
-            new ProjectileMoverLinear()
+            new ProjectileTargetStatic(deltaLeft)
         )
         .setVelocity(2400)
         .overrideFilter((projectile: Projectile) => {
@@ -78,8 +77,7 @@ export class ShipMacroLasAbility implements Ability {
         const projRight = new Projectile(
             this.unit.handle,
             bulletRightLoc,
-            new ProjectileTargetStatic(deltaRight),
-            new ProjectileMoverLinear()
+            new ProjectileTargetStatic(deltaRight)
         )
         .setVelocity(2400)
         .overrideFilter((projectile: Projectile) => {

@@ -17,6 +17,7 @@ export const SFX_FROST_NOVA = 'Abilities\\Spells\\Undead\\FrostNova\\FrostNovaTa
 export const SFX_SHOCKWAVE = "Abilities\\Spells\\Orc\\Shockwave\\ShockwaveMissile.mdl";
 export const SFX_CRYO_GRENADE = 'war3mapImported\\Chain Grenade Blue.mdx';
 export const SFX_HELLFIRE_GRENADE = 'Abilities\\Weapons\\GyroCopter\\GyroCopterMissile.mdl';
+export const SFX_METEOR_CANISTER = "Abilities\\Weapons\\RocketMissile\\RocketMissile.mdl"
 
 
 export const SFX_CATAPULT_MISSILE = "abilities\\weapons\\catapult\\catapultmissile.mdl";
@@ -63,7 +64,8 @@ export const SFX_BLOOD_11 = "Models\\FloorBlood11.mdx";
 export const SFX_BLOOD_12 = "Models\\FloorBlood12.mdx";
 export const SFX_HUMAN_BLOOD = "Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLargeDeathExplode.mdl";
 export const SFX_ALIEN_BLOOD = "Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl";
-
+export const SFX_VOID_DISK = 'war3mapImported\\Void Disc.mdx';
+export const SFX_SMITE = "Models\\sfx\\Smite.mdx";
 // Preload SFX
 Preload(SFX_WINDWAVE);
 Preload(SFX_LASER_1);
@@ -113,3 +115,6 @@ Preload(SFX_HUMAN_BLOOD);
 Preload(SFX_ALIEN_BLOOD);
 Preload(SFX_BLUE_BALL);
 Preload(SFX_BLUE_BLAST);
+Preload(SFX_VOID_DISK);
+Preload(SFX_SMITE);
+Preload(SFX_METEOR_CANISTER);

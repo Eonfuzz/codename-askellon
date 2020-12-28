@@ -31,6 +31,7 @@ export class Zone {
             let idx = 1;
             let namespaceCheck = `${namespaceVarName}${idx++}`;
             while (_G[namespaceCheck]) {
+                // if (this.id === ZONE_TYPE.PLANET) Log.Information("Found planet zone! "+namespaceCheck);
                 const rect = _G[namespaceCheck] as rect;
                 this.addRegion(rect);
                 namespaceCheck = `${namespaceVarName}${idx++}`;

@@ -26,7 +26,7 @@ ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
 
 ROLE_NAMES.set(ROLE_TYPES.NAVIGATOR, [
     "Admiral Ackbar", "Admiral Doubt", "Admiral Hansel", "Admiral Gretel", "Admiral Jones", "Admiral Aedus",
-    "Admiral Alex", "Navigator Stanley", "Adminal Mayday"
+    "Admiral Alex", "Navigator Stanley", "Adminal Mayday", "Admiral Thorne"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.SEC_GUARD, [

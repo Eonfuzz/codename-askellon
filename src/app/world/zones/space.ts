@@ -11,7 +11,7 @@ export class SpaceZone extends Zone {
         const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
-            // SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, bj_mapInitialPlayableArea);
+            // SetCameraBoundsToRectForPlayerBJ(unit.owner.handle, gg_rct_zoneplanet);
             // BlzChangeMinimapTerrainTex("war3mapGenerated.blp");
             BlzShowTerrain(true);
         }

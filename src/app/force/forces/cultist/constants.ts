@@ -11,3 +11,4 @@ export const CULTIST_CORPSE_INTERVAL = 10;
 export const CULTIST_ALTAR_BUILD_TIME = 60;
 
 export const COLOUR_CULT = "|cffb52166";
+export const TECH_RESEARCH_CULT_ID = FourCC('R00M');

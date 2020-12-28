@@ -20,7 +20,7 @@ export class ProjectileSFX {
 
         this.sfx = AddSpecialEffect(sfx, startingLoc.x, startingLoc.y); 
         BlzSetSpecialEffectZ(this.sfx, startingLoc.z);
-        BlzSetSpecialEffectRoll(this.sfx, this.pitch);
+        BlzSetSpecialEffectPitch(this.sfx, this.pitch);
         BlzSetSpecialEffectYaw(this.sfx, this.yaw);
     }
 

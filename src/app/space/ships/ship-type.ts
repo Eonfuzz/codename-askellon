@@ -144,7 +144,7 @@ export abstract class ShipWithFuel extends Ship {
             // Additionally, if we are out of mana damage the ship...
             if (this.shipFuel <= 0) {
                 this.unit.damageTarget(this.unit.handle, 
-                    40, 0, 
+                    40,
                     false, false, 
                     ATTACK_TYPE_HERO, 
                     DAMAGE_TYPE_DIVINE, 

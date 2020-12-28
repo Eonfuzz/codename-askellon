@@ -88,54 +88,22 @@ export class VentZone extends ZoneWithExits {
         }));
     }
 
-    public addExit(whichExit: Unit) {
-        this.exits.push(whichExit);
-    }
-
-    public setExits(to: Unit[]) {
-        this.exits = to;
-    }
-
     public onLeave(unit: Unit) {
         super.onLeave(unit);
 
         if (unit.typeId === CREWMEMBER_UNIT_ID) {
-
-            // Remove the existing modifier (if any)
-            if (this.playerLightingModifiers.has(unit.owner)) {
-                const mod = this.playerLightingModifiers.get(unit.owner);
-                this.playerLightingModifiers.delete(unit.owner);
-                VisionFactory.getInstance().removeVisionModifier(mod);
-            }
-            
             if (MapPlayer.fromLocal() === unit.owner) {
                 this.gasLoopSound.setVolume(0);
             }
-
-            // If no oxy remove oxy loss
-            // TODO
-            // If no power remove power loss
-            // Remove shared vision of exits
-            this.exits.forEach(exit => {
-                // Log.Information("Removing exit vision "+exit.name);
-                exit.shareVision(unit.owner, false);
-            });
         }
     }
 
     public onEnter(unit: Unit) {
         super.onEnter(unit);
         if (unit.typeId === CREWMEMBER_UNIT_ID) {
-            // Log.Information("Sharing exit vision");
-            this.exits.forEach(exit => {
-                // Log.Information(exit.name);
-                exit.shareVision(unit.owner, true);
-            });
-
             if ((this.gasPreparing || this.gasActive) && MapPlayer.fromLocal() === unit.owner) {
                 this.gasLoopSound.setVolume(15);
             }
-
 
             // If no oxy apply oxy loss
             // TODO

@@ -9,11 +9,11 @@ import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { AbilityHooks } from "../ability-hooks";
 import { ABIL_GENE_COSMIC } from "resources/ability-ids";
+import { SFX_VOID_DISK } from "resources/sfx-paths";
 
 const SFXAt = 0.8;
 const SFXEnd = 1.6;
 const EmbraceCosmosCastTime = 0.9;
-const EmbraceSFX = 'war3mapImported\\Void Disc.mdx';
 
 export class EmbraceCosmosAbility implements Ability {
 
@@ -44,7 +44,7 @@ export class EmbraceCosmosAbility implements Ability {
                 const uY = this.unit.y;
 
                 this.sfx = Effect.fromHandle(
-                    AddSpecialEffect(EmbraceSFX, uX, uY)
+                    AddSpecialEffect(SFX_VOID_DISK, uX, uY)
                 );
             }
             if (this.timeCast >= EmbraceCosmosCastTime && !this.hasDoneDamage) {
@@ -109,7 +109,6 @@ export class EmbraceCosmosAbility implements Ability {
                 isSelfUnit 
                     ? this.unit.getIntelligence(true) * 2.5 + 25
                     : this.unit.getIntelligence(true) * 5 + 50, 
-                0,
                 true, 
                 true, 
                 ATTACK_TYPE_MAGIC, 

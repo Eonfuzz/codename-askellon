@@ -41,6 +41,14 @@ export class Vector3 {
         return new Vector3(this.x * value, this.y * value, this.z * value);
     }
 
+    divide(value: Vector3) : Vector3 {
+        return new Vector3(this.x / value.x, this.y / value.y, this.z / value.z);
+    }
+
+    divideN(value: number) : Vector3 {
+        return new Vector3(this.x / value, this.y / value, this.z / value);
+    }
+
     add(value: Vector3) : Vector3 {
         return new Vector3(this.x + value.x, this.y + value.y, this.z + value.z);
     }

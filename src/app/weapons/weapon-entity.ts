@@ -21,7 +21,7 @@ import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { EventListener } from "app/events/event-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { ITEM_WEP_MINIGUN, ITEM_WEP_NEOKATANA } from "resources/item-ids";
+import { ITEM_ATTACH_METEOR_CANISTER, ITEM_WEP_MINIGUN, ITEM_WEP_NEOKATANA } from "resources/item-ids";
 import { ABIL_WEP_MINIGUN, ABIL_WEP_NEOKATANA } from "resources/ability-ids";
 import { Minigun } from "./guns/minigun";
 import { Hooks } from "lib/Hooks";
@@ -29,6 +29,8 @@ import { WeaponEntityAttackType } from "./weapon-attack-type";
 import { Timers } from "app/timer-type";
 import { GunItem } from "./guns/gun-item";
 import { WepNeokatana } from "./guns/neokatana";
+import { MeteorCanisterAttachment } from "./attachment/meteor-canister";
+import { UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -348,7 +350,13 @@ export class WeaponEntity extends Entity {
                 unit.owner, 
                 targetUnit.owner
             );
-            if (!validAggression) IssueImmediateOrder(unit.handle, "stop");
+            if (!validAggression) return IssueImmediateOrder(unit.handle, "stop");
+            // How do I handle auto spawning eggs?
+            // I'm not actually too sure
+            // I guess I do it here?
+            if (unit.typeId === UNIT_ID_EGG_AUTO_HATCH || unit.typeId === UNIT_ID_EGG_AUTO_HATCH_LARGE) {
+                unit.issueImmediateOrder("thunderclap");
+            }
         });
 
         this.weaponAttackTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
@@ -439,6 +447,7 @@ export class WeaponEntity extends Entity {
         // if (itemId === EMS_RIFLING_ITEM_ID) return true;
         if (itemId == SNIPER_ITEM_ID) return true;
         if (itemId == AT_ITEM_DRAGONFIRE_BLAST) return true;
+        if (itemId == ITEM_ATTACH_METEOR_CANISTER) return true;
         return false;
     }
 
@@ -464,6 +473,8 @@ export class WeaponEntity extends Entity {
             return new RailRifle(this.game, item);
         if (itemId == AT_ITEM_DRAGONFIRE_BLAST)
             return new DragonfireBarrelAttachment(this.game, item);
+        if (itemId == ITEM_ATTACH_METEOR_CANISTER)
+            return new MeteorCanisterAttachment(this.game, item);
         return undefined;
     }
 

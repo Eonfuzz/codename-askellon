@@ -6,6 +6,35 @@ import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BL
 import { Timers } from "app/timer-type";
 import { TILE_SIZE } from "resources/data-consts";
 
+export function randomWithinCircle(radius: number, x: number, y: number) {
+    const _x = GetRandomReal(-radius, radius);
+    const angle = Math.acos(_x/radius);
+    const lim = radius * Math.sin(angle);
+    const _y = GetRandomReal(-lim, lim);
+    return new Vector2(x + _x, y + _y);
+}
+
+export function getRectsGivenNamespace(namespace: string): rect[] {    
+    const results = [];
+
+    // We need to scan _g to find rects that match us
+    let strId = `${namespace}`;
+    while (strId.indexOf('_') >= 0) {
+        strId = strId.replace('_', '');
+    }
+    const namespaceVarName = `gg_rct_${strId}`;
+
+
+    let idx = 1;
+    let namespaceCheck = `${namespaceVarName}${idx++}`;
+    while (_G[namespaceCheck]) {
+        const rect = _G[namespaceCheck] as rect;
+        namespaceCheck = `${namespaceVarName}${idx++}`;
+        results.push(rect);
+    }
+    return results;
+}
+
 /**
  * Returns evently distributed points in a circle given radius
  * @param center 

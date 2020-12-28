@@ -100,8 +100,7 @@ export class LaserBroadsideAbility implements Ability {
                 const projectile = new Projectile(
                     this.castingUnit.handle,
                     bulletLoc,
-                    new ProjectileTargetStatic(deltaTarget),
-                    new ProjectileMoverLinear()
+                    new ProjectileTargetStatic(deltaTarget)
                 )
                 .setVelocity(1500)
                 .overrideFilter((projectile: Projectile) => {

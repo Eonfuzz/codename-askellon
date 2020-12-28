@@ -840,7 +840,7 @@ export class AlienForce extends ForceType {
  
     public onTakeDamage(who: MapPlayer, attacker: MapPlayer, damagedUnit: unit, damagingUnit: unit) {
         if (UnitHasBuffBJ(damagedUnit, BUFF_ID_ROACH_ARMOR)) {
-            BlzSetEventDamage(GetEventDamage() - 7);
+            BlzSetEventDamage(GetEventDamage() - 5);
         }
     }
 }

@@ -94,6 +94,8 @@ export class LatchAbility implements Ability {
         // Clear any aggression
         ForceEntity.getInstance().repairAllAlliances(this.unit.owner);
 
+        this.unit.invulnerable = true;
+
         return true;
     };
 
@@ -266,6 +268,7 @@ export class LatchAbility implements Ability {
 
     public destroy() { 
         try {
+            this.unit.invulnerable = false;
             UnitRemoveBuffBJ(BUFF_ID_FEAST, this.targetUnit.handle);
             if (this.unit && this.unit.isAlive()) {
                 // Set cooldowns

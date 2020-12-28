@@ -24,6 +24,9 @@ import { TECH_MAJOR_SECURITY, TECH_INCREASE_SECURITY_VISION_HEALTH, TECH_MINERAL
 import { Players } from "w3ts/globals/index";
 import { GENETIC_FACILITY_TOOLTIP, GENETIC_FACILITY_TOOLTIP_DAMAGED } from "resources/strings";
 import { ROLE_TYPES } from "resources/crewmember-names";
+import { Vector2 } from "app/types/vector2";
+import { WorldEntity } from "app/world/world-entity";
+import { ShipZone } from "app/world/zone-types/ship-zone";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
@@ -119,6 +122,16 @@ export class SecurityEntity extends Entity {
             uType !== UNIT_ID_STATION_SECURITY_CAMERA) return false;
 
         this.stationSecurityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGING);
+
+        if (u.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
+            u.color = PLAYER_COLOR_LIGHT_GRAY;
+            const point = Vector2.fromWidget(u.handle);
+            const zone = WorldEntity.getInstance().getPointZone(point.x, point.y) as ShipZone || undefined;
+
+            if (zone) {
+                zone.addTurret(u);
+            }
+        }
 
         if (u.typeId === UNIT_ID_MANSION_DOOR) {
             if (!this.doors. has(u)) {

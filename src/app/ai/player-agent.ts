@@ -173,18 +173,45 @@ export class PlayerAgent {
                     const attackOrder = new UnitActionWaypoint(Vector2.fromWidget(target.handle), WaypointOrders.attack, 100);
                     const newOrders = new UnitActionExecuteCode((target, timeStep, queue) => this.enactStateOnAgent(agent, this.generateState(agent)));
 
-                    const queue = this.sendUnitTo(agent, agentLocation.id, targetLocation.id);
-                    if (queue) {
-                        queue.addAction(attackOrder);
-                        queue.addAction(newOrders);
-                        this.actionQueue.set(agent, queue);
+                    if (agentLocation.id === targetLocation.id) {
+                        this.actionQueue.set(agent, ActionQueue.createUnitQueue(agent, attackOrder, newOrders));
                     }
                     else {
-                        this.actionQueue.set(agent, ActionQueue.createUnitQueue(agent, attackOrder, newOrders));
+                        const queue = this.sendUnitTo(agent, agentLocation.id, targetLocation.id);
+                        if (queue) {
+                            queue.addAction(attackOrder);
+                            queue.addAction(newOrders);
+                            this.actionQueue.set(agent, queue);
+                        }
+                        else {
+                            state = AGENT_STATE.WANDER;
+                        }
                     }
                 }
             }
         } 
+        if (state === AGENT_STATE.TRAVEL) {
+            const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
+            const ourFloor = this.pathingGraph.nodeDict.get(agentLocation.id);
+
+            if (ourFloor.connectedNodes.length > 0) {
+                const randomLocation = ourFloor.connectedNodes[GetRandomInt(0, ourFloor.connectedNodes.length - 1)];
+
+                const queue = this.sendUnitTo(agent, agentLocation.id, randomLocation.zone.id);
+                if (queue) {
+                    queue.addAction(new UnitActionExecuteCode((target, timeStep, queue) => {
+                        this.enactStateOnAgent(agent, this.generateState(agent));
+                    }));
+                    this.actionQueue.set(agent, queue);
+                }
+                else {
+                    state = AGENT_STATE.WANDER;
+                }
+            }
+            else {
+                state = AGENT_STATE.WANDER;
+            }
+        }
         if (state === AGENT_STATE.WANDER) {
             // Log.Information("Wander start");
             const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
@@ -203,19 +230,6 @@ export class PlayerAgent {
             }));
 
             this.actionQueue.set(agent, ActionQueue.createUnitQueue(agent, ...actions));
-        }
-        if (state === AGENT_STATE.TRAVEL) {
-            const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
-            const ourFloor = this.pathingGraph.nodeDict.get(agentLocation.id);
-            const randomLocation = ourFloor.connectedNodes[GetRandomInt(0, ourFloor.connectedNodes.length - 1)];
-
-            const queue = this.sendUnitTo(agent, agentLocation.id, randomLocation.zone.id);
-            if (queue) {
-                queue.addAction(new UnitActionExecuteCode((target, timeStep, queue) => {
-                    this.enactStateOnAgent(agent, this.generateState(agent));
-                }));
-            }
-            this.actionQueue.set(agent, queue);
         }
         if (state === AGENT_STATE.BUILD_TUMOR) {
             // Log.Information("Wander start");
@@ -266,6 +280,8 @@ export class PlayerAgent {
      * Constructs edges and pathways based on our zone details
      */
     private sendUnitTo(whichUnit: unit, from: ZONE_TYPE, to: ZONE_TYPE): UnitQueue | undefined {
+        if (from === to) return;
+
         const path = this.pathingGraph.pathTo(from, to);
         if (path && path.edges.length > 0) {
             const actions: UnitAction[] = [];

@@ -1,8 +1,8 @@
 import { Log } from "../../../../lib/serilog/serilog";
 import { ForceType } from "../force-type";
-import { ABIL_CREWMEMBER_INFO, ABIL_CULTIST_INFO } from "resources/ability-ids";
+import { ABIL_ALTAR_IS_BUILT, ABIL_CREWMEMBER_INFO, ABIL_CULTIST_INFO } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer } from "w3ts";
+import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer, Effect } from "w3ts";
 import { resolveTooltip } from "resources/ability-tooltips";
 import { EVENT_TYPE } from "app/events/event-enum";
 
@@ -18,7 +18,7 @@ import { VisionFactory } from "app/vision/vision-factory";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { PlayerState } from "../../player-type";
 import { Players } from "w3ts/globals/index";
-import { UNIT_ID_CULTIST_ALTAR } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, UNIT_ID_CULTIST_ALTAR } from "resources/unit-ids";
 import { Timers } from "app/timer-type";
 import { COL_MISC, COL_ATTATCH } from "resources/colours";
 import { Vector2 } from "app/types/vector2";
@@ -27,10 +27,10 @@ import { Vector3 } from "app/types/vector3";
 import { getZFromXY, MessagePlayer } from "lib/utils";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { WeaponEntity } from "app/weapons/weapon-entity";
-import { SFX_LASER_3, SFX_RED_SINGULARITY } from "resources/sfx-paths";
-import { CULTIST_ALTAR_MAX_MANA, COLOUR_CULT, CULTIST_ALTAR_BUILD_TIME, CULTIST_ALTAR_TIME_TO_REGEN, CULTIST_CORPSE_INTERVAL, CULTIST_ALTAR_REGEN_INCREASE } from "./constants";
+import { SFX_LASER_3, SFX_RED_SINGULARITY, SFX_VOID_DISK } from "resources/sfx-paths";
+import { CULTIST_ALTAR_MAX_MANA, COLOUR_CULT, CULTIST_ALTAR_BUILD_TIME, CULTIST_ALTAR_TIME_TO_REGEN, CULTIST_CORPSE_INTERVAL, CULTIST_ALTAR_REGEN_INCREASE, TECH_RESEARCH_CULT_ID } from "./constants";
 import { SoundRef } from "app/types/sound-ref";
-import { ITEM_HUMAN_CORPSE } from "resources/item-ids";
+import { ITEM_CEREMONIAL_DAGGER, ITEM_HUMAN_CORPSE } from "resources/item-ids";
 
 export class CultistForce extends CrewmemberForce {
     name = CULT_FORCE_NAME;
@@ -43,6 +43,8 @@ export class CultistForce extends CrewmemberForce {
     private playerToAltar: Map<MapPlayer, Unit> = new Map<MapPlayer, Unit>();
     private playerAltarIsBuilt: Map<MapPlayer, boolean> = new Map<MapPlayer, boolean>();
 
+    private playerKillingPunish = new Trigger();
+    private onCultistUpgrade = new Trigger();
 
     private altars: Unit[] = [];
 
@@ -91,6 +93,16 @@ export class CultistForce extends CrewmemberForce {
                 }
             });
         });
+        this.onCultistUpgrade.registerAnyUnitEvent(EVENT_PLAYER_UNIT_RESEARCH_FINISH);
+        this.onCultistUpgrade.addCondition(() => GetResearched() === TECH_RESEARCH_CULT_ID);
+        this.onCultistUpgrade.addAction(() => this.onCultistResearch(Unit.fromHandle(GetTriggerUnit())));
+
+        this.playerKillingPunish.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
+        this.playerKillingPunish.addCondition(() => {
+            const u = GetTriggerUnit();
+            return GetUnitTypeId(u) === CREWMEMBER_UNIT_ID;
+        });
+        this.playerKillingPunish.addAction(() => this.onCrewmemberDeath(Unit.fromHandle(GetTriggerUnit()), Unit.fromHandle(GetKillingUnit())));
     }
 
     public canUseAltar(who: Unit, altar: Unit): boolean {
@@ -102,6 +114,12 @@ export class CultistForce extends CrewmemberForce {
         const u = this.playerToAltar.get(who);
         if (u && u.isAlive()) return u;
         return undefined;
+    }
+
+    private onCrewmemberDeath(dyingCrew: Unit, killingCrew: Unit) {
+        if (!this.hasPlayer(killingCrew.owner)) return;
+        MessagePlayer(killingCrew.owner, `${COLOUR_CULT}We feast only on the flesh of the dead!`);
+        MessagePlayer(killingCrew.owner, `As ${COL_ATTATCH}punishment|r for killing a living player`);
     }
 
     private isAltarBuilt(altar: Unit): boolean | undefined {
@@ -117,10 +135,32 @@ export class CultistForce extends CrewmemberForce {
         altar.maxMana = CULTIST_ALTAR_MAX_MANA;
         altar.mana = 0;
 
+        altar.addAbility(ABIL_ALTAR_IS_BUILT);
         const player = MapPlayer.fromIndex(altar.userData);
         // TODO Send message to player
         MessagePlayer(player, `My ${COLOUR_CULT}a̷̲͕̰̼͎̾͑͜l̵̢̅͆͐̓͒̌̀͝t̷̫̬̩̥͕͕̗͚̽̕a̶̛̛̝̬̓́̒̄͆̎̈́͛̊̓̓̚r̸͓̤̬̯̚|r is built. Gifts from the v̴̯͔͔̈́o̴̦͓͖̅̓̄̀̂ȉ̴͚̮̰͍͇̰̏͂̀͊̌̐͋͂̽́̇̏͝d̷̜͔̱̰̥̲̥͍͈̱̣̔̏̃̎̓̿̌͆̀̃̈̀̚̚͝ you shall have`);
         if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
+    }
+
+    private onCultistResearch(altarTerminal: Unit) {
+        const player = altarTerminal.owner;
+        const altar = this.getPlayerAltar(player);
+        const pData = PlayerStateFactory.get(player);
+        const research = GetResearched();
+        const researchLevel = GetPlayerTechCount(player.handle, research, true);
+
+        if (researchLevel === 1 && altar && pData) {
+            const unit = pData.getUnit();
+            const spawnLoc = Vector2.fromWidget(altar.handle);
+            const deltaLoc = spawnLoc.add( Vector2.fromWidget(unit.handle).subtract(spawnLoc).multiplyN(0.5));
+            const sfx = new Effect(SFX_VOID_DISK, deltaLoc.x, deltaLoc.y);
+            sfx.scale = 0.8;
+            sfx.setColor(150, 20, 30);
+            Timers.addTimedAction(1, () => {
+                sfx.destroy();
+                CreateItem(ITEM_CEREMONIAL_DAGGER, deltaLoc.x, deltaLoc.y);
+            });
+        }
     }
 
     /**

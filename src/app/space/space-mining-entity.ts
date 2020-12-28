@@ -110,16 +110,16 @@ class MiningEvent {
 
             if (rng > 75) {
                 const minerals = this.source.getItemInSlot(1);
-                const charges = GetItemCharges(minerals);
+                const charges = minerals.charges;
                 if (charges < 100) {
-                    SetItemCharges(minerals, charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1));
+                    minerals.charges =  charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1);
                 }
             }
             else {
                 const minerals = this.source.getItemInSlot(0);
-                const charges = GetItemCharges(minerals);
+                const charges = minerals.charges;
                 if (charges < 250) {
-                    SetItemCharges(minerals, charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1));
+                    minerals.charges = charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1);
                 }
             }
             UnitDamageTarget(this.source.handle, this.target.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);

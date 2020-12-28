@@ -19,8 +19,10 @@ export class ShipBay {
 
     private animation: ShipAnimation | undefined;
     
-    constructor(whichRect: rect) {
+    constructor(whichRect: rect, zone: ZONE_TYPE) {
         this.RECT = Rectangle.fromHandle(whichRect);
+
+        this.ZONE = zone;
     }
 
     /**

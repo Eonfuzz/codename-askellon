@@ -224,7 +224,7 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
                 simulatedDelta = simulatedDelta * Math.max(totalD/300, 0.2)
                 this.ship.unit.setflyHeight(100, 20);
             }
-            const nPos = this.mover.move(undefined, undefined, undefined, simulatedDelta );
+            const nPos = this.mover.move(undefined, simulatedDelta );
     
             // Log.Information(`Delta: ${nPos.toString()}`)
             this.ship.unit.x += nPos.x;

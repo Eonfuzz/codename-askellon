@@ -9,7 +9,7 @@ export class Graph {
     nodes: Node[];
 
     
-    pathTo(from: ZONE_TYPE, to: ZONE_TYPE) {
+    pathTo(from: ZONE_TYPE, to: ZONE_TYPE): Path | false {
         const fromNode = this.nodeDict.get(from);
         const toNode = this.nodeDict.get(to);
 
@@ -51,10 +51,12 @@ export class Graph {
         }
 
         if (maxSearches <= 0) {
-            Log.Error("PATH FAIL: "+ZONE_TYPE[from]+" to "+ZONE_TYPE[to]+" NO PATH FOUND (Max Searches)");
+            // Log.Information("PATH FAIL: "+ZONE_TYPE[from]+" to "+ZONE_TYPE[to]+" NO PATH FOUND (Max Searches)");
+            return false;
         }
         else if (currentPath == undefined) {
-            Log.Error("PATH FAIL: "+ZONE_TYPE[from]+" to "+ZONE_TYPE[to]+" NO PATH FOUND (Exhausted Search)");
+            // Log.Information("PATH FAIL: "+ZONE_TYPE[from]+" to "+ZONE_TYPE[to]+" NO PATH FOUND (Exhausted Search)");
+            return false;
         }
         return currentPath;
     }
