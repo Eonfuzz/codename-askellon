@@ -77,7 +77,7 @@ export class CrewFactory {
             ROLE_TYPES.SEC_GUARD,
             ROLE_TYPES.PILOT,
             ROLE_TYPES.SEC_GUARD
-        ]
+        ];
 
         // Loop through all of our role options
         let roleTypesVisited = new Map<ROLE_TYPES, boolean>();

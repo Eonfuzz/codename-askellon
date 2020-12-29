@@ -56,20 +56,39 @@ export class AbilityEntity extends Entity {
     step() {
         // Go through all abilities cast
         let i = 0;
-        while (i < this.abilityQueue.length) {
-            const ability = this.abilityQueue[i];
-            const doDestroy = !ability.process(this._timerDelay);
 
-            // Destroy the ability if needed
-            if (!doDestroy || !ability.destroy()) {
-                // Increment i
-                i++;
+        try {
+            while (i < this.abilityQueue.length) {
+                const ability = this.abilityQueue[i];
+                const doDestroy = !ability.process(this._timerDelay);
+
+                // Destroy the ability if needed
+                if (!doDestroy || !ability.destroy()) {
+                    // Increment i
+                    i++;
+                }
+                else {
+                    // Otherwise delete and loop again
+                    this.abilityQueue[i] = this.abilityQueue[this.abilityQueue.length-1];
+                    delete this.abilityQueue[this.abilityQueue.length - 1];
+                }
             }
-            else {
-                // Otherwise delete and loop again
-                this.abilityQueue[i] = this.abilityQueue[this.abilityQueue.length-1];
-                delete this.abilityQueue[this.abilityQueue.length - 1];
+        }
+        catch (e) {
+            const erroringAbility = this.abilityQueue[i];
+
+            Log.Error("Error in Ability Entity ");
+            Log.Error(e);
+
+            try {
+                erroringAbility.destroy();
             }
+            catch(e) {
+
+            }
+            
+            this.abilityQueue[i] = this.abilityQueue[this.abilityQueue.length-1];
+            delete this.abilityQueue[this.abilityQueue.length - 1];
         }
     }
 

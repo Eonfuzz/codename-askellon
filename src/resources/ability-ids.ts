@@ -185,3 +185,4 @@ export const ABIL_DISARM_USER = FourCC('Abun');
 export const ABIL_CULTIST_CEREMONIAL_DAGGER = FourCC('A02K');
 export const ABIL_REPAIR_NEOKATANA = FourCC('A02N');
 export const ABIL_EGG_HATCH_NEUTRAL = FourCC('A02O');
+export const ABIL_ALIEN_CREATE_TUMOR = FourCC('A02P');

@@ -1,5 +1,5 @@
 import { Ability } from "../ability-type";
-import { Unit, playerColors } from "w3ts/index";
+import { Unit } from "w3ts/index";
 
 export class CeremonialDaggerItemAbility implements Ability {
 
@@ -16,7 +16,6 @@ export class CeremonialDaggerItemAbility implements Ability {
     };
 
     public process(delta: number) {
-
         return false;
     };
 

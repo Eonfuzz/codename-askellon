@@ -88,8 +88,8 @@ export class GeneticSamplerItemAbility implements Ability {
             const pColor = playerColors[this.targetUnit.owner.id];
             if (pColor) {
                 BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_RED, pColor.red);       
-                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_BLUE, pColor.green);
-                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_GREEN, pColor.blue);
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_GREEN, pColor.green);
+                BlzSetItemIntegerField(item, ITEM_IF_TINTING_COLOR_BLUE, pColor.blue);
             }
 
         }
