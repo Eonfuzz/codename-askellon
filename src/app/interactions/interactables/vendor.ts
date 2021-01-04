@@ -5,8 +5,6 @@ import { VENDING_MACHINE_TRIFEX } from "resources/unit-ids";
 import { ITEM_TRIFEX_ID } from "resources/item-ids";
 import { Interactables } from "./interactables";
 
-// const vendingSound = new SoundRef("Sounds\\vendingMachineChunk.mp3", false);
-
 export function initVendingInteraction() {
     const interaction: InteractableData = {
         action: (source: Unit, interactable: Unit) => {

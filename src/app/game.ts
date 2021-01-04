@@ -46,9 +46,9 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { PlayerState } from "./force/player-type";
 import { Quick } from "lib/Quick";
 
-const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
-const labrynthIntro = new SoundRef("Sounds\\Theme\\TheLabrynth.mp3", true, true);
-const warningSound = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
+export const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
+export const labrynthIntro = new SoundRef("Sounds\\Theme\\TheLabrynth.mp3", true, true);
+export const warningSound = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
 
 export class Game {
     private static instance: Game;
@@ -382,84 +382,85 @@ export class Game {
             const chat = ChatEntity.getInstance();
             let i = 1;
 
-            const messages = ["Here.", "Aye.", "Check.", "Made it", "Yes sir."];
-            let activePlayers = [];
-            Players.forEach((p, index) => {
-                const pData = PlayerStateFactory.get(p);
-                const crew = PlayerStateFactory.getCrewmember(p);
-                if (!crew) return;
-
-                i++;
-                activePlayers.push(p);
-                if (crew.role === ROLE_TYPES.CAPTAIN) {
-                    chat.postMessageFor(Players, crew.name, playerColors[index].code, "We survived. Who made it?", undefined, GENERIC_CHAT_SOUND_REF);
-                }
-                else if (crew.role === ROLE_TYPES.INQUISITOR) {
-                    Timers.addTimedAction(index * 0.3, () => {
-                        chat.postMessageFor(Players, crew.name, playerColors[index].code, "Necessitatibus, I am here", undefined, GENERIC_CHAT_SOUND_REF);
-                    });
-                }
-                else {
-                    Timers.addTimedAction(index * 0.3, () => {
-                        const message = messages[GetRandomInt(0, messages.length-1)];
-                        chat.postMessageFor(Players, crew.name, playerColors[index].code, message, undefined, GENERIC_CHAT_SOUND_REF);
-                    });
-                }
-            });
 
             if (PlayerStateFactory.isSinglePlayer()) {
+                const messages = ["Here.", "Aye.", "Check.", "Made it", "Yes sir."];
+                let activePlayers = [];
+                Players.forEach((p, index) => {
+                    const pData = PlayerStateFactory.get(p);
+                    const crew = PlayerStateFactory.getCrewmember(p);
+                    if (!crew) return;
+    
+                    i++;
+                    activePlayers.push(p);
+                    if (crew.role === ROLE_TYPES.CAPTAIN) {
+                        chat.postMessageFor(Players, crew.name, playerColors[index].code, "We survived. Who made it?", undefined, GENERIC_CHAT_SOUND_REF);
+                    }
+                    else if (crew.role === ROLE_TYPES.INQUISITOR) {
+                        Timers.addTimedAction(index * 0.3, () => {
+                            chat.postMessageFor(Players, crew.name, playerColors[index].code, "Necessitatibus, I am here", undefined, GENERIC_CHAT_SOUND_REF);
+                        });
+                    }
+                    else {
+                        Timers.addTimedAction(index * 0.3, () => {
+                            const message = messages[GetRandomInt(0, messages.length-1)];
+                            chat.postMessageFor(Players, crew.name, playerColors[index].code, message, undefined, GENERIC_CHAT_SOUND_REF);
+                        });
+                    }
+                });
+                
                 const captain = PlayerStateFactory.getCrewmember( Players[0] );
                 Timers.addTimedAction(5, () => {
                     chat.postMessageFor(Players, captain.name, playerColors[0].code, "Oh god. I'm alone.", undefined, GENERIC_CHAT_SOUND_REF);
                 });
             }
             else {
-                Timers.addTimedAction(i+2, () => {
-                    const randomPlayer = Quick.GetRandomFromArray(activePlayers, 1)[0] as MapPlayer;
-                    const crew = PlayerStateFactory.getCrewmember(randomPlayer);
+                // Timers.addTimedAction(i+2, () => {
+                //     const randomPlayer = Quick.GetRandomFromArray(activePlayers, 1)[0] as MapPlayer;
+                //     const crew = PlayerStateFactory.getCrewmember(randomPlayer);
 
-                    if (crew) {
-                        let message = '';
-                        switch(crew.role) {
-                            case ROLE_TYPES.CAPTAIN:
-                                message = "Crew, logs are indicating a creature boarded our vessel mid warp."
-                                break;
-                            case ROLE_TYPES.ENGINEER:
-                                message = "Saw some creature running around in the tunnels"
-                                break;
-                            case ROLE_TYPES.DOCTOR:
-                                message = "Captain, there's an alien creature here. I saw it while the power was down."
-                                break;
-                            case ROLE_TYPES.PILOT:
-                                message = "Pilot here, a weird slug like thing got inside our ship"
-                                break;
-                            case ROLE_TYPES.INQUISITOR:
-                                message = "Vile xenos onboard my ship! We must purge it"
-                                break;
-                            case ROLE_TYPES.SEC_GUARD:
-                                message = "Missed my shots, there's a damned bug here."
-                                break;
-                            default:
-                                message = "There's an alien around here..."
-                        }
-                        chat.postMessageFor(Players, crew.name, playerColors[randomPlayer.id].code, message, undefined, GENERIC_CHAT_SOUND_REF);
-                    }
+                //     if (crew) {
+                //         let message = '';
+                //         switch(crew.role) {
+                //             case ROLE_TYPES.CAPTAIN:
+                //                 message = "Crew, logs are indicating a creature boarded our vessel mid warp."
+                //                 break;
+                //             case ROLE_TYPES.ENGINEER:
+                //                 message = "Saw some creature running around in the tunnels"
+                //                 break;
+                //             case ROLE_TYPES.DOCTOR:
+                //                 message = "Captain, there's an alien creature here. I saw it while the power was down."
+                //                 break;
+                //             case ROLE_TYPES.PILOT:
+                //                 message = "Pilot here, a weird slug like thing got inside our ship"
+                //                 break;
+                //             case ROLE_TYPES.INQUISITOR:
+                //                 message = "Vile xenos onboard my ship! We must purge it"
+                //                 break;
+                //             case ROLE_TYPES.SEC_GUARD:
+                //                 message = "Missed my shots, there's a damned bug here."
+                //                 break;
+                //             default:
+                //                 message = "There's an alien around here..."
+                //         }
+                //         chat.postMessageFor(Players, crew.name, playerColors[randomPlayer.id].code, message, undefined, GENERIC_CHAT_SOUND_REF);
+                //     }
 
-                    Timers.addTimedAction(2, () => {
-                        warningSound.playSound();
-                        PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-                        MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Diagnostic logs are indicating an unknown alien entity boarded USSR Askellon during warp procedures`);
+                //     Timers.addTimedAction(2, () => {
+                //         warningSound.playSound();
+                //         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                //         MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Diagnostic logs are indicating an unknown alien entity boarded USSR Askellon during warp procedures`);
 
-                        Timers.addTimedAction(1, () => {
-                            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-                            MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Required Directives: Destroy entity, restore ship functionality`);
+                //         Timers.addTimedAction(1, () => {
+                //             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                //             MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Required Directives: Destroy entity, restore ship functionality`);
 
-                            new Timer().start(15, false, () => {
-                                ForceEntity.getInstance().startIntroduction();
-                            });
-                        });
-                    });
-                });
+                //             new Timer().start(15, false, () => {
+                //                 ForceEntity.getInstance().startIntroduction();
+                //             });
+                //         });
+                //     });
+                // });
             }
         });
 

@@ -346,7 +346,7 @@ export class SpaceEntity extends Entity {
         }
         else if (goal.typeId === UNIT_ID_LAVA_PLANET) {
             bays = this.shipBays.filter(b => b.ZONE === ZONE_TYPE.PLANET);
-            Log.Information(`Landing on planet, bays: ${bays.length}`);
+            // Log.Information(`Landing on planet, bays: ${bays.length}`);
         }
 
         // We need to find a "free" dock

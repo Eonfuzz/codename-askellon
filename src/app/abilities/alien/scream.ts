@@ -7,8 +7,6 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Log } from "lib/serilog/serilog";
 import { SOUND_ALIEN_SCREAM } from "resources/sounds";
 
-// const screamSound =new SoundRef("Sounds\\Nazgul.wav", false, true);
-
 export class ScreamAbility implements Ability {
     casterUnit: Unit;
 

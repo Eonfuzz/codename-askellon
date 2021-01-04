@@ -112,24 +112,6 @@ export class XenophobicPunchAbility implements Ability {
                 this.leapLeeway -= delta;
             }
 
-            let sfx = AddSpecialEffect("war3mapImported\\testMarine.mdx", loc.x, loc.y);
-            BlzSetSpecialEffectColorByPlayer(sfx, this.unit.owner.handle);
-            BlzPlaySpecialEffect(sfx, ConvertAnimType(8));
-            BlzSetSpecialEffectZ(sfx, loc.z);
-            if (this.finishedLeaping)
-                BlzSetSpecialEffectAlpha(sfx, 30);
-            else
-                BlzSetSpecialEffectAlpha(sfx, 80);
-            BlzSetSpecialEffectScale(sfx, 0.7);
-            // BlzSetSpecialEffectTimeScale(sfx, 1);
-            // BlzSetSpecialEffectTime(sfx, 0.2);
-            BlzSetSpecialEffectYaw(sfx, GetUnitFacing(this.unit.handle) * bj_DEGTORAD);
-            // DestroyEffect(sfx);
-            if (this.finishedLeaping)
-                Quick.Push(this.sfx, { effect: sfx, alpha: 30 });
-            else
-                Quick.Push(this.sfx, { effect: sfx, alpha: 80 });
-            // Update punch sfx
             BlzSetSpecialEffectX(this.punchSfx, loc.x + this.punchSfxOffset.x);
             BlzSetSpecialEffectY(this.punchSfx, loc.y + this.punchSfxOffset.y);
             BlzSetSpecialEffectZ(this.punchSfx, loc.z + 15);

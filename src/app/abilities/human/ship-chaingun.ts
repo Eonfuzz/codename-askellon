@@ -112,6 +112,7 @@ export class ShipChaingunAbility implements Ability {
 
 
     public destroy() {
+        this.sound.destroy(true);
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass -= this.shootingShip.engine.velocityForwardMax / 4;
         return true;
     };

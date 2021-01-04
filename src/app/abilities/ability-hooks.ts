@@ -54,7 +54,9 @@ import {
     ABIL_ALIEN_EVOLVE_T2_DEFILER,
     ABIL_ITEM_ATTACH_METEOR_CANISTER,
     ABIL_EGG_HATCH_NEUTRAL,
-    ABIL_ALIEN_CREATE_TUMOR
+    ABIL_ALIEN_CREATE_TUMOR,
+    ABIL_CULTIST_CEREMONIAL_DAGGER,
+    ABIL_CULTIST_GIFT_MADNESS
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -105,6 +107,8 @@ import { MinigunFullerAutoAbility } from "./human/minigun-fuller-auto";
 import { MeteorCanisterAbility } from "./human/meteor-canister";
 import { MinionEggHatchAbility } from "./alien/minions/minion-egg-hatch";
 import { SpawnTumorAbility } from "./alien/minions/create-tumor";
+import { CeremonialDaggerItemAbility } from "./items/ceremonial-dagger";
+import { GiftOfMadnessAbility } from "./cult/gift-of-madness";
 
 
 
@@ -213,3 +217,5 @@ AbilityHooks.Add(ABIL_ITEM_ATTACH_METEOR_CANISTER, () => new MeteorCanisterAbili
 AbilityHooks.Add(ABIL_EGG_HATCH_NEUTRAL, () => new MinionEggHatchAbility());
 
 AbilityHooks.Add(ABIL_ALIEN_CREATE_TUMOR, () => new SpawnTumorAbility());
+AbilityHooks.Add(ABIL_CULTIST_GIFT_MADNESS, () => new GiftOfMadnessAbility());
+AbilityHooks.Add(ABIL_CULTIST_CEREMONIAL_DAGGER, () => new CeremonialDaggerItemAbility());

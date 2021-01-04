@@ -17,8 +17,9 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { initInteractionTerminals } from "./interactables/terminals";
 import { initTesterInteractions } from "./interactables/genetic-testing-facility";
-import { intAltarInteraction } from "./interactables/cathederal-altar";
 import { initPlanetLandingInteraction } from "./interactables/ships/planet-landing";
+import { SmartTrigger } from "lib/SmartTrigger";
+import { intAltarInteraction } from "./interactables/cathederal-altar";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -42,7 +43,7 @@ export class InteractionEntity extends Entity {
         super();
 
         // Now track when a user *might* start an interaction
-        this.interactionBeginTrigger = new Trigger();
+        this.interactionBeginTrigger = new SmartTrigger();
         this.interactionBeginTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER);
         this.interactionBeginTrigger.addCondition(Condition(() => {
             const oId = GetIssuedOrderId();

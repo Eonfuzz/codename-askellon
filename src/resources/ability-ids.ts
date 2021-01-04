@@ -178,7 +178,6 @@ export const ABIL_DROP_MINERALS = FourCC('A01Y');
 
 
 export const ABIL_CULTIST_INFO = FourCC('A02I');
-export const ABIL_CULTIST_INFO_POST_BUILD = FourCC('A009');
 export const ABIL_APPLY_MADNESS = FourCC('A02J');
 export const ABIL_ALTAR_IS_BUILT = FourCC('A02L');
 export const ABIL_DISARM_USER = FourCC('Abun');
@@ -186,3 +185,4 @@ export const ABIL_CULTIST_CEREMONIAL_DAGGER = FourCC('A02K');
 export const ABIL_REPAIR_NEOKATANA = FourCC('A02N');
 export const ABIL_EGG_HATCH_NEUTRAL = FourCC('A02O');
 export const ABIL_ALIEN_CREATE_TUMOR = FourCC('A02P');
+export const ABIL_CULTIST_GIFT_MADNESS = FourCC('A02Q');

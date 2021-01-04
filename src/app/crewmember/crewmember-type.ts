@@ -172,7 +172,6 @@ export class Crewmember extends ArmableUnitWithItem {
     }
 
     getIncome() {
-        const crewModified = 1.0; // TODO
         const baseIncome = 200; // TODO
         const incomePerLevel = 50; // TODO
 

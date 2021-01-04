@@ -29,25 +29,13 @@ export class CreepedTile {
         if (to === CreepedTileState.BIRTH) {
             this.timeElapsed = 0;
             this.value = GetRandomReal(0, 3);    
-            // Timers.addTimedAction(this.value-1.5, () => {
-            //     const v = this.loc;
-            //     const sfx = AddSpecialEffect("Models\\DarkHarvest.mdx", v.x, v.y);
-            //     BlzSetSpecialEffectZ(sfx, getZFromXY(v.x, v.y)+10);
-            //     BlzSetSpecialEffectTimeScale(sfx, 2);
-            //     // BlzSetSpecialEffectAlpha(sfx, 45);
-            //     DestroyEffect(sfx);
-            // });
-            // Log.Information("Start birth!!");
-            // AddSpecialEffect(SFX_DARK_RITUAL, this.loc.x, this.loc.y);  
         }
         else if (to === CreepedTileState.STAND) {
-            // AddSpecialEffect(SFX_AVATAR, this.loc.x, this.loc.y);  
             SetTerrainType(this.loc.x, this.loc.y, FourCC('Jwmb'), 0, 1, 0);
         }
         else if (to === CreepedTileState.DECAY) {
             this.timeElapsed = 0;
             this.value = GetRandomReal(0, 10);
-            // AddSpecialEffect(SFX_RED_SINGULARITY, this.loc.x, this.loc.y); 
         }
     }
 

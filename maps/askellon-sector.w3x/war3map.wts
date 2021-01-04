@@ -118,11 +118,6 @@ STRING 33
 Crew
 }
 
-STRING 34
-{
-Xenos
-}
-
 STRING 35
 // Abilities: A002 (Attack - Gauss Rifle), Ubertip (Tooltip - Normal - Extended)
 {
@@ -250,7 +245,7 @@ Tree HQ
 }
 
 STRING 78
-// Abilities: A008 (Crewmember), Tip (Tooltip - Normal)
+// Abilities: A01Y (Drop Minerals), Tip (Tooltip - Normal)
 {
 [|cffffff00F|r] - Resolve
 }
@@ -2077,12 +2072,6 @@ Self amplifying rifle that increases in damage with each successive hit.
 |cffc81e1eFracture Round|r|cffffcc00 Cannot be removed.|r
 }
 
-STRING 545
-// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n|n|cff80808020 Second Cooldown|r
-}
-
 STRING 546
 // Doodads: D00J (Window Large), Name (Name)
 {
@@ -3025,12 +3014,6 @@ STRING 803
 Seal of Purity
 }
 
-STRING 804
-// Buffs/Effects: B008 (), Buffubertip (Tooltip - Extended)
-{
-This unit has been blessed and receives reduced damage and increased health regeneration
-}
-
 STRING 805
 // Abilities: A011 (Seal of Purity), Unhotkey (Hotkey - Turn Off)
 {
@@ -3046,7 +3029,7 @@ Q
 STRING 807
 // Abilities: A011 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant a unit the blessings of the Almighty, healing it for |cff00ff002 health a second|r and |cff00ff00reducing all damage it receives |rby |cff00ff002|r; lasts |cff00ff003 minutes.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 808
@@ -3242,7 +3225,7 @@ ranged
 }
 
 STRING 862
-// Units: n00B (|cffffff00Cathederal |rTerminal), EditorSuffix (Name - Editor Suffix)
+// Units: n00B (|cffffff00Cathedral |rTerminal), EditorSuffix (Name - Editor Suffix)
 {
 - Invisible
 }
@@ -3286,25 +3269,25 @@ Seal of Purity
 STRING 881
 // Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 883
 // Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 884
 // Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 885
 // Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 886
@@ -3395,42 +3378,6 @@ STRING 917
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
 Religious Dogma - 4
-}
-
-STRING 918
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
-STRING 919
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings ofTthe Court, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
-STRING 920
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
-STRING 921
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
-STRING 922
-// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
-}
-
-STRING 923
-// Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Judge Inquisitors are both judge, jury and executioner of the Court's will. "Maintain purity of thought, purity of will and purity of body" is a core tenet of its dogma.|r|n|nQuickily assesses and delivers judgement over the next |cff00ff002 seconds|r; afterwards dealing |cff00ff0050 damage|r and |cff00ff00slowing by 30%|r for |cff00ff002 seconds|r. If they were fleeing from the jury at time of judgement it instead deals |cff00ff00100 damage|r and stuns for |cff00ff002 seconds|r.|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 924
@@ -4930,12 +4877,6 @@ STRING 1247
 This unit is under the effects of infestation; Gaining 10% move speed and 20% attack speed.
 }
 
-STRING 1248
-// Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
-{
-|cff808080This industrial bottle contains a thick yellow grease that suspends a simple nano solution; when applied to the skin the machines activate and begin repairing tissue damage. While expensive, this salve is one of the only fool proof methods of re-entering a fight after only a short period of downtime.|r|n|nHeals the target for |cff00ff00400|r HP over |cff00ff0015|r seconds.|n|n|cff80808035 Seconds Cooldown|r
-}
-
 STRING 1249
 // Units: h008 (Turret), Name (Name)
 {
@@ -4943,15 +4884,15 @@ Turret
 }
 
 STRING 1250
-// Units: n00A (|cffffff00Cathederal |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
+// Units: n00A (|cffffff00Cathedral |rTerminal|n|cff808080Right Click to Use|r), Name (Name)
 {
-|cffffff00Cathederal |rTerminal|n|cff808080Right Click to Use|r
+|cffffff00Cathedral |rTerminal|n|cff808080Right Click to Use|r
 }
 
 STRING 1251
-// Units: n00B (|cffffff00Cathederal |rTerminal), Name (Name)
+// Units: n00B (|cffffff00Cathedral |rTerminal), Name (Name)
 {
-|cffffff00Cathederal |rTerminal
+|cffffff00Cathedral |rTerminal
 }
 
 STRING 1252
@@ -5710,12 +5651,6 @@ STRING 1400
 // Abilities: A01Y (Drop Minerals), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
-}
-
-STRING 1401
-// Abilities: A01Y (Drop Minerals), Tip (Tooltip - Normal)
-{
-[|cffffff00F|r] - Resolve
 }
 
 STRING 1403
@@ -6578,9 +6513,9 @@ STRING 1552
 }
 
 STRING 1553
-// Abilities: A02A (Consecrated Cathederal), Name (Name)
+// Abilities: A02A (Consecrated Cathedral), Name (Name)
 {
-Consecrated Cathederal
+Consecrated Cathedral
 }
 
 STRING 1555
@@ -6598,7 +6533,7 @@ STRING 1556
 STRING 1557
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nConsecration of Sacred Ground|n|cff00ff00- Crew can pray at the altar to gain |cffd45e19Purity Seal|r|cff00ff00|n- Being in the Cathederal heals 1 health a second|n-|cffd45e19 Purity Seals|r|cff00ff00 now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff00ff00Regeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- |cffd45e19Purity Seal|r|cff00ff00 duration increased by 60 seconds|r
+|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nConsecration of Sacred Ground|n|cff00ff00- Crew can pray at the altar to gain |cffd45e19Purity Seal|r|cff00ff00|n- Being in the Cathedral heals 1 health a second|n-|cffd45e19 Purity Seals|r|cff00ff00 now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff00ff00Regeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff00ff00- |cffd45e19Purity Seal|r|cff00ff00 duration increased by 60 seconds|r
 }
 
 STRING 1558
@@ -6610,7 +6545,7 @@ STRING 1558
 STRING 1560
 // Buffs/Effects: B00F (), Bufftip (Tooltip)
 {
-Consecrated Cathederal
+Consecrated Cathedral
 }
 
 STRING 1561
@@ -6698,9 +6633,9 @@ Will Become Alien On Death
 }
 
 STRING 1575
-// Units: n00R (|cffffff00Cathederal|r Altar|n|cff808080Right click to Pray|r), Name (Name)
+// Units: n00R (|cffffff00Cathedral|r Altar|n|cff808080Right click to Pray|r), Name (Name)
 {
-|cffffff00Cathederal|r Altar|n|cff808080Right click to Pray|r
+|cffffff00Cathedral|r Altar|n|cff808080Right click to Pray|r
 }
 
 STRING 1577
@@ -6743,12 +6678,6 @@ STRING 1584
 // Abilities: A02D (Fuller Auto), Name (Name)
 {
 Fuller Auto
-}
-
-STRING 1585
-// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1250%|r for |cffd45e127 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cff80808015 Second Cooldown|r
 }
 
 STRING 1587
@@ -6888,12 +6817,6 @@ STRING 1611
 Cultist
 }
 
-STRING 1612
-// Abilities: A02I (Cultist), Tip (Tooltip - Normal)
-{
-Cultist
-}
-
 STRING 1613
 // Abilities: A02I (Cultist), EditorSuffix (Editor Suffix)
 {
@@ -6906,34 +6829,10 @@ STRING 1614
 T
 }
 
-STRING 1615
-// Abilities: A009 (Cultist), Name (Name)
-{
-Cultist
-}
-
-STRING 1616
-// Abilities: A009 (Cultist), Hotkey (Hotkey - Normal)
-{
-T
-}
-
 STRING 1617
-// Abilities: A009 (Cultist), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A02I (Cultist), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff00ff00 - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
-}
-
-STRING 1618
-// Abilities: A009 (Cultist), Tip (Tooltip - Normal)
-{
-[|cffffff00F|r] - Resolve
-}
-
-STRING 1619
-// Abilities: A009 (Cultist), EditorSuffix (Editor Suffix)
-{
- [ ROLE INFO ]
 }
 
 STRING 1620
@@ -7022,13 +6921,13 @@ E
 STRING 1639
 // Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 1640
 // Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 1641
@@ -7040,13 +6939,13 @@ Seal of Purity
 STRING 1642
 // Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 1643
 // Abilities: A02K (Ceremonial Dagger), Ubertip (Tooltip - Normal - Extended)
 {
-|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathederal|r|n|n|cff80808060 Second Cooldown|r
+|cff808080The Almighty is a strict god and his blessings are stricter still. Accepting one upon the body is like accepting a contract with your soul.|r|n|nGrant the blessings of the Emperor, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eThe Almighty's dogma is strict and its faith is harsh; if the blessed unit would ever initiate combat, destroy station property or kill a human they lose this buff.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
 }
 
 STRING 1644
@@ -7077,24 +6976,6 @@ STRING 1649
 // Abilities: A02L (Altar of Carrion), Tip (Tooltip - Normal)
 {
 Altar of Carrion
-}
-
-STRING 1650
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Eldritch Ritual - Initiation
-}
-
-STRING 1652
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nEnables Secondary Cores|n|cff00ff00- Maximum Power increased by 25|n- Enables Service Tunnel Purging|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- Purge delay reduced by 3 seconds|r|n|n|cff8a6df2Infestation [ALIEN]|n- Purge damage versus aliens halved|n- Purge damage versus humans doubled|r
-}
-
-STRING 1653
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [3/4]|r|nConnects to tertiary modules|n|cff00ff00- Maximum Power increased by 25|n- Askellon Armor increased by 2|n- Enables Rotate Shield Frequency|n- Enables Overcharge Lasers|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff00ff00- Overcharge Lasers also doubles Security Turret attack speed|r|n|n|cff8a6df2Infestation [ALIEN]|n- Overcharge Lasers causes Security Turrets to attack everything|r
 }
 
 STRING 1654
@@ -7139,18 +7020,6 @@ STRING 1660
 |cff808080Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff00ff0010%|r.|n|cff00ff00Current Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
 }
 
-STRING 1662
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Eldritch Ritual - Ascention
-}
-
-STRING 1663
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Eldritch Ritual - Exaltation
-}
-
 STRING 1664
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
 {
@@ -7191,18 +7060,6 @@ STRING 1670
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
 {
 Upgrade Weapon Damage [10/10]
-}
-
-STRING 1671
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Eldritch Ritual - Ascention
-}
-
-STRING 1672
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Eldritch Ritual - Exaltation
 }
 
 STRING 1673
@@ -7317,12 +7174,6 @@ STRING 1692
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
 Rite of Initiation
-}
-
-STRING 1693
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
 }
 
 STRING 1694
@@ -7620,5 +7471,166 @@ STRING 1744
 // Abilities: A02P (Create Tumor), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
+}
+
+STRING 1745
+// Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
+{
+|cff808080This industrial bottle contains a thick yellow grease that suspends a simple nano solution; when applied to the skin the machines activate and begin repairing tissue damage. While expensive, this salve is one of the only fool proof methods of re-entering a fight after only a short period of downtime.|r|n|n|cff00ffffNon-Combat Consumable|r|n|NHeals the target for |cff00ff00400|r HP over |cff00ff0015|r seconds.|n|n|cff80808035 Seconds Cooldown|r
+}
+
+STRING 1746
+{
+http://discord.gg/nDMpQZm
+}
+
+STRING 1748
+// Abilities: A02Q (Bestow Madness), Hotkey (Hotkey - Normal)
+{
+X
+}
+
+STRING 1751
+// Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1752
+// Abilities: A02Q (Bestow Madness), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 1757
+// Abilities: A02Q (Bestow Madness), Name (Name)
+{
+Bestow Madness
+}
+
+STRING 1758
+// Abilities: A02Q (Bestow Madness), Tip (Tooltip - Normal)
+{
+Bestow Madness
+}
+
+STRING 1759
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nMay now cast |cffb52166Bestow Madness|r and the game will no longer end unless you are killed.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
+}
+
+STRING 1760
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Give control of your soul to the Crows of Carion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
+}
+
+STRING 1761
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff808080Rip the world asunder to bring a new era of hunger.|r|n|nUpon death you become a |cffb52166Carrion One|r; You may now |cffb52166kill|r any player without penalty.
+}
+
+STRING 1762
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Rite of Initiation
+}
+
+STRING 1763
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Edificial Sacrifice
+}
+
+STRING 1764
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+ascension
+}
+
+STRING 1765
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Edificial Sacrifice
+}
+
+STRING 1766
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+ascension
+}
+
+STRING 1767
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|cffb52166Can cure Insanity|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1768
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings ofTthe Court, healing a unit for |cff00ff002 health|r a second and reducing all damage received by |cff00ff002|r; lasts 3 minutes.|n|cffd45e19While active all Vitality gain is increased by 1.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|cffb52166Can cure Insanity|r|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1769
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|cffb52166Can cure Insanity|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1770
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|cffb52166Can cure Insanity|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1771
+// Abilities: A012 (Seal of Purity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The dictates of the Court are absolute, in this life and the next. Those who dare take the Seal and become a Brother-Noterie should beware, for the soul is the only bond the Court will accept.|r|n|nGrant the blessings of The Court, healing a unit for |cff00ff003 health|r a second and reducing all damage received by |cff00ff003|r; lasts 4 minutes.|n|cffd45e19- While active all Vitality gain is increased by 1.|n- Gaining Resolve heals for 50 hp.|r|n|n|cffc81e1eA Brother must be impartial and nonviolent when administering their duties; acts of violence or destruction will cost them their seal, and in the next life, their souls.|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|cffb52166Can cure Insanity|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1772
+// Abilities: A013 (Punishing Smite), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Judge Inquisitors are both judge, jury and executioner of the Court's will. "Maintain purity of thought, purity of will and purity of body" is a core tenet of its dogma.|r|n|nSmites a foe with terrifying fervor; Dealing |cff00ff0050|r damage and slowing by |cff00ff0030%|r for |cff00ff002|r seconds.|n|cff00ff00- |cffb52166Heretics|r|cff00ff00 receive 100 additional damage|n- Consumes Seal of Purity to stun for 2 seconds|r|n|n|cffb52166Heretic is any Alien, Cultist or Genetically Modified player|r|n|n|cffd45e19Can be upgraded in the Cathedral|r|n|n|cff80808060 Second Cooldown|r
+}
+
+STRING 1773
+// Buffs/Effects: B008 (), Buffubertip (Tooltip - Extended)
+{
+|cff808080A strong will can protect any frail body|r|nYou are |cffffff00Blessed|r. All damage taken is reduced and health regeneration is increased.|n|nCan cure |cffb52166Insanity|r.
+}
+
+STRING 1774
+// Abilities: A008 (Crewmember), Tip (Tooltip - Normal)
+{
+Role Information
+}
+
+STRING 1775
+// Abilities: A02I (Cultist), Tip (Tooltip - Normal)
+{
+Role Information
+}
+
+STRING 1776
+// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cff00ff0040%|r for |cff00ff007 seconds|r.|n|n|cfff9a602Cooldown:|r 20 Seconds
+}
+
+STRING 1777
+// Abilities: A003 (Sprint), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1250%|r for |cffd45e127 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cfff9a602Cooldown:|r 18 Seconds
+}
+
+STRING 1778
+// Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nBlesses all neaby players with |cffb52166Madness|r.|n|cff18bc9c- The effect is invisible to all bless players|n- Aliens can never be blessed|n|r|n|cffb52166Madness:|r|cff18bc9c Increases in severity over time, eventually creating hallucinations and driving them |r|cffb52166Insane|r|cff18bc9c.|r|n|n|cfff9a602Cooldown:|r 70 Seconds
 }
 

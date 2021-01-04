@@ -1,5 +1,6 @@
 import { COL_GOLD, COL_VENTS, COL_TEAL, COL_ATTATCH, COL_GOOD, COL_ALIEN } from "./colours";
 import { Vector2 } from "app/types/vector2";
+import { COLOUR_CULT } from "app/force/forces/cultist/constants";
 
 export enum ROLE_TYPES {
     CAPTAIN = 'Captain',
@@ -65,9 +66,9 @@ ROLE_NAMES.set(ROLE_TYPES.XENOBIOLOGIST, [
 
 export const ROLE_DESCRIPTIONS = new Map<ROLE_TYPES, string>();
 
-ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `${COL_GOOD}- Guide your crew by using the ${COL_TEAL}Security Terminal|r${COL_GOOD}
-- Eliminate outliers by ${COL_TEAL}targeting|r${COL_GOOD} by terminal
-- Gain bonus experience points while on the bridge|r`);
+ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `${COL_GOOD}[+] Gain passive experience while on the Bridge
+[+] Easy Access to the the ${COL_TEAL}Security Terminal|r${COL_GOOD}
+[+] Start the game with bonus attributes|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_GOLD}Navigator|r you must scan deep space and lead your ${COL_GOLD}Captain|r through deep space.|nYou are also in charge of the Cargo Bay's ships.`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `${COL_GOOD}- Use your ${COL_TEAL}Genetic Sampler|r${COL_GOOD} to get Samples
 - Feed samples to the ${COL_TEAL}Blood Tester|r${COL_GOOD} and find the alien
@@ -82,9 +83,10 @@ ROLE_DESCRIPTIONS.set(ROLE_TYPES.SEC_GUARD, `${COL_GOOD}- Hunt down and eliminat
 - Starts with Harkon's Blitzer`);
 
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.INQUISITOR, `${COL_GOOD}- Bless your brothers with the ${COL_TEAL}Seal of Purity|r${COL_GOOD}
-- Become extremely powerful by upgrading in the ${COL_TEAL}Cathederal|r${COL_GOOD}
-- Gain permanent attribute boosts by using ${COL_TEAL}Seal of Purity|r${COL_ATTATCH}
-- Religion prevents you from ever Gene Splicing|r`);
+- Become extremely powerful by upgrading in the ${COL_TEAL}Cathedral|r${COL_GOOD}
+- Gain permanent attribute boosts by using ${COL_TEAL}Seal of Purity|r
+- Cure ${COLOUR_CULT}Insanity|r${COL_GOOD} by using ${COL_TEAL}Seal of Purity|r
+${COL_ATTATCH}- Religion prevents you from ever Gene Splicing|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.PILOT, `${COL_GOOD}- Protect the Askellon from harm using ace pilot skills
 - Mine asteroids in space for permanent upgrades
 - Gain bonus experience for depositing minerals

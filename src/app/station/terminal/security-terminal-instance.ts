@@ -29,7 +29,7 @@ export class SecurityTerminal extends Terminal {
         Players.forEach(p => {
             const idx = p.id;
 
-            if (p.controller === MAP_CONTROL_USER) {
+            if (p.controller === MAP_CONTROL_USER && (p.slotState === PLAYER_SLOT_STATE_PLAYING || p.slotState === PLAYER_SLOT_STATE_LEFT)) {
                 const abil = ABIL_SECURITY_TARGET_ALL[idx];
                 this.terminalUnit.addAbility(abil);
                 const isTargeted = PlayerStateFactory.isTargeted(p);

@@ -7,6 +7,7 @@ export const COL_PINK = `|cffff8080`;
 export const COL_GOOD = `|cff00ff00`;
 export const COL_BAD = `|cff808080`;
 export const COL_ATTATCH = `|cffc81e1e`;
+export const COL_INCOME = `|cfff9a602`;
 export const COL_MISC = `|cff808080`;
 export const COL_INFO = `|cff00ffff`;
 export const COL_RESOLVE = `|cffffff00`;

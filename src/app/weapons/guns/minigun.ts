@@ -31,7 +31,6 @@ export class Minigun extends GunItem {
 
     private warmUpSound = new SoundRef("Sounds\\minigun-start.wav", false);
     // Have an array of 5 to make sure sounds dont fail to play
-    private shootSound = [new SoundRef("Sounds\\minigun-fire.wav", false)];
     private endSound = new SoundRef("Sounds\\minigun-end.wav", false);
     gunPath = "Weapons\\MarineMinigun.mdx";
 

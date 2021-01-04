@@ -1,10 +1,11 @@
-import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_GOLD, COL_ORANGE, COL_TEAL, COL_BAD } from "./colours";
+import { COL_MISC, COL_RESOLVE, COL_ALIEN, COL_GOOD, COL_INFO, COL_ATTATCH, COL_GOLD, COL_ORANGE, COL_TEAL, COL_BAD, COL_INCOME } from "./colours";
 import { ROLE_TYPES, ROLE_DESCRIPTIONS } from "resources/crewmember-names";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/index";
-import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ, ABIL_GENE_COSMIC, ABIL_GENE_XENOPHOBIC_PUNCH, ABIL_ITEM_ATTACH_METEOR_CANISTER } from "./ability-ids";
+import { ABIL_CREWMEMBER_INFO, ABIL_TRANSFORM_HUMAN_ALIEN, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_WEP_DIODE_EJ, ABIL_GENE_COSMIC, ABIL_GENE_XENOPHOBIC_PUNCH, ABIL_ITEM_ATTACH_METEOR_CANISTER, ABIL_CULTIST_INFO } from "./ability-ids";
 import { Log } from "lib/serilog/serilog";
 import { AT_ABILITY_DRAGONFIRE_BLAST } from "app/weapons/weapon-constants";
+import { COLOUR_CULT, COLOUR_CULT_GREEN } from "app/force/forces/cultist/constants";
 
 // On major upgrade (all)
 // On weapon equip
@@ -61,12 +62,21 @@ export const resolveTooltip = new DynamicAbilityTooltip(
     ABIL_CREWMEMBER_INFO,
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Repair the ship and get out of this sector... before it is too late.|r
-As a ${COL_GOOD}Crewmember|r of the Askellon you earn income and experience by damaging ${COL_ALIEN}Alien Forces|r, ${COL_GOOD}Upgrading|r Askellon systems and completing ${COL_GOOD}Role Objectives|r
-
-You are a ${who.role}:
+Your are the ${COL_TEAL}Human ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
-${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
+As Human:
+${COL_GOOD}[+] Work together to survive
+[+] Hunt down and kill threats to humanity
+[+] Mine minerals in space for money and upgrades
+[+] Receive Genetic Enhancements
+[+] Repair the blood tester and find the Alien
+[+] Gain Experience by purchasing upgrades
+[+] Gain Experience by damaging threats
+${COL_ATTATCH}[−] Can be an easy target when alone
+[−] Trust no one|r
+
+${COL_INCOME}Income:|r ${who.getIncome()} per minute`
 );
 
 export const alienTooltipToAlien = new DynamicAbilityTooltip(
@@ -74,30 +84,65 @@ export const alienTooltipToAlien = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Wipe out human life and claim this ship as yours.|r
 
-You are the ${COL_ALIEN}Alien.|r Win the game by destroying or assimilating all other life onboard this ship.
-Cast this ability to ${COL_INFO}transform|r, revealing your true form.
-        
-${COL_MISC}60 Second Cooldown|r
-
-You are a ${who.role}:
+Your are the ${COL_ALIEN}Alien ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
-${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
+Consume, Assimilate or Destroy all humans!
+${COL_GOOD}[+] Can transform between Alien and Human forms at will
+[+] Can Evolve to become even stronger
+[+] Alien form can spread infestation
+[+] Killing players while in Alien form turns them into Aliens
+[+] Extremely powerful when killing isolated humans
+${COL_ATTATCH}[−] First Alien form can easily die
+[−] Weak when outnumbered|r
+
+Cast this ability to ${COL_INFO}transform|r, revealing your true form.
+
+${COL_INCOME}Income:|r ${who.getIncome()} per minute
+${COL_INCOME}Cooldown:|r 60 Seconds`
 );
 export const alienTooltipToHuman = new DynamicAbilityTooltip(
     ABIL_TRANSFORM_ALIEN_HUMAN,
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Wipe out human life and claim this ship as yours.|r
 
-You are the ${COL_ALIEN}Alien.|r Win the game by destroying or assimilating all other life onboard this ship.
-Cast this ability to ${COL_INFO}transform|r, disguising as a human.
-
-${COL_MISC}60 Second Cooldown|r
-
-You are a ${who.role}:
+Your are the ${COL_ALIEN}Alien ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
-${COL_MISC}Current Income: ${who.getIncome()} per minute|r`
+Consume, Assimilate or Destroy all humans!
+${COL_GOOD}[+] Can transform between Alien and Human forms at will
+[+] Can Evolve to become even stronger
+[+] Alien form can spread infestation
+[+] Killing players while in Alien form turns them into Aliens
+[+] Extremely powerful when killing isolated humans
+${COL_ATTATCH}[−] First Alien form can easily die
+[−] Weak when outnumbered|r
+
+Cast this ability to ${COL_INFO}transform|r, disguising as a human.
+
+${COL_INCOME}Income:|r ${who.getIncome()} per minute
+${COL_INCOME}Cooldown:|r 60 Seconds`
+);
+export const cultistTooltip = new DynamicAbilityTooltip(
+    ABIL_CULTIST_INFO,
+    undefined,
+    (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}You hear a voice singing from across the void, its hands searching for another. If only you could reach for it.|r
+
+Your are the ${COLOUR_CULT}Cultist ${who.role}|r:
+${ROLE_DESCRIPTIONS.get(who.role)}
+
+The ${COLOUR_CULT}Carrion One|r must be reborn!
+${COL_GOOD}[+] Build your Altar and feed corpses to your god
+[+] Complete Rituals to gain massive increases in power
+${COL_ATTATCH}[−] You may only scavenge, never kill
+[−] Killing players will result in punishment
+[−] Will take damage upon losing an Altar
+[−] Cannot win until the first Ritual is complete|r
+
+Cast this ability to place an ${COLOUR_CULT}Altar|r, allowing you to perform rituals.
+
+${COL_INCOME}Income:|r ${who.getIncome()} per minute
+${COL_INCOME}Cooldown:|r 80 Seconds`
 );
 
 export const dragonBreathBlastTooltip = new DynamicAbilityTooltip(
@@ -110,7 +155,7 @@ ${COL_GOLD}Attchment for ${COL_ATTATCH}Kinetic|r ${COL_GOLD}weapons.|r
 
 Detontes a shrapnel charge laced with napalm; firing ${COL_GOOD}26|r ${COL_ORANGE}burning|r shards within a wide but short range. Each shard does ${COL_GOOD}${20*who.getDamageBonusMult()}|r damage and sets the target on ${COL_ORANGE}fire|r.
 
-${COL_MISC}15 Seconds Cooldown|r`
+${COL_INCOME}Cooldown:|r 15 Seconds`
 );
 
 export const diodeEjectTooltip = new DynamicAbilityTooltip(
@@ -124,7 +169,7 @@ Fires ${COL_GOOD}20|r short ranged plas blasts, dealing up to ${COL_GOOD}${
     }|r  damage; ${COL_ATTATCH}divided|r amongst each beam of light.
 ${COL_INFO}Firing this at full power causes you to be sent flying back.|r
 
-${COL_MISC}45 Second Cooldown|r`
+${COL_INCOME}Cooldown:|r 45 Seconds`
 );
 
 export const meteorCanisterTooltip = new DynamicAbilityTooltip(
@@ -135,7 +180,7 @@ export const meteorCanisterTooltip = new DynamicAbilityTooltip(
 
 Fires an airburst canister, raining down shrapnel for ${COL_GOOD}5 waves|r of ${COL_GOOD}${25 * who.getDamageBonusMult()} damage|r and slowing for ${COL_GOOD}30%|r.
 
-${COL_MISC}35 Seconds Cooldown|r`
+${COL_INCOME}Cooldown:|r 35 Seconds`
 );
 
 export const TOOLTIP_EMBRACE_COSMOS = new DynamicAbilityTooltip(
@@ -148,7 +193,7 @@ This takes a massive toll on your mind, causing ${COL_ATTATCH}${MathRound((who.u
 
 ${COL_ATTATCH}Their mundane brains buckle under your mental transmissions, but beware, for entities that can handle them may take this as an invitation...|r
 
-${COL_MISC}80 Seconds Cooldown|r`
+${COL_INCOME}Cooldown:|r 80 Seconds`
 );
 
 export const TOOLTIP_FISTS = new DynamicAbilityTooltip(
@@ -161,5 +206,5 @@ Hitting an ${COL_ALIEN}Alien Player|r ${COL_GOOD}permanently|r increases your ma
 
 ${COL_ORANGE}Dash range scales with accuracy, Punch damage scales with your hitpoints.|r
 
-${COL_MISC}2 Second Cooldown|r
-`);
+${COL_INCOME}Cooldown:|r 2 Seconds`
+);

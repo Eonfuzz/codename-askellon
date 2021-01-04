@@ -5,6 +5,7 @@ import { Log } from "lib/serilog/serilog";
 import { syncData } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { TERMINAL_REACTOR_DUMMY, TERMINAL_GENE_DUMMY, TERMINAL_RELIGION_DUMMY, TERMINAL_WEAPONS_DUMMY, TERMINAL_MEDICAL_DUMMY, TERMINAL_PURGE_DUMMY, TERMINAL_SECURITY_DUMMY, TERMINAL_VOID_DUMMY, TERMINAL_REACTOR, TERMINAL_GENE, TERMINAL_RELIGION, TERMINAL_WEAPONS, TERMINAL_MEDICAL, TERMINAL_VOID, TERMINAL_PURGE, TERMINAL_SECURITY, GENETIC_TESTING_FACILITY_SWITCH, GENETIC_TESTING_FACILITY_SWITCH_DUMMY, UNIT_ID_CULTIST_ALTAR, UNIT_ID_CULTIST_ALTAR_TERMINAL } from "resources/unit-ids";
+import { SmartTrigger } from "lib/SmartTrigger";
 
 export const TERMINAL_TIMEOUT_DISTANCE = 600;
 
@@ -41,11 +42,11 @@ export class Terminal {
 
         this.createTerminalUnit(sourceUnit, baseUnit);
 
-        this.terminalCastAbilityTrigger = new Trigger();
+        this.terminalCastAbilityTrigger = new SmartTrigger();
         this.terminalCastAbilityTrigger.registerUnitEvent(this.terminalUnit, EVENT_UNIT_SPELL_CAST);
         this.terminalCastAbilityTrigger.addAction(() => this.onCast());
 
-        this.unselectionTrigger = new Trigger();
+        this.unselectionTrigger = new SmartTrigger();
         const syncher = syncData(`INT_SEL_${Terminal.id++}`, this.sourceUnit.owner, (self, data: string) => this.onUnitUnselect());
 
         this.unselectionTrigger.registerPlayerUnitEvent(this.sourceUnit.owner, EVENT_PLAYER_UNIT_DESELECTED, null);

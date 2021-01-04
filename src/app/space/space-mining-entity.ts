@@ -130,9 +130,9 @@ class MiningEvent {
 
     destroy() {
         DestroyLightning(this.beam);
-        this.drillEndSound.playSoundOnPont(this.source.x, this.source.y, 15);
-        this.drillStartSound.stopSound();
-        this.drillLoopSound.stopSound(true);
+        this.drillEndSound.playSoundOnPont(this.source.x, this.source.y, 15, true);
+        this.drillStartSound.destroy();
+        this.drillLoopSound.destroy(true);
         this.beamStartEffect.destroy();
         this.beamEndEffect.destroy();
     }

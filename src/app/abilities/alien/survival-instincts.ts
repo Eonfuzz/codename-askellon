@@ -32,8 +32,6 @@ export class SurvivalInstinctsAbility implements Ability {
     private timeElapsed: number;
     private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
 
-    private orderTrigger = new Trigger();
-
     private duration: number;
 
     constructor() {
@@ -133,8 +131,6 @@ export class SurvivalInstinctsAbility implements Ability {
                 RemoveGhost(this.casterUnit);
                 t.destroy();
             });
-            // Delete order trigger
-            this.orderTrigger.destroy();
         }
         return true; 
     };

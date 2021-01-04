@@ -120,7 +120,7 @@ export class EmbraceCosmosAbility implements Ability {
 
     public destroy() {
         // Log.Information("Destroy");
-        this.soundEffect.stopSound();
+        this.soundEffect.destroy();
         if (this.sfx) {
             this.sfx.destroy();
         }

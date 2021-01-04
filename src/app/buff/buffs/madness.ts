@@ -54,7 +54,7 @@ export class Madness extends DynamicBuff {
 
     // Starts off at zero
     private insanity = 0;
-    private maxInsanity = 20;
+    private maxInsanity = 100;
     private sanityDebuffAt = this.maxInsanity - 10;
 
     private insanityTicker = 0;
@@ -64,9 +64,7 @@ export class Madness extends DynamicBuff {
     private hallucinations: Projectile[] = [];
     private projectileTimestamp = new WeakMap<Projectile, number>();
     
-    private cultistGodSoundByte = new SoundRef("Sounds\\carrionSound.mp3", false, true);
-
-
+    private cultistGodSoundByte = new SoundRef("Sounds\\HorrorRiser.mp3", false, true);
 
     constructor(who: Unit) {
         super();        
@@ -116,16 +114,6 @@ export class Madness extends DynamicBuff {
                         IssueTargetOrder(dummy, "faeriefire", this.unit.handle);
                     }, ABIL_APPLY_MADNESS);
 
-                    const s = GetRandomReal(0, 100);
-                    if (s <= 30) {
-                        MessagePlayer(this.unit.owner, `${COLOUR_CULT}Ripe! Ripe! Ripe!|r`);
-                    }
-                    else if (s <= 60) {
-                        MessagePlayer(this.unit.owner, `${COL_MISC}They're after you. Run! |r${COLOUR_CULT}Run! Run!|r`);
-                    }
-                    else {
-                        MessagePlayer(this.unit.owner, `${COL_MISC}Your hear the cawing of birds|r`);
-                    }
                     FogEntity.transition(this.unit.owner, {
                         fStart: 950,
                         fEnd: 2200,
@@ -349,7 +337,7 @@ export class Madness extends DynamicBuff {
     private processChat(chat: ChatHook) {
         try {
             if (chat.who === this.who.owner && chat.name === this.who.nameProper) {
-                const isInsaneTalk = GetRandomReal(0, 100) > ((this.insanity / this.maxInsanity) * 100);
+                const isInsaneTalk = GetRandomReal(0, 100) < ((this.insanity / this.maxInsanity) * 100);
                 const pCrew = PlayerStateFactory.getCrewmember(chat.who);
 
 
@@ -392,5 +380,10 @@ export class Madness extends DynamicBuff {
             Log.Error(e);
             return chat;
         }
+    }
+
+    public destroy() {
+        this.destroy();
+        this.cultistGodSoundByte.destroy();
     }
 }

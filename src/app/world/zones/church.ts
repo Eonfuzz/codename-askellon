@@ -37,10 +37,12 @@ export class ChurchZone extends ShipZone {
         const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
         const isCrew = crewmember && crewmember.unit === unit;
 
-        if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
+        if (isCrew && crewmember) {
             // Stop Play music
-            this.churchMusic.stopSound();
-            SetMusicVolume(20);
+            if (GetLocalPlayer() === unit.owner.handle) {
+                this.churchMusic.stopSound();
+                SetMusicVolume(20);
+            }
 
             const techLevelChurch = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION);
             if (techLevelChurch >= 2) {
@@ -58,10 +60,12 @@ export class ChurchZone extends ShipZone {
         const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
         const isCrew = crewmember && crewmember.unit === unit;
 
-        if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
-            this.churchMusic.playSound();
-            SetMusicVolume(5);
-            this.churchMusic.setVolume(30)
+        if (isCrew && crewmember) {
+            if (GetLocalPlayer() === unit.owner.handle) {
+                this.churchMusic.playSound();
+                SetMusicVolume(5);
+                this.churchMusic.setVolume(30)
+            }
             const techLevelChurch = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION);
             if (techLevelChurch >= 2) {
                 unit.addAbility(ABIL_INQUIS_CHURCH_CONSECRATED_AREA);

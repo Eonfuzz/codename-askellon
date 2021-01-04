@@ -27,6 +27,7 @@ export const SFX_FLASH_HEAL = "Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpeci
 export const SFX_RED_SINGULARITY = "war3mapImported\\SingularityRed.mdx";
 export const SFX_DARK_RITUAL = "Abilities\\Spells\\Undead\\DarkRitual\\DarkRitualTarget.mdl";
 export const SFX_DARK_SUMMONING = "Abilities\\Spells\\Undead\\Darksummoning\\DarkSummonTarget.mdl";
+export const SFX_DARK_HARVEST = "Models\\sfx\\DarkHarvest.mdx";
 export const SFX_HOWL = "Abilities\\Spells\\Other\\HowlOfTerror\\HowlCaster.mdl";
 export const SFX_FIRE = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireDamage.mdl';
 export const SFX_LIGHTNING_BOLT = 'Doodads\\Cinematic\\Lightningbolt\\Lightningbolt.mdl';
@@ -118,3 +119,4 @@ Preload(SFX_BLUE_BLAST);
 Preload(SFX_VOID_DISK);
 Preload(SFX_SMITE);
 Preload(SFX_METEOR_CANISTER);
+Preload(SFX_DARK_HARVEST);

@@ -32,7 +32,12 @@ export class Timers {
         TriggerRegisterTimerEvent(this.fastTimer, 0.01, true);
         TriggerAddAction(this.fastTimer, () => {
             this.fastTimerCallbacks.forEach((callback) => {
-                callback();
+                try {
+                    callback();
+                }
+                catch (e) {
+                    Log.Error(e);
+                }
             });
             
             let i = 0;

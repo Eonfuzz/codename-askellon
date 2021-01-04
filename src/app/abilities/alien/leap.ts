@@ -141,9 +141,6 @@ export class LeapAbility implements Ability {
             );
             casterLoc.z = getZFromXY(casterLoc.x, casterLoc.y);
 
-            // let sfx = AddSpecialEffect("Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl", casterLoc.x, casterLoc.y);
-            // DestroyEffect(sfx);
-
             let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", casterLoc.x, casterLoc.y);
             BlzSetSpecialEffectAlpha(sfx, 40);
             BlzSetSpecialEffectScale(sfx, 0.8);

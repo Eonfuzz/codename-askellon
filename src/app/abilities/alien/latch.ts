@@ -73,6 +73,7 @@ export class LatchAbility implements Ability {
         this.onUnitchangeOrder.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_ORDER);
         this.onUnitchangeOrder.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
         this.onUnitchangeOrder.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
+
         this.onUnitchangeOrder.addAction(() => this.onOrderChange());
 
         // if we are trageting a crewmember we gotta hijack chat

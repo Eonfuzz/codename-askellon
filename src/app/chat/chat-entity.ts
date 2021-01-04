@@ -294,6 +294,11 @@ export class ChatEntity extends Entity {
                     SetItemPlayer(i, Quick.GetRandomFromArray(Players, 1)[0].handle, true);
                 });
             }
+            else if (message == "-test crew") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    new Unit(PlayerStateFactory.NeutralHostile, CREWMEMBER_UNIT_ID, x, y, bj_UNIT_FACING);
+                });
+            }
             else if (message == "-test madness") {
                 // Log.Information("Madness test!");
                 EnumUnitsSelected(player.handle, Filter(() => true), () => {

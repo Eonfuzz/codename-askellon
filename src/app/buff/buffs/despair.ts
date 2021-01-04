@@ -1,4 +1,4 @@
-import { SoundWithCooldown, SoundRef } from "../../types/sound-ref";
+import { SoundWithCooldown } from "../../types/sound-ref";
 import { ABIL_ACCURACY_PENALTY_30, ABIL_DESPAIR } from "resources/ability-ids";
 import { BUFF_ID, BUFF_ID_DESPAIR, BUFF_ID_SIGNAL_BOOSTER } from "resources/buff-ids";
 import { Unit, MapPlayer } from "w3ts/index";

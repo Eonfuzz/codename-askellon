@@ -10,6 +10,8 @@ import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { GunItem } from "./gun-item";
 import { Timers } from "app/timer-type";
 import { getYawPitchRollFromVector } from "lib/translators";
+import { FilterIsAlive } from "resources/filters";
+import { ForceEntity } from "app/force/force-entity";
 
 export class WepNeokatana extends GunItem {
 
@@ -23,6 +25,11 @@ export class WepNeokatana extends GunItem {
 
     private castOrderId: number;
     private targetLoc: Vector3;
+
+    private timer: Timer;
+    private durationElapsed: number;
+    private hasSlashed1 = false;
+    private hasSlashed2 = false;
 
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(item, equippedTo);
@@ -67,11 +74,29 @@ export class WepNeokatana extends GunItem {
         sfx.setRoll(rotData.roll+ 180 * bj_DEGTORAD);
         sfx.setPitch(rotData.pitch);
         sfx.destroy();
+        
+        this.hasSlashed1 = false;
+        this.hasSlashed2 = false;
 
-        const t = new Timer();
-        t.start(0.03, true, () => {
+        
+        this.timer = new Timer();
+        this.durationElapsed = 0;
+
+        this.timer.start(0.03, true, () => {
             const nX = unit.x + movement.x * 0.03;
             const nY = unit.y + movement.y * 0.03;
+            this.durationElapsed += 0.03;
+
+            if (this.durationElapsed > 0.3 && !this.hasSlashed1) {
+                this.hasSlashed1 = true;
+                // Deal slash damage
+                this.doSlashDamage();
+            }
+            else if (this.durationElapsed > 4.3 && !this.hasSlashed2) {
+                this.hasSlashed2 = true;
+                // Deal slash damage
+                this.doSlashDamage();
+            }
 
             if (terrainIsPathable(nX, nY)) {
                 unit.x = nX;
@@ -85,8 +110,8 @@ export class WepNeokatana extends GunItem {
             unit.setTimeScale(1);
             unit.pauseEx(false);
             Timers.addTimedAction(0.3, () => {
-                t.pause();
-                t.destroy();
+                this.timer.pause();
+                this.timer.destroy();
             });
         });
     };
@@ -109,6 +134,40 @@ export class WepNeokatana extends GunItem {
         sfx.setRoll(rotData.roll + 25 * bj_DEGTORAD);
         sfx.setPitch(rotData.pitch);
         sfx.destroy();
+    }
+
+    private searchGroup = CreateGroup();
+    private doSlashDamage() {
+        if (this.equippedTo && this.equippedTo.unit) {
+            const radius = 120;
+            const u = this.equippedTo.unit;
+            const uLoc = Vector3.fromWidget(u.handle);
+            const posLoc = uLoc.projectTowards2D(u.facing - 30, radius);
+
+            // Now group all units infront and deal damage
+            GroupEnumUnitsInRange(
+                this.searchGroup, 
+                posLoc.x, 
+                posLoc.y,
+                radius,
+                FilterIsAlive(u.owner)
+            );
+            ForGroup(this.searchGroup, () => {
+                const unit = GetEnumUnit();
+                const p = MapPlayer.fromHandle(GetOwningPlayer(unit));
+                if (!ForceEntity.getInstance().aggressionBetweenTwoPlayers(u.owner, p)) return;
+                // damage unit by 35
+                UnitDamageTarget(u.handle, 
+                    unit, 
+                    35 * this.getDamageBonusMult(), 
+                    true, 
+                    true, 
+                    ATTACK_TYPE_MAGIC, 
+                    DAMAGE_TYPE_ACID, 
+                    WEAPON_TYPE_WHOKNOWS
+                );
+            });
+        }
     }
 
     public onAdd(caster: ArmableUnitWithItem) {

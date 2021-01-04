@@ -2,7 +2,7 @@
  * Chat system by Niklas
  * Converted to Typescript by Boar
  */
-import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
+import { SoundWithCooldown } from "app/types/sound-ref";
 import { MapPlayer } from "w3ts";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
 import { COL_MISC } from "resources/colours";

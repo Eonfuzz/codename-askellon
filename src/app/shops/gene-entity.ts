@@ -44,6 +44,7 @@ import { SOUND_STR_GENE_LOOP } from "resources/sounds";
 import { Timers } from "app/timer-type";
 import { COL_MISC, COL_TEAL } from "resources/colours";
 import { UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH } from "resources/upgrade-ids";
+import { SmartTrigger } from "lib/SmartTrigger";
 
 declare const udg_genetic_splicer_unit: unit;
 interface GeneInstance {
@@ -103,7 +104,7 @@ export class GeneEntity extends Entity {
             const instance = {
                 source: crew,
                 ui: geneUiUnit,
-                castTrigger: new Trigger()
+                castTrigger: new SmartTrigger()
             };
 
             this.instances.push(instance);

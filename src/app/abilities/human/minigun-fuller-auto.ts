@@ -12,7 +12,10 @@ import { ABIL_GENE_COSMIC } from "resources/ability-ids";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Minigun } from "app/weapons/guns/minigun";
 
-const FullerAutoSounds = [ new SoundRef("Sounds\\minigun_fullerauto_1.mp3", false), new SoundRef("Sounds\\minigun_fullerauto_2.mp3", false) ];
+const FullerAutoSounds = [ 
+    new SoundRef("Sounds\\minigun_fullerauto_1.mp3", false), 
+    new SoundRef("Sounds\\minigun_fullerauto_2.mp3", false) 
+];
 
 export class MinigunFullerAutoAbility implements Ability {
 

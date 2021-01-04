@@ -1,5 +1,6 @@
 import { Vector3 } from "../app/types/vector3";
 import { Unit } from "w3ts/handles/unit";
+import { getZFromXY } from "./utils";
 
 export class console {
     public static log(input: string): void {
@@ -39,19 +40,44 @@ export function PlayNewSound(soundPath: string, volume: number) {
 }
 
 export function PlayNewSoundOnUnit(soundPath: string, unit: Unit, volume: number): sound {
-    const result = CreateSound(soundPath, false, true, true, 10, 10, "" )
+    const result = CreateSound(soundPath, false, true, true, 10, 10, "" );
     SetSoundDuration(result, GetSoundFileDuration(soundPath));
     SetSoundChannel(result, 0);
     SetSoundVolume(result, volume);
     SetSoundPitch(result, 1.0);
     SetSoundDistances(result, 2000.0, 5000.0);
     SetSoundDistanceCutoff(result, 4500.0);
-    AttachSoundToUnit(result, unit.handle);
-    StartSound(result);
+    // AttachSoundToUnit(result, unit.handle);
+
+    const loc = Location(unit.x, unit.y);
+    PlaySoundAtPointBJ(result, volume, loc, getZFromXY(unit.x, unit.y));
+    RemoveLocation(loc);
+    
+    // StartSound(result);
     KillSoundWhenDone(result);
+
     return result;
 }
 
+export function PlayNewSoundAt(soundPath: string, x: number, y: number, volume: number): sound {
+    const result = CreateSound(soundPath, false, true, true, 10, 10, "" );
+    SetSoundDuration(result, GetSoundFileDuration(soundPath));
+    SetSoundChannel(result, 0);
+    SetSoundVolume(result, volume);
+    SetSoundPitch(result, 1.0);
+    SetSoundDistances(result, 2000.0, 5000.0);
+    SetSoundDistanceCutoff(result, 4500.0);
+    // AttachSoundToUnit(result, unit.handle);
+
+    const loc = Location(x, y);
+    PlaySoundAtPointBJ(result, volume, loc, getZFromXY(x, y));
+    RemoveLocation(loc);
+    
+    // StartSound(result);
+    KillSoundWhenDone(result);
+
+    return result;
+}
 export interface ColourToIndex {
     [key: string]: number;
 }

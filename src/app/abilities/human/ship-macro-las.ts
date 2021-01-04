@@ -3,7 +3,6 @@ import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { SPRINT_BUFF_ID, TECH_MAJOR_VOID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
-import { SoundRef } from "app/types/sound-ref";
 import { Unit } from "w3ts/index";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverLinear } from "app/weapons/projectile/projectile-target";

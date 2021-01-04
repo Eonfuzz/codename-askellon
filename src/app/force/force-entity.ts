@@ -350,6 +350,7 @@ export class ForceEntity extends Entity {
         });
     }
 
+
     /**
      * Checks victory conditions of all forces
      * returns a force if it is the only winning force
@@ -466,7 +467,7 @@ export class ForceEntity extends Entity {
             count: 1
         });
 
-        if (PlayerStateFactory.isSinglePlayer()) {
+        if (PlayerStateFactory.isSinglePlayer() || PlayerStateFactory.allowWIP()) {
             optSelection.addOpt({
                 name: CULT_FORCE_NAME,
                 isRequired: false,

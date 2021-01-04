@@ -7,8 +7,6 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit, MapPlayer, playerColors } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_SECURITY_TARGET_ALL, ABIL_ACTIVATE_SCAN_CREW, ABIL_ACTIVATE_SCAN_ALIENS } from "resources/ability-ids";
-import { PlayerState } from "app/force/player-type";
-import { TARGETING_TOOLTIP, TARGETING_TOOLTIP_EXTENDED } from "resources/strings";
 import { Players } from "w3ts/globals/index";
 import { Log } from "lib/serilog/serilog";
 import { Timers } from "app/timer-type";
@@ -16,8 +14,7 @@ import { GlobalCooldownAbilityEntity } from "../global-ability-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
 
-/** @noSelfInFile **/
-const scanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
+export const scanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
 export class StationSecurityScanForPlayer implements Ability {
 
     private isScanningForAliens = false;

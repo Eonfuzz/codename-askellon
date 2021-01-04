@@ -1,9 +1,9 @@
 import { Log } from "../../../../lib/serilog/serilog";
 import { ForceType } from "../force-type";
-import { ABIL_ALTAR_IS_BUILT, ABIL_CREWMEMBER_INFO, ABIL_CULTIST_INFO } from "resources/ability-ids";
+import { ABIL_ALTAR_IS_BUILT, ABIL_CREWMEMBER_INFO, ABIL_CULTIST_GIFT_MADNESS, ABIL_CULTIST_INFO, UNIT_IS_FLY } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer, Effect } from "w3ts";
-import { resolveTooltip } from "resources/ability-tooltips";
+import { cultistTooltip, resolveTooltip } from "resources/ability-tooltips";
 import { EVENT_TYPE } from "app/events/event-enum";
 
 // Entities and factories
@@ -21,16 +21,17 @@ import { Players } from "w3ts/globals/index";
 import { CREWMEMBER_UNIT_ID, UNIT_ID_CULTIST_ALTAR } from "resources/unit-ids";
 import { Timers } from "app/timer-type";
 import { COL_MISC, COL_ATTATCH } from "resources/colours";
-import { Vector2 } from "app/types/vector2";
+import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { Vector3 } from "app/types/vector3";
-import { getZFromXY, MessagePlayer } from "lib/utils";
+import { CreateBlood, getZFromXY, MessagePlayer } from "lib/utils";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
 import { WeaponEntity } from "app/weapons/weapon-entity";
-import { SFX_LASER_3, SFX_RED_SINGULARITY, SFX_VOID_DISK } from "resources/sfx-paths";
+import { SFX_HUMAN_BLOOD, SFX_LASER_3, SFX_RED_SINGULARITY, SFX_VOID_DISK } from "resources/sfx-paths";
 import { CULTIST_ALTAR_MAX_MANA, COLOUR_CULT, CULTIST_ALTAR_BUILD_TIME, CULTIST_ALTAR_TIME_TO_REGEN, CULTIST_CORPSE_INTERVAL, CULTIST_ALTAR_REGEN_INCREASE, TECH_RESEARCH_CULT_ID } from "./constants";
 import { SoundRef } from "app/types/sound-ref";
 import { ITEM_CEREMONIAL_DAGGER, ITEM_HUMAN_CORPSE } from "resources/item-ids";
+import { PlayNewSound, PlayNewSoundOnUnit } from "lib/translators";
 
 export class CultistForce extends CrewmemberForce {
     name = CULT_FORCE_NAME;
@@ -42,11 +43,15 @@ export class CultistForce extends CrewmemberForce {
     private playerToTick: Map<MapPlayer, number> = new Map<MapPlayer, number>();
     private playerToAltar: Map<MapPlayer, Unit> = new Map<MapPlayer, Unit>();
     private playerAltarIsBuilt: Map<MapPlayer, boolean> = new Map<MapPlayer, boolean>();
+    private playersPunishedCount: Map<MapPlayer, number> = new Map<MapPlayer, number>();
 
     private playerKillingPunish = new Trigger();
     private onCultistUpgrade = new Trigger();
+    private onAltarDeath = new Trigger();
 
     private altars: Unit[] = [];
+
+    private canWin: boolean = false;
 
     constructor() {
         super();
@@ -63,6 +68,11 @@ export class CultistForce extends CrewmemberForce {
             const u = Unit.fromHandle(GetTriggerUnit());
             const oldOwner = u.owner;
 
+            if (this.playerToAltar.get(oldOwner)) {
+                this.playerToAltar.get(oldOwner).kill();
+            }
+
+            this.onAltarDeath.registerUnitEvent(u, EVENT_UNIT_DEATH);
             u.owner = PlayerStateFactory.NeutralPassive;
 
             u.name = oldOwner.handle === GetLocalPlayer() 
@@ -97,6 +107,8 @@ export class CultistForce extends CrewmemberForce {
         this.onCultistUpgrade.addCondition(() => GetResearched() === TECH_RESEARCH_CULT_ID);
         this.onCultistUpgrade.addAction(() => this.onCultistResearch(Unit.fromHandle(GetTriggerUnit())));
 
+        this.onAltarDeath.addAction(() => this.onAltarDeathEv(Unit.fromHandle(GetTriggerUnit())));
+
         this.playerKillingPunish.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
         this.playerKillingPunish.addCondition(() => {
             const u = GetTriggerUnit();
@@ -116,10 +128,154 @@ export class CultistForce extends CrewmemberForce {
         return undefined;
     }
 
+    private onAltarDeathEv(altar: Unit, ignorePunishment?: boolean) {
+        const owner = MapPlayer.fromIndex(altar.userData);
+
+        const mAltar = this.playerToAltar.get(owner);
+        if (altar === mAltar) {
+            MessagePlayer(owner, `${COLOUR_CULT}Your Altar was destroyed!`);
+            const pData = PlayerStateFactory.get(owner);
+            const u = pData.getUnit();
+
+
+            if (!ignorePunishment) {
+                const sfx = AddSpecialEffect(SFX_RED_SINGULARITY, u.x, u.y);
+                BlzSetSpecialEffectZ(sfx, getZFromXY(u.x, u.y));
+                DestroyEffect(sfx);
+
+                u.damageTarget(u.handle, 50, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+                BlzStartUnitAbilityCooldown(u.handle, ABIL_CULTIST_INFO, 120);
+            }
+
+            const i = this.altars.indexOf(mAltar);
+            this.altars.splice(i, 1);
+            this.playerToAltar.delete(owner);
+
+        }
+    }
+
     private onCrewmemberDeath(dyingCrew: Unit, killingCrew: Unit) {
         if (!this.hasPlayer(killingCrew.owner)) return;
-        MessagePlayer(killingCrew.owner, `${COLOUR_CULT}We feast only on the flesh of the dead!`);
-        MessagePlayer(killingCrew.owner, `As ${COL_ATTATCH}punishment|r for killing a living player`);
+        if (killingCrew.owner.isLocal()) {
+            this.cultistGodSoundByte.playSound();
+        }
+
+        const punishCount = this.playersPunishedCount.get(killingCrew.owner) || 0;
+
+        if (punishCount < 1) {
+            MessagePlayer(killingCrew.owner, `${COLOUR_CULT}Feast only on the flesh of the dead!`);
+            MessagePlayer(killingCrew.owner, `Warning! As ${COLOUR_CULT}punishment|r for killing a living player you lose 6 attributes! Don't do it again`);
+
+            const sfx = AddSpecialEffect(SFX_RED_SINGULARITY, killingCrew.x, killingCrew.y);
+            BlzSetSpecialEffectZ(sfx, getZFromXY(killingCrew.x, killingCrew.y));
+            DestroyEffect(sfx);
+
+            PlayNewSoundOnUnit("Sounds\\Thunder2.mp3", killingCrew, 50);
+            killingCrew.strength -= 6;
+            // killingCrew.agility -= 6;
+            killingCrew.intelligence -= 6;
+
+            this.playersPunishedCount.set(killingCrew.owner, 1);
+        }
+        else {
+            MessagePlayer(killingCrew.owner, `${COLOUR_CULT}Again you disappoint us.`);
+
+            this.playSpinExplodeanimationFor(killingCrew, () => {
+                killingCrew.kill();   
+                killingCrew.x = 0;
+                killingCrew.y = 0;
+                killingCrew.show = false;
+            });
+
+            Timers.addTimedAction(3, () => {
+                MessagePlayer(killingCrew.owner, `${COLOUR_CULT}We make it so it will not be again`);
+            });
+        }
+    }
+
+    public playSpinExplodeanimationFor(who: Unit, callback: () => void) {
+        who.paused = true;
+        who.addAbility(UNIT_IS_FLY);
+        who.setflyHeight(250, 50);
+        who.invulnerable = true;
+        PlayNewSoundOnUnit("Sounds\\HorrorRiser2.mp3", who, 127);
+
+        SetUnitFacingTimed(who.handle, who.facing-170, 1.1);
+
+        Timers.addTimedAction(1, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.8);
+        });
+        Timers.addTimedAction(1.8, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.7);
+        });
+        Timers.addTimedAction(2.5, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.6);
+        });
+        Timers.addTimedAction(3.1, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.5);
+        });
+        Timers.addTimedAction(3.5, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.4);
+            PlayNewSoundOnUnit("Sounds\\HorrorRiser.mp3", who, 127);
+        });
+        Timers.addTimedAction(3.9, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.3);
+        });
+        Timers.addTimedAction(4.2, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.2);
+        });
+        Timers.addTimedAction(4.4, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.2);
+        });
+        Timers.addTimedAction(4.6, () => {
+            SetUnitFacingTimed(who.handle, who.facing-170, 0.2);
+        });
+        Timers.addTimedAction(4.8, () => {
+            PlayNewSoundOnUnit("Sounds\\Thunder2.mp3", who, 50);
+            let sfx = AddSpecialEffect(SFX_RED_SINGULARITY, who.x, who.y);
+            BlzSetSpecialEffectZ(sfx, getZFromXY(who.x, who.y) + 250);
+            DestroyEffect(sfx);    
+
+            sfx = AddSpecialEffect(SFX_HUMAN_BLOOD, who.x, who.y);
+            BlzSetSpecialEffectZ(sfx, getZFromXY(who.x, who.y) + 150);
+            DestroyEffect(sfx);
+
+            for (let index = 0; index < 8; index++) {
+                const tLoc = vectorFromUnit(who.handle);
+
+                const unitHeight = getZFromXY(tLoc.x, tLoc.y);
+                const startLoc = new Vector3(tLoc.x, tLoc.y, unitHeight + 250)
+    
+                const newTarget = new Vector3(
+                    startLoc.x + this.getRandomOffset(),
+                    startLoc.y + this.getRandomOffset(),
+                    unitHeight
+                );
+    
+                const projStartLoc = new Vector3(startLoc.x, startLoc.y, startLoc.z);
+                const projectile = new Projectile(
+                    who.handle, 
+                    projStartLoc,
+                    new ProjectileTargetStatic(newTarget.subtract(startLoc)),
+                    new ProjectileMoverParabolic(projStartLoc, newTarget, Deg2Rad(GetRandomReal(60,85)))
+                )
+                .onDeath(proj => CreateBlood(proj.getPosition().x, proj.getPosition().y))
+                .onCollide(() => true);
+    
+                projectile.addEffect("Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdl", new Vector3(0, 0, 0), newTarget.subtract(startLoc).normalise(), 1);
+    
+                EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: who, data: { projectile: projectile }});
+            }
+
+            who.removeAbility(UNIT_IS_FLY);
+            who.invulnerable = false;
+            if (callback) callback();
+        });
+    }
+
+    private getRandomOffset(): number {
+        const isNegative = GetRandomInt(0, 1);
+        return (isNegative == 1 ? -1 : 1) * Math.max(-500, GetRandomInt(0, 500));
     }
 
     private isAltarBuilt(altar: Unit): boolean | undefined {
@@ -138,7 +294,7 @@ export class CultistForce extends CrewmemberForce {
         altar.addAbility(ABIL_ALTAR_IS_BUILT);
         const player = MapPlayer.fromIndex(altar.userData);
         // TODO Send message to player
-        MessagePlayer(player, `My ${COLOUR_CULT}a̷̲͕̰̼͎̾͑͜l̵̢̅͆͐̓͒̌̀͝t̷̫̬̩̥͕͕̗͚̽̕a̶̛̛̝̬̓́̒̄͆̎̈́͛̊̓̓̚r̸͓̤̬̯̚|r is built. Gifts from the v̴̯͔͔̈́o̴̦͓͖̅̓̄̀̂ȉ̴͚̮̰͍͇̰̏͂̀͊̌̐͋͂̽́̇̏͝d̷̜͔̱̰̥̲̥͍͈̱̣̔̏̃̎̓̿̌͆̀̃̈̀̚̚͝ you shall have`);
+        MessagePlayer(player, `Your ${COLOUR_CULT}Altar|r has finished building.`);
         if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
     }
 
@@ -149,7 +305,13 @@ export class CultistForce extends CrewmemberForce {
         const research = GetResearched();
         const researchLevel = GetPlayerTechCount(player.handle, research, true);
 
+
+        if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
+
         if (researchLevel === 1 && altar && pData) {
+            this.canWin = true;
+        }
+        if (researchLevel === 2 && altar && pData) {
             const unit = pData.getUnit();
             const spawnLoc = Vector2.fromWidget(altar.handle);
             const deltaLoc = spawnLoc.add( Vector2.fromWidget(unit.handle).subtract(spawnLoc).multiplyN(0.5));
@@ -168,7 +330,7 @@ export class CultistForce extends CrewmemberForce {
      * Returns true if victory conditions are met
      */
     checkVictoryConditions(): boolean {
-        return this.players.length > 0;
+        return this.canWin && this.players.length > 0;
     }
 
     /**
@@ -184,12 +346,13 @@ export class CultistForce extends CrewmemberForce {
         VisionFactory.getInstance().setPlayervision(player, VISION_TYPE.HUMAN);
 
         whichUnit.unit.addAbility(ABIL_CULTIST_INFO);
+        whichUnit.unit.addAbility(ABIL_CULTIST_GIFT_MADNESS);
 
         SetPlayerAlliance(player.handle, PlayerStateFactory.CultistAIPlayer.handle, ALLIANCE_PASSIVE, true);
 
         this.playerToTick.set(player, 0);
         // Add ability tooltip
-        // TooltipEntity.getInstance().registerTooltip(whichUnit, resolveTooltip);
+        TooltipEntity.getInstance().registerTooltip(whichUnit, cultistTooltip);
     }
     
     /**

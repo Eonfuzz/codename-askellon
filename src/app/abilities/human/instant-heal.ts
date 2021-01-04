@@ -43,6 +43,7 @@ export class InstantHealAbility implements Ability {
     public destroy() {
         this.unit.setVertexColor(255, 255, 255, 255);
         DestroyEffect(this.sfx);
+        this.sound.destroy();
         return true;
     };
 }

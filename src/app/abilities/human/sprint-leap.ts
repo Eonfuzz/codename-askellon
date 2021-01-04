@@ -67,7 +67,7 @@ export class SprintLeapAbility implements Ability {
 
     public destroy() { 
         if (this.unit) {              
-            this.sound.playSoundOnUnit(this.unit, 50);
+            this.sound.playSoundOnUnit(this.unit, 50, true);
             let targetLoc = new Vector3(GetUnitX(this.unit), GetUnitY(this.unit), 0);
             targetLoc.z = getZFromXY(targetLoc.x, targetLoc.z);
 

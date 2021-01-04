@@ -12,7 +12,7 @@
     "build:defs": "ts-node scripts/dev"
   },
   "dependencies": {
-    "w3ts": "^2.2.1"
+    "w3ts": "git+https://github.com/cipherxof/w3ts.git"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.1.1",

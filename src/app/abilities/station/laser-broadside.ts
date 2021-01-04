@@ -83,8 +83,13 @@ export class LaserBroadsideAbility implements Ability {
                 const snd = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
                 this.shakingPlayers.forEach(p => {
                     // Log.Information(`Player ${p.name}`)
-                    if (p.handle === GetLocalPlayer()) snd.playSound();
+                    if (p.handle === GetLocalPlayer()) {
+                        snd.setVolume(100);
+                    } else {
+                        snd.setVolume(0);
+                    }
                 });
+                snd.playSound(true);
                 
                 Timers.addTimedAction(0.2, () => {
                     PlayNewSoundOnUnit("Sounds\\Laser5.mp3", this.castingUnit, 30);

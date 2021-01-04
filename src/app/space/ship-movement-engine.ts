@@ -53,9 +53,6 @@ export class SpaceMovementEngine {
 
         this.setGoal(initialGoal);
 
-        // AddSpecialEffect( SFX_FIRE, initialGoal.x, initialGoal.y );
-        // AddSpecialEffect( SFX_FIRE, initialGoal.x + this.goal.x, initialGoal.y + this.goal.y );
-
         this.thrust     = this.goal.normalise();
     }
 

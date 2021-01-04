@@ -17,6 +17,7 @@ import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { AbilityHooks } from "../ability-hooks";
+import { SmartTrigger } from "lib/SmartTrigger";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -39,7 +40,7 @@ export class TransformAbility implements Ability {
     private timeElapsed: number;
     private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
 
-    private orderTrigger = new Trigger();
+    private orderTrigger = new SmartTrigger();
     private previousOrder: number | undefined;
     private previousOrderTarget: Vector2 | undefined;
 
@@ -60,7 +61,7 @@ export class TransformAbility implements Ability {
         // Create order trigger to track last issued order
         this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
         // this.orderTrigger.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
-        this.orderTrigger.addCondition(Condition(() => GetIssuedOrderId() === SMART_ORDER_ID));
+        this.orderTrigger.addCondition(() => GetIssuedOrderId() === SMART_ORDER_ID);
         this.orderTrigger.addAction(() => {
             this.previousOrder = GetIssuedOrderId();
             this.previousOrderTarget = new Vector2(GetOrderPointX(), GetOrderPointY());

@@ -9,11 +9,15 @@ export class SoundRef {
         SetSoundDuration(this.sound, GetSoundFileDuration(sound));
     }
 
-    public playSound() {
+    public playSound(doKillWhenDone?: boolean) {
         StartSound(this.sound);
+
+        if (doKillWhenDone) {
+            KillSoundWhenDone(this.sound);
+        }
     }
 
-    public playSoundOnUnit(unit: unit, volume: number) {
+    public playSoundOnUnit(unit: unit, volume: number, doKillWhenDone?: boolean) {
         SetSoundChannel(this.sound, 0);
         SetSoundVolume(this.sound, volume);
         SetSoundPitch(this.sound, 1.0);
@@ -22,9 +26,13 @@ export class SoundRef {
 
         AttachSoundToUnit(this.sound, unit);
         StartSound(this.sound);
+
+        if (doKillWhenDone) {
+            KillSoundWhenDone(this.sound);
+        }
     }
 
-    public playSoundOnPont(x: number, y: number, volume: number) {
+    public playSoundOnPont(x: number, y: number, volume: number, doKillWhenDone?: boolean) {
         SetSoundChannel(this.sound, 0);
         SetSoundVolume(this.sound, volume);
         SetSoundPitch(this.sound, 1.0);
@@ -34,6 +42,10 @@ export class SoundRef {
         const loc = Location(x, y);
         PlaySoundAtPointBJ(this.sound, volume, loc, getZFromXY(x, y));
         RemoveLocation(loc);
+        
+        if (doKillWhenDone) {
+            KillSoundWhenDone(this.sound);
+        }
     }
 
     public setVolume(volume: number) {
@@ -42,6 +54,10 @@ export class SoundRef {
 
     public stopSound(noFade?: boolean) {
         StopSound(this.sound, false, !noFade);
+    }
+
+    public destroy(noFade?: boolean) {
+        StopSound(this.sound, true, !noFade);
     }
 }
 

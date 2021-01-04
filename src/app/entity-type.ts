@@ -19,9 +19,12 @@ export abstract class Entity {
                     entity._internalTimer += 0.01;
                     if (entity._internalTimer >= entity._timerDelay) {
                         entity._internalTimer = 0;
-                        xpcall(() => {
+                        try {
                             entity.step();
-                        }, Log.Error);
+                        }
+                        catch (e) {
+                            Log.Error(e);
+                        }
                     }
                 });
             };

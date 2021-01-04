@@ -145,6 +145,13 @@ export class PlayerStateFactory {
         return instance.isSnglePlayer;
     }
 
+    /**
+     * Returns true if the game is singleplayer
+     */
+    public static allowWIP() {
+        return MapPlayer.fromIndex(1).name === "Eonfuzz#1988";
+    }
+
     public static isAlienAI(who: MapPlayer) {
         return who === this.AlienAIPlayer1 || who === this.AlienAIPlayer2 || who === this.AlienAIPlayer3;
     }

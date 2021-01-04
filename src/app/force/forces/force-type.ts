@@ -171,24 +171,30 @@ export abstract class ForceType {
      * Does this force do anything on tick
      * @param delta 
      */
+    private moneyMax = 20;
+    private moneyTicker = this.moneyMax;
     public onTick(delta: number) {
-        const percent = delta / 60;
-        this.players.forEach(p => {
-            
-            const details = PlayerStateFactory.get(p);
-            const crew = details.getCrewmember();
+        this.moneyTicker -= delta;
+        if (this.moneyTicker <= 0) {
+            this.moneyTicker = this.moneyMax;
+            const percent = this.moneyMax / 60;
+            this.players.forEach(p => {
+                
+                const details = PlayerStateFactory.get(p);
+                const crew = details.getCrewmember();
 
-            if (crew && crew.unit.isAlive()) {
-                const calculatedIncome = MathRound(percent * crew.getIncome());
-                crew.player.setState(
-                    PLAYER_STATE_RESOURCE_GOLD, 
-                    crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome
-                );
+                if (crew && crew.unit.isAlive()) {
+                    const calculatedIncome = MathRound(percent * crew.getIncome());
+                    crew.player.setState(
+                        PLAYER_STATE_RESOURCE_GOLD, 
+                        crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + calculatedIncome
+                    );
 
-                // Also reward passive experience points
-                crew.addExperience( 200 * percent );
-            }
-        })
+                    // Also reward passive experience points
+                    crew.addExperience( 200 * percent );
+                }
+            });
+        }
     }
 
     /**

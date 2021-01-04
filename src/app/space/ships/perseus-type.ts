@@ -1,4 +1,4 @@
-import { Unit, Effect, MapPlayer, Item } from "w3ts/index";
+import { Unit, Effect, MapPlayer, Item, playerColors } from "w3ts/index";
 import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
@@ -68,6 +68,9 @@ export class PerseusShip extends ShipWithFuel {
         const newOwner = who.owner;
         this.unit.owner = who.owner;
 
+        if (who && who.owner) {
+            this.unit.color = playerColors[ who.owner.id ].playerColor;
+        }
         // If we have the entering unit was selected, select the ship too
         if (true) { // who.isSelected(newOwner)) {
             SelectUnitForPlayerSingle(this.unit.handle, newOwner.handle);
@@ -204,6 +207,7 @@ export class PerseusShip extends ShipWithFuel {
         SetUnitAnimationByIndex(this.unit.handle, 3);
 
         const shipPos = vectorFromUnit(this.unit.handle);
+        this.unit.color = newOwner.color;
 
         this.inShip.forEach(u => {
             const rPos = shipPos.applyPolarOffset(GetRandomReal(0, 360), 150);
@@ -223,7 +227,7 @@ export class PerseusShip extends ShipWithFuel {
         if (!isDeath) {
             // We're leaving space, can we dump off minerals?
             const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
-            if (unitZone.id === ZONE_TYPE.CARGO_A) {        
+            if (unitZone.id === ZONE_TYPE.CARGO_A || unitZone.id === ZONE_TYPE.CARGO_B) {        
                 this.dropMineral(oldOwner, this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);
                 this.dropMineral(oldOwner, this.unit.getItemInSlot(1), ITEM_MINERAL_VALUABLE);
             }

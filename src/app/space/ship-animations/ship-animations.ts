@@ -120,6 +120,12 @@ export class ShipAnimationExitStationDock extends ShipAnimation {
         PanCameraToTimedForPlayer(this.ship.unit.owner.handle, this.ship.unit.x, this.ship.unit.y, 0);
         return true;
     };
+
+    public destroy(skipCallbacks?: boolean) {
+        super.destroy(skipCallbacks);
+        this.sound.destroy();
+    }
+
 }
 
 export class ShipAnimationEnterStationDock extends ShipAnimation {
@@ -181,6 +187,11 @@ export class ShipAnimationEnterStationDock extends ShipAnimation {
             ),
             83 * bj_DEGTORAD,
         );
+    }
+
+    public destroy(skipCallbacks?: boolean) {
+        super.destroy(skipCallbacks);
+        this.shipshipLandSound.destroy();
     }
 
     public process(delta: number) {

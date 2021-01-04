@@ -1,7 +1,7 @@
 import { Ability } from "../ability-type";
 import { Unit } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
-import { ABILITY_SLOW_ID, ABIL_STUN_25 } from "resources/ability-ids";
+import { ABILITY_SLOW_ID, ABIL_STUN_25, TECH_HAS_GENES_TIER_1, TECH_HAS_GENES_TIER_2, TECH_HAS_GENES_TIER_3 } from "resources/ability-ids";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { SFX_RED_SINGULARITY, SFX_DARK_RITUAL, SFX_DARK_SUMMONING, SFX_HOWL, SFX_SMITE } from "resources/sfx-paths";
 import { PlayNewSoundOnUnit } from "lib/translators";
@@ -9,6 +9,10 @@ import { getZFromXY } from "lib/utils";
 import { ForceEntity } from "app/force/force-entity";
 import { Game } from "app/game";
 import { DummyCast } from "lib/dummy";
+import { BUFF_ID_PURITY_SEAL } from "resources/buff-ids";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { PlayerState } from "app/force/player-type";
+import { ALIEN_FORCE_NAME, CULT_FORCE_NAME } from "app/force/forces/force-names";
 
 export const smiteSound = new SoundRef("Sounds\\InquisitorSmite.mp3", false);
 
@@ -56,8 +60,6 @@ export class SmiteAbility implements Ability {
         BlzSetSpecialEffectZ(this.smiteSfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
         
         if (this.endNextTick) {
-            const uLoc = vectorFromUnit(this.targetUnit.handle);
-            const d = this.prevUnitLoc.subtract(uLoc).getLength();
             this.doFinish = true;
 
             PlayNewSoundOnUnit(
@@ -72,9 +74,37 @@ export class SmiteAbility implements Ability {
             BlzSetSpecialEffectZ(sfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
             DestroyEffect(sfx);
 
-            
-            if (d > 0) {
+            const pData = PlayerStateFactory.get(this.targetUnit.owner);
+            let isHeretic = false;
 
+            if (PlayerStateFactory.isAlienAI(this.targetUnit.owner)) isHeretic = true;
+            else if (pData && pData.getForce()) {
+                if (pData.getForce().is(ALIEN_FORCE_NAME)) isHeretic = true;
+                else if (pData.getForce().is(CULT_FORCE_NAME)) isHeretic = true;
+                else if (this.targetUnit.owner.getTechCount(TECH_HAS_GENES_TIER_1, true) > 0) isHeretic = true;
+                else if (this.targetUnit.owner.getTechCount(TECH_HAS_GENES_TIER_2, true) > 0) isHeretic = true;
+                else if (this.targetUnit.owner.getTechCount(TECH_HAS_GENES_TIER_3, true) > 0) isHeretic = true;
+            }
+
+            const damage = isHeretic ? 150 : 50;
+            const doStun = UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_PURITY_SEAL);
+            
+            if (ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner))  {
+                // We've moved uh oh time for BLAM
+                UnitDamageTarget(
+                    this.unit.handle, 
+                    this.targetUnit.handle, 
+                    damage,
+                    false, 
+                    true, 
+                    ATTACK_TYPE_MAGIC, 
+                    DAMAGE_TYPE_MAGIC, 
+                    WEAPON_TYPE_WHOKNOWS
+                );
+            }
+
+
+            if (doStun) {
                 PlayNewSoundOnUnit(
                     "Doodads\\Dungeon\\Terrain\\DungeonPortculisGate\\DungeonPortculisGateOpenMetal.flac", 
                     this.targetUnit, 
@@ -84,19 +114,6 @@ export class SmiteAbility implements Ability {
                 BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
                 BlzSetSpecialEffectZ(sfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
                 DestroyEffect(sfx);
-
-                if (!ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
-                // We've moved uh oh time for BLAM
-                UnitDamageTarget(
-                    this.unit.handle, 
-                    this.targetUnit.handle, 
-                    100,
-                    false, 
-                    true, 
-                    ATTACK_TYPE_MAGIC, 
-                    DAMAGE_TYPE_MAGIC, 
-                    WEAPON_TYPE_WHOKNOWS
-                );
 
                 const unit = this.targetUnit.handle;
                 DummyCast((dummy: unit) => {
@@ -108,19 +125,6 @@ export class SmiteAbility implements Ability {
 
             }
             else {
-                if (!ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner)) return;
-                // Deal 50 damage
-                UnitDamageTarget(
-                    this.unit.handle, 
-                    this.targetUnit.handle, 
-                    50,
-                    false, 
-                    true, 
-                    ATTACK_TYPE_MAGIC, 
-                    DAMAGE_TYPE_MAGIC, 
-                    WEAPON_TYPE_WHOKNOWS
-                );
-
                 // Slow the unit
                 const unit = this.targetUnit.handle;
                 DummyCast((dummy: unit) => {

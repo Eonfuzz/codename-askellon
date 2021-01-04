@@ -158,7 +158,7 @@ export class AcidStigmataAbility implements Ability {
             });
         }
 
-        this.soundRef.stopSound(true);
+        this.soundRef.destroy(true);
         this.poisonAura.destroy();
 
         return true; 

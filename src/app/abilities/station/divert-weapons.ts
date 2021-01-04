@@ -9,6 +9,7 @@ import { Log } from "lib/serilog/serilog";
 import { ChatEntity } from "app/chat/chat-entity";
 import { SOUND_COMPLEX_BEEP } from "resources/sounds";
 import { ResearchFactory } from "app/research/research-factory";
+import { COL_ATTATCH } from "resources/colours";
 
 export class DivertToWeaponsAbiility implements Ability {
     constructor() {}
@@ -37,7 +38,7 @@ export class DivertToWeaponsAbiility implements Ability {
             }
             return false;
         }));
-        ChatEntity.getInstance().postMessageFor(Players, "Reactor", '00ffff', "Activating weapon overdrive", undefined, SOUND_COMPLEX_BEEP);
+        ChatEntity.getInstance().postMessageFor(Players, "Reactor", COL_ATTATCH, "Activating weapon overdrive", undefined, SOUND_COMPLEX_BEEP);
 
         return true;
     };
@@ -52,7 +53,7 @@ export class DivertToWeaponsAbiility implements Ability {
             u.owner = PlayerStateFactory.StationSecurity;
             u.color = PLAYER_COLOR_LIGHT_GRAY;
         });
-        ChatEntity.getInstance().postMessageFor(Players, "Reactor", '00ffff', "Weapon overdrive exceeding safety thresholds. Disabling.", undefined, SOUND_COMPLEX_BEEP);
+        ChatEntity.getInstance().postMessageFor(Players, "Reactor", COL_ATTATCH, "Weapon overdrive exceeding safety thresholds. Disabling.", undefined, SOUND_COMPLEX_BEEP);
         Players.forEach(p => p.setTechResearched(TECH_DUMMY_DIVERT_WEAPONS, 0));
         return true;
     };

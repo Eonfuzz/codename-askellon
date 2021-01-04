@@ -7,6 +7,7 @@ import { SMART_ORDER_ID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { WORM_ALIEN_FORM } from "resources/unit-ids";
 import { Log } from "lib/serilog/serilog";
 import { InteractableData } from "./interactables/interactable-type";
+import { SmartTrigger } from "lib/SmartTrigger";
 
 export const STUN_ID = FourCC('stun');
 export const SLOW_ID = FourCC('slow');
@@ -53,7 +54,7 @@ export class InteractionEvent {
   }
 
   startInteraction() {
-    this.interactionTrigger = new Trigger();
+    this.interactionTrigger = new SmartTrigger();
     this.interactionTrigger.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
     this.interactionTrigger.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
     this.interactionTrigger.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_ORDER);
