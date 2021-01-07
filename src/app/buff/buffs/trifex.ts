@@ -8,7 +8,7 @@ import { ChatHook } from "app/chat/chat-hook-type";
  * Can be applied multiple times and from multiple sources
  */
 export class Trifex extends DynamicBuff {
-    name = BUFF_ID.TRIFEX;
+    id = BUFF_ID.TRIFEX;
 
     hookId: number;
 

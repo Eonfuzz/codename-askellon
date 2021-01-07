@@ -753,13 +753,13 @@ export class AlienForce extends ForceType {
             alien.strength = MathRound(alien.strength * 0.75);
             alien.intelligence = MathRound(alien.intelligence * 0.75);
             alien.setBaseDamage( MathRound(alien.getBaseDamage(0) * 0.8), 0);
-            alien.setScale(0.8, 0.8, 0.8);
+            alien.setScale(0.9, 0.9, 0.9);
             alien.name = 'Alien Spawn';
             SetPlayerTechResearched(alien.owner.handle, UPGR_DUMMY_IS_ALIEN_HOST, 0);
         }
         else {
             alien.name = 'Alien Host';
-            alien.setScale(1, 1, 1);
+            alien.setScale(1.1, 1.1, 1.1);
 
             // If we were not Alien Host
             // We need to undo the stat penalties

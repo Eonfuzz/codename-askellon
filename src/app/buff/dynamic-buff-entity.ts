@@ -44,15 +44,21 @@ export class DynamicBuffEntity extends Entity {
     }
 
     addBuff(buffId: BUFF_ID, who: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
-        let matchingBuff = DynamicBuffState.unitHasBuff(buffId, who);
+        try {
+            let matchingBuff = DynamicBuffState.unitHasBuff(buffId, who);
 
-        if (!matchingBuff) {
-            matchingBuff = this.newDynamicBuffFor(buffId, who);
-            DynamicBuffState.addBuff(who, matchingBuff);
+            if (!matchingBuff) {
+                matchingBuff = this.newDynamicBuffFor(buffId, who);
+                DynamicBuffState.addBuff(who, matchingBuff);
+            }
+
+            matchingBuff.addInstance(who, instance, isNegativeInstance);
+            return matchingBuff;
         }
-
-        matchingBuff.addInstance(who, instance, isNegativeInstance);
-        return matchingBuff;
+        catch (e) {
+            Log.Error("Error Adding Buff");
+            Log.Error(e);
+        }
     }
 
     newDynamicBuffFor(id: BUFF_ID, who: Unit) {
@@ -78,7 +84,9 @@ export class DynamicBuffEntity extends Entity {
             const isActive = buff.process(timestamp, this._timerDelay);
 
             // If we aren't active we need to do stuff
-            if (!isActive) {
+            const iC = buff.getInstanceCount() + buff.getNegativeinstanceCount();
+            if (!isActive && iC <= 0) {
+                // Log.Information("destorying buff "+buff.id+" for unit!");
                 const buffsForUnit = buffState.buffsByUnit.get(buff.who);
                 const idx = buffsForUnit.indexOf(buff);
 

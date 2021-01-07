@@ -1,6 +1,8 @@
 import { Unit } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstance } from "./buff-instance-type";
+import { Log } from "lib/serilog/serilog";
+import { BuffInstanceDuration } from "./buff-instance-duration-type";
 
 export abstract class DynamicBuff {
     public id: BUFF_ID;

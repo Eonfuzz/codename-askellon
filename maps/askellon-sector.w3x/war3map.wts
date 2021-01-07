@@ -7634,3 +7634,51 @@ STRING 1778
 |cff808080LORE TODO|r|n|nBlesses all neaby players with |cffb52166Madness|r.|n|cff18bc9c- The effect is invisible to all bless players|n- Aliens can never be blessed|n|r|n|cffb52166Madness:|r|cff18bc9c Increases in severity over time, eventually creating hallucinations and driving them |r|cffb52166Insane|r|cff18bc9c.|r|n|n|cfff9a602Cooldown:|r 70 Seconds
 }
 
+STRING 1779
+// Doodads: D01R (Space Pipes Centered), Name (Name)
+{
+Space Pipes Centered
+}
+
+STRING 1783
+// Items: I00R (Leroyale Cigar), Description (Description)
+{
+An Exotic Cigar
+}
+
+STRING 1784
+// Abilities: A009 (+4 Will ( Cigar )), Name (Name)
+{
++4 Will ( Cigar )
+}
+
+STRING 1785
+// Abilities: A02R (Item Hit Point Bonus), Name (Name)
+{
+Item Hit Point Bonus
+}
+
+STRING 1786
+// Abilities: A02R (Item Hit Point Bonus), EditorSuffix (Editor Suffix)
+{
+( +25 )
+}
+
+STRING 1790
+// Items: I00R (Leroyale Cigar), Name (Name)
+{
+Leroyale Cigar
+}
+
+STRING 1791
+// Items: I00R (Leroyale Cigar), Tip (Tooltip - Basic)
+{
+Leroyale Cigar
+}
+
+STRING 1792
+// Items: I00R (Leroyale Cigar), Ubertip (Tooltip - Extended)
+{
+|cff808080Leroyale, a familiar and yet exotic brand imported direct from Terra.|r|n|nPassively grants |cff00ff0025 Hit Points|r and |cff00ff004 Will|r.
+}
+

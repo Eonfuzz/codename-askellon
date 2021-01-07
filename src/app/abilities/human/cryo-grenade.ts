@@ -13,11 +13,9 @@ import { ForceEntity } from "app/force/force-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
-import { AbilityHooks } from "../ability-hooks";
-import { ABIL_ITEM_CRYO_GRENADE } from "resources/ability-ids";
 
 const EXPLOSION_BASE_DAMAGE = 20;
-const EXPLOSION_AOE = 300;
+const EXPLOSION_AOE = 190;
 
 
 export class CryoGrenadeAbility implements Ability {

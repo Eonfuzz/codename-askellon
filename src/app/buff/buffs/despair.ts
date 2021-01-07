@@ -27,7 +27,7 @@ Preload("Music\\FlightIntoTheUnkown.mp3");
  * Can be applied multiple times and from multiple sources
  */
 export class Despair extends DynamicBuff {
-    name = BUFF_ID.DESPAIR;
+    id = BUFF_ID.DESPAIR;
 
     private jumpScareSound: SoundWithCooldown;
 

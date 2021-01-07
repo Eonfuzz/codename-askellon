@@ -14,8 +14,6 @@ Preload("Music\\KavinskyRampage.mp3");
  */
 export class Resolve extends DynamicBuff {
     id = BUFF_ID.RESOLVE;
-    name = 'resolve';
-
     private breathSound: SoundWithCooldown;
 
     private unit: Unit;

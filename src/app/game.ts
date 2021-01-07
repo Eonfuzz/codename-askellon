@@ -446,20 +446,20 @@ export class Game {
                 //         chat.postMessageFor(Players, crew.name, playerColors[randomPlayer.id].code, message, undefined, GENERIC_CHAT_SOUND_REF);
                 //     }
 
-                //     Timers.addTimedAction(2, () => {
-                //         warningSound.playSound();
-                //         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-                //         MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Diagnostic logs are indicating an unknown alien entity boarded USSR Askellon during warp procedures`);
+                    Timers.addTimedAction(2, () => {
+                        warningSound.playSound();
+                        PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                        MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Diagnostic logs are indicating an unknown alien entity boarded USSR Askellon during warp procedures`);
 
-                //         Timers.addTimedAction(1, () => {
-                //             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-                //             MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Required Directives: Destroy entity, restore ship functionality`);
+                        Timers.addTimedAction(1, () => {
+                            PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                            MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Required Directives: Destroy entity, restore ship functionality`);
 
-                //             new Timer().start(15, false, () => {
-                //                 ForceEntity.getInstance().startIntroduction();
-                //             });
-                //         });
-                //     });
+                            new Timer().start(15, false, () => {
+                                ForceEntity.getInstance().startIntroduction();
+                            });
+                        });
+                    });
                 // });
             }
         });

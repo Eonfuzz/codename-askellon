@@ -19,3 +19,4 @@ export const ITEM_MINERAL_VALUABLE = FourCC('I00I');
 export const ITEM_HUMAN_CORPSE = FourCC('I00N');
 export const ITEM_CEREMONIAL_DAGGER = FourCC('I00O');
 export const ITEM_BROKEN_NEOKATANA = FourCC('I00Q');
+export const ITEM_CAPTAINS_CIGAR = FourCC('I00R');

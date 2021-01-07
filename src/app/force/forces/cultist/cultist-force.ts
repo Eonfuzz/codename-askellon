@@ -1,6 +1,6 @@
 import { Log } from "../../../../lib/serilog/serilog";
 import { ForceType } from "../force-type";
-import { ABIL_ALTAR_IS_BUILT, ABIL_CREWMEMBER_INFO, ABIL_CULTIST_GIFT_MADNESS, ABIL_CULTIST_INFO, UNIT_IS_FLY } from "resources/ability-ids";
+import { ABIL_ALTAR_IS_BUILT, ABIL_APPLY_MADNESS, ABIL_CREWMEMBER_INFO, ABIL_CULTIST_GIFT_MADNESS, ABIL_CULTIST_INFO, UNIT_IS_FLY } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer, Effect } from "w3ts";
 import { cultistTooltip, resolveTooltip } from "resources/ability-tooltips";
@@ -365,7 +365,7 @@ export class CultistForce extends CrewmemberForce {
 
        this.players.forEach(p => {
            const altar = this.getPlayerAltar(p);
-           const altarBuilt = altar && this.isAltarBuilt(altar);
+        //    const altarBuilt = altar && this.isAltarBuilt(altar);
 
            if (altar && altar.isAlive()) {
                 let tick = this.playerToTick.get(p) + delta;
@@ -464,5 +464,19 @@ export class CultistForce extends CrewmemberForce {
    }
 
    public onTakeDamage(who: MapPlayer, attacker: MapPlayer, damagedUnit: unit, damagingUnit: unit) {
+   }
+
+   removePlayer(player: MapPlayer, killer: Unit = undefined) {
+       // Remove player abilities
+       const pData = PlayerStateFactory.get(player);
+       const crew = pData.getCrewmember();
+
+       if (crew) {
+           crew.unit.removeAbility(ABIL_CULTIST_INFO);
+           crew.unit.removeAbility(ABIL_CULTIST_GIFT_MADNESS);
+       }
+
+       super.removePlayer(player, killer);
+
    }
 }

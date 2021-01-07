@@ -45,7 +45,7 @@ export const INSANTIY_TICK = 1;
  * Can be applied multiple times and from multiple sources
  */
 export class Madness extends DynamicBuff {
-    name = BUFF_ID.MADNESS;
+    id = BUFF_ID.MADNESS;
 
     private unit: Unit;
     protected doesStack = false;
@@ -97,7 +97,6 @@ export class Madness extends DynamicBuff {
 
             // Remove this buff
             if (this.insanity <= 0) {
-                Log.Information("Insnaity done")
                 return false;
             }
 
@@ -329,6 +328,7 @@ export class Madness extends DynamicBuff {
             
             FogEntity.reset(this.unit.owner, 10);
             
+            this.cultistGodSoundByte.destroy();
             ChatEntity.getInstance().removeHook(this.hookId);
         }
     }
@@ -380,10 +380,5 @@ export class Madness extends DynamicBuff {
             Log.Error(e);
             return chat;
         }
-    }
-
-    public destroy() {
-        this.destroy();
-        this.cultistGodSoundByte.destroy();
     }
 }

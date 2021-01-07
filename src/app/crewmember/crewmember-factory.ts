@@ -2,12 +2,12 @@ import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES, ROLE_TYPES, ROLE_SPAWN_LOCATIONS } from "../../resources/crewmember-names";
 import { Game } from "../game";
 import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
-import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR } from "../weapons/weapon-constants";
+import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED } from "../weapons/weapon-constants";
 import { ZONE_TYPE } from "../world/zone-id";
 import { ForceType } from "app/force/forces/force-type";
 import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQUIS_SMITE, ABIL_ITEM_EMOTIONAL_DAMP } from "resources/ability-ids";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
-import { ITEM_GENETIC_SAMPLER, ITEM_SIGNAL_BOOSTER } from "resources/item-ids";
+import { ITEM_CAPTAINS_CIGAR, ITEM_GENETIC_SAMPLER, ITEM_SIGNAL_BOOSTER } from "resources/item-ids";
 import { AlienForce } from "app/force/forces/alien-force";
 import { ForceEntity } from "app/force/force-entity";
 import { EventEntity } from "app/events/event-entity";
@@ -208,9 +208,13 @@ export class CrewFactory {
                     crewmember.unit.getIntelligence(false) + 2, 
                     true
                 );
+                const item = CreateItem(ITEM_CAPTAINS_CIGAR, 0, 0);
+                UnitAddItem(crewmember.unit.handle, item);
             }
             // Sec guard starts with weapon damage 1 and have shotguns
             else if (crewmember.role === ROLE_TYPES.SEC_GUARD) {
+                roleGaveWeapons = true;
+
                 player.setTechResearched(TECH_WEP_DAMAGE, 1);
                 const item = CreateItem(SHOTGUN_ITEM_ID, 0, 0);
                 UnitAddItem(crewmember.unit.handle, item);
@@ -223,9 +227,10 @@ export class CrewFactory {
             else if (crewmember.role === ROLE_TYPES.DOCTOR) {
                 SetHeroStr(nUnit.handle, GetHeroStr(nUnit.handle, false)+2, true);
                 SetHeroInt(nUnit.handle, GetHeroInt(nUnit.handle, false)+4, true);
-                const item = CreateItem(ITEM_GENETIC_SAMPLER, 0, 0);
+                let item = CreateItem(ITEM_GENETIC_SAMPLER, 0, 0);
                 UnitAddItem(crewmember.unit.handle, item);
-
+                item = CreateItem(ITEM_ID_NANOMED, 0, 0);
+                UnitAddItem(crewmember.unit.handle, item);
             }
             // Doctor begins with extra vigour and items
             else if (crewmember.role === ROLE_TYPES.ENGINEER) {

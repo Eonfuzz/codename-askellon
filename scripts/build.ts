@@ -128,32 +128,4 @@ function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
   fs.writeFileSync(w3iDir, toBuffer(w3iBuffer));
 }
 
-// export function alterW3i(fileDir: string, versionNumber: string) {
-//   try {
-//     logger.info(`Applying version ${versionNumber}`);
-//     w3i.name = `${w3i.name} v${versionNumber}`;
-//     logger.info(`New name: ${w3i.name}`);
-//     logger.info(`New desc: ${w3i.description}`);
-
-//     w3iBuffer = w3i.save();
-//     fs.writeFileSync(fileDir, toBuffer(w3iBuffer));
-//   }
-//   catch (e) {
-//     console.error("ERROR applying ver number: "+e);
-//   }
-// }
-
-
-// export function alterWts(fileDir: string, versionNumber: string) {
-//   try {
-//     const mapName = wts.load("TRIGSTR_012");
-//     // w3i.name = `${w3i.name} v${versionNumber}`;
-//     wts.stringMap.forEach((val, key) => {
-//       logger.info(`${key}: ${val}`);
-//     })
-//   }
-//   catch (e) {
-//     console.error("ERROR applying wts name: "+e);
-//   }
-// }
 main();

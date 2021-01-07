@@ -7,6 +7,7 @@ import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ResearchFactory } from "app/research/research-factory";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { Log } from "lib/serilog/serilog";
 
 const EMOTIONAL_DAMPENER_BASE_DURATION = 15;
 

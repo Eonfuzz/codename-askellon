@@ -547,12 +547,14 @@ export class ChatEntity extends Entity {
     public removeHook(hookHandle: number) {
         const hook = this.hooksForIds.get(hookHandle);
 
-        const idx = this.chatHooks.indexOf(hook);
-        if (idx >= 0) {
-            this.chatHooks.splice(idx, 1);
-            this.hooksForIds.delete(hookHandle);
+        try {
+            const idx = this.chatHooks.indexOf(hook);
+            if (idx >= 0) {
+                this.chatHooks.splice(idx, 1);
+                this.hooksForIds.delete(hookHandle);
+            }
         }
-        else {
+        catch(e) {
             Log.Error("Failed to delete hook for handle "+hookHandle);
         }
     }

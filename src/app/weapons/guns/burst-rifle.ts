@@ -69,7 +69,7 @@ export class BurstRifle extends GunItem {
             new ProjectileTargetStatic(deltaTarget)
         );
         projectile
-            .setCollisionRadius(15)
+            .setCollisionRadius(20)
             .setVelocity(2400)
             .onCollide((projectile: Projectile, collidesWith: unit) => 
                 this.onProjectileCollide(projectile, collidesWith)
