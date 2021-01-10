@@ -38,6 +38,8 @@ export class DiodeEjectAbility implements Ability {
     private weaponIntensityOnCast: number = 0;
     private leapExpired: boolean = false;
 
+    private unitsHit = new Map<unit, number>();
+
     constructor() {
         this.timeElapsed = 0;
     }
@@ -48,6 +50,8 @@ export class DiodeEjectAbility implements Ability {
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
         this.targetLoc.z = getZFromXY(this.targetLoc.x, this.targetLoc.y);
         
+        // Clear units hit
+        this.unitsHit.clear();
 
         this.crew = CrewFactory.getInstance().getCrewmemberForUnit(this.casterUnit) as Crewmember;
         this.weapon = this.crew.weapon as LaserRifle;
@@ -95,7 +99,7 @@ export class DiodeEjectAbility implements Ability {
 
         // Damage numbers
         const weaponBaseDamage = this.weapon.getDamage(this.crew.unit);
-        const diodeDamage = (50 + weaponBaseDamage * 4) / NUM_PROJECTILES;
+        const diodeDamage = (60 + weaponBaseDamage * 5) / NUM_PROJECTILES;
 
 
         const deltaLocs = getPointsInRangeWithSpread(
@@ -125,9 +129,14 @@ export class DiodeEjectAbility implements Ability {
             .onCollide((projectile, who) => {
                 projectile.setDestroy(true);
                 if (this.casterUnit) {
+                    const timesUnitHit = this.unitsHit.get(who) || 0;
+                    this.unitsHit.set(who, timesUnitHit + 1);
+
+                    let damage = diodeDamage / Pow(1.25, timesUnitHit);
+
                     UnitDamageTarget(this.casterUnit.handle, 
                         who, 
-                        diodeDamage, 
+                        damage, 
                         true, 
                         true, 
                         ATTACK_TYPE_MAGIC, 

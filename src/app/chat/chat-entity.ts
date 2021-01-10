@@ -410,7 +410,7 @@ export class ChatEntity extends Entity {
                 crew.updateTooltips();
             }
             else if (message === "-d" || message === "-dance") {
-                crew.unit.setAnimation(9);
+                crew.unit.setAnimation(10);
             }
             else if (message === "-clear" || message === "-c") {
                 if (player.handle === GetLocalPlayer()) ClearTextMessages();

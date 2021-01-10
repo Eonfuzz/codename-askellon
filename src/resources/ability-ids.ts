@@ -53,6 +53,7 @@ export const ABIL_WEP_MINIGUN = FourCC('A01A');
 export const ABIL_WEP_MINIGUN_OVERSIZED = FourCC('A01B');
 export const ABIL_WEP_MINIGUN_FULLER_AUTO = FourCC('A02D');
 export const ABIL_WEP_NEOKATANA = FourCC('A022');
+export const ABIL_WEP_FLAMETHROWER = FourCC('A02S');
 
 export const ABIL_ITEM_REPAIR = FourCC('A00J');
 export const ABIL_ITEM_TRIFEX = FourCC('A00P');

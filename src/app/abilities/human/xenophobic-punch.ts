@@ -60,7 +60,7 @@ export class XenophobicPunchAbility implements Ability {
     public process(delta: number) {
         if (this.timeElapsed == 0) {
             this.unit.pauseEx(true);
-            this.unit.setAnimation(8);
+            this.unit.setAnimation(9);
             this.unit.setTimeScale(1.3);
         }
         this.timeElapsed += delta;
@@ -98,7 +98,7 @@ export class XenophobicPunchAbility implements Ability {
             this.leapInstance.onFinish(() => {
                 this.unit.setTimeScale(1);
                 this.unit.pauseEx(false);
-                this.unit.setAnimation(7);
+                this.unit.setAnimation(8);
                 this.finishedLeaping = true;
                 DestroyEffect(this.punchSfx);
             });

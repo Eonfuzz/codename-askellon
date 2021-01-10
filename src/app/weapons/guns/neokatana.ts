@@ -41,8 +41,8 @@ export class WepNeokatana extends GunItem {
     public applyWeaponAttackValues(unit: Unit) {
         unit.setAttackCooldown(1, 1);
         this.equippedTo.unit.setBaseDamage(this.getDamage(unit) - 1, 0);
-        unit.acquireRange = this.bulletDistance * 0.8;
-        BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
+        unit.acquireRange = 128;
+        BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 128);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
     }
     
@@ -50,7 +50,7 @@ export class WepNeokatana extends GunItem {
         super.onShoot(unit, targetLocation);
 
         unit.setTimeScale(1.3);
-        Timers.addTimedAction(0, () => unit.setAnimation(10));
+        Timers.addTimedAction(0, () => unit.setAnimation(11));
 
         this.castOrderId = unit.currentOrder;
         this.slashSound.playSoundOnUnit(unit.handle, 20);
@@ -159,7 +159,7 @@ export class WepNeokatana extends GunItem {
                 // damage unit by 35
                 UnitDamageTarget(u.handle, 
                     unit, 
-                    35 * this.getDamageBonusMult(), 
+                    this.getDamage(u), 
                     true, 
                     true, 
                     ATTACK_TYPE_MAGIC, 
@@ -193,7 +193,7 @@ export class WepNeokatana extends GunItem {
 
 
     public getDamage(unit: Unit): number {
-        return MathRound( 13 * this.getDamageBonusMult());
+        return MathRound( 56 * this.getDamageBonusMult());
     }
 
     public getAbilityId() { return ABIL_WEP_NEOKATANA; }

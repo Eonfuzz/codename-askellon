@@ -21,8 +21,8 @@ import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { EventListener } from "app/events/event-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { ITEM_ATTACH_METEOR_CANISTER, ITEM_WEP_MINIGUN, ITEM_WEP_NEOKATANA } from "resources/item-ids";
-import { ABIL_WEP_MINIGUN, ABIL_WEP_NEOKATANA } from "resources/ability-ids";
+import { ITEM_ATTACH_METEOR_CANISTER, ITEM_WEP_FLAMETHROWER, ITEM_WEP_MINIGUN, ITEM_WEP_NEOKATANA } from "resources/item-ids";
+import { ABIL_WEP_FLAMETHROWER, ABIL_WEP_MINIGUN, ABIL_WEP_NEOKATANA } from "resources/ability-ids";
 import { Minigun } from "./guns/minigun";
 import { Hooks } from "lib/Hooks";
 import { WeaponEntityAttackType } from "./weapon-attack-type";
@@ -31,6 +31,7 @@ import { GunItem } from "./guns/gun-item";
 import { WepNeokatana } from "./guns/neokatana";
 import { MeteorCanisterAttachment } from "./attachment/meteor-canister";
 import { UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
+import { Flamethrower } from "./guns/flamethrower";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -81,6 +82,10 @@ export class WeaponEntity extends Entity {
         // Init katana
         this.weaponItemIds.push(ITEM_WEP_NEOKATANA);
         this.weaponAbilityIds.push(ABIL_WEP_NEOKATANA);
+
+        // Init Flamer
+        this.weaponItemIds.push(ITEM_WEP_FLAMETHROWER);
+        this.weaponAbilityIds.push(ABIL_WEP_FLAMETHROWER);
 
         /**
          * Now initialise all weapon systems
@@ -439,6 +444,7 @@ export class WeaponEntity extends Entity {
         if (itemId === SHOTGUN_ITEM_ID) return true;
         if (itemId === ITEM_WEP_MINIGUN) return true;
         if (itemId === ITEM_WEP_NEOKATANA) return true;
+        if (itemId === ITEM_WEP_FLAMETHROWER) return true;
         return false;
     }
 
@@ -461,6 +467,8 @@ export class WeaponEntity extends Entity {
             return new Shotgun(item, unit);
         else if (itemId === ITEM_WEP_MINIGUN) 
             return new Minigun(item, unit);
+        else if (itemId === ITEM_WEP_FLAMETHROWER) 
+            return new Flamethrower(item, unit);
         else if (itemId === ITEM_WEP_NEOKATANA) 
             return new WepNeokatana(item, unit);
         return undefined;

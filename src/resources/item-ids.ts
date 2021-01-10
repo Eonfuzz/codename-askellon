@@ -6,6 +6,7 @@ export const ITEM_GENETIC_SAMPLE_PURE = FourCC('I00M');
 
 export const ITEM_WEP_MINIGUN = FourCC('I00F');
 export const ITEM_WEP_NEOKATANA = FourCC('I00L');
+export const ITEM_WEP_FLAMETHROWER = FourCC('I00K');
 export const ITEM_BARRICADES = FourCC('I002');
 export const ITEM_HELLFIRE_GRENADE = FourCC('I003');
 export const ITEM_SIGNAL_BOOSTER = FourCC('I00G');

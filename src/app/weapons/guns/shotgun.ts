@@ -19,6 +19,8 @@ import { Timers } from "app/timer-type";
 
 export class Shotgun extends GunItem {
 
+    gunPath = "Weapons\\MarineHarkons.mdx";
+    
     private unitsHit = new Map<unit, number>();
 
     constructor(item: item, equippedTo: ArmableUnitWithItem) {

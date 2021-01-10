@@ -5195,34 +5195,8 @@ STRING 1304
 - Invisible
 }
 
-STRING 1305
-// Items: I00K (Holynator), Name (Name)
-{
-Holynator
-}
-
-STRING 1306
-// Items: I00K (Holynator), Ubertip (Tooltip - Extended)
-{
-|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
-Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
-
-A close ranged shotgun that deals good damage
-|cff00ff00- Fires a spread of shots
-- Unaffected by Accuracy
-- Hitting a unit with all 6 shots crits
-- Can be heavily customised|r
-|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
-}
-
-STRING 1307
-// Items: I00K (Holynator), Tip (Tooltip - Basic)
-{
-Purchase Holynator
-}
-
 STRING 1308
-// Items: I00K (Holynator), Description (Description)
+// Items: I00K (ET54 Magmeiros), Description (Description)
 {
 Weapon: Fires a powerful but short range blast
 }
@@ -6066,7 +6040,7 @@ A
 }
 
 STRING 1477
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A02S (Attack - Flamer), Hotkey (Hotkey - Normal)
 {
 A
 }
@@ -7641,7 +7615,7 @@ Space Pipes Centered
 }
 
 STRING 1783
-// Items: I00R (Leroyale Cigar), Description (Description)
+// Items: I00R (L'royale Cigar), Description (Description)
 {
 An Exotic Cigar
 }
@@ -7664,21 +7638,71 @@ STRING 1786
 ( +25 )
 }
 
-STRING 1790
-// Items: I00R (Leroyale Cigar), Name (Name)
+STRING 1794
+// Items: I00R (L'royale Cigar), Name (Name)
 {
-Leroyale Cigar
+L'royale Cigar
 }
 
-STRING 1791
-// Items: I00R (Leroyale Cigar), Tip (Tooltip - Basic)
+STRING 1795
+// Items: I00R (L'royale Cigar), Tip (Tooltip - Basic)
 {
-Leroyale Cigar
+L'royale Cigar
 }
 
-STRING 1792
-// Items: I00R (Leroyale Cigar), Ubertip (Tooltip - Extended)
+STRING 1796
+// Items: I00R (L'royale Cigar), Ubertip (Tooltip - Extended)
 {
-|cff808080Leroyale, a familiar and yet exotic brand imported direct from Terra.|r|n|nPassively grants |cff00ff0025 Hit Points|r and |cff00ff004 Will|r.
+|cff808080L'royale, a familiar and yet exotic brand imported direct from Terra.|r|n|nPassively grants |cff00ff0025 Hit Points|r and |cff00ff004 Will|r.
+}
+
+STRING 1797
+// Abilities: A02S (Attack - Flamer), Name (Name)
+{
+Attack - Flamer
+}
+
+STRING 1798
+// Abilities: A02S (Attack - Flamer), Ubertip (Tooltip - Normal - Extended)
+{
+is flamethrower yah
+}
+
+STRING 1799
+// Abilities: A02S (Attack - Flamer), Tip (Tooltip - Normal)
+{
+Flamethrower
+}
+
+STRING 1800
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1801
+// Items: I00K (ET54 Magmeiros), Name (Name)
+{
+ET54 Magmeiros
+}
+
+STRING 1802
+// Items: I00K (ET54 Magmeiros), Ubertip (Tooltip - Extended)
+{
+|cff808080A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
+Built for the flame-squaddie on the go, the Magmeiros is made from a titanium-uranium dual-weave, making it easy to carry without skimping on firepower! This year's release includes Monotine Fuel, specially designed to burn all the hotter when exposed to non-human tissues! With an unbeatable price and top reviews from the HexCorp Corporate Decontamination Squad, you can see why the Magmeiros is the most popular anti-alien weapon in the Pherexis Reach! Buy yours today!|r
+
+A portable flamethrower
+|cff00ff00- Fires a high damaging stream of combusting liquid
+- Can move while shooting|n- Deals bonus damage to Aliens and Cultists|n- Deals bonus damage to Genetically Modified Humans
+- Applies |cffd45e19On Fire!|r
+|cffc81e1e- Heavily affected by Accuracy|n- Weak versus unmodified Humans|r
+|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
+}
+
+STRING 1803
+// Items: I00K (ET54 Magmeiros), Tip (Tooltip - Basic)
+{
+Purchase ET54 Magmeiros
 }
 

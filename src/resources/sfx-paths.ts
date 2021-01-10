@@ -67,6 +67,11 @@ export const SFX_HUMAN_BLOOD = "Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\
 export const SFX_ALIEN_BLOOD = "Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl";
 export const SFX_VOID_DISK = 'war3mapImported\\Void Disc.mdx';
 export const SFX_SMITE = "Models\\sfx\\Smite.mdx";
+
+export const SFX_FIRE_SPEAR = "Models\\sfx\\Fire Spear.mdx";
+export const SFX_FIRE_BOLT = "Models\\sfx\\Firebolt Minor.mdx";
+export const SFX_FIRE_BALL = "Models\\sfx\\Fireball Minor.mdx";
+
 // Preload SFX
 Preload(SFX_WINDWAVE);
 Preload(SFX_LASER_1);
@@ -120,3 +125,6 @@ Preload(SFX_VOID_DISK);
 Preload(SFX_SMITE);
 Preload(SFX_METEOR_CANISTER);
 Preload(SFX_DARK_HARVEST);
+Preload(SFX_FIRE_SPEAR);
+Preload(SFX_FIRE_BOLT);
+Preload(SFX_FIRE_BALL);

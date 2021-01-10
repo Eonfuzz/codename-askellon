@@ -91,19 +91,23 @@ export class CrewmemberForce extends ForceType {
             super.removePlayer(player, killer);
 
             if (killer) {
-                const pKiller = PlayerStateFactory.get(killer.owner);
-                const pForce = pKiller.getForce();
-
-                const pZone = WorldEntity.getInstance().getPointZone(crew.unit.x, crew.unit.y);
                 
                 
-                const killedByAlien = 
+                let killedByAlien = false;
+                if (PlayerStateFactory.isAlienAI(killer.owner)) {
+                    killedByAlien = true;
+                }
+                else {
+                    const pKiller = PlayerStateFactory.get(killer.owner);
+                    const pForce = pKiller.getForce();
+    
+                    const pZone = WorldEntity.getInstance().getPointZone(crew.unit.x, crew.unit.y);
                     // Gene infested T1
-                    (pZone && pZone.id !== ZONE_TYPE.SPACE && player.getTechCount(UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH, true) > 0) ||
-                    // Killed by station AI
-                    PlayerStateFactory.isAlienAI(killer.owner) ||
-                    // Or killed by an Alien form Alien player
-                    (pForce && pForce.is(ALIEN_FORCE_NAME) && killer === (pForce as AlienForce).getAlienFormForPlayer( killer.owner ));
+                    killedByAlien =  (pZone && pZone.id !== ZONE_TYPE.SPACE && player.getTechCount(UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH, true) > 0) ||
+                        // Or killed by an Alien form Alien player
+                        (pForce && pForce.is(ALIEN_FORCE_NAME) && killer === (pForce as AlienForce).getAlienFormForPlayer( killer.owner ));
+                }
+
     
                 // If alien killed us migrate to alien force
                 if (killedByAlien) {

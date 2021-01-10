@@ -21,7 +21,7 @@
     "fs-extra": "^8.1.0",
     "lua-types": "^2.8.0",
     "luamin": "^1.0.4",
-    "mdx-m3-viewer": "^5.0.12",
+    "mdx-m3-viewer": "^5.2.1",
     "npm-watch": "^0.6.0",
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",

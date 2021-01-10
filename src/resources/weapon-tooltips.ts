@@ -1,5 +1,5 @@
 import { Gun } from "../app/weapons/guns/gun";
-import { COL_ATTATCH, COL_GOOD, COL_INFO, COL_GOLD, COL_MISC, COL_BAD, COL_ORANGE } from "./colours";
+import { COL_ATTATCH, COL_GOOD, COL_INFO, COL_GOLD, COL_MISC, COL_BAD, COL_ORANGE, COL_TEAL } from "./colours";
 import { GunItem } from "app/weapons/guns/gun-item";
 
 export const BURST_RIFLE_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
@@ -127,3 +127,31 @@ Continuous shooting while at max attack speed activates ${COL_ORANGE}Flamesaw|r,
 ${COL_ATTATCH}This weapon does not care for friend or foe, and will hit anything within its shower of molten lead|r
 
 ${COL_MISC}8 Seconds Cooldown|r`;
+
+export const FLAME_THROWER_ITEM = (weapon: GunItem, damage: any) => 
+`|cff808080A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
+Built for the flame-squaddie on the go, the Magmeiros is made from a titanium-uranium dual-weave, making it easy to carry without skimping on firepower! This year's release includes Monotine Fuel, specially designed to burn all the hotter when exposed to non-human tissues! With an unbeatable price and top reviews from the HexCorp Corporate Decontamination Squad, you can see why the Magmeiros is the most popular anti-alien weapon in the Pherexis Reach! Buy yours today!|r
+
+A portable flamethrower
+${COL_GOOD}- Fires a high damaging stream of combusting liquid
+- Can move while shooting
+- Deals bonus damage to Aliens and Cultists
+- Deals bonus damage to Genetically Modified Humans
+- Applies ${COL_ORANGE}On Fire!
+${COL_ATTATCH}- Heavily affected by Accuracy
+- Weak versus unmodified Humans|r
+
+${!weapon.attachment
+     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r${COL_INFO} attachments.|r` 
+     : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
+}`;
+
+export const FLAME_THROWER_EXTENDED = (damage: any) => 
+`|cff808080A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
+Built for the flame-squaddie on the go, the Magmeiros is made from a titanium-uranium dual-weave, making it easy to carry without skimping on firepower! This year's release includes Monotine Fuel, specially designed to burn all the hotter when exposed to non-human tissues! With an unbeatable price and top reviews from the HexCorp Corporate Decontamination Squad, you can see why the Magmeiros is the most popular anti-alien weapon in the Pherexis Reach! Buy yours today!|r
+
+Propels a stream of fire, dealing ${COL_GOOD}${MathRound(damage)}|r damage per second.
+
+${COL_ORANGE}Deals 25% bonus damage versus Alien, Cultist or Genetically Modified Humans|r
+
+${COL_MISC}10 Seconds Cooldown|r`;
