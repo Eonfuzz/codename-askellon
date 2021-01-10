@@ -14,7 +14,7 @@ import { CREW_FORCE_NAME, ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "./force-
 import { AlienForce } from "./alien-force";
 import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD, SFX_HUMAN_BLOOD } from "resources/sfx-paths";
-import { getZFromXY, CreateBlood } from "lib/utils";
+import { getZFromXY, CreateBlood, MessageAllPlayers, MessagePlayer } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ROLE_TYPES } from "resources/crewmember-names";
@@ -26,17 +26,29 @@ import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ITEM_HUMAN_CORPSE } from "resources/item-ids";
 import { Vector2 } from "app/types/vector2";
-import { COL_MISC } from "resources/colours";
+import { COL_ATTATCH, COL_GOOD, COL_MISC } from "resources/colours";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 
 
 export class CrewmemberForce extends ForceType {
     name = CREW_FORCE_NAME;
+
+    private hasSaidLastPlayerMessage = false;
     
     /**
      * Checks the victory conditions of this force
      * Returns true if victory conditions are met
      */
     checkVictoryConditions(): boolean {
+        if (this.players.length === 1 && this.name === CREW_FORCE_NAME && !this.hasSaidLastPlayerMessage) {
+            this.hasSaidLastPlayerMessage = true;
+            const player = this.players[0];
+            const crew = this.playerUnits.get(player);
+
+            MessageAllPlayers(`${playerColors[player.id]}${crew.name}|r ${COL_ATTATCH}is the last human alive!|r`);
+            MessagePlayer(player, `${COL_GOOD}You feel determined|r`);
+            crew.addResolve(new BuffInstanceDuration(crew.unit, 240), false);
+        }
         return this.players.length > 0;
     }
 
