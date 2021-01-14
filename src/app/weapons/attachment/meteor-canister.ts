@@ -1,7 +1,7 @@
 import { Gun } from "../guns/gun";
 import { Attachment } from "./attachment";
 import { Log } from "../../../lib/serilog/serilog";
-import { ABIL_ITEM_ATTACH_METEOR_CANISTER, ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
+import { ABIL_ITEM_ATTACH_METEOR_CANISTER, ABIL_WEP_DIODE_EJ, ABIL_WEP_FLAMETHROWER } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { meteorCanisterTooltip } from "resources/ability-tooltips";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
@@ -20,7 +20,8 @@ export class MeteorCanisterAttachment extends Attachment {
      */
     protected onAttach(weapon: GunItem, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === BURST_RIFLE_ABILITY_ID || 
-            weapon.getAbilityId() === SHOTGUN_ABILITY_ID
+            weapon.getAbilityId() === SHOTGUN_ABILITY_ID|| 
+            weapon.getAbilityId() === ABIL_WEP_FLAMETHROWER
         ) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(ABIL_ITEM_ATTACH_METEOR_CANISTER);

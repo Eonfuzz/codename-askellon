@@ -4,6 +4,7 @@ import { Log } from "../../../lib/serilog/serilog";
 import { BURST_RIFLE_ABILITY_ID, EMS_RIFLING_ABILITY_ID, SNIPER_ABILITY_ID, SHOTGUN_ABILITY_ID } from "../weapon-constants";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { GunItem } from "../guns/gun-item";
+import { ABIL_WEP_FLAMETHROWER } from "resources/ability-ids";
 
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
@@ -17,7 +18,8 @@ export class RailRifle extends Attachment {
      */
     protected onAttach(weapon: GunItem, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === BURST_RIFLE_ABILITY_ID || 
-            weapon.getAbilityId() === SHOTGUN_ABILITY_ID
+            weapon.getAbilityId() === SHOTGUN_ABILITY_ID|| 
+            weapon.getAbilityId() === ABIL_WEP_FLAMETHROWER
         ) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(SNIPER_ABILITY_ID);

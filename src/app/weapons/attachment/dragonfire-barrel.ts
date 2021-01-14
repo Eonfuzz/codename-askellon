@@ -7,6 +7,7 @@ import { dragonBreathBlastTooltip } from "resources/ability-tooltips";
 import { TooltipEntity } from "app/tooltip/tooltip-module";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { GunItem } from "../guns/gun-item";
+import { ABIL_WEP_FLAMETHROWER } from "resources/ability-ids";
 /**
  * It attaches to a gun, generally supplies an ability to the weapon
  */
@@ -19,7 +20,8 @@ export class DragonfireBarrelAttachment extends Attachment {
      */
     protected onAttach(weapon: GunItem, crewmember: Crewmember): boolean {
         if (weapon.getAbilityId() === BURST_RIFLE_ABILITY_ID || 
-            weapon.getAbilityId() === SHOTGUN_ABILITY_ID
+            weapon.getAbilityId() === SHOTGUN_ABILITY_ID || 
+            weapon.getAbilityId() === ABIL_WEP_FLAMETHROWER
         ) {
             if (weapon.equippedTo) {
                 weapon.equippedTo.unit.addAbility(AT_ABILITY_DRAGONFIRE_BLAST);
