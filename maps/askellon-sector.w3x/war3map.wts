@@ -4447,7 +4447,7 @@ Maskelynite
 }
 
 STRING 1160
-// Items: I00H (Maskelynite), Description (Description)
+// Items: I00J (Mineral Storage - Pyroxene), Description (Description)
 {
 You should not be seeing this
 }
@@ -4456,12 +4456,6 @@ STRING 1162
 // Items: I00I (Pyroxene), Name (Name)
 {
 Pyroxene
-}
-
-STRING 1163
-// Items: I00I (Pyroxene), Description (Description)
-{
-You should not be seeing this
 }
 
 STRING 1165
@@ -4528,12 +4522,6 @@ STRING 1180
 // Items: I00J (Mineral Storage - Pyroxene), Name (Name)
 {
 Mineral Storage - Pyroxene
-}
-
-STRING 1181
-// Items: I00J (Mineral Storage - Pyroxene), Description (Description)
-{
-You should not be seeing this
 }
 
 STRING 1182
@@ -7602,12 +7590,6 @@ STRING 1777
 |cff808080Routine physical exercises are a requirement for any longer duration space travel.|r|n|nIncreases movement speed by |cffd45e1250%|r for |cffd45e127 seconds|r and |cffd45e19leaps forwards based on the distance moved.|r|n|n|cfff9a602Cooldown:|r 18 Seconds
 }
 
-STRING 1778
-// Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080LORE TODO|r|n|nBlesses all neaby players with |cffb52166Madness|r.|n|cff18bc9c- The effect is invisible to all bless players|n- Aliens can never be blessed|n|r|n|cffb52166Madness:|r|cff18bc9c Increases in severity over time, eventually creating hallucinations and driving them |r|cffb52166Insane|r|cff18bc9c.|r|n|n|cfff9a602Cooldown:|r 70 Seconds
-}
-
 STRING 1779
 // Doodads: D01R (Space Pipes Centered), Name (Name)
 {
@@ -7704,5 +7686,28 @@ STRING 1803
 // Items: I00K (ET54 Magmeiros), Tip (Tooltip - Basic)
 {
 Purchase ET54 Magmeiros
+}
+
+STRING 1804
+// Items: I00H (Maskelynite), Description (Description)
+{
+A reliable mineral that can repair the Askellon
+}
+
+STRING 1805
+// Items: I00I (Pyroxene), Description (Description)
+{
+A rare mineral worth money
+}
+
+STRING 1806
+// Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nBlesses all neaby players with |cffb52166Madness|r.|n|cff18bc9c- Visible to those outside the area of effect|n- Aliens can never be blessed|n|r|n|cffb52166Madness:|r|cff18bc9c Increases in severity over time, eventually creating hallucinations and driving them |r|cffb52166Insane|r|cff18bc9c.|r|n|n|cfff9a602Cooldown:|r 70 Seconds
+}
+
+STRING 1807
+{
+There's no coming back from death.
 }
 

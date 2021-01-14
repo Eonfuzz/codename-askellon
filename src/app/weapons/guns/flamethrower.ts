@@ -239,7 +239,7 @@ export class Flamethrower extends GunItem {
                 
             DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
                 Unit.fromHandle(collidesWith), 
-                new BuffInstanceDuration(this.equippedTo.unit, 4)
+                new BuffInstanceDuration(this.equippedTo.unit, 10)
             );
         }
     }

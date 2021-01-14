@@ -170,7 +170,7 @@ export class PlayerAgent {
                 else {
                     const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
 
-                    const attackOrder = new UnitActionWaypoint(Vector2.fromWidget(target.handle), WaypointOrders.attack, 100);
+                    const attackOrder = new UnitActionWaypoint(Vector2.fromWidget(target.handle), WaypointOrders.attack, 450);
                     const newOrders = new UnitActionExecuteCode((target, timeStep, queue) => this.enactStateOnAgent(agent, this.generateState(agent)));
 
                     if (agentLocation.id === targetLocation.id) {
@@ -222,7 +222,7 @@ export class PlayerAgent {
             while (i++ < numWanders) {
                 const point = agentLocation.getRandomPointInZone();
                 if (point) {
-                    actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 450));
+                    actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 800));
                 }          
             }
             actions.push(new UnitActionExecuteCode((target, timeStep, queue) => {
@@ -241,7 +241,7 @@ export class PlayerAgent {
             while (i++ < numWanders) {
                 const point = agentLocation.getRandomPointInZone();
                 if (point) {
-                    actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 450));
+                    actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 560));
                 }          
             }
             actions.push(new UnitActionExecuteCode((target, timeStep, queue) => {                    
@@ -265,7 +265,7 @@ export class PlayerAgent {
             while (i++ < numWanders) {
                 const point = agentLocation.getRandomPointInZone();
                 if (point) {
-                    if (i !== numWanders) actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 450));
+                    if (i !== numWanders) actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 800));
                     if (i === numWanders) {
                         actions.push(new UnitActionImmediate(point, ImmediateOrders.evolve));
                     }

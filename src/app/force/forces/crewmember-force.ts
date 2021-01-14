@@ -45,7 +45,7 @@ export class CrewmemberForce extends ForceType {
             const player = this.players[0];
             const crew = this.playerUnits.get(player);
 
-            MessageAllPlayers(`${playerColors[player.id]}${crew.name}|r ${COL_ATTATCH}is the last human alive!|r`);
+            MessageAllPlayers(`${playerColors[player.id].code}${crew.name}|r ${COL_ATTATCH}is the last human alive!|r`);
             MessagePlayer(player, `${COL_GOOD}You feel determined|r`);
             crew.addResolve(new BuffInstanceDuration(crew.unit, 240), false);
         }
@@ -67,101 +67,124 @@ export class CrewmemberForce extends ForceType {
         const forceHasPlayer = this.players.indexOf(player) >= 0;
 
         if (forceHasPlayer) {
-            const playerData = PlayerStateFactory.get(player);
-            const crew = playerData.getCrewmember();
+            try {
+                const playerData = PlayerStateFactory.get(player);
+                const crew = playerData.getCrewmember();
+                
+                /**
+                 * Handle the removal of RESOLVE passive
+                 */
+                crew.unit.removeAbility(ABIL_CREWMEMBER_INFO);
+                // Remove ability tooltip
+                TooltipEntity.getInstance().unregisterTooltip(crew, resolveTooltip);
+
+
+                if (crew.unit.show) {
+                    // Place a corpse
+                    BlzSetUnitFacingEx(crew.unit.handle, 270);
+                    const cFacing = 270;
+                    const cLoc = Vector2.fromWidget(crew.unit.handle).applyPolarOffset(cFacing, -30);
+                    
+                    for (let index = 0; index < GetRandomInt(3, 5); index++) {
+                        CreateBlood(cLoc.x + GetRandomReal(-40, 40), cLoc.y + GetRandomReal(-40, 40))                
+                    }
+
+                    const i = CreateItem(ITEM_HUMAN_CORPSE, cLoc.x, cLoc.y);
+                    SetItemPlayer(i, player.handle, true);
+                    BlzSetItemExtendedTooltip(i, `${COL_MISC}His cold, lifeless eyes stare beyond the cosmos|r|n|nThis is the body of ${playerColors[player.id].code}${crew.name}|r`);
+                    
+                    SetItemVisible(i, false);
+                    Timers.addTimedAction(1.2, () => {
+                        SetItemVisible(i, true);
+                    });
+                }
+
+
+                // Remove our crew trackers
+                super.removePlayer(player, killer);
+
+                if (killer) {
+                    
+                    
+                    let killedByAlien = false;
+                    try {
+                        if (PlayerStateFactory.isAlienAI(killer.owner)) {
+                            killedByAlien = true;
+                        }
+                        else {
+                            const pKiller = PlayerStateFactory.get(killer.owner);
+                            const pForce = pKiller.getForce();
             
-            /**
-             * Handle the removal of RESOLVE passive
-             */
-            crew.unit.removeAbility(ABIL_CREWMEMBER_INFO);
-            // Remove ability tooltip
-            TooltipEntity.getInstance().unregisterTooltip(crew, resolveTooltip);
+                            const pZone = WorldEntity.getInstance().getPointZone(crew.unit.x, crew.unit.y);
+                            // Gene infested T1
+                            killedByAlien =  (pZone && pZone.id !== ZONE_TYPE.SPACE && player.getTechCount(UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH, true) > 0) ||
+                                // Or killed by an Alien form Alien player
+                                (pForce && pForce.is(ALIEN_FORCE_NAME) && killer === (pForce as AlienForce).getAlienFormForPlayer( killer.owner ));
+                        }
+                    }
+                    catch(e) {
+                        killedByAlien = false;
+                    }
 
+        
+                    // If alien killed us migrate to alien force
+                    if (killedByAlien) {
+                        const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
+                        // Revive and hide the crewmember
+                        crew.unit.revive(crew.unit.x, crew.unit.y, false);
+                        crew.unit.show = false;
+        
+                        PlayerStateFactory.get(player).setForce(alienForce);
+                        alienForce.addPlayer(player);
+                        alienForce.addPlayerMainUnit(crew, player);
+        
+                        const fogMod = CreateFogModifierRadius(player.handle, FOG_OF_WAR_VISIBLE, crew.unit.x, crew.unit.y, 600, true, true);
+                        FogModifierStart(fogMod);
 
-            if (crew.unit.show) {
-                // Place a corpse
-                BlzSetUnitFacingEx(crew.unit.handle, 270);
-                const cFacing = 270;
-                const cLoc = Vector2.fromWidget(crew.unit.handle).applyPolarOffset(cFacing, -30);
-                
-                for (let index = 0; index < GetRandomInt(3, 5); index++) {
-                    CreateBlood(cLoc.x + GetRandomReal(-40, 40), cLoc.y + GetRandomReal(-40, 40))                
+                        // Force transformation
+                        DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, crew.unit.x, crew.unit.y))
+                        Timers.addTimedAction(1, () => {
+                            DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, crew.unit.x, crew.unit.y));
+                        });
+                        Timers.addTimedAction(2.2, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
+                        Timers.addTimedAction(3, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
+                        Timers.addTimedAction(3.6, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
+                        Timers.addTimedAction(4, () => {
+                            DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y));
+                            alienForce.transform(player, true);
+                            FogModifierStop(fogMod);
+                            DestroyFogModifier(fogMod);
+
+                            const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, crew.unit.x, crew.unit.y, bj_UNIT_FACING);
+                            CreepEntity.addCreepWithSource(600, tumor);
+                        });
+                        alienForce.introduction(player, true);
+                    }
+                    // Otherwise make observer
+                    else {
+                        const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
+        
+                        obsForce.addPlayer(player);
+                        obsForce.addPlayerMainUnit(crew, player);
+                        PlayerStateFactory.get(player).setForce(obsForce);
+                    }
                 }
-
-                const i = CreateItem(ITEM_HUMAN_CORPSE, cLoc.x, cLoc.y);
-                SetItemPlayer(i, player.handle, true);
-                BlzSetItemExtendedTooltip(i, `${COL_MISC}His cold, lifeless eyes stare beyond the cosmos|r|n|nThis is the body of ${playerColors[player.id].code}${crew.name}|r`);
-                
-                SetItemVisible(i, false);
-                Timers.addTimedAction(1.2, () => {
-                    SetItemVisible(i, true);
-                });
-            }
-
-
-            // Remove our crew trackers
-            super.removePlayer(player, killer);
-
-            if (killer) {
-                
-                
-                let killedByAlien = false;
-                if (PlayerStateFactory.isAlienAI(killer.owner)) {
-                    killedByAlien = true;
-                }
-                else {
-                    const pKiller = PlayerStateFactory.get(killer.owner);
-                    const pForce = pKiller.getForce();
-    
-                    const pZone = WorldEntity.getInstance().getPointZone(crew.unit.x, crew.unit.y);
-                    // Gene infested T1
-                    killedByAlien =  (pZone && pZone.id !== ZONE_TYPE.SPACE && player.getTechCount(UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH, true) > 0) ||
-                        // Or killed by an Alien form Alien player
-                        (pForce && pForce.is(ALIEN_FORCE_NAME) && killer === (pForce as AlienForce).getAlienFormForPlayer( killer.owner ));
-                }
-
-    
-                // If alien killed us migrate to alien force
-                if (killedByAlien) {
-                    const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
-                    // Revive and hide the crewmember
-                    crew.unit.revive(crew.unit.x, crew.unit.y, false);
-                    crew.unit.show = false;
-    
-                    PlayerStateFactory.get(player).setForce(alienForce);
-                    alienForce.addPlayer(player);
-                    alienForce.addPlayerMainUnit(crew, player);
-    
-                    const fogMod = CreateFogModifierRadius(player.handle, FOG_OF_WAR_VISIBLE, crew.unit.x, crew.unit.y, 600, true, true);
-                    FogModifierStart(fogMod);
-
-                    // Force transformation
-                    DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, crew.unit.x, crew.unit.y))
-                    Timers.addTimedAction(1, () => {
-                        DestroyEffect(AddSpecialEffect(SFX_HUMAN_BLOOD, crew.unit.x, crew.unit.y));
-                    });
-                    Timers.addTimedAction(2.2, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
-                    Timers.addTimedAction(3, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
-                    Timers.addTimedAction(3.6, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
-                    Timers.addTimedAction(4, () => {
-                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y));
-                        alienForce.transform(player, true);
-                        FogModifierStop(fogMod);
-                        DestroyFogModifier(fogMod);
-
-                        const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, crew.unit.x, crew.unit.y, bj_UNIT_FACING);
-                        CreepEntity.addCreepWithSource(600, tumor);
-                    });
-                    alienForce.introduction(player, true);
-                }
-                // Otherwise make observer
                 else {
                     const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
-    
+
                     obsForce.addPlayer(player);
                     obsForce.addPlayerMainUnit(crew, player);
                     PlayerStateFactory.get(player).setForce(obsForce);
                 }
+            }
+            catch(e) {
+                const playerData = PlayerStateFactory.get(player);
+                const crew = playerData.getCrewmember();
+                const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
+
+                obsForce.addPlayer(player);
+                obsForce.addPlayerMainUnit(crew, player);
+                PlayerStateFactory.get(player).setForce(obsForce);
             }
         }
     }    

@@ -1,12 +1,16 @@
 import { ForceType } from "./force-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { MapPlayer } from "w3ts/index";
+import { MapPlayer, Timer } from "w3ts/index";
 import { ChatHook } from "app/chat/chat-hook-type";
 import { OBSERVER_FORCE_NAME, ALIEN_FORCE_NAME } from "./force-names";
 import { PlayerState } from "../player-type";
 import { PlayerStateFactory } from "../player-state-entity";
 import { Log } from "lib/serilog/serilog";
 import { Players } from "w3ts/globals/index";
+import { Timers } from "app/timer-type";
+import { MessagePlayer } from "lib/utils";
+import { COL_ATTATCH } from "resources/colours";
+import { SoundRef } from "app/types/sound-ref";
 
 export class ObserverForce extends ForceType {
     name = OBSERVER_FORCE_NAME;
@@ -25,6 +29,7 @@ export class ObserverForce extends ForceType {
     public addPlayerMainUnit(whichUnit: Crewmember, player: MapPlayer): void {
     };
 
+    private playerDiesSound =new SoundRef('Sound\\Interface\\QuestFailed.flac', false, true);
     addPlayer(who: MapPlayer) {
         // Give vision of everything
         const modifier = CreateFogModifierRect(who.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
@@ -40,6 +45,11 @@ export class ObserverForce extends ForceType {
 
         SetCameraBoundsToRectForPlayerBJ(who.handle, bj_mapInitialCameraBounds);
         super.addPlayer(who);
+
+        Timers.addSlowTimedAction(5, () => {
+            MessagePlayer(who, `${COL_ATTATCH}You're dead!|r There's no coming back from this, so feel free to observe the game or quit.`);
+            if (who.isLocal()) this.playerDiesSound.playSound();
+        });
     }
     
     /**

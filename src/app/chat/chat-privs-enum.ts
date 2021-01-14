@@ -25,5 +25,6 @@ export const VETERAN_USERS = [
     `Aggex#11661`,
     `Вурдалак#21816`,
     `Serendipity#11633`,
-    `Isaac#1877`
+    `Isaac#1877`,
+    `PrismaIllya#11412`
 ];
