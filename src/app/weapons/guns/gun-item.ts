@@ -28,7 +28,7 @@ export abstract class GunItem extends Gun {
             // Update the equip tooltip
             const newTooltip = this.getTooltip(caster);
             if (GetLocalPlayer() === owner.handle) {
-                BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, 0);
+                BlzSetAbilityExtendedTooltip(this.getAbilityId(), newTooltip, caster.getAbilityLevel(this.getAbilityId()) -1);
             }
 
             // Also update our weapon stats
@@ -44,10 +44,22 @@ export abstract class GunItem extends Gun {
             BlzStartUnitAbilityCooldown(
                 this.equippedTo.unit.handle, 
                 this.getAbilityId(), 
-                BlzGetAbilityCooldown(this.getAbilityId(), 0)
+                BlzGetAbilityCooldown(this.getAbilityId(), caster.unit.getAbilityLevel(this.getAbilityId()))
             );
             // Need to update the tooltip
             this.updateTooltip(caster.unit);
+        }
+        else if (weaponMode == WeaponEntityAttackType.SMART) {
+            caster.unit.addAbility(this.getAbilityId());
+            BlzStartUnitAbilityCooldown(
+                this.equippedTo.unit.handle, 
+                this.getAbilityId(), 
+                BlzGetAbilityCooldown(this.getAbilityId(), caster.unit.getAbilityLevel(this.getAbilityId()))
+            );
+            caster.unit.setAbilityLevel(this.getAbilityId(), 2);
+            // Need to update the tooltip
+            this.updateTooltip(caster.unit);
+
         }
         // If we are in attack mode let the user attack
         else {

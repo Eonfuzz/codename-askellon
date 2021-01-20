@@ -1,5 +1,3 @@
-import { Log } from "./serilog/serilog";
-
 //!!!!! KEEP 0 DEPENDENCIES
 export namespace Quick {
 
@@ -9,7 +7,6 @@ export namespace Quick {
         const str = string.gmatch(val, "%S+");
 
         for (const [x, y, z] of str) {
-            // Log.Information(`${x} ${y} ${z}`)
             result.push(x);
         }
         return result;
@@ -92,5 +89,46 @@ export namespace Quick {
         }
 
         return result.slice(0, n);
+    }
+
+    
+    export function Clamp(value: number, min: number, max: number) {
+        if (value > max) {
+            value = max;
+        } else if (value < min) {
+            value = min;
+        }
+        return value;
+    }
+
+
+    export function isBlank(s: string) {
+        return ("\n ".indexOf(s) >= 0);
+    }
+
+    export function UnpackStringNewlines(value: string) {
+        let allLines: string[] = [];
+        let currentLine = "";
+        let previousChar = "";
+        let skipToRealChar = true;
+        for (let i = 0; i < value.length; i++) {
+            let currentChar = value.charAt(i);
+            if (isBlank(currentChar) && previousChar == "\n") {
+                skipToRealChar = true;
+                continue;
+            }
+            if (currentChar == "\n" && !skipToRealChar) {
+                allLines.push(currentLine);
+                currentLine = "";
+            } else {
+                currentLine += currentChar;
+                skipToRealChar = false;
+            }
+
+            previousChar = currentChar;
+        }
+        if (currentLine.length > 0) allLines.push(currentLine);
+
+        return allLines;
     }
 }

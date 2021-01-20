@@ -1,6 +1,6 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
-import { ABIL_CREWMEMBER_INFO } from "resources/ability-ids";
+import { ABIL_CREWMEMBER_INFO, UPGR_REMOVED_VOCAL_CHORDS } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { MapPlayer, Unit, W3TS_HOOK, playerColors } from "w3ts";
 import { resolveTooltip } from "resources/ability-tooltips";
@@ -28,6 +28,7 @@ import { ITEM_HUMAN_CORPSE } from "resources/item-ids";
 import { Vector2 } from "app/types/vector2";
 import { COL_ATTATCH, COL_GOOD, COL_MISC } from "resources/colours";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { ChatHook } from "app/chat/chat-hook-type";
 
 
 export class CrewmemberForce extends ForceType {
@@ -228,5 +229,17 @@ export class CrewmemberForce extends ForceType {
    }
 
    public onTakeDamage(who: MapPlayer, attacker: MapPlayer, damagedUnit: unit, damagingUnit: unit) {
+   }
+
+
+   /**
+    * Gets a list of who can see the chat messages
+    * Unless overridden returns all the players
+    */
+   public getChatRecipients(chatEvent: ChatHook) {
+       if (chatEvent.who.getTechCount(UPGR_REMOVED_VOCAL_CHORDS, true) > 0) {
+           return chatEvent.recipients = [];
+       }
+       return chatEvent.recipients;
    }
 }

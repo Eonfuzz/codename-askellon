@@ -5,6 +5,7 @@ import { UiWidget } from "./widgets/widget";
 import { WIDGET_KEYS } from "./ui-keys";
 import { Trigger, MapPlayer } from "w3ts/index";
 import { Entity } from "app/entity-type";
+import { WeaponModeWidget } from "./widgets/change-weapon-mode";
 
 export class UIEntity extends Entity {
     private static instance: UIEntity;
@@ -28,19 +29,23 @@ export class UIEntity extends Entity {
     public init() {
         try {
 
-            // Remove all our UI
-            BlzHideOriginFrames(true);
-            BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
-            BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
+            // // Remove all our UI
+            // BlzHideOriginFrames(true);
+            // BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
+            // BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
             // Show them all, one by one
 
             // Enable the Portrait
             // BlzFrameSetVisible(this.originPortraitFrame, true);
             // BlzFrameSetSize(this.originPortraitFrame, 1, 0.1);
 
-            const healthbar = new Healthbar();
-            this.widgetByKey.set(WIDGET_KEYS.UI_HEALTHBAR, healthbar);
-            this.widgets.push(healthbar);
+            // const healthbar = new Healthbar();
+            // this.widgetByKey.set(WIDGET_KEYS.UI_HEALTHBAR, healthbar);
+            // this.widgets.push(healthbar);
+
+            const weaponModes = new WeaponModeWidget();
+            this.widgetByKey.set(WIDGET_KEYS.UI_WEAPON_MODE, weaponModes);
+            this.widgets.push(weaponModes);
         }
         catch (e) {
             Log.Error("Error setting up ui");

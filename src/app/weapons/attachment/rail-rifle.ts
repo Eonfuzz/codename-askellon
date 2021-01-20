@@ -1,7 +1,5 @@
-import { Gun } from "../guns/gun";
 import { Attachment } from "./attachment";
-import { Log } from "../../../lib/serilog/serilog";
-import { BURST_RIFLE_ABILITY_ID, EMS_RIFLING_ABILITY_ID, SNIPER_ABILITY_ID, SHOTGUN_ABILITY_ID } from "../weapon-constants";
+import { BURST_RIFLE_ABILITY_ID, SNIPER_ABILITY_ID, SHOTGUN_ABILITY_ID } from "../weapon-constants";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { GunItem } from "../guns/gun-item";
 import { ABIL_WEP_FLAMETHROWER } from "resources/ability-ids";

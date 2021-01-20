@@ -83,8 +83,6 @@ export class Game {
 
         SuspendTimeOfDay(true);
         
-        labrynthIntro.setVolume(80);
-        labrynthIntro.playSound();
         CinematicFilterGenericBJ(5, BLEND_MODE_NONE, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0, 0, 0 ,0 ,0);
         DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 5, `Loading, please wait`);
         BlzHideOriginFrames(true);
@@ -135,6 +133,9 @@ export class Game {
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 1500, mainShip.unit.y + 1500));
 
+        labrynthIntro.setVolume(80);
+        labrynthIntro.playSound();
+        
         Timers.addTimedAction(5, () => {
             // Init chat
             ChatEntity.getInstance().initialise();
@@ -311,7 +312,7 @@ export class Game {
                 Players.forEach(p => p.setState(PLAYER_STATE_RESOURCE_GOLD, 999999));
             }
 
-            // UIEntity.start();
+            UIEntity.start();
         }
         catch (e) {
             Log.Error(e);

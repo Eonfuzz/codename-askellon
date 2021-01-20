@@ -111,6 +111,25 @@ export class ForceEntity extends Entity {
             GetEventDamageSource(),
             BlzGetEventDamageTarget()
         ));
+
+        /**
+         * Now try to load in all the players
+         */
+        players.forEach(p => {
+            const pData = PlayerStateFactory.get(p);
+            if (pData) {
+                pData.load(() => {
+                    const crew = pData.getCrewmember();
+                    if (crew) {
+                        EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, { 
+                            source: undefined, 
+                            crewmember: crew, 
+                            data: { mode: pData.getAttackType() }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     public onForceTakeOrDealDamage(damagingUnit: unit, damagedUnit: unit) {
@@ -380,8 +399,21 @@ export class ForceEntity extends Entity {
                 else {
                     losingSound.playSound();
                 }
+                Players.forEach(p => {
+                    const pData = PlayerStateFactory.get(p);
+                    if (pData && pData.getForce() && !pData.getForce().is(OBSERVER_FORCE_NAME)) {
+                        pData.gamesLeft -= 1;
+                    }
+                    if (winningPlayers.indexOf(p) >= 0) {
+                        pData.playerGamesWon += 1;
+                    }
+                    else {
+                        pData.playerGamesLost += 1;
+                    }
+                    pData.save();
+                });
 
-                Timers.addSlowTimedAction(3, () => {
+                Timers.addSlowTimedAction(5, () => {
                     winningPlayers.forEach(winner => {
                         CustomVictoryBJ(winner.handle, true, true);
                     });

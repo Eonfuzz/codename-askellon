@@ -18,6 +18,7 @@ import { VoidSickness } from "./buffs/void-sickness";
 import { Madness } from "./buffs/madness";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
+import { ComebackDrugBuff } from "./buffs/drug-comeback";
 
 export class DynamicBuffEntity extends Entity {
 
@@ -70,6 +71,7 @@ export class DynamicBuffEntity extends Entity {
         if (id === BUFF_ID.PURITY_SEAL) return new PuritySeal();
         if (id === BUFF_ID.VOID_SICKNESS) return new VoidSickness();
         if (id === BUFF_ID.MADNESS) return new Madness(who);
+        if (id === BUFF_ID.DRUG_COMEBACK) return new ComebackDrugBuff();
         Log.Error("Creating new buff no instance for ID "+id);
     }
 

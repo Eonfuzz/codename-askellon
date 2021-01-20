@@ -67,7 +67,7 @@ ROLE_NAMES.set(ROLE_TYPES.XENOBIOLOGIST, [
 export const ROLE_DESCRIPTIONS = new Map<ROLE_TYPES, string>();
 
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.CAPTAIN, `${COL_GOOD}[+] Gain passive experience while on the Bridge
-[+] Easy Access to the the ${COL_TEAL}Security Terminal|r${COL_GOOD}
+[+] Easy Access to the ${COL_TEAL}Security Terminal|r${COL_GOOD}
 [+] Start the game with bonus attributes|r`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.NAVIGATOR, `As ${COL_GOLD}Navigator|r you must scan deep space and lead your ${COL_GOLD}Captain|r through deep space.|nYou are also in charge of the Cargo Bay's ships.`);
 ROLE_DESCRIPTIONS.set(ROLE_TYPES.DOCTOR, `${COL_GOOD}- Use your ${COL_TEAL}Genetic Sampler|r${COL_GOOD} to get Samples

@@ -30,6 +30,7 @@ import { PlayNewSoundOnUnit } from "lib/translators";
 import { Quick } from "lib/Quick";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { SyncSaveLoad } from "lib/TreeLib/SaveLoad/SyncSaveLoad";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -143,25 +144,23 @@ export class ChatEntity extends Entity {
             //     this.game.galaxyModule.navigateToSector(dX, dY);
             // }
             // else 
-            if (message.indexOf("-wa") === 0) {
-                EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, {
-                    source: crew.unit,
-                    crewmember: crew,
-                    data: { mode: WeaponEntityAttackType.ATTACK } 
-                });
-            }
-            else if (message.indexOf("-wc") === 0) {
-                EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, {
-                    source: crew.unit,
-                    crewmember: crew,
-                    data: { mode: WeaponEntityAttackType.CAST } 
-                });
-            }
-            else if (message.indexOf("-pmax") === 0) {
+            if (message.indexOf("-pmax") === 0) {
                 AskellonEntity.addToPower(AskellonEntity.getMaxPower());
             }
             else if (message.indexOf("-pmin") === 0) {
                 AskellonEntity.addToPower(-AskellonEntity.getCurrentPower());
+            }
+            else if (message.indexOf("-save") === 0) {
+                const p = PlayerStateFactory.get(player).save();
+            }
+            else if (message.indexOf("-load") === 0) {
+                const p = PlayerStateFactory.get(player).load();
+            }
+            else if (message.indexOf("-plog") === 0) {
+                const p = PlayerStateFactory.get(MapPlayer.fromIndex(Number(message.split(" ")[1])));
+                if (p) {
+                    p.log(player);
+                }
             }
             else  if (message.indexOf("-god") === 0) {
                 const idx = this.adminGodUsers.indexOf(player);
@@ -430,6 +429,27 @@ export class ChatEntity extends Entity {
                     }
                 }
                 if (player.handle === GetLocalPlayer()) ClearTextMessages();
+            }
+            if (message.indexOf("-wa") === 0) {
+                EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, {
+                    source: crew.unit,
+                    crewmember: crew,
+                    data: { mode: WeaponEntityAttackType.ATTACK } 
+                });
+            }
+            else if (message.indexOf("-wc") === 0) {
+                EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, {
+                    source: crew.unit,
+                    crewmember: crew,
+                    data: { mode: WeaponEntityAttackType.CAST } 
+                });
+            }
+            else if (message.indexOf("-ws") === 0) {
+                EventEntity.send(EVENT_TYPE.WEAPON_MODE_CHANGE, {
+                    source: crew.unit,
+                    crewmember: crew,
+                    data: { mode: WeaponEntityAttackType.SMART } 
+                });
             }
             else if (message === "-h" || message === "-handles" || message === "-p" || message === "-players") {
                 const pIsAlien = PlayerStateFactory.get(player).getForce().is(ALIEN_FORCE_NAME);

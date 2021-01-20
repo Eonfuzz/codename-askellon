@@ -173,13 +173,13 @@ A
 }
 
 STRING 48
-// Abilities: A004 (Equip Weapon), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A002 (Attack - Gauss Rifle), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
 
 STRING 49
-// Abilities: A004 (Equip Weapon), Tip (Tooltip - Normal)
+// Abilities: A002 (Attack - Gauss Rifle), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - SI Battle Rifle
 }
@@ -1560,7 +1560,7 @@ STRING 395
 }
 
 STRING 396
-// Abilities: A00J (Repair), Tip (Tooltip - Normal)
+// Abilities: A004 (Equip Weapon), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - SI Battle Rifle
 }
@@ -1812,7 +1812,7 @@ STRING 455
 }
 
 STRING 456
-// Abilities: A00L (Emotion Inhibitors), Tip (Tooltip - Normal)
+// Abilities: A00J (Repair), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - SI Battle Rifle
 }
@@ -2472,12 +2472,6 @@ STRING 637
 // Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), class (Class)
 {
 ranged
-}
-
-STRING 642
-// Units: n006 (|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r ), Name (Name)
-{
-|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r Vendor|n|cff808080Right Click to use|r
 }
 
 STRING 643
@@ -3907,7 +3901,7 @@ A
 }
 
 STRING 1042
-// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A004 (Equip Weapon), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
@@ -4296,12 +4290,6 @@ STRING 1123
 S
 }
 
-STRING 1124
-// Abilities: A01K (Xenophobic), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080"Rot in hell, Alien scum."|r|n|nThe patient undergoes invasive surgery, gaining the |cffd45e19Come Get Some!|r power.|nAllowing them to taunt Aliens, applying |cff8a6df2Despair|r to all nearby Aliens and replacing their weapon with |cffd45e19Fists|r; a weak weapon that increases in power over time. Lasts |cff00ff0020 |rSeconds.|n|n|cff8a6df2Aliens cannot transform while under the effects of Despair|r|n|nAttribute Gain: |cff00ff00+3.5 Vitality|r and |cff00ff00-1 Will|r per level
-}
-
 STRING 1125
 // Abilities: A01L (Xenophobic), Name (Name)
 {
@@ -4351,13 +4339,13 @@ STRING 1134
 }
 
 STRING 1138
-// Abilities: A01N (Adaptive Regeneration), Hotkey (Hotkey - Normal)
+// Abilities: AC06 (Target Player 6), Hotkey (Hotkey - Normal)
 {
 S
 }
 
 STRING 1141
-// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Abilities: A02T (Remove Vocal Cords), EditorSuffix (Editor Suffix)
 {
 - GENE
 }
@@ -4372,12 +4360,6 @@ STRING 1147
 // Abilities: A01O (Adaptive Regeneration), EditorSuffix (Editor Suffix)
 {
 - Ability
-}
-
-STRING 1148
-// Abilities: A01N (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080LORE TODO|r|n|nThe patient undergoes invasive surgery, gaining the |cffd45e19Adaptive Regeneration|r power.|nPassively |cff00ff00increases|r all stat gains, and can be activated to instantly |cff00ff00heal 40%|r of your maximum hitpoints.|r|n|nAttribute Gain: |cff00ff00+2 Vitality|r, |cff00ff00+2 Accuracy|r and |cff00ff001.5 Will|r per level
 }
 
 STRING 1149
@@ -4733,18 +4715,6 @@ STRING 1225
  ( INFESTATION )
 }
 
-STRING 1226
-// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personnel. |r|n|nSplices the |cffd45e19Enhanced Mobility|r power into your patient; |cff00ff00passively |rincreasing |cff00ff00movement speed|r by |cff00ff0010%|r and |cff00ff00Sprinting |rnow |cff00ff00jumps |rupon expiration.|n|nAttribute Gain: |cff00ff00+1 Vitality|r per level
-}
-
-STRING 1227
-// Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nSupernaturally sensitive glands placed behind the cortex pick up the smallest of envornental changes.|n- |cffd45e19Receive Warning|r when the Askellon warps|n- |cffd45e19Receive Warning|r when an Alien Transforms|n- Cosmic Events affect you more|n- Gain 2 Will for each Warp|n- Gain the |cffd45e19Embrace the Cosmos|r ability.|n|nAttribute Gain: |cff00ff00+3 Will|r and |cff00ff00-2 Accuracy|r per level
-}
-
 STRING 1228
 // Units: u006 (Egg), EditorSuffix (Name - Editor Suffix)
 {
@@ -4854,7 +4824,7 @@ Infestation Aura
 }
 
 STRING 1246
-// Buffs/Effects: B00B (), Bufftip (Tooltip)
+// Abilities: A02C (Genetics INFESTATION - Perma Spawn), Tip (Tooltip - Normal)
 {
 Infestation
 }
@@ -5003,12 +4973,6 @@ STRING 1272
 Target Player 6
 }
 
-STRING 1273
-// Abilities: AC06 (Target Player 6), Hotkey (Hotkey - Normal)
-{
-S
-}
-
 STRING 1274
 // Abilities: AC06 (Target Player 6), Ubertip (Tooltip - Normal - Extended)
 {
@@ -5028,7 +4992,7 @@ Target Player 7
 }
 
 STRING 1277
-// Abilities: AC07 (Target Player 7), Hotkey (Hotkey - Normal)
+// Abilities: A01N (Adaptive Regeneration), Hotkey (Hotkey - Normal)
 {
 D
 }
@@ -5806,7 +5770,7 @@ A
 }
 
 STRING 1437
-// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
@@ -6034,7 +5998,7 @@ A
 }
 
 STRING 1478
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A02V (Comeback), Hotkey (Hotkey - Normal)
 {
 A
 }
@@ -6444,12 +6408,6 @@ STRING 1547
 |cff808080Eugh you feel sick|r|nUnable to enter ships for |cffc81e1e30 seconds|r.
 }
 
-STRING 1548
-// Abilities: A01O (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080LORE TODO|r|n|nInstantly|cff00ff00 heal 40%|r of your maximum hit points.|n|n|cff80808080 Seconds Cooldown|r
-}
-
 STRING 1549
 // Buffs/Effects: B004 (Despair), Buffubertip (Tooltip - Extended)
 {
@@ -6546,28 +6504,10 @@ STRING 1566
 Spawns canite every 25 seconds
 }
 
-STRING 1567
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nSplices the |cffd45e19Night Eyes|r power into your patient.|nWhen used, gain |cff00ff00night vision|r for |cff00ff0030 seconds|r. You are |cff00ff00immune |rto |cff8a6df2Despair|r caused by darkness.|n|nAttribute Gain: |cff00ff00+2.5 Accuracy|r and |cff00ff00+1 Will|r per level.
-}
-
 STRING 1568
 // Abilities: A02C (Genetics INFESTATION - Perma Spawn), Name (Name)
 {
 Genetics INFESTATION - Perma Spawn
-}
-
-STRING 1569
-// Abilities: A02C (Genetics INFESTATION - Perma Spawn), Tip (Tooltip - Normal)
-{
-[ PASSIVE ] Mutated Genetics
-}
-
-STRING 1570
-// Abilities: A02C (Genetics INFESTATION - Perma Spawn), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080What is man but a bundle of easily manipulatable genetics?|r|n|nCompleting a |cff00ff00Tier 1 Genetic Splice|r now causes the target to turn into an |cff8a6df2Alien upon death|r, no matter the source|cffc81e1e ( Only effects non-alien players )|r.|n|n|cffd45e19You've unlocked this by Infesting Healthcare|r
 }
 
 STRING 1571
@@ -7268,13 +7208,13 @@ Repair Neokatana
 }
 
 STRING 1716
-// Abilities: A02N (Repair Neokatana), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
 {
 |cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
 
 STRING 1717
-// Abilities: A02N (Repair Neokatana), Tip (Tooltip - Normal)
+// Abilities: A00L (Emotion Inhibitors), Tip (Tooltip - Normal)
 {
 [|cffffff00A|r] - SI Battle Rifle
 }
@@ -7709,5 +7649,323 @@ STRING 1806
 STRING 1807
 {
 There's no coming back from death.
+}
+
+STRING 1808
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nGrants the |cfff9a602Nightstalker|r power.|n|cff00ff00[+] Passively ignore despair caused by Darkness|n[+] Activate to gain Dark Vision|n|n|cfff9a602Attribute Gain Per Level:|n|cff00ff00+2.5 Will|r, |cff00ff00+1 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 1809
+// Abilities: AGJP (Enhanced Mobility), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080These symbiotic muscle grafts were originally developed to restore movement in injured personnel. |r|n|nGrants the |cfff9a602Enhanced Sprint|r power.|n|cff00ff00[+] Increased Sprint Duration and Speed|n[+] Jump after sprinting|r|n|n|cfff9a602Attribute Gain Per Level:|n|cff00ff00+1 Vitality|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 1810
+// Abilities: AGCM (Cosmic Sensitivity), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Irqhart-Timms Procedure is supposed to be utterly discredited and totally illegal, but starship crewmen keep seeking it out and there's always surgeons ready to do it. Those who have the surgery claim to sense the shifting of the cosmos, but to onlookers, they appear blind to the world. The stories shared amongst starship crews talk of their uncanny awareness of the goings-on on their ships, but also of horrific incidents of cosmic-ray-hyperexposure and recurring incidents of madness, neural shutdown and monster attacks on the vessels they frequent.|r|n|nGrants the |cfff9a602Cosmic Potential|r power.|n|cff00ff00[+] Know when an Alien Transforms|n[+] Damage and slow nearby units|n|r|cffb52166[−] Does self damage|r|r|n|n|cfff9a602Attribute Gain Per Level:|n|cff00ff00+3 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 1811
+// Abilities: A01K (Xenophobic), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080"Rot in hell, Alien scum."|r|n|nGrants the |cfff9a602Come Get Some!|r power.|n|cff00ff00[+] Can Punch Aliens|n[+] Punching Aliens grants permanent Hit Points|n|r|cffb52166[−] You have to Punch Aliens|r|r|n|n|cfff9a602Attribute Gain Per Level:|n|cff00ff00+3.5 Vitality|r and |cffb52166-1 Will|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 1812
+// Abilities: A01N (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nGrants the |cfff9a602Adaptive Regeneration|r power.|n|cff00ff00[+] Instantly heal 33% of your maximum HP|r|n|n|cfff9a602Attribute Gain Per Level:|n|cff00ff00+2 Vitality|r, |cff00ff00+2 Accuracy|r and |cff00ff00+1.5 Will|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 1813
+// Abilities: A02C (Genetics INFESTATION - Perma Spawn), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080What is man but a bundle of easily manipulatable genetics?|r|n|nUsing the |cfff9a602Genetic Splicer|r now causes players to become |cff8a6df2Alien|r upon death from any source|n|n|cff8a6df2This is an Infestation ability|r
+}
+
+STRING 1814
+// Abilities: A02T (Remove Vocal Cords), Name (Name)
+{
+Remove Vocal Cords
+}
+
+STRING 1816
+// Buffs/Effects: B00B (), Bufftip (Tooltip)
+{
+Infestation
+}
+
+STRING 1818
+// Upgrades: RGEN (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- GENE
+}
+
+STRING 1820
+// Abilities: A01O (Adaptive Regeneration), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nInstantly|cff00ff00 heal 33%|r of your maximum hit points.|n|n|cff80808080 Seconds Cooldown|r
+}
+
+STRING 1821
+// Abilities: A02T (Remove Vocal Cords), Hotkey (Hotkey - Normal)
+{
+F
+}
+
+STRING 1822
+// Abilities: A02T (Remove Vocal Cords), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080He wont be needing these.|r|n|nGrants the |cfff9a602Removed Vocal Chords|r power.|n|cffb52166[−] Can no longer talk|r|n|n|cfff9a602Attribute Gain Per Level:|n|cffb52166-1 Vitality|r and |cffb52166-1 Will|r per level|n|N|cffd45e19Attribute changes are retroactive|r|n|cff8a6df2This is an Infestation ability|r
+}
+
+STRING 1823
+// Abilities: A02T (Remove Vocal Cords), Tip (Tooltip - Normal)
+{
+Remove Vocal Chords
+}
+
+STRING 1824
+// Abilities: A02U (Mute), Name (Name)
+{
+Mute
+}
+
+STRING 1825
+// Abilities: A02U (Mute), Tip (Tooltip - Normal)
+{
+Mute
+}
+
+STRING 1827
+// Abilities: A02U (Mute), Researchhotkey (Hotkey - Learn)
+{
+E
+}
+
+STRING 1828
+// Abilities: A02U (Mute), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 1829
+// Abilities: A02U (Mute), Unhotkey (Hotkey - Turn Off)
+{
+E
+}
+
+STRING 1830
+// Upgrades: R00N (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+No Vocal Cords
+}
+
+STRING 1831
+// Abilities: A02U (Mute), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO|r|n|nYou are unable to talk.|n|n|cffb52166This cannot be healed|n
+}
+
+STRING 1832
+// Items: I00S ("Comeback" Thanomoxadryl), Name (Name)
+{
+"Comeback" Thanomoxadryl
+}
+
+STRING 1834
+// Items: I00S ("Comeback" Thanomoxadryl), Tip (Tooltip - Basic)
+{
+Purchase "Comeback" Thanomoxadryl
+}
+
+STRING 1835
+// Items: I00S ("Comeback" Thanomoxadryl), Description (Description)
+{
+Grants hp, regeneration and movement speed. But at a cost.
+}
+
+STRING 1836
+// Abilities: A02V (Comeback), Name (Name)
+{
+Comeback
+}
+
+STRING 1837
+// Abilities: A02V (Comeback), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Fluff TODO|r|n|nRepairs station property to |cff00ff00100%|r over |cff00ff005|r seconds.|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1838
+// Abilities: A02N (Repair Neokatana), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - SI Battle Rifle
+}
+
+STRING 1839
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 1841
+// Abilities: A02W (Life Regeneration), Name (Name)
+{
+Life Regeneration
+}
+
+STRING 1842
+// Abilities: A02W (Life Regeneration), EditorSuffix (Editor Suffix)
+{
+ (+25 Regen)
+}
+
+STRING 1843
+// Abilities: A02X (Item Hit Point Bonus), Name (Name)
+{
+Item Hit Point Bonus
+}
+
+STRING 1844
+// Abilities: A02X (Item Hit Point Bonus), EditorSuffix (Editor Suffix)
+{
+( +200 )
+}
+
+STRING 1845
+// Abilities: A02Y (Item Move Speed Bonus), EditorSuffix (Editor Suffix)
+{
+ ( +30 )
+}
+
+STRING 1847
+// Items: I00S ("Comeback" Thanomoxadryl), Ubertip (Tooltip - Extended)
+{
+|cff808080The premier combat drug of Askellon's Enforcement Squads, Comeback provides soldiers with short-term cellular regeneration, allowing soldiers to survive massive injury. Not for use by everyone. Side effects include cellular disintegration, cellular malformation and genetic corruption. Hexcorp accepts no responsibility for reduced lifespan, early-onset senility or chronic addiction.|r|n|nIncreases your Maximum Hit Points by|cff00ff00 200|r, regeneration by |cff00ff0025 |rand movement speed by |cff00ff0010%|r; Lasts |cff00ff0030 |rseconds.|n|n|cffb52166Side Effect:|r While not using the drug, your Maximum Hit points are reduced by |cff00ff001|r for every |cff00ff0010 |rHealth this has regenerated.|n|n|cff808080200 Seconds Cooldown|r
+}
+
+STRING 1848
+// Units: n006 (|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r ), Name (Name)
+{
+|cff00ff00T|r|cff00ff32r|r|cff00ff65i|r|cff00ff98f|r|cff00ffcbe|r|cff00fffex|r Vendor [ |cfff9a602Doctor Only|r ]|n|cff808080Right Click to use|r
+}
+
+STRING 1849
+// Doodads: D01S (Lab Room), Name (Name)
+{
+Lab Room
+}
+
+STRING 1850
+// Doodads: D01T (Containment), Name (Name)
+{
+Containment
+}
+
+STRING 1851
+// Doodads: D01U (Support Column Medium), Name (Name)
+{
+Support Column Medium
+}
+
+STRING 1852
+// Doodads: D01V (Askellon Flag), Name (Name)
+{
+Askellon Flag
+}
+
+STRING 1853
+// Abilities: AC07 (Target Player 7), Hotkey (Hotkey - Normal)
+{
+D
+}
+
+STRING 1854
+// Abilities: A00H (Attack - Laser), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Particle Accelerator
+}
+
+STRING 1855
+// Abilities: ASHO (Attack - Harkon's Blitzer), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Harkon's Blitzer
+}
+
+STRING 1856
+// Abilities: A01A (Attack - Minigun), Tip (Tooltip - Normal)
+{
+MG5-27 "Flamesaw" Pattern Minigun
+}
+
+STRING 1857
+// Abilities: A01M (Attack - Fists), Tip (Tooltip - Normal)
+{
+Fists
+}
+
+STRING 1858
+// Abilities: A01M (Attack - Fists), Ubertip (Tooltip - Normal - Extended)
+{
+Punch Shit Yo
+}
+
+STRING 1859
+// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 1860
+// Abilities: A022 (Attack - Neokatana), Tip (Tooltip - Normal)
+{
+Katana
+}
+
+STRING 1861
+// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 1862
+// Abilities: A02N (Repair Neokatana), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff00ff00DAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 1863
+// Abilities: A02S (Attack - Flamer), Tip (Tooltip - Normal)
+{
+Flamethrower
+}
+
+STRING 1864
+// Abilities: A02S (Attack - Flamer), Ubertip (Tooltip - Normal - Extended)
+{
+is flamethrower yah
+}
+
+STRING 1865
+// Abilities: A02V (Comeback), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - SI Battle Rifle
+}
+
+STRING 1866
+// Units: n00Y ("Spinout" Ron|n|cff808080May you rest in peace|r), Name (Name)
+{
+"Spinout" Ron|n|cff808080May you rest in peace|r
+}
+
+STRING 1867
+// Units: n00Z (Shane|n|cff808080May you rest in peace|r), Name (Name)
+{
+Shane|n|cff808080May you rest in peace|r
 }
 

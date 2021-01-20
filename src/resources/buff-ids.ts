@@ -1,6 +1,7 @@
 export enum BUFF_ID {
     RESOLVE,
     DESPAIR,
+    DRUG_COMEBACK,
     FLASH_FREEZE,
     FIRE,
     TRIFEX,

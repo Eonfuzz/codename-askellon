@@ -103,6 +103,9 @@ export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
 export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');
 export const ABIL_GENE_COSMIC = FourCC('ACSM');
 export const ABIL_GENE_XENOPHOBIC = FourCC('A01L');
+export const ABIL_GENE_REMOVE_VOCAL = FourCC('A02T');
+export const UPGR_REMOVED_VOCAL_CHORDS = FourCC('R00N');
+export const ABIL_REMOVED_VOCAL_CHORDS = FourCC('A02U');
 
 export const GENE_INSTALL_MOBILITY = FourCC('AGJP');
 export const GENE_TECH_MOBILITY = FourCC('R001');
@@ -127,6 +130,7 @@ export const ABIL_ITEM_CRYO_GRENADE = FourCC('A00M');
 export const ABIL_ITEM_HELLFIRE_GRENADE = FourCC('A01F');
 export const ABIL_ITEM_GENETIC_SAMPLER = FourCC('A017');
 export const ABIL_ITEM_GENETIC_SAMPLE_INFESTED = FourCC('A018');
+export const ABIL_ITEM_DRUG_COMEBACK = FourCC('A02V');
 
 
 export const ABIL_DEFEND = FourCC('Adef');
@@ -187,3 +191,7 @@ export const ABIL_REPAIR_NEOKATANA = FourCC('A02N');
 export const ABIL_EGG_HATCH_NEUTRAL = FourCC('A02O');
 export const ABIL_ALIEN_CREATE_TUMOR = FourCC('A02P');
 export const ABIL_CULTIST_GIFT_MADNESS = FourCC('A02Q');
+
+export const ABIL_MOVESPEED_BONUS_30 = FourCC('A02Y');
+export const ABIL_LIFE_REGEN_BONUS_25 = FourCC('A02Y');
+export const ABIL_MAX_LIFE_BONUS_200 = FourCC('A02X');

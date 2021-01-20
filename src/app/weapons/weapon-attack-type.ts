@@ -1,3 +1,3 @@
 export enum WeaponEntityAttackType {
-    CAST, ATTACK
+    CAST, ATTACK, SMART
 }

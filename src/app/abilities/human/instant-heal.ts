@@ -12,7 +12,7 @@ export class InstantHealAbility implements Ability {
     
     private timeElapsed = 0;
     private healOver = 0.6;
-    private healPercent = 0.4;
+    private healPercent = 0.33;
 
     private sfx: effect;
 

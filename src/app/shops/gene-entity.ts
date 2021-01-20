@@ -17,7 +17,10 @@ import { TECH_NO_GENES_TIER_1,
     ABIL_GENE_XENOPHOBIC,
     GENE_INSTALL_OSBORNE_GENE,
     ABIL_GENE_INSTANT_HEAL,
-    GENE_INFESTED_1
+    GENE_INFESTED_1,
+    ABIL_GENE_REMOVE_VOCAL,
+    UPGR_REMOVED_VOCAL_CHORDS,
+    ABIL_REMOVED_VOCAL_CHORDS
 } from "resources/ability-ids";
 import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit, Timer } from "w3ts";
@@ -98,7 +101,11 @@ export class GeneEntity extends Entity {
                 const infestedGenes1 = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
                 if (infestedGenes1) {
                     geneUiUnit.addAbility( GENE_INFESTED_1 );
-                }            
+                }                   
+                const infestedGenes2 = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 3);
+                if (infestedGenes2) {
+                    geneUiUnit.addAbility( ABIL_GENE_REMOVE_VOCAL );
+                }                     
             }
             
             const instance = {
@@ -319,6 +326,12 @@ export class GeneEntity extends Entity {
                 crewmember.setIntGain( crewmember.getIntGain() + 1.5 );
                 instance.unitInGeneZone.unit.addAbility(ABIL_GENE_INSTANT_HEAL);
             }
+            else if (castAbil === ABIL_GENE_REMOVE_VOCAL) {
+                crewmember.setStrGain( crewmember.getStrGain() - 1 );
+                crewmember.setIntGain( crewmember.getIntGain() - 1 );
+                instance.unitInGeneZone.unit.addAbility(ABIL_REMOVED_VOCAL_CHORDS);
+                crewmember.player.setTechResearched(UPGR_REMOVED_VOCAL_CHORDS, 1);
+            }
 
         
             // Now grant XP if installed by doc and medicare 2 was researched
@@ -370,6 +383,7 @@ export class GeneEntity extends Entity {
             case GENE_INSTALL_COSMIC_SENSITIVITY:
             case GENE_INSTALL_OSBORNE_GENE:
             case GENE_INSTALL_XENOPHOBIC:
+            case ABIL_GENE_REMOVE_VOCAL:
                 return 2;
         }
     }

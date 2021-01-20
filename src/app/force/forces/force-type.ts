@@ -13,6 +13,7 @@ import { EventListener } from "app/events/event-type";
 import { ChatEntity } from "app/chat/chat-entity";
 import { MessageAllPlayers, MessagePlayer } from "lib/utils";
 import { ROLE_DESCRIPTIONS } from "resources/crewmember-names";
+import { UPGR_REMOVED_VOCAL_CHORDS } from "resources/ability-ids";
 
 
 export const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
@@ -65,6 +66,22 @@ export abstract class ForceType {
             this.playerDeathTriggers.delete(player);
             this.playerUnits.delete(player);
 
+            try {
+                if (killer) {
+                    const wasTeamkill = this.hasPlayer(killer.owner);
+                    const killData = PlayerStateFactory.get(killer.owner);
+                    if (killData) {
+                        killData.playerTeamkills += wasTeamkill ? 1 : 0;
+                        killData.playerEnemyKills += wasTeamkill ? 0 : 1;
+                        killData.save();
+                    }                    
+                }
+            }
+            catch (e) {
+                Log.Error("Error when saving player kill / death score");
+                Log.Error(e);
+            }
+
             // Check victory conds
             EventEntity.getInstance().sendEvent(EVENT_TYPE.CHECK_VICTORY_CONDS);
         }
@@ -110,6 +127,9 @@ export abstract class ForceType {
      * Unless overridden returns all the players
      */
     public getChatRecipients(chatEvent: ChatHook) {
+        if (chatEvent.who.getTechCount(UPGR_REMOVED_VOCAL_CHORDS, true) > 0) {
+            return chatEvent.recipients = [];
+        }
         return chatEvent.recipients;
     }
 

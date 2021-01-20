@@ -121,7 +121,7 @@ export class VentZone extends ZoneWithExits {
                 this.gasTicker = 0;
                 for (let index = 0; index < this.unitsInside.length; index++) {
                     const unit = this.unitsInside[index];
-                    UnitDamageTarget(unit.handle, unit.handle, 5 + unit.maxLife*0.01, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+                    UnitDamageTarget(unit.handle, unit.handle, 10 + unit.maxLife*0.02, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
 
                     const sfx = AddSpecialEffect(SFX_CARRION_SWARM_HIT, unit.x, unit.y);
                     BlzSetSpecialEffectZ(sfx, getZFromXY(unit.x, unit.y) + 30);

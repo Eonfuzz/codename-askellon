@@ -1,10 +1,22 @@
 import { Vector2 } from "app/types/vector2";
-import { Rectangle, Item, Trigger, MapPlayer, Unit } from "w3ts/index"
+import { Rectangle, Item, Trigger, MapPlayer, Unit, TextTag } from "w3ts/index"
 import { Log } from "./serilog/serilog";
 import { Players } from "w3ts/globals/index";
 import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7, SFX_BLOOD_8, SFX_BLOOD_9, SFX_BLOOD_10, SFX_BLOOD_11, SFX_BLOOD_12, SFX_FIRE } from "resources/sfx-paths";
 import { Timers } from "app/timer-type";
 import { TILE_SIZE } from "resources/data-consts";
+
+export function showOverheadText(x: number, y: number, r: number, g: number, b: number, a: number, text: string) {
+    const t = new TextTag();
+    t.setText(text, 10, true);
+    t.setPos(x, y, 90);
+    t.setColor(r, g, b, a);
+    t.setPermanent(false);
+    t.setLifespan(4.5);
+    t.setFadepoint(2.5);
+    t.setVelocity(0, 7.1 / 128 * Sin(3.14159 / 2));
+    return t;
+}
 
 export function randomWithinCircle(radius: number, x: number, y: number) {
     const _x = GetRandomReal(-radius, radius);

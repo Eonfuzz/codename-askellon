@@ -1,2 +1,2 @@
+UI\Tooltips\Default.fdf
 UI\Chat\Chat.fdf
-UI\Unit\Healthbar.fdf

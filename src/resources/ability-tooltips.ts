@@ -62,7 +62,7 @@ export const resolveTooltip = new DynamicAbilityTooltip(
     ABIL_CREWMEMBER_INFO,
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Repair the ship and get out of this sector... before it is too late.|r
-Your are the ${COL_TEAL}Human ${who.role}|r:
+You are the ${COL_TEAL}Human ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
 As Human:
@@ -84,7 +84,7 @@ export const alienTooltipToAlien = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Wipe out human life and claim this ship as yours.|r
 
-Your are the ${COL_ALIEN}Alien ${who.role}|r:
+You are the ${COL_ALIEN}Alien ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
 Consume, Assimilate or Destroy all humans!
@@ -106,7 +106,7 @@ export const alienTooltipToHuman = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Wipe out human life and claim this ship as yours.|r
 
-Your are the ${COL_ALIEN}Alien ${who.role}|r:
+You are the ${COL_ALIEN}Alien ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
 Consume, Assimilate or Destroy all humans!
@@ -128,7 +128,7 @@ export const cultistTooltip = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}You hear a voice singing from across the void, its hands searching for another. If only you could reach for it.|r
 
-Your are the ${COLOUR_CULT}Cultist ${who.role}|r:
+You are the ${COLOUR_CULT}Cultist ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
 The ${COLOUR_CULT}Carrion One|r must be reborn!

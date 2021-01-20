@@ -50,6 +50,13 @@ export class ObserverForce extends ForceType {
             MessagePlayer(who, `${COL_ATTATCH}You're dead!|r There's no coming back from this, so feel free to observe the game or quit.`);
             if (who.isLocal()) this.playerDiesSound.playSound();
         });
+
+        // Joining the observer force lets you quit without penalty
+        const pData = PlayerStateFactory.get(who);
+        if (pData) {
+            pData.gamesLeft -= 1;
+            pData.save();
+        }
     }
     
     /**

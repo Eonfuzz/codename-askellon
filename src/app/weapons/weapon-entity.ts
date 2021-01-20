@@ -32,6 +32,8 @@ import { WepNeokatana } from "./guns/neokatana";
 import { MeteorCanisterAttachment } from "./attachment/meteor-canister";
 import { UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
 import { Flamethrower } from "./guns/flamethrower";
+import { Vector2 } from "app/types/vector2";
+import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -310,39 +312,60 @@ export class WeaponEntity extends Entity {
 
     weaponShootTrigger = new Trigger();
     weaponAttackTrigger = new Trigger();
+    // For smart casting
+    weaponFacingTrigger = new Trigger();
     initaliseWeaponShooting() {
-        // if (this.WEAPON_MODE === 'CAST') {
-            this.weaponShootTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
-            this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0))
-            this.weaponShootTrigger.addAction(() => {
-                let unit = Unit.fromHandle(GetTriggerUnit());
+        this.weaponFacingTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_CAST);
+        this.weaponFacingTrigger.addCondition(() => {
+            if (this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0) {
+                const pData = PlayerStateFactory.get(MapPlayer.fromHandle(GetOwningPlayer(GetTriggerUnit())));
+                return (pData && pData.getAttackType() === WeaponEntityAttackType.SMART);
+            }
+            return false;
+        });
+        this.weaponFacingTrigger.addAction(() => {
+            const u = Unit.fromHandle(GetTriggerUnit());
+            const a = new Vector2(u.x, u.y).angleTo(InputManager.getLastMouseCoordinate(u.owner.handle));
 
-                let targetLoc = new Vector3(
-                    GetSpellTargetX(),
-                    GetSpellTargetY(),
-                    0
-                );
+            u.facing = a;
+        });
+    
+        this.weaponShootTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0))
+        this.weaponShootTrigger.addAction(() => {
+            let unit = Unit.fromHandle(GetTriggerUnit());
 
-                targetLoc.z = getZFromXY(targetLoc.x, targetLoc.y);
+            const pData = PlayerStateFactory.get(unit.owner);
+            const isSmartCast = (pData && pData.getAttackType() === WeaponEntityAttackType.SMART);
 
-                // Get unit weapon instance
-                const weapon = this.getGunForUnit(unit);
-                if (weapon) {
-                    // If we are targeting a unit pass the event over to the force module
-                    const targetedUnit = GetSpellTargetUnit();
-                    if (targetedUnit) {
-                        ForceEntity.getInstance().aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
-                    }
-                    
-                    weapon.onShoot(
-                        unit, 
-                        targetLoc
-                    );
+            const targetLoc : Vector3 = new Vector3(0, 0, 0);
+            if (isSmartCast) {
+                const mLoc = InputManager.getLastMouseCoordinate(unit.owner.handle);
+                targetLoc.x = mLoc.x;
+                targetLoc.y = mLoc.y;
+            }
+            else {
+                targetLoc.x = GetSpellTargetX();
+                targetLoc.y = GetSpellTargetY();
+            }
+            
+            targetLoc.z = getZFromXY(targetLoc.x, targetLoc.y);
+
+            // Get unit weapon instance
+            const weapon = this.getGunForUnit(unit);
+            if (weapon) {
+                // If we are targeting a unit pass the event over to the force module
+                const targetedUnit = GetSpellTargetUnit();
+                if (targetedUnit) {
+                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
                 }
-            })
-        // }
-        // // Handle auto attack
-        // else {
+                
+                weapon.onShoot(
+                    unit, 
+                    targetLoc
+                );
+            }
+        })
 
         // Handle start of the attack
         const attackTrigger = new Trigger();
@@ -369,16 +392,7 @@ export class WeaponEntity extends Entity {
         this.weaponAttackTrigger.addAction(() => {
             let unit = Unit.fromHandle(GetEventDamageSource());
             let targetUnit = Unit.fromHandle(BlzGetEventDamageTarget())
-
-            const validAggression = ForceEntity.getInstance().aggressionBetweenTwoPlayers(
-                unit.owner, 
-                targetUnit.owner
-            );
-
-            // Log.Information("Unit takes damage!");
             if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
-
-            // Log.Information("Have damaging unit in struct");
             
             let targetLocation = new Vector3(targetUnit.x, targetUnit.y, targetUnit.z);
             
