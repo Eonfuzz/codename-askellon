@@ -401,16 +401,18 @@ export class ForceEntity extends Entity {
                 }
                 Players.forEach(p => {
                     const pData = PlayerStateFactory.get(p);
-                    if (pData && pData.getForce() && !pData.getForce().is(OBSERVER_FORCE_NAME)) {
-                        pData.gamesLeft -= 1;
+                    if (pData) {
+                        if (pData.getForce() && !pData.getForce().is(OBSERVER_FORCE_NAME)) {
+                            pData.gamesLeft -= 1;
+                        }
+                        if (winningPlayers.indexOf(p) >= 0) {
+                            pData.playerGamesWon += 1;
+                        }
+                        else {
+                            pData.playerGamesLost += 1;
+                        }
+                        pData.save();
                     }
-                    if (winningPlayers.indexOf(p) >= 0) {
-                        pData.playerGamesWon += 1;
-                    }
-                    else {
-                        pData.playerGamesLost += 1;
-                    }
-                    pData.save();
                 });
 
                 Timers.addSlowTimedAction(5, () => {

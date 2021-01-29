@@ -3,7 +3,7 @@ import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
-import { FilterIsEnemyAndAlive, FilterIsAlive } from "../../../resources/filters";
+import { FilterIsEnemyAndAlive, FilterIsAlive, FilterAnyUnit } from "../../../resources/filters";
 import { MapPlayer, Unit } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { BUFF_ID } from "resources/buff-ids";
@@ -67,7 +67,7 @@ export class CryoGrenadeAbility implements Ability {
                 atWhere.x, 
                 atWhere.y,
                 EXPLOSION_AOE,
-                FilterIsAlive(this.castingPlayer)
+                FilterAnyUnit()
             );
             ForGroup(this.damageGroup, () => this.damageUnit());
         }

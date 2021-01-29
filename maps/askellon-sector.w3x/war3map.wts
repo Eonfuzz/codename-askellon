@@ -7969,3 +7969,56 @@ STRING 1867
 Shane|n|cff808080May you rest in peace|r
 }
 
+STRING 1868
+{
+|Cff00ff00discord.gg/nDMpQZm
+}
+
+STRING 1873
+// Units: h00D (Fusion Bomb), Name (Name)
+{
+Fusion Bomb
+}
+
+STRING 1878
+// Abilities: A02Z (Build Bomb), Name (Name)
+{
+Build Bomb
+}
+
+STRING 1879
+// Items: I00T ("Nova" NVA47 Explosive), Name (Name)
+{
+"Nova" NVA47 Explosive
+}
+
+STRING 1880
+// Items: I00T ("Nova" NVA47 Explosive), Tip (Tooltip - Basic)
+{
+"Nova" NVA47 Explosive
+}
+
+STRING 1881
+// Items: I00T ("Nova" NVA47 Explosive), Ubertip (Tooltip - Extended)
+{
+|cff808080Intelligent metal cylinders quickly expand once placed into the ground, forming an instant and sturdy wall.|r|n|nPlaces a |cff00ff00Remote Mine|r that can be remote detonated.|nDetonate by clicking on it; Dealing |cff00ff00350 |rdamage.|n|n|cff80808040 Seconds Cooldown|r
+}
+
+STRING 1882
+// Items: I00T ("Nova" NVA47 Explosive), Description (Description)
+{
+Places a remote bomb
+}
+
+STRING 1883
+// Doodads: D01W (Force Wall Flat), Name (Name)
+{
+Force Wall Flat
+}
+
+STRING 1884
+// Units: h00E (High Quality Crate|n|cff808080Contains Loot!|r), Name (Name)
+{
+High Quality Crate|n|cff808080Contains Loot!|r
+}
+

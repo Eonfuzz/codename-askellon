@@ -22,13 +22,22 @@ export class SpawnTumorAbility implements Ability {
             const y = u.y + GetRandomReal(-10, 10);
 
 
-            const bloodSfx = AddSpecialEffect("Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl", x, y);
-            BlzSetSpecialEffectZ(bloodSfx, getZFromXY(x, y) + 10);
-            DestroyEffect(bloodSfx);
+    
+            const floor = WorldEntity.getInstance().getPointZone(x, y);
 
-            // const zone = WorldEntity.getInstance().getPointZone(x, y);
-            const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, x, y, bj_UNIT_FACING);
-            CreepEntity.addCreepWithSource(600, tumor);
+            if (floor) {
+                const bloodSfx = AddSpecialEffect("Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl", x, y);
+                BlzSetSpecialEffectZ(bloodSfx, getZFromXY(x, y) + 10);
+                DestroyEffect(bloodSfx);
+
+                // const zone = WorldEntity.getInstance().getPointZone(x, y);
+                const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, x, y, bj_UNIT_FACING);
+                CreepEntity.addCreepWithSource(600, tumor);
+    
+                // Force our unit to travel too
+                WorldEntity.getInstance().travel(tumor, floor.id);
+            }
+
         }
         catch(e) {
             Log.Error(e);            

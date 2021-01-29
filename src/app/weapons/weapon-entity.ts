@@ -34,6 +34,7 @@ import { UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/
 import { Flamethrower } from "./guns/flamethrower";
 import { Vector2 } from "app/types/vector2";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
+import { FilterIsAlive } from "resources/filters";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -314,6 +315,7 @@ export class WeaponEntity extends Entity {
     weaponAttackTrigger = new Trigger();
     // For smart casting
     weaponFacingTrigger = new Trigger();
+    weaponFacingHostileGroup = CreateGroup();
     initaliseWeaponShooting() {
         this.weaponFacingTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_CAST);
         this.weaponFacingTrigger.addCondition(() => {
@@ -325,7 +327,21 @@ export class WeaponEntity extends Entity {
         });
         this.weaponFacingTrigger.addAction(() => {
             const u = Unit.fromHandle(GetTriggerUnit());
-            const a = new Vector2(u.x, u.y).angleTo(InputManager.getLastMouseCoordinate(u.owner.handle));
+            const c = InputManager.getLastMouseCoordinate(u.owner.handle);
+            const a = new Vector2(u.x, u.y).angleTo(c);
+
+            // Pick nearby units and make them hostile?
+            GroupEnumUnitsInRange(
+                this.weaponFacingHostileGroup, 
+                c.x,
+                c.y,
+                250,
+                FilterIsAlive(u.owner)
+            );
+
+            ForGroup(this.weaponFacingHostileGroup, () => {
+                ForceEntity.getInstance().aggressionBetweenTwoPlayers(u.owner, Unit.fromHandle(GetEnumUnit()).owner);
+            })
 
             u.facing = a;
         });

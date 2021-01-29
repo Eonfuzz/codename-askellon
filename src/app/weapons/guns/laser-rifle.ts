@@ -143,7 +143,7 @@ export class LaserRifle extends GunItem {
 
 
     public getDamage(unit: Unit): number {
-        return MathRound( 25 * Pow(1.5, this.intensity) * this.getDamageBonusMult());
+        return MathRound( 30 * Pow(1.5, this.intensity) * this.getDamageBonusMult());
     }
 
     

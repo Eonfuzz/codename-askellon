@@ -82,6 +82,7 @@ export class InteractionEvent {
   process(delta: number): boolean {
     // If we've destroyed between ticks cancel and return false
     if (!this.interactionTrigger || !this.interactionTrigger.enabled) return false;
+    if (!this.unit.isAlive() || !this.unit.show) return false;
 
     const v1 = vectorFromUnit(this.unit.handle);
     const v2 = vectorFromUnit(this.targetUnit.handle);

@@ -22,3 +22,4 @@ export const ITEM_CEREMONIAL_DAGGER = FourCC('I00O');
 export const ITEM_BROKEN_NEOKATANA = FourCC('I00Q');
 export const ITEM_CAPTAINS_CIGAR = FourCC('I00R');
 export const ITEM_COMEBACK_DRUG = FourCC('I00S');
+export const ITEM_REMOTE_BOMB = FourCC('I00T');

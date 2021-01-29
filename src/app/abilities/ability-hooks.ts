@@ -57,7 +57,8 @@ import {
     ABIL_ALIEN_CREATE_TUMOR,
     ABIL_CULTIST_CEREMONIAL_DAGGER,
     ABIL_CULTIST_GIFT_MADNESS,
-    ABIL_ITEM_DRUG_COMEBACK
+    ABIL_ITEM_DRUG_COMEBACK,
+    ABIL_ITEM_REMOTE_BOMB
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -111,6 +112,7 @@ import { SpawnTumorAbility } from "./alien/minions/create-tumor";
 import { CeremonialDaggerItemAbility } from "./items/ceremonial-dagger";
 import { GiftOfMadnessAbility } from "./cult/gift-of-madness";
 import { ComebackDrugAbility } from "./items/comeback-drug";
+import { PlaceBombAbility } from "./items/place-bomb";
 
 
 
@@ -222,3 +224,4 @@ AbilityHooks.Add(ABIL_ALIEN_CREATE_TUMOR, () => new SpawnTumorAbility());
 AbilityHooks.Add(ABIL_CULTIST_GIFT_MADNESS, () => new GiftOfMadnessAbility());
 AbilityHooks.Add(ABIL_CULTIST_CEREMONIAL_DAGGER, () => new CeremonialDaggerItemAbility());
 AbilityHooks.Add(ABIL_ITEM_DRUG_COMEBACK, () => new ComebackDrugAbility());
+AbilityHooks.Add(ABIL_ITEM_REMOTE_BOMB, () => new PlaceBombAbility());

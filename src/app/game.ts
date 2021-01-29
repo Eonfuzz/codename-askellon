@@ -142,6 +142,7 @@ export class Game {
 
             CinematicFadeBJ(bj_CINEFADETYPE_FADEIN, 1.5, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
 
+            EnableUserUI(true);
             // Camera follow the main ship
             this.followMainShip();
     
@@ -265,6 +266,7 @@ export class Game {
             CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
             // CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 40.00, 50.00, 70.00, 0);
 
+            EnableUserUI(true);
         });
 
         Timers.addTimedAction(18, () => {            
@@ -338,20 +340,21 @@ export class Game {
         new Timer().start(2, false, () => {
             PlayNewSound("Sounds\\ShipDamage\\GroanLong2.mp3", 127);
             CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 2, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 100.00, 100.00, 90.00, 0);           
+        
+            EnableUserUI(true);
         })
 
         new Timer().start(3, false, () => {
             SetDayNightModels("DeepFried\\dnclordaeronunit.mdx", "DeepFried\\dnclordaeronunit.mdx");
             CameraSetSourceNoise(5, 50);
-            for (let i = 0; i < 12; i++) {
-                BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), false);            
-            }
         });
         new Timer().start(6, false, () => {
             CameraSetSourceNoise(10, 50);
         });
         new Timer().start(7, false, () => {
             CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0.00, 0.00, 0.00, 0);
+            
+            EnableUserUI(true);
             CameraSetSourceNoise(15, 50);
         });
         new Timer().start(9, false, () => {
@@ -416,37 +419,6 @@ export class Game {
                 });
             }
             else {
-                // Timers.addTimedAction(i+2, () => {
-                //     const randomPlayer = Quick.GetRandomFromArray(activePlayers, 1)[0] as MapPlayer;
-                //     const crew = PlayerStateFactory.getCrewmember(randomPlayer);
-
-                //     if (crew) {
-                //         let message = '';
-                //         switch(crew.role) {
-                //             case ROLE_TYPES.CAPTAIN:
-                //                 message = "Crew, logs are indicating a creature boarded our vessel mid warp."
-                //                 break;
-                //             case ROLE_TYPES.ENGINEER:
-                //                 message = "Saw some creature running around in the tunnels"
-                //                 break;
-                //             case ROLE_TYPES.DOCTOR:
-                //                 message = "Captain, there's an alien creature here. I saw it while the power was down."
-                //                 break;
-                //             case ROLE_TYPES.PILOT:
-                //                 message = "Pilot here, a weird slug like thing got inside our ship"
-                //                 break;
-                //             case ROLE_TYPES.INQUISITOR:
-                //                 message = "Vile xenos onboard my ship! We must purge it"
-                //                 break;
-                //             case ROLE_TYPES.SEC_GUARD:
-                //                 message = "Missed my shots, there's a damned bug here."
-                //                 break;
-                //             default:
-                //                 message = "There's an alien around here..."
-                //         }
-                //         chat.postMessageFor(Players, crew.name, playerColors[randomPlayer.id].code, message, undefined, GENERIC_CHAT_SOUND_REF);
-                //     }
-
                     Timers.addTimedAction(2, () => {
                         warningSound.playSound();
                         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
@@ -464,6 +436,5 @@ export class Game {
                 // });
             }
         });
-
     }
 }

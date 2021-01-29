@@ -73,3 +73,5 @@ export const UNIT_ID_CULTIST_ALTAR_TERMINAL = FourCC('n00W');
 export const UNIT_ID_LAVA_PLANET = FourCC(`n00U`);
 export const UNIT_ID_EGG_AUTO_HATCH = FourCC('u007');
 export const UNIT_ID_EGG_AUTO_HATCH_LARGE = FourCC('u008');
+
+export const UNIT_ID_REMOTE_BOMB = FourCC('h00D');

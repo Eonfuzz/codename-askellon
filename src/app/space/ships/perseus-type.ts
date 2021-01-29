@@ -67,6 +67,7 @@ export class PerseusShip extends ShipWithFuel {
     onEnterShip(who: Unit) {
         const newOwner = who.owner;
         this.unit.owner = who.owner;
+        this.shipFuel -= 30;
 
         if (who && who.owner) {
             this.unit.color = playerColors[ who.owner.id ].playerColor;

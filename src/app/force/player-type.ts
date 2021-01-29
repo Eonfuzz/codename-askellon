@@ -161,13 +161,13 @@ export class PlayerState {
     }
 
     public log(toWho: MapPlayer = this.player) {
-        MessagePlayer(this.player, `:: Ship Records [${playerColors[this.player.id].code}${this.originalName}|r] ::`);
-        MessagePlayer(this.player, `${COL_GOOD}Games Played ::|r ${this.gamesPlayed}`);
-        MessagePlayer(this.player, `${COL_GOOD}Games Won ::|r ${this.playerGamesWon}`);
-        MessagePlayer(this.player, `${COL_GOOD}Enemy Kills ::|r ${this.playerTeamkills}`);
+        MessagePlayer(toWho, `:: Ship Records [${playerColors[this.player.id].code}${this.originalName}|r] ::`);
+        MessagePlayer(toWho, `${COL_GOOD}Games Played ::|r ${this.gamesPlayed}`);
+        MessagePlayer(toWho, `${COL_GOOD}Games Won ::|r ${this.playerGamesWon}`);
+        MessagePlayer(toWho, `${COL_GOOD}Enemy Kills ::|r ${this.playerTeamkills}`);
 
-        MessagePlayer(this.player, `${COLOUR_CULT}Games Left ::|r ${this.gamesLeft}`);
-        MessagePlayer(this.player, `${COLOUR_CULT}Games Lost ::|r ${this.playerGamesLost}`);
-        MessagePlayer(this.player, `${COLOUR_CULT}Team Kills ::|r ${this.playerTeamkills}`);
+        MessagePlayer(toWho, `${COLOUR_CULT}Games Left ::|r ${this.gamesLeft}`);
+        MessagePlayer(toWho, `${COLOUR_CULT}Games Lost ::|r ${this.playerGamesLost}`);
+        MessagePlayer(toWho, `${COLOUR_CULT}Team Kills ::|r ${this.playerTeamkills}`);
     }
 }

@@ -126,7 +126,7 @@ export abstract class ShipWithFuel extends Ship {
         if (this.state === ShipState.inSpace) {
             const momentumLen = this.engine.getMomentum().getLength();
 
-            const fuelCost = (0.1 + momentumLen / 8000);
+            const fuelCost = (0.1 + momentumLen / 3000);
             this.shipFuel -= fuelCost * this.fuelUsagePercent;
 
             // Also update some sfx when we update fuel

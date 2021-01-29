@@ -72,7 +72,7 @@ export class VisionFactory {
      * Calcualtes the new vision state of a player
      * @param forWho 
      */
-    private calculateVision(forWho: MapPlayer) {
+    public calculateVision(forWho: MapPlayer) {
         const visionType = this.playerVisionType.get(forWho);
         const oldState = this.playerVisionState.get(forWho);
 

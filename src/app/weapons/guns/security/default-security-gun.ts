@@ -18,7 +18,10 @@ import { ProjectileTargetStatic } from "app/weapons/projectile/projectile-target
 import { SoundRef } from "app/types/sound-ref";
 
 export class DefaultSecurityGun extends Gun {
-    shootRef = new SoundRef("Sounds\\Station\\turretShoot.mp3", false, true);
+    private shootSound = new SoundRef("Sounds\\turretShoot.mp3", false, false);
+    private shootSound2 = new SoundRef("Sounds\\turretShoot.mp3", false, false);
+    private soundTracker = 0;
+
     constructor(equippedTo: ArmableUnit) {
         super(equippedTo);
         // Define spread and bullet distance
@@ -38,8 +41,16 @@ export class DefaultSecurityGun extends Gun {
         super.onShoot(unit, targetLocation);
 
         try {
-            const sound = PlayNewSoundOnUnit("Sounds\\turretShoot.mp3", unit, 20);
-            let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y) + 30).projectTowards2D(unit.facing, 20);
+            if (this.soundTracker === 0) {
+                this.shootSound.playSoundOnUnit(unit.handle, 30, false);
+                this.soundTracker = 1;
+            }
+            else {
+                this.shootSound2.playSoundOnUnit(unit.handle, 30, false);
+                this.soundTracker = 0;
+            }
+            let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y) + 30);
+            casterLoc = casterLoc.projectTowards2D(casterLoc.angle2Dto(targetLocation), 20);
             let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
 
             let newTargetLocation = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
@@ -48,7 +59,7 @@ export class DefaultSecurityGun extends Gun {
             for (let i = 0; i < 4; i++) {
                 Timers.addTimedAction(delay, () => {
                     if (this.equippedTo && this.equippedTo.unit && this.equippedTo.unit.isAlive()) {
-                        this.fireProjectile(unit, newTargetLocation);
+                        this.fireProjectile(unit, casterLoc, newTargetLocation);
                     }
                 });
                 delay = delay + 0.15;
@@ -59,13 +70,11 @@ export class DefaultSecurityGun extends Gun {
         }
     };
 
-    private fireProjectile(unit: Unit, targetLocation: Vector3) {
-        let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y) + 30);
-        casterLoc = casterLoc.projectTowards2D(casterLoc.angle2Dto(targetLocation)+GetRandomReal(-10,10), 40);
+    private fireProjectile(unit: Unit, casterLoc: Vector3, targetLocation: Vector3) {
         let strayTarget = this.getStrayLocation(targetLocation, unit)
         let deltaTarget = strayTarget.subtract(casterLoc);
 
-        new Effect("war3mapImported\\MuzzleFlash.mdx", unit, "hand, right").destroy();
+        DestroyEffect(AddSpecialEffectTarget("war3mapImported\\MuzzleFlash.mdx", unit.handle, "hand, right"));
 
         const sfxOrientation = getYawPitchRollFromVector(deltaTarget.normalise());
 

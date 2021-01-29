@@ -43,7 +43,7 @@ export class ComebackDrugBuff extends DynamicBuff {
         if (this.ticker > 2) {
             this.ticker -= 2;
             
-            const healing = Math.min(this.who.maxLife - this.who.life, 50);
+            const healing = Math.min(this.who.maxLife - this.who.life, 25);
             this.who.life += healing;
             ComebackDrugBuff.healthRegeneratedFromDrug.set(this.who, 
                 (ComebackDrugBuff.healthRegeneratedFromDrug.get(this.who) || 0) + healing
@@ -71,7 +71,7 @@ export class ComebackDrugBuff extends DynamicBuff {
             this.who.addAbility(ABIL_MOVESPEED_BONUS_30);
             const bonusMaxHp = 200 + MathRound((ComebackDrugBuff.healthRegeneratedFromDrug.get(this.who) || 0) / 10);
             this.who.maxLife += bonusMaxHp;
-            this.who.life += bonusMaxHp;
+            // this.who.life += bonusMaxHp;
             // Reset current health regen
             ComebackDrugBuff.currentHealthRegeneratedFromDrug.set(this.who, 0);
             showOverheadText(this.who.x, this.who.y, 119, 221, 119, 200, `+${bonusMaxHp}`);

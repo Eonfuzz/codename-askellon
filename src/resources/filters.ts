@@ -10,3 +10,8 @@ export const FilterIsAlive = (whichPlayer: MapPlayer) => Filter(() => {
     const fUnit = GetFilterUnit();
     return !BlzIsUnitInvulnerable(fUnit) && GetOwningPlayer(fUnit) !== whichPlayer.handle;
 });
+
+export const FilterAnyUnit = () => Filter(() => {
+    const fUnit = GetFilterUnit();
+    return !BlzIsUnitInvulnerable(fUnit);
+});

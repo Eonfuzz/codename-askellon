@@ -22,10 +22,12 @@ export class DropMineralsAbility implements Ability {
         // Loop through all items and place them on the ground ( that are minerals )
         for (let i = 0; i < this.unit.inventorySize; i++) {
             const item = this.unit.getItemInSlot(i);
-            const iType = item.typeId;
-            if (iType === ITEM_MINERAL_REACTIVE || iType === ITEM_MINERAL_VALUABLE) {
-                item.setPosition(this.targetPoint.x, this.targetPoint.y);
-                ConveyorEntity.getInstance().checkItem(item.handle);
+            if (item) {
+                const iType = item.typeId;
+                if (iType === ITEM_MINERAL_REACTIVE || iType === ITEM_MINERAL_VALUABLE) {
+                    item.setPosition(this.targetPoint.x, this.targetPoint.y);
+                    ConveyorEntity.getInstance().checkItem(item.handle);
+                }
             }
             
         }

@@ -11,6 +11,7 @@ import { BUFF_ID_VOID_SICKNESS } from "resources/buff-ids";
 import { MessagePlayer } from "lib/utils";
 import { Log } from "lib/serilog/serilog";
 import { UPGR_DUMMY_VOID_SICKNESS } from "resources/upgrade-ids";
+import { COLOUR_CULT_GREEN } from "app/force/forces/cultist/constants";
 
 // Interacting with asteroids
 const noInventorySpace = new SoundRef("Sounds\\DeniedBeep.mp3", false, true);
@@ -41,6 +42,11 @@ export function initShipInteractions() {
 
             if (GetPlayerTechCount(source.owner.handle, UPGR_DUMMY_VOID_SICKNESS, true) !== 0) {
                 MessagePlayer(source.owner, `You feel too ${COL_ATTATCH}sick|r to use this right now.`)
+                return false;
+            }
+
+            if (interactable.mana <= 30) {
+                MessagePlayer(source.owner, `Not enough ${COLOUR_CULT_GREEN}Fuel|r to exit the station. Try again later.`)
                 return false;
             }
             EventEntity.getInstance().sendEvent(EVENT_TYPE.ENTER_SHIP, {

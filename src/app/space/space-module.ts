@@ -29,7 +29,7 @@ import { Hooks } from "lib/Hooks";
 import { SpaceMiningEntity } from "./space-mining-entity";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { Quick } from "lib/Quick";
-import { getRectsGivenNamespace } from "lib/utils";
+import { getRectsGivenNamespace, getZFromXY } from "lib/utils";
 import { PlayerState } from "app/force/player-type";
 
 // For ship bay instansiation
@@ -118,6 +118,20 @@ export class SpaceEntity extends Entity {
         .addListener( new EventListener(EVENT_TYPE.SHIP_ENTERS_SPACE, (self, data) => this.onShipEntersSpace(data.source, data.data.ship)) )
         .addListener( new EventListener(EVENT_TYPE.SHIP_LEAVES_SPACE, (self, data) => this.onShipLeavesSpace(data.source, data.data.goal)) );
     
+        // Listen to solar event, on hit remove all ship mana        
+        EventEntity.listen(EVENT_TYPE.WORLD_EVENT_SOLAR,  () => {
+            this.ships.forEach(ship => {
+                if (ship && ship.unit && ship.unit.isAlive()) {
+                    // Deal damage to ship based on it's current fuel
+                    ship.unit.damageTarget(ship.unit.handle, ship.shipFuel * 3, false, false, ATTACK_TYPE_MAGIC, DAMAGE_TYPE_LIGHTNING, WEAPON_TYPE_WHOKNOWS);
+                    ship.shipFuel = 0;
+                    const sfx = AddSpecialEffect("Abilities\\Weapons\\Bolt\\BoltImpact.mdl", ship.unit.x, ship.unit.y);
+                    BlzSetSpecialEffectZ(sfx, getZFromXY(ship.unit.x, ship.unit.y)+200);
+                    DestroyEffect(sfx);
+                }
+            });
+        });
+
         try {
             this.initShips();
         }

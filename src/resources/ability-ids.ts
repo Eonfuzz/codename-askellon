@@ -195,3 +195,5 @@ export const ABIL_CULTIST_GIFT_MADNESS = FourCC('A02Q');
 export const ABIL_MOVESPEED_BONUS_30 = FourCC('A02Y');
 export const ABIL_LIFE_REGEN_BONUS_25 = FourCC('A02Y');
 export const ABIL_MAX_LIFE_BONUS_200 = FourCC('A02X');
+
+export const ABIL_ITEM_REMOTE_BOMB = FourCC('A02Z');

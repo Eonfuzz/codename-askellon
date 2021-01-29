@@ -3,7 +3,7 @@ import { Hooks } from "lib/Hooks";
 import { Log } from "lib/serilog/serilog";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { ZONE_TYPE } from "app/world/zone-id";
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "app/world/zone-id";
 import { Timers } from "app/timer-type";
 import { Quick } from "lib/Quick";
 import { SoundRef } from "app/types/sound-ref";
@@ -123,13 +123,10 @@ export class AskellonEntity extends Entity {
                 : 1)); 
 
             Quick.GetRandomFromArray(this.poweredFloors, howManyFloors).forEach(floor => {
-                let howLong = GetRandomReal(0+20*(severity/3), 10+60*(severity/3));
-
-                Timers.addTimedAction(GetRandomReal(3,10), () => {                        
-                    PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
-                    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] POWER SURGE DETECTED IN ${ZONE_TYPE[floor]}`);
-                    EventEntity.send(EVENT_TYPE.STATION_POWER_OUT, { source: null, data: { zone: floor, duration: howLong }})
-                });
+                let howLong = GetRandomReal(0+20*(severity/3), 10+60*(severity/3));                   
+                PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] Power Surge Detected :: ${ZONE_TYPE_TO_ZONE_NAME.get(floor)}`);
+                EventEntity.send(EVENT_TYPE.STATION_POWER_OUT, { source: null, data: { zone: floor, duration: howLong }})
             });
         }
         catch(e) {
