@@ -2834,12 +2834,6 @@ STRING 760
 Thick Carapace
 }
 
-STRING 762
-// Buffs/Effects: B006 (Thick Carapace), Buffubertip (Tooltip - Extended)
-{
-All damage recieved is reduced by 10
-}
-
 STRING 763
 // Buffs/Effects: B007 (Acidic Stigmata), Bufftip (Tooltip)
 {
@@ -7249,12 +7243,6 @@ STRING 1733
 |cff808080A heavily iterated weapon, the MCDC has been consistantly proven to be useful to peacefully disperse protestors and rioters.|r|n|n|cffffcc00An attachment for |r|cffc81e1eKinetic|r|cffffcc00 weapons.|r|n|nFires an airburst canister that rains down |cff00ff005 waves|r of |cff00ff0025 damage|r, slowing for |cff00ff0030%|r. |n|N|cff80808035 Seconds Cooldown|r
 }
 
-STRING 1734
-// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 5|r.
-}
-
 STRING 1735
 // Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
@@ -8074,5 +8062,17 @@ STRING 1903
 // Abilities: uDex (Detect Leave), Name (Name)
 {
 Detect Leave
+}
+
+STRING 1904
+// Abilities: A00X (Thick Carapace), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nThickened Carapace increases your armor by 4 and reduces all damage received by 4|r.
+}
+
+STRING 1905
+// Buffs/Effects: B006 (Thick Carapace), Buffubertip (Tooltip - Extended)
+{
+All damage recieved is reduced by 4
 }
 

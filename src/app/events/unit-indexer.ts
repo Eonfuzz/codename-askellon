@@ -1,9 +1,12 @@
+import { Log } from "lib/serilog/serilog";
+import { ABIL_U_DEX } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { Group, Trigger, Unit } from "w3ts/index";
 
 export enum UnitDexEvent {
     INDEX,
-    DEINDEX
+    DEINDEX,
+    DEATH,
 }
 
 export class UnitDex {
@@ -13,12 +16,12 @@ export class UnitDex {
     public static readonly list: number[] = [];
     public static readonly unit: Unit[] = [];
     public static eventUnit: Unit;
-    private static DETECT_LEAVE_ABILITY = FourCC("uDex");
+    private static DETECT_LEAVE_ABILITY = ABIL_U_DEX;
     private static counter = 0;
     private static count = 0;
     private static index = 0;
     private static lastIndex = 0;
-    private static indexTrig = [new Trigger(), new Trigger()];
+    private static indexTrig = [new Trigger(), new Trigger(), new Trigger()];
 
     private constructor() { }
 
@@ -83,7 +86,6 @@ export class UnitDex {
     }
 
     private static onLeave() {
-
         if (GetIssuedOrderId() != 852056) {
             return false;
         }
@@ -92,6 +94,10 @@ export class UnitDex {
 
         // If unit was killed (not removed) then don't continue
         if (u.getAbilityLevel(this.DETECT_LEAVE_ABILITY) != 0) {
+            if (!UnitAlive(u.handle)) {
+                this.eventUnit = u;
+                this.indexTrig[UnitDexEvent.DEATH].exec();
+            }
             return false
         }
 

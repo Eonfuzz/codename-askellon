@@ -10,6 +10,8 @@ import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_U_DEX } from "resources/ability-ids";
 import { UnitDex, UnitDexEvent } from "./unit-indexer";
+import { console } from "lib/translators";
+import { Log } from "lib/serilog/serilog";
 
 /**
  * Handles and tracks events being passed to and from the game
@@ -50,9 +52,8 @@ export class EventEntity {
             }
         });
 
-        UnitDex.registerEvent(UnitDexEvent.DEINDEX, () => {
+        UnitDex.registerEvent(UnitDexEvent.DEATH, () => {
             const unit = UnitDex.eventUnit;
-
 
             // Other things we gotta do
             // If it is a creep tumor, play the zerg building sfx
@@ -74,13 +75,12 @@ export class EventEntity {
                 BlzSetSpecialEffectScale(sfx, unit.selectionScale);
                 DestroyEffect(sfx)
             }
+        });
 
-            Timers.addTimedAction(0.00, () => {
-                if (!UnitAlive(unit.handle)) {
-                    // Unit is omega dead
-                    EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
-                }
-            });
+        UnitDex.registerEvent(UnitDexEvent.DEINDEX, () => {
+            const unit = UnitDex.eventUnit;
+            // Unit is omega dead
+            EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
         });
     }
 

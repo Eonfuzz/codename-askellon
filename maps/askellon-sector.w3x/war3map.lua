@@ -1178,7 +1178,7 @@ end
 function CreateRegions()
     local we
     gg_rct_Space = Rect(6592.0, -30176.0, 29920.0, 1216.0)
-    gg_rct_FallZone1Land = Rect(-27488.0, 26816.0, -27168.0, 27168.0)
+    gg_rct_FallZone1Land = Rect(-8608.0, -17216.0, -8288.0, -16864.0)
     gg_rct_GeneSplicer = Rect(-15584.0, -15040.0, -15456.0, -14912.0)
     gg_rct_FallZoneCargo = Rect(-24768.0, -17696.0, -24096.0, -17440.0)
     gg_rct_FallZoneCargoLand = Rect(-25600.0, 26016.0, -25344.0, 26496.0)

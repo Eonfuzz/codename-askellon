@@ -64,7 +64,7 @@ export class CrewmemberForce extends ForceType {
         TooltipEntity.getInstance().registerTooltip(whichUnit, resolveTooltip);
     }
 
-    removePlayer(player: MapPlayer, killer: Unit = undefined) {
+    removePlayer(player: MapPlayer, killer: Unit = undefined, skipObserver: boolean = false) {
         const forceHasPlayer = this.players.indexOf(player) >= 0;
 
         if (forceHasPlayer) {
@@ -134,6 +134,7 @@ export class CrewmemberForce extends ForceType {
                         // Revive and hide the crewmember
                         crew.unit.revive(crew.unit.x, crew.unit.y, false);
                         crew.unit.show = false;
+                        crew.unit.paused = true;
         
                         PlayerStateFactory.get(player).setForce(alienForce);
                         alienForce.addPlayer(player);
@@ -151,6 +152,7 @@ export class CrewmemberForce extends ForceType {
                         Timers.addTimedAction(3, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
                         Timers.addTimedAction(3.6, () => DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y)));
                         Timers.addTimedAction(4, () => {
+                            crew.unit.paused = false;
                             DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y));
                             alienForce.transform(player, true);
                             FogModifierStop(fogMod);
@@ -163,29 +165,39 @@ export class CrewmemberForce extends ForceType {
                     }
                     // Otherwise make observer
                     else {
-                        const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
+                        if (!skipObserver) {
+                            const playerData = PlayerStateFactory.get(player);
+                            const crew = playerData.getCrewmember();
+                            const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
         
+                            obsForce.addPlayer(player);
+                            obsForce.addPlayerMainUnit(crew, player);
+                            PlayerStateFactory.get(player).setForce(obsForce);
+                        }
+                    }
+                }
+                else {
+                    if (!skipObserver) {
+                        const playerData = PlayerStateFactory.get(player);
+                        const crew = playerData.getCrewmember();
+                        const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
+    
                         obsForce.addPlayer(player);
                         obsForce.addPlayerMainUnit(crew, player);
                         PlayerStateFactory.get(player).setForce(obsForce);
                     }
                 }
-                else {
+            }
+            catch(e) {
+                if (!skipObserver) {
+                    const playerData = PlayerStateFactory.get(player);
+                    const crew = playerData.getCrewmember();
                     const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
 
                     obsForce.addPlayer(player);
                     obsForce.addPlayerMainUnit(crew, player);
                     PlayerStateFactory.get(player).setForce(obsForce);
                 }
-            }
-            catch(e) {
-                const playerData = PlayerStateFactory.get(player);
-                const crew = playerData.getCrewmember();
-                const obsForce = PlayerStateFactory.getForce(OBSERVER_FORCE_NAME) as ObserverForce;
-
-                obsForce.addPlayer(player);
-                obsForce.addPlayerMainUnit(crew, player);
-                PlayerStateFactory.get(player).setForce(obsForce);
             }
         }
     }    

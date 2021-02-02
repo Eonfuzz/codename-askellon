@@ -3,16 +3,16 @@ import { COL_ATTATCH, COL_GOOD, COL_INFO, COL_GOLD, COL_MISC, COL_BAD, COL_ORANG
 import { GunItem } from "app/weapons/guns/gun-item";
 
 export const BURST_RIFLE_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
-`|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
+`|cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
 Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
 
-Fires a short burst of six bullets, each dealing |cff00ff00${damage} damage|r.
+Fires a short burst of ${COL_GOOD}6|r bullets, each dealing ${COL_GOOD}${damage}|r damage.
 
 ${COL_MISC}1 Second Cooldown|r
 `;
 
 export const BURST_RIFLE_ITEM = (weapon: GunItem, damage: any) => 
-`|cff808080Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
+`|cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
 Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
 
 Attached: ${weapon.attachment 
@@ -55,22 +55,22 @@ ${COL_ATTATCH}Fracture Round|r ${COL_GOLD}cannot be removed.|r
 `;
 
 export const SHOTGUN_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
-`|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
+`|cff627781Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
-Fires a blast of 6 shots in a cone, each bullet dealing |cff00ff00${damage}|r damage.
+Fires a blast of 6 shots in a cone, each bullet dealing |cff18bc9c${damage}|r damage.
 Every bullet after the first deals 20% less damage.
 
 ${COL_MISC}2 Seconds Cooldown|r`;
 
 export const SHOTGUN_ITEM = (weapon: GunItem, damage: any) => 
-`|cff808080Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
+`|cff627781Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
 
 A close ranged shotgun that deals good damage
 ${COL_GOOD}- Fires a spread of shots
 - Unaffected by Accuracy
-- Fires 6 shots, each dealing up to |cff00ff00${damage}|r${COL_GOOD} damage
+- Fires 6 shots, each dealing up to |cff18bc9c${damage}|r${COL_GOOD} damage
 - Can be heavily customised|r
 
 ${!weapon.attachment
@@ -79,14 +79,14 @@ ${!weapon.attachment
 }`;
 
 export const TESLA_EXTENDED = (damage: any, accuracyMin: any, accuracyMax: any) => 
-`|cff808080LORE WIP|r
+`|cff627781LORE WIP|r
 
 Charges for 0.5 seconds and fires a massive bolt of lightning hitting all units in a line dealing ${damage} damage and applying ${COL_INFO}Static Shock|r.
 ${COL_INFO}Static Shock|r units explode after 1 second, dealing ${damage/10} damage to all other nearby units and applying ${COL_INFO}Static Shock|r.
 `;
 
 export const TESLA_ITEM = (weapon: GunItem, damage: any) => 
-`|cff808080Lore WIP|r
+`|cff627781Lore WIP|r
 
 A lightning cannon 
 ${COL_GOOD}- Great Damage
@@ -129,7 +129,7 @@ ${COL_ATTATCH}This weapon does not care for friend or foe, and will hit anything
 ${COL_MISC}8 Seconds Cooldown|r`;
 
 export const FLAME_THROWER_ITEM = (weapon: GunItem, damage: any) => 
-`|cff808080A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
+`|cff627781A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
 Built for the flame-squaddie on the go, the Magmeiros is made from a titanium-uranium dual-weave, making it easy to carry without skimping on firepower! This year's release includes Monotine Fuel, specially designed to burn all the hotter when exposed to non-human tissues! With an unbeatable price and top reviews from the HexCorp Corporate Decontamination Squad, you can see why the Magmeiros is the most popular anti-alien weapon in the Pherexis Reach! Buy yours today!|r
 
 A portable flamethrower
@@ -147,7 +147,7 @@ ${!weapon.attachment
 }`;
 
 export const FLAME_THROWER_EXTENDED = (damage: any) => 
-`|cff808080A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
+`|cff627781A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
 Built for the flame-squaddie on the go, the Magmeiros is made from a titanium-uranium dual-weave, making it easy to carry without skimping on firepower! This year's release includes Monotine Fuel, specially designed to burn all the hotter when exposed to non-human tissues! With an unbeatable price and top reviews from the HexCorp Corporate Decontamination Squad, you can see why the Magmeiros is the most popular anti-alien weapon in the Pherexis Reach! Buy yours today!|r
 
 Propels a stream of fire, dealing ${COL_GOOD}${MathRound(damage)}|r damage per second.

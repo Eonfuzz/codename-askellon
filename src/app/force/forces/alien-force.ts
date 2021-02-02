@@ -349,7 +349,7 @@ export class AlienForce extends ForceType {
                         const crwPlayers = crewForce.getPlayers();
                         const pickedPlayer = Quick.GetRandomFromArray(crwPlayers, 1)[0];
 
-                        crewForce.removePlayer(pickedPlayer);
+                        crewForce.removePlayer(pickedPlayer, undefined, true);
                         
                         const crewPickedPlayer = PlayerStateFactory.getCrewmember(pickedPlayer);
         
@@ -646,103 +646,85 @@ export class AlienForce extends ForceType {
      * Evolves the alien host and all spawn
      */
     public onEvolve(newForm: number) {
-
-        // Log.Information("On evolution called");
-        // Log.Information(`Current players: ${this.players.length}`);
-
-        // Timers.addTimedAction(3, () => {
-                // Increment current evo
-                this.currentAlienEvolution = newForm;
-                const alienHost = this.getHost();
-                // const forceEnt = ForceEntity.getInstance();
-                const worldEnt = WorldEntity.getInstance();
+        // Increment current evo
+        this.currentAlienEvolution = newForm;
+        const alienHost = this.getHost();
+        const worldEnt = WorldEntity.getInstance();
+        
+        this.players.forEach((player, i) => {
+            try {
+                // Now get their alien units and replace with the new evo
+                const unit = this.playerAlienUnits.get(player);
+                const pData = PlayerStateFactory.get(player);
+                const crew = PlayerStateFactory.getCrewmember(player);
                 
-                // TODO FIXME host might be dead, keep for debbuging purposes though
-                const pHost = PlayerStateFactory.get(this.getHost());
-                // Log.Information("Alien ho/st: "+`${pHost.originalName}`)
+                if (!unit) {
+                    Log.Information("wtf no unit for alien")
+                }
 
-                this.players.forEach((player, i) => {
+                // Is our "Current" unit hidden?
+                const transformingUnitIsHidden = this.playerIsTransformed.get(player) 
+                    // If the player is transformed we need to check if the alien is visible
+                    ? !unit.show
+                    // Otherwise check if the crew is visible
+                    : (crew && crew.unit && !crew.unit.show)
+                
+                // If the current alien is hidden, skip this player
+                if (crew && !crew.unit.isAlive()) 
+                    return Log.Information(`EVOLVE ATTEMPT Crewmember for ${player.name} is dead`);
 
-                    // TODO Remove delayed timers?
-                    // Log.Information(`For ${i}`);
-                    // Timers.addTimedAction(i * 5, () => {
-                        try {
-                            // Log.Information(`Starting ${i} ${player.name}`);
-                            // Now get their alien units and replace with the new evo
-                            const unit = this.playerAlienUnits.get(player);
-                            const pData = PlayerStateFactory.get(player);
-                            const crew = PlayerStateFactory.getCrewmember(player);
-                            
-                            if (!unit) {
-                                Log.Information("wtf no unit for alien")
-                            }
-                            const transformationOnHiddenUnits = this.playerIsTransformed.get(player) ? (crew && crew.unit && !crew.unit.show) : (!unit.show);
-                            
-                            // If the current alien is hidden, skip this player
-                            if (crew && !crew.unit.isAlive()) 
-                                return Log.Information(`EVOLVE ATTEMPT Crewmember for ${player.name} is dead`);
-        
-                            if (unit) {
-                                // Get old unit zone
-                                const oldZone = worldEnt.getUnitZone(unit);
-        
-                                // Remove the old unit from the zone
-                                if (oldZone) {
-                                    // Log.Information("[OPTIONAL] Removing old world entity "+ZONE_TYPE[oldZone.id]);
-                                    worldEnt.removeUnit(unit);
-                                }
+                if (unit) {
+                    // Get old unit zone
+                    const oldZone = worldEnt.getUnitZone(unit);
 
-                                // Log.Information(`${pData.originalName} Replacing alien`);
-                                // Remove old alien death
-                                const oldAlienDeath = this.alienDeathTrigs.get(unit);
-                                oldAlienDeath.destroy();
-                                this.alienDeathTrigs.delete(unit);
-                                // Now call replace func
-                                ReplaceUnitBJ(unit.handle, newForm, 1);
-        
-                                const replacedUnit = GetLastReplacedUnitBJ();
-                                const alien = Unit.fromHandle(replacedUnit);
-        
-                                // Log.Information(`${pData.originalName} Registering alien death`);
-                                this.registerAlienDeath(alien);
-        
-                                // And handle travel
-                                if (oldZone) {
-                                    // Log.Information("[OPTIONAL] Travel to new zone "+ZONE_TYPE[oldZone.id]);
-                                    worldEnt.travel(alien, oldZone.id);
-                                }
-                            
-                                SelectUnitForPlayerSingle(alien.handle, player.handle);
-        
-                                // Log.Information(`${pData.originalName} Setting player unit `);
-                                this.playerAlienUnits.set(player, alien);
-                                alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
-                        
-                                alien.name = 'Alien Host';
-                                alien.color = PLAYER_COLOR_PURPLE;
-        
-                                if (!transformationOnHiddenUnits) {
-                                    DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
+                    // Remove the old unit from the zone
+                    if (oldZone) {
+                        worldEnt.removeUnit(unit);
+                    }
+
+                    // Remove old alien death
+                    const oldAlienDeath = this.alienDeathTrigs.get(unit);
+                    oldAlienDeath.destroy();
+                    this.alienDeathTrigs.delete(unit);
+                    // Now call replace func
+                    ReplaceUnitBJ(unit.handle, newForm, 1);
+
+                    const replacedUnit = GetLastReplacedUnitBJ();
+                    const alien = Unit.fromHandle(replacedUnit);
+
+                    this.registerAlienDeath(alien);
+
+                    // And handle travel
+                    if (oldZone) {
+                        worldEnt.travel(alien, oldZone.id);
+                    }
+                
+                    SelectUnitForPlayerSingle(alien.handle, player.handle);
+
+                    this.playerAlienUnits.set(player, alien);
+                    alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
             
-                                    // Log.Information(`${pData.originalName} Applying minion host effects`);
-                                    // Now we need to also set alien spawn penalties
-                                    this.applyAlienMinionHost(alien, player === alienHost);
-            
-                                    // If a player isn't transformed force the transformation
-                                    if (!transformationOnHiddenUnits && !this.playerIsTransformed.get(player)) {
-                                        // Log.Information(`${pData.originalName} Transforming player!`);
-                                        this.transform(player, true);
-                                    }
-                                }
-                            }
+                    alien.name = 'Alien Host';
+                    alien.color = PLAYER_COLOR_PURPLE;
+
+                    // Now we need to also set alien spawn penalties
+                    this.applyAlienMinionHost(alien, player === alienHost);
+
+                    if (!transformingUnitIsHidden) {
+                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
+
+                        // If a player isn't transformed force the transformation
+                        if (!this.playerIsTransformed.get(player)) {
+                            this.transform(player, true);
                         }
-                        catch (e) {
-                            Log.Error("Evolution failed!");
-                            Log.Error(e);
-                        }
-                    // });
-                });
-        // });
+                    }
+                }
+            }
+            catch (e) {
+                Log.Error("Evolution failed!");
+                Log.Error(e);
+            }
+        });
     }
 
     private applyAlienMinionHost(alien: Unit, isHost: boolean) {
@@ -840,7 +822,7 @@ export class AlienForce extends ForceType {
  
     public onTakeDamage(who: MapPlayer, attacker: MapPlayer, damagedUnit: unit, damagingUnit: unit) {
         if (UnitHasBuffBJ(damagedUnit, BUFF_ID_ROACH_ARMOR)) {
-            BlzSetEventDamage(GetEventDamage() - 5);
+            BlzSetEventDamage(GetEventDamage() - 4);
         }
     }
 }

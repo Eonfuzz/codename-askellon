@@ -69,7 +69,6 @@ export class PlayerStateFactory {
             return this.state.get(who);
         }
         else if (who.slotState === PLAYER_SLOT_STATE_PLAYING && who.controller === MAP_CONTROL_USER) {
-            // Log.Warning(`Pdata.new [${who.id}]${who.name}`)
             const nState = new PlayerState(who);
             this.state.set(who, nState);
             return nState;
