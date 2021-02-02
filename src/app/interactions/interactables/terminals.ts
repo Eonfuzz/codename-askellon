@@ -27,7 +27,8 @@ export const initInteractionTerminals = () => {
     const cultistTerminal: InteractableData = {
         condition: (fromUnit: Unit, targetUnit: Unit) => {
             // Log.Information("Using terminal");
-            return targetUnit.userData == fromUnit.owner.id && targetUnit.getAbilityLevel(ABIL_ALTAR_IS_BUILT) >= 1;
+            return false;
+            // return targetUnit.userData == fromUnit.owner.id && targetUnit.getAbilityLevel(ABIL_ALTAR_IS_BUILT) >= 1;
         },
         onStart: (fromUnit: Unit, targetUnit: Unit) => {
             // Log.Information("Using terminal");

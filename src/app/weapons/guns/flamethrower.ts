@@ -31,13 +31,13 @@ export class Flamethrower extends GunItem {
     private maxDuration = 3;
     private duration = this.maxDuration;
     private dummyFireballIn = 0.1;
-    private targetLoc: Vector3;
+    private deltaLoc: Vector2;
 
     private shootTimer = new Timer();
 
     private FIRE_TICK_RATE = 0.07;
     private FACING_TICK_RATE = 0.05;
-    private BASE_DPS = 65;
+    private BASE_DPS = 73;
     private DAMAGE_PER_HIT = this.BASE_DPS * this.FIRE_TICK_RATE;
 
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
@@ -48,41 +48,32 @@ export class Flamethrower extends GunItem {
     }
 
     public applyWeaponAttackValues(unit: Unit) {
-        unit.setAttackCooldown(1, 1);
+        BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 5);
         this.equippedTo.unit.setBaseDamage(MathRound(this.getDamage(unit) / this.FIRE_TICK_RATE - 1), 0);
         unit.acquireRange = this.bulletDistance * 0.8;
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
-        BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
+        unit.setAttackCooldown( 
+            BlzGetAbilityCooldown(this.getAbilityId(), unit.getAbilityLevel(this.getAbilityId())), 
+            0
+        );
     }
-
-    
-    public onAdd(caster: ArmableUnitWithItem) {
-        super.onAdd(caster);
-        this.equippedTo.unit.addAbility(ABIL_WEP_FLAMETHROWER);
-    }
-
-    public onRemove() {
-        this.equippedTo.unit.removeAbility(ABIL_WEP_FLAMETHROWER);
-        super.onRemove();
-    }
-
     
     public onShoot(unit: Unit, targetLocation: Vector3): void {
         super.onShoot(unit, targetLocation);
 
         this.duration = this.maxDuration;
-        this.flamerSound.playSoundOnUnit(unit.handle, 127);
+        this.flamerSound.playSoundOnUnit(unit.handle, 60);
 
         let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
-        let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
+        this.deltaLoc = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
 
-        this.targetLoc = new Vector3(targetDistance.x + casterLoc.x, targetDistance.y + casterLoc.y, targetLocation.z);
+        const targetLoc = new Vector3(this.deltaLoc.x + casterLoc.x, this.deltaLoc.y + casterLoc.y, targetLocation.z);
 
         this.shootTimer.start(this.FACING_TICK_RATE, true, () => this.updateFacing(this.FACING_TICK_RATE))
 
         const uLoc = Vector3.fromWidget(unit.handle);
-        const dLoc = this.targetLoc.subtract(uLoc);
-        const a = uLoc.angle2Dto(this.targetLoc);
+        const dLoc = targetLoc.subtract(uLoc);
+        const a = uLoc.angle2Dto(targetLoc);
         const offsetVec = new Vector2(0, 0).applyPolarOffset(a - 90, dLoc.getLength());
 
         // AddSpecialEffect(SFX_ACID_AURA, 
@@ -120,7 +111,9 @@ export class Flamethrower extends GunItem {
         }
             
         let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)+10).projectTowardsGunModel(unit.handle);
-        let strayTarget = this.getStrayLocation(this.targetLoc, unit);
+        const targetLoc = new Vector3(casterLoc.x + this.deltaLoc.x, casterLoc.y + this.deltaLoc.y, casterLoc.z);
+        
+        let strayTarget = this.getStrayLocation(targetLoc, unit);
         strayTarget.z = 0;
         let deltaTarget = strayTarget.subtract(casterLoc);
 

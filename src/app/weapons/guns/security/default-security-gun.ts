@@ -42,11 +42,11 @@ export class DefaultSecurityGun extends Gun {
 
         try {
             if (this.soundTracker === 0) {
-                this.shootSound.playSoundOnUnit(unit.handle, 30, false);
+                this.shootSound.playSoundOnUnit(unit.handle, 20, false);
                 this.soundTracker = 1;
             }
             else {
-                this.shootSound2.playSoundOnUnit(unit.handle, 30, false);
+                this.shootSound2.playSoundOnUnit(unit.handle, 20, false);
                 this.soundTracker = 0;
             }
             let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y) + 30);

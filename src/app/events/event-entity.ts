@@ -3,13 +3,13 @@ import { EVENT_TYPE } from "./event-enum";
 import { EventData } from "./event-data";
 import { Hooks } from "lib/Hooks";
 import { Trigger, Region, Unit, MapPlayer } from "w3ts/index";
-import { Log } from "lib/serilog/serilog";
-import { ABIL_DEFEND, ABIL_EGG_HATCH_NEUTRAL } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
 import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH } from "resources/unit-ids";
 import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ABIL_U_DEX } from "resources/ability-ids";
+import { UnitDex, UnitDexEvent } from "./unit-indexer";
 
 /**
  * Handles and tracks events being passed to and from the game
@@ -28,101 +28,60 @@ export class EventEntity {
 
     eventListeners = new Map<EVENT_TYPE, EventListener[]>();
 
-    private onUnitSpawn: Trigger;
-    private onUnitDeath: Trigger;
-    private onUnitUndefend: Trigger;
-
     constructor() {
-        const mapArea = CreateRegion();
-        RegionAddRect(mapArea, GetPlayableMapRect());
-        
-        // listen to unit create events
-        // this is used as a "on unit remove" hack
-        this.onUnitSpawn = new Trigger();
-        this.onUnitSpawn.registerEnterRegion(mapArea, Condition(() => true));
+        UnitDex.init();
 
-        Players.forEach(player => {
-            SetPlayerAbilityAvailable(player.handle, ABIL_DEFEND, false);
-        });
-        this.onUnitSpawn.addAction(() => {
-            const unit = GetTriggerUnit();
-            const u = GetUnitTypeId(GetTriggerUnit());
-            
-            if (u == UNIT_ID_DUMMY_CASTER) return false;
-            if (u == UNIT_ID_CRATE) return false;
-            if (u == SPACE_UNIT_ASTEROID) return false;
-            if (u == SPACE_UNIT_MINERAL) return false;
+        UnitDex.registerEvent(UnitDexEvent.INDEX, () => {
+            const u = UnitDex.eventUnit;
+            const uType = u.typeId;
+
+            if (uType == UNIT_ID_DUMMY_CASTER) return false;
+            if (uType == UNIT_ID_CRATE) return false;
+            if (uType == SPACE_UNIT_ASTEROID) return false;
+            if (uType == SPACE_UNIT_MINERAL) return false;
 
             // Check to see if controller is alien AI
-            if (PlayerStateFactory.isAlienAI(MapPlayer.fromHandle(GetOwningPlayer(unit)))) {
-                const source = Unit.fromHandle(unit);
-                EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: source });
+            if (PlayerStateFactory.isAlienAI(u.owner)) {
+                EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: u });
             }
-            else if (GetUnitTypeId(unit) === ALIEN_MINION_CANITE) {
-                DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, GetUnitX(unit), GetUnitY(unit)));
-                const source = Unit.fromHandle(unit);
-                EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: source });
+            else if (uType === ALIEN_MINION_CANITE) {
+                DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, u.x, u.y));
+                EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: u });
             }
-        })
+        });
 
-        this.onUnitDeath = new Trigger();
-        this.onUnitDeath.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
-        this.onUnitDeath.addAction(() => {
-            const unit = GetTriggerUnit();
-            const u = GetUnitTypeId(GetTriggerUnit());
-            
-            if (u == UNIT_ID_DUMMY_CASTER) return false;
-            if (u == UNIT_ID_CRATE) return false;
-            if (u == SPACE_UNIT_ASTEROID) return false;
-            if (u == SPACE_UNIT_MINERAL) return false;
-            // if (u == UNIT_) return false;
+        UnitDex.registerEvent(UnitDexEvent.DEINDEX, () => {
+            const unit = UnitDex.eventUnit;
 
-            
-            UnitAddAbility(GetTriggerUnit(), ABIL_DEFEND);
-        })
 
-        this.onUnitUndefend = new Trigger();
-        this.onUnitUndefend.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_ORDER);
-        this.onUnitUndefend.addCondition(Condition(() => { 
-            const order = GetIssuedOrderId()
-            // If we are undefending it means something's happened to the unit
-            if (order === 852056) {
-                const unit = Unit.fromHandle(GetTriggerUnit());
-                const unitIsDead = !UnitAlive(unit.handle)
-                if (unitIsDead) {
+            // Other things we gotta do
+            // If it is a creep tumor, play the zerg building sfx
+            if (unit.typeId === ALIEN_STRUCTURE_TUMOR) {
+                unit.show = false;
+                const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
+                BlzSetSpecialEffectScale(sfx, 0.4);
+                DestroyEffect(sfx);
+            }
+            else if (unit.typeId === ALIEN_MINION_LARVA) {
+                unit.show = false;
+                const sfx = AddSpecialEffect(SFX_ZERG_LARVA_DEATH, unit.x, unit.y);
+                BlzSetSpecialEffectScale(sfx, 0.6);
+                DestroyEffect(sfx);
+            }
+            else if (unit.typeId === ALIEN_MINION_EGG || unit.typeId === UNIT_ID_EGG_AUTO_HATCH || unit.typeId == UNIT_ID_EGG_AUTO_HATCH_LARGE) {
+                unit.show = false;
+                const sfx = AddSpecialEffect(SFX_ZERG_EGG_DEATH, unit.x, unit.y);
+                BlzSetSpecialEffectScale(sfx, unit.selectionScale);
+                DestroyEffect(sfx)
+            }
 
-                    // Other things we gotta do
-                    // If it is a creep tumor, play the zerg building sfx
-                    if (unit.typeId === ALIEN_STRUCTURE_TUMOR) {
-                        unit.show = false;
-                        const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
-                        BlzSetSpecialEffectScale(sfx, 0.4);
-                        DestroyEffect(sfx);
-                    }
-                    else if (unit.typeId === ALIEN_MINION_LARVA) {
-                        unit.show = false;
-                        const sfx = AddSpecialEffect(SFX_ZERG_LARVA_DEATH, unit.x, unit.y);
-                        BlzSetSpecialEffectScale(sfx, 0.6);
-                        DestroyEffect(sfx);
-                    }
-                    else if (unit.typeId === ALIEN_MINION_EGG || unit.typeId === UNIT_ID_EGG_AUTO_HATCH || unit.typeId == UNIT_ID_EGG_AUTO_HATCH_LARGE) {
-                        unit.show = false;
-                        const sfx = AddSpecialEffect(SFX_ZERG_EGG_DEATH, unit.x, unit.y);
-                        BlzSetSpecialEffectScale(sfx, unit.selectionScale);
-                        DestroyEffect(sfx)
-                    }
-
-                    Timers.addTimedAction(0.00, () => {
-                        if (!UnitAlive(unit.handle)) {
-                            // Unit is omega dead
-                            EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
-                        }
-                    });
+            Timers.addTimedAction(0.00, () => {
+                if (!UnitAlive(unit.handle)) {
+                    // Unit is omega dead
+                    EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
                 }
-            }
-            // Log.Information("Order "+OrderId2String(GetIssuedOrderId()));
-            return false;
-        }))
+            });
+        });
     }
 
     addListener(listeners: EventListener[])
@@ -179,5 +138,5 @@ export class EventEntity {
         else {
             EventEntity.getInstance().addListener(new EventListener(listener as EVENT_TYPE, cb));
         }
-    } 
+    }
 }

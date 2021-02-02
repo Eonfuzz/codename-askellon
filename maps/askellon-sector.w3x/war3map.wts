@@ -906,7 +906,7 @@ W
 }
 
 STRING 241
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A02G (Concealing Webs), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1068,7 +1068,7 @@ W
 }
 
 STRING 283
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2445,7 +2445,7 @@ W
 }
 
 STRING 633
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3062,12 +3062,6 @@ STRING 818
 Seal of Purity
 }
 
-STRING 823
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff808080LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nInstalls firmware updates on space ships|n|cff00ff00- Unlocks Heavy Ordinance for Perseus and Askellon|n- Ship fuel usage reduced by 40%|n|n|cffffcc00Occupation Bonus [PILOT / NAVIGATOR]|r|n|cff00ff00- Macro Las fuel cost reduced by 5|n- Ship fuel usage reduced by a further 20%|r|n|n|cff8a6df2Infestation [ALIEN]|n- Ordinance will always lock onto the Askellon|n- Internal damage causes infestation|n- Disables oxygen production on ships|r
-}
-
 STRING 824
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
@@ -3183,7 +3177,7 @@ W
 }
 
 STRING 850
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -5124,7 +5118,7 @@ R
 }
 
 STRING 1300
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A02F (Hookshot), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -5520,7 +5514,7 @@ Q
 }
 
 STRING 1389
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6605,60 +6599,6 @@ STRING 1590
 - T2 Defiler
 }
 
-STRING 1591
-// Abilities: A02E (Defiler Infestation Spawning), Name (Name)
-{
-Defiler Infestation Spawning
-}
-
-STRING 1592
-// Abilities: A02E (Defiler Infestation Spawning), Tip (Tooltip - Normal)
-{
-Infestation Form
-}
-
-STRING 1593
-// Abilities: A02E (Defiler Infestation Spawning), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The abdomen conceals large birthing sacs.|r|n|nYour attacks coat the enemy in a terrible toxin, dealing |cff00ff005 damage|r a second lasting |cff00ff0010 seconds|r. Also passively spawns a |cff8a6defCanite|r every 25 seconds.|r|r|n|n|cff80808025 Seconds Cooldown|r
-}
-
-STRING 1595
-// Abilities: A02F (Defiler Neurotoxin), Tip (Tooltip - Normal)
-{
-Xenos Neurotoxin
-}
-
-STRING 1596
-// Abilities: A02F (Defiler Neurotoxin), Name (Name)
-{
-Defiler Neurotoxin
-}
-
-STRING 1597
-// Abilities: A02F (Defiler Neurotoxin), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The abdomen conceals large birthing sacs.|r|n|nYour attacks coat the enemy in a terrible toxin, dealing |cff00ff005 damage|r a second lasting |cff00ff0010 seconds|r. Also passively spawns a |cff8a6defCanite|r every 25 seconds.|r|r|n|n|cff80808025 Seconds Cooldown|r
-}
-
-STRING 1598
-// Abilities: A02G (Defiler Infestation Spawning 2), Name (Name)
-{
-Defiler Infestation Spawning 2
-}
-
-STRING 1599
-// Abilities: A02G (Defiler Infestation Spawning 2), Tip (Tooltip - Normal)
-{
-Infestation Form
-}
-
-STRING 1600
-// Abilities: A02G (Defiler Infestation Spawning 2), Ubertip (Tooltip - Normal - Extended)
-{
-|cff808080The abdomen conceals large birthing sacs.|r|n|nYour attacks coat the enemy in a terrible toxin, dealing |cff00ff005 damage|r a second lasting |cff00ff0010 seconds|r. Also passively spawns a |cff8a6defCanite|r every 25 seconds.|r|r|n|n|cff80808025 Seconds Cooldown|r
-}
-
 STRING 1601
 // Items: I00N (Corpse), Name (Name)
 {
@@ -7007,7 +6947,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 1680
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -7031,7 +6971,7 @@ Q
 }
 
 STRING 1684
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -7316,7 +7256,7 @@ STRING 1734
 }
 
 STRING 1735
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8020,5 +7960,119 @@ STRING 1884
 // Units: h00E (High Quality Crate|n|cff808080Contains Loot!|r), Name (Name)
 {
 High Quality Crate|n|cff808080Contains Loot!|r
+}
+
+STRING 1885
+// Abilities: A030 (Defiler Infestation), Name (Name)
+{
+Defiler Infestation
+}
+
+STRING 1886
+// Abilities: A030 (Defiler Infestation), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080LORE TODO.|r|n|nYour next attack applies |cff8a6defParasitization|r.|n|n|cff8a6defParasitization|r slows by |cff00ff0020%|r and explodes after |cff00ff003|r seconds, dealing |cff00ff0050|r damage in a large AOE and applying |cff8a6defParasitization|r to all other units hit.|r|n|n|cff80808015 Seconds Cooldown|r
+}
+
+STRING 1887
+// Abilities: A030 (Defiler Infestation), Tip (Tooltip - Normal)
+{
+Reactive Parasitization
+}
+
+STRING 1888
+// Abilities: A02E (Broodnest), Name (Name)
+{
+Broodnest
+}
+
+STRING 1889
+// Abilities: A02E (Broodnest), Hotkey (Hotkey - Normal)
+{
+X
+}
+
+STRING 1890
+// Abilities: A02E (Broodnest), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080The Alien organism replicates itself by cell duplication.|r|n|nPlaces a clutch of |cff8a6df2Eggs|r at your feet; These hatch after |cff00ff0080 |rseconds or when |cff00ff00Reactive Parasitization|r explodes nearby.|n|n|cffd45e19Hatched eggs spawn powerful AI controlled minions.|r|n|n|cff80808045 Second Cooldown|r|r
+}
+
+STRING 1891
+// Abilities: A02E (Broodnest), Tip (Tooltip - Normal)
+{
+Broodnest
+}
+
+STRING 1892
+// Abilities: A02E (Broodnest), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff00ff0010 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff00ff0030 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff80808010 Seconds Cooldown|r
+}
+
+STRING 1893
+// Abilities: A02E (Broodnest), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 1894
+// Abilities: A02F (Hookshot), Name (Name)
+{
+Hookshot
+}
+
+STRING 1895
+// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nFires a sticky web that grabs the first thing it hits|n|cff00ff00Wall|r - Quickly Rappel forwards|n|cff00ff00Unit|r - Stuns and pulls them towards you|r|n|n|cffd45e19This is your escape and kill tool. Don't waste it!|r|n|n|cff80808025 Second Cooldown|r
+}
+
+STRING 1896
+// Abilities: A02F (Hookshot), Tip (Tooltip - Normal)
+{
+Hookshot
+}
+
+STRING 1897
+// Abilities: A02G (Concealing Webs), Name (Name)
+{
+Concealing Webs
+}
+
+STRING 1898
+// Abilities: A02G (Concealing Webs), Ubertip (Tooltip - Normal - Extended)
+{
+|cff808080Lore TODO|r|n|nBegin creating a trail of webs; Immediately creates 1 web and up to |cff00ff002|r more whenever you walk off a web|r. Lasts |cff00ff0015|r seconds.|n|n|cffd45e19Webs last until you cast this ability again, being on a web grants Invisibility|r|r|n|n|cff80808025 Second Cooldown|r
+}
+
+STRING 1899
+// Abilities: A02G (Concealing Webs), Tip (Tooltip - Normal)
+{
+Concealing Webs
+}
+
+STRING 1900
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1901
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1902
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+WIP this does nothing but give XP
+}
+
+STRING 1903
+// Abilities: uDex (Detect Leave), Name (Name)
+{
+Detect Leave
 }
 

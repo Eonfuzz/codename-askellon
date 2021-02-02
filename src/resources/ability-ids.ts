@@ -133,7 +133,7 @@ export const ABIL_ITEM_GENETIC_SAMPLE_INFESTED = FourCC('A018');
 export const ABIL_ITEM_DRUG_COMEBACK = FourCC('A02V');
 
 
-export const ABIL_DEFEND = FourCC('Adef');
+export const ABIL_U_DEX = FourCC('uDex');
 
 export const ABIL_SYSTEM_REACTOR_DIAGNOSTICS = FourCC('A01P');
 export const ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS = FourCC('A01X');

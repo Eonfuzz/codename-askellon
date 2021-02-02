@@ -64,6 +64,7 @@ export abstract class GunItem extends Gun {
         // If we are in attack mode let the user attack
         else {
             UnitRemoveAbility(this.equippedTo.unit.handle, FourCC('Abun'));
+            this.applyWeaponAttackValues(this.equippedTo.unit);
         }
 
         // If we have an attachment make sure it's added to the unit

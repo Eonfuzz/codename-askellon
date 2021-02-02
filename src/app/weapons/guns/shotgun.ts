@@ -31,11 +31,14 @@ export class Shotgun extends GunItem {
     }
 
     public applyWeaponAttackValues(unit: Unit) {
-        unit.setAttackCooldown(1.5, 1);
         this.equippedTo.unit.setBaseDamage(this.getDamage(unit) - 1, 0);
         unit.acquireRange = 450;
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, ConvertUnitWeaponIntegerField(FourCC('ua1t')), 0, 2);
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance+20);
+        unit.setAttackCooldown( 
+            BlzGetAbilityCooldown(this.getAbilityId(), unit.getAbilityLevel(this.getAbilityId())) * 1.3, 
+            0
+        );
     }
     
     public onShoot(unit: Unit, targetLocation: Vector3): void {

@@ -35,12 +35,15 @@ export class LaserRifle extends GunItem {
     }
 
     public applyWeaponAttackValues(unit: Unit) {
-        unit.setAttackCooldown(1.5, 1);
         this.equippedTo.unit.setBaseDamage(this.getDamage(unit) - 1, 0);
         unit.acquireRange = this.bulletDistance * 0.8;
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 5);
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED, 0, 2);
+        unit.setAttackCooldown( 
+            BlzGetAbilityCooldown(this.getAbilityId(), unit.getAbilityLevel(this.getAbilityId())) * 1.3, 
+            0
+        );
     }
     
     public onShoot(unit: Unit, targetLocation: Vector3): void {

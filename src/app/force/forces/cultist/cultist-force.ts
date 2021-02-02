@@ -82,7 +82,7 @@ export class CultistForce extends CrewmemberForce {
                 u.shareVision(p, true);
             });
 
-            SetUnitUserData(u.handle, oldOwner.id);
+            // SetUnitUserData(u.handle, oldOwner.id);
 
             this.playerToAltar.set(oldOwner, u);
             this.altars.push(u);
@@ -129,29 +129,29 @@ export class CultistForce extends CrewmemberForce {
     }
 
     private onAltarDeathEv(altar: Unit, ignorePunishment?: boolean) {
-        const owner = MapPlayer.fromIndex(altar.userData);
+        // const owner = MapPlayer.fromIndex(altar.userData);
 
-        const mAltar = this.playerToAltar.get(owner);
-        if (altar === mAltar) {
-            MessagePlayer(owner, `${COLOUR_CULT}Your Altar was destroyed!`);
-            const pData = PlayerStateFactory.get(owner);
-            const u = pData.getUnit();
+        // const mAltar = this.playerToAltar.get(owner);
+        // if (altar === mAltar) {
+        //     MessagePlayer(owner, `${COLOUR_CULT}Your Altar was destroyed!`);
+        //     const pData = PlayerStateFactory.get(owner);
+        //     const u = pData.getUnit();
 
 
-            if (!ignorePunishment) {
-                const sfx = AddSpecialEffect(SFX_RED_SINGULARITY, u.x, u.y);
-                BlzSetSpecialEffectZ(sfx, getZFromXY(u.x, u.y));
-                DestroyEffect(sfx);
+        //     if (!ignorePunishment) {
+        //         const sfx = AddSpecialEffect(SFX_RED_SINGULARITY, u.x, u.y);
+        //         BlzSetSpecialEffectZ(sfx, getZFromXY(u.x, u.y));
+        //         DestroyEffect(sfx);
 
-                u.damageTarget(u.handle, 50, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
-                BlzStartUnitAbilityCooldown(u.handle, ABIL_CULTIST_INFO, 120);
-            }
+        //         u.damageTarget(u.handle, 50, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+        //         BlzStartUnitAbilityCooldown(u.handle, ABIL_CULTIST_INFO, 120);
+        //     }
 
-            const i = this.altars.indexOf(mAltar);
-            this.altars.splice(i, 1);
-            this.playerToAltar.delete(owner);
+        //     const i = this.altars.indexOf(mAltar);
+        //     this.altars.splice(i, 1);
+        //     this.playerToAltar.delete(owner);
 
-        }
+        // }
     }
 
     private onCrewmemberDeath(dyingCrew: Unit, killingCrew: Unit) {
@@ -279,11 +279,11 @@ export class CultistForce extends CrewmemberForce {
     }
 
     private isAltarBuilt(altar: Unit): boolean | undefined {
-        const p = MapPlayer.fromIndex(GetUnitUserData(altar.handle));
-        const pAltar = this.getPlayerAltar(p);
-        if (pAltar && pAltar === altar) {
-            return this.playerAltarIsBuilt.get(p);
-        }
+        // const p = MapPlayer.fromIndex(GetUnitUserData(altar.handle));
+        // const pAltar = this.getPlayerAltar(p);
+        // if (pAltar && pAltar === altar) {
+        //     return this.playerAltarIsBuilt.get(p);
+        // }
         return;
     }
 
@@ -292,10 +292,10 @@ export class CultistForce extends CrewmemberForce {
         altar.mana = 0;
 
         altar.addAbility(ABIL_ALTAR_IS_BUILT);
-        const player = MapPlayer.fromIndex(altar.userData);
+        // const player = MapPlayer.fromIndex(altar.userData);
         // TODO Send message to player
-        MessagePlayer(player, `Your ${COLOUR_CULT}Altar|r has finished building.`);
-        if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
+        // MessagePlayer(player, `Your ${COLOUR_CULT}Altar|r has finished building.`);
+        // if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
     }
 
     private onCultistResearch(altarTerminal: Unit) {

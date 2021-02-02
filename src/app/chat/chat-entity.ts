@@ -4,7 +4,7 @@ import { ChatSystem } from "./chat-system";
 import { Log } from "lib/serilog/serilog";
 import {  SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE, COL_ALIEN } from "resources/colours";
-import { syncData, GetActivePlayers, GetPlayerCamLoc, MessagePlayer } from "lib/utils";
+import { syncData, GetActivePlayers, GetPlayerCamLoc, MessagePlayer, GetPlayerUnitSelection } from "lib/utils";
 import { ChatHook } from "./chat-hook-type";
 import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
@@ -320,8 +320,10 @@ export class ChatEntity extends Entity {
                 });
             }
             else if (message == "-cd") {
-                EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    UnitResetCooldown(GetEnumUnit());
+                GetPlayerUnitSelection(player, units => {
+                    units.forEach(u => {
+                        u.resetCooldown();
+                    });
                 });
             }
             else if (message == "-min1") {
@@ -334,13 +336,17 @@ export class ChatEntity extends Entity {
                 ResearchFactory.getInstance().processMajorUpgrade(TECH_MINERALS_PROGRESS, 3);
             }
             else if (message == "-control") {
-                EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    SetUnitOwner(GetEnumUnit(), player.handle, false);
+                GetPlayerUnitSelection(player, units => {
+                    units.forEach(u => {
+                        SetUnitOwner(u.handle, player.handle, false);
+                    });
                 });
             }
             else if (message == "-checkai") {
-                EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    AIEntity.debugAgent(GetEnumUnit())
+                GetPlayerUnitSelection(player, units => {
+                    units.forEach(u => {
+                        AIEntity.debugAgent(u.handle)
+                    });
                 });
             }
             else if (message.indexOf("-vision") === 0) {
@@ -374,33 +380,18 @@ export class ChatEntity extends Entity {
                 // Log.Information("TP");
                 GetPlayerCamLoc(player, (x, y) => {
                     // Get zone at loc
-                    Log.Information("Tp: "+x+", "+y);
+                    MessagePlayer(player, "Tp: "+x+", "+y);
                     const zone = WorldEntity.getInstance().getPointZone(x, y);
                     if (zone) Log.Information("Zone: "+ZONE_TYPE[zone.id]);
                     else Log.Information("No Zone");
 
-                    EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                        const u = GetEnumUnit();
-                        SetUnitX(u, x);
-                        SetUnitY(u, y);
-                        if (zone) WorldEntity.getInstance().travel(Unit.fromHandle(u), zone.id);
-                    })
-                });
-            }
-            else if (message == "-tp2") {
-                // Log.Information("TP");
-                GetPlayerCamLoc(player, (x, y) => {
-                    // Get zone at loc
-                    Log.Information("Tp: "+x+", "+y);
-                    const zone = WorldEntity.getInstance().getPointZone(x, y);
-                    if (zone) Log.Information("Zone: "+ZONE_TYPE[zone.id]);
-                    else Log.Information("No Zone");
-
-                    EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                        const u = GetEnumUnit();
-                        SetUnitPosition(u, x, y);
-                        if (zone) WorldEntity.getInstance().travel(Unit.fromHandle(u), zone.id);
-                    })
+                    GetPlayerUnitSelection(player, units => {
+                        units.forEach(u => {
+                            u.x = x;
+                            u.y = y;
+                            if (zone) WorldEntity.getInstance().travel(u, zone.id);
+                        });
+                    });
                 });
             }
         }

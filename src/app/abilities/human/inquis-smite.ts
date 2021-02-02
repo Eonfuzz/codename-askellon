@@ -86,7 +86,7 @@ export class SmiteAbility implements Ability {
                 else if (this.targetUnit.owner.getTechCount(TECH_HAS_GENES_TIER_3, true) > 0) isHeretic = true;
             }
 
-            const damage = isHeretic ? 150 : 50;
+            const damage = isHeretic ? 250 : 100;
             const doStun = UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_PURITY_SEAL);
             
             if (ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.unit.owner, this.targetUnit.owner))  {

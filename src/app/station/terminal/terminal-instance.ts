@@ -47,7 +47,7 @@ export class Terminal {
         this.terminalCastAbilityTrigger.addAction(() => this.onCast());
 
         this.unselectionTrigger = new SmartTrigger();
-        const syncher = syncData(`INT_SEL_${Terminal.id++}`, this.sourceUnit.owner, (self, data: string) => this.onUnitUnselect());
+        const syncher = syncData(`INT_SEL_${Terminal.id++}`, this.sourceUnit.owner, (data: string) => this.onUnitUnselect());
 
         this.unselectionTrigger.registerPlayerUnitEvent(this.sourceUnit.owner, EVENT_PLAYER_UNIT_DESELECTED, null);
         this.unselectionTrigger.addAction(() => {

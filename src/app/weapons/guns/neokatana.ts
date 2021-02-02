@@ -39,11 +39,14 @@ export class WepNeokatana extends GunItem {
     }
 
     public applyWeaponAttackValues(unit: Unit) {
-        unit.setAttackCooldown(1, 1);
         this.equippedTo.unit.setBaseDamage(this.getDamage(unit) - 1, 0);
         unit.acquireRange = 128;
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 128);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
+        unit.setAttackCooldown( 
+            BlzGetAbilityCooldown(this.getAbilityId(), unit.getAbilityLevel(this.getAbilityId())), 
+            0
+        );
     }
     
     public onShoot(unit: Unit, targetLocation: Vector3): void {

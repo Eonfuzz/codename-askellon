@@ -5,6 +5,7 @@ import { Players } from "w3ts/globals/index";
 import { SFX_BLOOD_1, SFX_BLOOD_2, SFX_BLOOD_3, SFX_BLOOD_4, SFX_BLOOD_5, SFX_BLOOD_6, SFX_BLOOD_7, SFX_BLOOD_8, SFX_BLOOD_9, SFX_BLOOD_10, SFX_BLOOD_11, SFX_BLOOD_12, SFX_FIRE } from "resources/sfx-paths";
 import { Timers } from "app/timer-type";
 import { TILE_SIZE } from "resources/data-consts";
+import { UnitDex } from "app/events/unit-indexer";
 
 export function showOverheadText(x: number, y: number, r: number, g: number, b: number, a: number, text: string) {
     const t = new TextTag();
@@ -79,7 +80,7 @@ export function MessagePlayer(who: MapPlayer, message: string): void {
 
 let camIterator = 0;
 export function GetPlayerCamLoc(who: MapPlayer, callback: (x: number, y: number) => void) {
-    const syncher = syncData(`${camIterator++}`, who, (self, data: string) => {
+    const syncher = syncData(`${camIterator++}`, who, (data: string) => {
         // Log.Information(data);
         const x = S2R(data.split(',')[0]);
         const y = S2R(data.split(',')[1]);
@@ -93,6 +94,28 @@ export function GetPlayerCamLoc(who: MapPlayer, callback: (x: number, y: number)
         syncher(`${x},${y}`);
     }
 }
+
+const selectionGroup = CreateGroup();
+export function GetPlayerUnitSelection(who: MapPlayer, callback: (Unit: Unit[]) => void) {
+
+    GroupEnumUnitsSelected(selectionGroup, who.handle, null); 
+    let sendString = '';         
+    ForGroup(selectionGroup, () => {
+        sendString += GetUnitUserData(GetEnumUnit())+";";
+    });   
+    GroupClear(selectionGroup);
+    
+    const syncher = syncData(`${camIterator++}`, who, (data: string) => {
+        const uIndexes = data.split(";");
+        const result: Unit[] = [];
+        uIndexes.forEach(uIdx => {
+            result.push(UnitDex.unit[Number(uIdx)]);
+        });
+        callback(result);
+    });
+
+    syncher(sendString);
+} 
 
 export function GetActivePlayers() {
     return Players.filter(currentPlayer => {
@@ -223,7 +246,7 @@ export function terrainIsPathable(x: number, y: number) {
     return hasItem;
 }
 
-export function syncData(handle: string, listenFor: MapPlayer, taker: Function): Function {
+export function syncData(handle: string, listenFor: MapPlayer, cb: (result: string) => void): (data: string) => void {
     // Create and register listen
     const syncTrigger = new Trigger();
     syncTrigger.registerPlayerSyncEvent(listenFor, handle, false);
@@ -232,13 +255,11 @@ export function syncData(handle: string, listenFor: MapPlayer, taker: Function):
         // Erase this trigger
         syncTrigger.destroy();
         // Return result
-        taker(data);
+        cb(data);
     });
 
-    return (self, toSend) => {
-        // if (GetLocalPlayer() === listenFor.handle) {
-            BlzSendSyncData(handle, toSend);
-        // } 
+    return (toSend: string) => {
+        BlzSendSyncData(handle, toSend);
     }
 }
 

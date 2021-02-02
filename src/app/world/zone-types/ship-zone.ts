@@ -115,7 +115,7 @@ export class ShipZone extends ZoneWithExits {
         // Do we have any living generators still?
         for (let index = 0; index < this.powerGenerators.length; index++) {
             const generator = this.powerGenerators[index];
-            if (generator.isAlive()) {
+            if (generator.isAlive() && !generator.invulnerable) {
                 return true;
             }
         }

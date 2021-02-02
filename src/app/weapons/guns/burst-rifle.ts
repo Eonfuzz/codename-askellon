@@ -29,17 +29,20 @@ export class BurstRifle extends GunItem {
     }
 
     public applyWeaponAttackValues(caster: Unit) {
-        caster.setAttackCooldown(1, 1);
         this.equippedTo.unit.setBaseDamage(this.getDamage(caster) - 1, 0);
         caster.acquireRange = this.bulletDistance * 0.8;
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
+        caster.setAttackCooldown( 
+            BlzGetAbilityCooldown(this.getAbilityId(), caster.getAbilityLevel(this.getAbilityId())) * 1.3, 
+            0
+        );
     }
     
     public onShoot(unit: Unit, targetLocation: Vector3): void {
         super.onShoot(unit, targetLocation);
 
-        const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", unit, 50);
+        const sound = PlayNewSoundOnUnit("Sounds\\BattleRifleShoot.mp3", unit, 40);
         let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
         let targetDistance = new Vector2(targetLocation.x - casterLoc.x, targetLocation.y - casterLoc.y).normalise().multiplyN(this.bulletDistance);
 
