@@ -345,7 +345,7 @@ export class ChatEntity extends Entity {
             else if (message == "-checkai") {
                 GetPlayerUnitSelection(player, units => {
                     units.forEach(u => {
-                        AIEntity.debugAgent(u.handle)
+                        AIEntity.debugAgent(u)
                     });
                 });
             }

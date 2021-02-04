@@ -1,6 +1,5 @@
 import { Entity } from "app/entity-type";
 import { Hooks } from "lib/Hooks";
-import { BuildGraph } from "./graph-builder";
 import { Log } from "lib/serilog/serilog";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { Graph } from "./pathfinding/graph";
@@ -14,6 +13,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import {  ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA } from "resources/unit-ids";
 import { CreepEntity } from "app/creep/creep-entity";
 import { Timers } from "app/timer-type";
+import { NodeGraph } from "./graph-builder";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -25,11 +25,6 @@ export class AIEntity extends Entity {
         return this.instance;
     }
 
-    /**
-     * Class def
-     */
-    private pathfindingGraph: Graph;
-
     private playerToAgent: Map<MapPlayer, PlayerAgent>;
     private playerAgents: PlayerAgent[];
 
@@ -37,13 +32,17 @@ export class AIEntity extends Entity {
 
     constructor() {
         super();
-        this.pathfindingGraph = BuildGraph();
+
+
+        // Populate our node grapoh
+        NodeGraph.buildGraph();
+
         this.playerToAgent = new Map<MapPlayer, PlayerAgent>();
         this.playerAgents = [];
 
         // Create agents
         PlayerStateFactory.getAlienAI().forEach(p => {
-            const agent = new PlayerAgent(p, this.pathfindingGraph, 33);
+            const agent = new PlayerAgent(p, 33);
             this.playerAgents.push(agent);
             this.playerToAgent.set(agent.player, agent);
         });
@@ -54,7 +53,7 @@ export class AIEntity extends Entity {
         EventEntity.listen(new EventListener(EVENT_TYPE.REGISTER_AS_AI_ENTITY, (self, ev) => {
             // Log.Information("Register as AI entity called");
             if (!ev.source.isUnitType( UNIT_TYPE_STRUCTURE )) {
-                AIEntity.addAgent(ev.source.handle);
+                AIEntity.addAgent(ev.source);
             }
         }));
 
@@ -113,7 +112,13 @@ export class AIEntity extends Entity {
         return undefined;
     }
 
-    step() {}
+    _timerDelay = 2;
+    step() {
+        for (let index = 0; index < this.playerAgents.length; index++) {
+            const agent = this.playerAgents[index];
+            agent.step(this._timerDelay);
+        }
+    }
 
     getAgentforPlayer(who: MapPlayer): PlayerAgent | undefined {
         return this.playerToAgent.get(who);
@@ -127,7 +132,7 @@ export class AIEntity extends Entity {
       * Requries the unit to be currently owned by an agent user
       * @param whichUnit 
       */
-    public static addAgent(whichUnit: unit) {
+    public static addAgent(whichUnit: Unit) {
         const instance = this.getInstance();
 
         // Check this unit currently isn't in the AI database
@@ -137,20 +142,20 @@ export class AIEntity extends Entity {
             try {
                 const createFor = instance.getBestPlayerAgent();
 
-                if (!createFor) return RemoveUnit(whichUnit); 
+                if (!createFor) return whichUnit.destroy();
 
-                SetUnitOwner(whichUnit, createFor.player.handle, false);
+                SetUnitOwner(whichUnit.handle, createFor.player.handle, false);
 
-                const z = WorldEntity.getInstance().getPointZone(GetUnitX(whichUnit), GetUnitY(whichUnit));
+                const z = WorldEntity.getInstance().getPointZone(whichUnit.x, whichUnit.y);
 
                 if (!z) {
                     return; //Log.Error("Failed to add AI unit, no zone found "+GetUnitName(whichUnit));
                 }
-                if (GetUnitTypeId(whichUnit) === ALIEN_MINION_FORMLESS) {
-                    CreepEntity.addCreepWithSource(256, Unit.fromHandle(whichUnit));
+                if (whichUnit.typeId === ALIEN_MINION_FORMLESS) {
+                    CreepEntity.addCreepWithSource(256, whichUnit);
                 }
 
-                WorldEntity.getInstance().travel(Unit.fromHandle(whichUnit), z.id);
+                WorldEntity.getInstance().travel(whichUnit, z.id);
                 createFor.addAgent(whichUnit);
             }
             catch(e) {
@@ -163,7 +168,7 @@ export class AIEntity extends Entity {
      * Logs all actions a unit is expected to do
      * @param who 
      */
-    public static debugAgent(who: unit) {
+    public static debugAgent(who: Unit) {
         Log.Information("Checking AI...");
         const i = this.getInstance();
         i.playerAgents.forEach(a => a.debugUnit(who));

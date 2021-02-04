@@ -14,7 +14,9 @@ export class UnitQueue implements Queue {
 
     constructor(target: unit, ...unitActions: UnitAction[]) {
         this.target = target;
-        this.allActions.push(...unitActions);
+        if (unitActions) {
+            this.allActions.push(...unitActions);
+        }
     }
 
     private performAction(timeStep: number) {
