@@ -28,6 +28,9 @@ declare const udg_elevator_entrances: unit[];
 declare const udg_elevator_exits: unit[];
 declare const udg_elevator_exit_zones: string[];
 
+declare const udg_hatch_entrances: unit [];
+declare const udg_hatch_exits: unit[];
+
 export class TheAskellon {
     floors: Map<ZONE_TYPE, ZoneWithExits> = new Map();
     allFloors: Zone[] = [];
@@ -74,6 +77,25 @@ export class TheAskellon {
                 }
                 else {
                     Log.Information((entranceZone ? entranceZone.id : GetUnitName(u)) + " has no exits ");
+                }
+            });
+
+            udg_hatch_entrances.forEach((u, index) => {
+                const entranceZone = this.allFloors.find(z => z.pointIsInZone(GetUnitX(u), GetUnitY(u)));
+
+                if (entranceZone instanceof ZoneWithExits) {
+                    const exitUnit = udg_hatch_exits[index];
+                    const exitZone = this.allFloors.find(z => z.pointIsInZone(GetUnitX(exitUnit), GetUnitY(exitUnit)));
+
+                    entranceZone.addPathway({ 
+                        entrance: Unit.fromHandle(u), 
+                        exit: Unit.fromHandle(udg_hatch_exits[index]),
+                        leadsTo: exitZone
+                    });
+                }
+                else {
+                    UnitShareVision(u, MapPlayer.fromIndex(0).handle, true);
+                    Log.Information((entranceZone ? entranceZone.id : `Entrance zone NOT FOUND`+GetUnitName(u)) + " has no exits ");
                 }
             });
 

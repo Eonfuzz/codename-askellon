@@ -14,6 +14,8 @@ import {  ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_STRUCTURE_TUMOR, ALI
 import { CreepEntity } from "app/creep/creep-entity";
 import { Timers } from "app/timer-type";
 import { NodeGraph } from "./graph-builder";
+import { ABIL_ALIEN_MINION_EVOLVE } from "resources/ability-ids";
+import { AI_MAX_TUMORS } from "./agent-state";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -33,7 +35,6 @@ export class AIEntity extends Entity {
     constructor() {
         super();
 
-
         // Populate our node grapoh
         NodeGraph.buildGraph();
 
@@ -45,6 +46,8 @@ export class AIEntity extends Entity {
             const agent = new PlayerAgent(p, 33);
             this.playerAgents.push(agent);
             this.playerToAgent.set(agent.player, agent);
+            // Set max count of tumors
+            SetPlayerTechMaxAllowed(p.handle, ALIEN_STRUCTURE_TUMOR, AI_MAX_TUMORS);
         });
 
         /**
@@ -60,20 +63,6 @@ export class AIEntity extends Entity {
         this.unitBuildTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH);
         this.unitBuildTrigger.addAction(() => {
             const building = Unit.fromHandle(GetConstructedStructure());
-
-            Timers.addTimedAction(0.1, () => {
-                // Look for nearby alien larva
-                const searchGroup = new Group();
-                searchGroup.enumUnitsInRange(building.x, building.y, 150,  Filter(() => true));
-    
-                searchGroup.for(() => {
-                    const unit = GetEnumUnit();
-                    if (GetUnitTypeId(unit) === ALIEN_MINION_LARVA) {
-                        KillUnit(unit);
-                    }
-                });
-            })
-
 
             // Now see if we need to register it as creep
             if (GetUnitTypeId(GetConstructedStructure()) === ALIEN_STRUCTURE_TUMOR) {
@@ -135,6 +124,14 @@ export class AIEntity extends Entity {
     public static addAgent(whichUnit: Unit) {
         const instance = this.getInstance();
 
+        const abilLevel = whichUnit.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
+        if (abilLevel > 0) {
+            whichUnit.startAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
+                BlzGetAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
+                    abilLevel - 1
+            ));
+        }
+
         // Check this unit currently isn't in the AI database
         const isAlreadyAgent = !!instance.playerAgents.find(a => a.hasAgent(whichUnit));
 
@@ -159,6 +156,7 @@ export class AIEntity extends Entity {
                 createFor.addAgent(whichUnit);
             }
             catch(e) {
+                Log.Error(`Error adding agent:`);
                 Log.Error(e);
             }
         }
@@ -169,8 +167,9 @@ export class AIEntity extends Entity {
      * @param who 
      */
     public static debugAgent(who: Unit) {
-        Log.Information("Checking AI...");
         const i = this.getInstance();
-        i.playerAgents.forEach(a => a.debugUnit(who));
+        if (!i.playerAgents.some(a => a.debugUnit(who))) { 
+            Log.Information(`${who.name} not found in any agents`)
+        }
     }
 }

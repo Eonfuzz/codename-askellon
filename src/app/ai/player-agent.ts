@@ -1,5 +1,5 @@
 import { MapPlayer, Unit } from "w3ts/index";
-import { AGENT_STATE } from "./agent-state";
+import { AGENT_STATE, AI_MAX_TUMORS } from "./agent-state";
 import { Log } from "lib/serilog/serilog";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
@@ -13,6 +13,9 @@ import { AgentSeek } from "./state/agent-seek";
 import { AgentTravel } from "./state/agent-travel";
 import { AgentWander } from "./state/agent-wander";
 import { AgentBuildTumor } from "./state/agent-build-tumor";
+import { Quick } from "lib/Quick";
+import { ABIL_ALIEN_MINION_EVOLVE } from "resources/ability-ids";
+import { AgentEvolve } from "./state/agent-evolve";
 
 /**
  * A player that acts under the AI entity
@@ -26,6 +29,7 @@ export class PlayerAgent {
 
     // A list of all agents
     private agents = new WeakMap<Unit, AgentState>();
+    private agentSates: AgentState[] = [];
 
 
     constructor(player: MapPlayer, maxAgents: number = 33) {
@@ -46,6 +50,10 @@ export class PlayerAgent {
     public removeAgent(agent: Unit) {
         if (agent.owner !== this.player) return;
         if (this.agents.has(agent)) {
+            const state = this.agents.get(agent);
+
+            Quick.Slice(this.agentSates, this.agentSates.indexOf(state));
+
             // Decrement our agent count
             this.agentCount--;
             this.agents.delete(agent);
@@ -59,18 +67,21 @@ export class PlayerAgent {
         // first decide the state
         const seed = GetRandomInt(0, 100);
 
+        const uLevel = whichAgent.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
+        const canEvolve = uLevel > 0 && BlzGetUnitAbilityCooldownRemaining(whichAgent.handle, ABIL_ALIEN_MINION_EVOLVE) <= 1;
+
+        if (canEvolve) {
+            return AGENT_STATE.EVOLVE;
+        }
+
+
         /**
          * Larvas either travel to hatch or travel to make tumors
          */
         if (uType === ALIEN_MINION_LARVA) {
-            // Log.Information("LARVA");
-            if (seed >= 60) {
+            if (seed >= 60 && GetPlayerTechCount(this.player.handle, ALIEN_STRUCTURE_TUMOR, true) <= AI_MAX_TUMORS) {
                 // Log.Information("BUILD TUMOR");
                 return AGENT_STATE.BUILD_TUMOR;
-            }
-            if (seed >= 30) {
-                // Log.Information("EVOLVE");
-                return AGENT_STATE.EVOLVE;
             }
             // Log.Information("TRAVEL");
             return AGENT_STATE.TRAVEL;
@@ -94,11 +105,14 @@ export class PlayerAgent {
     public addAgent(agent: Unit) {
         const agentStateId = this.generateState(agent);
         const agentState = this.enactStateOnAgent(agent, agentStateId);
+        // Log.Verbose(`PlayerAgent[${this.player.id}]:: ${agent.name}->${AGENT_STATE[agentStateId]}`);
+
+
         if (agentState) {
             // Increment our agent count
             this.agentCount++;
-            this.agents.set(agent, agentState);
-            
+            this.agentSates.push(agentState);
+            this.agents.set(agent, agentState);            
         }
     }
 
@@ -111,38 +125,28 @@ export class PlayerAgent {
     }
 
     private enactStateOnAgent(agent: Unit, state: AGENT_STATE): AgentState | undefined {
-        if (state === AGENT_STATE.SEEK) {
-            return new AgentSeek(agent);
-        } 
-        if (state === AGENT_STATE.TRAVEL) {
-            return new AgentTravel(agent);
+        try {
+            if (state === AGENT_STATE.SEEK) {
+                return new AgentSeek(agent);
+            } 
+            if (state === AGENT_STATE.TRAVEL) {
+                return new AgentTravel(agent);
+            }
+            if (state === AGENT_STATE.WANDER) {
+                return new AgentWander(agent);
+            }
+            if (state === AGENT_STATE.BUILD_TUMOR) {
+                return new AgentBuildTumor(agent);
+            }
+            if (state === AGENT_STATE.EVOLVE) {
+                return new AgentEvolve(agent);
+            }
         }
-        if (state === AGENT_STATE.WANDER) {
-            return new AgentWander(agent);
+        catch(e) {
+            // Log.Verbose(`Failed to enact ${AGENT_STATE[state]} on ${agent.name}; defaulting to wander`);
+            // Log.Verbose(e);
         }
-        if (state === AGENT_STATE.BUILD_TUMOR) {
-            return new AgentBuildTumor(agent);
-        }
-        if (state === AGENT_STATE.EVOLVE) {
-            // TODO FIX ME
-            // // Log.Information("Wander start");
-            // const agentLocation = WorldEntity.getInstance().getUnitZone(Unit.fromHandle(agent));
-            // // We wander a random amount
-            // const numWanders = GetRandomInt(2, 4);
-            // let i = 0;
-            // const actions = [];
-            // while (i++ < numWanders) {
-            //     const point = agentLocation.getRandomPointInZone();
-            //     if (point) {
-            //         if (i !== numWanders) actions.push(new UnitActionWaypoint(point, WaypointOrders.attack, 800));
-            //         if (i === numWanders) {
-            //             actions.push(new UnitActionImmediate(point, ImmediateOrders.evolve));
-            //         }
-            //     }          
-            // }
-            // const queue = ActionQueue.createUnitQueue(agent, ...actions);
-            // this.actionQueue.set(agent, queue);
-        }
+        return new AgentWander(agent);
     }
 
     public debugUnit(whichUnit: Unit) {
@@ -159,6 +163,8 @@ export class PlayerAgent {
                 let isActive = queue.currentActionIndex === index;
                 Log.Information(`[${isActive ? COL_GOOD : COL_MISC}${index}|r] ${action}`)
             });
+
+            return true;
         }
     }
 
@@ -168,6 +174,18 @@ export class PlayerAgent {
 
     // Updates our agent behaviours
     public step(delta: number) {
+        for (let index = 0; index < this.agentSates.length; index++) {
+            const agent = this.agentSates[index];
 
+            if (!agent.tick(delta)) {
+                this.removeAgent(agent.agent);
+                if (agent.agent.isAlive()) {
+                    this.addAgent(agent.agent);
+                }
+                else {
+                    index++;
+                }
+            }
+        }
     }
 }

@@ -9,6 +9,37 @@ import { MessagePlayer } from "lib/utils";
 import { COL_GOOD } from "resources/colours";
 import { COLOUR_CULT } from "./forces/cultist/constants";
 
+export enum PRIVS {
+    USER, VETERAN, MODERATOR, DEVELOPER
+}
+
+
+export const VETERAN_USERS = [
+    `senpai#12749`,
+    `zach#14297`,
+    `kaedin#1539`,
+    `darkalien#11124`,
+    `redaxe13#1850`,
+    `lanarhodes#69420`,
+    `ryk#1153`,
+    `xklybur#11854`,
+    `hxastur#2165`,
+    `mayday#12613`,
+    `spotdon1#1551`,
+    `djinny#1853`,
+    `avayana#2133`,
+    `vlad23#2736`,
+    `miles#1506`,
+    `psizzle#1363`,
+    `chemixv#2500`,
+    `korzen#2121`,
+    `Aggex#11661`,
+    `Вурдалак#21816`,
+    `Serendipity#11633`,
+    `Isaac#1877`,
+    `PrismaIllya#11412`,
+    `LordofRoses#1971`
+];
 
 export class PlayerState {
 
@@ -42,6 +73,27 @@ export class PlayerState {
         this.player = player;
         this.originalName = player.name;
         this.originalColour = player.color;
+    }
+
+    getUserPrivs(): PRIVS {
+        const who = this.player;
+
+        // Log.Information("Player attempting commands: "+GetPlayerName(who));
+        if (who.name === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
+        if (who.name === 'maddeem#1693') return PRIVS.DEVELOPER;
+        if (who.name === 'mayday#12613') return PRIVS.DEVELOPER;
+        if (who.name === 'redaxe#1865') return PRIVS.DEVELOPER;
+
+        if (who.name === 'pipski#12613') return PRIVS.DEVELOPER;
+        if (who.name === 'Local Player') return PRIVS.DEVELOPER;
+        // No # means this is a local game
+        if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
+
+        else if (VETERAN_USERS.indexOf(who.name.toLowerCase()) >= 0) {
+            return PRIVS.VETERAN;
+        }
+
+        return PRIVS.USER;
     }
 
     setForce(force: ForceType) {

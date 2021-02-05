@@ -85,10 +85,10 @@ gg_rct_ShipBay6 = nil
 gg_rct_ShipBay7 = nil
 gg_rct_ShipBay8 = nil
 gg_rct_zonecargob1 = nil
-gg_rct_zonebridgevents3 = nil
-gg_rct_zonebridgevents1 = nil
-gg_rct_zonebridgevents2 = nil
-gg_rct_zonebridgevents4 = nil
+gg_rct_zonebridgevent3 = nil
+gg_rct_zonebridgevent1 = nil
+gg_rct_zonebridgevent2 = nil
+gg_rct_zonebridgevent4 = nil
 gg_rct_zonebridge9 = nil
 gg_rct_zonearmoryvent1 = nil
 gg_rct_zonearmoryvent2 = nil
@@ -1247,16 +1247,16 @@ function CreateRegions()
     gg_rct_ShipBay7 = Rect(-1440.0, -18944.0, -1248.0, -18528.0)
     gg_rct_ShipBay8 = Rect(-544.0, -18944.0, -352.0, -18528.0)
     gg_rct_zonecargob1 = Rect(-3488.0, -19168.0, -96.0, -17536.0)
-    gg_rct_zonebridgevents3 = Rect(-12960.0, -8096.0, -12224.0, -6368.0)
-    we = AddWeatherEffect(gg_rct_zonebridgevents3, FourCC("FDwh"))
+    gg_rct_zonebridgevent3 = Rect(-12960.0, -8096.0, -12224.0, -6368.0)
+    we = AddWeatherEffect(gg_rct_zonebridgevent3, FourCC("FDwh"))
     EnableWeatherEffect(we, true)
-    gg_rct_zonebridgevents1 = Rect(-14880.0, -8064.0, -14624.0, -6432.0)
-    we = AddWeatherEffect(gg_rct_zonebridgevents1, FourCC("FDwh"))
+    gg_rct_zonebridgevent1 = Rect(-14880.0, -8064.0, -14624.0, -6432.0)
+    we = AddWeatherEffect(gg_rct_zonebridgevent1, FourCC("FDwh"))
     EnableWeatherEffect(we, true)
-    gg_rct_zonebridgevents2 = Rect(-14560.0, -8096.0, -12928.0, -7520.0)
-    we = AddWeatherEffect(gg_rct_zonebridgevents2, FourCC("FDwh"))
+    gg_rct_zonebridgevent2 = Rect(-14560.0, -8096.0, -12928.0, -7520.0)
+    we = AddWeatherEffect(gg_rct_zonebridgevent2, FourCC("FDwh"))
     EnableWeatherEffect(we, true)
-    gg_rct_zonebridgevents4 = Rect(-14656.0, -8096.0, -14528.0, -6432.0)
+    gg_rct_zonebridgevent4 = Rect(-14656.0, -8096.0, -14528.0, -6432.0)
     gg_rct_zonebridge9 = Rect(-14464.0, -4736.0, -12640.0, -3936.0)
     gg_rct_zonearmoryvent1 = Rect(-7712.0, -9280.0, -6112.0, -8192.0)
     gg_rct_zonearmoryvent2 = Rect(-7712.0, -11488.0, -6656.0, -9248.0)
@@ -1288,7 +1288,7 @@ function CreateRegions()
     gg_rct_FallZoneCargoB = Rect(-3392.0, -17696.0, -2720.0, -17440.0)
     gg_rct_zonecargob2 = Rect(-1504.0, -17536.0, -576.0, -16544.0)
     gg_rct_zonecargob3 = Rect(-512.0, -17632.0, -160.0, -17312.0)
-    gg_rct_zonecargob4 = Rect(-3648.0, -18304.0, -3488.0, -17728.0)
+    gg_rct_zonecargob4 = Rect(-3648.0, -18304.0, -3424.0, -17728.0)
     gg_rct_mineralcrushereast = Rect(-1728.0, -17664.0, -1536.0, -17344.0)
     gg_rct_zonereactor1 = Rect(-14624.0, -25376.0, -12000.0, -24192.0)
     gg_rct_zonecargoa2 = Rect(-26848.0, -17664.0, -25984.0, -16576.0)
@@ -1297,7 +1297,7 @@ function CreateRegions()
     gg_rct_zonebiologyvent1 = Rect(-11712.0, -13216.0, -10272.0, -12544.0)
     gg_rct_zonebiologyvent2 = Rect(-11488.0, -13440.0, -11168.0, -13184.0)
     gg_rct_zonecargobvent1 = Rect(-3392.0, -17536.0, -2720.0, -15808.0)
-    gg_rct_zonecargobvent2 = Rect(-2720.0, -16512.0, -1856.0, -15808.0)
+    gg_rct_zonecargobvent2 = Rect(-2784.0, -16512.0, -1856.0, -15744.0)
     gg_rct_zonecargobvent3 = Rect(-1888.0, -16512.0, -1216.0, -15392.0)
     gg_rct_zonecargobvent4 = Rect(-2944.0, -15808.0, -2464.0, -15520.0)
     gg_rct_zonereactor2 = Rect(-15200.0, -21824.0, -11424.0, -21056.0)

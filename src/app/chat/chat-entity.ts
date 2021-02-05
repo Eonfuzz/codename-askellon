@@ -10,7 +10,6 @@ import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { PRIVS, VETERAN_USERS } from "./chat-privs-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
@@ -31,6 +30,7 @@ import { Quick } from "lib/Quick";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { SyncSaveLoad } from "lib/TreeLib/SaveLoad/SyncSaveLoad";
+import { PRIVS } from "app/force/player-type";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -133,17 +133,12 @@ export class ChatEntity extends Entity {
     }
 
     handleCommand(player: MapPlayer, message: string, crew: Crewmember) {
-        const priv = this.getUserPrivs(player);
+        const pData = PlayerStateFactory.get(player);
+        const priv = pData.getUserPrivs();
+
 
         // Priv 2 === DEVELOPER
         if (priv >= PRIVS.DEVELOPER) {
-            // if (message.indexOf("-m") === 0) {
-            //     const mSplit = message.split(" ");
-            //     const dX = S2I(mSplit[1] || "0");
-            //     const dY = S2I(mSplit[2] || "0");
-            //     this.game.galaxyModule.navigateToSector(dX, dY);
-            // }
-            // else 
             if (message.indexOf("-pmax") === 0) {
                 AskellonEntity.addToPower(AskellonEntity.getMaxPower());
             }
@@ -225,6 +220,23 @@ export class ChatEntity extends Entity {
             }
             else if (message == "-flare") {
                 WorldEntity.getInstance().beginASolarFlare();
+            }
+            else if (message == "-larva") {
+                // Log.Information("PF "+message);
+                GetPlayerCamLoc(player, (x, y) => {
+                    const pData = PlayerStateFactory.get(player);
+                    const crewUnit = pData.getCrewmember().unit;
+
+                    const zone = WorldEntity.getInstance().getPointZone(x, y);
+                    if (zone) {
+                        const aiPlayer = PlayerStateFactory.getAlienAI()[0];
+                        CreateUnit(aiPlayer.handle, ALIEN_MINION_LARVA, x, y, GetRandomInt(0, 360));  
+                    }
+                    else {
+                        Log.Information("No Zone picked");
+                    }
+                });
+                // const unit =
             }
             else if (message == "-pf") {
                 // Log.Information("PF "+message);
@@ -593,24 +605,4 @@ export class ChatEntity extends Entity {
         this.postMessageFor([player], name, COL_MISC_MESSAGE, `${message}|r`);
     }
 
-    getUserPrivs(who: MapPlayer): PRIVS {
-        // Log.Information("Player attempting commands: "+GetPlayerName(who));
-        if (who.name === 'Eonfuzz#1988') return PRIVS.DEVELOPER;
-        if (who.name === 'maddeem#1693') return PRIVS.DEVELOPER;
-        if (who.name === 'mayday#12613') return PRIVS.DEVELOPER;
-        if (who.name === 'redaxe#1865') return PRIVS.DEVELOPER;
-
-        if (PlayerStateFactory.isSinglePlayer() && who.name === 'ChemixV#2500') return PRIVS.DEVELOPER;
-        if (who.name === 'pipski#12613') return PRIVS.DEVELOPER;
-        if (who.name === 'Local Player') return PRIVS.DEVELOPER;
-        // No # means this is a local game
-        if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
-        else if (GetActivePlayers().length === 1) return PRIVS.MODERATOR;
-
-        else if (VETERAN_USERS.indexOf(who.name.toLowerCase()) >= 0) {
-            return PRIVS.VETERAN;
-        }
-
-        return PRIVS.USER;
-    }
 }

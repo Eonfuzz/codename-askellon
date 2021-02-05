@@ -77,6 +77,13 @@ export class ActionQueue extends Entity {
     /**
      * Create a single unit Queue
      * @param target The unit that should be handled.
+     */
+    public static createUnitQueueEmpty(target: unit): UnitQueue {
+        return this.getInstance().createUnitQueue(target);
+    }
+    /**
+     * Create a single unit Queue
+     * @param target The unit that should be handled.
      * @param actions Initial actions, more can be added with a function in the returned object.
      */
     public static createUnitQueue(target: unit, ...actions: UnitAction[]): UnitQueue {

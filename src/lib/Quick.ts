@@ -75,6 +75,8 @@ export namespace Quick {
     }
 
     export function GetRandomFromArray<T>(a: T[], howMany: number = 1): T[] {
+        if (!a || a.length === 0) return a;
+        
         let n = Math.min(a.length, howMany);
 
         const result = a.slice();

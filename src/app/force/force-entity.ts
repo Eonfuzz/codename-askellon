@@ -1,6 +1,6 @@
 import { Log } from "../../lib/serilog/serilog";
 import { ForceType } from "./forces/force-type";
-import { Trigger, MapPlayer, Timer, Unit, playerColors } from "w3ts";
+import { Trigger, MapPlayer, Timer, Unit, playerColors, Force } from "w3ts";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 import { SoundRef } from "app/types/sound-ref";
 import { Aggression } from "./alliance/aggression-type";
@@ -19,13 +19,14 @@ import { CrewmemberForce } from "./forces/crewmember-force";
 import { ObserverForce } from "./forces/observer-force";
 import { CREW_FORCE_NAME, ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME, CULT_FORCE_NAME } from "./forces/force-names";
 import { AlienForce } from "./forces/alien-force";
-import { GetActivePlayers } from "lib/utils";
+import { GetActivePlayers, MessageAllPlayers, MessagePlayer } from "lib/utils";
 import { Hooks } from "lib/Hooks";
 import { ChatEntity } from "app/chat/chat-entity";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
 import { PlayerState } from "./player-type";
 import { CultistForce } from "./forces/cultist/cultist-force";
+import { COL_ALIEN, COL_ATTATCH, COL_GOOD } from "resources/colours";
 
 export interface playerDetails {
     name: string, colour: playercolor
@@ -370,35 +371,62 @@ export class ForceEntity extends Entity {
     }
 
 
+    // The currently winning force (if any)
+    private hasWinningForce: ForceType | undefined;
+    private gameOver: boolean = false;
     /**
      * Checks victory conditions of all forces
      * returns a force if it is the only winning force
      */
     public checkVictoryConditions(): ForceType | undefined {
+
+        // Too late! Game is over
+        if (this.gameOver) return;
+
+        // Takes X seconds
+
         // has only one force one?
         const winningForces = PlayerStateFactory.getInstance().forces.filter(f => f.checkVictoryConditions());
 
         if (winningForces.length === 1) {
-            const winningSound = new SoundRef("Sound\\Interface\\NewTournament.flac", false, true);
-            const losingSound = new SoundRef("Sound\\Dialogue\\UndeadExpCamp\\Undead02x\\L02Balnazzar06.flac", false, true);
-
             const winner = winningForces[0];
+
+            // Ensure this trigger never runs if the same winning force is called
+            if (this.hasWinningForce && this.hasWinningForce === winner) return;
+
+            this.hasWinningForce = winner;
             const winningPlayers = winner.getPlayers();
             
-
-            Timers.addSlowTimedAction(15, () => {
+            Timers.addSlowTimedAction(5, () => {
                 // has only one force one?
                 const winningForces2 = PlayerStateFactory.getInstance().forces.filter(f => f.checkVictoryConditions());
 
-                if (winningForces2.length > 1) return;
-                if (winner !== winningForces2[0]) return;
+                // If the winning forces CHANGE cancel and restart
+                if (winningForces2.length > 1) return this.hasWinningForce = undefined;
+                if (winner !== winningForces2[0]) return this.hasWinningForce = undefined;
                 
+                this.gameOver = true;
+
+                const winningSound = new SoundRef("Sounds\\VictoryStinger.mp3", false, true);
+                const losingSound = new SoundRef("Sounds\\DefeatStinger.mp3", false, true);
+
+                if (winner.is(ALIEN_FORCE_NAME)) {
+                    Players.forEach(p => MessagePlayer(p, `${COL_ALIEN}The Aliens have eliminated humanity.`));
+                }
+                else if (winner.is(CREW_FORCE_NAME)) {
+                    Players.forEach(p => MessagePlayer(p, `${COL_GOOD}Humanity has exterminated the alien threat!`));
+                }
+
                 if (winningPlayers.indexOf(MapPlayer.fromLocal()) >= 0) {
                     winningSound.playSound();
+                    MessageAllPlayers(`${COL_GOOD} You win!|r Your stats have been saved. Thanks for playing!`)
                 }
                 else {
                     losingSound.playSound();
+                    MessageAllPlayers(`${COL_ATTATCH} You lose!|r Your stats have been saved. Thanks for playing!`)
                 }
+
+
                 Players.forEach(p => {
                     const pData = PlayerStateFactory.get(p);
                     if (pData) {
@@ -415,17 +443,17 @@ export class ForceEntity extends Entity {
                     }
                 });
 
-                Timers.addSlowTimedAction(5, () => {
-                    winningPlayers.forEach(winner => {
-                        CustomVictoryBJ(winner.handle, true, true);
-                    });
-                    Timers.addSlowTimedAction(1, () => {
-                        Players.forEach(p => {
-                            if (winner.name === ALIEN_FORCE_NAME)
-                                CustomDefeatBJ(p.handle, "The Askellon is doomed");
-                            else
-                                CustomDefeatBJ(p.handle, "The last alien has been slain!");
-                        });
+
+                // Wait 10 seconds before the game ends
+                Timers.addSlowTimedAction(10, () => {
+
+                    Players.forEach(p => {
+                        if (winningPlayers.indexOf(p) >= 0) {
+                            CustomVictoryBJ(p.handle, true, true);
+                        }
+                        else {
+                            CustomDefeatBJ(p.handle, `You lose!`);
+                        }
                     });
                 });
             });
@@ -433,7 +461,7 @@ export class ForceEntity extends Entity {
         else if (winningForces.length === 0) { 
             const drawSound = new SoundRef("Sound\\Dialogue\\Extra\\KelThuzadDeath1.flac", false, true);
             drawSound.playSound();
-            Timers.addSlowTimedAction(5, () => {
+            Timers.addSlowTimedAction(10, () => {
                 // Log.Information("Slow timed!");
                 Players.forEach(player => {
                     // Log.Information("Defeat for all!");

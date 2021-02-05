@@ -5,6 +5,7 @@ import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { Zone } from "app/world/zone-types/zone-type";
 import { Quick } from "lib/Quick";
+import { Log } from "lib/serilog/serilog";
 import { ActionQueue } from "lib/TreeLib/ActionQueue/ActionQueue";
 import { UnitActionExecuteCode } from "lib/TreeLib/ActionQueue/Actions/UnitActionExecuteCode";
 import { UnitActionWaypoint } from "lib/TreeLib/ActionQueue/Actions/UnitActionWaypoint";
@@ -21,7 +22,7 @@ export class AgentSeek extends AgentState {
     
     // Potentially software gore
     // or at least an unhealthy parasitic relationship
-    private travelState: AgentTravel;
+    private travelState: AgentTravel | undefined;
     // The target of our seek
     private seekTarget: Unit;
     private seekTargetOldLocation: Zone;
@@ -42,12 +43,20 @@ export class AgentSeek extends AgentState {
             // Assign our last known location
             this.seekTargetOldLocation = seekTarget.loc;
             // Create a sub agent travel
-            this.travelState = new AgentTravel(this.agent, seekTarget.path);
-            this.travelState.actionQueue.addAction(new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450));
-            this.actionQueue = this.travelState.actionQueue;
+            try {
+                this.travelState = new AgentTravel(this.agent, seekTarget.path);
+                this.travelState.actionQueue.addAction(new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450));
+                this.actionQueue = this.travelState.actionQueue;
+            }
+            catch(e) {
+                this.travelState = undefined;
+                this.actionQueue = ActionQueue.createUnitQueue(agent.handle, 
+                    new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450)
+                );
+            }
         }
         else {
-            throw new Error(`Failed to find seek target`);
+            error(`Failed to find seek target`);
         }
     }
 
@@ -115,9 +124,17 @@ export class AgentSeek extends AgentState {
                 // Can we still path to our target?
                 if (!data) return false;
                 // Otherwise lets recalculate the path
-                this.travelState = new AgentTravel(this.agent, data.path);
-                this.travelState.actionQueue.addAction(new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450));
-                this.actionQueue = this.travelState.actionQueue;
+                try {
+                    this.travelState = new AgentTravel(this.agent, data.path);
+                    this.travelState.actionQueue.addAction(new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450));
+                    this.actionQueue = this.travelState.actionQueue;
+                }
+                catch(e) {
+                    this.travelState = undefined;
+                    this.actionQueue = ActionQueue.createUnitQueue(this.agent.handle, 
+                        new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450)
+                    );
+                }
             }
         }
 
@@ -127,6 +144,6 @@ export class AgentSeek extends AgentState {
 
 
     private isVisibleOrHasDespair(who: Unit): boolean {
-        return IsUnitVisible(who.handle, this.agent.owner.handle) || UnitHasBuffBJ(who.handle, BUFF_ID_DESPAIR);
+        return UnitHasBuffBJ(who.handle, BUFF_ID_DESPAIR);
     }
 }

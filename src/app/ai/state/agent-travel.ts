@@ -1,14 +1,12 @@
 import { Vector2 } from "app/types/vector2";
-import { Vector3 } from "app/types/vector3";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
+import { Log } from "lib/serilog/serilog";
 import { ActionQueue } from "lib/TreeLib/ActionQueue/ActionQueue";
 import { UnitAction } from "lib/TreeLib/ActionQueue/Actions/UnitAction";
-import { UnitActionExecuteCode } from "lib/TreeLib/ActionQueue/Actions/UnitActionExecuteCode";
 import { UnitActionInteract } from "lib/TreeLib/ActionQueue/Actions/UnitActionInteract";
 import { UnitActionWaypoint } from "lib/TreeLib/ActionQueue/Actions/UnitActionWaypoint";
 import { WaypointOrders } from "lib/TreeLib/ActionQueue/Actions/WaypointOrders";
-import { UnitQueue } from "lib/TreeLib/ActionQueue/Queues/UnitQueue";
 import { Unit } from "w3ts/index";
 import { NodeGraph } from "../graph-builder";
 import { Graph } from "../pathfinding/graph";
@@ -28,18 +26,24 @@ export class AgentTravel extends AgentState {
     constructor(agent: Unit, path?: Path) {
         super(agent);
 
+        // Log.Information("Beginning agent travel");
+
         let queue: UnitAction[];
 
+        // Log.Information("Getting path");
         // Just use our path if received
         if (path) {
             queue = this.pathToQueue(path);
         }
         // Generate a new one otherwise
         else {
+            // Log.Information("Loading graph");
             const pathingGraph = NodeGraph.getGraph();
             
             const agentLocation = WorldEntity.getInstance().getUnitZone(agent);
             const ourFloor = pathingGraph.nodeDict.get(agentLocation.id);
+
+            // Log.Information(`our pos ${agentLocation.id} our floor connections #${ourFloor.connectedNodes.map(z => ZONE_TYPE[z.zone.id]).join(', ')}`);
     
             if (ourFloor.connectedNodes.length > 0) {
                 const randomLocation = ourFloor.connectedNodes[GetRandomInt(0, ourFloor.connectedNodes.length - 1)];
@@ -52,6 +56,9 @@ export class AgentTravel extends AgentState {
             // Set our queue
             this.actionQueue = ActionQueue.createUnitQueue(agent.handle, ...queue);
         }
+        else {
+            error('');
+        }
     }
 
     /**
@@ -60,7 +67,9 @@ export class AgentTravel extends AgentState {
     private sendUnitTo(pathingGraph: Graph, from: ZONE_TYPE, to: ZONE_TYPE): UnitAction[] | undefined {
         if (from === to) return;
 
+        // Log.Information("Getting paths...");
         const path = pathingGraph.pathTo(from, to);
+        // Log.Information(`Travel paths: ${path ? path.edges.length : 'nil'}`)
         if (path && path.edges.length > 0) {
             return this.pathToQueue(path);
         }
@@ -79,6 +88,6 @@ export class AgentTravel extends AgentState {
     }
 
     tick(delta: number): boolean {
-        return this.actionQueue.isFinished;
+        return !this.actionQueue.isFinished;
     }
 }

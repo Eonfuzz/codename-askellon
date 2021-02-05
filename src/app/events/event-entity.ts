@@ -8,7 +8,7 @@ import { Timers } from "app/timer-type";
 import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH } from "resources/unit-ids";
 import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { ABIL_U_DEX } from "resources/ability-ids";
+import { ABIL_ALIEN_MINION_EVOLVE, ABIL_U_DEX } from "resources/ability-ids";
 import { UnitDex, UnitDexEvent } from "./unit-indexer";
 import { console } from "lib/translators";
 import { Log } from "lib/serilog/serilog";
@@ -42,12 +42,13 @@ export class EventEntity {
             if (uType == SPACE_UNIT_ASTEROID) return false;
             if (uType == SPACE_UNIT_MINERAL) return false;
 
+
+            if (uType === ALIEN_MINION_CANITE) {
+                DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, u.x, u.y));
+                u.setAbilityLevel(ABIL_ALIEN_MINION_EVOLVE, 2);
+            }
             // Check to see if controller is alien AI
             if (PlayerStateFactory.isAlienAI(u.owner)) {
-                EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: u });
-            }
-            else if (uType === ALIEN_MINION_CANITE) {
-                DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, u.x, u.y));
                 EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: u });
             }
         });

@@ -1,6 +1,9 @@
 import { Vector3 } from "../app/types/vector3";
 import { Unit } from "w3ts/handles/unit";
 import { getZFromXY } from "./utils";
+import { Players } from "w3ts/globals/index";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { PRIVS } from "app/force/player-type";
 
 export class console {
     public static log(input: string): void {
@@ -27,6 +30,14 @@ export function SendMessage(this: void, msg: any): void {
 export function SendMessageUnlogged(this: void, msg: any): void {
     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `${msg}`);
 }
+
+export function SendMessageToAdmin(this: void, msg: any): void {
+    Players.forEach(p => {
+        const _p = PlayerStateFactory.get(p);
+        if (_p && _p.getUserPrivs() >+ PRIVS.MODERATOR) DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `${msg}`);
+    });
+}
+
 
 export function PlayNewSound(soundPath: string, volume: number) {
     const result = CreateSound(soundPath, false, false, true, 10, 10, "" )

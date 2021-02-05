@@ -14,19 +14,22 @@ export class EggInstance {
     private from: Unit;
     private to: number;
     private duration: number
+    private scale: number;
 
     public egg: Unit;
 
     private timeElapsed = 0;
 
-    constructor(from: Unit, to: number, duration?: number) {
+    constructor(from: Unit, to: number, duration: number = DEFAULT_EGG_DURATION, scale: number = 1) {
         this.from = from;
         this.to = to;
-        this.duration = duration || DEFAULT_EGG_DURATION;
+        this.duration = duration;
+        this.scale = scale;
     }
 
     init() {
         this.egg = new Unit(this.from.owner, ALIEN_MINION_EGG, this.from.x, this.from.y, this.from.facing);
+        this.egg.setScale(this.scale, this.scale, this.scale);
         this.egg.setPathing(false);
         
         // Hide and kill the old unit
@@ -44,6 +47,7 @@ export class EggInstance {
             // Log.Information("Spawning unit");
             const sfx = AddSpecialEffect(SFX_HUMAN_BLOOD, this.egg.x, this.egg.y);
             BlzSetSpecialEffectZ(sfx, getZFromXY(this.egg.x, this.egg.y));
+            BlzSetSpecialEffectScale(sfx, this.scale);
             DestroyEffect(sfx);
             // const unit = new Unit(this.egg.owner, this.to, this.egg.x, this.egg.y, this.egg.facing);
 

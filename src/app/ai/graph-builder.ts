@@ -1,6 +1,6 @@
 import { Graph } from "./pathfinding/graph";
 import { Edge } from "./pathfinding/edge";
-import { ZONE_TYPE } from "app/world/zone-id";
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "app/world/zone-id";
 import { Node } from "./pathfinding/node";
 import { Unit } from "w3ts/index";
 import { WorldEntity } from "app/world/world-entity";
@@ -9,13 +9,13 @@ import { ZoneWithExits } from "app/world/zone-types/zone-with-exits";
 import { Zone } from "app/world/zone-types/zone-type";
 
 export class NodeGraph {
-    private static graph: Graph;
+    private static graph = new Graph();
     
     /**
      * Populates and builds NodeGraph.graph
      */
     public static buildGraph() : void {
-        const graph = new Graph();
+       
 
         const edgeForUnit = new Map<Unit, Edge>();
         const nodeForZoneType = new Map<ZONE_TYPE, Node>();
@@ -32,6 +32,7 @@ export class NodeGraph {
                 nodes.push(node);
             });
             
+            // Log.Information("Building nodes: "+nodes.length);
 
             // After creating "node" map
             // Populate pathways and edges
@@ -40,6 +41,8 @@ export class NodeGraph {
                 if (node.zone instanceof ZoneWithExits) {
                     const paths = node.zone.getPathways();
                     paths.forEach(exit => {
+            
+                        // Log.Information(`${ZONE_TYPE[node.zone.id]} -> ${exit.entrance.name}`);
                         // We may already have an edge for this unit
                         const edge = edgeForUnit.get(exit.entrance) ||  new Edge();
 
@@ -71,12 +74,11 @@ export class NodeGraph {
             Log.Error(e);
         }
 
-        graph.nodes = nodes;
-        graph.nodeDict = nodeForZoneType;
+        this.graph.nodes = nodes;
+        this.graph.nodeDict = nodeForZoneType;
 
         // Now develop connections
-        graph.nodes.forEach(node => this.populateNode(node));
-        this.graph = graph;
+        this.graph.nodes.forEach(node => this.populateNode(node));
     }
 
     private static populateNode(node: Node) {
@@ -86,6 +88,7 @@ export class NodeGraph {
         const allNodes = [];
         const nodeSearch = [node];
     
+        
         // Log.Information("-> "+ZONE_TYPE[node.zone.id]);
     
         let maxSearches = 60;

@@ -3,13 +3,14 @@ import { addScriptHook, W3TS_HOOK } from "w3ts/hooks";
 import { Timer } from "w3ts/handles/timer";
 import { StringSink } from "lib/serilog/string-sink";
 import { Log, LogLevel } from "lib/serilog/serilog";
-import { SendMessageUnlogged } from "lib/translators";
+import { SendMessageToAdmin, SendMessageUnlogged } from "lib/translators";
 
 
 
 function tsMain() {
     Log.Init([
-        new StringSink(LogLevel.Debug, SendMessageUnlogged),
+        new StringSink(LogLevel.Verbose, SendMessageToAdmin),
+        // new StringSink(LogLevel.Debug, SendMessageUnlogged),
     ]);
 
     function Main(){

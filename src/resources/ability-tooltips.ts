@@ -63,7 +63,7 @@ export const resolveTooltip = new DynamicAbilityTooltip(
     undefined,
     (who: Crewmember, abilLevel: number, data: any) => `${COL_MISC}Repair the ship and get out of this sector... before it is too late.|r
 
-    You are the ${COL_TEAL}Human ${who.role}|r:
+You are the ${COL_TEAL}Human ${who.role}|r:
 ${ROLE_DESCRIPTIONS.get(who.role)}
 
 As Human:

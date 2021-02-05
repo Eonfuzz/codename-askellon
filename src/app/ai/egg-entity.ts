@@ -24,7 +24,7 @@ export class EggEntity extends Entity {
 
         // Register egg events
         EventEntity.listen(new EventListener(EVENT_TYPE.SPAWN_ALIEN_EGG_FOR, (self, event) => {
-            this.instances.push( new EggInstance(event.source, event.data.to, event.data.duration));
+            this.instances.push( new EggInstance(event.source, event.data.to, event.data.duration, event.data.scale));
             this.instances[this.instances.length-1].init();
         }))
     }

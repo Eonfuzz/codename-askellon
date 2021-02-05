@@ -111,10 +111,7 @@ ${COL_ATTATCH}- Must stand still
 - Turning reduces attack speed
 - Unallies all units in the cone of fire|r
 
-${!weapon.attachment
-     ? `${COL_INFO}Can be enhanced with ${COL_ATTATCH}kinetic|r${COL_INFO} attachments.|r` 
-     : `${COL_GOLD}Equip and type -u to remove ${COL_ATTATCH}${weapon.attachment.name}|r|r`
-}`;
+${COL_ATTATCH}Fuller Auto|r ${COL_GOLD}cannot be removed.|r`;
 
 export const MINIGUN_EXTENDED = (weapon: GunItem, damage: any) => 
 `${COL_MISC}No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 

@@ -27,6 +27,8 @@ export class BridgeZoneVent extends VentZone {
         const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
         const isCrew = crewmember && crewmember.unit === unit;
 
+        BlzGetStackingItemTargetPreviousCharges
+
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
             this.operaMusic.setVolume(25);
             this.operaMusic.playSound();

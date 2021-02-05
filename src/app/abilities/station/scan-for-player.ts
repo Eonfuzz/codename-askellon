@@ -13,6 +13,7 @@ import { Timers } from "app/timer-type";
 import { GlobalCooldownAbilityEntity } from "../global-ability-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
+import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 
 export const scanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
 export class StationSecurityScanForPlayer implements Ability {
@@ -23,6 +24,8 @@ export class StationSecurityScanForPlayer implements Ability {
 
     private duration = 0;
     private maxDuration = 10;
+
+    private scanGroup = CreateGroup();
 
     constructor(scanForAliens: boolean) {
         this.isScanningForAliens = scanForAliens;
@@ -57,14 +60,26 @@ export class StationSecurityScanForPlayer implements Ability {
                     
                     const crew = pData.getCrewmember();
                     const pMain = pData.getUnit();
-                    if (pData && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain) {
-                        if (p.id < playerColors.length) {
-                            const c = playerColors[p.id];
-                            if (c) PingMinimapEx(pMain.x, pMain.y, 5, c.red, c.green, c.blue, false);
+
+
+                    let unit: Unit;
+                    // Try to find the "main" unit
+                    // First of all it's either a crewmember
+                    if (pData && crew && crew.unit && crew.unit.isAlive() && crew.unit === pMain && crew.unit.show) {
+                        unit = crew.unit;
+                    }
+                    // Or a ship..
+                    else {
+                        GroupEnumUnitsOfPlayer(this.scanGroup, p.handle, Filter(() => GetUnitTypeId(GetFilterUnit()) == SHIP_VOYAGER_UNIT));
+                        if (BlzGroupGetSize(this.scanGroup) === 1) {
+                            unit = Unit.fromHandle(BlzGroupUnitAt(this.scanGroup, 0));
                         }
-                        else {
-                            // Log.Warning(`${p.id} not in rgb colour array`);
-                        }
+                    }
+
+                    // Then ping it!
+                    if (unit && p.id < playerColors.length) {
+                        const c = playerColors[p.id];
+                        if (c) PingMinimapEx(unit.x, unit.y, 5, c.red, c.green, c.blue, false);
                     }
                 })
             }
@@ -97,6 +112,7 @@ export class StationSecurityScanForPlayer implements Ability {
     };
 
     public destroy() {
+        DestroyGroup(this.scanGroup);
         MessageAllPlayers(`Scan Complete.`);
         return true;
     };

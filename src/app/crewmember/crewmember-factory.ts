@@ -24,10 +24,10 @@ import { Vector2 } from "app/types/vector2";
 import { Players } from "w3ts/globals/index";
 import { Log } from "lib/serilog/serilog";
 import { ChatEntity } from "app/chat/chat-entity";
-import { PRIVS } from "app/chat/chat-privs-enum";
 import { Timers } from "app/timer-type";
 import { MessagePlayer } from "lib/utils";
 import { COL_GOOD } from "resources/colours";
+import { PlayerState, PRIVS } from "app/force/player-type";
 
 const crwSkins = [FourCC('Crw0'), FourCC('Crw1')];
 
@@ -185,15 +185,15 @@ export class CrewFactory {
         if (!location) return Log.Error(`Failed to find spawn zone ${player.name} in ${force.name} of ${role} in ${spawnLocation.toString()}`);
 
         try { 
-
-            let nUnit = Unit.fromHandle(BlzCreateUnitWithSkin(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING, this.getSkinFor(player)));
+            const pData = PlayerStateFactory.get(player);
+            
+            let nUnit = Unit.fromHandle(BlzCreateUnitWithSkin(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING, this.getSkinFor(pData)));
             let crewmember = new Crewmember(player, nUnit, force, role);
 
             crewmember.setName(name);
             crewmember.setPlayer(player);
 
             // Update pData
-            const pData = PlayerStateFactory.get(nUnit.owner);
             pData.setCrewmember(crewmember);
             
             this.crewmemberForUnit.set(nUnit, crewmember);        
@@ -338,8 +338,8 @@ export class CrewFactory {
         return this.crewmemberForUnit.has(unit) && this.crewmemberForUnit.get(unit);
     }
 
-    getSkinFor(who: MapPlayer) {        
-        const isVeteran = ChatEntity.getInstance().getUserPrivs(who) >= PRIVS.VETERAN;
+    private getSkinFor(who: PlayerState) {        
+        const isVeteran = who.getUserPrivs() >= PRIVS.VETERAN;
         const skin = isVeteran ? crwSkins[1] : crwSkins[0];
         return skin;
     }

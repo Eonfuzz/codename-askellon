@@ -1,4 +1,5 @@
 import { MapPlayer } from "w3ts";
+import { ALIEN_STRUCTURE_TUMOR } from "./unit-ids";
 
 export const FilterIsEnemyAndAlive = (enemyOfWho: MapPlayer) => Filter(() => {
     const fUnit = GetFilterUnit();
@@ -15,3 +16,7 @@ export const FilterAnyUnit = () => Filter(() => {
     const fUnit = GetFilterUnit();
     return !BlzIsUnitInvulnerable(fUnit);
 });
+
+export const FilterTumors = () => Filter(() => {
+    return GetUnitTypeId(GetFilterUnit()) === ALIEN_STRUCTURE_TUMOR;
+})
