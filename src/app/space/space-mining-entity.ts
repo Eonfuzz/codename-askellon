@@ -44,6 +44,7 @@ class MiningEvent {
         this.beamOrigin = Vector3.fromWidget(source.handle).projectTowards2D(target.facing, 45);
         this.beamOrigin.z = 100;
 
+
         this.beamLaserCurrentPoint = Vector3.fromWidget(target.handle);
         this.beamLaserTargetPoint = Vector3.fromWidget(target.handle).multiply( new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).multiplyN(50));
 

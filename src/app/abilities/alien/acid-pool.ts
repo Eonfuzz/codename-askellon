@@ -10,7 +10,6 @@ import { getZFromXY } from "lib/utils";
 import { ABILITY_SLOW_ID, ABIL_ALIEN_ACID_POOL } from "resources/ability-ids";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { DummyCast } from "lib/dummy";
-import { AbilityHooks } from "../ability-hooks";
 
 const DAMAGE_PER_SECOND = 35;
 

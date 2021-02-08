@@ -118,7 +118,7 @@ export class AskellonEntity extends Entity {
             DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] REACTOR POWER LEVELS UNSTABLE`);
 
             let howManyFloors = severity  === 3 ? this.poweredFloors.length 
-                : (severity  === 2 ? GetRandomInt(1, this.poweredFloors.length) 
+                : (severity  === 2 ? GetRandomInt(MathRound(this.poweredFloors.length / 2), this.poweredFloors.length) 
                 : (severity  === 1 ? GetRandomInt(1, MathRound(this.poweredFloors.length / 2))
                 : 1)); 
 
