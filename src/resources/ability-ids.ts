@@ -197,3 +197,8 @@ export const ABIL_LIFE_REGEN_BONUS_25 = FourCC('A02Y');
 export const ABIL_MAX_LIFE_BONUS_200 = FourCC('A02X');
 
 export const ABIL_ITEM_REMOTE_BOMB = FourCC('A02Z');
+
+export const ABIL_ALIEN_WEBSHOT = FourCC('A02F');
+export const ABIL_ALIEN_BROODNEST = FourCC('A02E');
+export const ABIL_ALIEN_DEFILER_INFESTATION = FourCC('A030');
+export const ABIL_ALIEN_WEBWALK = FourCC('A02G');
