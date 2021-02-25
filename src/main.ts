@@ -6,6 +6,7 @@ import { Log, LogLevel } from "lib/serilog/serilog";
 import { SendMessageToAdmin, SendMessageUnlogged } from "lib/translators";
 
 
+// Hello world from boar!
 
 function tsMain() {
     Log.Init([
