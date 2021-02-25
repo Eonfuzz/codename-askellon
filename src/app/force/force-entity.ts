@@ -264,6 +264,16 @@ export class ForceEntity extends Entity {
                 this.aggressionLog.set(key, logs);
 
                 if (logs.length === 0) {
+                    
+                    // Ensure we are not trying to ally between targeted players and security
+                    // This is aggression of security vs player or player vs security
+                    if (instance.defendant === PlayerStateFactory.StationSecurity) {
+                        
+                    } 
+                    else if(instance.aggressor === PlayerStateFactory.StationSecurity) {
+
+                    }
+
                     // If the defendant is station security, we need to make sure we ARE targeted
                     if (instance.defendant !== PlayerStateFactory.StationSecurity || !PlayerStateFactory.isTargeted(instance.aggressor)) {
                         // We have no more combat instances between these two players

@@ -8,10 +8,16 @@ import { vectorFromUnit } from "app/types/vector2";
 import { ProjectileMoverParabolic, ProjectileTargetStatic } from "app/weapons/projectile/projectile-target";
 import { LeapEntity } from "app/leap-engine/leap-entity";
 import { Leap } from "app/leap-engine/leap-type";
+import { ABIL_ALIEN_WEBSHOT } from "resources/ability-ids";
+import { PlayNewSoundOnUnit } from "lib/translators";
+import { Log } from "lib/serilog/serilog";
+import { SFX_ALIEN_ACID_BALL } from "resources/sfx-paths";
+import { Timers } from "app/timer-type";
 
-const MISSILE_LAUNCH_EFFECT = "someWebShot";
-const MISSILE_EFFECT = "someWebShot";
-const MISSILE_BEAM = "SOME";
+const MISSILE_LAUNCH_EFFECT = "Abilities\\Spells\\Undead\\Web\\Webmissile.mdl";
+const MISSILE_EFFECT = "Models\\sfx\\CocoonMissile.mdx";
+const MISSILE_BEAM = "SPNL";
+const WEB_SFX = "Models\\sfx\\Web.mdl";
 
 export class WebshotAbility implements Ability {
 
@@ -29,6 +35,10 @@ export class WebshotAbility implements Ability {
     private leapInstance: Leap;
     private webshotGoal: Vector3;
     private finishedLeaping: boolean = false;
+
+    private prevFogModifier: fogmodifier;
+
+    private spawnWebSFXCounter = 0.1;
 
     public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
@@ -51,7 +61,12 @@ export class WebshotAbility implements Ability {
         .onDeath(() => this.onCollide())
         .onCollide((self, who) => this.onCollide(Unit.fromHandle(who)));
 
-        this.webshotMissile.addEffect(MISSILE_EFFECT, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
+        let webSfx = this.webshotMissile.addEffect(MISSILE_EFFECT, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
+
+        // webSfx = this.webshotMissile.addEffect(MISSILE_EFFECT_2, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
+        // BlzSetSpecialEffectColor(webSfx, 80, 255, 90);
+        // BlzSetSpecialEffectPitch(webSfx, -90 * bj_DEGTORAD);
+        BlzSetSpecialEffectScale(webSfx, 1.3);
 
         const sfx = AddSpecialEffect(MISSILE_LAUNCH_EFFECT, polarPoint.x, polarPoint.y);
         BlzSetSpecialEffectHeight(sfx, -30);
@@ -61,62 +76,79 @@ export class WebshotAbility implements Ability {
 
         const projPos = this.webshotMissile.getPosition();
         
-        this.webshotTrail = AddLightningEx(MISSILE_BEAM, false, 
+        this.webshotTrail = AddLightningEx('WEBB', false, 
             startLoc.x, startLoc.y, startLoc.z, 
             projPos.x, projPos.y, projPos.z
         );
+
+        PlayNewSoundOnUnit("Abilities\\Spells\\Undead\\Web\\WebMissileLaunch1.flac", this.casterUnit, 80);
 
         return true;
     };
 
     private onCollide(withWho?: Unit) {
+        if (this.webshotCollided) return;
+
+        this.webshotMissile.setDestroy(true);
+        
         let pullTowards: boolean = true;
 
         let startVec: Vector3;
         let goalVec: Vector3;
         let who: Unit;
 
-        if (withWho != undefined) {
-            // If this is the second level abil we need to pull them to us
-            if (this.casterUnit.getAbilityLevel(ABIL_WEBSHOT) > 1) {
-                who = withWho;
+        PlayNewSoundOnUnit("Abilities\\Spells\\Undead\\Web\\WebTarget1.flac", this.casterUnit, 80);
 
-                goalVec = Vector3.fromWidget(this.casterUnit.handle);
-                startVec = Vector3.fromWidget(withWho.handle);
+        try {
+            this.webshotCollided = true;
+            if (withWho != undefined) {
+                // If this is the second level abil we need to pull them to us
+                if (this.casterUnit.getAbilityLevel(ABIL_ALIEN_WEBSHOT) >= 1 && !IsUnitIdType(withWho.typeId, UNIT_TYPE_STRUCTURE)) {
+                    who = withWho;
 
-                // Also ministun the "Pull towards" unit
-                withWho.pauseEx(true);
-                pullTowards = false;
-            }
-            // Otherwise pull us to them
+                    startVec = Vector3.fromWidget(withWho.handle);
+
+                    goalVec = Vector3.fromWidget(this.casterUnit.handle);
+                    goalVec = goalVec.projectTowards2D(goalVec.angle2Dto(startVec), 80);
+
+                    // Also ministun the "Pull towards" unit
+                    withWho.pauseEx(true);
+                    pullTowards = false;
+                }
+                // Otherwise pull us to them
+                else {
+                    who = this.casterUnit;
+
+                    goalVec = Vector3.fromWidget(withWho.handle);
+                    startVec = Vector3.fromWidget(this.casterUnit.handle);
+                    pullTowards = true;
+
+                    // Also ministun the "Pull towards" unit
+                    withWho.pauseEx(true);
+                }
+            }  
             else {
                 who = this.casterUnit;
-
-                goalVec = Vector3.fromWidget(withWho.handle);
+                // Otherwise pull us to the location of the projectile
+                goalVec = this.webshotMissile.getPosition();
                 startVec = Vector3.fromWidget(this.casterUnit.handle);
                 pullTowards = true;
-
-                // Also ministun the "Pull towards" unit
-                withWho.pauseEx(true);
             }
-        }  
-        else {
-            who = this.casterUnit;
-            // Otherwise pull us to the location of the projectile
-            goalVec = this.webshotMissile.getPosition();
-            startVec = Vector3.fromWidget(this.casterUnit.handle);
-            pullTowards = true;
-        }
-        
-        this.webshotGoal = goalVec;
-        this.webshotPullingUs = pullTowards;
+            
+            this.webshotGoal = goalVec;
+            this.webshotPullingUs = pullTowards;
 
-        LeapEntity.getInstance().newLeap(
-            who.handle,
-            goalVec,
-            55,
-            2.5
-        ).onFinish(() => this.onJumpPullFinish(withWho));
+            this.leapInstance = LeapEntity.getInstance().newLeap(
+                who.handle,
+                goalVec,
+                40,
+                1.4
+            );
+            this.leapInstance.onFinish(() => this.onJumpPullFinish(withWho));
+        }
+        catch(e) {
+            Log.Error(e);
+        }
     }
 
     private onJumpPullFinish(withWho: Unit) {
@@ -134,6 +166,23 @@ export class WebshotAbility implements Ability {
 
             const projPos = this.webshotMissile.getPosition();
             MoveLightningEx(this.webshotTrail, true, startLoc.x, startLoc.y,  startLoc.z, projPos.x, projPos.y, projPos.z);
+
+            if (this.prevFogModifier) DestroyFogModifier(this.prevFogModifier);
+            this.prevFogModifier = CreateFogModifierRadius(this.casterUnit.owner.handle, FOG_OF_WAR_VISIBLE, projPos.x, projPos.y, 400, false, false);
+            
+                
+            this.spawnWebSFXCounter -= delta;
+            if (this.spawnWebSFXCounter <= 0) {
+                this.spawnWebSFXCounter = 0.1;
+                const sfx = AddSpecialEffect(WEB_SFX, projPos.x, projPos.y);
+                BlzSetSpecialEffectHeight(sfx, projPos.z);
+                BlzSetSpecialEffectYaw(sfx, GetRandomReal(0, 360) * bj_DEGTORAD);
+                BlzSetSpecialEffectScale(sfx, 0.5);
+                BlzSetSpecialEffectAlpha(sfx, 45);
+                DestroyEffect(sfx);
+            }
+
+
             return true;
         }
         // After we've collided we need to "reel" in
@@ -142,13 +191,14 @@ export class WebshotAbility implements Ability {
             const goalLoc = this.webshotGoal;
             
             if (this.webshotPullingUs) {
-                MoveLightningEx(this.webshotTrail, true, movingUnitLoc.x, movingUnitLoc.y,  movingUnitLoc.z, goalLoc.x, goalLoc.y, goalLoc.z);
+                const interpLoc = movingUnitLoc.projectTowards2D(movingUnitLoc.angle2Dto(goalLoc), 80);
+                MoveLightningEx(this.webshotTrail, true, interpLoc.x, interpLoc.y, interpLoc.z, goalLoc.x, goalLoc.y, goalLoc.z);
             }
             else {
-                MoveLightningEx(this.webshotTrail, true, goalLoc.x, goalLoc.y, goalLoc.z,  movingUnitLoc.x, movingUnitLoc.y, movingUnitLoc.z,);
+                MoveLightningEx(this.webshotTrail, true, this.casterUnit.x, this.casterUnit.y, goalLoc.z,  movingUnitLoc.x, movingUnitLoc.y, movingUnitLoc.z,);
             }
 
-            return this.finishedLeaping;
+            return !this.finishedLeaping;
         }
     };
     
@@ -156,7 +206,9 @@ export class WebshotAbility implements Ability {
         // Log.Information("Ending");
         this.webshotSfx && BlzSetSpecialEffectTimeScale(this.webshotSfx, 10);
         this.webshotSfx && DestroyEffect(this.webshotSfx);
+        DestroyLightning(this.webshotTrail)
 
+        if (this.prevFogModifier) DestroyFogModifier(this.prevFogModifier);
         return true; 
     };
 }

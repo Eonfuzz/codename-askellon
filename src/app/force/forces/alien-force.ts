@@ -273,16 +273,6 @@ export class AlienForce extends ForceType {
                 for (let index = 0; index < GetRandomInt(3, 5); index++) {
                     CreateBlood(cLoc.x + GetRandomReal(-40, 40), cLoc.y + GetRandomReal(-40, 40))                
                 }
-
-                // const i = CreateItem(ITEM_HUMAN_CORPSE, cLoc.x, cLoc.y);
-                // SetItemPlayer(i, player.handle, true);
-
-                // BlzSetItemExtendedTooltip(i, `${COL_MISC}His cold, lifeless eyes stare beyond the cosmos|r|n|nThis is the body of ${playerColors[player.id].code}${crew.name}|r`);
-                
-                // SetItemVisible(i, false);
-                // Timers.addTimedAction(1.2, () => {
-                //     SetItemVisible(i, true);
-                // });
             }
 
             // Remove ability tooltip
@@ -316,7 +306,7 @@ export class AlienForce extends ForceType {
             player.name = pData.originalName;
             player.color = pData.originalColour;
 
-            PlayNewSound("Sounds\\Nazgul.wav", 60);
+            PlayNewSound("Sounds\\Nazgul.wav", 50);
             Players.forEach(p => {
                 DisplayTextToPlayer(p.handle, 0, 0, STR_ALIEN_DEATH(
                     player,
@@ -337,7 +327,7 @@ export class AlienForce extends ForceType {
                 this.repickHost();
             }
             // Otherwise if the game time is less than five minutes, pick a new host
-            else if (this.players.length === 0 && GameTimeElapsed.getTime() <= 5*60) {
+            else if (this.players.length === 0 && GameTimeElapsed.getTime() <= 8*60) {
                 const crewForce = PlayerStateFactory.getForce(CREW_FORCE_NAME) as CrewmemberForce;
                 if (crewForce.getPlayers().length > 1) {
                     this.isPickingAnotherAlienHost = true;

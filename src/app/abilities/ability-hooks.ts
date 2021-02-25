@@ -58,7 +58,10 @@ import {
     ABIL_CULTIST_CEREMONIAL_DAGGER,
     ABIL_CULTIST_GIFT_MADNESS,
     ABIL_ITEM_DRUG_COMEBACK,
-    ABIL_ITEM_REMOTE_BOMB
+    ABIL_ITEM_REMOTE_BOMB,
+    ABIL_ALIEN_WEBSHOT,
+    ABIL_ALIEN_BROODNEST,
+    ABIL_ALIEN_WEBWALK
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -113,6 +116,9 @@ import { CeremonialDaggerItemAbility } from "./items/ceremonial-dagger";
 import { GiftOfMadnessAbility } from "./cult/gift-of-madness";
 import { ComebackDrugAbility } from "./items/comeback-drug";
 import { PlaceBombAbility } from "./items/place-bomb";
+import { WebshotAbility } from "./alien/evo-infestation/webshot";
+import { BroodNestAbility } from "./alien/evo-infestation/broodnest";
+import { ConealingWebsAbility } from "./alien/evo-infestation/conealing-webs";
 
 
 
@@ -225,3 +231,7 @@ AbilityHooks.Add(ABIL_CULTIST_GIFT_MADNESS, () => new GiftOfMadnessAbility());
 AbilityHooks.Add(ABIL_CULTIST_CEREMONIAL_DAGGER, () => new CeremonialDaggerItemAbility());
 AbilityHooks.Add(ABIL_ITEM_DRUG_COMEBACK, () => new ComebackDrugAbility());
 AbilityHooks.Add(ABIL_ITEM_REMOTE_BOMB, () => new PlaceBombAbility());
+AbilityHooks.Add(ABIL_ALIEN_WEBSHOT, () => new WebshotAbility());
+AbilityHooks.Add(ABIL_ALIEN_BROODNEST, () => new BroodNestAbility());
+AbilityHooks.Add(ABIL_ALIEN_WEBWALK, () => new ConealingWebsAbility());
+

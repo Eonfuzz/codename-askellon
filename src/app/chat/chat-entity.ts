@@ -193,23 +193,25 @@ export class ChatEntity extends Entity {
                 BlzShowTerrain(true);
             }
             else if (message.indexOf("-a") === 0) {
-                EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    const u = Unit.fromHandle(GetEnumUnit());
-                    u.setAnimation(Number(message.slice(2,5)));
+                GetPlayerUnitSelection(player, units => {
+                    units.forEach(u => {                     
+                        u.setAnimation(Number(message.slice(2,5)));
+                    });
                 });
             }
             else if (message == "-level") {
-                EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    const pData = PlayerStateFactory.get(MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit())));
-                    if (pData && pData.getCrewmember()) {
-                        pData.getCrewmember().addExperience(99999);
-                    }
+                GetPlayerUnitSelection(player, units => {
+                    units.forEach(u => {                           
+                        const pData = PlayerStateFactory.get(u.owner);
+                        if (pData && pData.getCrewmember()) {
+                            pData.getCrewmember().addExperience(99999);
+                        }
+                    });
                 });
             }
             else if (message == "-kill") {
-                EnumUnitsSelected(player.handle, Filter(() => true), () => {
-                    // KillUnit(GetEnumUnit());
-                    UnitDamageTarget(GetEnumUnit(), GetEnumUnit(), 9999999, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_DIVINE, WEAPON_TYPE_WHOKNOWS);
+                GetPlayerUnitSelection(player, units => {
+                    units.forEach(u => u.kill());
                 });
             }
             else if (message == "-creep") {
@@ -300,6 +302,12 @@ export class ChatEntity extends Entity {
             else if (message == "-test minigun") {
                 GetPlayerCamLoc(player, (x, y) => {
                     CreateItem(ITEM_WEP_MINIGUN, x, y);
+                });
+            }
+            else if (message == "-test fahr") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    AddSpecialEffect("fahrbomb.mdx", x, y);
+                    // CreateItem(ITEM_WEP_MINIGUN, x, y);
                 });
             }
             else if (message == "-test thano") {

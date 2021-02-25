@@ -67,7 +67,7 @@ export class Zone {
     public onLeave(unit: Unit) {
         const idx = this.unitsInside.indexOf(unit);
         if (idx >= 0) this.unitsInside.splice(idx, 1);
-        else Log.Warning("Failed to remove unit "+unit.name+" from "+this.id);
+        // else Log.Warning("Failed to remove unit "+unit.name+" from "+this.id);
     }
 
     /**
@@ -91,10 +91,24 @@ export class Zone {
      */
     public getPlayersInZone() {
         try { 
-            let players = this.unitsInside.map(u => {
-                // Log.Information("Getting "+u.name);
-                return u.owner;
-            });
+            const players = [];
+
+            for (let index = 0; index < this.unitsInside.length; index++) {
+                const u = this.unitsInside[index];
+                if (!u.isHero() && !u.isAlive()) {
+                    // Time to remove this unit?
+                    const idx = this.unitsInside.indexOf(u);
+                    if (idx >= 0) this.unitsInside.splice(idx, 1);
+
+                    // Log.Verbose(`Removing undefined // killed unit from ${this.id}`);
+                    index--;
+                }
+                else {
+                    // Otherwise push the player to the array
+                    players.push(u.owner);
+                }
+            }
+
             return players.filter(function(elem, index, self) {
                 return index === self.indexOf(elem);
             });

@@ -30,11 +30,12 @@ import { Timers } from "app/timer-type";
 import { GunItem } from "./guns/gun-item";
 import { WepNeokatana } from "./guns/neokatana";
 import { MeteorCanisterAttachment } from "./attachment/meteor-canister";
-import { UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
 import { Flamethrower } from "./guns/flamethrower";
 import { Vector2 } from "app/types/vector2";
 import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { FilterIsAlive } from "resources/filters";
+import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 
 export class WeaponEntity extends Entity {
     private static instance: WeaponEntity;
@@ -398,8 +399,16 @@ export class WeaponEntity extends Entity {
             // How do I handle auto spawning eggs?
             // I'm not actually too sure
             // I guess I do it here?
-            if (unit.typeId === UNIT_ID_EGG_AUTO_HATCH || unit.typeId === UNIT_ID_EGG_AUTO_HATCH_LARGE) {
-                unit.issueImmediateOrder("thunderclap");
+            if (unit.typeId === UNIT_ID_EGG_AUTO_HATCH || 
+                unit.typeId === UNIT_ID_EGG_AUTO_HATCH_LARGE) {
+
+                if (targetUnit.typeId === CREWMEMBER_UNIT_ID && !PlayerStateFactory.get(unit.owner).getForce().is(ALIEN_FORCE_NAME)) {
+                    unit.issueImmediateOrder("thunderclap");
+                }
+                else {
+                    unit.paused = true;
+                    unit.paused = false;
+                }
             }
         });
 

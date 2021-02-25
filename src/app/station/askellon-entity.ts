@@ -123,7 +123,7 @@ export class AskellonEntity extends Entity {
                 : 1)); 
 
             Quick.GetRandomFromArray(this.poweredFloors, howManyFloors).forEach(floor => {
-                let howLong = GetRandomReal(0+20*(severity/3), 10+60*(severity/3)); 
+                let howLong = GetRandomReal(40+60*(severity/3), 60+120*(severity/3)); 
                 DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] Power Surge Detected :: ${ZONE_TYPE_TO_ZONE_NAME.get(floor)}`);
                 EventEntity.send(EVENT_TYPE.STATION_POWER_OUT, { source: null, data: { zone: floor, duration: howLong }})
             });
