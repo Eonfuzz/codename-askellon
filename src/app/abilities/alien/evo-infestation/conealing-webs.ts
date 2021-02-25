@@ -101,7 +101,7 @@ export class ConealingWebsAbility implements Ability {
         this.websSpawned++;
         const web = {
             sfx: new Effect( 
-                "Models\\sfx\\Web.mdl", 
+                "Models\\sfx\\WebFloor.mdl", 
                 this.casterUnit.x, 
                 this.casterUnit.y
             ),
@@ -111,8 +111,8 @@ export class ConealingWebsAbility implements Ability {
 
         FogModifierStart(web.vis);
 
-        web.sfx.scale = 2;
-        web.sfx.setHeight(getZFromXY(web.loc.x, web.loc.y) + 220);
+        web.sfx.scale = 5;
+        web.sfx.setHeight(getZFromXY(web.loc.x, web.loc.y) + 20);
 
         PlayNewSoundOnUnit(
             "Abilities\\Spells\\Undead\\Web\\WebTarget1.flac", this.casterUnit, 20);

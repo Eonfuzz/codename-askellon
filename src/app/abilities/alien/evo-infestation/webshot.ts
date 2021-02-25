@@ -17,7 +17,7 @@ import { Timers } from "app/timer-type";
 const MISSILE_LAUNCH_EFFECT = "Abilities\\Spells\\Undead\\Web\\Webmissile.mdl";
 const MISSILE_EFFECT = "Models\\sfx\\CocoonMissile.mdx";
 const MISSILE_BEAM = "SPNL";
-const WEB_SFX = "Models\\sfx\\Web.mdl";
+const WEB_SFX = "Models\\sfx\\WebFloor.mdl";
 
 export class WebshotAbility implements Ability {
 
@@ -175,7 +175,7 @@ export class WebshotAbility implements Ability {
             if (this.spawnWebSFXCounter <= 0) {
                 this.spawnWebSFXCounter = 0.1;
                 const sfx = AddSpecialEffect(WEB_SFX, projPos.x, projPos.y);
-                BlzSetSpecialEffectHeight(sfx, projPos.z);
+                BlzSetSpecialEffectZ(sfx, projPos.z);
                 BlzSetSpecialEffectYaw(sfx, GetRandomReal(0, 360) * bj_DEGTORAD);
                 BlzSetSpecialEffectScale(sfx, 0.5);
                 BlzSetSpecialEffectAlpha(sfx, 45);
