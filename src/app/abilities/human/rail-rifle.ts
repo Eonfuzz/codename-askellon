@@ -170,12 +170,12 @@ export class RailRifleAbility implements Ability {
         // Case equipped unit to damage the target
         const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
         if (crewmember) {
-            const chargeFactor = Pow(1+this.timeElapsed/10, 2)
+            const chargeFactor = Pow(1+this.timeElapsed/15, 2)
 
             UnitDamageTarget(
                 projectile.source, 
                 collidesWith, 
-                (50 + (chargeFactor*125) )*crewmember.getDamageBonusMult(),
+                (25 + (chargeFactor*125) )*crewmember.getDamageBonusMult(),
                 false, 
                 true, 
                 ATTACK_TYPE_PIERCE, 
