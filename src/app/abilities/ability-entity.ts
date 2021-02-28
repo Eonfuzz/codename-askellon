@@ -53,6 +53,7 @@ export class AbilityEntity extends Entity {
     }
 
 
+    _timerDelay = 0.02;
     step() {
         // Go through all abilities cast
         let i = 0;

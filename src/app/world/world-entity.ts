@@ -42,7 +42,7 @@ export class WorldEntity extends Entity {
     private worldZones: Map<ZONE_TYPE, Zone> = new Map();
     private allZones: Zone[] = [];
     // Map of unit to zone
-    private unitLocation: Map<Unit, Zone> = new Map();
+    private unitLocation: Map<number, Zone> = new Map();
 
     _timerDelay = 0.25;
 
@@ -92,7 +92,7 @@ export class WorldEntity extends Entity {
      */
     public handleTravel(unit: Unit, to: ZONE_TYPE) {
         try {
-            const oldZone = this.unitLocation.get(unit);
+            const oldZone = this.unitLocation.get(unit.id);
             const newZone = this.getZone(to);     
 
             // Now call on enter and on leave for the zones
@@ -101,7 +101,7 @@ export class WorldEntity extends Entity {
             
             if (newZone) {
                 // Log.Information("Setting "+unit.name+" to zone "+ZONE_TYPE[newZone.id]);
-                this.unitLocation.set(unit, newZone);
+                this.unitLocation.set(unit.id, newZone);
             }
 
             return newZone;
@@ -197,7 +197,7 @@ export class WorldEntity extends Entity {
 
     getUnitZone(whichUnit: Unit): Zone | undefined {
         if (!whichUnit) Log.Error("getUnitZone called but unit is undefined");
-        return this.unitLocation.get(whichUnit);
+        return this.unitLocation.get(whichUnit.id);
     }
 
     /**
@@ -214,7 +214,7 @@ export class WorldEntity extends Entity {
                 // Force on leave
                 zone.onLeave(whichUnit);
                 // Remove data on it
-                this.unitLocation.delete(whichUnit);
+                this.unitLocation.delete(whichUnit.id);
             }
             else {
                 // Log.Information("Remove zone failed for "+whichUnit.name);

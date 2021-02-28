@@ -25,7 +25,7 @@ export class DragonFireBlastAbility implements Ability {
 
     private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
-    private unitsHit = new Map<unit, number>();
+    private unitsHit = new Map<number, number>();
 
     private damageGroup = CreateGroup();
 
@@ -125,8 +125,8 @@ export class DragonFireBlastAbility implements Ability {
     
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
-        const timesUnitHit = this.unitsHit.get(collidesWith) || 0;
-        this.unitsHit.set(collidesWith, timesUnitHit + 1);
+        const timesUnitHit = this.unitsHit.get(GetHandleId(collidesWith)) || 0;
+        this.unitsHit.set(GetHandleId(collidesWith), timesUnitHit + 1);
 
         const crewmember = CrewFactory.getInstance().getCrewmemberForUnit(this.casterUnit);
 

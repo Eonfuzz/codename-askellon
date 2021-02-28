@@ -31,7 +31,7 @@ import { ShipZone } from "app/world/zone-types/ship-zone";
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
 export class SecurityEntity extends Entity {
-    isDestroyedMap = new Map<Unit, boolean>();
+    isDestroyedMap = new Map<number, boolean>();
 
     private static instance: SecurityEntity;
 
@@ -43,7 +43,7 @@ export class SecurityEntity extends Entity {
         return this.instance;
     }
 
-    private doors = new Map<Unit, Door>();
+    private doors = new Map<number, Door>();
     private doorsIterator: Door[] = [];
 
     private stationSecurityDamageTrigger = new Trigger();
@@ -134,9 +134,9 @@ export class SecurityEntity extends Entity {
         }
 
         if (u.typeId === UNIT_ID_MANSION_DOOR) {
-            if (!this.doors. has(u)) {
+            if (!this.doors.has(u.id)) {
                 const door = new Door(u, false);
-                this.doors.set(u, door);
+                this.doors.set(u.id, door);
                 this.doorsIterator.push(door)
             }
         }
@@ -150,7 +150,7 @@ export class SecurityEntity extends Entity {
     }
 
     public isUnitDestroyed(u: Unit) {
-        return this.isDestroyedMap.get(u) || false;
+        return this.isDestroyedMap.get(u.id) || false;
     }
 
     /**
@@ -172,7 +172,7 @@ export class SecurityEntity extends Entity {
             BlzSetEventDamage(0);
 
             if (!unitIsDestroyed) {
-                this.isDestroyedMap.set(unit, true);
+                this.isDestroyedMap.set(unit.id, true);
                 // Pause the unit
                 unit.paused = true;
 
@@ -217,7 +217,7 @@ export class SecurityEntity extends Entity {
         // Once a unit is healed remove its invulnerability
         // Allow some margin of error
         if (unitIsDestroyed && GetUnitLifePercent(u) >= 99) {
-            this.isDestroyedMap.set(unit, false);
+            this.isDestroyedMap.set(unit.id, false);
             // Set unit hp to full
             SetUnitLifePercentBJ(u, 100);
             // Pause the unit

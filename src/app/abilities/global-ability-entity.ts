@@ -50,7 +50,7 @@ export class GlobalCooldownAbilityEntity extends Entity {
      * Living units that have global coolodwns
      * Used for more optimised event propagation
      */
-    private unitsListeningToAbility = new Map<unit, number[]>();
+    private unitsListeningToAbility = new Map<number, number[]>();
 
     /**
      * The units that are listening to an ability cooldown
@@ -109,9 +109,9 @@ export class GlobalCooldownAbilityEntity extends Entity {
                     if (cooldown > 0) BlzStartUnitAbilityCooldown(u, abilId, cooldown);
                     
                     // Register what this unit is listening to
-                    const abilsThisUnitIsListeningTo = this.unitsListeningToAbility.get(u) || [];
+                    const abilsThisUnitIsListeningTo = this.unitsListeningToAbility.get(GetHandleId(u)) || [];
                     abilsThisUnitIsListeningTo.push(abilId);
-                    this.unitsListeningToAbility.set(u, abilsThisUnitIsListeningTo);
+                    this.unitsListeningToAbility.set(GetHandleId(u), abilsThisUnitIsListeningTo);
 
                     // Register it in the ability -> unit map
                     const abilOnUnits = this.abilitiesOnUnits.get(abilId) || [];
@@ -134,11 +134,11 @@ export class GlobalCooldownAbilityEntity extends Entity {
      */
     private onUnitRemove(u: Unit) {
         
-        const uAbils = this.unitsListeningToAbility.get(u.handle);
+        const uAbils = this.unitsListeningToAbility.get(u.id);
         if (!uAbils) return;
 
         // First remove the unit's entry
-        this.unitsListeningToAbility.delete(u.handle);
+        this.unitsListeningToAbility.delete(u.id);
         // Now remove it from each ability entry
         for (let index = 0; index < uAbils.length; index++) {
             const abil = uAbils[index];

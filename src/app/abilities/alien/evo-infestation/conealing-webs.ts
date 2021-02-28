@@ -5,6 +5,7 @@ import { Vector2 } from "app/types/vector2";
 import { AddGhost, getZFromXY, RemoveGhost } from "lib/utils";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { Log } from "lib/serilog/serilog";
+import { ABIL_ALIEN_WEBWALK } from "resources/ability-ids";
 
 interface Web {
     sfx: Effect;
@@ -18,11 +19,12 @@ export class ConealingWebsAbility implements Ability {
     
     private duration = 15;
     private websSpawned = 0;
+    private maxWebsSpawned = 1;
 
     private currentWebs: Web[] = [];
 
     private static activeWebs: Web[] = [];
-    private static activeWebsByCaster = new Map<Unit, Web[]>();
+    private static activeWebsByCaster = new Map<number, Web[]>();
 
     private webCheckEvery = 1;
     private stealthAOE = 400;
@@ -30,8 +32,12 @@ export class ConealingWebsAbility implements Ability {
     public initialise() {
         this.casterUnit = Unit.fromEvent();
 
+        if (this.casterUnit.getAbilityLevel(ABIL_ALIEN_WEBWALK) >= 2) {
+            this.maxWebsSpawned = 5;
+        }
+
         // Remove references to our old set of webs
-        const oldWebs = ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit);
+        const oldWebs = ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit.id);
         if (oldWebs && oldWebs.length > 0) {
             oldWebs.forEach(w => {
                 const idx = ConealingWebsAbility.activeWebs.indexOf(w);
@@ -43,7 +49,7 @@ export class ConealingWebsAbility implements Ability {
                 w.sfx.destroy();
             });
         }
-        ConealingWebsAbility.activeWebsByCaster.set(this.casterUnit, this.currentWebs);
+        ConealingWebsAbility.activeWebsByCaster.set(this.casterUnit.id, this.currentWebs);
         return true;
     }
     
@@ -63,7 +69,7 @@ export class ConealingWebsAbility implements Ability {
                         if (this.casterUnit.getAbilityLevel(FourCC("Agho")) <= 0) 
                             this.casterUnit.addAbility(FourCC("Agho"));
                     }
-                    else if (this.websSpawned <= 5) {
+                    else if (this.websSpawned <= this.maxWebsSpawned) {
                         this.spawnWeb();
                     }
                     else {
@@ -84,7 +90,7 @@ export class ConealingWebsAbility implements Ability {
                 this.casterUnit.removeAbility(FourCC("Agho"));
             }
         }
-        return ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit) == this.currentWebs;
+        return ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit.id) == this.currentWebs;
     }
 
     private inRangeOfWeb(): boolean {
@@ -119,7 +125,7 @@ export class ConealingWebsAbility implements Ability {
 
         this.currentWebs.push(web);
         ConealingWebsAbility.activeWebs.push(web);
-        ConealingWebsAbility.activeWebsByCaster.set(this.casterUnit, this.currentWebs);
+        ConealingWebsAbility.activeWebsByCaster.set(this.casterUnit.id, this.currentWebs);
     }
     
     public destroy() { 

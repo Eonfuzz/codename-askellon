@@ -44,7 +44,8 @@ export class LeapEntity extends Entity {
         new SoundRef("Sounds\\FallingWhistle.mp3", false),
         new SoundRef("Sounds\\SnakeDeath.mp3", false)
     ];
-
+    
+    _timerDelay = 0.02;
     step() {
         let i = 0;
         while (i < this.instances.length) {

@@ -1,7 +1,7 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_EVOLVE_T1_SPELLBOOK, ABIL_ALIEN_EVOLVE_T2_SPELLBOOK, ABIL_ALIEN_EVOLVE_T3_SPELLBOOK } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_EVOLVE_T1_SPELLBOOK, ABIL_ALIEN_EVOLVE_T2_SPELLBOOK, ABIL_ALIEN_EVOLVE_T3_SPELLBOOK, ABIL_ALIEN_WEBSHOT, ABIL_ALIEN_BROODNEST, ABIL_ALIEN_WEBWALK } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { PlayNewSound } from "lib/translators";
@@ -10,7 +10,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
-import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_RABBIT, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, WORM_ALIEN_FORM } from "resources/unit-ids";
+import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_RABBIT, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, WORM_ALIEN_FORM, DEFILER_ALIEN_FORM } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
@@ -53,7 +53,7 @@ export class AlienForce extends ForceType {
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
-    private alienDeathTrigs = new Map<Unit, Trigger>();
+    private alienDeathTrigs = new Map<number, Trigger>();
     private alienKillsTrigger = new Trigger();
 
     private isPickingAnotherAlienHost = false;
@@ -220,7 +220,7 @@ export class AlienForce extends ForceType {
     public registerAlienDeath(who: Unit) {
         const trig = new Trigger();
 
-        this.alienDeathTrigs.set(who, trig);
+        this.alienDeathTrigs.set(who.id, trig);
         trig.registerUnitEvent(who, EVENT_UNIT_DEATH);
         trig.addAction(() => this.removePlayerAlienUnit(who))
     }
@@ -281,9 +281,9 @@ export class AlienForce extends ForceType {
 
             // As this can be called on alien death we need to make sure both alien and human is dead
             const alienUnit = this.getAlienFormForPlayer(player);
-            const deathTrig = this.alienDeathTrigs.get(alienUnit);
+            const deathTrig = this.alienDeathTrigs.get(alienUnit.id);
             deathTrig.destroy();
-            this.alienDeathTrigs.delete(alienUnit);
+            this.alienDeathTrigs.delete(alienUnit.id);
             // Now remove our existing death trigs for human
             super.removePlayer(player, killer);  
             
@@ -673,9 +673,9 @@ export class AlienForce extends ForceType {
                     }
 
                     // Remove old alien death
-                    const oldAlienDeath = this.alienDeathTrigs.get(unit);
+                    const oldAlienDeath = this.alienDeathTrigs.get(unit.id);
                     oldAlienDeath.destroy();
-                    this.alienDeathTrigs.delete(unit);
+                    this.alienDeathTrigs.delete(unit.id);
                     // Now call replace func
                     ReplaceUnitBJ(unit.handle, newForm, 1);
 
@@ -744,7 +744,14 @@ export class AlienForce extends ForceType {
 
             this.setHost(alien.owner);
             SetPlayerTechResearched(alien.owner.handle, UPGR_DUMMY_IS_ALIEN_HOST, 1);
-            
+        }
+
+        // Some unique alien stuff here.
+        // Messy but where should I put it?
+        if (alien.typeId === DEFILER_ALIEN_FORM) {
+            alien.setAbilityLevel(ABIL_ALIEN_WEBSHOT, 2);
+            alien.setAbilityLevel(ABIL_ALIEN_BROODNEST, 2);
+            alien.setAbilityLevel(ABIL_ALIEN_WEBWALK, 2);
         }
     } 
     

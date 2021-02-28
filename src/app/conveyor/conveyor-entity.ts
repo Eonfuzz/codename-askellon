@@ -207,7 +207,7 @@ export class ConveyorEntity extends Entity {
         else if (!isWithinWest && westIdx != -1) Quick.Slice(this.unitMoveWest, westIdx);
     }
 
-
+    _timerDelay = 0.02;
     step() {
         const conveyorSpeed = 105 * this._timerDelay;
         try {

@@ -117,6 +117,7 @@ export class ChatEntity extends Entity {
         });
     }
 
+    _timerDelay = 0.03;
     step() {
         this.chatHandlers.forEach(handler => handler.updateFade(this._timerDelay));
     }

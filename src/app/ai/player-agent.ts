@@ -28,7 +28,7 @@ export class PlayerAgent {
     private maxAgents: number;
 
     // A list of all agents
-    private agents = new WeakMap<Unit, AgentState>();
+    private agents = new Map<number, AgentState>();
     private agentSates: AgentState[] = [];
 
 
@@ -49,14 +49,14 @@ export class PlayerAgent {
 
     public removeAgent(agent: Unit) {
         if (agent.owner !== this.player) return;
-        if (this.agents.has(agent)) {
-            const state = this.agents.get(agent);
+        if (this.agents.has(agent.id)) {
+            const state = this.agents.get(agent.id);
 
             Quick.Slice(this.agentSates, this.agentSates.indexOf(state));
 
             // Decrement our agent count
             this.agentCount--;
-            this.agents.delete(agent);
+            this.agents.delete(agent.id);
         }
     }
 
@@ -112,7 +112,7 @@ export class PlayerAgent {
             // Increment our agent count
             this.agentCount++;
             this.agentSates.push(agentState);
-            this.agents.set(agent, agentState);            
+            this.agents.set(agent.id, agentState);            
         }
     }
 
@@ -150,7 +150,7 @@ export class PlayerAgent {
     }
 
     public debugUnit(whichUnit: Unit) {
-        const state = this.agents.get(whichUnit);
+        const state = this.agents.get(whichUnit.id);
         if (state) {
             const queue = state.actionQueue;
             const uZone = WorldEntity.getInstance().getUnitZone(whichUnit);
@@ -169,9 +169,10 @@ export class PlayerAgent {
     }
 
     public hasAgent(whichUnit: Unit) {
-        return this.agents.has(whichUnit);
+        return this.agents.has(whichUnit.id);
     }
 
+    _timerDelay = 0.5;
     // Updates our agent behaviours
     public step(delta: number) {
         for (let index = 0; index < this.agentSates.length; index++) {

@@ -21,7 +21,7 @@ export class Shotgun extends GunItem {
 
     gunPath = "Weapons\\MarineHarkons.mdx";
     
-    private unitsHit = new Map<unit, number>();
+    private unitsHit = new Map<number, number>();
 
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(item, equippedTo);
@@ -113,8 +113,8 @@ export class Shotgun extends GunItem {
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
-            const timesUnitHit = this.unitsHit.get(collidesWith) || 0;
-            this.unitsHit.set(collidesWith, timesUnitHit + 1);
+            const timesUnitHit = this.unitsHit.get(GetHandleId(collidesWith)) || 0;
+            this.unitsHit.set(GetHandleId(collidesWith), timesUnitHit + 1);
 
             const damage = this.getDamage(this.equippedTo.unit) / Pow(1.25, timesUnitHit);
             UnitDamageTarget(
