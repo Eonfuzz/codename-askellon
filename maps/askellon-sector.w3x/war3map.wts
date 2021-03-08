@@ -8088,3 +8088,15 @@ STRING 1913
 Spawn Canite ( 80s )
 }
 
+STRING 1914
+// Doodads: D01X (Path Blocker (Huge) (Pathing ONLY)), Name (Name)
+{
+Path Blocker (Huge) (Pathing ONLY)
+}
+
+STRING 1915
+// Doodads: D01Y (Flame Vent), Name (Name)
+{
+Flame Vent
+}
+
