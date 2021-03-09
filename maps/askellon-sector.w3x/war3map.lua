@@ -1079,12 +1079,6 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7488.0, -13984.0, 268.410, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7488.0, -14144.0, 268.410, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7296.0, -13824.0, 268.410, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22048.0, -17152.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21952.0, -17152.0, -45.214, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21856.0, -17152.0, 23.611, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21760.0, -17152.0, -29.283, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21664.0, -17152.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21568.0, -17152.0, -40.821, FourCC("h005"))
 end
 
 function CreateNeutralPassiveBuildings()
