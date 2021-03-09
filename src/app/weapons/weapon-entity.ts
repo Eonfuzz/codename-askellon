@@ -48,7 +48,7 @@ export class WeaponEntity extends Entity {
         return this.instance;
     }
 
-    unitsWithWeapon = new Map<unit, Gun>();
+    unitsWithWeapon = new Map<number, Gun>();
     game: Game;
     
     weaponItemIds: Array<number> = [];
@@ -114,6 +114,7 @@ export class WeaponEntity extends Entity {
     }
 
 
+    _timerDelay = 0.02;
     /**
      * Loops through and updates all projectiles
      * @param DELTA_TIME The time passed since last loop, used to get real time value of velocity
@@ -280,7 +281,7 @@ export class WeaponEntity extends Entity {
             if (weaponForItem) {
                 this.guns.push(weaponForItem);
                 weaponForItem.onAdd(crew);
-                this.unitsWithWeapon.set(crew.unit.handle, weaponForItem);
+                this.unitsWithWeapon.set(crew.unit.id, weaponForItem);
 
                 // Broadcast item equip event
                 EventEntity.getInstance().sendEvent(EVENT_TYPE.WEAPON_EQUIP, { 
@@ -417,7 +418,7 @@ export class WeaponEntity extends Entity {
         this.weaponAttackTrigger.addAction(() => {
             let unit = Unit.fromHandle(GetEventDamageSource());
             let targetUnit = Unit.fromHandle(BlzGetEventDamageTarget())
-            if (!this.unitsWithWeapon.has(GetEventDamageSource())) return;
+            if (!this.unitsWithWeapon.has(GetHandleId(GetEventDamageSource()))) return;
             
             let targetLocation = new Vector3(targetUnit.x, targetUnit.y, targetUnit.z);
             
@@ -473,7 +474,7 @@ export class WeaponEntity extends Entity {
         if (gun) {
             gun.onRemove();
             // Remove weapon
-            this.unitsWithWeapon.delete(unit.handle);
+            this.unitsWithWeapon.delete(unit.id);
         }
     }
 
@@ -542,7 +543,7 @@ export class WeaponEntity extends Entity {
     }
 
     registerWeaponForUnit(gun: Gun) {
-        this.unitsWithWeapon.set(gun.equippedTo.unit.handle, gun);
+        this.unitsWithWeapon.set(gun.equippedTo.unit.id, gun);
         this.guns.push(gun);
     }
 }

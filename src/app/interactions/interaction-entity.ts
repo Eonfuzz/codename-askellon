@@ -37,7 +37,7 @@ export class InteractionEntity extends Entity {
     private interactionBeginTrigger: Trigger;
     private interactions: Array<InteractionEvent> = [];
 
-    private unitInteractionTimeStamp = new Map<Unit, number>();
+    private unitInteractionTimeStamp = new Map<number, number>();
 
     constructor() {
         super();
@@ -53,8 +53,8 @@ export class InteractionEntity extends Entity {
 
         // Listen to unit removal
         EventEntity.listen(new EventListener(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, (self, ev) => {
-            if (this.unitInteractionTimeStamp.has(ev.source)) {
-                this.unitInteractionTimeStamp.delete(ev.source);
+            if (this.unitInteractionTimeStamp.has(ev.source.id)) {
+                this.unitInteractionTimeStamp.delete(ev.source.id);
             }
         }));
 
@@ -117,6 +117,7 @@ export class InteractionEntity extends Entity {
         }
     }
 
+    _timerDelay = 0.04;
     step() {
         let i = 0;
         while (i < this.interactions.length) {
@@ -138,7 +139,7 @@ export class InteractionEntity extends Entity {
 
     private checkCooldown(who: Unit) {
         const ourGameTime = GameTimeElapsed.getTime();
-        const lastInteraction = this.unitInteractionTimeStamp.get(who) || 0;
+        const lastInteraction = this.unitInteractionTimeStamp.get(who.id) || 0;
 
         return (ourGameTime - lastInteraction) >= 3;
     }
@@ -147,6 +148,6 @@ export class InteractionEntity extends Entity {
         if (PlayerStateFactory.isAlienAI(who.owner)) return;
         
         const ourGameTime = GameTimeElapsed.getTime();
-        this.unitInteractionTimeStamp.set(who, ourGameTime);
+        this.unitInteractionTimeStamp.set(who.id, ourGameTime);
     }
 }

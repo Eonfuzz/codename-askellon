@@ -66,7 +66,8 @@ export class WebshotAbility implements Ability {
         // webSfx = this.webshotMissile.addEffect(MISSILE_EFFECT_2, new Vector3(0, 0, 0), deltaTarget.normalise(), 1);
         // BlzSetSpecialEffectColor(webSfx, 80, 255, 90);
         // BlzSetSpecialEffectPitch(webSfx, -90 * bj_DEGTORAD);
-        BlzSetSpecialEffectScale(webSfx, 1.3);
+        BlzSetSpecialEffectScale(webSfx, 1);
+        BlzSetSpecialEffectAlpha(webSfx, 120);
 
         const sfx = AddSpecialEffect(MISSILE_LAUNCH_EFFECT, polarPoint.x, polarPoint.y);
         BlzSetSpecialEffectHeight(sfx, -30);
@@ -103,7 +104,7 @@ export class WebshotAbility implements Ability {
             this.webshotCollided = true;
             if (withWho != undefined) {
                 // If this is the second level abil we need to pull them to us
-                if (this.casterUnit.getAbilityLevel(ABIL_ALIEN_WEBSHOT) >= 1 && !IsUnitIdType(withWho.typeId, UNIT_TYPE_STRUCTURE)) {
+                if (this.casterUnit.getAbilityLevel(ABIL_ALIEN_WEBSHOT) >= 2 && !IsUnitIdType(withWho.typeId, UNIT_TYPE_STRUCTURE)) {
                     who = withWho;
 
                     startVec = Vector3.fromWidget(withWho.handle);

@@ -75,6 +75,7 @@ export class DynamicBuffEntity extends Entity {
         Log.Error("Creating new buff no instance for ID "+id);
     }
 
+    _timerDelay = 0.3;
     step() {
         const timestamp = GameTimeElapsed.getTime();
 
@@ -89,12 +90,12 @@ export class DynamicBuffEntity extends Entity {
             const iC = buff.getInstanceCount() + buff.getNegativeinstanceCount();
             if (!isActive && iC <= 0) {
                 // Log.Information("destorying buff "+buff.id+" for unit!");
-                const buffsForUnit = buffState.buffsByUnit.get(buff.who);
+                const buffsForUnit = buffState.buffsByUnit.get(buff.who.id);
                 const idx = buffsForUnit.indexOf(buff);
 
                 if (idx >= 0) {
                     buffsForUnit.splice(idx, 1);
-                    if (buffsForUnit.length === 0) buffState.buffsByUnit.delete(buff.who);
+                    if (buffsForUnit.length === 0) buffState.buffsByUnit.delete(buff.who.id);
                 }
                 else {
                     Log.Error("Deleting unit buff from unit buff cache but no unit entry");

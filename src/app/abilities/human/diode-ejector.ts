@@ -38,7 +38,7 @@ export class DiodeEjectAbility implements Ability {
     private weaponIntensityOnCast: number = 0;
     private leapExpired: boolean = false;
 
-    private unitsHit = new Map<unit, number>();
+    private unitsHit = new Map<number, number>();
 
     constructor() {
         this.timeElapsed = 0;
@@ -129,8 +129,8 @@ export class DiodeEjectAbility implements Ability {
             .onCollide((projectile, who) => {
                 projectile.setDestroy(true);
                 if (this.casterUnit) {
-                    const timesUnitHit = this.unitsHit.get(who) || 0;
-                    this.unitsHit.set(who, timesUnitHit + 1);
+                    const timesUnitHit = this.unitsHit.get(GetHandleId(who)) || 0;
+                    this.unitsHit.set(GetHandleId(who), timesUnitHit + 1);
 
                     let damage = diodeDamage / Pow(1.25, timesUnitHit);
 

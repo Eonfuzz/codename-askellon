@@ -17,7 +17,7 @@ export class NodeGraph {
     public static buildGraph() : void {
        
 
-        const edgeForUnit = new Map<Unit, Edge>();
+        const edgeForUnit = new Map<number, Edge>();
         const nodeForZoneType = new Map<ZONE_TYPE, Node>();
 
         const nodes: Node[] = [];
@@ -44,16 +44,16 @@ export class NodeGraph {
             
                         // Log.Information(`${ZONE_TYPE[node.zone.id]} -> ${exit.entrance.name}`);
                         // We may already have an edge for this unit
-                        const edge = edgeForUnit.get(exit.entrance) ||  new Edge();
+                        const edge = edgeForUnit.get(exit.entrance.id) ||  new Edge();
 
                         edge.node = node;
                         edge.unit = exit.entrance;
-                        edgeForUnit.set(edge.unit, edge);
+                        edgeForUnit.set(edge.unit.id, edge);
                         node.pathways.push(edge);
 
                         // now set it for the exit
-                        const exitEdge = edgeForUnit.get(exit.exit) || new Edge();
-                        edgeForUnit.set(exit.exit, exitEdge);
+                        const exitEdge = edgeForUnit.get(exit.exit.id) || new Edge();
+                        edgeForUnit.set(exit.exit.id, exitEdge);
                         edge.exit = exitEdge;
                     });
                 }

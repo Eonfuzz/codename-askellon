@@ -44,7 +44,7 @@ export class CrewFactory {
 
     game: Game;
 
-    crewmemberForUnit = new Map<Unit, Crewmember>();
+    crewmemberForUnit = new Map<number, Crewmember>();
     allCrew: Crewmember[] = [];
 
     allJobs: Array<ROLE_TYPES> = [];
@@ -196,7 +196,7 @@ export class CrewFactory {
             // Update pData
             pData.setCrewmember(crewmember);
             
-            this.crewmemberForUnit.set(nUnit, crewmember);        
+            this.crewmemberForUnit.set(nUnit.id, crewmember);        
 
             // Add the unit to its force
             force.addPlayerMainUnit(crewmember, player);
@@ -335,7 +335,7 @@ export class CrewFactory {
     }
 
     getCrewmemberForUnit(unit: Unit): Crewmember | void {
-        return this.crewmemberForUnit.has(unit) && this.crewmemberForUnit.get(unit);
+        return this.crewmemberForUnit.has(unit.id) && this.crewmemberForUnit.get(unit.id);
     }
 
     private getSkinFor(who: PlayerState) {        

@@ -16,13 +16,13 @@ export class DynamicBuffState {
 
     
     public buffs: DynamicBuff[] = [];
-    public buffsByUnit = new Map<Unit, DynamicBuff[]>();
+    public buffsByUnit = new Map<number, DynamicBuff[]>();
 
     public static unitHasBuff(buffId: BUFF_ID, who: Unit): false | DynamicBuff {
         const state = DynamicBuffState.getInstance();
 
-        if (!state.buffsByUnit.has(who)) return false;
-        const buffs = state.buffsByUnit.get(who);
+        if (!state.buffsByUnit.has(who.id)) return false;
+        const buffs = state.buffsByUnit.get(who.id);
         return buffs.find(b => b.id === buffId);
     }
 
@@ -30,10 +30,10 @@ export class DynamicBuffState {
     public static addBuff(who: Unit, buff: DynamicBuff) {
         const state = DynamicBuffState.getInstance();
 
-        const unitBuffs = state.buffsByUnit.get(who) || [];
+        const unitBuffs = state.buffsByUnit.get(who.id) || [];
 
         unitBuffs.push(buff);
         state.buffs.push(buff);
-        state.buffsByUnit.set(who, unitBuffs);
+        state.buffsByUnit.set(who.id, unitBuffs);
     }
 }

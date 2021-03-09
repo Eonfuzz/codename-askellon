@@ -29,7 +29,6 @@ import {
     ABIL_ITEM_TRIFEX,
     ABIL_ITEM_GENETIC_SAMPLER,
     ABIL_ACTIVATE_SEQUENCER_TEST,
-    ABIL_ALIEN_EVOLVE_T3,
     ABIL_ALIEN_NEURAL_TAKEOVER,
     ABIL_SHIP_CHAINGUN,
     ABIL_ITEM_HELLFIRE_GRENADE,
@@ -40,8 +39,6 @@ import {
     ABIL_SYSTEM_REACTOR_DIAGNOSTICS,
     ABIL_SYSTEM_PURGE_VENTS,
     ABIL_ALIEN_MINION_EVOLVE,
-    ABIL_ALIEN_MINION_PLACE_EGG,
-    ABIL_SECURITY_TARGET_PLAYER_7,
     ABIL_SECURITY_TARGET_ALL,
     ABIL_ASKELLON_BROADSIDE_LEFT,
     ABIL_ASKELLON_BROADSIDE_RIGHT,
@@ -51,7 +48,6 @@ import {
     ABIL_ACTIVATE_SCAN_CREW,
     ABIL_ACTIVATE_SCAN_ALIENS,
     ABIL_WEP_MINIGUN_FULLER_AUTO,
-    ABIL_ALIEN_EVOLVE_T2_DEFILER,
     ABIL_ITEM_ATTACH_METEOR_CANISTER,
     ABIL_EGG_HATCH_NEUTRAL,
     ABIL_ALIEN_CREATE_TUMOR,
@@ -61,7 +57,9 @@ import {
     ABIL_ITEM_REMOTE_BOMB,
     ABIL_ALIEN_WEBSHOT,
     ABIL_ALIEN_BROODNEST,
-    ABIL_ALIEN_WEBWALK
+    ABIL_ALIEN_WEBWALK,
+    ABIL_ALIEN_EVOLVE_T2_SPIDER,
+    ABIL_ALIEN_EVOLVE_T3_DEFILER
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -91,7 +89,7 @@ import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { DiodeEjectAbility } from "./human/diode-ejector";
 import { NeuralTakeoverAbility } from "./alien/neural-takeover";
-import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, DEFILER_ALIEN_FORM } from "resources/unit-ids";
+import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, DEFILER_ALIEN_FORM, SPIDER_ALIEN_FORM } from "resources/unit-ids";
 import { ShipChaingunAbility } from "./human/ship-chaingun";
 import { HellfireGrenadeAbility } from "./human/hellfire-grenade";
 import { FrenzyAbility } from "./alien/frenzy";
@@ -173,7 +171,8 @@ AbilityHooks.Add(ABIL_ALIEN_CHARGE, () => new BusterChargeAbility());
 AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T1, () => new EvolveAbility(ZERGLING_ALIEN_FORM));
 AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T2, () => new EvolveAbility(ROACH_ALIEN_FORM));
 
-AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T2_DEFILER, () => new EvolveAbility(DEFILER_ALIEN_FORM));
+AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T2_SPIDER, () => new EvolveAbility(SPIDER_ALIEN_FORM));
+AbilityHooks.Add(ABIL_ALIEN_EVOLVE_T3_DEFILER, () => new EvolveAbility(DEFILER_ALIEN_FORM));
 AbilityHooks.Add(ABIL_ALIEN_LATCH, () => new LatchAbility());
 AbilityHooks.Add(ABIL_ALIEN_LEAP, () => new LeapAbility());
 AbilityHooks.Add(ABIL_ALIEN_SCREAM, () => new ScreamAbility());

@@ -52,7 +52,7 @@ export class UIEntity extends Entity {
             Log.Error(e);
         }
     }
-
+    _timerDelay = 0.3;
     step() {
         const localPlayer = MapPlayer.fromLocal();
         for (let index = 0; index < this.widgets.length; index++) {

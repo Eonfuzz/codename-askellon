@@ -13,16 +13,16 @@ import { DynamicBuff } from "../dynamic-buff-type";
 export class ComebackDrugBuff extends DynamicBuff {
     id = BUFF_ID.DRUG_COMEBACK;
 
-    private static healthRegeneratedFromDrug: WeakMap<Unit, number>;
-    private static currentHealthRegeneratedFromDrug: WeakMap<Unit, number>;
+    private static healthRegeneratedFromDrug: Map<number, number>;
+    private static currentHealthRegeneratedFromDrug: Map<number, number>;
 
 
     constructor() {
         super();
 
         if (!ComebackDrugBuff.healthRegeneratedFromDrug) {
-            ComebackDrugBuff.healthRegeneratedFromDrug = new WeakMap<Unit, number>();
-            ComebackDrugBuff.currentHealthRegeneratedFromDrug = new WeakMap<Unit, number>();
+            ComebackDrugBuff.healthRegeneratedFromDrug = new Map<number, number>();
+            ComebackDrugBuff.currentHealthRegeneratedFromDrug = new Map<number, number>();
         }
 
     }
@@ -45,11 +45,11 @@ export class ComebackDrugBuff extends DynamicBuff {
             
             const healing = Math.min(this.who.maxLife - this.who.life, 25);
             this.who.life += healing;
-            ComebackDrugBuff.healthRegeneratedFromDrug.set(this.who, 
-                (ComebackDrugBuff.healthRegeneratedFromDrug.get(this.who) || 0) + healing
+            ComebackDrugBuff.healthRegeneratedFromDrug.set(this.who.id, 
+                (ComebackDrugBuff.healthRegeneratedFromDrug.get(this.who.id) || 0) + healing
             );
-            ComebackDrugBuff.currentHealthRegeneratedFromDrug.set(this.who, 
-                (ComebackDrugBuff.currentHealthRegeneratedFromDrug.get(this.who) || 0) + healing
+            ComebackDrugBuff.currentHealthRegeneratedFromDrug.set(this.who.id, 
+                (ComebackDrugBuff.currentHealthRegeneratedFromDrug.get(this.who.id) || 0) + healing
             );
             if (healing > 0) {
                 showOverheadText(this.who.x, this.who.y, 119, 221, 119, 200, `+${MathRound(healing)}`);
@@ -69,16 +69,16 @@ export class ComebackDrugBuff extends DynamicBuff {
     public onStatusChange(newStatus: boolean) {
         if (newStatus) {
             this.who.addAbility(ABIL_MOVESPEED_BONUS_30);
-            const bonusMaxHp = 200 + MathRound((ComebackDrugBuff.healthRegeneratedFromDrug.get(this.who) || 0) / 10);
+            const bonusMaxHp = 200 + MathRound((ComebackDrugBuff.healthRegeneratedFromDrug.get(this.who.id) || 0) / 10);
             this.who.maxLife += bonusMaxHp;
             // this.who.life += bonusMaxHp;
             // Reset current health regen
-            ComebackDrugBuff.currentHealthRegeneratedFromDrug.set(this.who, 0);
+            ComebackDrugBuff.currentHealthRegeneratedFromDrug.set(this.who.id, 0);
             showOverheadText(this.who.x, this.who.y, 119, 221, 119, 200, `+${bonusMaxHp}`);
         }
         else {
             this.who.removeAbility(ABIL_MOVESPEED_BONUS_30);
-            const bonusHealthLoss = MathRound((ComebackDrugBuff.currentHealthRegeneratedFromDrug.get(this.who) || 0) / 10);
+            const bonusHealthLoss = MathRound((ComebackDrugBuff.currentHealthRegeneratedFromDrug.get(this.who.id) || 0) / 10);
             const healthLoss = 200 + bonusHealthLoss;
             this.who.maxLife -= healthLoss;
             showOverheadText(this.who.x, this.who.y, 255, 105, 97, 200, `-${bonusHealthLoss} Max HP`);

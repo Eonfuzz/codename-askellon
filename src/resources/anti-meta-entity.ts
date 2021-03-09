@@ -82,7 +82,7 @@ export class AntiMetaEntity {
             //     }
             // });
     }
-    //heckin test
+    
     hook(who: MapPlayer) {
         const trigger = new Trigger();
         this.triggerForPlayer.set(who, trigger);

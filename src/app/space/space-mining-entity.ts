@@ -151,7 +151,7 @@ export class SpaceMiningEntity extends Entity {
         return this.instance;
     }
 
-    private miningUnits = new Map<Unit, MiningEvent>();
+    private miningUnits = new Map<number, MiningEvent>();
     private item: MiningEvent[] = [];
 
     constructor() {
@@ -173,18 +173,18 @@ export class SpaceMiningEntity extends Entity {
     }
 
     private add(source: Unit, target: Unit) {
-        if (!this.miningUnits.has(source)) {
+        if (!this.miningUnits.has(source.id)) {
             const ev = new MiningEvent(source, target);
             this.item.push( ev );
-            this.miningUnits.set(source, ev);
+            this.miningUnits.set(source.id, ev);
         }
     }
 
     private end(source: Unit, target: Unit) {
-        const ev = this.miningUnits.get(source);
+        const ev = this.miningUnits.get(source.id);
 
         if (ev) {
-            this.miningUnits.delete(source);
+            this.miningUnits.delete(source.id);
             const idx = this.item.indexOf(ev);
             ev.destroy();
             if (idx >= 0) {
