@@ -108,7 +108,7 @@ export class PerseusShip extends ShipWithFuel {
             EventEntity.getInstance().removeListener(this.mineralListener);
             // first of all eject all our units
             const allUnits = this.inShip.slice();
-            this.onLeaveShip();
+            this.onLeaveShip(true);
 
             Timers.addTimedAction(0.00, () => {
                 // Make killer damage them for 400 damage as they were inside the ship
@@ -116,9 +116,11 @@ export class PerseusShip extends ShipWithFuel {
                     // If we're in space we need to destoy the unit's items so they don't stop
                     if (ShipState.inSpace) {
                         for (let index = 0; index < 6; index++) {
-                            const item = u.getItemInSlot(index);
-                            if (item) {
-                                item.destroy();
+                            if (UnitItemInSlot(u.handle, index)) {
+                                const item = u.getItemInSlot(index);
+                                if (item) {
+                                    item.destroy();
+                                }
                             }
                         }
                     }
@@ -229,8 +231,12 @@ export class PerseusShip extends ShipWithFuel {
             // We're leaving space, can we dump off minerals?
             const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
             if (unitZone.id === ZONE_TYPE.CARGO_A || unitZone.id === ZONE_TYPE.CARGO_B) {        
-                this.dropMineral(oldOwner, this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);
-                this.dropMineral(oldOwner, this.unit.getItemInSlot(1), ITEM_MINERAL_VALUABLE);
+                if (UnitItemInSlot(this.unit.handle, 0)) {
+                    this.dropMineral(oldOwner, this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);  
+                }
+                if (UnitItemInSlot(this.unit.handle, 1)) {
+                    this.dropMineral(oldOwner, this.unit.getItemInSlot(1), ITEM_MINERAL_VALUABLE);
+                }
             }
         }
         
@@ -242,7 +248,7 @@ export class PerseusShip extends ShipWithFuel {
         const stacks = parentMineral.charges;
         parentMineral.charges = 0;
         
-        if (stacks > 0) {
+        if (stacks > 1) {
             const minerals = CreateItem(ITEM_ID, this.unit.x + GetRandomInt(-50, 50), this.unit.y - 300 + GetRandomInt(-50, 50));
             const maxCharges = ITEM_ID === ITEM_MINERAL_REACTIVE ? 30 : 15; 
             const fullStacks = Math.floor(stacks / maxCharges);

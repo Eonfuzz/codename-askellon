@@ -29,8 +29,8 @@ import { PlayNewSoundOnUnit } from "lib/translators";
 import { Quick } from "lib/Quick";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { SyncSaveLoad } from "lib/TreeLib/SaveLoad/SyncSaveLoad";
 import { PRIVS } from "app/force/player-type";
+import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -369,6 +369,12 @@ export class ChatEntity extends Entity {
                         AIEntity.debugAgent(u)
                     });
                 });
+            }
+            else if (message == "-logai") {
+                AIEntity.debug();
+            }
+            else if (message == "-logbuffs") {
+                DynamicBuffState.log();
             }
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);

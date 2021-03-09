@@ -2,6 +2,7 @@ import { Unit } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { DynamicBuff } from "./dynamic-buff-type";
 import { Hooks } from "lib/Hooks";
+import { Log } from "lib/serilog/serilog";
 
 export class DynamicBuffState {
     private static instance: DynamicBuffState;
@@ -35,5 +36,14 @@ export class DynamicBuffState {
         unitBuffs.push(buff);
         state.buffs.push(buff);
         state.buffsByUnit.set(who.id, unitBuffs);
+    }
+
+    
+
+    public static log() {
+        const buffState = DynamicBuffState.getInstance();
+
+        Log.Information(`Dynamic Buff State`);
+        Log.Information(`Buffs: ${buffState.buffs.length} of unit arr count ${buffState.buffsByUnit.size}`);
     }
 }

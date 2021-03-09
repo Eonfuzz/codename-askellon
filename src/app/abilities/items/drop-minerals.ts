@@ -1,5 +1,5 @@
 import { Ability } from "../ability-type";
-import { Unit } from "w3ts/index";
+import { Item, Unit } from "w3ts/index";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE } from "resources/item-ids";
 import { Vector2 } from "app/types/vector2";
 import { ConveyorEntity } from "app/conveyor/conveyor-entity";
@@ -21,8 +21,9 @@ export class DropMineralsAbility implements Ability {
 
         // Loop through all items and place them on the ground ( that are minerals )
         for (let i = 0; i < this.unit.inventorySize; i++) {
-            const item = this.unit.getItemInSlot(i);
-            if (item) {
+            const _item = UnitItemInSlot(this.unit.handle, i);
+            if (_item) {
+                const item = Item.fromHandle(_item);
                 const iType = item.typeId;
                 if (iType === ITEM_MINERAL_REACTIVE || iType === ITEM_MINERAL_VALUABLE) {
                     item.setPosition(this.targetPoint.x, this.targetPoint.y);

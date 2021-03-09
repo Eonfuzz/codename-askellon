@@ -168,6 +168,14 @@ export class PlayerAgent {
         }
     }
 
+    /**
+     * Logs this agent's state
+     */
+    public log() {
+        Log.Information(`Player Agent: ${this.player.name}`);
+        Log.Information(`Agents: ${this.agentSates.length} of count ${this.agentCount} of max ${this.maxAgents}`);
+    }
+
     public hasAgent(whichUnit: Unit) {
         return this.agents.has(whichUnit.id);
     }

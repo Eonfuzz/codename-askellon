@@ -172,4 +172,9 @@ export class AIEntity extends Entity {
             Log.Information(`${who.name} not found in any agents`)
         }
     }
+
+    public static debug() {
+        const i = this.getInstance();
+        i.playerAgents.forEach( p => p.log());
+    }
 }
