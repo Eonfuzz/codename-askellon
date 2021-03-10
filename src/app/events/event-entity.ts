@@ -56,13 +56,15 @@ export class EventEntity {
         UnitDex.registerEvent(UnitDexEvent.DEATH, () => {
             const unit = UnitDex.eventUnit;
 
+            Log.Verbose(`Death called for ${unit.name} ${unit.id}`);
             // Other things we gotta do
             // If it is a creep tumor, play the zerg building sfx
             if (unit.typeId === ALIEN_STRUCTURE_TUMOR) {
-                unit.show = false;
                 const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
                 BlzSetSpecialEffectScale(sfx, 0.4);
                 DestroyEffect(sfx);
+                unit.destroy();
+                EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
             }
             else if (unit.typeId === ALIEN_MINION_LARVA) {
                 unit.show = false;
@@ -80,6 +82,8 @@ export class EventEntity {
 
         UnitDex.registerEvent(UnitDexEvent.DEINDEX, () => {
             const unit = UnitDex.eventUnit;
+
+            Log.Verbose(`Remove called for ${unit.name} ${unit.id}`);
             // Unit is omega dead
             EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
         });

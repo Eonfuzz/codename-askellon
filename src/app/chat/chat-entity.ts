@@ -1,7 +1,7 @@
 import { Trigger, MapPlayer, Timer, Unit, playerColors } from "w3ts";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { ChatSystem } from "./chat-system";
-import { Log } from "lib/serilog/serilog";
+import { Log, LogLevel } from "lib/serilog/serilog";
 import {  SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE, COL_ALIEN } from "resources/colours";
 import { syncData, GetActivePlayers, GetPlayerCamLoc, MessagePlayer, GetPlayerUnitSelection } from "lib/utils";
@@ -25,12 +25,13 @@ import { ITEM_WEP_NEOKATANA, ITEM_WEP_MINIGUN, ITEM_HUMAN_CORPSE, ITEM_COMEBACK_
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "app/force/forces/force-names";
-import { PlayNewSoundOnUnit } from "lib/translators";
+import { PlayNewSoundOnUnit, SendMessageToAdmin } from "lib/translators";
 import { Quick } from "lib/Quick";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { PRIVS } from "app/force/player-type";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
+import { StringSink } from "lib/serilog/string-sink";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -370,11 +371,21 @@ export class ChatEntity extends Entity {
                     });
                 });
             }
+            else if (message.indexOf(`-loglevel `) === 0) {
+                const level = Number(message.split(" ")[1]);
+                Log.Error(`New level: ${LogLevel[level]}`);
+                Log.Init([
+                    new StringSink(level, SendMessageToAdmin)
+                ]);
+            }
             else if (message == "-logai") {
                 AIEntity.debug();
             }
             else if (message == "-logbuffs") {
                 DynamicBuffState.log();
+            }
+            else if (message == "-logworld") {
+                WorldEntity.getInstance().log();
             }
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);

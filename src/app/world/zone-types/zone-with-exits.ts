@@ -72,4 +72,8 @@ export abstract class ZoneWithExits extends Zone {
 
     public step(delta: number) {
     }
+    
+    public debug() {
+        Log.Information(`Zone ${this.id} -> Units Inside: ${this.unitsInside.length} -> Modifiers: ${this.playerLightingModifiers.size}`);
+    }
 }

@@ -208,16 +208,18 @@ export class WorldEntity extends Entity {
     removeUnit(whichUnit: Unit) {
         const zone = this.getUnitZone(whichUnit);
 
+        Log.Verbose("Remove unit called");
+
         try {
             if (zone) {
-                // Log.Information("Removing unit "+whichUnit.name+" from "+zone.id);
+                Log.Verbose("Removing unit "+whichUnit.name+" from "+zone.id);
                 // Force on leave
                 zone.onLeave(whichUnit);
                 // Remove data on it
                 this.unitLocation.delete(whichUnit.id);
             }
             else {
-                // Log.Information("Remove zone failed for "+whichUnit.name);
+                Log.Verbose("Remove zone failed for "+whichUnit.name);
             }
         }
         catch(e) {
@@ -341,5 +343,10 @@ export class WorldEntity extends Entity {
             AskellonEntity.getInstance().reactorWarningSound.playSound();
             MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] SOLAR EVENT DETECTED, RETURN TO THE ASKELLON.`);
         });
+    }
+
+    public log() {
+        Log.Information(`TOTAL ${this.unitLocation.size}`);
+        this.askellon.log();
     }
 }

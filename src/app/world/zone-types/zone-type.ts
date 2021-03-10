@@ -121,4 +121,8 @@ export class Zone {
     }
 
     public doCauseFear() { return false; }
+
+    public debug() {
+        Log.Information(`Zone ${this.id} -> Units Inside: ${this.unitsInside.length}`);
+    }
 }

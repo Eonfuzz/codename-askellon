@@ -153,8 +153,9 @@ export class PlaceBombAbility implements Ability {
     
     private explode() {
         if (this.bomb.isAlive()) {
-            PlayNewSoundAt("Sounds\\FusionExplosion.wav", this.bomb.x, this.bomb.y, 127);         
-            this.bomb.destroy();
+            PlayNewSoundAt("Sounds\\FusionExplosion.wav", this.bomb.x, this.bomb.y, 127);    
+            this.bomb.show = false;     
+            this.bomb.kill();
             this.detonated = true;
 
             const sfx = AddSpecialEffect("Objects\\Spawnmodels\\NightElf\\NECancelDeath\\NECancelDeath.mdl", this.bomb.x, this.bomb.y);

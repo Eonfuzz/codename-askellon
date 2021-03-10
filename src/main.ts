@@ -10,7 +10,7 @@ import { SendMessageToAdmin, SendMessageUnlogged } from "lib/translators";
 
 function tsMain() {
     Log.Init([
-        new StringSink(LogLevel.Verbose, SendMessageToAdmin),
+        new StringSink(LogLevel.Debug, SendMessageToAdmin),
         // new StringSink(LogLevel.Debug, SendMessageUnlogged),
     ]);
 

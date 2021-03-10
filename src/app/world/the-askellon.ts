@@ -196,4 +196,17 @@ export class TheAskellon {
     public getPlayers() {
         return this.playersInAskellon.slice();
     }
+
+    public log() {
+        Log.Information(`Floors: ${this.allFloors.length}`)
+        for (let index = 0; index < this.allFloors.length; index++) {
+            try {
+                const element = this.allFloors[index];
+                element.debug();
+            }
+            catch (e) {
+                Log.Error(`Failed to log Askellon at ${index} e: ${e}`);
+            }
+        }
+    }
 }

@@ -6,21 +6,14 @@ import { ABIL_GENE_NIGHTEYE } from "resources/ability-ids";
 import { VisionFactory } from "app/vision/vision-factory";
 import { VISION_PENALTY } from "app/vision/vision-type";
 import { BuffInstanceCallback } from "app/buff/buff-instance-callback-type";
-import { CREWMEMBER_UNIT_ID, DESTR_ID_POWERED_LIGHT_BLUE, DESTR_ID_POWERED_LIGHT_RED, DESTR_ID_POWERED_LIGHT_WHITE, DESTR_ID_POWERED_LIGHT_GREEN } from "resources/unit-ids";
-import { Vector2 } from "app/types/vector2";
-import { Zone } from "./zone-type";
+import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { ZoneWithExits } from "./zone-with-exits";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { Log } from "lib/serilog/serilog";
 import { SFX_CARRION_SWARM_HIT } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
 import { SoundRef } from "app/types/sound-ref";
-
-const LIGHT_CLACK = "Sounds\\LightClack.mp3";
-declare const udg_power_generators: Array<unit>;
-declare const udg_power_generator_zones: Array<string>;
 
 export class VentZone extends ZoneWithExits {
     protected hasOxygen: boolean = true;

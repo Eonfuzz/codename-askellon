@@ -139,7 +139,10 @@ export class AIEntity extends Entity {
             try {
                 const createFor = instance.getBestPlayerAgent();
 
-                if (!createFor) return whichUnit.destroy();
+                if (!createFor) {
+                    whichUnit.show = false;
+                    return whichUnit.kill();
+                }
 
                 SetUnitOwner(whichUnit.handle, createFor.player.handle, false);
 
