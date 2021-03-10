@@ -55,8 +55,18 @@ export class AIEntity extends Entity {
          */
         EventEntity.listen(new EventListener(EVENT_TYPE.REGISTER_AS_AI_ENTITY, (self, ev) => {
             // Log.Information("Register as AI entity called");
+            // Dont register tumors as AI entities
             if (!ev.source.isUnitType( UNIT_TYPE_STRUCTURE )) {
                 AIEntity.addAgent(ev.source);
+            }
+            // But DO add them to the map
+            else {
+                
+
+                const z = WorldEntity.getInstance().getPointZone(ev.source.x, ev.source.y);
+                if (z) {
+                    WorldEntity.getInstance().travel(ev.source, z.id);
+                }
             }
         }));
 
