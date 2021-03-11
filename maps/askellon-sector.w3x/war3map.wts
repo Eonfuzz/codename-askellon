@@ -8232,3 +8232,15 @@ STRING 1937
 Picture Frame High Priest
 }
 
+STRING 1938
+// Destructibles: B00U (Picture Sky 1), Name (Name)
+{
+Picture Sky 1
+}
+
+STRING 1939
+// Destructibles: B00V (Picture Angry Priest), Name (Name)
+{
+Picture Angry Priest
+}
+
