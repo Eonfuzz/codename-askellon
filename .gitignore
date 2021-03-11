@@ -4,3 +4,5 @@ dist/
 .vscode/
 maps/askellon-sector.w3x.backup/
 dist2/
+/config.json
+/project.log
