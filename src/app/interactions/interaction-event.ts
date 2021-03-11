@@ -1,5 +1,3 @@
-/** @noSelfInFile **/
-import { Game } from "../game";
 import { Trigger, Unit } from "w3ts";
 import { vectorFromUnit } from "../types/vector2";
 import { ProgressBar } from "../types/progress-bar";

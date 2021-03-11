@@ -1,6 +1,5 @@
 import { Entity } from "app/entity-type";
 import { Hooks } from "lib/Hooks";
-import { Unit } from "w3ts/index";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";

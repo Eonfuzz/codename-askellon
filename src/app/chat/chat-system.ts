@@ -18,7 +18,6 @@ export class ChatSystem {
     private frame: framehandle | undefined;
     private chatFrame: framehandle | undefined;
     private timeSinceLastMessage: number = 0;
-    private timestampLastMessage: number = 0;
 
     constructor(forWho: MapPlayer) {
         this.player = forWho;
@@ -123,7 +122,6 @@ export class ChatSystem {
                 this.addMessage(text);
                 this.update();
                 if (sound && sound.canPlaySound()) sound.playSound();
-                this.timestampLastMessage = timestamp;
                 this.timeSinceLastMessage = 0;
             }
         }

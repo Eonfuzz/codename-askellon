@@ -61,8 +61,6 @@ export class AIEntity extends Entity {
             }
             // But DO add them to the map
             else {
-                
-
                 const z = WorldEntity.getInstance().getPointZone(ev.source.x, ev.source.y);
                 if (z) {
                     WorldEntity.getInstance().travel(ev.source, z.id);

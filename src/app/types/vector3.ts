@@ -1,8 +1,6 @@
 import { Vector2 } from "./vector2";
 import { getZFromXY } from "lib/utils";
 
-/** @noSelfInFile **/
-
 export class Vector3 {
     public x: number;
     public y: number;
