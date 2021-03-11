@@ -8205,3 +8205,30 @@ STRING 1932
 Location Sign Ventilation
 }
 
+STRING 1933
+// Destructibles: B00R (|cff00ffffInquisitor Dredd Dareson |r
+Strike fast and suddenly. Attack without), Name (Name)
+{
+|cff00ffffInquisitor Dredd Dareson |r
+Strike fast and suddenly. Attack without warning. Secure victory before the foe is aware of his danger. Remember always, a war is easily won if your enemy does not know he is fighting.
+}
+
+STRING 1934
+// Destructibles: B00R (|cff00ffffInquisitor Dredd Dareson |r
+Strike fast and suddenly. Attack without), EditorSuffix (Editor Suffix)
+{
+(Plaque)
+}
+
+STRING 1936
+// Destructibles: B00S (Picture Frame Emperor of Man), Name (Name)
+{
+Picture Frame Emperor of Man
+}
+
+STRING 1937
+// Destructibles: B00T (Picture Frame High Priest), Name (Name)
+{
+Picture Frame High Priest
+}
+
