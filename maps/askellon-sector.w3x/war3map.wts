@@ -8244,3 +8244,33 @@ STRING 1939
 Picture Angry Priest
 }
 
+STRING 1940
+// Destructibles: B00W (|cfffa8324WARNING:|r
+You are entering a live fire shooting range. Hex-Corps is), Name (Name)
+{
+|cfffa8324WARNING:|r
+You are entering a live fire shooting range. Hex-Corps is not responsible for any injury or loss of life. Use at your own risk.
+}
+
+STRING 1941
+// Destructibles: B00W (|cfffa8324WARNING:|r
+You are entering a live fire shooting range. Hex-Corps is), EditorSuffix (Editor Suffix)
+{
+(Sign)
+}
+
+STRING 1942
+// Destructibles: B00X (|cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
+Chemicals in this facility are known), Name (Name)
+{
+|cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
+Chemicals in this facility are known to be carcinogenic and corrosive; when inhaled, they will cause discomfort and death. Hex-Corps bares no responsibility for mishandling of these chemicals.
+}
+
+STRING 1943
+// Destructibles: B00X (|cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
+Chemicals in this facility are known), EditorSuffix (Editor Suffix)
+{
+(Sign)
+}
+
