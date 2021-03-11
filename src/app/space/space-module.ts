@@ -54,8 +54,6 @@ export class SpaceEntity extends Entity {
 
     // An array of ships
     public ships: ShipWithFuel[];
-    private shipUnitDict = new Map<number, ShipWithFuel>();
-
     public mainShip: AskellonShip;
     public planet: Unit;
 
@@ -173,9 +171,8 @@ export class SpaceEntity extends Entity {
 
                 // Also for now create a ship to sit in the dock
                 const ship = new PerseusShip(ShipState.inBay, Unit.fromHandle(
-                    CreateUnit(PlayerStateFactory.NeutralHostile.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
+                    CreateUnit(PlayerStateFactory.StationProperty.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
                 );
-                this.shipUnitDict.set(ship.unit.id, ship);
                 this.ships.push(ship);
 
                 WorldEntity.getInstance().travel(ship.unit, bay.ZONE);
@@ -209,7 +206,6 @@ export class SpaceEntity extends Entity {
                     // Now kill the ship
                     matchingShip.onDeath(k);
                     // Now clear it from ships for unit
-                    this.shipUnitDict.delete(u.id);
                     this.ships.splice(this.ships.indexOf(matchingShip as ShipWithFuel), 1);
                     // Log.Information("Finished ship Death!");
                 }
@@ -470,7 +466,6 @@ export class SpaceEntity extends Entity {
         if (this.mainShip && this.mainShip.unit.handle === who.handle) {
             return this.mainShip;
         }
-        else if (this.shipUnitDict.has(who.id)) 
-            return this.shipUnitDict.get(who.id);
+        return this.ships.find(s => { return s.unit.id == who.id});
     }
 }

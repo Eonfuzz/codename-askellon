@@ -19,6 +19,7 @@ import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstance } from "app/buff/buff-instance-type";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { COL_MISC, COL_ORANGE } from "resources/colours";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -204,14 +205,15 @@ export class PerseusShip extends ShipWithFuel {
     }
 
     onLeaveShip(isDeath?: boolean) {
-        const newOwner = PlayerStateFactory.NeutralHostile;
         const oldOwner = this.unit.owner;
-        this.unit.owner = newOwner;
+        this.unit.owner = PlayerStateFactory.NeutralHostile;
+        this.unit.name = `${COL_ORANGE}Perseus|r|n${COL_MISC}Right Click to Enter|r`;  
+        this.unit.owner = PlayerStateFactory.StationProperty;
+        this.unit.color = PlayerStateFactory.NeutralHostile.color;
+
         SetUnitAnimationByIndex(this.unit.handle, 3);
 
         const shipPos = vectorFromUnit(this.unit.handle);
-        this.unit.color = newOwner.color;
-
         this.inShip.forEach(u => {
             const rPos = shipPos.applyPolarOffset(GetRandomReal(0, 360), 150);
             u.x = rPos.x;
@@ -229,7 +231,7 @@ export class PerseusShip extends ShipWithFuel {
         // Only continue if we are NOT dying
         if (!isDeath) {
             // We're leaving space, can we dump off minerals?
-            const unitZone = WorldEntity.getInstance().getUnitZone(this.unit);
+            const unitZone = WorldEntity.getInstance().getPointZone(this.unit.x, this.unit.y)
             if (unitZone.id === ZONE_TYPE.CARGO_A || unitZone.id === ZONE_TYPE.CARGO_B) {        
                 if (UnitItemInSlot(this.unit.handle, 0)) {
                     this.dropMineral(oldOwner, this.unit.getItemInSlot(0), ITEM_MINERAL_REACTIVE);  

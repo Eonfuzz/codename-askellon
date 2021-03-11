@@ -128,7 +128,7 @@ export class SecurityEntity extends Entity {
             const point = Vector2.fromWidget(u.handle);
             const zone = WorldEntity.getInstance().getPointZone(point.x, point.y) as ShipZone || undefined;
 
-            if (zone) {
+            if (zone && zone.addTurret) {
                 zone.addTurret(u);
             }
         }
