@@ -8100,3 +8100,108 @@ STRING 1915
 Flame Vent
 }
 
+STRING 1916
+// Destructibles: B00B (|cff00ffffVolunga Saga, c.5|r
+Fear not death for the hour of your doom is set ), Name (Name)
+{
+|cff00ffffVolunga Saga, c.5|r
+Fear not death for the hour of your doom is set and none may escape it.
+}
+
+STRING 1917
+// Destructibles: B00B (|cff00ffffVolunga Saga, c.5|r
+Fear not death for the hour of your doom is set ), EditorSuffix (Editor Suffix)
+{
+(Plaque)
+}
+
+STRING 1918
+// Destructibles: B00C (Sign Armory), Name (Name)
+{
+Sign Armory
+}
+
+STRING 1919
+// Destructibles: B00D (Sign Genetics Lab), Name (Name)
+{
+Sign Genetics Lab
+}
+
+STRING 1920
+// Destructibles: B00E (Sign Cathedral), Name (Name)
+{
+Sign Cathedral
+}
+
+STRING 1921
+// Destructibles: B00F (Sign Bridge), Name (Name)
+{
+Sign Bridge
+}
+
+STRING 1922
+// Destructibles: B00G (Sign Port Cargo), Name (Name)
+{
+Sign Port Cargo
+}
+
+STRING 1923
+// Destructibles: B00H (Sign Starboard Cargo), Name (Name)
+{
+Sign Starboard Cargo
+}
+
+STRING 1924
+// Destructibles: B00I (Sign Reactor), Name (Name)
+{
+Sign Reactor
+}
+
+STRING 1925
+// Destructibles: B00J (Location Sign Reactor), Name (Name)
+{
+Location Sign Reactor
+}
+
+STRING 1926
+// Destructibles: B00K (Location Sign Cathedral), Name (Name)
+{
+Location Sign Cathedral
+}
+
+STRING 1927
+// Destructibles: B00L (Location Sign Genetics Lab), Name (Name)
+{
+Location Sign Genetics Lab
+}
+
+STRING 1928
+// Destructibles: B00M (Location Sign Bridge), Name (Name)
+{
+Location Sign Bridge
+}
+
+STRING 1929
+// Destructibles: B00N (Location Sign Port Cargo), Name (Name)
+{
+Location Sign Port Cargo
+}
+
+STRING 1930
+// Destructibles: B00O (Location Sign Starboard Cargo), Name (Name)
+{
+Location Sign Starboard Cargo
+}
+
+STRING 1931
+// Destructibles: B00P (Location Sign Armory), Name (Name)
+{
+Location Sign Armory
+}
+
+STRING 1932
+// Destructibles: B00Q (Location Sign Ventilation), Name (Name)
+{
+Location Sign Ventilation
+}
+
