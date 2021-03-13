@@ -40,10 +40,10 @@ export class CultistForce extends CrewmemberForce {
 
     private templeSpawnedTrigger = new Trigger();
 
-    private playerToTick: Map<MapPlayer, number> = new Map<MapPlayer, number>();
-    private playerToAltar: Map<MapPlayer, Unit> = new Map<MapPlayer, Unit>();
-    private playerAltarIsBuilt: Map<MapPlayer, boolean> = new Map<MapPlayer, boolean>();
-    private playersPunishedCount: Map<MapPlayer, number> = new Map<MapPlayer, number>();
+    private playerToTick: Map<number, number> = new Map<number, number>();
+    private playerToAltar: Map<number, Unit> = new Map<number, Unit>();
+    private playerAltarIsBuilt: Map<number, boolean> = new Map<number, boolean>();
+    private playersPunishedCount: Map<number, number> = new Map<number, number>();
 
     private playerKillingPunish = new Trigger();
     private onCultistUpgrade = new Trigger();
@@ -68,8 +68,8 @@ export class CultistForce extends CrewmemberForce {
             const u = Unit.fromHandle(GetTriggerUnit());
             const oldOwner = u.owner;
 
-            if (this.playerToAltar.get(oldOwner)) {
-                this.playerToAltar.get(oldOwner).kill();
+            if (this.playerToAltar.get(oldOwner.id)) {
+                this.playerToAltar.get(oldOwner.id).kill();
             }
 
             this.onAltarDeath.registerUnitEvent(u, EVENT_UNIT_DEATH);
@@ -79,12 +79,12 @@ export class CultistForce extends CrewmemberForce {
                 ?  `Circle of Carrion|n${COL_MISC}This is your ${COL_ATTATCH}Altar. ${COL_MISC}Right click to use.`
                 : `Unknown|n${COL_MISC}Your skin crawls while looking at it|r`;
             this.players.forEach(p => {                
-                u.shareVision(p, true);
+                u.shareVision(MapPlayer.fromIndex(p), true);
             });
 
             // SetUnitUserData(u.handle, oldOwner.id);
 
-            this.playerToAltar.set(oldOwner, u);
+            this.playerToAltar.set(oldOwner.id, u);
             this.altars.push(u);
 
             Timers.addTimedAction(0, () => {
@@ -97,8 +97,8 @@ export class CultistForce extends CrewmemberForce {
             // Add checker for altar being built
             const timeToBuild = PlayerStateFactory.isSinglePlayer() ? 5 : CULTIST_ALTAR_BUILD_TIME;
             Timers.addTimedAction(timeToBuild, () => {
-                if (u.isAlive() && this.getPlayerAltar(oldOwner) === u) {
-                    this.playerAltarIsBuilt.set(oldOwner, true);
+                if (u.isAlive() && this.getPlayerAltar(oldOwner.id) === u) {
+                    this.playerAltarIsBuilt.set(oldOwner.id, true);
                     this.onAltarIsBuilt(u);
                 }
             });
@@ -118,11 +118,11 @@ export class CultistForce extends CrewmemberForce {
     }
 
     public canUseAltar(who: Unit, altar: Unit): boolean {
-        const altarForPlayer = this.playerToAltar.get(who.owner);
+        const altarForPlayer = this.playerToAltar.get(who.owner.id);
         return altarForPlayer && altarForPlayer === altar;
     }
 
-    private getPlayerAltar(who: MapPlayer): Unit | undefined {
+    private getPlayerAltar(who: number): Unit | undefined {
         const u = this.playerToAltar.get(who);
         if (u && u.isAlive()) return u;
         return undefined;
@@ -160,7 +160,7 @@ export class CultistForce extends CrewmemberForce {
             this.cultistGodSoundByte.playSound();
         }
 
-        const punishCount = this.playersPunishedCount.get(killingCrew.owner) || 0;
+        const punishCount = this.playersPunishedCount.get(killingCrew.owner.id) || 0;
 
         if (punishCount < 1) {
             MessagePlayer(killingCrew.owner, `${COLOUR_CULT}Feast only on the flesh of the dead!`);
@@ -175,7 +175,7 @@ export class CultistForce extends CrewmemberForce {
             // killingCrew.agility -= 6;
             killingCrew.intelligence -= 6;
 
-            this.playersPunishedCount.set(killingCrew.owner, 1);
+            this.playersPunishedCount.set(killingCrew.owner.id, 1);
         }
         else {
             MessagePlayer(killingCrew.owner, `${COLOUR_CULT}Again you disappoint us.`);
@@ -300,7 +300,7 @@ export class CultistForce extends CrewmemberForce {
 
     private onCultistResearch(altarTerminal: Unit) {
         const player = altarTerminal.owner;
-        const altar = this.getPlayerAltar(player);
+        const altar = this.getPlayerAltar(player.id);
         const pData = PlayerStateFactory.get(player);
         const research = GetResearched();
         const researchLevel = GetPlayerTechCount(player.handle, research, true);
@@ -341,8 +341,8 @@ export class CultistForce extends CrewmemberForce {
         trig.registerUnitEvent(whichUnit.unit, EVENT_UNIT_DEATH);
         trig.addAction(() => this.removePlayer(player, Unit.fromHandle(GetKillingUnit() || GetDyingUnit())));
 
-        this.playerUnits.set(player, whichUnit);
-        this.playerDeathTriggers.set(player, trig);
+        this.playerUnits.set(player.id, whichUnit);
+        this.playerDeathTriggers.set(player.id, trig);
         VisionFactory.getInstance().setPlayervision(player, VISION_TYPE.HUMAN);
 
         whichUnit.unit.addAbility(ABIL_CULTIST_INFO);
@@ -350,7 +350,7 @@ export class CultistForce extends CrewmemberForce {
 
         SetPlayerAlliance(player.handle, PlayerStateFactory.CultistAIPlayer.handle, ALLIANCE_PASSIVE, true);
 
-        this.playerToTick.set(player, 0);
+        this.playerToTick.set(player.id, 0);
         // Add ability tooltip
         TooltipEntity.getInstance().registerTooltip(whichUnit, cultistTooltip);
     }
@@ -382,7 +382,8 @@ export class CultistForce extends CrewmemberForce {
                     altar.mana = 0;
                     altar.setAnimation(3);
                     // Add 1 lumber for now
-                    p.setState(PLAYER_STATE_RESOURCE_LUMBER, p.getState(PLAYER_STATE_RESOURCE_LUMBER) + 1);
+                    const player = MapPlayer.fromIndex(p);
+                    player.setState(PLAYER_STATE_RESOURCE_LUMBER, player.getState(PLAYER_STATE_RESOURCE_LUMBER) + 1);
                 }
             }
        });

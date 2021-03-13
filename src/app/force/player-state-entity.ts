@@ -23,12 +23,12 @@ export class PlayerStateFactory {
         return this.instance;
     }
 
-    private state = new Map<MapPlayer, PlayerState>();
+    private state = new Map<number, PlayerState>();
 
     public isSnglePlayer = false;
     public playerCount = 0;
     // Are players targeted?
-    private securityTargetState = new Map<MapPlayer, boolean>();
+    private securityTargetState = new Map<number, boolean>();
 
     /**
      * Constructor
@@ -63,14 +63,20 @@ export class PlayerStateFactory {
         });
     }
 
-    public get(who: MapPlayer) {
+    public get(who: MapPlayer): PlayerState
+    public get(who: number): PlayerState
+    public get(who: MapPlayer | number): PlayerState
+    public get(who: MapPlayer | number): PlayerState {
         if (!who) return;
-        if (this.state.has(who)) {
-            return this.state.get(who);
+
+        const pId = who instanceof MapPlayer ? who.id : who;
+        const player = MapPlayer.fromIndex(pId);
+        if (this.state.has(pId)) {
+            return this.state.get(pId);
         }
-        else if (who.slotState === PLAYER_SLOT_STATE_PLAYING && who.controller === MAP_CONTROL_USER) {
-            const nState = new PlayerState(who);
-            this.state.set(who, nState);
+        else if (player.slotState === PLAYER_SLOT_STATE_PLAYING && player.controller === MAP_CONTROL_USER) {
+            const nState = new PlayerState(player);
+            this.state.set(pId, nState);
             return nState;
         }
     }
@@ -81,11 +87,17 @@ export class PlayerStateFactory {
     /**
      * Static API
      */
-    public static get(who: MapPlayer) {
+    public static get(who: number): PlayerState;
+    public static get(who: MapPlayer): PlayerState;
+    public static get(who: MapPlayer | number): PlayerState;
+    public static get(who: MapPlayer | number): PlayerState {
         return PlayerStateFactory.getInstance().get(who);
     }
 
-    public static getCrewmember(who: MapPlayer): Crewmember | undefined {
+    public static getCrewmember(who: number)
+    public static getCrewmember(who: MapPlayer)
+    public static getCrewmember(who: MapPlayer | number)
+    public static getCrewmember(who: MapPlayer | number): Crewmember | undefined {
         const pData = PlayerStateFactory.get(who);
         
         if (pData) {
@@ -160,11 +172,11 @@ export class PlayerStateFactory {
     }
 
     public static isTargeted(who: MapPlayer) {
-        return this.getInstance().securityTargetState.get(who);
+        return this.getInstance().securityTargetState.get(who.id);
     }
 
     public static setTargeted(who: MapPlayer, to: boolean) {
-        this.getInstance().securityTargetState.set(who, to);
+        this.getInstance().securityTargetState.set(who.id, to);
     }
 
     public static getCrewOfRole(role: ROLE_TYPES): Crewmember[] {

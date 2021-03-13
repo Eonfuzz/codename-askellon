@@ -47,9 +47,9 @@ export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
 
     private alienHost: MapPlayer | undefined;
-    private playerAlienUnits: Map<MapPlayer, Unit> = new Map();
-    private playerIsTransformed: Map<MapPlayer, boolean> = new Map();
-    private playerIsAlienAlliesOnly: Map<MapPlayer, boolean> = new Map();
+    private playerAlienUnits: Map<number, Unit> = new Map();
+    private playerIsTransformed: Map<number, boolean> = new Map();
+    private playerIsAlienAlliesOnly: Map<number, boolean> = new Map();
     
     private currentAlienEvolution: number = DEFAULT_ALIEN_FORM;
 
@@ -126,7 +126,7 @@ export class AlienForce extends ForceType {
             const unitLocation = vectorFromUnit(who.unit.handle);
             // const zLoc = this.forceModule.game.getZFromXY(unitLocation.x, unitLocation.y);
 
-            let alien = this.playerAlienUnits.get(owner);
+            let alien = this.playerAlienUnits.get(owner.id);
             // Is this unit being added to aliens for the first time
             if (!alien) {
                 // Set player infesting to true
@@ -174,7 +174,7 @@ export class AlienForce extends ForceType {
                 alien.color = PLAYER_COLOR_BROWN;
                 
                 // Now create an alien for player
-                this.playerAlienUnits.set(owner, alien);
+                this.playerAlienUnits.set(owner.id, alien);
                 
 
                 // Hiding life bars
@@ -196,8 +196,8 @@ export class AlienForce extends ForceType {
                 
                     // If this is the second alien display messages to alien players
                     this.players.forEach(p => {
-                        if (p !== owner) {
-                            MessagePlayer(p, `${playerColors[owner.id].code}${crewmember.name}|r ${COL_ALIEN} has become an Alien. Send messages starting with ${COL_GOLD}.|r${COL_ALIEN} to communicate only with aliens.|r`);
+                        if (p !== owner.id) {
+                            MessagePlayer(MapPlayer.fromIndex(p), `${playerColors[owner.id].code}${crewmember.name}|r ${COL_ALIEN} has become an Alien. Send messages starting with ${COL_GOLD}.|r${COL_ALIEN} to communicate only with aliens.|r`);
                         }
                     })
                 }
@@ -255,7 +255,7 @@ export class AlienForce extends ForceType {
 
 
     removePlayer(player: MapPlayer, killer?: Unit) {
-        const forceHasPlayer = this.players.indexOf(player) >= 0;
+        const forceHasPlayer = this.players.indexOf(player.id) >= 0;
 
         if (forceHasPlayer) {
             const playerData = PlayerStateFactory.get(player);
@@ -361,7 +361,7 @@ export class AlienForce extends ForceType {
         // Let the players know the host died... a second time
         Timers.addTimedAction(5, () => {
             this.players.forEach(p => {
-                MessagePlayer(p, `${COL_ALIEN}Children, your ${COL_TEAL}Host|r${COL_ALIEN} may be dead but you are still alive. The hive will promote one of you.`);
+                MessagePlayer(MapPlayer.fromIndex(p), `${COL_ALIEN}Children, your ${COL_TEAL}Host|r${COL_ALIEN} may be dead but you are still alive. The hive will promote one of you.`);
             });
         });
         // Now try the actual repickening
@@ -369,11 +369,12 @@ export class AlienForce extends ForceType {
             const alienHost = Quick.GetRandomFromArray(this.players, 1)[0];
 
             if (alienHost) {
+                const player = MapPlayer.fromIndex(alienHost);
                 const pData = PlayerStateFactory.get(alienHost);
                 const crew = PlayerStateFactory.getCrewmember(alienHost);
-                const alienUnit = this.getAlienFormForPlayer(alienHost);
+                const alienUnit = this.getAlienFormForPlayer(player);
 
-                this.setHost(alienHost);
+                this.setHost(player);
                 this.applyAlienMinionHost(alienUnit, true);
                 this.players.forEach(p => {
                     MessagePlayer(p, `|cff${pData.originalColour}${crew.name}|r${COL_ALIEN} is your new host.`);
@@ -390,18 +391,18 @@ export class AlienForce extends ForceType {
     }
 
     transform(who: MapPlayer, toAlien: boolean): Unit | void {
-        this.playerIsTransformed.set(who, toAlien);
+        this.playerIsTransformed.set(who.id, toAlien);
 
-        const alien = this.playerAlienUnits.get(who);
-        let unit = this.playerUnits.get(who);
+        const alien = this.playerAlienUnits.get(who.id);
+        let unit = this.playerUnits.get(who.id);
 
         const crewmember = PlayerStateFactory.get(who).getCrewmember();
 
         if (!alien) return Log.Error("AlienForce::transform No alien for "+who.name+"!");
         if (!unit) {
             if (crewmember && crewmember.unit) {
-                this.playerUnits.set(who, unit);
-                unit = this.playerUnits.get(who);
+                this.playerUnits.set(who.id, unit);
+                unit = this.playerUnits.get(who.id);
             }
             if (!unit) return Log.Error("AlienForce::transform No human for "+who.name+"!");
         }
@@ -468,8 +469,10 @@ export class AlienForce extends ForceType {
         return toShow;
     }
 
-    isPlayerTransformed(who: MapPlayer) {
-        const playerIsTransformed = this.playerIsTransformed.get(who);
+    isPlayerTransformed(who: number)
+    isPlayerTransformed(who: MapPlayer)
+    isPlayerTransformed(who: MapPlayer | number) {
+        const playerIsTransformed = this.playerIsTransformed.get(who instanceof MapPlayer ? who.id : who);
         return playerIsTransformed;
     }
 
@@ -485,7 +488,7 @@ export class AlienForce extends ForceType {
         super.onUnitGainsXp(whichUnit, newTotal);
 
         // Do the same to the alien
-        const alien = this.playerAlienUnits.get(whichUnit.player);
+        const alien = this.playerAlienUnits.get(whichUnit.player.id);
         if (!alien) return; // Do nothing if no alien for player
         
         // Apply XP gain to alien form
@@ -498,12 +501,14 @@ export class AlienForce extends ForceType {
      * Returns the player's currently "active" unit
      */
     public getActiveUnitFor(who: MapPlayer) {
-        if (this.playerIsTransformed.get(who)) return this.getAlienFormForPlayer(who);
+        if (this.playerIsTransformed.get(who.id)) return this.getAlienFormForPlayer(who);
         return super.getActiveUnitFor(who);
     }
 
-    public getAlienFormForPlayer(who: MapPlayer) {
-        return this.playerAlienUnits.get(who);
+    getAlienFormForPlayer(who: number)
+    getAlienFormForPlayer(who: MapPlayer)
+    public getAlienFormForPlayer(who: MapPlayer | number) {
+        return this.playerAlienUnits.get(who instanceof MapPlayer ? who.id : who);
     }
 
     /**
@@ -513,7 +518,7 @@ export class AlienForce extends ForceType {
     public getChatRecipients(chatEvent: ChatHook) {
         // If the player is transformed return a list of all alien players
         if (chatEvent.message[0] == ".") {
-            return this.players;
+            return this.players.map( p => MapPlayer.fromIndex(p));
         }
         
         // Otherwise return default behaviour
@@ -575,7 +580,7 @@ export class AlienForce extends ForceType {
      */
     public getChatTag(chatEvent: ChatHook): string | undefined { 
         // If player is transformed return an alien name
-        if (chatEvent.message[0] == "." || this.playerIsAlienAlliesOnly.get(chatEvent.who)) {
+        if (chatEvent.message[0] == "." || this.playerIsAlienAlliesOnly.get(chatEvent.who.id)) {
             return STR_CHAT_ALIEN_TAG;
         }
         
@@ -624,7 +629,7 @@ export class AlienForce extends ForceType {
                         ? this.getAlienFormForPlayer(player2) 
                         : PlayerStateFactory.getCrewmember(player2).unit;
 
-                    if (GetLocalPlayer() === player1.handle) {
+                    if (MapPlayer.fromLocal().id === player1) {
                         PingMinimapEx(u.x, u.y, 3, 153, 51, 255, false);
                     }
                 });
@@ -641,10 +646,10 @@ export class AlienForce extends ForceType {
         const alienHost = this.getHost();
         const worldEnt = WorldEntity.getInstance();
         
-        this.players.forEach((player, i) => {
+        this.getPlayers().forEach((player, i) => {
             try {
                 // Now get their alien units and replace with the new evo
-                const unit = this.playerAlienUnits.get(player);
+                const unit = this.playerAlienUnits.get(player.id);
                 const pData = PlayerStateFactory.get(player);
                 const crew = PlayerStateFactory.getCrewmember(player);
                 
@@ -653,7 +658,7 @@ export class AlienForce extends ForceType {
                 }
 
                 // Is our "Current" unit hidden?
-                const transformingUnitIsHidden = this.playerIsTransformed.get(player) 
+                const transformingUnitIsHidden = this.playerIsTransformed.get(player.id) 
                     // If the player is transformed we need to check if the alien is visible
                     ? !unit.show
                     // Otherwise check if the crew is visible
@@ -691,7 +696,7 @@ export class AlienForce extends ForceType {
                 
                     SelectUnitForPlayerSingle(alien.handle, player.handle);
 
-                    this.playerAlienUnits.set(player, alien);
+                    this.playerAlienUnits.set(player.id, alien);
                     alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
             
                     alien.name = 'Alien Host';
@@ -704,7 +709,7 @@ export class AlienForce extends ForceType {
                         DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, alien.x, alien.y));
 
                         // If a player isn't transformed force the transformation
-                        if (!this.playerIsTransformed.get(player)) {
+                        if (!this.playerIsTransformed.get(player.id)) {
                             this.transform(player, true);
                         }
                     }

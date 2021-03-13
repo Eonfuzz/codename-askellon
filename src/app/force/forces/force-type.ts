@@ -19,9 +19,9 @@ import { UPGR_REMOVED_VOCAL_CHORDS } from "resources/ability-ids";
 export const GENERIC_CHAT_SOUND_REF = new SoundWithCooldown(3, 'Sounds\\RadioChatter.mp3', true);
 export abstract class ForceType {
     // Keep track of players in force
-    protected players: Array<MapPlayer> = [];
-    protected playerUnits: Map<MapPlayer, Crewmember> = new Map();
-    protected playerDeathTriggers: Map<MapPlayer, Trigger> = new Map();
+    protected players: Array<number> = [];
+    protected playerUnits: Map<number, Crewmember> = new Map();
+    protected playerDeathTriggers: Map<number, Trigger> = new Map();
 
     abstract name: string;
     
@@ -30,16 +30,16 @@ export abstract class ForceType {
     }
 
     hasPlayer(who: MapPlayer): boolean {
-        return this.players.indexOf(who) >= 0;
+        return this.players.indexOf(who.id) >= 0;
     }
 
     getPlayers() {
-        return this.players
+        return this.players.map(p => MapPlayer.fromIndex(p));
     }
 
     addPlayer(who: MapPlayer) {
         // Log.Information(`Adding ${who.name} to ${this.name}`);
-        this.players.push(who);
+        this.players.push(who.id);
     }
 
     public addPlayerMainUnit(whichUnit: Crewmember, player: MapPlayer): void {
@@ -47,8 +47,8 @@ export abstract class ForceType {
         trig.registerUnitEvent(whichUnit.unit, EVENT_UNIT_DEATH);
         trig.addAction(() => this.removePlayer(player, Unit.fromHandle(GetKillingUnit() || GetDyingUnit())));
 
-        this.playerUnits.set(player, whichUnit);
-        this.playerDeathTriggers.set(player, trig);
+        this.playerUnits.set(player.id, whichUnit);
+        this.playerDeathTriggers.set(player.id, trig);
         VisionFactory.getInstance().setPlayervision(player, VISION_TYPE.HUMAN);
     };
 
@@ -58,13 +58,13 @@ export abstract class ForceType {
      * @param killer 
      */
     public removePlayer(player: MapPlayer, killer: Unit = undefined) {
-        const idx = this.players.indexOf(player);
+        const idx = this.players.indexOf(player.id);
 
         if (idx >= 0) {
             this.players.splice(idx, 1);
-            this.playerDeathTriggers.get(player).destroy();
-            this.playerDeathTriggers.delete(player);
-            this.playerUnits.delete(player);
+            this.playerDeathTriggers.get(player.id).destroy();
+            this.playerDeathTriggers.delete(player.id);
+            this.playerUnits.delete(player.id);
 
             try {
                 if (killer) {
@@ -150,7 +150,7 @@ export abstract class ForceType {
      * Returns the player's currently "active" unit
      */
     public getActiveUnitFor(who: MapPlayer) {
-        return this.playerUnits.has(who) && this.playerUnits.get(who).unit;
+        return this.playerUnits.has(who.id) && this.playerUnits.get(who.id).unit;
     }
 
     /**

@@ -46,7 +46,7 @@ export class CrewmemberForce extends ForceType {
             const player = this.players[0];
             const crew = this.playerUnits.get(player);
 
-            MessageAllPlayers(`${playerColors[player.id].code}${crew.name}|r ${COL_ATTATCH}is the last human alive!|r`);
+            MessageAllPlayers(`${playerColors[player].code}${crew.name}|r ${COL_ATTATCH}is the last human alive!|r`);
             MessagePlayer(player, `${COL_GOOD}You feel determined|r`);
             crew.addResolve(new BuffInstanceDuration(crew.unit, 240), false);
         }
@@ -65,7 +65,7 @@ export class CrewmemberForce extends ForceType {
     }
 
     removePlayer(player: MapPlayer, killer: Unit = undefined, skipObserver: boolean = false) {
-        const forceHasPlayer = this.players.indexOf(player) >= 0;
+        const forceHasPlayer = this.players.indexOf(player.id) >= 0;
 
         if (forceHasPlayer) {
             try {

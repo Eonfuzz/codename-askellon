@@ -12,7 +12,7 @@ export interface pathway { entrance: Unit, exit: Unit, leadsTo: Zone };
 export abstract class ZoneWithExits extends Zone {
     // The exits to and from this zone
     protected pathway: Array<pathway> = [];
-    protected playerLightingModifiers = new Map<MapPlayer, number>();
+    protected playerLightingModifiers = new Map<number, number>();
 
 
     constructor(id: ZONE_TYPE) {
@@ -40,10 +40,12 @@ export abstract class ZoneWithExits extends Zone {
 
         if (unit.typeId === CREWMEMBER_UNIT_ID) {
 
+            const p = unit.owner;
+
             // Remove the existing modifier (if any)
-            if (this.playerLightingModifiers.has(unit.owner)) {
-                const mod = this.playerLightingModifiers.get(unit.owner);
-                this.playerLightingModifiers.delete(unit.owner);
+            if (this.playerLightingModifiers.has(p.id)) {
+                const mod = this.playerLightingModifiers.get(p.id);
+                this.playerLightingModifiers.delete(p.id);
                 VisionFactory.getInstance().removeVisionModifier(mod);
             }
 

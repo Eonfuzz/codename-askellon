@@ -74,8 +74,15 @@ export function MessageAllPlayers(message: string): void {
     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, message);
 }
 
-export function MessagePlayer(who: MapPlayer, message: string): void { 
-    DisplayTimedTextToPlayer(who.handle, 0, 0, 10, message);
+export function MessagePlayer(who: number, message: string);
+export function MessagePlayer(who: MapPlayer, message: string);
+export function MessagePlayer(who: MapPlayer | number, message: string): void {
+    if (who instanceof MapPlayer) {
+        DisplayTimedTextToPlayer(who.handle, 0, 0, 10, message);
+    }
+    else {
+        DisplayTimedTextToPlayer(Player(who), 0, 0, 10, message);
+    }
 }
 
 let camIterator = 0;

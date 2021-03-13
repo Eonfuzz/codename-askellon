@@ -83,4 +83,7 @@ export enum EVENT_TYPE {
     ADD_BUFF_INSTANCE,
 
     WORLD_EVENT_SOLAR,
+    
+    // Debug events
+    DEBUG_WEAPONS,
 }

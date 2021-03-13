@@ -66,7 +66,7 @@ export class ObserverForce extends ForceType {
    public getChatRecipients(chatHook: ChatHook) {       
        // Otherwise return default behaviour
     //    Log.Information("Getting chat recipients: "+this.players.map(p => p.name).join(','));
-       return this.players;
+       return this.players.map(p => MapPlayer.fromIndex(p));
    }
 
    /**
@@ -98,10 +98,10 @@ export class ObserverForce extends ForceType {
                 Players.forEach( p => {
                     if (p.slotState !== PLAYER_SLOT_STATE_PLAYING) return;
                     if (p.controller !== MAP_CONTROL_USER) return;
-                    if (obs == p) return;       
+                    if (obs == p.id) return;       
                     
                     const pData = PlayerStateFactory.get(p);
-                    if (obs.handle === GetLocalPlayer() && pData && pData.getForce()) {
+                    if (MapPlayer.fromLocal().id === obs && pData && pData.getForce()) {
                         const force = pData.getForce();
                         const u = pData.getUnit();
                         if (u) {

@@ -27,7 +27,7 @@ export class AIEntity extends Entity {
         return this.instance;
     }
 
-    private playerToAgent: Map<MapPlayer, PlayerAgent>;
+    private playerToAgent: Map<number, PlayerAgent>;
     private playerAgents: PlayerAgent[];
 
     private unitBuildTrigger = new Trigger();
@@ -38,14 +38,14 @@ export class AIEntity extends Entity {
         // Populate our node grapoh
         NodeGraph.buildGraph();
 
-        this.playerToAgent = new Map<MapPlayer, PlayerAgent>();
+        this.playerToAgent = new Map<number, PlayerAgent>();
         this.playerAgents = [];
 
         // Create agents
         PlayerStateFactory.getAlienAI().forEach(p => {
             const agent = new PlayerAgent(p, 33);
             this.playerAgents.push(agent);
-            this.playerToAgent.set(agent.player, agent);
+            this.playerToAgent.set(agent.player.id, agent);
             // Set max count of tumors
             SetPlayerTechMaxAllowed(p.handle, ALIEN_STRUCTURE_TUMOR, AI_MAX_TUMORS);
         });
@@ -118,7 +118,7 @@ export class AIEntity extends Entity {
     }
 
     getAgentforPlayer(who: MapPlayer): PlayerAgent | undefined {
-        return this.playerToAgent.get(who);
+        return this.playerToAgent.get(who.id);
     }
 
     /**

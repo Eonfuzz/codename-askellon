@@ -148,13 +148,13 @@ export class VentZone extends ZoneWithExits {
         }
 
         // Remove the existing modifier (if any)
-        if (this.playerLightingModifiers.has(player)) {
-            const mod = this.playerLightingModifiers.get(player);
-            this.playerLightingModifiers.delete(player);
+        if (this.playerLightingModifiers.has(player.id)) {
+            const mod = this.playerLightingModifiers.get(player.id);
+            this.playerLightingModifiers.delete(player.id);
             VisionFactory.getInstance().removeVisionModifier(mod);
         }
 
-        this.playerLightingModifiers.set(player, 
+        this.playerLightingModifiers.set(player.id, 
             VisionFactory.getInstance().addVisionModifier(VISION_PENALTY.TERRAIN_DARK_AREA, player)
         );
     }

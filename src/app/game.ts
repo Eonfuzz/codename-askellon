@@ -39,12 +39,10 @@ import { UIEntity } from "resources/ui/ui-entity";
 import { AskellonEntity } from "./station/askellon-entity";
 import { Timers } from "./timer-type";
 import { ShipZone } from "./world/zone-types/ship-zone";
-import { EggInstance } from "./ai/egg-instance";
 import { EggEntity } from "./ai/egg-entity";
 import { GENERIC_CHAT_SOUND_REF } from "./force/forces/force-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
-import { PlayerState } from "./force/player-type";
-import { Quick } from "lib/Quick";
+import { TipEntity } from "./tips/tip-entity";
 
 export const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export const labrynthIntro = new SoundRef("Sounds\\Theme\\TheLabrynth.mp3", true, true);
@@ -129,6 +127,8 @@ export class Game {
         AIEntity.getInstance();
         AntiMetaEntity.start();
         EggEntity.getInstance();
+
+        TipEntity.getInstance();
 
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 1500, mainShip.unit.y + 1500));

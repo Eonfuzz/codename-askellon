@@ -1,0 +1,27 @@
+import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "app/world/zone-id";
+
+export const ALL_TIPS = [
+    `You can gain experience by purchasing Askellon Upgrades, damaging aliens and completing role objectives`,
+    `A passive Alien will be outscaled by the crew. Evolve faster by damaging them and the station!`,
+    `Turrets are great at killing Alien Minions; destroy their floor's power generator to disable them`,
+    `Alien AI will hunt down and focus players with Despair`,
+    `All Aliens have vision of players with Despair`,
+    `You can purchase damage upgrades from the ${ZONE_TYPE_TO_ZONE_NAME.get(ZONE_TYPE.ARMORY)}`,
+    `The only way to increase your health is by Genetic Splicing and levelling up`,
+    `Genetic Splicing permanantly increases stats gained when you level up. Get them ASAP!`,
+    `Make sure you trust the person performing Genetic Splicing on you. Alien players can slice out your vocal chords; Preventing you from communicating forever.`,
+    `Aliens can jump through Ventilation fans to escape`,
+    `Humans require the Mobility gene power to jump small distances`,
+    `You can type -tips to turn tips off!`,
+    `Items are key to your victory! Carry grenades and nanomeds at all times`,
+    `It takes 50 seconds for an Alien to evolve and are extremely vulnerable during it`,
+    `Humans transforming into Aliens will give despair to anyone nearby`,
+    `Upon reaching low health, all humans receive Resolve; Reducing all damage taken by 30% and increasing movement speed by 20%`,
+    `All weapons are balanced around each other, choose one that fits your playstyle`,
+    `The Minigun has the highest DPS out of all guns but its weilder c`,
+    `The Inquisitor can not receive any Genetic Splices; They instead can upgrade themselves at the Cathederal`,
+    `Elevators and Hatches take longer the less Life you have, increasing up to 130%`,
+    `Power Generators can be found in the Service Tunnels. Be careful when repairing them`,
+    `Joining the discord grants you a unique Veteran crewmember skin`,
+    `Minerals may be sold for money, or dropped on conveyor belts for Askellon Mana and upgrade progression. Pilots receive both money, upgrade progression and bonus experience when placing minerals on conveyor belts`,
+];

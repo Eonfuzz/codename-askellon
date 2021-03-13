@@ -56,6 +56,7 @@ export class PlayerState {
     public levelBonusStrength = 0;
     public levelBonusAgility = 0;
     public levelBonusIntelligence = 0;
+    public tipsOn = true;
 
     /**
      * Save-able state items
@@ -156,7 +157,8 @@ export class PlayerState {
                 `PlayerTeamKills:${this.playerTeamkills}\n`+
                 `PlayerEnemyKills:${this.playerEnemyKills}\n`+
                 `PlayerGamesWon:${this.playerGamesWon}\n`+
-                `PlayerGamesLost:${this.playerGamesLost}\n`
+                `PlayerGamesLost:${this.playerGamesLost}\n`,
+                `TipsDisabled:${!this.tipsOn}`
             );
         }
     }
@@ -196,6 +198,9 @@ export class PlayerState {
                             break;
                         case "PlayerGamesLost":
                             this.playerGamesLost = Number(value);
+                            break;
+                        case "TipsDisabled":
+                            this.tipsOn = false;
                             break;
                         case "Player":
                             if (this.originalName != value) {

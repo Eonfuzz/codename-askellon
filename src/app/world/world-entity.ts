@@ -190,11 +190,7 @@ export class WorldEntity extends Entity {
         if (!result) Log.Error("FAILED TO GET ZONE FOR "+whichZone);
         return result as ZONE_TYPE;
     }
-
-    getPlayersInZone(whichZone: ZONE_TYPE): Array<MapPlayer> {
-        return [];
-    }
-
+    
     getUnitZone(whichUnit: Unit): Zone | undefined {
         if (!whichUnit) Log.Error("getUnitZone called but unit is undefined");
         return this.unitLocation.get(whichUnit.id);

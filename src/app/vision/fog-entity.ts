@@ -50,8 +50,8 @@ export class FogEntity extends Entity {
 
     private defaultFogState: FogState = { fStart: 2600, fEnd: 5000, density: 1, r: 60, g: 60, b: 80 };
 
-    private playerTransitions = new Map<MapPlayer, FogTransition>();
-    private playerFogState = new Map<MapPlayer, FogState>();
+    private playerTransitions = new Map<number, FogTransition>();
+    private playerFogState = new Map<number, FogState>();
     private activeTransitions: FogTransition[] = [];
 
     public static getInstance() {
@@ -84,10 +84,10 @@ export class FogEntity extends Entity {
                     state.b / 255
                 );
             }
-            this.playerFogState.set(trans.player, state);
+            this.playerFogState.set(trans.player.id, state);
             if (trans.done()) {
                 this.activeTransitions.splice(i--, 1);
-                this.playerTransitions.delete(trans.player);
+                this.playerTransitions.delete(trans.player.id);
             }
         }
     }
@@ -98,17 +98,17 @@ export class FogEntity extends Entity {
 
         const nTransition = new FogTransition(who, startState, goalState, duration);
 
-        const oldTransition = this.playerTransitions.get(who);
+        const oldTransition = this.playerTransitions.get(who.id);
         if (oldTransition) {
             const i = this.activeTransitions.indexOf(oldTransition);
             if (i >= 0) this.activeTransitions.splice(i, 1);
         }
-        this.playerTransitions.set(who, nTransition);
+        this.playerTransitions.set(who.id, nTransition);
         this.activeTransitions.push(nTransition);
     }
 
     private getCurrentState(who: MapPlayer) {
-        return this.playerFogState.get(who) || this.defaultFogState;
+        return this.playerFogState.get(who.id) || this.defaultFogState;
     }
 
     public static transition(who: MapPlayer, to: FogState, duration: number) {

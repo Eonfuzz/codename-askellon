@@ -4,5 +4,7 @@ dist/
 .vscode/
 maps/askellon-sector.w3x.backup/
 dist2/
-/config.json
-/project.log
+
+# ignore our config and project
+config.json
+project.log

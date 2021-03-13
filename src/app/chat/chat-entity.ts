@@ -29,9 +29,10 @@ import { PlayNewSoundOnUnit, SendMessageToAdmin } from "lib/translators";
 import { Quick } from "lib/Quick";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { PRIVS } from "app/force/player-type";
+import { PlayerState, PRIVS } from "app/force/player-type";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { StringSink } from "lib/serilog/string-sink";
+import { WeaponEntity } from "app/weapons/weapon-entity";
 export class ChatEntity extends Entity {
 
     private static instance: ChatEntity;
@@ -45,7 +46,7 @@ export class ChatEntity extends Entity {
     }
 
 
-    private chatHandlers = new Map<MapPlayer, ChatSystem>();
+    private chatHandlers = new Map<number, ChatSystem>();
 
     private adminGodUsers: MapPlayer[] = [];
     private adminListenUsers: MapPlayer[] = [];
@@ -112,7 +113,7 @@ export class ChatEntity extends Entity {
             chatHandler.init(chatHandle, chatTextHandle);
 
             // Now set chat system in map
-            this.chatHandlers.set(p, chatHandler);
+            this.chatHandlers.set(p.id, chatHandler);
             
             messageTrigger.registerPlayerChatEvent(p, "", false);
         });
@@ -306,12 +307,6 @@ export class ChatEntity extends Entity {
                     CreateItem(ITEM_WEP_MINIGUN, x, y);
                 });
             }
-            else if (message == "-test fahr") {
-                GetPlayerCamLoc(player, (x, y) => {
-                    AddSpecialEffect("fahrbomb.mdx", x, y);
-                    // CreateItem(ITEM_WEP_MINIGUN, x, y);
-                });
-            }
             else if (message == "-test thano") {
                 GetPlayerCamLoc(player, (x, y) => {
                     CreateItem(ITEM_COMEBACK_DRUG, x, y);
@@ -387,6 +382,9 @@ export class ChatEntity extends Entity {
             else if (message == "-logworld") {
                 WorldEntity.getInstance().log();
             }
+            else if (message == "-logweapons") {
+                EventEntity.send(EVENT_TYPE.DEBUG_WEAPONS, { source: undefined });
+            }
             else if (message.indexOf("-vision") === 0) {
                 const modifier = CreateFogModifierRect(player.handle, FOG_OF_WAR_VISIBLE, bj_mapInitialCameraBounds, true, false);
                 FogModifierStart(modifier);
@@ -450,6 +448,12 @@ export class ChatEntity extends Entity {
             }
             else if (message === "-clear" || message === "-c") {
                 if (player.handle === GetLocalPlayer()) ClearTextMessages();
+            }
+            else if (message === "-tips" || message === "-tip" || message === "-tips off") {
+                const pData = PlayerStateFactory.get(player);
+                pData.tipsOn = !pData.tipsOn;
+                MessagePlayer(player, `Tips are now ${pData.tipsOn ? `on` : `off`}`);
+                pData.save();
             }
             else if (message === "-lol" || message === "-l" || message === "-l") {
                 const pData = PlayerStateFactory.get(player);
@@ -618,7 +622,7 @@ export class ChatEntity extends Entity {
 
     public postMessageFor(players: MapPlayer[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundWithCooldown) {
         players.forEach(p => {
-            const cHandler = this.chatHandlers.get(p);
+            const cHandler = this.chatHandlers.get(p.id);
             if (cHandler) cHandler.sendMessage(fromName, color, message, messageTag, sound);
         });            
     }

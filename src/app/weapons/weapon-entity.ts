@@ -7,8 +7,8 @@ import { Game } from "../game";
 import { Trigger, Unit, Timer, Item, MapPlayer } from "w3ts";
 import { Log } from "../../lib/serilog/serilog";
 import { Attachment } from "./attachment/attachment";
-import { ArmableUnit, ArmableUnitWithItem } from "./guns/unit-has-weapon";
-import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, HIGH_QUALITY_POLYMER_ITEM_ID, EMS_RIFLING_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, BURST_RIFLE_ABILITY_ID, SHOTGUN_ABILITY_ID } from "./weapon-constants";
+import {  ArmableUnitWithItem } from "./guns/unit-has-weapon";
+import { SNIPER_ITEM_ID, BURST_RIFLE_ITEM_ID, LASER_ABILITY_ID, LASER_ITEM_ID, SHOTGUN_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, BURST_RIFLE_ABILITY_ID, SHOTGUN_ABILITY_ID } from "./weapon-constants";
 import { LaserRifle } from "./guns/laser-rifle";
 import { Shotgun } from "./guns/shotgun";
 import { RailRifle } from "./attachment/rail-rifle";
@@ -18,7 +18,6 @@ import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { ForceEntity } from "app/force/force-entity";
-import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { EventListener } from "app/events/event-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ITEM_ATTACH_METEOR_CANISTER, ITEM_WEP_FLAMETHROWER, ITEM_WEP_MINIGUN, ITEM_WEP_NEOKATANA } from "resources/item-ids";
@@ -111,6 +110,15 @@ export class WeaponEntity extends Entity {
         EventEntity.listen(new EventListener(EVENT_TYPE.WEAPON_MODE_CHANGE, (self, data) => {
             this.changeWeaponModeTo(data.crewmember, data.data.mode);
         }));
+        EventEntity.listen(new EventListener(EVENT_TYPE.DEBUG_WEAPONS, (self, data) => {
+            this.log();
+        }));
+    }
+
+    public log() {
+        Log.Information(`Weapon Entity`);
+        Log.Information(`Projectiles: ${this.projectiles.length}`);
+        Log.Information(`Guns: ${this.guns.length}`);
     }
 
 
@@ -271,7 +279,9 @@ export class WeaponEntity extends Entity {
 
         if (itemIsWeapon) {
             const oldWeapon = this.getGunForUnit(unit);
-            const weaponForItem = this.getGunForItem(item) || this.createWeaponForId(item, crew);
+            const oldItem = this.getGunForItem(item);
+            const weaponForItem =  oldItem|| this.createWeaponForId(item, crew);
+
 
             if (oldWeapon) {
                 oldWeapon.onRemove();
@@ -279,7 +289,6 @@ export class WeaponEntity extends Entity {
 
             // Now check to see if we created a gun or not
             if (weaponForItem) {
-                this.guns.push(weaponForItem);
                 weaponForItem.onAdd(crew);
                 this.unitsWithWeapon.set(crew.unit.id, weaponForItem);
 
@@ -499,19 +508,24 @@ export class WeaponEntity extends Entity {
 
     createWeaponForId(item: item, unit: ArmableUnitWithItem) : Gun | undefined {
         let itemId = GetItemTypeId(item);
+        let result: GunItem;
+
         if (itemId === BURST_RIFLE_ITEM_ID) 
-            return new BurstRifle(item, unit);
+            result = new BurstRifle(item, unit);
         else if (itemId === LASER_ITEM_ID) 
-            return new LaserRifle(this.game, item, unit);
+            result =  new LaserRifle(this.game, item, unit);
         else if (itemId === SHOTGUN_ITEM_ID) 
-            return new Shotgun(item, unit);
+            result =  new Shotgun(item, unit);
         else if (itemId === ITEM_WEP_MINIGUN) 
-            return new Minigun(item, unit);
+            result =  new Minigun(item, unit);
         else if (itemId === ITEM_WEP_FLAMETHROWER) 
-            return new Flamethrower(item, unit);
+            result =  new Flamethrower(item, unit);
         else if (itemId === ITEM_WEP_NEOKATANA) 
-            return new WepNeokatana(item, unit);
-        return undefined;
+            result =  new WepNeokatana(item, unit);
+
+            
+        if (result) this.guns.push(result);
+        return result;
     }
 
     createAttachmentForId(item: item) : Attachment | undefined {

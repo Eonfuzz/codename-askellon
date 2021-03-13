@@ -2481,7 +2481,7 @@ Medical Supplies
 }
 
 STRING 646
-// Units: h006 (|cffd45e19Perseus|r|n|cff627781Right Click To Enter|r), Name (Name)
+// Units: nPER (|cffd45e19Perseus|r|n|cff627781Right Click To Enter|r), Name (Name)
 {
 |cffd45e19Perseus|r|n|cff627781Right Click To Enter|r
 }
@@ -8100,17 +8100,9 @@ STRING 1915
 Flame Vent
 }
 
-STRING 1916
-// Destructibles: B00B (|cff00ffffVolunga Saga, c.5|r
-Fear not death for the hour of your doom is set ), Name (Name)
-{
-|cff00ffffVolunga Saga, c.5|r
-Fear not death for the hour of your doom is set and none may escape it.
-}
-
 STRING 1917
-// Destructibles: B00B (|cff00ffffVolunga Saga, c.5|r
-Fear not death for the hour of your doom is set ), EditorSuffix (Editor Suffix)
+// Destructibles: B00B (|cff18bc9cVolunga Saga, c.5|r
+|cff627781Fear not death for the hour of your do), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -8205,17 +8197,9 @@ STRING 1932
 Location Sign Ventilation
 }
 
-STRING 1933
-// Destructibles: B00R (|cff00ffffInquisitor Dredd Dareson |r
-Strike fast and suddenly. Attack without), Name (Name)
-{
-|cff00ffffInquisitor Dredd Dareson |r
-Strike fast and suddenly. Attack without warning. Secure victory before the foe is aware of his danger. Remember always, a war is easily won if your enemy does not know he is fighting.
-}
-
 STRING 1934
-// Destructibles: B00R (|cff00ffffInquisitor Dredd Dareson |r
-Strike fast and suddenly. Attack without), EditorSuffix (Editor Suffix)
+// Destructibles: B00R (|cff18bc9cInquisitor Dredd Dareson |r
+|cff627781Strike fast and suddenly. Atta), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -8272,5 +8256,51 @@ STRING 1943
 Chemicals in this facility are known), EditorSuffix (Editor Suffix)
 {
 (Sign)
+}
+
+STRING 1944
+// Destructibles: B00B (|cff18bc9cVolunga Saga, c.5|r
+|cff627781Fear not death for the hour of your do), Name (Name)
+{
+|cff18bc9cVolunga Saga, c.5|r
+|cff627781Fear not death for the hour of your doom is set and none may escape it.|r
+}
+
+STRING 1945
+// Destructibles: B00R (|cff18bc9cInquisitor Dredd Dareson |r
+|cff627781Strike fast and suddenly. Atta), Name (Name)
+{
+|cff18bc9cInquisitor Dredd Dareson |r
+|cff627781Strike fast and suddenly. Attack without warning. Secure victory before the foe is aware of his danger. Remember always, a war is easily won if your enemy does not know he is fighting.|r
+}
+
+STRING 1947
+// Destructibles: B00Y (|cff18bc9cProcedures and Maxims, pp. 487|r
+|cff627781Those who shirk from the ), EditorSuffix (Editor Suffix)
+{
+(Plaque)
+}
+
+STRING 1948
+// Destructibles: B00Y (|cff18bc9cProcedures and Maxims, pp. 487|r
+|cff627781Those who shirk from the ), Name (Name)
+{
+|cff18bc9cProcedures and Maxims, pp. 487|r
+|cff627781Those who shirk from the Noterie's gaze are filled with sin, for the certitude of the Court is the truest kindness.|r
+}
+
+STRING 1949
+// Destructibles: B00Z (|cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
+|cff627781By the bin), Name (Name)
+{
+|cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
+|cff627781By the binding oaths of the impartial liege, we must judge!|r
+}
+
+STRING 1950
+// Destructibles: B00Z (|cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
+|cff627781By the bin), EditorSuffix (Editor Suffix)
+{
+(Plaque)
 }
 

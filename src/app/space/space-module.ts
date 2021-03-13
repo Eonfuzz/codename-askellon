@@ -1,4 +1,4 @@
-import { Trigger, Rectangle, Unit } from "w3ts";
+import { Trigger, Rectangle, Unit, MapPlayer } from "w3ts";
 import { SpaceObject, SpaceObjectType } from "./space-objects/space-object";
 import { Asteroid } from "./space-objects/asteroid";
 import { Mineral } from "./space-objects/mineral";
