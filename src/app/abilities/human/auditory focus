@@ -25,6 +25,7 @@ export class AuditoryFocusAbility implements Ability {
     private destructableList = [];
     private destructableListMax = 0;
     private remainingDuration = DURATION;
+    private locallyVisible: boolean
 
     constructor() {}
 
@@ -32,6 +33,7 @@ export class AuditoryFocusAbility implements Ability {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.castingPlayer = this.casterUnit.owner;
         this.selfEffect = AddSpecialEffectTarget(SELF_SFX, this.casterUnit, "head");
+        this.locallyVisible = this.castingPlayer == GetLocalPlayer()
         return true;
     };
 
@@ -54,30 +56,31 @@ export class AuditoryFocusAbility implements Ability {
                     this.casterUnit.y, 
                     effectRadius, 
                     FilterIsAlive);
-            GroupRemoveGroup(this.checkMovementGroup, tempGroup);
             
             let enumUnit: Unit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
             while (enumUnit != null) {
                 GroupRemoveUnit(this.checkMovementGroup, enumUnit);
-                delete this.locationData[enumUnit.id];
+                if IsUnitInGroup(enumUnit, tempGroup) == false {
+                    delete this.locationData[enumUnit.id];
+                };
                 enumUnit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
             };
             
             enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
             while (enumUnit != null) {
+                GroupRemoveUnit(tempGroup, enumUnit);
                 if (IsUnitVisible(enumUnit, this.castingPlayer) == false) {
-                    GroupRemoveUnit(tempGroup, enumUnit);
                     GroupAddUnit(enumUnit,this.checkMovementGroup);
                     if this.locationData[enumUnit.id] != null && this.locationData[enumUnit.id] != Vector2.vectorFromUnit(enumUnit)) {
                         let tempDestructable = CreateDestructable(DESTRUCT_ID, enumUnit.x, enumUnit.y, 270, 1, 0);
-                        ShowDestructable(tempDestructable, GetLocalPlayer() == this.castingPlayer);
+                        ShowDestructable(tempDestructable, this.locallyVisible);
                         SetDestructableAnimation(tempDestructable, "birth");
                         this.destructableList[destructableListMax] = tempDestructable;
                         this.destructableListMax++;
                     };
                     this.locationData[enumUnit.id] = Vector2.vectorFromUnit(enumUnit);
-                    enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
                 };
+                enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
             };
             DestroyGroup(tempGroup);
         };
