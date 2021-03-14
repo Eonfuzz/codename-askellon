@@ -1,6 +1,6 @@
 import { Ability } from "../ability-type";
 import { Vector2 } from "../../types/vector2";
-import { FilterIsAlive } from "../../../resources/filters";
+import { FilterAnyUnit } from "../../../resources/filters";
 import { MapPlayer, Unit, Effect } from "w3ts";
 import { BUFF_ID } from "resources/buff-ids";
 import { ForceEntity } from "app/force/force-entity";
@@ -8,7 +8,7 @@ import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 
 const DURATION = 15;
-const RADIUS = 1200; //If 0, default vision radius will be used.
+const RADIUS = 0; //If 0, default vision radius will be used.
 const REFRESH_RATE = 1;
 const DESTRUCT_ID = FourCC('0000'); // <- ADD THIS WHEN IMPLEMENTED IN MAP
 const SELF_SFX = "";
@@ -26,6 +26,7 @@ export class AuditoryFocusAbility implements Ability {
     private destructableListMax = 0;
     private remainingDuration = DURATION;
     private locallyVisible: boolean;
+    private effectRadius : number
 
     constructor() {}
 
@@ -34,6 +35,12 @@ export class AuditoryFocusAbility implements Ability {
         this.castingPlayer = this.casterUnit.owner;
         this.selfEffect = AddSpecialEffectTarget(SELF_SFX, this.casterUnit, "head");
         this.locallyVisible = this.castingPlayer == GetLocalPlayer();
+        if (RADIUS == 0) {
+            this.effectRadius = BlzGetUnitIntegerField(this.casterUnit, ConvertUnitIntegerField(FourCC('usid')));
+        };
+        else {
+            this.effectRadius = RADIUS;
+        };
         return true;
     };
 
@@ -41,22 +48,19 @@ export class AuditoryFocusAbility implements Ability {
         if (refreshTime >= REFRESH_RATE) {
             removeDestructables();
             refreshTime = 0;
-            let effectRadius = 0;
-            if (RADIUS == 0) {
-                effectRadius = BlzGetUnitIntegerField(this.casterUnit,ConvertUnitIntegerField(FourCC('usid')));
-            };
-            else {
-                effectRadius = RADIUS;
-            };
             
+            //Create a temporary group using the units within the effect radius
             let tempGroup = CreateGroup();
             GroupEnumUnitsInRange(
                     tempGroup, 
                     this.casterUnit.x, 
                     this.casterUnit.y, 
-                    effectRadius, 
-                    FilterIsAlive);
+                    this.effectRadius, 
+                    FilterAnyUnit()
+                    );
             
+            //Compare temporary group with previous temporary group and delete location data for units
+            //no longer in range
             let enumUnit: Unit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
             while (enumUnit != null) {
                 GroupRemoveUnit(this.checkMovementGroup, enumUnit);
@@ -66,6 +70,9 @@ export class AuditoryFocusAbility implements Ability {
                 enumUnit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
             };
             
+            //Go thru the temporary group and see if they are NOT visible and moving. If both conditions are met
+            //create the destructable visible only to the casting player
+            //then update unit location data and add them to the checkMovementGroup
             enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
             while (enumUnit != null) {
                 GroupRemoveUnit(tempGroup, enumUnit);
