@@ -56,25 +56,24 @@ export class AuditoryFocusAbility implements Ability {
                     this.casterUnit.x, 
                     this.casterUnit.y, 
                     this.effectRadius, 
-                    () => (
+                    () => {
                         const fUnit = GetFilterUnit()
                         return !BlzIsUnitInvulnerable(fUnit) && !IsUnitVisible(fUnit,this.castingPlayer);
-                        );
-                    );
+            });
             
             //Compare temporary group with previous temporary group and delete location data for units
             //no longer in range
-            ForGroup(this.checkMovementGroup, () => (
+            ForGroup(this.checkMovementGroup, () => {
                 const enumUnit = GetEnumUnit();
                 GroupRemoveUnit(this.checkMovementGroup, enumUnit);
                 !IsUnitInGroup(enumUnit, tempGroup) ? delete this.locationData[enumUnit.id];
                 return true;
-            );
+            });
             
             //Go thru the temporary group and see if they are NOT visible and moving. If both conditions are met
             //create the destructable visible only to the casting player
             //then update unit location data and add them to the checkMovementGroup
-            ForGroup(tempGroup, () => (
+            ForGroup(tempGroup, () => {
                 const enumUnit: Unit = Unit.fromEnum();
                 GroupAddUnit(enumUnit,this.checkMovementGroup);
                 if (this.locationData[enumUnit.id] != null && this.locationData[enumUnit.id] != Vector2.vectorFromUnit(enumUnit)) {
@@ -86,7 +85,7 @@ export class AuditoryFocusAbility implements Ability {
                 };
                 this.locationData[enumUnit.id] = Vector2.vectorFromUnit(enumUnit);
                 return true;
-            );
+            });
             DestroyGroup(tempGroup);
         };
         else {
