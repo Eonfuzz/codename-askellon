@@ -26,7 +26,7 @@ export class AuditoryFocusAbility implements Ability {
     private destructableListMax = 0;
     private remainingDuration = DURATION;
     private locallyVisible: boolean;
-    private effectRadius : number
+    private effectRadius : number;
 
     constructor() {}
 
@@ -56,39 +56,37 @@ export class AuditoryFocusAbility implements Ability {
                     this.casterUnit.x, 
                     this.casterUnit.y, 
                     this.effectRadius, 
-                    FilterAnyUnit()
+                    () => (
+                        const fUnit = GetFilterUnit()
+                        return !BlzIsUnitInvulnerable(fUnit) && !IsUnitVisible(fUnit,this.castingPlayer);
+                        );
                     );
             
             //Compare temporary group with previous temporary group and delete location data for units
             //no longer in range
-            let enumUnit: Unit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
-            while (enumUnit != null) {
+            ForGroup(this.checkMovementGroup, () => (
+                const enumUnit = GetEnumUnit();
                 GroupRemoveUnit(this.checkMovementGroup, enumUnit);
-                if (!IsUnitInGroup(enumUnit, tempGroup)) {
-                    delete this.locationData[enumUnit.id];
-                };
-                enumUnit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
-            };
+                !IsUnitInGroup(enumUnit, tempGroup) ? delete this.locationData[enumUnit.id];
+                return true;
+            );
             
             //Go thru the temporary group and see if they are NOT visible and moving. If both conditions are met
             //create the destructable visible only to the casting player
             //then update unit location data and add them to the checkMovementGroup
-            enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
-            while (enumUnit != null) {
-                GroupRemoveUnit(tempGroup, enumUnit);
-                if (!IsUnitVisible(enumUnit, this.castingPlayer)) {
-                    GroupAddUnit(enumUnit,this.checkMovementGroup);
-                    if (this.locationData[enumUnit.id] != null && this.locationData[enumUnit.id] != Vector2.vectorFromUnit(enumUnit)) {
-                        let tempDestructable = CreateDestructable(DESTRUCT_ID, enumUnit.x, enumUnit.y, 270, 1, 0);
-                        ShowDestructable(tempDestructable, this.locallyVisible);
-                        SetDestructableAnimation(tempDestructable, "birth");
-                        this.destructableList[destructableListMax] = tempDestructable;
-                        this.destructableListMax++;
-                    };
-                    this.locationData[enumUnit.id] = Vector2.vectorFromUnit(enumUnit);
+            ForGroup(tempGroup, () => (
+                const enumUnit: Unit = Unit.fromEnum();
+                GroupAddUnit(enumUnit,this.checkMovementGroup);
+                if (this.locationData[enumUnit.id] != null && this.locationData[enumUnit.id] != Vector2.vectorFromUnit(enumUnit)) {
+                    let tempDestructable = CreateDestructable(DESTRUCT_ID, enumUnit.x, enumUnit.y, 270, 1, 0);
+                    ShowDestructable(tempDestructable, this.locallyVisible);
+                    SetDestructableAnimation(tempDestructable, "birth");
+                    this.destructableList[destructableListMax] = tempDestructable;
+                    this.destructableListMax++;
                 };
-                enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
-            };
+                this.locationData[enumUnit.id] = Vector2.vectorFromUnit(enumUnit);
+                return true;
+            );
             DestroyGroup(tempGroup);
         };
         else {
