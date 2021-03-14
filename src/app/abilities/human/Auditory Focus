@@ -31,12 +31,13 @@ export class AuditoryFocusAbility implements Ability {
     public initialise() {
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.castingPlayer = this.casterUnit.owner;
-        selfEffect = AddSpecialEffectTarget(SELF_SFX, this.casterUnit, "origin");
+        this.selfEffect = AddSpecialEffectTarget(SELF_SFX, this.casterUnit, "head");
         return true;
     };
 
     public process(delta: number) {
         if (refreshTime >= REFRESH_RATE) {
+            removeDestructables();
             refreshTime = 0;
             let effectRadius = 0;
             if (RADIUS == 0) {
@@ -45,54 +46,60 @@ export class AuditoryFocusAbility implements Ability {
             else {
                 effectRadius = RADIUS;
             };
-            remove_destructables();
-            let tempLocation = GetUnitLoc(this.casterUnit);
-            let tempGroup = GetUnitsInRangeOfLocMatching(
-                effectRadius, 
-                tempLocation, 
-                FilterIsAlive()
-            );
-            RemoveLocation(tempLocation);
-            GroupRemoveGroup(checkMovementGroup, tempGroup);
-            let enumUnit: Unit = Unit.fromHandle(FirstOfGroup(checkMovementGroup));
+            
+            let tempGroup = CreateGroup();
+            GroupEnumUnitsInRange(
+                    tempGroup, 
+                    this.casterUnit.x, 
+                    this.casterUnit.y, 
+                    effectRadius, 
+                    FilterIsAlive);
+            GroupRemoveGroup(this.checkMovementGroup, tempGroup);
+            
+            let enumUnit: Unit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
             while (enumUnit != null) {
-                delete locationData[enumUnit.id];
-                enumUnit: Unit = Unit.fromHandle(FirstOfGroup(checkMovementGroup));
+                GroupRemoveUnit(this.checkMovementGroup, enumUnit);
+                delete this.locationData[enumUnit.id];
+                enumUnit = Unit.fromHandle(FirstOfGroup(this.checkMovementGroup));
             };
+            
             enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
             while (enumUnit != null) {
-                GroupRemoveUnit(tempGroup, enumUnit);
-                GroupAddUnit(enumUnit,checkMovementGroup);
-                if locationData[enumUnit.id] != null && locationData[enumUnit.id] != Vector2.vectorFromUnit(enumUnit)) {
-                    let tempDestructable = CreateDestructable(DESTRUCT_ID, enumUnit.x, enumUnit.y, 270, 1, 0);
-                    SetDestructableAnimation(tempDestructable, "birth");
-                    destructableList[destructableListMax] = tempDestructable;
-                    destructableListMax++
+                if (IsUnitVisible(enumUnit, this.castingPlayer) == false) {
+                    GroupRemoveUnit(tempGroup, enumUnit);
+                    GroupAddUnit(enumUnit,this.checkMovementGroup);
+                    if this.locationData[enumUnit.id] != null && this.locationData[enumUnit.id] != Vector2.vectorFromUnit(enumUnit)) {
+                        let tempDestructable = CreateDestructable(DESTRUCT_ID, enumUnit.x, enumUnit.y, 270, 1, 0);
+                        ShowDestructable(tempDestructable, GetLocalPlayer() == this.castingPlayer);
+                        SetDestructableAnimation(tempDestructable, "birth");
+                        this.destructableList[destructableListMax] = tempDestructable;
+                        this.destructableListMax++;
+                    };
+                    this.locationData[enumUnit.id] = Vector2.vectorFromUnit(enumUnit);
+                    enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
                 };
-                locationData[enumUnit.id] = Vector2.vectorFromUnit(enumUnit);
-                enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
             };
-            DestroyGroup(tempGroup)
+            DestroyGroup(tempGroup);
         };
         else {
-            refreshTime += delta;
+            this.refreshTime += delta;
         };
-        remainingDuration -= delta
-        return remainingDuration > 0;
+        this.remainingDuration -= delta;
+        return this.remainingDuration > 0;
     };
 
-    private remove_destructables() {
-        for (var i = 0; i < destructableListMax; ++i) {
-            RemoveDestructable(destructableList[i]);
+    private removeDestructables() {
+        for (var i = 0; i < this.destructableListMax; ++i) {
+            RemoveDestructable(this.destructableList[i]);
         };
-        destructableListMax = 0
+        this.destructableListMax = 0;
         return true;
     };
 
     public destroy() { 
         DestroyGroup(this.checkMovmentGroup);
-        DestroyEffect(selfEffect);
-        remove_destructables();
+        DestroyEffect(this.selfEffect);
+        removeDestructables();
         return true; 
     };
 }
