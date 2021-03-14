@@ -912,7 +912,7 @@ W
 }
 
 STRING 242
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A031 (Evolve), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1074,7 +1074,7 @@ W
 }
 
 STRING 284
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2451,7 +2451,7 @@ W
 }
 
 STRING 634
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3177,7 +3177,7 @@ W
 }
 
 STRING 851
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -5106,7 +5106,7 @@ Target Player
 }
 
 STRING 1299
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A032 (Evolutions - Tier 2 Infestation), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -6547,6 +6547,7 @@ Fuller Auto
 }
 
 STRING 1587
+// Units: N010 (Alien), Name (Name)
 {
 Alien
 }
@@ -6561,12 +6562,6 @@ STRING 1589
 // Units: ALI2 (Alien), EditorSuffix (Name - Editor Suffix)
 {
 - T3 Canite
-}
-
-STRING 1590
-// Units: N00S (Alien), EditorSuffix (Name - Editor Suffix)
-{
-- T2 Defiler
 }
 
 STRING 1601
@@ -6947,7 +6942,7 @@ W
 }
 
 STRING 1685
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -7297,13 +7292,13 @@ X
 }
 
 STRING 1751
-// Abilities: A02E (Broodnest), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A031 (Evolve), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
 }
 
 STRING 1752
-// Abilities: A02E (Broodnest), Tip (Tooltip - Normal)
+// Abilities: A031 (Evolve), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
@@ -7956,12 +7951,6 @@ STRING 1889
 X
 }
 
-STRING 1890
-// Abilities: A02E (Broodnest), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781The Alien organism replicates itself by cell duplication.|r|n|nPlaces a clutch of |cff8a6df2Eggs|r at your feet; These hatch after |cff18bc9c80 |rseconds or when |cff18bc9cReactive Parasitization|r explodes nearby.|n|n|cffd45e19Hatched eggs spawn powerful AI controlled minions.|r|n|n|cff62778145 Second Cooldown|r|r
-}
-
 STRING 1891
 // Abilities: A02E (Broodnest), Tip (Tooltip - Normal)
 {
@@ -7974,28 +7963,10 @@ STRING 1894
 Hookshot
 }
 
-STRING 1895
-// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Lore TODO|r|n|nFires a sticky web that grabs the first thing it hits|n|cff18bc9cWall|r - Quickly Rappel forwards|n|cff18bc9cUnit|r - Stuns and pulls them towards you|r|n|n|cffd45e19This is your escape and kill tool. Don't waste it!|r|n|n|cff62778125 Second Cooldown|r
-}
-
-STRING 1896
-// Abilities: A02F (Hookshot), Tip (Tooltip - Normal)
-{
-Hookshot
-}
-
 STRING 1897
 // Abilities: A02G (Concealing Webs), Name (Name)
 {
 Concealing Webs
-}
-
-STRING 1898
-// Abilities: A02G (Concealing Webs), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Lore TODO|r|n|nBegin creating a trail of webs; Immediately creates 1 web and up to |cff18bc9c2|r more whenever you walk off a web|r. Lasts |cff18bc9c15|r seconds.|n|n|cffd45e19Webs last until you cast this ability again, being on a web grants Invisibility|r|r|n|n|cff62778125 Second Cooldown|r
 }
 
 STRING 1899
@@ -8302,5 +8273,136 @@ STRING 1950
 |cff627781By the bin), EditorSuffix (Editor Suffix)
 {
 (Plaque)
+}
+
+STRING 1951
+// Units: N00S (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- Infestor T3
+}
+
+STRING 1952
+// Units: N010 (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- Infestor T2
+}
+
+STRING 1953
+// Abilities: A02E (Broodnest), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The Alien organism replicates itself by cell duplication.|r|n|nPlaces a clutch of |cff8a6df2Eggs|r at your feet; These hatch after |cff18bc9c80 |rseconds or when a player walks nearby.|n|n|cffd45e19Hatched eggs spawn powerful AI controlled minions.|r|n|n|cff62778145 Second Cooldown|r|r
+}
+
+STRING 1954
+// Abilities: A02E (Broodnest), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The Alien organism replicates itself by cell duplication.|r|n|nPlaces a clutch of |cff8a6df2Greater Eggs|r at your feet; These hatch after |cff18bc9c80 |rseconds or when a player walks nearby.|n|n|cffd45e19Hatched eggs spawn powerful AI controlled minions.|r|n|n|cff62778145 Second Cooldown|r|r
+}
+
+STRING 1955
+// Abilities: A02E (Broodnest), Tip (Tooltip - Normal)
+{
+Broodnest
+}
+
+STRING 1956
+// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|nFires a sticky web that pulls you to the first thing it hits.|r|n|n|cff62778135 Second Cooldown|r
+}
+
+STRING 1957
+// Abilities: A02F (Hookshot), Tip (Tooltip - Normal)
+{
+Webshot
+}
+
+STRING 1958
+// Abilities: A02F (Hookshot), Tip (Tooltip - Normal)
+{
+Webshot
+}
+
+STRING 1959
+// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|nFires a sticky web that grabs the first thing it hits; Units hit are |cff18bc9cstunned|r and pulled towards you.|n|n|cff62778135 Second Cooldown|r
+}
+
+STRING 1960
+// Abilities: A02G (Concealing Webs), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|nSpawns two webs under you feet; You are invisible while inside these webs.|n|n|cff62778135 Second Cooldown|r
+}
+
+STRING 1961
+// Abilities: A02G (Concealing Webs), Tip (Tooltip - Normal)
+{
+Concealing Webs
+}
+
+STRING 1962
+// Abilities: A02G (Concealing Webs), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|nBegin creating a trail of webs; Immediately creates 1 web and up to |cff18bc9c3|r more whenever you walk off a web|r. Lasts |cff18bc9c15|r seconds.|n|n|cffd45e19Webs last until you cast this ability again, being on a web grants Invisibility|r|r|n|n|cff62778150 Second Cooldown|r
+}
+
+STRING 1963
+// Abilities: A031 (Evolve), Name (Name)
+{
+Evolve
+}
+
+STRING 1964
+// Abilities: A031 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Infestation|n|cff18bc9c- Easily spreads infestation|n- Traps are very powerful|r|n|cffc81e1e- Very weak in straight combat|n- Traps require setup time|r|n|nTakes |cff18bc9c40 seconds|r to complete your evolution. |r|r|n|n|cffb52166WORK IN PROGRESS; ABILITIES ARE INCOMPLETE|r|n|n|cff627781120 Seconds Cooldown|r
+}
+
+STRING 1965
+// Abilities: A031 (Evolve), Tip (Tooltip - Normal)
+{
+Infestation Evolution
+}
+
+STRING 1966
+// Abilities: A031 (Evolve), EditorSuffix (Editor Suffix)
+{
+- Infestor T2
+}
+
+STRING 1967
+// Abilities: A032 (Evolutions - Tier 2 Infestation), Name (Name)
+{
+Evolutions - Tier 2 Infestation
+}
+
+STRING 1968
+// Abilities: A032 (Evolutions - Tier 2 Infestation), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Consume biomass, learn prey behaviours and become stronger.|r|n|nBegin evolving into your selected Evolution. Takes |cff18bc9c40 seconds|r to complete your evolution.|r|r|n|n|cff627781120 Seconds Cooldown|r
+}
+
+STRING 1969
+// Abilities: A032 (Evolutions - Tier 2 Infestation), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 1970
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 1971
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 1972
+{
+Alien
 }
 

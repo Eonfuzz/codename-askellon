@@ -44,7 +44,7 @@ export class Minigun extends GunItem {
     private targetLoc: Vector3;
 
     // Max degree of turn per second
-    private maxTurnSpeed = 110;
+    private maxTurnSpeed = 180;
     private shootTimer = new Timer();
 
     public fullerAutoActive = false;
