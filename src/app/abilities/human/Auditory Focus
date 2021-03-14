@@ -1,0 +1,98 @@
+import { Ability } from "../ability-type";
+import { Vector2 } from "../../types/vector2";
+import { FilterIsAlive } from "../../../resources/filters";
+import { MapPlayer, Unit, Effect } from "w3ts";
+import { BUFF_ID } from "resources/buff-ids";
+import { ForceEntity } from "app/force/force-entity";
+import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
+import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+
+const DURATION = 15;
+const RADIUS = 1200; //If 0, default vision radius will be used.
+const REFRESH_RATE = 1;
+const DESTRUCT_ID = FourCC('0000'); // <- ADD THIS WHEN IMPLEMENTED IN MAP
+const SELF_SFX = "";
+
+
+export class AuditoryFocusAbility implements Ability {
+
+    private casterUnit: Unit | undefined;
+    private castingPlayer: MapPlayer | undefined;
+    private checkMovmentGroup = CreateGroup();
+    private refreshTime = REFRESH_RATE;
+    private selfEffect: Effect | undefined;
+    private locationData = [];
+    private destructableList = [];
+    private destructableListMax = 0;
+    private remainingDuration = DURATION;
+
+    constructor() {}
+
+    public initialise() {
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+        this.castingPlayer = this.casterUnit.owner;
+        selfEffect = AddSpecialEffectTarget(SELF_SFX, this.casterUnit, "origin");
+        return true;
+    };
+
+    public process(delta: number) {
+        if (refreshTime >= REFRESH_RATE) {
+            refreshTime = 0;
+            let effectRadius = 0;
+            if (RADIUS == 0) {
+                effectRadius = BlzGetUnitIntegerField(this.casterUnit,ConvertUnitIntegerField(FourCC('usid')));
+            };
+            else {
+                effectRadius = RADIUS;
+            };
+            remove_destructables();
+            let tempLocation = GetUnitLoc(this.casterUnit);
+            let tempGroup = GetUnitsInRangeOfLocMatching(
+                effectRadius, 
+                tempLocation, 
+                FilterIsAlive()
+            );
+            RemoveLocation(tempLocation);
+            GroupRemoveGroup(checkMovementGroup, tempGroup);
+            let enumUnit: Unit = Unit.fromHandle(FirstOfGroup(checkMovementGroup));
+            while (enumUnit != null) {
+                delete locationData[enumUnit.id];
+                enumUnit: Unit = Unit.fromHandle(FirstOfGroup(checkMovementGroup));
+            };
+            enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
+            while (enumUnit != null) {
+                GroupRemoveUnit(tempGroup, enumUnit);
+                GroupAddUnit(enumUnit,checkMovementGroup);
+                if locationData[enumUnit.id] != null && locationData[enumUnit.id] != Vector2.vectorFromUnit(enumUnit)) {
+                    let tempDestructable = CreateDestructable(DESTRUCT_ID, enumUnit.x, enumUnit.y, 270, 1, 0);
+                    SetDestructableAnimation(tempDestructable, "birth");
+                    destructableList[destructableListMax] = tempDestructable;
+                    destructableListMax++
+                };
+                locationData[enumUnit.id] = Vector2.vectorFromUnit(enumUnit);
+                enumUnit = Unit.fromHandle(FirstOfGroup(tempGroup));
+            };
+            DestroyGroup(tempGroup)
+        };
+        else {
+            refreshTime += delta;
+        };
+        remainingDuration -= delta
+        return remainingDuration > 0;
+    };
+
+    private remove_destructables() {
+        for (var i = 0; i < destructableListMax; ++i) {
+            RemoveDestructable(destructableList[i]);
+        };
+        destructableListMax = 0
+        return true;
+    };
+
+    public destroy() { 
+        DestroyGroup(this.checkMovmentGroup);
+        DestroyEffect(selfEffect);
+        remove_destructables();
+        return true; 
+    };
+}
