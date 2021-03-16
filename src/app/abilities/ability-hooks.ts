@@ -59,7 +59,7 @@ import {
     ABIL_ALIEN_BROODNEST,
     ABIL_ALIEN_WEBWALK,
     ABIL_ALIEN_EVOLVE_T2_SPIDER,
-    ABIL_ALIEN_EVOLVE_T3_DEFILER
+    ABIL_ALIEN_EVOLVE_T3_DEFILER,
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
