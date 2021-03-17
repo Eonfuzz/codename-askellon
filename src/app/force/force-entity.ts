@@ -539,7 +539,7 @@ export class ForceEntity extends Entity {
             count: 1
         });
 
-        if (PlayerStateFactory.isSinglePlayer() || PlayerStateFactory.allowWIP()) {
+        // if (PlayerStateFactory.isSinglePlayer() || PlayerStateFactory.allowWIP()) {
             optSelection.addOpt({
                 name: CULT_FORCE_NAME,
                 isRequired: false,
@@ -549,7 +549,7 @@ export class ForceEntity extends Entity {
                 chanceToExist: 100,
                 count: (PlayerStateFactory.getInstance().playerCount > 8) ? 2 : 1
             });
-        }
+        // }
         
         // Now ask for opts
         optSelection.askPlayerOpts();

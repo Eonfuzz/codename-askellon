@@ -1,31 +1,25 @@
 import { SoundWithCooldown, SoundRef } from "../../types/sound-ref";
 import { ABIL_ACCURACY_PENALTY_30, ABIL_DESPAIR, ABIL_APPLY_MADNESS } from "resources/ability-ids";
 import { BUFF_ID, BUFF_ID_DESPAIR, BUFF_ID_SIGNAL_BOOSTER, BUFF_ID_PURITY_SEAL, BUFF_ID_MADNESS } from "resources/buff-ids";
-import { Unit, MapPlayer, Timer } from "w3ts/index";
+import { Unit, MapPlayer, Timer, Effect } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { DummyCast } from "lib/dummy";
 import { Log } from "lib/serilog/serilog";
-import { ForceEntity } from "app/force/force-entity";
-import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
-import { AlienForce } from "app/force/forces/alien-force";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ChatHook } from "app/chat/chat-hook-type";
 import { ChatEntity } from "app/chat/chat-entity";
-import { COL_MISC } from "resources/colours";
 import { BuffInstance } from "../buff-instance-type";
-import { BuffInstanceDuration } from "../buff-instance-duration-type";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY, MessagePlayer } from "lib/utils";
 import { ProjectileTargetStatic, ProjectileMoverLinear } from "app/weapons/projectile/projectile-target";
-import { Game } from "app/game";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
-import { COLOUR_CULT } from "app/force/forces/cultist/constants";
 import { Quick } from "lib/Quick";
-import { randomWords } from "resources/words";
 import { FogEntity, FogTransition } from "app/vision/fog-entity";
+import { SFX_BURNING_RAGE_PURPLE } from "resources/sfx-paths";
+import { randomWords } from "resources/words";
 
 export const whisperLoop = new SoundRef("Sounds\\whisperLoop.mp3", true, true);
 Preload("Sounds\\whisperLoop.mp3");
@@ -54,7 +48,7 @@ export class Madness extends DynamicBuff {
 
     // Starts off at zero
     private insanity = 0;
-    private maxInsanity = 100;
+    private maxInsanity = 60;
     private sanityDebuffAt = this.maxInsanity - 10;
 
     private insanityTicker = 0;
@@ -65,6 +59,8 @@ export class Madness extends DynamicBuff {
     private projectileTimestamp = new WeakMap<Projectile, number>();
     
     private cultistGodSoundByte = new SoundRef("Sounds\\HorrorRiser.mp3", false, true);
+
+    private insanityPreviewEffect!: Effect;
 
     constructor(who: Unit) {
         super();        
@@ -87,10 +83,8 @@ export class Madness extends DynamicBuff {
             const oldVal = this.insanity;
             this.insanityTicker -= INSANTIY_TICK;
 
-            if (UnitHasBuffBJ(this.unit.handle, BUFF_ID_PURITY_SEAL)) {
-                this.insanity--;
-            }
-            else {
+            // Only increment insanity status while it has despair
+            if (UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR) && !UnitHasBuffBJ(this.unit.handle, BUFF_ID_PURITY_SEAL)) {
                 this.insanity++;
             }
             this.insanity = Math.min(this.insanity, this.maxInsanity);
@@ -103,8 +97,9 @@ export class Madness extends DynamicBuff {
             if (oldVal < this.sanityDebuffAt && this.insanity >= this.sanityDebuffAt) {
                 // Apply insanity debuff sound
                 // Apply insanity buff
-                if (this.unit.owner.handle === GetLocalPlayer()) 
+                if (this.unit.owner.handle === GetLocalPlayer()) {
                     this.cultistGodSoundByte.playSound();
+                }
                 if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_MADNESS)) {
                     // If we don't have another ticker apply the buff to the unit
                     DummyCast((dummy: unit) => {
@@ -131,6 +126,7 @@ export class Madness extends DynamicBuff {
             }
             else if (oldVal >= this.sanityDebuffAt && this.insanity < this.sanityDebuffAt) {
                 // Remove buff
+                whisperLoop.setVolume( 0 );
                 UnitRemoveBuffBJ(BUFF_ID_MADNESS, this.unit.handle);
                 FogEntity.transition(this.unit.owner, {
                     fStart: 950,
@@ -139,20 +135,24 @@ export class Madness extends DynamicBuff {
                     r: 60, g: 60, b: 80
                 }, 10);
             }
+
+            
+            if (this.insanity > this.sanityDebuffAt) {
+                if (GetLocalPlayer() === this.unit.owner.handle) {
+                    const v = Math.min(127,  127 - 127 * (this.maxInsanity - this.insanity) / 10);
+                    whisperLoop.setVolume( MathRound(v) );
+                }
+                
+                this.hallucinationIn -= INSANTIY_TICK;
+                if (this.hallucinationIn <= 0) {
+                    const mod = Math.min(5,  3 * this.insanity / this.maxInsanity);
+                    this.hallucinationIn = GetRandomReal(15 / mod, 27 / mod);
+        
+                    this.createHallucination();
+                }   
+            }
         }
         
-        if (GetLocalPlayer() === this.unit.owner.handle) {
-            const v = Math.min(127,  127 * this.insanity / this.maxInsanity);
-            whisperLoop.setVolume( MathRound(v) );
-        }
-
-        this.hallucinationIn -= delta;
-        if (this.hallucinationIn <= 0) {
-            const mod = Math.min(5,  3 * this.insanity / this.maxInsanity);
-            this.hallucinationIn = GetRandomReal(15 / mod, 27 / mod);
-
-            this.createHallucination();
-        }
 
         return result;
     }
@@ -298,22 +298,24 @@ export class Madness extends DynamicBuff {
         }
     }
 
+
     public onStatusChange(newStatus: boolean) {
         if (newStatus) {
             this.hookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.processChat(hook));
-
             // End music and sounds
             if (GetLocalPlayer() === this.unit.owner.handle) {
                 whisperLoop.setVolume(0);
                 whisperLoop.playSound();
-                // SetMusicVolume(0);
             }
-            FogEntity.transition(this.unit.owner, {
-                fStart: 950,
-                fEnd: 3000,
-                density: 1,
-                r: 60, g: 60, b: 80
-            }, 40);
+            
+            if (!this.insanityPreviewEffect) {
+                const source = this.instances.map(i => i.source)[0];
+                if (!this.insanityPreviewEffect) {
+                    // Lets create a preview above the unit's head
+                    let sfx = source.owner.isLocal() ? SFX_BURNING_RAGE_PURPLE : "";
+                    this.insanityPreviewEffect = new Effect(sfx, this.unit, "overhead");
+                }
+            }
         }
         else {
             // Also remove resolve buff
@@ -330,48 +332,47 @@ export class Madness extends DynamicBuff {
             
             this.cultistGodSoundByte.destroy();
             ChatEntity.getInstance().removeHook(this.hookId);
+
+            if (this.insanityPreviewEffect) {
+                this.insanityPreviewEffect.destroy();
+                this.insanityPreviewEffect = undefined;
+            }
         }
     }
 
     
     private processChat(chat: ChatHook) {
         try {
-            if (chat.who === this.who.owner && chat.name === this.who.nameProper) {
-                const isInsaneTalk = GetRandomReal(0, 100) < ((this.insanity / this.maxInsanity) * 100);
-                const pCrew = PlayerStateFactory.getCrewmember(chat.who);
+            if (this.insanity > this.sanityDebuffAt) { 
+                if (chat.who === this.who.owner && chat.name === this.who.nameProper) {
+                    const isInsaneTalk = GetRandomReal(0, 100) < ((this.insanity / this.maxInsanity) * 100);
+                    const pCrew = PlayerStateFactory.getCrewmember(chat.who);
 
 
-                if (isInsaneTalk) {
-                    let seed = GetRandomReal(0, 100);
+                    if (isInsaneTalk) {
+                        const message: string = chat.message;
+                        let nMessage: string = message || chat.message || '';
+                        const tokenisedMessage: string[] = [];
 
-                    const message: string = (seed <= 30) 
-                        ? Quick.GetRandomFromArray(ChatEntity.getInstance().getPreviousMessages(), 1)[0]
-                        : chat.message;
-                    let nMessage: string = message || chat.message || '';
-                    const tokenisedMessage: string[] = [];
+                        Quick.Tokenize(nMessage).forEach(token => {
+                            const seed = GetRandomReal(0, 100);
+    
+                            if (seed >= 80) {
+                                tokenisedMessage.push(token);
+                            }
+                            else {
+                                tokenisedMessage.push(Quick.GetRandomFromArray(randomWords, 1)[0]);
+                            }
+                        });
 
-                    Quick.Tokenize(nMessage).forEach(token => {
-                        tokenisedMessage.push(token);
-                    });
 
+                        let stringBuilder: string = '';
 
-                    let stringBuilder: string = '';
-
-                    tokenisedMessage.forEach(token => {
-                        seed = GetRandomReal(0, 100);
-                        if (seed >= 10 && token.toLowerCase() !== "carrion") {
-                            token = Quick.ReplaceVowelWith(token, (char: string) => {
-                                const seed = GetRandomReal(0, 100);
-                                if (seed <= 30)
-                                    return "?";
-                                else if (seed <= 60)
-                                    return "y";
-                                else return "l";
-                            });
-                        }
-                        stringBuilder += token+" ";
-                    });
-                    chat.message = stringBuilder;
+                        tokenisedMessage.forEach(token => {
+                            stringBuilder += token+" ";
+                        });
+                        chat.message = stringBuilder;
+                    }
                 }
             }
             return chat;

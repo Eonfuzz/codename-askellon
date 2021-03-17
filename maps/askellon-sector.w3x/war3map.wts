@@ -8406,3 +8406,15 @@ STRING 1972
 Alien
 }
 
+STRING 1973
+// Upgrades: R00O (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Has An Active Altar
+}
+
+STRING 1974
+// Upgrades: R00O (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Has An Active Altar
+}
+
