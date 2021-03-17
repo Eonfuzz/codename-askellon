@@ -61,45 +61,46 @@ export class PlayerAgent {
     }
 
     private generateState(whichAgent: Unit) {
+        { // DO
+            const uType = whichAgent.typeId;
 
-        const uType = whichAgent.typeId;
+            // first decide the state
+            const seed = GetRandomInt(0, 100);
 
-        // first decide the state
-        const seed = GetRandomInt(0, 100);
+            const uLevel = whichAgent.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
+            const canEvolve = uLevel > 0 && BlzGetUnitAbilityCooldownRemaining(whichAgent.handle, ABIL_ALIEN_MINION_EVOLVE) <= 1;
 
-        const uLevel = whichAgent.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
-        const canEvolve = uLevel > 0 && BlzGetUnitAbilityCooldownRemaining(whichAgent.handle, ABIL_ALIEN_MINION_EVOLVE) <= 1;
-
-        if (canEvolve) {
-            return AGENT_STATE.EVOLVE;
-        }
-
-
-        /**
-         * Larvas either travel to hatch or travel to make tumors
-         */
-        if (uType === ALIEN_MINION_LARVA) {
-            if (seed >= 60 && GetPlayerTechCount(this.player.handle, ALIEN_STRUCTURE_TUMOR, true) <= AI_MAX_TUMORS) {
-                // Log.Information("BUILD TUMOR");
-                return AGENT_STATE.BUILD_TUMOR;
+            if (canEvolve) {
+                return AGENT_STATE.EVOLVE;
             }
-            // Log.Information("TRAVEL");
-            return AGENT_STATE.TRAVEL;
-        }
 
-        // 25% to go to a random floor
-        if (seed >= 75) {
-            return AGENT_STATE.TRAVEL;
-        }
-        // 40% to seek a random player
-        // If no players are available it wanders
-        else if (seed >= 10) {
-            return AGENT_STATE.SEEK;
-        }
-        // 20% to wander on current floor
-        else  {
-            return AGENT_STATE.WANDER;
-        }
+
+            /**
+             * Larvas either travel to hatch or travel to make tumors
+             */
+            if (uType === ALIEN_MINION_LARVA) {
+                if (seed >= 60 && GetPlayerTechCount(this.player.handle, ALIEN_STRUCTURE_TUMOR, true) <= AI_MAX_TUMORS) {
+                    // Log.Information("BUILD TUMOR");
+                    return AGENT_STATE.BUILD_TUMOR;
+                }
+                // Log.Information("TRAVEL");
+                return AGENT_STATE.TRAVEL;
+            }
+
+            // 25% to go to a random floor
+            if (seed >= 75) {
+                return AGENT_STATE.TRAVEL;
+            }
+            // 40% to seek a random player
+            // If no players are available it wanders
+            else if (seed >= 10) {
+                return AGENT_STATE.SEEK;
+            }
+            // 20% to wander on current floor
+            else  {
+                return AGENT_STATE.WANDER;
+            }
+        } // END
     }
 
     public addAgent(agent: Unit) {

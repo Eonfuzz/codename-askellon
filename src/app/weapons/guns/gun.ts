@@ -88,28 +88,30 @@ export abstract class Gun {
     }
 
     protected getStrayLocation(originalLocation: Vector3, unit: Unit): Vector3 {
-        const accuracyModifier = this.getStrayValue(unit);
+        { // DO
+            const accuracyModifier = this.getStrayValue(unit);
 
-        // Minimum distance for the shot
-        const minLength = 0;
-        // Maximum distance for stray shots
-        // Accuracy is exponentially good / bad
-        const maxLength = this.spreadAOE + accuracyModifier / 2;
+            // Minimum distance for the shot
+            const minLength = 0;
+            // Maximum distance for stray shots
+            // Accuracy is exponentially good / bad
+            const maxLength = this.spreadAOE + accuracyModifier / 2;
 
-        // The maximimum possible spread for the shot
-        const angleSpread = Math.min(30 - accuracyModifier / 40, 10);
+            // The maximimum possible spread for the shot
+            const angleSpread = Math.min(30 - accuracyModifier / 40, 10);
 
-        // Get the angle back towards the caster
-        const dX = unit.x - originalLocation.x;
-        const dY = unit.y - originalLocation.y;
-        const thetaRadians = Atan2(dY, dX);
+            // Get the angle back towards the caster
+            const dX = unit.x - originalLocation.x;
+            const dY = unit.y - originalLocation.y;
+            const thetaRadians = Atan2(dY, dX);
 
-        // Project the point with a random distance
-        let newLocation = originalLocation.projectTowards2D( 
-            Rad2Deg(thetaRadians) * GetRandomReal(-angleSpread, angleSpread), 
-            GetRandomReal(minLength, maxLength)
-        );
+            // Project the point with a random distance
+            let newLocation = originalLocation.projectTowards2D( 
+                Rad2Deg(thetaRadians) * GetRandomReal(-angleSpread, angleSpread), 
+                GetRandomReal(minLength, maxLength)
+            );
 
-        return newLocation;
+            return newLocation;
+        } // END
     }
 }

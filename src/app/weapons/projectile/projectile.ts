@@ -140,16 +140,18 @@ export class Projectile {
      * @param deltaTime 
      */
     update(deltaTime: number): Vector3 {
-        let velocityToApply = this.mover.move(this.getTarget().getTargetVector(), deltaTime);
-        let newPosition = this.position.add(velocityToApply);
-        this.position = newPosition;
+        { // DO
+            let velocityToApply = this.mover.move(this.getTarget().getTargetVector(), deltaTime);
+            let newPosition = this.position.add(velocityToApply);
+            this.position = newPosition;
 
-        // Now update attached sfx
-        this.sfx.forEach(sfx => sfx.updatePosition(this.position));
+            // Now update attached sfx
+            this.sfx.forEach(sfx => sfx.updatePosition(this.position));
 
-        if (this.reachedEnd(velocityToApply)) this.doDestroy = true;
-        // Return distance travelled
-        return velocityToApply;
+            if (this.reachedEnd(velocityToApply)) this.doDestroy = true;
+            // Return distance travelled
+            return velocityToApply;
+        } // END
     }
 
     public setVelocity(velocity: number): Projectile {

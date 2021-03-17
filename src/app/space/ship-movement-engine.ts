@@ -62,10 +62,6 @@ export class SpaceMovementEngine {
         const cThrustAngle = this.thrust.getAngle();
         const nGoalAngle = this.goal.getAngle();
 
-        // Log.Information("Angle: "+cThrustAngle);
-        
-
-
         const d = (nGoalAngle - cThrustAngle + 180) % 360 - 180;
 
         // Log.Information()

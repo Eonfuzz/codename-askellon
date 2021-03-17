@@ -84,29 +84,31 @@ export class AIEntity extends Entity {
      * @param ignoreLimit 
      */
     public getBestPlayerAgent(ignoreLimit: boolean = false): PlayerAgent | undefined {
-        // Search through our agents and add
-        for (let i = 0; i< this.playerAgents.length; i++) {
-            const agent = this.playerAgents[i];
-            if (!agent.hasMaximumAgents()) {
-                return agent;
-            }
-        }
-
-        // Otherwise our agents are at max
-        // Can we ignore limit?
-        if (ignoreLimit) {
-            // Find agent with least amound of units
-            let leastUnitAgent: PlayerAgent = undefined;
+        { // DO
+            // Search through our agents and add
             for (let i = 0; i< this.playerAgents.length; i++) {
                 const agent = this.playerAgents[i];
-                if (!leastUnitAgent || leastUnitAgent.getCurrentAgents() > agent.getCurrentAgents()) {
-                    leastUnitAgent = agent;
+                if (!agent.hasMaximumAgents()) {
+                    return agent;
                 }
             }
-            // Now create
-            return leastUnitAgent;
-        }
-        return undefined;
+
+            // Otherwise our agents are at max
+            // Can we ignore limit?
+            if (ignoreLimit) {
+                // Find agent with least amound of units
+                let leastUnitAgent: PlayerAgent = undefined;
+                for (let i = 0; i< this.playerAgents.length; i++) {
+                    const agent = this.playerAgents[i];
+                    if (!leastUnitAgent || leastUnitAgent.getCurrentAgents() > agent.getCurrentAgents()) {
+                        leastUnitAgent = agent;
+                    }
+                }
+                // Now create
+                return leastUnitAgent;
+            }
+            return undefined;
+        } // END
     }
 
     _timerDelay = 2;
@@ -130,47 +132,49 @@ export class AIEntity extends Entity {
       * @param whichUnit 
       */
     public static addAgent(whichUnit: Unit) {
-        const instance = this.getInstance();
+        { // DO
+            const instance = this.getInstance();
 
-        const abilLevel = whichUnit.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
-        if (abilLevel > 0) {
-            whichUnit.startAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
-                BlzGetAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
-                    abilLevel - 1
-            ));
-        }
-
-        // Check this unit currently isn't in the AI database
-        const isAlreadyAgent = !!instance.playerAgents.find(a => a.hasAgent(whichUnit));
-
-        if (!isAlreadyAgent) {
-            try {
-                const createFor = instance.getBestPlayerAgent();
-
-                if (!createFor) {
-                    whichUnit.show = false;
-                    return whichUnit.kill();
-                }
-
-                SetUnitOwner(whichUnit.handle, createFor.player.handle, false);
-
-                const z = WorldEntity.getInstance().getPointZone(whichUnit.x, whichUnit.y);
-
-                if (!z) {
-                    return; //Log.Error("Failed to add AI unit, no zone found "+GetUnitName(whichUnit));
-                }
-                if (whichUnit.typeId === ALIEN_MINION_FORMLESS) {
-                    CreepEntity.addCreepWithSource(256, whichUnit);
-                }
-
-                WorldEntity.getInstance().travel(whichUnit, z.id);
-                createFor.addAgent(whichUnit);
+            const abilLevel = whichUnit.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
+            if (abilLevel > 0) {
+                whichUnit.startAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
+                    BlzGetAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
+                        abilLevel - 1
+                ));
             }
-            catch(e) {
-                Log.Error(`Error adding agent:`);
-                Log.Error(e);
+
+            // Check this unit currently isn't in the AI database
+            const isAlreadyAgent = !!instance.playerAgents.find(a => a.hasAgent(whichUnit));
+
+            if (!isAlreadyAgent) {
+                try {
+                    const createFor = instance.getBestPlayerAgent();
+
+                    if (!createFor) {
+                        whichUnit.show = false;
+                        return whichUnit.kill();
+                    }
+
+                    SetUnitOwner(whichUnit.handle, createFor.player.handle, false);
+
+                    const z = WorldEntity.getInstance().getPointZone(whichUnit.x, whichUnit.y);
+
+                    if (!z) {
+                        return; //Log.Error("Failed to add AI unit, no zone found "+GetUnitName(whichUnit));
+                    }
+                    if (whichUnit.typeId === ALIEN_MINION_FORMLESS) {
+                        CreepEntity.addCreepWithSource(256, whichUnit);
+                    }
+
+                    WorldEntity.getInstance().travel(whichUnit, z.id);
+                    createFor.addAgent(whichUnit);
+                }
+                catch(e) {
+                    Log.Error(`Error adding agent:`);
+                    Log.Error(e);
+                }
             }
-        }
+        } // END
     }
 
     /**

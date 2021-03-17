@@ -64,18 +64,20 @@ export class CreepEntity extends Entity {
     }
 
     makeCreep(where: Vector2) {
-        const existingCreep = this.creepMap.get(where.x, where.y);
-        if (existingCreep && existingCreep.state === CreepedTileState.DECAY) {
-            existingCreep.setState(CreepedTileState.BIRTH);
-        }
-        else if (existingCreep) {
-            existingCreep.add();
-        }
-        else  {
-            const creepTile = new CreepedTile(where);
-            this.creepMap.set(where.x, where.y, creepTile);
-            this.creepIterator.push(creepTile);
-        }
+        { // DO
+            const existingCreep = this.creepMap.get(where.x, where.y);
+            if (existingCreep && existingCreep.state === CreepedTileState.DECAY) {
+                existingCreep.setState(CreepedTileState.BIRTH);
+            }
+            else if (existingCreep) {
+                existingCreep.add();
+            }
+            else  {
+                const creepTile = new CreepedTile(where);
+                this.creepMap.set(where.x, where.y, creepTile);
+                this.creepIterator.push(creepTile);
+            }
+        } // END
     }
 
     killCreep(where: Vector2) {

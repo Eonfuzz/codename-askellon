@@ -30,6 +30,15 @@ export namespace Hooks {
     }
 }
 
+const _TriggerAddAction = TriggerAddAction;
+_G.TriggerAddAction = (whichTrigger: trigger, actionFunc: () => void) => {
+    return _TriggerAddAction(whichTrigger, () => {
+        { //DO
+            actionFunc();
+        } //END
+    });
+}
+
 /*
 What is das hooks?
 So, lua garbage collection removes stuff that falls out of scope, however,

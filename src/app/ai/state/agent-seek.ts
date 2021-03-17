@@ -65,81 +65,86 @@ export class AgentSeek extends AgentState {
      * for now it just iterates through all living crewmembers
      */
     private findSeekTarget(agentLocation: Zone): { target: Unit, path: Path, loc: Zone } | undefined {
+        { // DO
 
-        // Grab all human players
-        const humanPlayers = PlayerStateFactory.getForce(CREW_FORCE_NAME);
-        const allHumans = humanPlayers.getPlayers();
+            // Grab all human players
+            const humanPlayers = PlayerStateFactory.getForce(CREW_FORCE_NAME);
+            const allHumans = humanPlayers.getPlayers();
 
-        // All our possible targets
-        const targets = [];
+            // All our possible targets
+            const targets = [];
 
-        allHumans.forEach(human => {
-            const crew = PlayerStateFactory.getCrewmember(human);
-            const targetLocation = crew && WorldEntity.getInstance().getUnitZone(crew.unit);
-            // If the target is a crew, alive AND visible
-            if (crew && UnitAlive(crew.unit.handle) && targetLocation && this.isVisibleOrHasDespair(crew.unit)) {
-                // Make sure we can path to it
-                let path = NodeGraph.getGraph().pathTo(agentLocation.id, targetLocation.id)
-                if (path) {
-                    targets.push({ target: crew.unit, path: path, loc: targetLocation });
+            allHumans.forEach(human => {
+                const crew = PlayerStateFactory.getCrewmember(human);
+                const targetLocation = crew && WorldEntity.getInstance().getUnitZone(crew.unit);
+                // If the target is a crew, alive AND visible
+                if (crew && UnitAlive(crew.unit.handle) && targetLocation && this.isVisibleOrHasDespair(crew.unit)) {
+                    // Make sure we can path to it
+                    let path = NodeGraph.getGraph().pathTo(agentLocation.id, targetLocation.id)
+                    if (path) {
+                        targets.push({ target: crew.unit, path: path, loc: targetLocation });
+                    }
                 }
-            }
-        });
+            });
 
-        return Quick.GetRandomFromArray(targets, 1)[0];
+            return Quick.GetRandomFromArray(targets, 1)[0];
+        } // END
     }
 
     private recalculateTargetPath(target: Unit): { target: Unit, path: Path, loc: Zone } | undefined  {
+        { // DO
+            const targetLocation = target && WorldEntity.getInstance().getUnitZone(target);
+            // If the target is a crew, alive AND visible
+            if (targetLocation) {
 
-        const targetLocation = target && WorldEntity.getInstance().getUnitZone(target);
-        // If the target is a crew, alive AND visible
-        if (targetLocation) {
-
-            const agentLocation = WorldEntity.getInstance().getUnitZone(this.agent);
-            // Make sure we can path to it
-            let path = NodeGraph.getGraph().pathTo(agentLocation.id, targetLocation.id)
-            if (path) {
-                return { target: target, path: path, loc: targetLocation };
+                const agentLocation = WorldEntity.getInstance().getUnitZone(this.agent);
+                // Make sure we can path to it
+                let path = NodeGraph.getGraph().pathTo(agentLocation.id, targetLocation.id)
+                if (path) {
+                    return { target: target, path: path, loc: targetLocation };
+                }
             }
-        }
+        } // END
     }
 
     private ticker = 0;
     private CHECK_LOC_EVERY = 10;
 
     tick(delta: number): boolean {
-        this.ticker += delta;
+        { // DO
+            this.ticker += delta;
 
-        // Every X seconds we need to check that this seek state is still valid
-        if (this.ticker >= this.CHECK_LOC_EVERY) {
-            this.ticker -= this.CHECK_LOC_EVERY;
+            // Every X seconds we need to check that this seek state is still valid
+            if (this.ticker >= this.CHECK_LOC_EVERY) {
+                this.ticker -= this.CHECK_LOC_EVERY;
 
-            // Is our target dead?
-            if (!this.seekTarget.isAlive()) return false;
-            // Is our target still visible?
-            if (!this.isVisibleOrHasDespair(this.seekTarget)) return false;
-            // Has our target moved locations?
-            if (this.seekTargetOldLocation != WorldEntity.getInstance().getUnitZone(this.seekTarget)) {
-                const data = this.recalculateTargetPath(this.seekTarget);
-                // Can we still path to our target?
-                if (!data) return false;
-                // Otherwise lets recalculate the path
-                try {
-                    this.travelState = new AgentTravel(this.agent, data.path);
-                    this.travelState.actionQueue.addAction(new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450));
-                    this.actionQueue = this.travelState.actionQueue;
-                }
-                catch(e) {
-                    this.travelState = undefined;
-                    this.actionQueue = ActionQueue.createUnitQueue(this.agent.handle, 
-                        new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450)
-                    );
+                // Is our target dead?
+                if (!this.seekTarget.isAlive()) return false;
+                // Is our target still visible?
+                if (!this.isVisibleOrHasDespair(this.seekTarget)) return false;
+                // Has our target moved locations?
+                if (this.seekTargetOldLocation != WorldEntity.getInstance().getUnitZone(this.seekTarget)) {
+                    const data = this.recalculateTargetPath(this.seekTarget);
+                    // Can we still path to our target?
+                    if (!data) return false;
+                    // Otherwise lets recalculate the path
+                    try {
+                        this.travelState = new AgentTravel(this.agent, data.path);
+                        this.travelState.actionQueue.addAction(new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450));
+                        this.actionQueue = this.travelState.actionQueue;
+                    }
+                    catch(e) {
+                        this.travelState = undefined;
+                        this.actionQueue = ActionQueue.createUnitQueue(this.agent.handle, 
+                            new UnitActionWaypoint(Vector2.fromWidget(this.seekTarget.handle), WaypointOrders.attack, 450)
+                        );
+                    }
                 }
             }
-        }
 
-        // We finish when our attack move is finished
-        return !this.actionQueue.isFinished;
+            // We finish when our attack move is finished
+            return !this.actionQueue.isFinished;
+        } // END
     }
 
 

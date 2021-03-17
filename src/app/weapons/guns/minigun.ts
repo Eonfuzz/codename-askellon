@@ -118,93 +118,95 @@ export class Minigun extends GunItem {
 
     // Updates our target location based on facing
     private updateFacing(delta: number) {
-        if (!this || !this.equippedTo || !this.equippedTo.unit) return;
-        
-        const oldLength = this.targetLoc.getLength(); 
-        const unit = this.equippedTo.unit;
-
-        const newLoc = InputManager.getLastMouseCoordinate(this.equippedTo.unit.owner.handle);
-
-        const angleToCurrentTarget = Rad2Deg(Atan2(this.targetLoc.y-unit.y, this.targetLoc.x-unit.x));
-        const angleToNewTarget = Rad2Deg(Atan2(newLoc.y-unit.y, newLoc.x-unit.x));
-
-        const angleDelta = (angleToNewTarget - angleToCurrentTarget + 180) % 360 - 180;
-
-        const nAngleD = (angleDelta < 0) ? Math.max(angleDelta, -this.maxTurnSpeed*delta) : Math.min(angleDelta, this.maxTurnSpeed*delta);
-        const nAngle = angleToCurrentTarget + nAngleD;
-
-        const targetLocation = new Vector3(unit.x, unit.y, this.targetLoc.z).projectTowards2D(nAngle, oldLength);
-
-        let targetDistance = new Vector2(targetLocation.x - unit.x, targetLocation.y - unit.y).normalise().multiplyN(this.bulletDistance);
-
-        this.targetLoc = new Vector3(targetDistance.x + unit.x, targetDistance.y + unit.y, targetLocation.z);
-
-        unit.facing = nAngle;
-
-        
-        // Log.Information("nAngle "+nAngleD+", vs "+45*delta);
-
-        if (nAngleD < -45*delta || nAngleD > 45*delta) {
-            this.spinStacks -= 1;
-            if (nAngleD < -60*delta || nAngleD > 60*delta) {
-                this.flamesawActive = false;
-            }
-            if (nAngleD < -90*delta || nAngleD > 90*delta) {
-                this.spinStacks = MathRound( this.spinStacks / 1.5 );
-            }
-            if (this.spinStacks < 0) this.spinStacks = 0;
-        }
-
-        if (this.spinStacks === this.maxSpinStacks && !this.flamesawActive) {
-            this.flameSawMaxCounter += delta;
-            if (this.flameSawMaxCounter >= 0.75) {
-                this.flamesawActive = true;
-
-                let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", unit.x, unit.y);
-                BlzSetSpecialEffectAlpha(sfx, 40);
-                BlzSetSpecialEffectScale(sfx, 0.7);
-                BlzSetSpecialEffectTimeScale(sfx, 1);
-                BlzSetSpecialEffectTime(sfx, 0.2);
-                BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
-                DestroyEffect(sfx);
-            }
-        }
-        else {
-            this.flameSawMaxCounter = 0;
-        }
-
-        this.unallyTicker -= delta;
-        if (this.unallyTicker <= 0) {
-            this.unallyTicker = 1;
-            GroupEnumUnitsInRange(
-                this.unallyGroup, 
-                unit.x, 
-                unit.y,
-                350,
-                FilterIsAlive(unit.owner)
-            );
-            ForGroup(this.unallyGroup, () => {
-                ForceEntity.getInstance().aggressionBetweenTwoPlayers(
-                    this.equippedTo.unit.owner,
-                    MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
-                );
-            });
-            // Now unally for target loc
-            GroupEnumUnitsInRange(
-                this.unallyGroup, 
-                this.targetLoc.x, 
-                this.targetLoc.y,
-                1350,
-                FilterIsAlive(unit.owner)
-            );
-            ForGroup(this.unallyGroup, () => {
-                ForceEntity.getInstance().aggressionBetweenTwoPlayers(
-                    this.equippedTo.unit.owner,
-                    MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
-                );
-            });
+        { // DO
+            if (!this || !this.equippedTo || !this.equippedTo.unit) return;
             
-        }
+            const oldLength = this.targetLoc.getLength(); 
+            const unit = this.equippedTo.unit;
+
+            const newLoc = InputManager.getLastMouseCoordinate(this.equippedTo.unit.owner.handle);
+
+            const angleToCurrentTarget = Rad2Deg(Atan2(this.targetLoc.y-unit.y, this.targetLoc.x-unit.x));
+            const angleToNewTarget = Rad2Deg(Atan2(newLoc.y-unit.y, newLoc.x-unit.x));
+
+            const angleDelta = (angleToNewTarget - angleToCurrentTarget + 180) % 360 - 180;
+
+            const nAngleD = (angleDelta < 0) ? Math.max(angleDelta, -this.maxTurnSpeed*delta) : Math.min(angleDelta, this.maxTurnSpeed*delta);
+            const nAngle = angleToCurrentTarget + nAngleD;
+
+            const targetLocation = new Vector3(unit.x, unit.y, this.targetLoc.z).projectTowards2D(nAngle, oldLength);
+
+            let targetDistance = new Vector2(targetLocation.x - unit.x, targetLocation.y - unit.y).normalise().multiplyN(this.bulletDistance);
+
+            this.targetLoc = new Vector3(targetDistance.x + unit.x, targetDistance.y + unit.y, targetLocation.z);
+
+            unit.facing = nAngle;
+
+            
+            // Log.Information("nAngle "+nAngleD+", vs "+45*delta);
+
+            if (nAngleD < -45*delta || nAngleD > 45*delta) {
+                this.spinStacks -= 1;
+                if (nAngleD < -60*delta || nAngleD > 60*delta) {
+                    this.flamesawActive = false;
+                }
+                if (nAngleD < -90*delta || nAngleD > 90*delta) {
+                    this.spinStacks = MathRound( this.spinStacks / 1.5 );
+                }
+                if (this.spinStacks < 0) this.spinStacks = 0;
+            }
+
+            if (this.spinStacks === this.maxSpinStacks && !this.flamesawActive) {
+                this.flameSawMaxCounter += delta;
+                if (this.flameSawMaxCounter >= 0.75) {
+                    this.flamesawActive = true;
+
+                    let sfx = AddSpecialEffect("war3mapImported\\DustWave.mdx", unit.x, unit.y);
+                    BlzSetSpecialEffectAlpha(sfx, 40);
+                    BlzSetSpecialEffectScale(sfx, 0.7);
+                    BlzSetSpecialEffectTimeScale(sfx, 1);
+                    BlzSetSpecialEffectTime(sfx, 0.2);
+                    BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360));
+                    DestroyEffect(sfx);
+                }
+            }
+            else {
+                this.flameSawMaxCounter = 0;
+            }
+
+            this.unallyTicker -= delta;
+            if (this.unallyTicker <= 0) {
+                this.unallyTicker = 1;
+                GroupEnumUnitsInRange(
+                    this.unallyGroup, 
+                    unit.x, 
+                    unit.y,
+                    350,
+                    FilterIsAlive(unit.owner)
+                );
+                ForGroup(this.unallyGroup, () => {
+                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(
+                        this.equippedTo.unit.owner,
+                        MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
+                    );
+                });
+                // Now unally for target loc
+                GroupEnumUnitsInRange(
+                    this.unallyGroup, 
+                    this.targetLoc.x, 
+                    this.targetLoc.y,
+                    1350,
+                    FilterIsAlive(unit.owner)
+                );
+                ForGroup(this.unallyGroup, () => {
+                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(
+                        this.equippedTo.unit.owner,
+                        MapPlayer.fromHandle(GetOwningPlayer(GetEnumUnit()))
+                    );
+                });
+                
+            }
+        } // END
     }
 
     private fireProjectile(unit: Unit) {

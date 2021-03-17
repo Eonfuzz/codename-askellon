@@ -65,68 +65,70 @@ class MiningEvent {
     }
 
     step(delta) {
-        // Increase move speed of the beam
-        this.beamMoveSpeed += 10 * delta;
+        { // DO
+            // Increase move speed of the beam
+            this.beamMoveSpeed += 10 * delta;
 
 
-        // Set beam origin
-        this.beamOrigin = Vector3.fromWidget(this.source.handle).projectTowards2D(this.source.facing, 45);
-        this.beamOrigin.z = 90;
+            // Set beam origin
+            this.beamOrigin = Vector3.fromWidget(this.source.handle).projectTowards2D(this.source.facing, 45);
+            this.beamOrigin.z = 90;
 
-        this.beamStartEffect.x = this.beamOrigin.x;
-        this.beamStartEffect.y = this.beamOrigin.y;
-        this.beamStartEffect.z = 90;
+            this.beamStartEffect.x = this.beamOrigin.x;
+            this.beamStartEffect.y = this.beamOrigin.y;
+            this.beamStartEffect.z = 90;
 
-        const deltaPoint = this.beamLaserTargetPoint.subtract(this.beamLaserCurrentPoint).normalise().multiplyN(this.beamMoveSpeed * delta);
-        this.beamLaserCurrentPoint = this.beamLaserCurrentPoint.add(deltaPoint);
+            const deltaPoint = this.beamLaserTargetPoint.subtract(this.beamLaserCurrentPoint).normalise().multiplyN(this.beamMoveSpeed * delta);
+            this.beamLaserCurrentPoint = this.beamLaserCurrentPoint.add(deltaPoint);
 
-        // Prevent ships from flying away while mining
-        if (this.beamLaserCurrentPoint.subtract(this.beamOrigin).getLength() > 900) 
-            return false;
+            // Prevent ships from flying away while mining
+            if (this.beamLaserCurrentPoint.subtract(this.beamOrigin).getLength() > 900) 
+                return false;
 
-        // Move lightning
-        const s = this.beamOrigin;
-        const e = this.beamLaserCurrentPoint;
-        MoveLightningEx(this.beam, true, s.x, s.y, s.z, e.x, e.y, e.z);
+            // Move lightning
+            const s = this.beamOrigin;
+            const e = this.beamLaserCurrentPoint;
+            MoveLightningEx(this.beam, true, s.x, s.y, s.z, e.x, e.y, e.z);
 
-        this.beamEndEffect.x = this.beamLaserCurrentPoint.x;
-        this.beamEndEffect.y = this.beamLaserCurrentPoint.y;
-        this.beamEndEffect.z = this.beamLaserCurrentPoint.z;
+            this.beamEndEffect.x = this.beamLaserCurrentPoint.x;
+            this.beamEndEffect.y = this.beamLaserCurrentPoint.y;
+            this.beamEndEffect.z = this.beamLaserCurrentPoint.z;
 
 
-        this.beamLaserTicker += delta * (this.hasSpeedUpgrade ? 1.5 : 1);
-        // Update target loc
-        if (this.beamLaserTicker > 0.5) {
-            this.beamLaserTicker -= 0.5;
-            this.beamTicks += 1;
+            this.beamLaserTicker += delta * (this.hasSpeedUpgrade ? 1.5 : 1);
+            // Update target loc
+            if (this.beamLaserTicker > 0.5) {
+                this.beamLaserTicker -= 0.5;
+                this.beamTicks += 1;
 
-            if (this.beamTicks > 4) {
-                this.beamMoveSpeed = this.hasSpeedUpgrade ? 60 : 20;
-                const nTargetLoc = Vector3.fromWidget(this.target.handle);
-                this.beamLaserTargetPoint = nTargetLoc.add(
-                    new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).normalise().multiplyN(45 * this.target.selectionScale));
-            }
-
-            const rng = (this.target.typeId === SPACE_UNIT_MINERAL) ? 100 : 0;
-
-            if (rng > 75) {
-                const minerals = this.source.getItemInSlot(1);
-                const charges = minerals.charges;
-                if (charges < 100) {
-                    minerals.charges =  charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1);
+                if (this.beamTicks > 4) {
+                    this.beamMoveSpeed = this.hasSpeedUpgrade ? 60 : 20;
+                    const nTargetLoc = Vector3.fromWidget(this.target.handle);
+                    this.beamLaserTargetPoint = nTargetLoc.add(
+                        new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).normalise().multiplyN(45 * this.target.selectionScale));
                 }
-            }
-            else {
-                const minerals = this.source.getItemInSlot(0);
-                const charges = minerals.charges;
-                if (charges < 250) {
-                    minerals.charges = charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1);
+
+                const rng = (this.target.typeId === SPACE_UNIT_MINERAL) ? 100 : 0;
+
+                if (rng > 75) {
+                    const minerals = this.source.getItemInSlot(1);
+                    const charges = minerals.charges;
+                    if (charges < 100) {
+                        minerals.charges =  charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1);
+                    }
                 }
+                else {
+                    const minerals = this.source.getItemInSlot(0);
+                    const charges = minerals.charges;
+                    if (charges < 250) {
+                        minerals.charges = charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1);
+                    }
+                }
+                UnitDamageTarget(this.source.handle, this.target.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
+                if (!UnitAlive(this.target.handle)) return;
             }
-            UnitDamageTarget(this.source.handle, this.target.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
-            if (!UnitAlive(this.target.handle)) return;
-        }
-        return true;
+            return true;
+        } // END
     }
 
     destroy() {

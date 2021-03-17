@@ -1204,12 +1204,6 @@ STRING 344
 - ACTUAL
 }
 
-STRING 345
-// Abilities: ANEG (Night Eye), Name (Name)
-{
-Night Eye
-}
-
 STRING 346
 // Abilities: A00I (Night Eye), Hotkey (Hotkey - Normal)
 {
@@ -1217,21 +1211,15 @@ Q
 }
 
 STRING 348
-// Abilities: ANEG (Night Eye), Tip (Tooltip - Normal)
+// Upgrades: R00O (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Night Eye Gene
 }
 
 STRING 349
-// Abilities: ANEG (Night Eye), EditorSuffix (Editor Suffix)
+// Abilities: ACSM (Embrace the Cosmos), EditorSuffix (Editor Suffix)
 {
 - Ability
-}
-
-STRING 351
-// Abilities: ANEG (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781A revolutionay mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nWhen used, gain |cffd45e19night vision|r for |cffd45e1930 seconds|r. You are |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
 }
 
 STRING 358
@@ -1259,7 +1247,7 @@ STRING 369
 }
 
 STRING 370
-// Abilities: ANEG (Night Eye), Hotkey (Hotkey - Normal)
+// Abilities: AGCM (Cosmic Sensitivity), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -1700,7 +1688,7 @@ Cosmic Sensitivity
 }
 
 STRING 498
-// Abilities: AGCM (Cosmic Sensitivity), Hotkey (Hotkey - Normal)
+// Abilities: A001 (PERSEUS - Dodge Roll Left), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -1736,7 +1724,7 @@ Embrace the Cosmos
 }
 
 STRING 509
-// Abilities: ACSM (Embrace the Cosmos), EditorSuffix (Editor Suffix)
+// Abilities: A01L (Xenophobic), EditorSuffix (Editor Suffix)
 {
 - Ability
 }
@@ -1867,7 +1855,7 @@ Dodge Roll Left
 }
 
 STRING 555
-// Abilities: A001 (PERSEUS - Dodge Roll Left), Hotkey (Hotkey - Normal)
+// Abilities: A011 (Seal of Purity), Unhotkey (Hotkey - Turn Off)
 {
 Q
 }
@@ -2743,13 +2731,13 @@ Seal of Purity
 }
 
 STRING 805
-// Abilities: A011 (Seal of Purity), Unhotkey (Hotkey - Turn Off)
+// Abilities: A011 (Seal of Purity), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
 STRING 806
-// Abilities: A011 (Seal of Purity), Hotkey (Hotkey - Normal)
+// Abilities: A012 (Seal of Purity), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -2773,7 +2761,7 @@ Seal of Purity
 }
 
 STRING 813
-// Abilities: A012 (Seal of Purity), Hotkey (Hotkey - Normal)
+// Abilities: A014 (Evolve), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -2953,25 +2941,25 @@ STRING 862
 }
 
 STRING 870
-// Abilities: A014 (Evolve), Hotkey (Hotkey - Normal)
-{
-Q
-}
-
-STRING 871
 // Abilities: A015 (Latch), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
-STRING 872
+STRING 871
 // Abilities: A019 (Sequence Genetic Samples), Hotkey (Hotkey - Normal)
 {
 Q
 }
 
-STRING 873
+STRING 872
 // Abilities: AC01 (Target Player 1), Hotkey (Hotkey - Normal)
+{
+Q
+}
+
+STRING 873
+// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -3301,7 +3289,7 @@ Survival Instincts
 }
 
 STRING 964
-// Abilities: A01U (ASKELLON - BROADSIDE LEFT), Hotkey (Hotkey - Normal)
+// Abilities: A02F (Hookshot), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -4021,7 +4009,7 @@ Come Get Some!
 }
 
 STRING 1128
-// Abilities: A01L (Xenophobic), EditorSuffix (Editor Suffix)
+// Abilities: A01O (Adaptive Regeneration), EditorSuffix (Editor Suffix)
 {
 - Ability
 }
@@ -4072,12 +4060,6 @@ STRING 1144
 // Abilities: A01O (Adaptive Regeneration), Hotkey (Hotkey - Normal)
 {
 E
-}
-
-STRING 1147
-// Abilities: A01O (Adaptive Regeneration), EditorSuffix (Editor Suffix)
-{
-- Ability
 }
 
 STRING 1149
@@ -4837,7 +4819,7 @@ R
 }
 
 STRING 1300
-// Abilities: A02F (Hookshot), Hotkey (Hotkey - Normal)
+// Abilities: A033 (Night Eyes), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -4927,7 +4909,7 @@ Magnetic Fusilade
 }
 
 STRING 1321
-// Abilities: A033 (Night Eye), Hotkey (Hotkey - Normal)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -5239,7 +5221,7 @@ Q
 }
 
 STRING 1390
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6638,7 +6620,7 @@ Q
 }
 
 STRING 1681
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6941,7 +6923,7 @@ Q
 }
 
 STRING 1736
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -7258,12 +7240,6 @@ STRING 1806
 // Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781LORE TODO|r|n|nBlesses all neaby players with |cffb52166Madness|r.|n|cff18bc9c- Visible to those outside the area of effect|n- Aliens can never be blessed|n|r|n|cffb52166Madness:|r|cff18bc9c Increases in severity over time, eventually creating hallucinations and driving them |r|cffb52166Insane|r|cff18bc9c.|r|n|n|cfff9a602Cooldown:|r 70 Seconds
-}
-
-STRING 1808
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nGrants the |cfff9a602Nightstalker|r power.|n|cff18bc9c[+] Passively ignore despair caused by Darkness|n[+] Activate to gain Dark Vision|n|n|cfff9a602Attribute Gain Per Level:|n|cff18bc9c+2.5 Will|r, |cff18bc9c+1 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
 }
 
 STRING 1809
@@ -7778,7 +7754,7 @@ Flame Vent
 
 STRING 1917
 // Destructibles: B00B (|cff18bc9cVolunga Saga, c.5|r
-|cff627781Fear not death for the hour of your doo), EditorSuffix (Editor Suffix)
+|cff627781Fear not death for the hour of your do), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -7875,7 +7851,7 @@ Location Sign Ventilation
 
 STRING 1934
 // Destructibles: B00R (|cff18bc9cInquisitor Dredd Dareson |r
-|cff627781Strike fast and suddenly. Attac), EditorSuffix (Editor Suffix)
+|cff627781Strike fast and suddenly. Atta), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -7906,7 +7882,7 @@ Picture Angry Priest
 
 STRING 1940
 // Destructibles: B00W (|cfffa8324WARNING:|r
-You are entering a live fire shooting range. Hex-Corps is ), Name (Name)
+You are entering a live fire shooting range. Hex-Corps is), Name (Name)
 {
 |cfffa8324WARNING:|r
 You are entering a live fire shooting range. Hex-Corps is not responsible for any injury or loss of life. Use at your own risk.
@@ -7914,14 +7890,14 @@ You are entering a live fire shooting range. Hex-Corps is not responsible for an
 
 STRING 1941
 // Destructibles: B00W (|cfffa8324WARNING:|r
-You are entering a live fire shooting range. Hex-Corps is ), EditorSuffix (Editor Suffix)
+You are entering a live fire shooting range. Hex-Corps is), EditorSuffix (Editor Suffix)
 {
 (Sign)
 }
 
 STRING 1942
 // Destructibles: B00X (|cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
-Chemicals in this facility are known ), Name (Name)
+Chemicals in this facility are known), Name (Name)
 {
 |cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
 Chemicals in this facility are known to be carcinogenic and corrosive; when inhaled, they will cause discomfort and death. Hex-Corps bares no responsibility for mishandling of these chemicals.
@@ -7929,14 +7905,14 @@ Chemicals in this facility are known to be carcinogenic and corrosive; when inha
 
 STRING 1943
 // Destructibles: B00X (|cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
-Chemicals in this facility are known ), EditorSuffix (Editor Suffix)
+Chemicals in this facility are known), EditorSuffix (Editor Suffix)
 {
 (Sign)
 }
 
 STRING 1944
 // Destructibles: B00B (|cff18bc9cVolunga Saga, c.5|r
-|cff627781Fear not death for the hour of your doo), Name (Name)
+|cff627781Fear not death for the hour of your do), Name (Name)
 {
 |cff18bc9cVolunga Saga, c.5|r
 |cff627781Fear not death for the hour of your doom is set and none may escape it.|r
@@ -7944,7 +7920,7 @@ STRING 1944
 
 STRING 1945
 // Destructibles: B00R (|cff18bc9cInquisitor Dredd Dareson |r
-|cff627781Strike fast and suddenly. Attac), Name (Name)
+|cff627781Strike fast and suddenly. Atta), Name (Name)
 {
 |cff18bc9cInquisitor Dredd Dareson |r
 |cff627781Strike fast and suddenly. Attack without warning. Secure victory before the foe is aware of his danger. Remember always, a war is easily won if your enemy does not know he is fighting.|r
@@ -7952,14 +7928,14 @@ STRING 1945
 
 STRING 1947
 // Destructibles: B00Y (|cff18bc9cProcedures and Maxims, pp. 487|r
-|cff627781Those who shirk from the N), EditorSuffix (Editor Suffix)
+|cff627781Those who shirk from the ), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
 
 STRING 1948
 // Destructibles: B00Y (|cff18bc9cProcedures and Maxims, pp. 487|r
-|cff627781Those who shirk from the N), Name (Name)
+|cff627781Those who shirk from the ), Name (Name)
 {
 |cff18bc9cProcedures and Maxims, pp. 487|r
 |cff627781Those who shirk from the Noterie's gaze are filled with sin, for the certitude of the Court is the truest kindness.|r
@@ -7967,7 +7943,7 @@ STRING 1948
 
 STRING 1949
 // Destructibles: B00Z (|cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
-|cff627781By the bind), Name (Name)
+|cff627781By the bin), Name (Name)
 {
 |cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
 |cff627781By the binding oaths of the impartial liege, we must judge!|r
@@ -7975,7 +7951,7 @@ STRING 1949
 
 STRING 1950
 // Destructibles: B00Z (|cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
-|cff627781By the bind), EditorSuffix (Editor Suffix)
+|cff627781By the bin), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -8106,32 +8082,14 @@ STRING 1971
 W
 }
 
-STRING 1972
-// Abilities: A033 (Night Eye), Name (Name)
-{
-Night Eye
-}
-
-STRING 1973
-// Abilities: A033 (Night Eye), Tip (Tooltip - Normal)
-{
-Night Eye Gene
-}
-
 STRING 1974
-// Abilities: A033 (Night Eye), Ubertip (Tooltip - Normal - Extended)
+// Upgrades: R00O (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
 {
 |cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.|r|n|nPings nearby moving units who are concealed, increases |cffd45e19armor|r by |cffd45e191|r and gain |cffd45e19night vision|r for |cffd45e1925 seconds|r. |n|nYou are permanently |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
 }
 
-STRING 1975
-// Abilities: A033 (Night Eye), EditorSuffix (Editor Suffix)
-{
-- Ability
-}
-
 STRING 1976
-// Buffs/Effects: B00H (), Bufftip (Tooltip)
+// Abilities: A033 (Night Eyes), Tip (Tooltip - Normal)
 {
 Night Eyes
 }
@@ -8142,21 +8100,52 @@ STRING 1977
 This unit has enchanced cognitive function.
 }
 
-STRING 1978
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+STRING 1979
+// Upgrades: R00P (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
-Q
+Has Active Altar
 }
 
-STRING 1973
-// Upgrades: R00O (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+STRING 1980
+// Upgrades: R00P (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
 {
-Has An Active Altar
+|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.|r|n|nPings nearby moving units who are concealed, increases |cffd45e19armor|r by |cffd45e191|r and gain |cffd45e19night vision|r for |cffd45e1925 seconds|r. |n|nYou are permanently |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
 }
 
-STRING 1974
-// Upgrades: R00O (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+STRING 1981
+// Abilities: A033 (Night Eyes), Ubertip (Tooltip - Normal - Extended)
 {
-Has An Active Altar
+|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.|r|n|nPings nearby moving units who are concealed, increases |cffd45e19armor|r by |cffd45e191|r and gain |cffd45e19night vision|r for |cffd45e1925 seconds|r. |n|nYou are permanently |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.|n|n|cff62778160 Seconds Cooldown|r
+}
+
+STRING 1982
+// Abilities: A033 (Night Eyes), Name (Name)
+{
+Night Eyes
+}
+
+STRING 1983
+// Buffs/Effects: B00H (), Bufftip (Tooltip)
+{
+Night Eyes
+}
+
+STRING 1984
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.
+|r|n|nGrants the |cfff9a602Nightstalker|r power.|n|cff18bc9c[+] Passively ignore despair caused by Darkness|n[+] Activate to gain Dark Vision|n|n|cfff9a602Attribute Gain Per Level:|n|cff18bc9c+2.5 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 1985
+// Destructibles: B010 (Night eye), Name (Name)
+{
+Night eye
+}
+
+STRING 1986
+// Destructibles: B010 (Night eye), EditorSuffix (Editor Suffix)
+{
+(Ability Effect)
 }
 

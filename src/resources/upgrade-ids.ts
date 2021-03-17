@@ -1,4 +1,4 @@
 export const UPGR_DUMMY_IS_ALIEN_HOST = FourCC('R00J');
 export const UPGR_DUMMY_VOID_SICKNESS = FourCC('R00k');
 export const UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH = FourCC('R00L');
-export const UPGR_DUMM_HAS_ACTIVE_ALTAR = FourCC('R00O');
+export const UPGR_DUMM_HAS_ACTIVE_ALTAR = FourCC('R00P');

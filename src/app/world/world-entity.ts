@@ -119,66 +119,67 @@ export class WorldEntity extends Entity {
      * @param isSubTravel used internally, if true we wont call entering floors
      */
     travel(unit: Unit, to: ZONE_TYPE, isSubTravel?: boolean) {
+        { // DO
+            // Log.Information("Unit Travel "+unit.name);
 
-        // Log.Information("Unit Travel "+unit.name);
+            // Does the travel work
+            const oldZone = this.getUnitZone(unit);
+            const nZone = this.handleTravel(unit, to);
+            const pData = PlayerStateFactory.get(unit.owner);
 
-        // Does the travel work
-        const oldZone = this.getUnitZone(unit);
-        const nZone = this.handleTravel(unit, to);
-        const pData = PlayerStateFactory.get(unit.owner);
+            // If we dont have player data that means its an AI player
+            if (!pData || !pData.getCrewmember()) return;
 
-        // If we dont have player data that means its an AI player
-        if (!pData || !pData.getCrewmember()) return;
+            try {
+                // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
+                // If this is a player we care about
+                const crew = pData.getCrewmember(); 
+                const force = pData.getForce() as AlienForce;
+                const isAlien = force.is(ALIEN_FORCE_NAME);
+                const alienUnit = isAlien ? force.getAlienFormForPlayer(unit.owner) : undefined;
 
-        try {
-            // Now we need to see if we have to travel the ALIEN FORM and or the CREWMEBMER (incase alien or transformed)
-            // If this is a player we care about
-            const crew = pData.getCrewmember(); 
-            const force = pData.getForce() as AlienForce;
-            const isAlien = force.is(ALIEN_FORCE_NAME);
-            const alienUnit = isAlien ? force.getAlienFormForPlayer(unit.owner) : undefined;
+                const isCrewmember = crew && crew.unit === unit;
 
-            const isCrewmember = crew && crew.unit === unit;
-
-            // If it was the alien form, we need to travel the crewmember around
-            if (isAlien && alienUnit == unit) {
-                this.handleTravel(crew.unit, to);
-            }
-            // Otherwise, check if the traversing unit is crewmember AND has an alien form
-            else if (isCrewmember && isAlien && crew) {
-                // If so travel that alien form
-                this.handleTravel(alienUnit, to);
-            }
-
-            // If the traversing unit was alien or crewmember, call the floor change event
-            const isCrewOrAlien = (crew && crew.unit === unit) || alienUnit == unit;
-            if (!isSubTravel && isCrewOrAlien)  {
-                const newLoc = this.getZone(to);
-                newLoc && newLoc.displayEnteringMessage(unit.owner);
-
-                // Log.Information("Not subtravel");
-
-                const oldZoneInAskellon = oldZone && this.askellon.findZone(oldZone.id)
-                const newZoneInAskellon = !!this.askellon.findZone(nZone.id);
-
-                // Log.Information(`Old ${oldZoneInAskellon} New ${newZoneInAskellon}`);
-                if (!oldZoneInAskellon && newZoneInAskellon) {
-                    this.askellon.onEnter(crew.unit, nZone);
+                // If it was the alien form, we need to travel the crewmember around
+                if (isAlien && alienUnit == unit) {
+                    this.handleTravel(crew.unit, to);
                 }
-                else if (!newZoneInAskellon && oldZoneInAskellon) {
-                    this.askellon.onLeave(crew.unit, nZone);
+                // Otherwise, check if the traversing unit is crewmember AND has an alien form
+                else if (isCrewmember && isAlien && crew) {
+                    // If so travel that alien form
+                    this.handleTravel(alienUnit, to);
                 }
 
-                EventEntity.getInstance().sendEvent(
-                    EVENT_TYPE.CREW_CHANGES_FLOOR, 
-                    { source: unit, crewmember: pData.getCrewmember()}
-                );
+                // If the traversing unit was alien or crewmember, call the floor change event
+                const isCrewOrAlien = (crew && crew.unit === unit) || alienUnit == unit;
+                if (!isSubTravel && isCrewOrAlien)  {
+                    const newLoc = this.getZone(to);
+                    newLoc && newLoc.displayEnteringMessage(unit.owner);
+
+                    // Log.Information("Not subtravel");
+
+                    const oldZoneInAskellon = oldZone && this.askellon.findZone(oldZone.id)
+                    const newZoneInAskellon = !!this.askellon.findZone(nZone.id);
+
+                    // Log.Information(`Old ${oldZoneInAskellon} New ${newZoneInAskellon}`);
+                    if (!oldZoneInAskellon && newZoneInAskellon) {
+                        this.askellon.onEnter(crew.unit, nZone);
+                    }
+                    else if (!newZoneInAskellon && oldZoneInAskellon) {
+                        this.askellon.onLeave(crew.unit, nZone);
+                    }
+
+                    EventEntity.getInstance().sendEvent(
+                        EVENT_TYPE.CREW_CHANGES_FLOOR, 
+                        { source: unit, crewmember: pData.getCrewmember()}
+                    );
+                }
             }
-        }
-        catch (e) {
-            Log.Error("TRAVEL FAILED");
-            Log.Error(e);
-        }
+            catch (e) {
+                Log.Error("TRAVEL FAILED");
+                Log.Error(e);
+            }
+        } // END
     }
 
     getZone(whichZone: ZONE_TYPE) {

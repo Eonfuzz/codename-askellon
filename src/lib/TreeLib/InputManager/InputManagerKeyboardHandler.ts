@@ -13,23 +13,25 @@ export class InputManagerKeyboardHandler {
     public registeredKeys: KeyInputContainer[] = [];
 
     private onKeyAction() {
-        let key = BlzGetTriggerPlayerKey();
-        let metaKey = BlzGetTriggerPlayerMetaKey();
-        let isDown = BlzGetTriggerPlayerIsKeyDown();
-        let inputContainer = this.getKeyContainer(key);
-        inputContainer.isDown = isDown;
-        for (let index = 0; index < inputContainer.callbacks.length; index += 1) {
-            let callback = inputContainer.callbacks[index];
-            if (callback.enabled && (callback.metaKeys.indexOf(metaKey) >= 0 || callback.metaKeys.indexOf(MetaKey.ALL) >= 0)) {
-                if ((isDown && callback.pressType == PressType.PRESS)
-                    || (!isDown && callback.pressType == PressType.RELEASE)) {
-                    callback.triggeringPlayer = GetTriggerPlayer();
-                    xpcall(() => {
-                        callback.callback(callback);
-                    }, Log.Error);
+        { // DO
+            let key = BlzGetTriggerPlayerKey();
+            let metaKey = BlzGetTriggerPlayerMetaKey();
+            let isDown = BlzGetTriggerPlayerIsKeyDown();
+            let inputContainer = this.getKeyContainer(key);
+            inputContainer.isDown = isDown;
+            for (let index = 0; index < inputContainer.callbacks.length; index += 1) {
+                let callback = inputContainer.callbacks[index];
+                if (callback.enabled && (callback.metaKeys.indexOf(metaKey) >= 0 || callback.metaKeys.indexOf(MetaKey.ALL) >= 0)) {
+                    if ((isDown && callback.pressType == PressType.PRESS)
+                        || (!isDown && callback.pressType == PressType.RELEASE)) {
+                        callback.triggeringPlayer = GetTriggerPlayer();
+                        xpcall(() => {
+                            callback.callback(callback);
+                        }, Log.Error);
+                    }
                 }
             }
-        }
+        } // END
     }
 
     public registerNewKeyEvent(key: oskeytype) {

@@ -25,25 +25,27 @@ export class InputManagerMouseHandler {
     public lastPosition: Vector2[] = [];
     public lastCoordinate: Vector2[] = [];
 
-    private onMousePressAction() {
-        let mouseButton = BlzGetTriggerPlayerMouseButton();
-        let x = BlzGetTriggerPlayerMouseX();
-        let y = BlzGetTriggerPlayerMouseY();
-        this.onMouseMoveAction();
-        let mouseContainer = this.getMouseContainer(mouseButton);
-        mouseContainer.isDown = true;
-        for (let index = 0; index < mouseContainer.callbacks.length; index += 1) {
-            let callback = mouseContainer.callbacks[index];
-            if (callback.enabled) {
-                if (callback.pressType == PressType.PRESS) {
-                    callback.triggeringPlayer = GetTriggerPlayer();
-                    callback.position = new Vector2(x, y);
-                    xpcall(() => {
-                        callback.callback(callback);
-                    }, Log.Error);
+    private onMousePressAction() { 
+        { // DO
+            let mouseButton = BlzGetTriggerPlayerMouseButton();
+            let x = BlzGetTriggerPlayerMouseX();
+            let y = BlzGetTriggerPlayerMouseY();
+            this.onMouseMoveAction();
+            let mouseContainer = this.getMouseContainer(mouseButton);
+            mouseContainer.isDown = true;
+            for (let index = 0; index < mouseContainer.callbacks.length; index += 1) {
+                let callback = mouseContainer.callbacks[index];
+                if (callback.enabled) {
+                    if (callback.pressType == PressType.PRESS) {
+                        callback.triggeringPlayer = GetTriggerPlayer();
+                        callback.position = new Vector2(x, y);
+                        xpcall(() => {
+                            callback.callback(callback);
+                        }, Log.Error);
+                    }
                 }
             }
-        }
+        } // END
     }
 
     private onMouseReleaseAction() {

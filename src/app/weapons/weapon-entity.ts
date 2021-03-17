@@ -179,40 +179,42 @@ export class WeaponEntity extends Entity {
      * @param delta 
      */
     checkCollisionsForProjectile(projectile: Projectile, from: Vector3, to: Vector3, delta: Vector3, pbLockers: destructable[]) {
-        if (!projectile.filter) return;
+        { // DO
+            if (!projectile.filter) return;
 
-        // Clear existing group units
-        GroupClear(this.collisionCheckGroup);
+            // Clear existing group units
+            GroupClear(this.collisionCheckGroup);
 
-        const centerPoint = from.add(to).multiplyN(0.5);
-        const checkDist = delta.getLength() + projectile.getCollisionRadius() + 200;
+            const centerPoint = from.add(to).multiplyN(0.5);
+            const checkDist = delta.getLength() + projectile.getCollisionRadius() + 200;
 
-        // Grab all units in the rough area
-        // Optimisation to not run an expensive check on many units
-        GroupEnumUnitsInRange(this.collisionCheckGroup, centerPoint.x, centerPoint.y, checkDist, projectile.filter);
+            // Grab all units in the rough area
+            // Optimisation to not run an expensive check on many units
+            GroupEnumUnitsInRange(this.collisionCheckGroup, centerPoint.x, centerPoint.y, checkDist, projectile.filter);
 
-        // Now loop through all units found
-        ForGroup(this.collisionCheckGroup, () => {
-            const unit = GetEnumUnit();
-            const unitLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), 0);
-            // Calculates the distance away from the dot product
-            const distance = unitLoc.distanceToLine(from, to);
-            if (distance < (projectile.getCollisionRadius() + BlzGetUnitCollisionSize(unit))) {
-                projectile.collide(unit);
-            }
-        });
-
-        // After all this is done, check for pathing blockers
-        if (!projectile.willDestroy()) {
-            const blocker = pbLockers.find(b => {
-                const dLoc = new Vector3( GetDestructableX(b), GetDestructableY(b), 0);
+            // Now loop through all units found
+            ForGroup(this.collisionCheckGroup, () => {
+                const unit = GetEnumUnit();
+                const unitLoc = new Vector3(GetUnitX(unit), GetUnitY(unit), 0);
                 // Calculates the distance away from the dot product
-                const distance = dLoc.distanceToLine(from, to);
-                if (distance < (projectile.getCollisionRadius() + 32)) {
-                    projectile.setDestroy(true);
+                const distance = unitLoc.distanceToLine(from, to);
+                if (distance < (projectile.getCollisionRadius() + BlzGetUnitCollisionSize(unit))) {
+                    projectile.collide(unit);
                 }
-            })
-        }
+            });
+
+            // After all this is done, check for pathing blockers
+            if (!projectile.willDestroy()) {
+                const blocker = pbLockers.find(b => {
+                    const dLoc = new Vector3( GetDestructableX(b), GetDestructableY(b), 0);
+                    // Calculates the distance away from the dot product
+                    const distance = dLoc.distanceToLine(from, to);
+                    if (distance < (projectile.getCollisionRadius() + 32)) {
+                        projectile.setDestroy(true);
+                    }
+                })
+            }
+        } // END
     }
 
     addProjectile(projectile: Projectile): void {

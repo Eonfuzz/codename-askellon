@@ -48,41 +48,43 @@ export class CreepSource {
     }
 
     public updateCreep(): { new: Vector2[], removed: Vector2[] } {
-        const tileMap = new MultiMap<number, number, boolean>();
+        { // DO
+            const tileMap = new MultiMap<number, number, boolean>();
 
-        const cX = Math.round(this.source.x() / TILE_SIZE) * TILE_SIZE;
-        const cY = Math.round(this.source.y() / TILE_SIZE) * TILE_SIZE;
-        const radius = Math.round(this.currentRadius / TILE_SIZE) * TILE_SIZE;
+            const cX = Math.round(this.source.x() / TILE_SIZE) * TILE_SIZE;
+            const cY = Math.round(this.source.y() / TILE_SIZE) * TILE_SIZE;
+            const radius = Math.round(this.currentRadius / TILE_SIZE) * TILE_SIZE;
 
-        // Log.Information(`cX: ${cX} cY: ${cY}`);
+            // Log.Information(`cX: ${cX} cY: ${cY}`);
 
-        const points = [];
-        const removed = [];
+            const points = [];
+            const removed = [];
 
-        for (let j = (cX-radius); j <= (cX+radius); j += TILE_SIZE) {
-            for (let k = (cY-radius); k<=(cY+radius); k += TILE_SIZE) {
-                if (distance(cX, cY, j, k) <= radius) {
-                    if (!this.oldTileMap.get(j, k)) {
-                        const vec = new Vector2(j, k);
-                        points.push( vec );
-                        this.oldTilesIterator.push( vec );
+            for (let j = (cX-radius); j <= (cX+radius); j += TILE_SIZE) {
+                for (let k = (cY-radius); k<=(cY+radius); k += TILE_SIZE) {
+                    if (distance(cX, cY, j, k) <= radius) {
+                        if (!this.oldTileMap.get(j, k)) {
+                            const vec = new Vector2(j, k);
+                            points.push( vec );
+                            this.oldTilesIterator.push( vec );
+                        }
+                        tileMap.set( j, k, true );
                     }
-                    tileMap.set( j, k, true );
                 }
             }
-        }
 
-        // Log.Information("UC: Points length: "+this.oldTilesIterator.length);
+            // Log.Information("UC: Points length: "+this.oldTilesIterator.length);
 
-        for (let index = 0; index < this.oldTilesIterator.length; index++) {
-            const vec = this.oldTilesIterator[index];
-            if (!tileMap.get(vec.x, vec.y)) {
-                removed.push( vec );
-                Quick.Slice(this.oldTilesIterator, index--);
+            for (let index = 0; index < this.oldTilesIterator.length; index++) {
+                const vec = this.oldTilesIterator[index];
+                if (!tileMap.get(vec.x, vec.y)) {
+                    removed.push( vec );
+                    Quick.Slice(this.oldTilesIterator, index--);
+                }
             }
-        }
 
-        this.oldTileMap = tileMap;
-        return { new: points,  removed: removed };
+            this.oldTileMap = tileMap;
+            return { new: points,  removed: removed };
+        } // END
     }
 }
