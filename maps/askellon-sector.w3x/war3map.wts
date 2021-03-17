@@ -1,37 +1,7 @@
-﻿STRING 1
-{
-Player 1
-}
-
-STRING 9
+﻿STRING 9
 // Abilities: A000 (Afterburner), Hotkey (Hotkey - Normal)
 {
 W
-}
-
-STRING 12
-{
-|cff627781Codename Askellon|r
-}
-
-STRING 13
-{
-8+
-}
-
-STRING 14
-{
-Survive deep space as your Crew is terrorised by creatures unimaginable.
-
-Currently a work in progress by Eonfuzz and Maddeem.
-Join my discord at: 
-|cff627781https://discord.gg/nDMpQZm|r
-Please use |cff692929Reforged Graphics|r for the best experience
-}
-
-STRING 15
-{
-Eonfuzz and Maddeem
 }
 
 STRING 16
@@ -56,66 +26,6 @@ STRING 21
 // Items: I000 (Burst Rifle), Name (Name)
 {
 Burst Rifle
-}
-
-STRING 22
-{
-Player 2
-}
-
-STRING 23
-{
-Player 3
-}
-
-STRING 24
-{
-Player 4
-}
-
-STRING 25
-{
-Player 5
-}
-
-STRING 26
-{
-Player 6
-}
-
-STRING 27
-{
-Player 7
-}
-
-STRING 28
-{
-Player 8
-}
-
-STRING 29
-{
-Player 9
-}
-
-STRING 30
-{
-Player 10
-}
-
-STRING 31
-{
-Alien
-}
-
-STRING 32
-{
-Security
-}
-
-STRING 33
-{
-Crew
 }
 
 STRING 35
@@ -340,11 +250,6 @@ STRING 105
 R
 }
 
-STRING 108
-{
- 
-}
-
 STRING 109
 // Abilities: A00A (EMS Rifling), Tip (Tooltip - Normal)
 {
@@ -535,86 +440,6 @@ STRING 161
 // Abilities: TF02 (Revert), EditorSuffix (Editor Suffix)
 {
  to human
-}
-
-STRING 162
-{
-Accuracy
-}
-
-STRING 163
-{
-|Cffffff00Accuracy|R
-}
-
-STRING 164
-{
-Accuracy:
-}
-
-STRING 165
-{
-Will:
-}
-
-STRING 166
-{
-Vitality:
-}
-
-STRING 167
-{
-Will
-}
-
-STRING 168
-{
-|Cffffff00Will|R
-}
-
-STRING 169
-{
-Will
-}
-
-STRING 170
-{
-Vitality
-}
-
-STRING 171
-{
-|Cffffff00Vitality|R
-}
-
-STRING 172
-{
- - Each point improves weapon range
-}
-
-STRING 173
-{
- - Each point increases melee damage by %d
-}
-
-STRING 174
-{
- - Improves bullet spread
-}
-
-STRING 176
-{
- - Each point increases hit points by %d
-}
-
-STRING 177
-{
- - Each point increases hit point regeneration by %d
-}
-
-STRING 178
-{
- - Improves bullet spread
 }
 
 STRING 179
@@ -1175,11 +1000,6 @@ STRING 300
 Weapons Tech Upgrade
 }
 
-STRING 301
-{
-Station
-}
-
 STRING 304
 // Units: hWEP (|cffa00000Weapons |rTerminal), EditorSuffix (Name - Editor Suffix)
 {
@@ -1468,11 +1288,6 @@ STRING 375
 Unlock Psionic Potential
 }
 
-STRING 379
-{
-Unknown
-}
-
 STRING 380
 // Doodads: D00C (Korhal Wall), Name (Name)
 {
@@ -1581,66 +1396,6 @@ STRING 401
 // Items: I005 (Repair Kit), Ubertip (Tooltip - Extended)
 {
 |cff627781Fluff TODO|r|n|nRepairs station property by |cff18bc9c500|r HP over |cff18bc9c5|r seconds.|n|n|cff62778110 Seconds Cooldown|r
-}
-
-STRING 402
-{
-Type: |Cffffcc00Energy|R
-}
-
-STRING 403
-{
-Type: |Cffffcc00Psionic|R
-}
-
-STRING 404
-{
-Type: |Cffffcc00Kinetic|R
-}
-
-STRING 408
-{
-|cff627781Standard issue combat armor; designed to reduce damage and impact from bullets.|r|n|n|cff18bc9c75%|r Kinetic Damage|n|cffff0000125%|r Rending Damage
-}
-
-STRING 409
-{
-|cff627781Standard issue combat armor; designed to reduce damage and impact from bullets.|r|n|n|cff18bc9c75%|r Kinetic Damage|n|cffff0000125%|r Rending Damage
-}
-
-STRING 410
-{
-|cff627781Standard issue combat armor; designed to reduce damage and impact from bullets.|r|n|n|cff18bc9c75%|r Kinetic Damage|n|cffff0000125%|r Rending Damage
-}
-
-STRING 411
-{
-Type: |Cffffcc00Combat Armor|R
-}
-
-STRING 412
-{
-Type: |Cffffcc00Alien|R
-}
-
-STRING 413
-{
-Type: |Cffffcc00Rending|R
-}
-
-STRING 417
-{
-|cff627781The Jaws and Claws of the xenos beast these will rip and tear through standard combat armor.|r|n|n|cff18bc9c125%|r Damage to Combat Armor|n|cffff000075%|r Damage to Xenos Mesh
-}
-
-STRING 418
-{
-|cff627781The Jaws and Claws of the xenos beast these will rip and tear through standard combat armor.|r|n|n|cff18bc9c125%|r Damage to Combat Armor|n|cffff000075%|r Damage to Xenos Mesh
-}
-
-STRING 419
-{
-|cff627781The Jaws and Claws of the xenos beast these will rip and tear through standard combat armor.|r|n|n|cff18bc9c125%|r Damage to Combat Armor|n|cffff000075%|r Damage to Xenos Mesh
 }
 
 STRING 420
@@ -2002,21 +1757,6 @@ STRING 518
 // Doodads: D00I (Korhal Wall Large), Name (Name)
 {
 Korhal Wall Large
-}
-
-STRING 524
-{
-|cff627781Kinetic weapons are effective against every other than engineered kevlar armor.|r|n|n|cffff000075%|r Damage versus Combat Armor|n|cff18bc9c100%|r Damage versus Other
-}
-
-STRING 525
-{
-|cff627781Kinetic weapons are effective against every other than engineered kevlar armor.|r|n|n|cffff000075%|r Damage versus Combat Armor|n|cff18bc9c100%|r Damage versus Other
-}
-
-STRING 526
-{
-|cff627781Kinetic weapons are effective against every other than engineered kevlar armor.|r|n|n|cffff000075%|r Damage versus Combat Armor|n|cff18bc9c100%|r Damage versus Other
 }
 
 STRING 527
@@ -3836,16 +3576,6 @@ STRING 1027
 Ruined Ground (64x64)
 }
 
-STRING 1028
-{
- - Each point increases mana and mana regeneration
-}
-
-STRING 1031
-{
- - Every 3 points reduces despair duration by 1
-}
-
 STRING 1032
 // Doodads: D00Y (Korhal Military Wall), Name (Name)
 {
@@ -4504,11 +4234,6 @@ STRING 1183
 // Abilities: A00T (Inventory), EditorSuffix (Editor Suffix)
 {
  (2 slot)
-}
-
-STRING 1186
-{
-Alien:
 }
 
 STRING 1187
@@ -5202,7 +4927,7 @@ Magnetic Fusilade
 }
 
 STRING 1321
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A033 (Night Eye), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -5514,7 +5239,7 @@ Q
 }
 
 STRING 1390
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6642,11 +6367,6 @@ STRING 1617
 |cff627781Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff18bc9c - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
 }
 
-STRING 1620
-{
-Cultists
-}
-
 STRING 1622
 // Units: n00T (Circle of Carrion), Name (Name)
 {
@@ -6918,7 +6638,7 @@ Q
 }
 
 STRING 1681
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -7221,7 +6941,7 @@ Q
 }
 
 STRING 1736
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -7278,11 +6998,6 @@ STRING 1745
 // Items: I006 (Nano-Med), Ubertip (Tooltip - Extended)
 {
 |cff627781This industrial bottle contains a thick yellow grease that suspends a simple nano solution; when applied to the skin the machines activate and begin repairing tissue damage. While expensive, this salve is one of the only fool proof methods of re-entering a fight after only a short period of downtime.|r|n|n|cff00ffffNon-Combat Consumable|r|n|NHeals the target for |cff18bc9c400|r HP over |cff18bc9c15|r seconds.|n|n|cff62778135 Seconds Cooldown|r
-}
-
-STRING 1746
-{
-http://discord.gg/nDMpQZm
 }
 
 STRING 1748
@@ -7543,11 +7258,6 @@ STRING 1806
 // Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781LORE TODO|r|n|nBlesses all neaby players with |cffb52166Madness|r.|n|cff18bc9c- Visible to those outside the area of effect|n- Aliens can never be blessed|n|r|n|cffb52166Madness:|r|cff18bc9c Increases in severity over time, eventually creating hallucinations and driving them |r|cffb52166Insane|r|cff18bc9c.|r|n|n|cfff9a602Cooldown:|r 70 Seconds
-}
-
-STRING 1807
-{
-There's no coming back from death.
 }
 
 STRING 1808
@@ -7868,11 +7578,6 @@ STRING 1867
 Shane|n|cff627781May you rest in peace|r
 }
 
-STRING 1868
-{
-|cff18bc9cdiscord.gg/nDMpQZm
-}
-
 STRING 1873
 // Units: h00D (Fusion Bomb), Name (Name)
 {
@@ -8073,7 +7778,7 @@ Flame Vent
 
 STRING 1917
 // Destructibles: B00B (|cff18bc9cVolunga Saga, c.5|r
-|cff627781Fear not death for the hour of your do), EditorSuffix (Editor Suffix)
+|cff627781Fear not death for the hour of your doo), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -8170,7 +7875,7 @@ Location Sign Ventilation
 
 STRING 1934
 // Destructibles: B00R (|cff18bc9cInquisitor Dredd Dareson |r
-|cff627781Strike fast and suddenly. Atta), EditorSuffix (Editor Suffix)
+|cff627781Strike fast and suddenly. Attac), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -8201,7 +7906,7 @@ Picture Angry Priest
 
 STRING 1940
 // Destructibles: B00W (|cfffa8324WARNING:|r
-You are entering a live fire shooting range. Hex-Corps is), Name (Name)
+You are entering a live fire shooting range. Hex-Corps is ), Name (Name)
 {
 |cfffa8324WARNING:|r
 You are entering a live fire shooting range. Hex-Corps is not responsible for any injury or loss of life. Use at your own risk.
@@ -8209,14 +7914,14 @@ You are entering a live fire shooting range. Hex-Corps is not responsible for an
 
 STRING 1941
 // Destructibles: B00W (|cfffa8324WARNING:|r
-You are entering a live fire shooting range. Hex-Corps is), EditorSuffix (Editor Suffix)
+You are entering a live fire shooting range. Hex-Corps is ), EditorSuffix (Editor Suffix)
 {
 (Sign)
 }
 
 STRING 1942
 // Destructibles: B00X (|cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
-Chemicals in this facility are known), Name (Name)
+Chemicals in this facility are known ), Name (Name)
 {
 |cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
 Chemicals in this facility are known to be carcinogenic and corrosive; when inhaled, they will cause discomfort and death. Hex-Corps bares no responsibility for mishandling of these chemicals.
@@ -8224,14 +7929,14 @@ Chemicals in this facility are known to be carcinogenic and corrosive; when inha
 
 STRING 1943
 // Destructibles: B00X (|cfffa8324WARNING - LEVEL 3 BIO-HAZARD:|r
-Chemicals in this facility are known), EditorSuffix (Editor Suffix)
+Chemicals in this facility are known ), EditorSuffix (Editor Suffix)
 {
 (Sign)
 }
 
 STRING 1944
 // Destructibles: B00B (|cff18bc9cVolunga Saga, c.5|r
-|cff627781Fear not death for the hour of your do), Name (Name)
+|cff627781Fear not death for the hour of your doo), Name (Name)
 {
 |cff18bc9cVolunga Saga, c.5|r
 |cff627781Fear not death for the hour of your doom is set and none may escape it.|r
@@ -8239,7 +7944,7 @@ STRING 1944
 
 STRING 1945
 // Destructibles: B00R (|cff18bc9cInquisitor Dredd Dareson |r
-|cff627781Strike fast and suddenly. Atta), Name (Name)
+|cff627781Strike fast and suddenly. Attac), Name (Name)
 {
 |cff18bc9cInquisitor Dredd Dareson |r
 |cff627781Strike fast and suddenly. Attack without warning. Secure victory before the foe is aware of his danger. Remember always, a war is easily won if your enemy does not know he is fighting.|r
@@ -8247,14 +7952,14 @@ STRING 1945
 
 STRING 1947
 // Destructibles: B00Y (|cff18bc9cProcedures and Maxims, pp. 487|r
-|cff627781Those who shirk from the ), EditorSuffix (Editor Suffix)
+|cff627781Those who shirk from the N), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
 
 STRING 1948
 // Destructibles: B00Y (|cff18bc9cProcedures and Maxims, pp. 487|r
-|cff627781Those who shirk from the ), Name (Name)
+|cff627781Those who shirk from the N), Name (Name)
 {
 |cff18bc9cProcedures and Maxims, pp. 487|r
 |cff627781Those who shirk from the Noterie's gaze are filled with sin, for the certitude of the Court is the truest kindness.|r
@@ -8262,7 +7967,7 @@ STRING 1948
 
 STRING 1949
 // Destructibles: B00Z (|cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
-|cff627781By the bin), Name (Name)
+|cff627781By the bind), Name (Name)
 {
 |cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
 |cff627781By the binding oaths of the impartial liege, we must judge!|r
@@ -8270,7 +7975,7 @@ STRING 1949
 
 STRING 1950
 // Destructibles: B00Z (|cff18bc9cTestimonies of the Prosecutor-Abbots, vol. 23|r
-|cff627781By the bin), EditorSuffix (Editor Suffix)
+|cff627781By the bind), EditorSuffix (Editor Suffix)
 {
 (Plaque)
 }
@@ -8402,8 +8107,45 @@ W
 }
 
 STRING 1972
+// Abilities: A033 (Night Eye), Name (Name)
 {
-Alien
+Night Eye
+}
+
+STRING 1973
+// Abilities: A033 (Night Eye), Tip (Tooltip - Normal)
+{
+Night Eye Gene
+}
+
+STRING 1974
+// Abilities: A033 (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.|r|n|nPings nearby moving units who are concealed, increases |cffd45e19armor|r by |cffd45e191|r and gain |cffd45e19night vision|r for |cffd45e1925 seconds|r. |n|nYou are permanently |cffd45e19immune|r to |cff6f2583Despair|r caused by darkness.
+}
+
+STRING 1975
+// Abilities: A033 (Night Eye), EditorSuffix (Editor Suffix)
+{
+- Ability
+}
+
+STRING 1976
+// Buffs/Effects: B00H (), Bufftip (Tooltip)
+{
+Night Eyes
+}
+
+STRING 1977
+// Buffs/Effects: B00H (), Buffubertip (Tooltip - Extended)
+{
+This unit has enchanced cognitive function.
+}
+
+STRING 1978
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
 }
 
 STRING 1973

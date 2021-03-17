@@ -101,7 +101,7 @@ export const TECH_CREW_ARMOR_HITPOINTS_INCREASE = FourCC('R00D');
 export const GENE_INFESTED_1 = FourCC('A02C');
 
 export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
-export const ABIL_GENE_NIGHTEYE = FourCC('ANEG');
+export const ABIL_GENE_NIGHTEYE = FourCC('A033');
 export const ABIL_GENE_COSMIC = FourCC('ACSM');
 export const ABIL_GENE_XENOPHOBIC = FourCC('A01L');
 export const ABIL_GENE_REMOVE_VOCAL = FourCC('A02T');
