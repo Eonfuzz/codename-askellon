@@ -407,7 +407,7 @@ export class ForceEntity extends Entity {
             this.hasWinningForce = winner;
             const winningPlayers = winner.getPlayers();
             
-            Timers.addSlowTimedAction(5, () => {
+            Timers.addSlowTimedAction(15, () => {
                 // has only one force one?
                 const winningForces2 = PlayerStateFactory.getInstance().forces.filter(f => f.checkVictoryConditions());
 
@@ -539,7 +539,7 @@ export class ForceEntity extends Entity {
             count: 1
         });
 
-        // if (PlayerStateFactory.isSinglePlayer() || PlayerStateFactory.allowWIP()) {
+        if (PlayerStateFactory.isSinglePlayer() || PlayerStateFactory.allowWIP()) {
             optSelection.addOpt({
                 name: CULT_FORCE_NAME,
                 isRequired: false,
@@ -549,7 +549,7 @@ export class ForceEntity extends Entity {
                 chanceToExist: 100,
                 count: (PlayerStateFactory.getInstance().playerCount > 8) ? 2 : 1
             });
-        // }
+        }
         
         // Now ask for opts
         optSelection.askPlayerOpts();

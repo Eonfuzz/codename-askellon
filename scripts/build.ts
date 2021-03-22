@@ -121,8 +121,9 @@ function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
   const w3i = new War3MapW3i.File(w3iBuffer);
   const wts = new War3MapWts.File(wtsBuffer);
 
+  
   const w3iNameString = getStringNumberFromString(w3i.name);
-  w3i.name = `${wts.stringMap.get(w3iNameString)} v${verNum}`;
+  w3i.name = `|cff627781Codename Askellon|r v${verNum}`;
 
   w3iBuffer = w3i.save();
   fs.writeFileSync(w3iDir, toBuffer(w3iBuffer));

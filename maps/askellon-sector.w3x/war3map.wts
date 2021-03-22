@@ -6326,7 +6326,6 @@ STRING 1610
 }
 
 STRING 1611
-// Abilities: A02I (Cultist), Name (Name)
 {
 Cultist
 }
@@ -7010,18 +7009,6 @@ STRING 1758
 // Abilities: A02Q (Bestow Madness), Tip (Tooltip - Normal)
 {
 Bestow Madness
-}
-
-STRING 1759
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nMay now cast |cffb52166Bestow Madness|r and the game will no longer end unless you are killed.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
-}
-
-STRING 1760
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781Give control of your soul to the Crows of Carion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
 }
 
 STRING 1761
@@ -8130,13 +8117,6 @@ STRING 1983
 Night Eyes
 }
 
-STRING 1984
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.
-|r|n|nGrants the |cfff9a602Nightstalker|r power.|n|cff18bc9c[+] Passively ignore despair caused by Darkness|n[+] Activate to gain Dark Vision|n|n|cfff9a602Attribute Gain Per Level:|n|cff18bc9c+2.5 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
-}
-
 STRING 1985
 // Destructibles: B010 (Night eye), Name (Name)
 {
@@ -8147,5 +8127,144 @@ STRING 1986
 // Destructibles: B010 (Night eye), EditorSuffix (Editor Suffix)
 {
 (Ability Effect)
+}
+
+STRING 1987
+{
+Player 1
+}
+
+STRING 1988
+{
+Player 2
+}
+
+STRING 1989
+{
+Player 3
+}
+
+STRING 1990
+{
+Player 4
+}
+
+STRING 1991
+{
+Player 5
+}
+
+STRING 1992
+{
+Player 6
+}
+
+STRING 1993
+{
+Player 7
+}
+
+STRING 1994
+{
+Player 8
+}
+
+STRING 1995
+{
+Player 9
+}
+
+STRING 1996
+{
+Player 10
+}
+
+STRING 1997
+{
+Alien 1
+}
+
+STRING 1998
+{
+Alien 2
+}
+
+STRING 1999
+{
+Alien 3
+}
+
+STRING 2000
+{
+Station Property
+}
+
+STRING 2001
+{
+Station Security
+}
+
+STRING 2002
+{
+Unknown
+}
+
+STRING 2003
+// Abilities: A02I (Cultist), Name (Name)
+{
+Cultist
+}
+
+STRING 2004
+{
+|cff627781Codename Askellon|r
+}
+
+STRING 2005
+{
+6+
+}
+
+STRING 2006
+{
+|cff627781A space horror similar to Metastasis or Space Station 13.|r
+
+The Askellon has been infiltrated by terrible Alien creatures. Cleanse the corruption onboard and escape!
+
+|cff18bc9cdiscord.gg/nDMpQZm|r
+}
+
+STRING 2007
+{
+Eonfuzz and Maddeem
+}
+
+STRING 2008
+{
+Crew
+}
+
+STRING 2009
+{
+discord.gg/nDMpQZm
+}
+
+STRING 2010
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.
+|r|n|nGrants the |cfff9a602Nightstalker|r power.|n|cff18bc9c[+] Passively ignore despair caused by Darkness|n[+] Activate to enhance your senses, granting you vision of any moving unit within a large radius|n|n|cfff9a602Attribute Gain Per Level:|n|cff18bc9c+2.5 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 2011
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
+}
+
+STRING 2012
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Give control of your soul to the Crows of Carion.|r|n|nPassively ressurects nearby corpses into  |cffb52166Undead Crewmembers|r, these seek the living and cannot be killed.|nEach ressurection grants permanent worship speed.
 }
 

@@ -9,6 +9,8 @@ import { PlayerState } from "app/force/player-type";
 import { InteractableData } from "./interactable-type";
 import { Unit } from "w3ts/index";
 import { ABIL_ALTAR_IS_BUILT } from "resources/ability-ids";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { CULT_FORCE_NAME } from "app/force/forces/force-names";
 
 export const initInteractionTerminals = () => {
     
@@ -26,9 +28,9 @@ export const initInteractionTerminals = () => {
     }
     const cultistTerminal: InteractableData = {
         condition: (fromUnit: Unit, targetUnit: Unit) => {
+            const pData = PlayerStateFactory.get(fromUnit.owner);
             // Log.Information("Using terminal");
-            return false;
-            // return targetUnit.userData == fromUnit.owner.id && targetUnit.getAbilityLevel(ABIL_ALTAR_IS_BUILT) >= 1;
+            return targetUnit.getAbilityLevel(ABIL_ALTAR_IS_BUILT) >= 1 && pData && pData.getForce()?.is(CULT_FORCE_NAME);
         },
         onStart: (fromUnit: Unit, targetUnit: Unit) => {
             // Log.Information("Using terminal");

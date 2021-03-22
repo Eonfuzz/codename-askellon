@@ -197,6 +197,9 @@ export class Projectile {
         if (this.dead) {
             this.sfx.forEach(sfx => sfx.destroy());
             this.sfx = [];
+            if (this.filter) {
+                DestroyFilter(this.filter);
+            }
         }
         return this.dead;
     }
