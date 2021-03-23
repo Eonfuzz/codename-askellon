@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/handles/unit";
 import { PlayNewSoundOnUnit, getYawPitchRollFromVector } from "lib/translators";
 import { getZFromXY } from "lib/utils";
@@ -15,7 +15,7 @@ import { Effect } from "w3ts/index";
 import { SFX_BLUE_BALL, SFX_BLUE_BLAST } from "resources/sfx-paths";
 
 
-export class RailRifleAbility implements Ability {
+export class RailRifleAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetLoc: Vector2;
@@ -29,9 +29,10 @@ export class RailRifleAbility implements Ability {
 
     private orbEffect: Effect;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.sound = new SoundRef("Sounds\\chargeUp.mp3", false); 
         this.sound.playSoundOnUnit(this.unit.handle, 30);
@@ -50,12 +51,12 @@ export class RailRifleAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
 
         const doCancel = this.unit.currentOrder !== this.castOrderId;
 
-        if (doCancel && this.timeElapsed < 0.75) return false;
+        if (doCancel && this.timeElapsed < 0.75) return this.done = true;
 
         const uLoc = Vector2.fromWidget(this.unit.handle);
         this.targetLoc = InputManager.getLastMousePosition(this.unit.owner.handle);
@@ -93,6 +94,7 @@ export class RailRifleAbility implements Ability {
         // Should we fire?
         if (doCancel) {
             this.fire();
+            this.done = true;
             return false;
         }
         return true;

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { SoundRef } from "app/types/sound-ref";
 import { Unit } from "w3ts/index";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
@@ -7,17 +7,14 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Log } from "lib/serilog/serilog";
 import { SOUND_ALIEN_SCREAM } from "resources/sounds";
 
-export class ScreamAbility implements Ability {
-    casterUnit: Unit;
+export class ScreamAbility extends AbilityWithDone {    
 
-    constructor() {}
-
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         const world = WorldEntity.getInstance();
         // Get out current unit's zone
@@ -42,6 +39,8 @@ export class ScreamAbility implements Ability {
         else {
             Log.Error("Scream caster not in any zone. DIS BE A BUG");
         }
+        
+        this.done = true;
         return false;
     };
     

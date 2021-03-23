@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Unit } from "w3ts/handles/unit";
 import { ForceEntity } from "app/force/force-entity";
@@ -9,21 +9,22 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 const PSIONIC_EYE_DURATION = 5;
 const PSIONIC_EYE_INTERVAL = 1;
 
-export class PsionicEyeAbility implements Ability {
+export class PsionicEyeAbility extends AbilityWithDone {
 
     private unit: Unit | undefined;
     private timeElapsed: number = 0;
     private timeSincePing: number = 0;
 
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
 
         const pingFor: Crewmember[] = [];

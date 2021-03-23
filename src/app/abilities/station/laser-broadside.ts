@@ -1,9 +1,6 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { SoundRef } from "app/types/sound-ref";
 import { MessageAllPlayers, getZFromXY } from "lib/utils";
-import { COL_ORANGE, COL_INFO } from "resources/colours";
-import { EventEntity } from "app/events/event-entity";
-import { EVENT_TYPE } from "app/events/event-enum";
 import { WorldEntity } from "app/world/world-entity";
 import { MapPlayer, Unit } from "w3ts/index";
 import { Vector2 } from "app/types/vector2";
@@ -21,7 +18,7 @@ import { PlayNewSoundOnUnit } from "lib/translators";
 import { Timers } from "app/timer-type";
 
 
-export class LaserBroadsideAbility implements Ability {
+export class LaserBroadsideAbility extends AbilityWithDone {
     private timeElapsed = 0;
 
     private castingUnit: Unit;
@@ -32,9 +29,10 @@ export class LaserBroadsideAbility implements Ability {
 
     private decayTimer = 1;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.castingUnit = Unit.fromHandle( GetTriggerUnit() );
         this.shakingPlayers = WorldEntity.getInstance().askellon.getPlayers();
 
@@ -59,12 +57,14 @@ export class LaserBroadsideAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
 
         if (this.shotTiming.length === 0) {
             this.decayTimer -= delta;
-            return this.decayTimer > 0;
+            if (this.decayTimer <= 0) {
+                return this.done = true;
+            }
         }
 
         else {

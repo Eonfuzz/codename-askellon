@@ -1,4 +1,4 @@
-import { Ability } from "app/abilities/ability-type";
+import { AbilityWithDone } from "app/abilities/ability-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit } from "w3ts/index";
@@ -10,11 +10,10 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { CreepEntity } from "app/creep/creep-entity";
 import { getZFromXY } from "lib/utils";
 
-export class SpawnTumorAbility implements Ability {
+export class SpawnTumorAbility extends AbilityWithDone {
 
-    constructor() {}
-
-    public initialise() {
+    public init() {
+        super.init();
         const u = Unit.fromHandle(GetTriggerUnit());
         
         try {
@@ -42,12 +41,12 @@ export class SpawnTumorAbility implements Ability {
         catch(e) {
             Log.Error(e);            
         }
+
+        this.done = true;
         return true;
     };
 
-    public process(delta: number) {
-        return false;
-    };
+    public step(delta: number) {};
     
     public destroy() {
         return true; 

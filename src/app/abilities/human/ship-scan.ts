@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { SoundRef } from "app/types/sound-ref";
 import { Unit } from "w3ts/index";
 import { Ship } from "app/space/ships/ship-type";
@@ -6,14 +6,15 @@ import { ShipState } from "app/space/ships/ship-state-type";
 import { SpaceEntity } from "app/space/space-module";
 
 const deepScanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
-export class ShipDeepScanAbility implements Ability {
+export class ShipDeepScanAbility extends AbilityWithDone {
 
     private unit: Unit;
     private ship: Ship;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
 
         const spaceEntity = SpaceEntity.getInstance();
@@ -40,10 +41,11 @@ export class ShipDeepScanAbility implements Ability {
             }
         });
 
+        this.done = true;
         return true;
     };
 
-    public process(moduldelta: number) {
+    public step(moduldelta: number) {
         return false;
     };
 

@@ -1,17 +1,14 @@
-import { Ability } from "app/abilities/ability-type";
-import { EventEntity } from "app/events/event-entity";
-import { EVENT_TYPE } from "app/events/event-enum";
+import { AbilityWithDone } from "app/abilities/ability-type";
 import { Unit } from "w3ts/index";
-import { ALIEN_MINION_CANITE, ALIEN_MINION_LARVA } from "resources/unit-ids";
-import { AIEntity } from "app/ai/ai-entity";
 import { WorldEntity } from "app/world/world-entity";
 import { Log } from "lib/serilog/serilog";
 
-export class MinionSpawnAbility implements Ability {
+export class MinionSpawnAbility extends AbilityWithDone {
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         const u = Unit.fromHandle(GetTriggerUnit());
         
         try {
@@ -24,10 +21,12 @@ export class MinionSpawnAbility implements Ability {
         catch(e) {
             Log.Error(e);            
         }
+
+        this.done = true;
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         return false;
     };
     

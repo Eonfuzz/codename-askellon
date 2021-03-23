@@ -1,14 +1,6 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/handles/unit";
-import { BUFF_ID } from "resources/buff-ids";
 import { SoundRef } from "app/types/sound-ref";
-import { FilterIsAlive } from "resources/filters";
-import { Effect } from "w3ts/index";
-import { ForceEntity } from "app/force/force-entity";
-import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
-import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { AbilityHooks } from "../ability-hooks";
-import { ABIL_GENE_COSMIC } from "resources/ability-ids";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Minigun } from "app/weapons/guns/minigun";
 
@@ -17,16 +9,17 @@ const FullerAutoSounds = [
     new SoundRef("Sounds\\minigun_fullerauto_2.mp3", false) 
 ];
 
-export class MinigunFullerAutoAbility implements Ability {
+export class MinigunFullerAutoAbility extends AbilityWithDone {
 
     private unit: Unit | undefined;
     private wep: Minigun;
 
     private duration = 5;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         FullerAutoSounds[ GetRandomInt(0, FullerAutoSounds.length -1)].playSoundOnUnit(this.unit.handle, 127);
 
@@ -39,9 +32,9 @@ export class MinigunFullerAutoAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.duration -= delta;
-        return this.duration > 0;
+        if (this.duration <= 0) this.done = true;
     };
 
     public destroy() {

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { getZFromXY, GetActivePlayers } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED, SFX_LIGHTNING_BOLT } from "resources/sfx-paths";
 import { SoundRef } from "app/types/sound-ref";
@@ -17,12 +17,13 @@ const SEQUENCE_MAX_DURATION = 10;
 const ambienceSoundGeneticSequence = new SoundRef("Sounds\\GeneticSequencerAmbience.mp3", false);
 Preload("Sounds\\GeneticSequencerAmbience.mp3");
 
-export class GeneticSequenceAbility implements Ability {
+export class GeneticSequenceAbility extends AbilityWithDone {
     private timeElapsed = 0;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         ambienceSoundGeneticSequence.playSoundOnUnit(udg_genetic_sequencer_unit, 30);
 
         // Reward bonus XP to doctor ( if caster is doctor )
@@ -38,7 +39,7 @@ export class GeneticSequenceAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
 
         const redLight = MathRound(this.timeElapsed*6) % 4;
@@ -56,7 +57,9 @@ export class GeneticSequenceAbility implements Ability {
             );
         }
 
-        return this.timeElapsed <= SEQUENCE_MAX_DURATION;
+        if (this.timeElapsed >= SEQUENCE_MAX_DURATION) {            
+            this.done = true; 
+        }
     };
 
     public completeTest() {

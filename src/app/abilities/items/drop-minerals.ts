@@ -1,23 +1,24 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Item, Unit } from "w3ts/index";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE } from "resources/item-ids";
 import { Vector2 } from "app/types/vector2";
 import { ConveyorEntity } from "app/conveyor/conveyor-entity";
 
-export class DropMineralsAbility implements Ability {
+export class DropMineralsAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetPoint: Vector2;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetPoint = new Vector2( GetSpellTargetX(), GetSpellTargetY() );
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         // Loop through all items and place them on the ground ( that are minerals )
         for (let i = 0; i < this.unit.inventorySize; i++) {
@@ -32,6 +33,7 @@ export class DropMineralsAbility implements Ability {
             }
             
         }
+        this.done = true; 
         return false;
     };
 

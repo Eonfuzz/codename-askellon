@@ -1,5 +1,5 @@
 import { Unit } from "w3ts/handles/unit";
-import { Ability } from "app/abilities/ability-type";
+import { AbilityWithDone } from "app/abilities/ability-type";
 import { Effect } from "w3ts/index";
 import { Vector2 } from "app/types/vector2";
 import { AddGhost, getZFromXY, RemoveGhost } from "lib/utils";
@@ -13,9 +13,7 @@ interface Web {
     vis: fogmodifier;
 }
 
-export class ConealingWebsAbility implements Ability {
-
-    private casterUnit: Unit | undefined;
+export class ConealingWebsAbility extends AbilityWithDone {
     
     private duration = 15;
     private websSpawned = 0;
@@ -29,8 +27,8 @@ export class ConealingWebsAbility implements Ability {
     private webCheckEvery = 1;
     private stealthAOE = 400;
 
-    public initialise() {
-        this.casterUnit = Unit.fromEvent();
+    public init() {
+        super.init();
 
         if (this.casterUnit.getAbilityLevel(ABIL_ALIEN_WEBWALK) >= 2) {
             this.maxWebsSpawned = 5;
@@ -53,7 +51,7 @@ export class ConealingWebsAbility implements Ability {
         return true;
     }
     
-    public process(delta: number) {
+    public step(delta: number) {
         this.duration -= delta;
 
         if (this.duration > 0) {
@@ -90,7 +88,10 @@ export class ConealingWebsAbility implements Ability {
                 this.casterUnit.removeAbility(FourCC("Agho"));
             }
         }
-        return ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit.id) == this.currentWebs;
+
+        if (ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit.id) == this.currentWebs) {
+            this.done = true;
+        }
     }
 
     private inRangeOfWeb(): boolean {

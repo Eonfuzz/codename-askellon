@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/index";
 import { FilterIsAlive } from "resources/filters";
 import { Log } from "lib/serilog/serilog";
@@ -8,9 +8,10 @@ import { InputManager } from "lib/TreeLib/InputManager/InputManager";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 
-export class NeuralTakeoverAbility implements Ability {
+export class NeuralTakeoverAbility extends AbilityWithDone {
     
-    public initialise() {
+    public init() {
+        super.init();
         let unit: Unit;
         let caster = Unit.fromHandle(GetTriggerUnit());
 
@@ -59,11 +60,12 @@ export class NeuralTakeoverAbility implements Ability {
         }
 
         DestroyGroup(findGroup);
+        this.done = true;
         return true;
     };
 
     
-    public process(delta: number) {
+    public step(delta: number) {
         return false;
     }
 

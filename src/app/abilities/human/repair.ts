@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/index";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { Game } from "app/game";
@@ -9,7 +9,7 @@ const REPAIR_TICK_EVERY = 1;
 const REPAIR_AMOUNT = 100;
 // const REPAIR_ORDER_ID = 852010;
 
-export class ItemRepairAbility implements Ability {
+export class ItemRepairAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetUnit: Unit;
@@ -18,9 +18,10 @@ export class ItemRepairAbility implements Ability {
     private timeElapsedSinceLastRepair = 0;
     private castOrderId: number;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         // We are targeting a destructible
         if (GetSpellTargetDestructable()) {
             KillDestructable(GetSpellTargetDestructable());
@@ -35,7 +36,7 @@ export class ItemRepairAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
         this.timeElapsedSinceLastRepair += delta;
 
@@ -57,6 +58,7 @@ export class ItemRepairAbility implements Ability {
             if (this.targetUnit.life >= this.targetUnit.maxLife) { 
                 this.unit.pauseEx(true);
                 this.unit.pauseEx(false);
+                this.done = true;
                 return false;
             }
         }
@@ -66,7 +68,8 @@ export class ItemRepairAbility implements Ability {
             this.targetUnit.setVertexColor(255 - v, 255 - v, 255, 255);
             this.unit.setVertexColor(255 - v, 255 - v, 255, 255);
         }
-        return this.timeElapsed < REPAIR_DURATION;
+
+        if (this.timeElapsed >= REPAIR_DURATION) this.done = true;
     };
 
     public destroy() { 

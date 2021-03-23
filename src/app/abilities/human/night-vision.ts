@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { MapPlayer, Unit } from "w3ts";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { WorldEntity } from "app/world/world-entity";
@@ -13,11 +13,10 @@ const RADIUS = 1200;
 const REFRESH_RATE = 1;
 const DESTRUCT_ID = FourCC('B010');
 
-export class NightVisionAbility implements Ability {
+export class NightVisionAbility extends AbilityWithDone {
 
     private oldVis: VISION_TYPE = VISION_TYPE.HUMAN;
 
-    private casterUnit: Unit | undefined;
     private castingPlayer: MapPlayer | undefined;
     private checkMovementGroup = CreateGroup();
     private refreshTime = REFRESH_RATE;
@@ -28,10 +27,11 @@ export class NightVisionAbility implements Ability {
     private locallyVisible: boolean;
     private sound = new SoundRef(SOUND_STR_SONIC_RES, false, false);
 
-    constructor() {}
+    
 
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
+
         this.castingPlayer = this.casterUnit.owner;
         this.locallyVisible = GetTriggerPlayer() == GetLocalPlayer();
         this.sound.playSoundOnUnit(this.casterUnit.handle, 127, true);
@@ -45,7 +45,7 @@ export class NightVisionAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         if (this.refreshTime >= REFRESH_RATE) {
             this.removeDestructables();
             this.refreshTime = 0;
@@ -98,7 +98,8 @@ export class NightVisionAbility implements Ability {
             this.refreshTime += delta;
         }
         this.remainingDuration -= delta;
-        return this.remainingDuration > 0;
+
+        if (this.remainingDuration <= 0) this.done = true;
     };
 
     public removeDestructables() {

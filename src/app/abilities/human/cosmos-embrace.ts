@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/handles/unit";
 import { BUFF_ID } from "resources/buff-ids";
 import { SoundRef } from "app/types/sound-ref";
@@ -7,15 +7,13 @@ import { Effect } from "w3ts/index";
 import { ForceEntity } from "app/force/force-entity";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { AbilityHooks } from "../ability-hooks";
-import { ABIL_GENE_COSMIC } from "resources/ability-ids";
 import { SFX_VOID_DISK } from "resources/sfx-paths";
 
 const SFXAt = 0.8;
 const SFXEnd = 1.6;
 const EmbraceCosmosCastTime = 0.9;
 
-export class EmbraceCosmosAbility implements Ability {
+export class EmbraceCosmosAbility extends AbilityWithDone {
 
     private unit: Unit | undefined;
     private soundEffect = new SoundRef("Sounds\\CosmosEmbrace.mp3", false);
@@ -25,9 +23,10 @@ export class EmbraceCosmosAbility implements Ability {
     private sfx: Effect;
     private hasDoneDamage = false;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.soundEffect.playSoundOnUnit(this.unit.handle, 127);
         this.castingOrder = this.unit.currentOrder;
@@ -35,7 +34,7 @@ export class EmbraceCosmosAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeCast += delta;
 
         if (this.castingOrder === this.unit.currentOrder || this.timeCast > EmbraceCosmosCastTime) {
@@ -52,10 +51,12 @@ export class EmbraceCosmosAbility implements Ability {
                 this.embraceCosmosExplode();
             }
             if (this.timeCast >= SFXEnd && this.sfx) {
+                this.done = true;
                 return false;
             }
         }
         else if (this.timeCast < EmbraceCosmosCastTime) {
+            this.done = true;
             return false;
         }
 

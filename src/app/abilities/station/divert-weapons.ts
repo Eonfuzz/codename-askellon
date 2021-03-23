@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { LIGHTS_GREEN, LIGHTS_RED, SFX_LIGHTNING_BOLT, SFX_RED_SINGULARITY } from "resources/sfx-paths";
 import { MapPlayer, Unit } from "w3ts/index";
 import { Players } from "w3ts/globals/index";
@@ -11,14 +11,15 @@ import { SOUND_COMPLEX_BEEP } from "resources/sounds";
 import { ResearchFactory } from "app/research/research-factory";
 import { COL_ATTATCH } from "resources/colours";
 
-export class DivertToWeaponsAbiility implements Ability {
-    constructor() {}
+export class DivertToWeaponsAbiility extends AbilityWithDone {
+    
 
     timeElapsed = 0;
 
     infestedTurrets: Unit[] = [];
 
-    public initialise() {
+    public init() {
+        super.init();
         const isInfested = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_REACTOR, 3);
         Players.forEach(p => {
             p.setTechResearched(TECH_DUMMY_DIVERT_WEAPONS, 2);
@@ -43,9 +44,11 @@ export class DivertToWeaponsAbiility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;        
-        return this.timeElapsed < 30;
+        if (this.timeElapsed >= 30) {            
+            this.done = true; 
+        }
     };
 
     public destroy() {

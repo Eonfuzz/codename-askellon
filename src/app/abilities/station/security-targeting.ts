@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { SoundRef } from "app/types/sound-ref";
 import { MessageAllPlayers } from "lib/utils";
 import { COL_ORANGE, COL_INFO, COL_ATTATCH, COL_GOOD } from "resources/colours";
@@ -11,10 +11,11 @@ import { PlayNewSound } from "lib/translators";
 import { PlayerState } from "app/force/player-type";
 import { TARGETING_TOOLTIP, TARGETING_TOOLTIP_EXTENDED } from "resources/strings";
 
-export class StationSecurityTargetAbility implements Ability {
-    constructor() {}
+export class StationSecurityTargetAbility extends AbilityWithDone {
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         const u = Unit.fromHandle(GetTriggerUnit());
 
         const idx = ABIL_SECURITY_TARGET_ALL.indexOf(GetSpellAbilityId());
@@ -38,10 +39,11 @@ export class StationSecurityTargetAbility implements Ability {
 
         BlzSetAbilityTooltip(GetSpellAbilityId(), TARGETING_TOOLTIP(PlayerStateFactory.isTargeted(who), who, pCrew), 0);
         BlzSetAbilityExtendedTooltip(GetSpellAbilityId(), TARGETING_TOOLTIP_EXTENDED(PlayerStateFactory.isTargeted(who), who, pCrew), 0);
+        this.done = true; 
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         return false;
     };
 

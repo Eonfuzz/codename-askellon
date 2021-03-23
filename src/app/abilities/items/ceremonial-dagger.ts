@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Effect, Unit } from "w3ts/index";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
@@ -7,7 +7,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { CULT_FORCE_NAME } from "app/force/forces/force-names";
 import { CultistForce } from "app/force/forces/cultist/cultist-force";
 
-export class CeremonialDaggerItemAbility implements Ability {
+export class CeremonialDaggerItemAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetUnit: Unit;
@@ -18,9 +18,10 @@ export class CeremonialDaggerItemAbility implements Ability {
 
     private distanceMoved = 0;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());        
         
@@ -28,7 +29,7 @@ export class CeremonialDaggerItemAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         // update target loc
         this.targetLoc = Vector3.fromWidget(this.targetUnit.handle);
         // Get our current loc
@@ -86,16 +87,17 @@ export class CeremonialDaggerItemAbility implements Ability {
                 });    
             }
 
+            this.done = true; 
             return false;
         }
 
         // Have we moved max distance?
-        if (this.distanceMoved > 600) return false;
+        if (this.distanceMoved > 600) 
+            this.done = true; 
 
         // Else keep going
         return true;
 
-        return false;
     };
 
     public destroy() {

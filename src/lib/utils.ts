@@ -13,9 +13,10 @@ export function showOverheadText(x: number, y: number, r: number, g: number, b: 
     t.setPos(x, y, 90);
     t.setColor(r, g, b, a);
     t.setPermanent(false);
-    t.setLifespan(4.5);
-    t.setFadepoint(2.5);
-    t.setVelocity(0, 7.1 / 128 * Sin(3.14159 / 2));
+    t.setLifespan(2);
+    t.setFadepoint(1);
+    t.setVisible(true);
+    t.setVelocity(0, 7.1 / 128 * Sin(3.14159 / 2));;
     return t;
 }
 

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/handles/unit";
 import { WorldEntity } from "app/world/world-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
@@ -25,7 +25,7 @@ export const punchMessages = [
     "You are one ugly motherfucker"
 ];
 
-export class XenophobicPunchAbility implements Ability {
+export class XenophobicPunchAbility extends AbilityWithDone {
 
     private unit: Unit | undefined;
     private timeElapsed: number = 0;
@@ -49,15 +49,16 @@ export class XenophobicPunchAbility implements Ability {
     // For X seconds after landing we create afterimages
     private leapLeeway = 0.2;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetLoc = new Vector2(GetSpellTargetX(), GetSpellTargetY());
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         if (this.timeElapsed == 0) {
             this.unit.pauseEx(true);
             this.unit.setAnimation(9);
@@ -144,7 +145,8 @@ export class XenophobicPunchAbility implements Ability {
             }
         }
 
-        return !(this.finishedLeaping && this.sfx.length === 0);
+        if (this.finishedLeaping && this.sfx.length === 0)
+            this.done = true; 
     };
 
     private damage(who: unit) {

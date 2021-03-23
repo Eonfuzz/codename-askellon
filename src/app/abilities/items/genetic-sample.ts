@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit, playerColors } from "w3ts/index";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_GENETIC_SAMPLE_PURE } from "resources/item-ids";
 import { STR_GENETIC_SAMPLE, STR_GENETIC_SAMPLE_PURE } from "resources/strings";
@@ -13,21 +13,22 @@ export enum GENE_SPLICE_ALLIANCE {
     PURE
 }
 
-export class GeneticSamplerItemAbility implements Ability {
+export class GeneticSamplerItemAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetUnit: Unit;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());        
         
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         const unitHasSpareItemSlot = UnitInventoryCount(this.unit.handle) < UnitInventorySize(this.unit.handle);
 
@@ -102,6 +103,7 @@ export class GeneticSamplerItemAbility implements Ability {
         BlzSetSpecialEffectZ(sfx, getZFromXY(this.unit.x, this.unit.y) + 30);
         DestroyEffect(sfx);
 
+        this.done = true; 
         return false;
     };
 

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/projectile/projectile-target";
@@ -11,7 +11,6 @@ import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 
-/** @noSelfInFile **/
 const SPREAD = 45;
 const NUM_BULLETS = 26;
 const DISTANCE = 300;
@@ -21,18 +20,17 @@ const MISSILE_FIRE_WAVE = 'Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilSpecia
 const FIRE_BREATH = 'Abilities\\Spells\\Other\\BreathOfFire\\BreathOfFireMissile.mdl';
 
 
-export class DragonFireBlastAbility implements Ability {
+export class DragonFireBlastAbility extends AbilityWithDone {
 
-    private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
     private unitsHit = new Map<number, number>();
 
     private damageGroup = CreateGroup();
 
-    constructor() {}
+    
 
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
         this.unitsHit.clear();
 
         const sound = PlayNewSoundOnUnit("Sounds\\DragonBreathShotgun.wav", this.casterUnit, 50);
@@ -80,6 +78,8 @@ export class DragonFireBlastAbility implements Ability {
                 );
         });
 
+        this.done = true;
+
         return true;
     };
 
@@ -114,9 +114,7 @@ export class DragonFireBlastAbility implements Ability {
             .setVelocity(1250);
     }
 
-    public process(delta: number) {
-        return true;
-    };
+    public step(delta: number) {};
 
     public destroy() { 
         DestroyGroup(this.damageGroup);

@@ -1,5 +1,5 @@
 import { Unit } from "w3ts/handles/unit";
-import { Ability } from "app/abilities/ability-type";
+import { AbilityWithDone } from "app/abilities/ability-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { AlienForce } from "app/force/forces/alien-force";
 import { ALIEN_STRUCTURE_TUMOR, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
@@ -8,21 +8,18 @@ import { ABIL_ALIEN_BROODNEST } from "resources/ability-ids";
 import { CreepEntity } from "app/creep/creep-entity";
 import { WorldEntity } from "app/world/world-entity";
 
-export class BroodNestAbility implements Ability {
+export class BroodNestAbility extends AbilityWithDone {
 
-    private casterUnit: Unit | undefined;
     private eggUnits: Unit[] = [];
     
     private duration = 240;
 
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
 
 
-        const aForce = PlayerStateFactory.get(this.casterUnit.owner).getForce() as AlienForce;
-        
+        const aForce = PlayerStateFactory.get(this.casterUnit.owner).getForce() as AlienForce;        
         const placeLoc = Vector2.fromWidget(this.casterUnit.handle);
-
         const chance = aForce.getHost() === this.casterUnit.owner ?  50 : 20;
         if (GetRandomReal(0, 100) <= chance) {
             // Place the large egg
@@ -62,9 +59,11 @@ export class BroodNestAbility implements Ability {
         return true;
     }
     
-    public process(delta: number) {
+    public step(delta: number) {
         this.duration -= delta;
-        return this.duration >= 0;
+        if (this.duration <= 0) {
+            this.done = true;
+        }
     }
     
     public destroy() { 

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
 import { ABILITY_SLOW_ID, ABIL_STUN_25, TECH_HAS_GENES_TIER_1, TECH_HAS_GENES_TIER_2, TECH_HAS_GENES_TIER_3 } from "resources/ability-ids";
@@ -7,16 +7,14 @@ import { SFX_RED_SINGULARITY, SFX_DARK_RITUAL, SFX_DARK_SUMMONING, SFX_HOWL, SFX
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { getZFromXY } from "lib/utils";
 import { ForceEntity } from "app/force/force-entity";
-import { Game } from "app/game";
 import { DummyCast } from "lib/dummy";
 import { BUFF_ID_PURITY_SEAL } from "resources/buff-ids";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { PlayerState } from "app/force/player-type";
 import { ALIEN_FORCE_NAME, CULT_FORCE_NAME } from "app/force/forces/force-names";
 
 export const smiteSound = new SoundRef("Sounds\\InquisitorSmite.mp3", false);
 
-export class SmiteAbility implements Ability {
+export class SmiteAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetUnit: Unit;
@@ -26,17 +24,17 @@ export class SmiteAbility implements Ability {
     private timerUntilCheck: number = 2.2;
     private endNextTick: boolean = false;
 
-    private doFinish: boolean = false;
-
     private prevUnitLoc: Vector2;
 
     private smiteSfx: effect;
 
     constructor(isImpure: boolean) {
+        super();
         this.isImpure = isImpure;
     }
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
 
@@ -51,7 +49,7 @@ export class SmiteAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         this.timerUntilCheck -= delta;
 
@@ -60,7 +58,7 @@ export class SmiteAbility implements Ability {
         BlzSetSpecialEffectZ(this.smiteSfx, getZFromXY(this.targetUnit.x, this.targetUnit.y) + 30);
         
         if (this.endNextTick) {
-            this.doFinish = true;
+            this.done = true;
 
             PlayNewSoundOnUnit(
                 "Doodads\\Cinematic\\LightningboltLightningBolt1.flac", 
@@ -141,8 +139,6 @@ export class SmiteAbility implements Ability {
             this.endNextTick = true;
             this.prevUnitLoc = vectorFromUnit(this.targetUnit.handle);
         }
-
-        return !this.doFinish;
     };
 
     public destroy() { 

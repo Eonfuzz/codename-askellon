@@ -1,7 +1,7 @@
 import { Unit } from "w3ts/handles/unit";
 import { getZFromXY } from "lib/utils";
 import { WeaponEntity } from "app/weapons/weapon-entity";
-import { Ability } from "app/abilities/ability-type";
+import { AbilityWithDone } from "app/abilities/ability-type";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { Vector3 } from "app/types/vector3";
 import { vectorFromUnit } from "app/types/vector2";
@@ -19,9 +19,7 @@ const MISSILE_EFFECT = "Models\\sfx\\CocoonMissile.mdx";
 const MISSILE_BEAM = "SPNL";
 const WEB_SFX = "Models\\sfx\\WebFloor.mdl";
 
-export class WebshotAbility implements Ability {
-
-    private casterUnit: Unit | undefined;
+export class WebshotAbility extends AbilityWithDone {
     private targetLoc: Vector3 | undefined;
 
     private webshotSfx: effect | undefined;
@@ -40,8 +38,8 @@ export class WebshotAbility implements Ability {
 
     private spawnWebSFXCounter = 0.1;
 
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
         this.targetLoc.z = getZFromXY(this.targetLoc.x, this.targetLoc.y);
@@ -160,7 +158,7 @@ export class WebshotAbility implements Ability {
         }
     }
 
-    public process(delta: number) {
+    public step(delta: number) {
         if (!this.webshotCollided) {
             const polarPoint = vectorFromUnit(this.casterUnit.handle).applyPolarOffset(this.casterUnit.facing, 80);
             const startLoc = new Vector3(polarPoint.x, polarPoint.y, getZFromXY(polarPoint.x, polarPoint.y)+30);
@@ -182,9 +180,6 @@ export class WebshotAbility implements Ability {
                 BlzSetSpecialEffectAlpha(sfx, 45);
                 DestroyEffect(sfx);
             }
-
-
-            return true;
         }
         // After we've collided we need to "reel" in
         else {
@@ -199,7 +194,7 @@ export class WebshotAbility implements Ability {
                 MoveLightningEx(this.webshotTrail, true, this.casterUnit.x, this.casterUnit.y, goalLoc.z,  movingUnitLoc.x, movingUnitLoc.y, movingUnitLoc.z,);
             }
 
-            return !this.finishedLeaping;
+            if (this.finishedLeaping) this.done = true;
         }
     };
     

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Trigger, Unit, Effect, MapPlayer } from "w3ts";
 import { ABIL_STUN_25 } from "resources/ability-ids";
 import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
@@ -17,9 +17,8 @@ const DAMAGE_ON_IMPALE = 25;
 const DAMAGE_ON_COLLIDE = 50;
 const GRAB_DISTANCE = 70;
 
-export class BusterChargeAbility implements Ability {
+export class BusterChargeAbility extends AbilityWithDone {
 
-    private casterUnit: Unit;
 
     private searchGroup = CreateGroup();
     private impaledUnits = CreateGroup();
@@ -32,9 +31,11 @@ export class BusterChargeAbility implements Ability {
     private prevLoc: Vector2;
     private jumpAtZ: number;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
+
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         const targetLoc = new Vector2(GetSpellTargetX(), GetSpellTargetY());
@@ -60,7 +61,7 @@ export class BusterChargeAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         let moveVec: Vector2;
         let oldZ: number;
@@ -145,6 +146,7 @@ export class BusterChargeAbility implements Ability {
         }
         else if (hasTerrainCollision || newZ > oldZ || newZ2 > oldZ || newZ3 > oldZ) {
             this.onWallCollide(newX, newY);
+            this.done = true;
             return false;
         }
 
@@ -193,6 +195,7 @@ export class BusterChargeAbility implements Ability {
         });
 
         if (this.distanceTravelled >= MAX_DISTANCE) {
+            this.done = true;
             return false;
         }
         

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Effect, Group, Item, MapPlayer, Unit } from "w3ts/index";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE, ITEM_REMOTE_BOMB } from "resources/item-ids";
 import { Vector2 } from "app/types/vector2";
@@ -18,7 +18,7 @@ import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
-export class PlaceBombAbility implements Ability {
+export class PlaceBombAbility extends AbilityWithDone {
 
     private unit: Unit;
     private player: MapPlayer;
@@ -39,9 +39,10 @@ export class PlaceBombAbility implements Ability {
 
     private placementTimestamp: number;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.player = this.unit.owner;
 
@@ -82,14 +83,17 @@ export class PlaceBombAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         if (!this.detonating) {
             this.checkTicker += delta;
             if (this.checkTicker > 2) {
                 this.checkTicker = 0;
                                 
-                return !this.detonated && this.bomb.isAlive();
+                if (this.detonated || !this.bomb.isAlive()) {
+                    this.done = true; 
+                    return;
+                }
             }
         }
         else if (this.unit.isAlive()) {
@@ -116,6 +120,7 @@ export class PlaceBombAbility implements Ability {
 
             if (this.detonatingTimer <= 0) {
                 this.explode();
+                this.done = true; 
                 return false;
             }
 

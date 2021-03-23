@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Trigger, Unit, Effect } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { PlayNewSoundOnUnit } from "lib/translators";
@@ -14,8 +14,6 @@ import { EventEntity } from "app/events/event-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { AbilityHooks } from "../ability-hooks";
-
 
 const CREATE_SFX_EVERY = 0.06;
 const EGG_SACK = "Doodads\\Dungeon\\Terrain\\EggSack\\EggSack0.mdl";
@@ -26,9 +24,7 @@ const HeartbeatSound = new SoundWithCooldown(4, "Sounds\\Alien Heartbeat.mp3");
 const MoistSound = new SoundRef("Sounds\\Moist.mp3", true, true);
 const GREEN_LIGHT = "war3mapImported\\Light_Green_20.mdl";
 
-export class EvolveAbility implements Ability {
-
-    private casterUnit: Unit | undefined;
+export class EvolveAbility extends AbilityWithDone {
     private effect: Effect;
     private light: Effect;
 
@@ -44,12 +40,14 @@ export class EvolveAbility implements Ability {
     private toForm: number;
 
     constructor(toWhichForm: number) {
+        super();
         this.timeElapsed = 0;
         this.toForm = toWhichForm;
     }
 
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
+
         this.castingOrder = this.casterUnit.currentOrder;
 
         this.casterUnit.setVertexColor(255, 255, 255, 0);
@@ -85,10 +83,11 @@ export class EvolveAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         // Is the unit dead?
         if (!this.casterUnit.isAlive() || !this.casterUnit.show) {
+            this.done = true;
             return false;
         }
 
@@ -107,6 +106,7 @@ export class EvolveAbility implements Ability {
                 data: { value: -500 }
             });
 
+            this.done = true;
             return false;
         }
 
@@ -125,6 +125,7 @@ export class EvolveAbility implements Ability {
                 this.createGiblet();
             }
 
+            this.done = true;
             return false;
         }
         return true;
