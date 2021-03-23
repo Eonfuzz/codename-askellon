@@ -10,3 +10,6 @@ MinimapNeutralTexture=UI\Minimap\minimap-neutralbuilding.dds
 TownAttackSound=Sounds/Nothing.flac
 UnderAttackSound=Sounds/Nothing.flac
 
+[Errors]
+Controlgranted=TRIGSTR_2021
+

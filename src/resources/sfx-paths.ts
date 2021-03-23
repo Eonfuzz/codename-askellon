@@ -75,6 +75,8 @@ export const SFX_FIRE_BALL = "Models\\sfx\\Fireball Minor.mdx";
 export const SFX_BURNING_RAGE_RED = "Models\\sfx\\Burning Rage Red.mdx";
 export const SFX_BURNING_RAGE_PURPLE = "Models\\sfx\\Burning Rage Purple.mdx";
 
+export const SFX_CONVOKE_CARRION = "Models\\sfx\\AnnihilationBlast2.mdx";
+
 // Preload SFX
 Preload(SFX_WINDWAVE);
 Preload(SFX_LASER_1);
@@ -131,3 +133,4 @@ Preload(SFX_DARK_HARVEST);
 Preload(SFX_FIRE_SPEAR);
 Preload(SFX_FIRE_BOLT);
 Preload(SFX_FIRE_BALL);
+Preload(SFX_CONVOKE_CARRION);

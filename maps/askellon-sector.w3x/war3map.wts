@@ -5203,7 +5203,7 @@ Reactor-Aided Weapon Reprocessor
 }
 
 STRING 1387
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A035 (Convoke Carrion), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -5555,7 +5555,7 @@ STRING 1451
 }
 
 STRING 1452
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6326,6 +6326,7 @@ STRING 1610
 }
 
 STRING 1611
+// Abilities: A02I (Cultist), Name (Name)
 {
 Cultist
 }
@@ -6625,7 +6626,7 @@ Q
 }
 
 STRING 1682
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6928,7 +6929,7 @@ Q
 }
 
 STRING 1737
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8130,7 +8131,6 @@ STRING 1986
 }
 
 STRING 1987
-<<<<<<< HEAD
 // Units: H006 (Carrion), Name (Name)
 {
 Carrion
@@ -8154,22 +8154,10 @@ STRING 1990
 Dark Thrall
 }
 
-STRING 1992
-// Abilities: A035 (Carrion Reincarnation), Name (Name)
-{
-Carrion Reincarnation
-}
-
 STRING 1993
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
-}
-
-STRING 1994
-// Abilities: A034 (Dark Thrall), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781"Rejoice in the crimson light of our Carrion One! Humanity gave you the illusion of will, He has blessed you with subservience, the true nature of man." |r|n|nThis crew member has been made into a |cffb52166Carrion Thrall|r and lives soley to fulfill the will of the Carrion One. The |cffb52166thrall|r still retains the soul of the body and has limited autonomy. Any |cffffff00order|r issued by the cultist to a |cffb52166thrall|r severs the connection of the soul to the body. |n|nActivating this ability will restore autonomy to the |cffb52166thrall|r causing the |cffb52166thrall|r to go into a frenzy for |cff18bc9c8|r seconds, increasing movement speed by |cff18bc9c40%|r and attack speed by |cff18bc9c25%|r.|n|n|cfff9a602Cooldown:|r 35 Seconds
 }
 
 STRING 1995
@@ -8187,138 +8175,58 @@ This unit is in a frenzy; it will attack and move faster.
 Player 1
 }
 
-STRING 1988
-{
-Player 2
-}
-
-STRING 1989
-{
-Player 3
-}
-
-STRING 1990
-{
-Player 4
-}
-
-STRING 1991
-{
-Player 5
-}
-
-STRING 1992
-{
-Player 6
-}
-
-STRING 1993
-{
-Player 7
-}
-
-STRING 1994
-{
-Player 8
-}
-
-STRING 1995
-{
-Player 9
-}
-
-STRING 1996
-{
-Player 10
-}
-
-STRING 1997
-{
-Alien 1
-}
-
-STRING 1998
-{
-Alien 2
-}
-
-STRING 1999
-{
-Alien 3
-}
-
-STRING 2000
-{
-Station Property
-}
-
-STRING 2001
-{
-Station Security
-}
-
-STRING 2002
-{
-Unknown
-}
-
-STRING 2003
-// Abilities: A02I (Cultist), Name (Name)
-{
-Cultist
-}
-
-STRING 2004
-{
-|cff627781Codename Askellon|r
-}
-
-STRING 2005
-{
-6+
-}
-
-STRING 2006
-{
-|cff627781A space horror similar to Metastasis or Space Station 13.|r
-
-The Askellon has been infiltrated by terrible Alien creatures. Cleanse the corruption onboard and escape!
-
-|cff18bc9cdiscord.gg/nDMpQZm|r
-}
-
-STRING 2007
-{
-Eonfuzz and Maddeem
-}
-
 STRING 2008
 {
 Crew
 }
 
-STRING 2009
+STRING 2013
 {
-discord.gg/nDMpQZm
+Askellon
 }
 
-STRING 2010
-// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+STRING 2014
 {
-|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision. The chemicals in the commercialized procedure have the "undesired" effect of damaging the temporal lobe while enchancing auditory brain activity.
-|r|n|nGrants the |cfff9a602Nightstalker|r power.|n|cff18bc9c[+] Passively ignore despair caused by Darkness|n[+] Activate to enhance your senses, granting you vision of any moving unit within a large radius|n|n|cfff9a602Attribute Gain Per Level:|n|cff18bc9c+2.5 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+Crew Member
 }
 
-STRING 2011
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+STRING 2015
 {
-|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
+Zerg
 }
 
-STRING 2012
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+STRING 2016
+// Abilities: A034 (Dark Thrall), Ubertip (Tooltip - Normal - Extended)
 {
-|cff627781Give control of your soul to the Crows of Carion.|r|n|nPassively ressurects nearby corpses into  |cffb52166Undead Crewmembers|r, these seek the living and cannot be killed.|nEach ressurection grants permanent worship speed.
->>>>>>> f21aad997dd1e6ace5aaf8c795f018aa14665b46
+|cff627781"Rejoice in the crimson light of our Carrion One! Humanity gave you the illusion of will, He has blessed you with subservience, the true nature of man." |r|n|nThis crew member has been made into a |cffb52166Carrion|r and lives soley to fulfill the will of the Carrion One. The |cffb52166Carrion|r still retains the soul of the body and has limited autonomy. Any |cffffff00order|r issued by the cultist to a |cffb52166Carrion|r severs the connection of the soul to the body. |n|nActivating this ability will restore autonomy to the |cffb52166Carrion|r causing the |cffb52166Carrion|r to go into a frenzy for |cff18bc9c8|r seconds, increasing movement speed by |cff18bc9c40%|r and attack speed by |cff18bc9c25%|r.|n|n|cfff9a602Cooldown:|r 35 Seconds
+}
+
+STRING 2017
+// Abilities: A035 (Convoke Carrion), Name (Name)
+{
+Convoke Carrion
+}
+
+STRING 2018
+// Abilities: A035 (Convoke Carrion), Tip (Tooltip - Normal)
+{
+Convoke Carrion
+}
+
+STRING 2019
+// Abilities: A035 (Convoke Carrion), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781"My great religion is a belief in the blood, the flesh, as being wiser than the intellect. We can go wrong in our minds. But what our blood feels and believes and says, is always true."|r|n|nTarget a corpse to turn it into a |cffb52166Carrion|r. The soul previously inhabiting the corpse will have limited control over their body and will not be able to speak. The |cffb52166Carrion|r is functionally immortal and revives shortly after being slain.|n|nThe cultist can take control of the |cffb52166Carrion|r at |cffff0000any time|r.
+}
+
+STRING 2020
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 2021
+{
+ 
 }
 

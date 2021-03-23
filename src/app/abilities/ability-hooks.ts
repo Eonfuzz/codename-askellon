@@ -66,6 +66,8 @@ import {
     ABIL_ALIEN_EVOLVE_T2_SPIDER,
     ABIL_ALIEN_EVOLVE_T3_DEFILER,
     ABIL_CREWMEMBER_INFO,
+    ABIL_CULTIST_DARK_THRALL,
+    ABIL_CULTIST_CONVOKE_CARRION
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -122,6 +124,8 @@ import { WebshotAbility } from "./alien/evo-infestation/webshot";
 import { BroodNestAbility } from "./alien/evo-infestation/broodnest";
 import { ConealingWebsAbility } from "./alien/evo-infestation/conealing-webs";
 import { TestBehaviour } from "./behaviours/test-behaviour";
+import { CarrionReincarnationBehaviour} from "./behaviours/carrion-reincarnation"
+import { ConvokeCarrionAbility} from "./cult/convoke-carrion"
 import { MessageAllPlayers } from "lib/utils";
 import { Timers } from "app/timer-type";
 
@@ -489,6 +493,7 @@ AbilityHooks.AddAbility(ABIL_EGG_HATCH_NEUTRAL, () => new MinionEggHatchAbility(
 
 AbilityHooks.AddAbility(ABIL_ALIEN_CREATE_TUMOR, () => new SpawnTumorAbility());
 AbilityHooks.AddAbility(ABIL_CULTIST_GIFT_MADNESS, () => new GiftOfMadnessAbility());
+AbilityHooks.AddAbility(ABIL_CULTIST_CONVOKE_CARRION, () => new ConvokeCarrionAbility());
 AbilityHooks.AddAbility(ABIL_CULTIST_CEREMONIAL_DAGGER, () => new CeremonialDaggerItemAbility());
 AbilityHooks.AddAbility(ABIL_ITEM_DRUG_COMEBACK, () => new ComebackDrugAbility());
 AbilityHooks.AddAbility(ABIL_ITEM_REMOTE_BOMB, () => new PlaceBombAbility());
@@ -500,3 +505,4 @@ AbilityHooks.AddAbility(ABIL_ALIEN_WEBWALK, () => new ConealingWebsAbility());
  * TEST BEHAVIOUR
  */
 AbilityHooks.AddBehaiour(ABIL_CREWMEMBER_INFO, () => new TestBehaviour());
+AbilityHooks.AddBehaiour(ABIL_CULTIST_DARK_THRALL, () => new CarrionReincarnationBehaviour());
