@@ -1,5 +1,4 @@
-/** @noSelfInFile **/
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
@@ -16,7 +15,6 @@ import { ForceEntity } from "app/force/force-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { AbilityHooks } from "../ability-hooks";
 import { SmartTrigger } from "lib/SmartTrigger";
 
 
@@ -34,9 +32,8 @@ const MEAT_AOE_MIN = 150;
 const DURATION_TO_ALIEN = 0.5;
 const DURATION_TO_HUMAN = 0.5;
 
-export class TransformAbility implements Ability {
+export class TransformAbility extends AbilityWithDone {
 
-    private casterUnit: Unit | undefined;
     private timeElapsed: number;
     private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
 
@@ -48,12 +45,15 @@ export class TransformAbility implements Ability {
     private duration: number;
 
     constructor(toAlienFromHuman: boolean) {
+        super();
+
         this.timeElapsed = 0;
         this.toAlien = toAlienFromHuman;
         this.duration = (this.toAlien ? DURATION_TO_ALIEN : DURATION_TO_HUMAN);
     }
 
-    public initialise() {
+    public init() {
+        super.init();
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         // Log.Information("Casting transform!");
@@ -69,16 +69,18 @@ export class TransformAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
         this.timeElapsedSinceSFX += delta;
 
         if (this.casterUnit.isAlive() === false) {
             // Log.Information("Cast isn't alive");
+            this.done = true;
             return false;
         }
         if (this.casterUnit.show === false) {
             // Log.Information("Cast isn't visible");
+            this.done = true;
             return false;
         }
 
@@ -113,7 +115,10 @@ export class TransformAbility implements Ability {
 
             WeaponEntity.getInstance().addProjectile(projectile);
         }
-        return this.timeElapsed < this.duration;
+
+        if (this.timeElapsed >= this.duration) {
+            this.done = true;
+        }
     };
 
     private getRandomOffset(): number {

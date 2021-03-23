@@ -1,5 +1,4 @@
-/** @noSelfInFile **/
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
 import { ProjectileTargetStatic, ProjectileMoverParabolic, ProjectileMoverLinear } from "../../weapons/projectile/projectile-target";
@@ -10,8 +9,6 @@ import { Unit } from "w3ts/handles/unit";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { LeapEntity } from "app/leap-engine/leap-entity";
-import { AbilityHooks } from "../ability-hooks";
-import { ABIL_WEP_DIODE_EJ } from "resources/ability-ids";
 
 // How many projectiles are fired inside the cone
 const NUM_PROJECTILES = 20;
@@ -19,12 +16,11 @@ const PROJECTILE_CONE = 45;
 const PROJECTILE_RANGE = 450;
 const PROJECTILE_SPEED = 2800;
 
-export class DiodeEjectAbility implements Ability {
+export class DiodeEjectAbility extends AbilityWithDone {
 
-    private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
 
-    private timeElapsed: number;
+    private timeElapsed: number = 0;
 
     private doneDamage: boolean = false;
     private hasLeaped: boolean = false;
@@ -36,15 +32,11 @@ export class DiodeEjectAbility implements Ability {
     private weapon: LaserRifle | undefined;  
 
     private weaponIntensityOnCast: number = 0;
-    private leapExpired: boolean = false;
 
     private unitsHit = new Map<number, number>();
 
-    constructor() {
-        this.timeElapsed = 0;
-    }
-
-    public initialise() {
+    public init() {
+        super.init();
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
@@ -59,8 +51,7 @@ export class DiodeEjectAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
-        let leapFinished = false;
+    public step(delta: number) {
         this.timeElapsed += delta;
 
         if (!this.doneDamage && this.ventDamagePoint <= this.timeElapsed) {
@@ -72,8 +63,6 @@ export class DiodeEjectAbility implements Ability {
             this.startLeap();
             this.hasLeaped = true;
         }
-        
-        return !this.leapExpired;
     };
 
     private doVentDamage() {
@@ -174,7 +163,7 @@ export class DiodeEjectAbility implements Ability {
             45,
             1
         ).onFinish((leapEntry) => {
-            this.leapExpired = true;
+            this.done = true;
         });
     }
     

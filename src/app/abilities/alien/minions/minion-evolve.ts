@@ -1,15 +1,14 @@
-import { Ability } from "app/abilities/ability-type";
+import { AbilityWithDone } from "app/abilities/ability-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit } from "w3ts/index";
 import { ALIEN_MINION_CANITE, ALIEN_MINION_HYDRA, ALIEN_MINION_LARVA } from "resources/unit-ids";
 import { Log } from "lib/serilog/serilog";
 
-export class MinionEvolveAbility implements Ability {
+export class MinionEvolveAbility extends AbilityWithDone {
 
-    constructor() {}
-
-    public initialise() {
+    public init() {
+        super.init();
         // Log.Information("Doing evolve egg thing");
         const unit = Unit.fromEvent();
         let target: number;
@@ -28,10 +27,12 @@ export class MinionEvolveAbility implements Ability {
             source: Unit.fromHandle( GetTriggerUnit() ),
             data: { to: target, scale: scale }
         });
+
+        this.done = true;
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         return false;
     };
     

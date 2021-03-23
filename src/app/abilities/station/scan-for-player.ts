@@ -1,22 +1,18 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { SoundRef } from "app/types/sound-ref";
 import { MessageAllPlayers } from "lib/utils";
 import { COL_ORANGE, COL_INFO, COL_ATTATCH, COL_GOOD, COL_GOLD, COL_ALIEN } from "resources/colours";
-import { EventEntity } from "app/events/event-entity";
-import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit, MapPlayer, playerColors } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_SECURITY_TARGET_ALL, ABIL_ACTIVATE_SCAN_CREW, ABIL_ACTIVATE_SCAN_ALIENS, TECH_MAJOR_SECURITY } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
-import { Log } from "lib/serilog/serilog";
-import { Timers } from "app/timer-type";
 import { GlobalCooldownAbilityEntity } from "../global-ability-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { AlienForce } from "app/force/forces/alien-force";
 import { SHIP_VOYAGER_UNIT } from "resources/unit-ids";
 
 export const scanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
-export class StationSecurityScanForPlayer implements Ability {
+export class StationSecurityScanForPlayer extends AbilityWithDone {
 
     private isScanningForAliens = false;
 
@@ -28,10 +24,12 @@ export class StationSecurityScanForPlayer implements Ability {
     private scanGroup = CreateGroup();
 
     constructor(scanForAliens: boolean) {
+        super();
         this.isScanningForAliens = scanForAliens;
     }
 
-    public initialise() {
+    public init() {
+        super.init();
         const u = Unit.fromHandle(GetTriggerUnit());
 
         GlobalCooldownAbilityEntity.getInstance().onAbilityCast(u.handle, ABIL_ACTIVATE_SCAN_CREW);
@@ -43,7 +41,7 @@ export class StationSecurityScanForPlayer implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.duration += delta;
         this.scanInterval -= delta;
 
@@ -107,8 +105,9 @@ export class StationSecurityScanForPlayer implements Ability {
             }
         }
 
-
-        return this.duration < this.maxDuration;
+        if (this.duration >= this.maxDuration) {
+            this.done = true; 
+        }
     };
 
     public destroy() {

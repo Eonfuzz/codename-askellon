@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { SoundRef } from "app/types/sound-ref";
@@ -8,19 +8,19 @@ import { Game } from "app/game";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { ResearchFactory } from "app/research/research-factory";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { DummyCast } from "lib/dummy";
 
 export const puritySealSounds = [
     new SoundRef("Sounds\\WhatIsHisWill.mp3", false),
     new SoundRef("Sounds\\WhatIsYourDuty.mp3", false)
 ];
 
-export class PuritySealAbility implements Ability {
+export class PuritySealAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetUnit: Unit;
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
 
@@ -30,7 +30,7 @@ export class PuritySealAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         const tLevel = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION);
         const hasIncreasedDuration = ResearchFactory.getInstance().techHasOccupationBonus(TECH_MAJOR_RELIGION, 2);
         
@@ -40,6 +40,8 @@ export class PuritySealAbility implements Ability {
             new BuffInstanceDuration(this.unit, hasIncreasedDuration ? 240 : 180)
         ) as PuritySeal;
 
+        
+        this.done = true;
         return false;
     };
 

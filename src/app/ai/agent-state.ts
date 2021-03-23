@@ -15,6 +15,6 @@ export enum AGENT_STATE {
 }
 
 // How many tumors can the AI build (per player)
-export const AI_MAX_TUMORS = 10;
+export const AI_MAX_TUMORS = 12;
 // How far away each tumor has to be
 export const AI_TUMOR_MIN_RADIUS = 600;

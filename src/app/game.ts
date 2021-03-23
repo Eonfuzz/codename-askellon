@@ -20,7 +20,6 @@ import { ChatEntity } from "./chat/chat-entity";
 import { InteractionEntity } from "./interactions/interaction-entity";
 import { ResearchFactory } from "./research/research-factory";
 import { GeneEntity } from "./shops/gene-entity";
-import { AbilityEntity } from "./abilities/ability-entity";
 import { WorldEntity } from "./world/world-entity";
 import { SpaceEntity } from "./space/space-module";
 
@@ -43,6 +42,7 @@ import { EggEntity } from "./ai/egg-entity";
 import { GENERIC_CHAT_SOUND_REF } from "./force/forces/force-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { TipEntity } from "./tips/tip-entity";
+import { AbilityHooks } from "./abilities/ability-hooks";
 
 export const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export const labrynthIntro = new SoundRef("Sounds\\Theme\\TheLabrynth.mp3", true, true);
@@ -122,7 +122,7 @@ export class Game {
         // Relies on ALL the above
         SpaceEntity.getInstance();
         WeaponEntity.getInstance();
-        AbilityEntity.getInstance();
+        AbilityHooks.getInstance();
 
         AIEntity.getInstance();
         AntiMetaEntity.start();

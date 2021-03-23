@@ -1,13 +1,12 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector2 } from "../../types/vector2";
 import { ABIL_SHIP_BARREL_ROLL_RIGHT } from "resources/ability-ids";
 import { Unit } from "w3ts/index";
 import { Ship } from "app/space/ships/ship-type";
 import { SpaceEntity } from "app/space/space-module";
 
-/** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";
-export class ShipBarrelRoll implements Ability {
+export class ShipBarrelRoll extends AbilityWithDone {
 
     private unit: Unit;
     private ship: Ship;
@@ -24,9 +23,10 @@ export class ShipBarrelRoll implements Ability {
 
     private playingAnim = false;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.ship = SpaceEntity.getInstance().getShipForUnit(this.unit);
 
@@ -42,7 +42,7 @@ export class ShipBarrelRoll implements Ability {
         return true;
     }
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         if (this.playingAnim === false) {
             this.playingAnim = true;
@@ -53,7 +53,7 @@ export class ShipBarrelRoll implements Ability {
 
         this.timeElapsed += delta;
 
-        if (!this.ship.engine) return false;
+        if (!this.ship.engine) return this.done = true;
 
         const pos = this.ship.engine.getPosition().add(this.movementVector.multiplyN(delta));
         this.ship.engine.setPosition(pos);
@@ -71,7 +71,7 @@ export class ShipBarrelRoll implements Ability {
             this.movementVector = this.movementVector.setLengthN(this.rollLength - this.rollLength * (nTime / this.rollSlowDown));
         }
 
-        return this.timeElapsed <= (this.rollDuration + this.rollSlowDown);
+        if (this.timeElapsed >= (this.rollDuration + this.rollSlowDown)) this.done = true;
     }
 
     public destroy() {

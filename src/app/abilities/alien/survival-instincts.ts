@@ -1,5 +1,4 @@
-/** @noSelfInFile **/
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
@@ -8,9 +7,7 @@ import { Trigger, Unit, Timer, MapPlayer } from "w3ts";
 import { getZFromXY, AddGhost, RemoveGhost, CreateBlood } from "lib/utils";
 import { FilterIsAlive } from "resources/filters";
 import { ForceEntity } from "app/force/force-entity";
-import { WeaponEntity } from "app/weapons/weapon-entity";
-import { AbilityHooks } from "../ability-hooks";
-import { ABIL_ALIEN_SURVIVAL_INSTINCTS } from "resources/ability-ids";
+import { WeaponEntity } from "app/weapons/weapon-entity"
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -26,22 +23,16 @@ const MEAT_AOE = 950;
 const MEAT_AOE_MIN = 150;
 const DURATION_TO_HUMAN = 0.5;
 
-export class SurvivalInstinctsAbility implements Ability {
+export class SurvivalInstinctsAbility extends AbilityWithDone {
 
-    private casterUnit: Unit | undefined;
-    private timeElapsed: number;
+    private timeElapsed: number = 0;
     private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
 
-    private duration: number;
+    private duration: number  = DURATION_TO_HUMAN;
 
-    constructor() {
-        this.timeElapsed = 0;
-        this.duration = DURATION_TO_HUMAN;
-    }
+    public init() {
+        super.init();
 
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
-        
         const group = CreateGroup();
         GroupEnumUnitsInRange(
             group, 
@@ -63,7 +54,7 @@ export class SurvivalInstinctsAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
         this.timeElapsedSinceSFX += delta;
 
@@ -98,7 +89,10 @@ export class SurvivalInstinctsAbility implements Ability {
 
             WeaponEntity.getInstance().addProjectile(projectile);
         }
-        return this.timeElapsed < this.duration;
+
+        if (this.timeElapsed < this.duration) {
+            this.done = true;
+        }
     };
 
     private getRandomOffset(): number {

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { SPRINT_BUFF_ID, TECH_MAJOR_VOID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
@@ -19,8 +19,7 @@ import { WeaponEntity } from "app/weapons/weapon-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
 
-/** @noSelfInFile **/
-export class ShipMacroLasAbility implements Ability {
+export class ShipMacroLasAbility extends AbilityWithDone {
 
     private unit: Unit;
     private shootingShip: Ship;
@@ -28,9 +27,10 @@ export class ShipMacroLasAbility implements Ability {
     private bulletDamage = 60;
     private causeFires = false;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.shootingShip = SpaceEntity.getInstance().getShipForUnit(this.unit);
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass += this.shootingShip.engine.velocityForwardMax / 4;
@@ -93,10 +93,11 @@ export class ShipMacroLasAbility implements Ability {
         WeaponEntity.getInstance().addProjectile(projLeft);
         WeaponEntity.getInstance().addProjectile(projRight);
 
+        this.done = true;
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         return false;
     };
 

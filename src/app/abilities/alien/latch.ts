@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit, Timer, Trigger, MapPlayer, playerColors } from "w3ts/index";
 import { Log } from "lib/serilog/serilog";
 import { ABIL_ALIEN_LATCH, TECH_PLAYER_INFESTS, TECH_LATCHED_IN_HUMAN, TECH_LATCHED_IN_WHATEVER } from "resources/ability-ids";
@@ -14,13 +14,12 @@ import { ChatEntity } from "app/chat/chat-entity";
 import { EventData } from "app/events/event-data";
 import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { AbilityHooks } from "../ability-hooks";
 import { AddGhost, RemoveGhost, getZFromXY } from "lib/utils";
 import { DummyCast } from "lib/dummy";
 import { BUFF_ID_NANOMED, BUFF_ID_TRIFEX, BUFF_ID_FEAST, BUFF_ID_REGENERATION } from "resources/buff-ids";
 
 
-export class LatchAbility implements Ability {
+export class LatchAbility extends AbilityWithDone {
 
     private unit: Unit;
     private targetUnit: Unit;
@@ -42,10 +41,9 @@ export class LatchAbility implements Ability {
     private damageTicker = 0;
     private eatAbilStackCount = 0;
 
-    constructor() {
-    }
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
         this.castOrder = this.unit.currentOrder;
@@ -81,7 +79,7 @@ export class LatchAbility implements Ability {
         if (pData && pData.getCrewmember() && pData.getCrewmember().unit === this.targetUnit) {
             // Create that hook
             
-            this.latchChatHookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.processChat(hook));
+            this.latchChatHookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.stepChat(hook));
             this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
         }
         /**
@@ -100,7 +98,7 @@ export class LatchAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         if (this.forceStop) return false;
 
         // Make sure our current unit or target exists
@@ -113,6 +111,7 @@ export class LatchAbility implements Ability {
 
         // Kill if we aren't
         if (!isLatching) {
+            this.done = true;
             return false;
         }
 
@@ -127,6 +126,7 @@ export class LatchAbility implements Ability {
             || UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_TRIFEX)
             || UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_REGENERATION)) {
             this.forceStop = true;
+            this.done = true;
             return false;
         }
 
@@ -151,7 +151,7 @@ export class LatchAbility implements Ability {
         return true;
     };
 
-    private processChat(hook: ChatHook) {
+    private stepChat(hook: ChatHook) {
 
         if (hook.who === this.unit.owner) {
             const pData = PlayerStateFactory.get(this.targetUnit.owner);

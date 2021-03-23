@@ -4,6 +4,7 @@ import {MouseCallback} from "./MouseCallback";
 import {InputManagerKeyboardHandler} from "./InputManagerKeyboardHandler";
 import {InputManagerMouseHandler} from "./InputManagerMouseHandler";
 import { Hooks } from "lib/Hooks";
+import { Vector2 } from "app/types/vector2";
 
 export class InputManager {
     private static instance: InputManager;
@@ -122,5 +123,13 @@ export class InputManager {
      */
     public static getLastMouseCoordinate(triggeringPlayer: player) {
         return InputManager.getInstance().mouseHandler.getLastMouseCoordinate(triggeringPlayer);
+    }
+
+    /**
+     * Gets the last known mouse position, filters out GUI hovering so its always referencing the game world coordinates.
+     * @param triggeringPlayer the player to get it from.
+     */
+    public static setLastMouseCoordinate(triggeringPlayer: player, toVec: Vector2) {
+        return InputManager.getInstance().mouseHandler.lastCoordinate[GetPlayerId(triggeringPlayer)] = toVec;
     }
 }

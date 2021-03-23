@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
@@ -18,17 +18,16 @@ const EXPLOSION_BASE_DAMAGE = 20;
 const EXPLOSION_AOE = 190;
 
 
-export class CryoGrenadeAbility implements Ability {
+export class CryoGrenadeAbility extends AbilityWithDone {
 
-    private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
 
     private castingPlayer: MapPlayer | undefined;
     private damageGroup = CreateGroup();
+    
 
-    constructor() {}
-
-    public initialise() {
+    public init() {
+        super.init();
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.castingPlayer = this.casterUnit.owner;
 
@@ -57,6 +56,8 @@ export class CryoGrenadeAbility implements Ability {
     };
 
     private explode(atWhere: Vector3) {
+        this.done = true;
+        
         let sfx = AddSpecialEffect(SFX_FROST_NOVA, atWhere.x, atWhere.y);
         BlzSetSpecialEffectZ(sfx, getZFromXY(atWhere.x, atWhere.y));
         DestroyEffect(sfx);
@@ -74,7 +75,7 @@ export class CryoGrenadeAbility implements Ability {
         return true;
     }
 
-    public process(delta: number) {
+    public step(delta: number) {
         return true;
     };
 

@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
@@ -6,14 +6,10 @@ import { ProjectileTargetStatic, ProjectileMoverParabolic } from "../../weapons/
 import { FilterIsEnemyAndAlive, FilterIsAlive } from "../../../resources/filters";
 import { MapPlayer, Unit } from "w3ts";
 import { getZFromXY, randomWithinCircle } from "lib/utils";
-import { BUFF_ID } from "resources/buff-ids";
-import { SFX_CRYO_GRENADE, SFX_FROST_NOVA, SFX_HELLFIRE_GRENADE, SFX_BUILDING_EXPLOSION, SFX_FIRE_EXPLOSION, SFX_METEOR_CANISTER } from "resources/sfx-paths";
+import { SFX_METEOR_CANISTER } from "resources/sfx-paths";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { ForceEntity } from "app/force/force-entity";
-import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
-import { AbilityHooks } from "../ability-hooks";
 import { ABILITY_SLOW_ID, ABIL_ITEM_CRYO_GRENADE } from "resources/ability-ids";
 import { Timers } from "app/timer-type";
 import { Log } from "lib/serilog/serilog";
@@ -24,23 +20,21 @@ const EXPLOSION_BASE_DAMAGE = 25;
 const EXPLOSION_AOE = 300;
 
 
-export class MeteorCanisterAbility implements Ability {
+export class MeteorCanisterAbility extends AbilityWithDone {
 
-    private casterUnit: Unit | undefined;
     private targetLoc: Vector3 | undefined;
 
     private castingPlayer: MapPlayer | undefined;
 
     private damageGroup = CreateGroup();
 
-    private done = false;
-
     private numWaves = 5;
     private waitBetweenWaves = 1.3;
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.castingPlayer = this.casterUnit.owner;
 
@@ -137,7 +131,7 @@ export class MeteorCanisterAbility implements Ability {
         return true;
     }
 
-    public process(delta: number) {
+    public step(delta: number) {
         return !this.done;
     };
 

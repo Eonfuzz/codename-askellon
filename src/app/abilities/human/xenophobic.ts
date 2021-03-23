@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/handles/unit";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { WorldEntity } from "app/world/world-entity";
@@ -23,7 +23,7 @@ import { GunItem } from "app/weapons/guns/gun-item";
 const comeGetSomePath = "Sounds\\ComeGetSome.mp3";
 Preload(comeGetSomePath);
 
-export class XenophobicAbility implements Ability {
+export class XenophobicAbility extends AbilityWithDone {
 
     private unit: Unit | undefined;
     private timeElapsed: number = 0;
@@ -38,9 +38,10 @@ export class XenophobicAbility implements Ability {
     private abilTooltipHandle: number;
 
 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         PlayNewSoundOnUnit(comeGetSomePath, this.unit, 80);
 
@@ -59,7 +60,7 @@ export class XenophobicAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         if (this.timeElapsed === 0) {
             this.unit.addAbility(ABIL_GENE_XENOPHOBIC_PUNCH);
 
@@ -84,7 +85,8 @@ export class XenophobicAbility implements Ability {
         if (this.crewmember && this.crewmember.weapon) {
             this.crewmember.weapon.onRemove();
         }
-        return this.timeElapsed < this.maxDuration;
+        if (this.timeElapsed >= this.maxDuration) 
+            this.done = true; 
     };
 
     public destroy() { 

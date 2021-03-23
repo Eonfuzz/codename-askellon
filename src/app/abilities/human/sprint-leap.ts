@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { SPRINT_BUFF_ID } from "resources/ability-ids";
 import { Vector3 } from "app/types/vector3";
@@ -9,7 +9,7 @@ import { SoundRef } from "app/types/sound-ref";
 
 const TECH_UPGRADE_SPRINT_LEAP = FourCC('R001');
 
-export class SprintLeapAbility implements Ability {
+export class SprintLeapAbility extends AbilityWithDone {
 
     private unit: unit | undefined;
 
@@ -18,9 +18,10 @@ export class SprintLeapAbility implements Ability {
     private unitLastLoc: Vector2 | undefined;
     
     private sound: SoundRef; 
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = GetTriggerUnit();
 
         // If unit doesn't have the right tech upgrade return false
@@ -36,7 +37,7 @@ export class SprintLeapAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
 
         if (this.unit && UnitHasBuffBJ(this.unit, SPRINT_BUFF_ID) && this.unitLastLoc) {
@@ -50,6 +51,7 @@ export class SprintLeapAbility implements Ability {
 
                 if (this.timeAtZeroDelta > 0.2) {                  
                     UnitRemoveBuffBJ(SPRINT_BUFF_ID, this.unit);
+                    this.done = true;
                     return false;
                 }
             }
@@ -60,6 +62,7 @@ export class SprintLeapAbility implements Ability {
             this.unitLastLoc = newPos;
         }
         else {
+            this.done = true;
             return false;
         }
         return true;

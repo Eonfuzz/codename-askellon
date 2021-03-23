@@ -16,6 +16,7 @@ import { AgentBuildTumor } from "./state/agent-build-tumor";
 import { Quick } from "lib/Quick";
 import { ABIL_ALIEN_MINION_EVOLVE } from "resources/ability-ids";
 import { AgentEvolve } from "./state/agent-evolve";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 /**
  * A player that acts under the AI entity
@@ -123,6 +124,11 @@ export class PlayerAgent {
 
     public getCurrentAgents() {
         return this.agentCount;
+    }
+
+
+    public canTakeAgent(agent: Unit, ignoreLimit: boolean = false) {
+        return (ignoreLimit || !this.hasMaximumAgents()) && PlayerStateFactory.isAlienAI(agent.owner);
     }
 
     private enactStateOnAgent(agent: Unit, state: AGENT_STATE): AgentState | undefined {

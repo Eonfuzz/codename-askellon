@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../../weapons/projectile/projectile";
@@ -22,11 +22,8 @@ const POOL_SFX = 'war3mapImported\\ToxicField.mdx';
 const POOL_DURATION = 10;
 const POOL_AREA = 350;
 
-export class AcidPoolAbility implements Ability {
-
-    private casterUnit: Unit | undefined;
+export class AcidPoolAbility extends AbilityWithDone {
     private targetLoc: Vector3 | undefined;
-    private timeElapsed: number;
 
     private poolLocation: Vector3 | undefined;
     private sfx: effect | undefined;
@@ -38,13 +35,11 @@ export class AcidPoolAbility implements Ability {
     private lastDelta = 0;
     private checkForSlowEvery = 0.3;
     private timeElapsedSinceLastSlowCheck = 0.5;
+    private timeElapsed = 0;
 
-    constructor() {
-        this.timeElapsed = 0;
-    }
-
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
+        
         this.castingPlayer = this.casterUnit.owner;
 
         this.targetLoc =  new Vector3(GetSpellTargetX(), GetSpellTargetY(), 0);
@@ -97,7 +92,7 @@ export class AcidPoolAbility implements Ability {
         return true;
     }
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         if (this.poolLocation && this.castingPlayer) {
             this.timeElapsed += delta;
@@ -118,7 +113,9 @@ export class AcidPoolAbility implements Ability {
             }
         }
 
-        return this.timeElapsed < POOL_DURATION;
+        if (this.timeElapsed >= POOL_DURATION) {
+            this.done = true;
+        }
     };
 
     private damageUnit() {

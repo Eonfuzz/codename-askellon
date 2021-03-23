@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Effect, MapPlayer, Unit } from "w3ts/index";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
@@ -10,24 +10,23 @@ import { FilterIsAlive } from "resources/filters";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-export class GiftOfMadnessAbility implements Ability {
+export class GiftOfMadnessAbility extends AbilityWithDone {
 
-    private unit: Unit;
     private targetLoc: Vector3;
     private damageGroup: group = CreateGroup();
 
     private AOE = 150;
 
-    constructor() {}
+    
 
-    public initialise() {
-        this.unit = Unit.fromHandle(GetTriggerUnit());    
+    public init() {
+        super.init();
         
         this.targetLoc = new Vector3(GetSpellTargetX(), GetSpellTargetY(), getZFromXY(GetSpellTargetX(), GetSpellTargetY()));
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
 
         let sfx = SFX_DARK_HARVEST;
         let volume = 50;
@@ -37,7 +36,7 @@ export class GiftOfMadnessAbility implements Ability {
             this.targetLoc.x, 
             this.targetLoc.y,
             this.AOE,
-            FilterIsAlive(this.unit.owner)
+            FilterIsAlive(this.casterUnit.owner)
         );
         ForGroup(this.damageGroup, () => {
             const u = Unit.fromHandle(GetEnumUnit());
@@ -51,7 +50,7 @@ export class GiftOfMadnessAbility implements Ability {
                 DynamicBuffEntity.add(
                     BUFF_ID.MADNESS, 
                     u,
-                    new BuffInstanceDuration(this.unit, 300)
+                    new BuffInstanceDuration(this.casterUnit, 300)
                 );
             }
         });
@@ -61,6 +60,8 @@ export class GiftOfMadnessAbility implements Ability {
         const effect = new Effect(sfx, this.targetLoc.x, this.targetLoc.y);
         effect.z = this.targetLoc.z + 10;
         effect.destroy();
+
+        this.done = true;
         return false;
     };
 

@@ -16,6 +16,7 @@ import { Timers } from "app/timer-type";
 import { NodeGraph } from "./graph-builder";
 import { ABIL_ALIEN_MINION_EVOLVE } from "resources/ability-ids";
 import { AI_MAX_TUMORS } from "./agent-state";
+import { PlayerAgentCult } from "./player-agent-cult";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -50,6 +51,10 @@ export class AIEntity extends Entity {
             SetPlayerTechMaxAllowed(p.handle, ALIEN_STRUCTURE_TUMOR, AI_MAX_TUMORS);
         });
 
+        const nAgent = new PlayerAgentCult(PlayerStateFactory.CultistAIPlayer, 40);
+        this.playerAgents.push(nAgent);
+        this.playerToAgent.set(nAgent.player.id, nAgent);
+
         /**
          * Listen to create AI minion requests
          */
@@ -83,13 +88,13 @@ export class AIEntity extends Entity {
      * Returns a player agent that can have more agents
      * @param ignoreLimit 
      */
-    public getBestPlayerAgent(ignoreLimit: boolean = false): PlayerAgent | undefined {
+    public getBestPlayerAgent(forAgent: Unit, ignoreLimit: boolean = false): PlayerAgent | undefined {
         { // DO
             // Search through our agents and add
             for (let i = 0; i< this.playerAgents.length; i++) {
-                const agent = this.playerAgents[i];
-                if (!agent.hasMaximumAgents()) {
-                    return agent;
+                const playerAgent = this.playerAgents[i];
+                if (playerAgent.canTakeAgent(forAgent)) {
+                    return playerAgent;
                 }
             }
 
@@ -97,11 +102,12 @@ export class AIEntity extends Entity {
             // Can we ignore limit?
             if (ignoreLimit) {
                 // Find agent with least amound of units
-                let leastUnitAgent: PlayerAgent = undefined;
+                let leastUnitAgent: PlayerAgent = this.playerAgents[0];
                 for (let i = 0; i< this.playerAgents.length; i++) {
-                    const agent = this.playerAgents[i];
-                    if (!leastUnitAgent || leastUnitAgent.getCurrentAgents() > agent.getCurrentAgents()) {
-                        leastUnitAgent = agent;
+                    const playerAgent = this.playerAgents[i];
+                    if (playerAgent.canTakeAgent(forAgent, ignoreLimit) && 
+                        leastUnitAgent.getCurrentAgents() > playerAgent.getCurrentAgents()) {
+                        leastUnitAgent = playerAgent;
                     }
                 }
                 // Now create
@@ -148,7 +154,7 @@ export class AIEntity extends Entity {
 
             if (!isAlreadyAgent) {
                 try {
-                    const createFor = instance.getBestPlayerAgent();
+                    const createFor = instance.getBestPlayerAgent(whichUnit);
 
                     if (!createFor) {
                         whichUnit.show = false;

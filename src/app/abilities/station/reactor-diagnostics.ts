@@ -1,14 +1,15 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { COL_TEAL, COL_ATTATCH, COL_INFO, COL_MISC, COL_GOOD, COL_ORANGE } from "resources/colours";
 import { Timers } from "app/timer-type";
 import { MapPlayer } from "w3ts/index";
 import { PlayNewSound } from "lib/translators";
 import { AskellonEntity } from "app/station/askellon-entity";
 
-export class ReactorDiagnosticsAbility implements Ability {
-    constructor() {}
+export class ReactorDiagnosticsAbility extends AbilityWithDone {
+    
 
-    public initialise() {
+    public init() {
+        super.init();
 
         const castingPlayer = MapPlayer.fromHandle(GetOwningPlayer(GetTriggerUnit()));
 
@@ -61,10 +62,11 @@ export class ReactorDiagnosticsAbility implements Ability {
             DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 15.5,
                 `${COL_MISC}------->|r Generation: ${COL_GOOD}${AskellonEntity.getPowerGeneration()} M-kW|r`);
         });
+        this.done = true; 
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         return false;
     };
 

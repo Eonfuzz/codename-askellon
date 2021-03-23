@@ -112,8 +112,8 @@ export class PlayerStateFactory {
         return instance.forces.filter(f => f.is(forceName))[0];
     }
     // Players
-    public static StationSecurity = MapPlayer.fromIndex(22);
     public static StationProperty = MapPlayer.fromIndex(21);
+    public static StationSecurity = MapPlayer.fromIndex(22);
     public static UnknownPlayer = MapPlayer.fromIndex(23);
 
     public static CultistAIPlayer = MapPlayer.fromIndex(17);

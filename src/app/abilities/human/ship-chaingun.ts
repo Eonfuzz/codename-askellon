@@ -1,4 +1,4 @@
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
@@ -14,9 +14,8 @@ import { WeaponEntity } from "app/weapons/weapon-entity";
 import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
 
-/** @noSelfInFile **/
 const bulletModel = "war3mapImported\\Bullet.mdx";
-export class ShipChaingunAbility implements Ability {
+export class ShipChaingunAbility extends AbilityWithDone {
 
     private unit: Unit;
     private shootingShip: Ship;
@@ -25,9 +24,10 @@ export class ShipChaingunAbility implements Ability {
     private timeSinceBullet = 0;
     private bulletDamage = 20;
     private sound = new SoundRef("sounds\\chaingunSound.mp3", false);
-    constructor() {}
+    
 
-    public initialise() {
+    public init() {
+        super.init();
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.shootingShip = SpaceEntity.getInstance().getShipForUnit(this.unit);
         if (this.shootingShip && this.shootingShip.engine) this.shootingShip.engine.mass += this.shootingShip.engine.velocityForwardMax / 4;
@@ -40,12 +40,12 @@ export class ShipChaingunAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
         this.timeSinceBullet += delta;
 
         // End if we are leaving space
-        if (this.shootingShip.state === ShipState.inBay) return false;
+        if (this.shootingShip.state === ShipState.inBay) return this.done = true;
 
         if (this.timeElapsed >= 1 && this.timeSinceBullet >= 0.1) {
             this.timeSinceBullet -= 0.1;
@@ -81,7 +81,7 @@ export class ShipChaingunAbility implements Ability {
             WeaponEntity.getInstance().addProjectile(projectile);
         }
 
-        return this.timeElapsed <= 5;
+        if (this.timeElapsed >= 5) this.done = true;
     };
 
     private onCollide(projectile: Projectile, withWho: unit) {

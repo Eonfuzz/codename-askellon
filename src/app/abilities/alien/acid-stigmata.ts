@@ -1,5 +1,4 @@
-/** @noSelfInFile **/
-import { Ability } from "../ability-type";
+import { AbilityWithDone } from "../ability-type";
 import { Unit, Effect } from "w3ts";
 import { BUFF_ID_ROACH_ARMOR, BUFF_ID } from "resources/buff-ids";
 import { TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_ACID_HURL } from "resources/ability-ids";
@@ -10,7 +9,6 @@ import { SoundRef } from "app/types/sound-ref";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { DummyCast } from "lib/dummy";
-import { AbilityHooks } from "../ability-hooks";
 
 // Damage increase each second
 const MAX_DURATION = 6;
@@ -22,9 +20,8 @@ const DAMAGE_EVERY = 0.1;
 
 const ABILITY_SLOW_ID = FourCC('A00B');
 
-export class AcidStigmataAbility implements Ability {
+export class AcidStigmataAbility extends AbilityWithDone {
 
-    private casterUnit: Unit;
     private timeElapsed: number = 0;
 
     private damageGroup = CreateGroup();
@@ -35,10 +32,10 @@ export class AcidStigmataAbility implements Ability {
     private poisonAura: Effect;
     private soundRef = new SoundRef("Abilities\\Spells\\Undead\\Unsummon\\CityscapeCrystalShield1.flac", true);
 
-    constructor() {}
+    
 
-    public initialise() {
-        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
+    public init() {
+        super.init();
 
         this.casterUnit.addAbility(FourCC('A00W'));
         UnitRemoveBuffBJ(BUFF_ID_ROACH_ARMOR, this.casterUnit.handle);
@@ -55,11 +52,12 @@ export class AcidStigmataAbility implements Ability {
         return true;
     };
 
-    public process(delta: number) {
+    public step(delta: number) {
         this.timeElapsed += delta;
 
         // Stop if time elapsed is too far
         if (this.hasAttacked || this.timeElapsed >= MAX_DURATION) {
+            this.done = true;
             return false;
         }
 
