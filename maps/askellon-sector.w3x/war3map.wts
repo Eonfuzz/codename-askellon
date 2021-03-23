@@ -4909,7 +4909,7 @@ Magnetic Fusilade
 }
 
 STRING 1321
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A034 (Dark Thrall), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -5221,7 +5221,7 @@ Q
 }
 
 STRING 1390
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6620,7 +6620,7 @@ Q
 }
 
 STRING 1681
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6923,7 +6923,7 @@ Q
 }
 
 STRING 1736
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8147,5 +8147,59 @@ STRING 1986
 // Destructibles: B010 (Night eye), EditorSuffix (Editor Suffix)
 {
 (Ability Effect)
+}
+
+STRING 1987
+// Units: H006 (Carrion), Name (Name)
+{
+Carrion
+}
+
+STRING 1988
+// Units: H006 (Carrion), Ubertip (Tooltip - Extended)
+{
+An undead thrall of the Carrion One.
+}
+
+STRING 1989
+// Abilities: A034 (Dark Thrall), Name (Name)
+{
+Dark Thrall
+}
+
+STRING 1990
+// Abilities: A034 (Dark Thrall), Tip (Tooltip - Normal)
+{
+Dark Thrall
+}
+
+STRING 1992
+// Abilities: A035 (Carrion Reincarnation), Name (Name)
+{
+Carrion Reincarnation
+}
+
+STRING 1993
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 1994
+// Abilities: A034 (Dark Thrall), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781"Rejoice in the crimson light of our Carrion One! Humanity gave you the illusion of will, He has blessed you with subservience, the true nature of man." |r|n|nThis crew member has been made into a |cffb52166Carrion Thrall|r and lives soley to fulfill the will of the Carrion One. The |cffb52166thrall|r still retains the soul of the body and has limited autonomy. Any |cffffff00order|r issued by the cultist to a |cffb52166thrall|r severs the connection of the soul to the body. |n|nActivating this ability will restore autonomy to the |cffb52166thrall|r causing the |cffb52166thrall|r to go into a frenzy for |cff18bc9c8|r seconds, increasing movement speed by |cff18bc9c40%|r and attack speed by |cff18bc9c25%|r.|n|n|cfff9a602Cooldown:|r 35 Seconds
+}
+
+STRING 1995
+// Buffs/Effects: B00I (), Bufftip (Tooltip)
+{
+Frenzy
+}
+
+STRING 1996
+// Buffs/Effects: B00I (), Buffubertip (Tooltip - Extended)
+{
+This unit is in a frenzy; it will attack and move faster.
 }
 

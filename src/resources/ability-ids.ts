@@ -192,6 +192,7 @@ export const ABIL_REPAIR_NEOKATANA = FourCC('A02N');
 export const ABIL_EGG_HATCH_NEUTRAL = FourCC('A02O');
 export const ABIL_ALIEN_CREATE_TUMOR = FourCC('A02P');
 export const ABIL_CULTIST_GIFT_MADNESS = FourCC('A02Q');
+export const ABIL_CULTIST_DARK_THRALL = FourCC('A034');
 
 export const ABIL_MOVESPEED_BONUS_30 = FourCC('A02Y');
 export const ABIL_LIFE_REGEN_BONUS_25 = FourCC('A02Y');
