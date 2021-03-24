@@ -34,7 +34,7 @@ export class CarrionReincarnationBehaviour extends Behaviour {
             this.forUnit = Unit.fromHandle(GetTriggerUnit());
             ReviveHero(this.forUnit.handle,this.forUnit.x,this.forUnit.y,false);
             PauseUnit(this.forUnit.handle,true);
-            SetUnitAnimation(this.forUnit.handle,"death");
+            SetUnitAnimation(this.forUnit.handle, "death");
             SetUnitInvulnerable(this.forUnit.handle,true);
             SetUnitState(this.forUnit.handle,UNIT_STATE_LIFE,2);
             this.reviveRate = BlzGetUnitMaxHP(this.forUnit.handle) / REVIVE_TIME;
@@ -49,8 +49,8 @@ export class CarrionReincarnationBehaviour extends Behaviour {
             SetUnitState(this.forUnit.handle,UNIT_STATE_LIFE, newHp);
             if (newHp >= maxHp) {
                 this.isReviving = false;
-                SetUnitAnimation(this.forUnit.handle,"birth");
-                QueueUnitAnimation(this.forUnit.handle,"stand");
+                SetUnitAnimation(this.forUnit.handle, "birth");
+                QueueUnitAnimation(this.forUnit.handle, "stand");
                 Timers.addTimedAction(2.33, () => {
                     SetUnitInvulnerable(this.forUnit.handle,false);
                     PauseUnit(this.forUnit.handle,false);

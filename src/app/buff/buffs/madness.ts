@@ -83,10 +83,15 @@ export class Madness extends DynamicBuff {
             const oldVal = this.insanity;
             this.insanityTicker -= INSANTIY_TICK;
 
+            const hasPuritySeal = UnitHasBuffBJ(this.unit.handle, BUFF_ID_PURITY_SEAL);
             // Only increment insanity status while it has despair
-            if (UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR) && !UnitHasBuffBJ(this.unit.handle, BUFF_ID_PURITY_SEAL)) {
+            if (UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR) && !hasPuritySeal) {
                 this.insanity++;
             }
+            else if (hasPuritySeal) {
+                this.insanity--;
+            }
+            
             this.insanity = Math.min(this.insanity, this.maxInsanity);
 
             // Remove this buff

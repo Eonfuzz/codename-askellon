@@ -6,6 +6,7 @@ import { getYawPitchRollFromVector, PlayNewSoundOnUnit } from "lib/translators";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { CULT_FORCE_NAME } from "app/force/forces/force-names";
 import { CultistForce } from "app/force/forces/cultist/cultist-force";
+import { SFX_CONVOKE_CARRION } from "resources/sfx-paths";
 
 export class CeremonialDaggerItemAbility extends AbilityWithDone {
 
@@ -70,6 +71,7 @@ export class CeremonialDaggerItemAbility extends AbilityWithDone {
             if (this.targetUnit.life <= 50) {
                 const cultistForce = PlayerStateFactory.getForce(CULT_FORCE_NAME) as CultistForce;
                 cultistForce.playSpinExplodeanimationFor(this.targetUnit, () => {
+
                     this.unit.damageTarget(this.targetUnit.handle, 999999, true, false, 
                         ATTACK_TYPE_HERO, 
                         DAMAGE_TYPE_UNKNOWN,
@@ -78,12 +80,19 @@ export class CeremonialDaggerItemAbility extends AbilityWithDone {
                     this.targetUnit.x = 0;
                     this.targetUnit.y = 0;
                     this.targetUnit.show = false;
-                    this.unit.strength += 7;
-                    this.unit.intelligence += 5;
-                    this.unit.owner.setState(
-                        PLAYER_STATE_RESOURCE_LUMBER, 
-                        this.unit.owner.getState(PLAYER_STATE_RESOURCE_LUMBER) + 1
-                    );
+
+                    if (this.targetUnit.isHero()) {
+                        const sfx = new Effect(SFX_CONVOKE_CARRION, this.unit.x, this.unit.y);
+                        sfx.z = getZFromXY(this.unit.x, this.unit.y) + 10;
+                        sfx.destroy();
+
+                        this.unit.strength += 7;
+                        this.unit.intelligence += 5;
+                        this.unit.owner.setState(
+                            PLAYER_STATE_RESOURCE_LUMBER, 
+                            this.unit.owner.getState(PLAYER_STATE_RESOURCE_LUMBER) + 1
+                        );
+                    }
                 });    
             }
 

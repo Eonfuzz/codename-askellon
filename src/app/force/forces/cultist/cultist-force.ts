@@ -2,7 +2,7 @@ import { Log } from "../../../../lib/serilog/serilog";
 import { ForceType } from "../force-type";
 import { ABIL_ALTAR_IS_BUILT, ABIL_APPLY_MADNESS, ABIL_CREWMEMBER_INFO, ABIL_CULTIST_GIFT_MADNESS, ABIL_CULTIST_INFO, UNIT_IS_FLY } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer, Effect } from "w3ts";
+import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer, Effect, Item } from "w3ts";
 import { cultistTooltip, resolveTooltip } from "resources/ability-tooltips";
 import { EVENT_TYPE } from "app/events/event-enum";
 
@@ -322,9 +322,6 @@ export class CultistForce extends CrewmemberForce {
         if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
 
         if (researchLevel === 1 && altar && pData) {
-            this.canWin = true;
-        }
-        if (researchLevel === 2 && altar && pData) {
             const unit = pData.getUnit();
             const spawnLoc = Vector2.fromWidget(altar.handle);
             const deltaLoc = spawnLoc.add( Vector2.fromWidget(unit.handle).subtract(spawnLoc).multiplyN(0.5));
@@ -333,8 +330,14 @@ export class CultistForce extends CrewmemberForce {
             sfx.setColor(150, 20, 30);
             Timers.addTimedAction(1, () => {
                 sfx.destroy();
-                CreateItem(ITEM_CEREMONIAL_DAGGER, deltaLoc.x, deltaLoc.y);
+                const i = CreateItem(ITEM_CEREMONIAL_DAGGER, deltaLoc.x, deltaLoc.y);
+                if (UnitInventoryCount(unit.handle) < UnitInventorySize(unit.handle)) {
+                    unit.addItem(Item.fromHandle(i));
+                }
             });
+        }
+        if (researchLevel === 2 && altar && pData) {
+            this.canWin = true;
         }
     }
 

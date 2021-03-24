@@ -288,8 +288,6 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
-gg_trg_test = nil
-gg_item_I00N_0775 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -356,7 +354,6 @@ end
 function CreateAllItems()
     local itemID
     BlzCreateItemWithSkin(FourCC("I00N"), 25310.2, 28049.2, FourCC("I00N"))
-    gg_item_I00N_0775 = BlzCreateItemWithSkin(FourCC("I00N"), -12621.7, -14989.7, FourCC("I00N"))
     BlzCreateItemWithSkin(FourCC("I00Q"), 25398.9, 28027.3, FourCC("I00Q"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14809.9, -17189.7, FourCC("ISHO"))
     gg_item_desc_0511 = BlzCreateItemWithSkin(FourCC("desc"), -12569.9, -13303.7, FourCC("desc"))
@@ -455,7 +452,6 @@ function CreateUnitsForPlayer0()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 23439.2, 9759.0, 0.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 23503.2, 9759.0, 0.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), 23567.2, 9759.0, 0.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("H006"), -12541.8, -14737.2, 268.122, FourCC("H006"))
 end
 
 function CreateBuildingsForPlayer18()
@@ -1455,15 +1451,6 @@ function InitTrig_SetKillzones()
     TriggerAddAction(gg_trg_SetKillzones, Trig_SetKillzones_Actions)
 end
 
-function Trig_test_Actions()
-    SetItemPlayerBJ(gg_item_I00N_0775, Player(8), true)
-end
-
-function InitTrig_test()
-    gg_trg_test = CreateTrigger()
-    TriggerAddAction(gg_trg_test, Trig_test_Actions)
-end
-
 function Trig_Set_Actions()
     udg_elevator_entrances[1] = gg_unit_n001_0005
     udg_elevator_exits[1] = gg_unit_n001_0055
@@ -1722,7 +1709,6 @@ end
 
 function InitCustomTriggers()
     InitTrig_SetKillzones()
-    InitTrig_test()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()
@@ -1734,7 +1720,6 @@ end
 
 function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetKillzones)
-    ConditionalTriggerExecute(gg_trg_test)
     ConditionalTriggerExecute(gg_trg_Set)
     ConditionalTriggerExecute(gg_trg_SetHatch)
     ConditionalTriggerExecute(gg_trg_SetFall)
@@ -2206,7 +2191,7 @@ end
 
 function config()
     SetMapName("TRIGSTR_2013")
-    SetMapDescription("")
+    SetMapDescription("TRIGSTR_2027")
     SetPlayers(17)
     SetTeams(17)
     SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)

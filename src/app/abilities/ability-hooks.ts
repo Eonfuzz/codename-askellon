@@ -277,7 +277,7 @@ export class AbilityHooks extends Entity {
 
     private checkBehaviourKeysForAbility(u: Unit, abilId: number) {
         if (u.getAbilityLevel(abilId) > 0) {
-            Log.Information(`Found behaviour for unit:  ${u.name}`)
+            // Log.Information(`Found behaviour for unit:  ${u.name}`)
             const behaviour = AbilityHooks.Behaviour(abilId);
             if (behaviour && behaviour.init(u)) {
                 this.behaviours.push(behaviour);

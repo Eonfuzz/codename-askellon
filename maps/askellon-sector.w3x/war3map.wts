@@ -743,7 +743,7 @@ W
 }
 
 STRING 243
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A035 (Convoke Carrion), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -905,7 +905,7 @@ W
 }
 
 STRING 285
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2185,7 +2185,7 @@ W
 }
 
 STRING 635
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2911,7 +2911,7 @@ W
 }
 
 STRING 852
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -5203,7 +5203,7 @@ Reactor-Aided Weapon Reprocessor
 }
 
 STRING 1387
-// Abilities: A035 (Convoke Carrion), Hotkey (Hotkey - Normal)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -5555,7 +5555,7 @@ STRING 1451
 }
 
 STRING 1452
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6326,7 +6326,6 @@ STRING 1610
 }
 
 STRING 1611
-// Abilities: A02I (Cultist), Name (Name)
 {
 Cultist
 }
@@ -6377,12 +6376,6 @@ STRING 1626
 // Abilities: A02J (Apply Madness), Name (Name)
 {
 Apply Madness
-}
-
-STRING 1629
-// Buffs/Effects: B00G (Insanity), Buffubertip (Tooltip - Extended)
-{
-|cff627781The oldest and strongest emotion of mankind is fear and the oldest and strongest kind of fear is fear of the unknown.|r|nThe |cffc81e1cCircle of Carrion|r knows.
 }
 
 STRING 1630
@@ -6626,7 +6619,7 @@ Q
 }
 
 STRING 1682
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6650,7 +6643,7 @@ W
 }
 
 STRING 1686
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -6929,7 +6922,7 @@ Q
 }
 
 STRING 1737
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -7010,12 +7003,6 @@ STRING 1758
 // Abilities: A02Q (Bestow Madness), Tip (Tooltip - Normal)
 {
 Bestow Madness
-}
-
-STRING 1761
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781Rip the world asunder to bring a new era of hunger.|r|n|nUpon death you become a |cffb52166Carrion One|r; You may now |cffb52166kill|r any player without penalty.
 }
 
 STRING 1762
@@ -8219,14 +8206,94 @@ STRING 2019
 |cff627781"My great religion is a belief in the blood, the flesh, as being wiser than the intellect. We can go wrong in our minds. But what our blood feels and believes and says, is always true."|r|n|nTarget a corpse to turn it into a |cffb52166Carrion|r. The soul previously inhabiting the corpse will have limited control over their body and will not be able to speak. The |cffb52166Carrion|r is functionally immortal and revives shortly after being slain.|n|nThe cultist can take control of the |cffb52166Carrion|r at |cffff0000any time|r.
 }
 
-STRING 2020
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-Q
-}
-
 STRING 2021
 {
  
+}
+
+STRING 2022
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 2023
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
+
+}
+
+STRING 2024
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Give control of your soul to the Crows of Carion.|r|n|nUnlocks |cffb52166Convoke Carrion|r, resurrecting a corpse as an immortal undead thrall.|n|nYour are now considered |cffb52166evil|r; The game will not finish until you win or die.
+}
+
+STRING 2025
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Rip the world asunder to bring a new era of hunger.|r|n|nOpens a portal to the |cffb52166Carrion Realm|r; You may now |cffb52166kill|r any player without penalty.
+}
+
+STRING 2026
+{
+6+
+}
+
+STRING 2027
+{
+|cff627781A space horror similar to Metastasis or Space Station 13.|r
+
+The Askellon has been infiltrated by terrible Alien creatures. Cleanse the corruption onboard and escape!
+
+|cff18bc9cdiscord.gg/nDMpQZm|r
+}
+
+STRING 2028
+{
+Eonfuzz and Maddeem
+}
+
+STRING 2029
+{
+Alien 1
+}
+
+STRING 2030
+{
+Alien 2
+}
+
+STRING 2031
+{
+Alien 3
+}
+
+STRING 2032
+{
+Station Property
+}
+
+STRING 2033
+{
+Station Security
+}
+
+STRING 2034
+{
+Unknown
+}
+
+STRING 2035
+// Abilities: A02I (Cultist), Name (Name)
+{
+Cultist
+}
+
+STRING 2036
+// Buffs/Effects: B00G (Insanity), Buffubertip (Tooltip - Extended)
+{
+|cff627781The oldest and strongest emotion of mankind is fear and the oldest and strongest kind of fear is fear of the unknown.|r|nThe |cffb52166Circle of Carrion|r knows.|nCan be slowly cured by receiving a |cff18bc9cPurity Seal|r or praying at the |cff18bc9cCathederal|r.
 }
 
