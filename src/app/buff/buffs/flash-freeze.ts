@@ -6,8 +6,6 @@ import { DynamicBuff } from "../dynamic-buff-type";
 import { BuffInstanceDuration } from "../buff-instance-duration-type";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
-const FREEZE_SOUND = new SoundRef('Sounds\\CryoGrenade.wav', false);
-FREEZE_SOUND.setVolume(50);
 
 /**
  * Sets movement speed to zero
@@ -18,6 +16,7 @@ export class flashFreeze extends DynamicBuff {
     id = BUFF_ID.FLASH_FREEZE;
 
     protected doesStack = false;
+    FREEZE_SOUND = new SoundRef('Sounds\\CryoGrenade.wav', false);
 
     // Use this to keep track of the highest duration
     private remainingDuration = 0;
@@ -74,14 +73,15 @@ export class flashFreeze extends DynamicBuff {
 
     public onStatusChange(newStatus: boolean) {
         if (newStatus) {
-            if (GetLocalPlayer() === this.who.owner.handle) {
-                FREEZE_SOUND.playSound();
-            }
+            this.FREEZE_SOUND.setVolume(50);
+            this.FREEZE_SOUND.playSoundForPlayer(this.who.owner);
         }
         else {
             this.who.moveSpeed = this.startingSpeed;
             this.who.turnSpeed = this.startingTurnSpeed;
-                
+            
+            this.FREEZE_SOUND.destroy();
+
             this.who.setVertexColor(
                 this.originalTintRed,
                 this.originalTintGreen,
@@ -90,4 +90,5 @@ export class flashFreeze extends DynamicBuff {
             );
         }
     }
+    
 }

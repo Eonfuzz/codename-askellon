@@ -2,8 +2,8 @@ import { ProjectileTarget, ProjectileMover, ProjectileMoverLinear } from "./proj
 import { Vector3 } from "../../types/vector3";
 import { ProjectileSFX } from "./projectile-sfx";
 import { getZFromXY } from "lib/utils";
+import { UNIT_IS_FLY } from "resources/ability-ids";
 
-const AIRBORN_ABILITY_DUMMY = FourCC('A00C');
 const DEFAULT_FILTER = (projectile: Projectile) => {
     return Filter(() => {
         let unit = GetFilterUnit(); 
@@ -11,7 +11,8 @@ const DEFAULT_FILTER = (projectile: Projectile) => {
         return GetWidgetLife(unit) > 0.405 && 
             !IsUnitAlly(unit, GetOwningPlayer(projectile.source)) &&
             IsUnitType(unit, UNIT_TYPE_MAGIC_IMMUNE) == false && 
-            GetUnitAbilityLevel(unit, AIRBORN_ABILITY_DUMMY) == 0;
+            BlzIsUnitInvulnerable(unit) === false &&
+            GetUnitAbilityLevel(unit, UNIT_IS_FLY) == 0;
     });
 };
 

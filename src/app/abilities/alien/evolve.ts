@@ -74,9 +74,7 @@ export class EvolveAbility extends AbilityWithDone {
 
 
         MoistSound.setVolume(90);
-        if (GetLocalPlayer() == this.casterUnit.owner.handle) {
-            MoistSound.playSound();
-        }
+        MoistSound.playSoundForPlayer(this.casterUnit.owner);
 
         this.casterUnit.addAbility(ABIL_ALIEN_EVOLVE_ARMOR);
 
@@ -179,9 +177,8 @@ export class EvolveAbility extends AbilityWithDone {
             this.casterUnit.removeAbility(ABIL_ALIEN_EVOLVE_ARMOR);
             PlayNewSoundOnUnit(EGG_HATCH_SOUND, this.casterUnit, 127);
         }
-        if (GetLocalPlayer() == this.casterUnit.owner.handle) {
-            MoistSound.stopSound();
-        }
+        
+        MoistSound.stopSound();
 
         // If we evolved
         if (this.completedEvolve) {

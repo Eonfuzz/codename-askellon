@@ -2,6 +2,7 @@ import { Unit } from "w3ts/index";
 import { ABILITY_HOOK } from "../hook-types";
 import { Behaviour } from "../behaviour";
 import { Timers } from "app/timer-type";
+import { UNIT_IS_FLY } from "resources/ability-ids";
 
 const REVIVE_TIME = 30;
 
@@ -39,6 +40,7 @@ export class CarrionReincarnationBehaviour extends Behaviour {
             SetUnitState(this.forUnit.handle,UNIT_STATE_LIFE,2);
             this.reviveRate = BlzGetUnitMaxHP(this.forUnit.handle) / REVIVE_TIME;
             this.isReviving = true;
+            this.forUnit.addAbility(UNIT_IS_FLY);
         }
     };
 
@@ -49,6 +51,7 @@ export class CarrionReincarnationBehaviour extends Behaviour {
             SetUnitState(this.forUnit.handle,UNIT_STATE_LIFE, newHp);
             if (newHp >= maxHp) {
                 this.isReviving = false;
+                this.forUnit.removeAbility(UNIT_IS_FLY);
                 SetUnitAnimation(this.forUnit.handle, "birth");
                 QueueUnitAnimation(this.forUnit.handle, "stand");
                 Timers.addTimedAction(2.33, () => {

@@ -774,9 +774,10 @@ export class AlienForce extends ForceType {
         Timers.addTimedAction(4, () => {
             const isHost = this.getHost() === who;
 
+            SOUND_ALIEN_GROWL.setVolume(127);
+            SOUND_ALIEN_GROWL.playSoundForPlayer(MapPlayer.fromLocal());
+
             if (GetLocalPlayer() === who.handle) {
-                SOUND_ALIEN_GROWL.setVolume(127);
-                SOUND_ALIEN_GROWL.playSound();
                 if (isHost) {
                     MessagePlayer(who, `${COL_ALIEN}The hive welcomes you, my new Host.|r`);
                 }

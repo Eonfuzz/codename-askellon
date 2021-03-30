@@ -56,12 +56,11 @@ export class Resolve extends DynamicBuff {
     public onStatusChange(newStatus: boolean) {
         if (newStatus) {
             this.unit.addAbility(ABIL_ACCURACY_BONUS_30);
+
+            this.breathSound.setVolume(127);
+            this.breathSound.playSoundForPlayer(this.unit.owner);
             resolveMusic.setVolume(15);
-            if (GetLocalPlayer() === this.unit.owner.handle) {
-                SetMusicVolume(0);
-                this.breathSound.playSound();
-                resolveMusic.playSound();
-            }
+            resolveMusic.playSoundForPlayer(this.unit.owner);
 
             // If we dont got the buff cast that bad boi
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_RESOLVE)) {
@@ -80,9 +79,9 @@ export class Resolve extends DynamicBuff {
             this.onChangeCallbacks.forEach(cb => cb(this));
 
             // End music and sounds
+            this.breathSound.stopSound();
+            resolveMusic.stopSound();
             if (GetLocalPlayer() === this.unit.owner.handle) {
-                this.breathSound.stopSound();
-                resolveMusic.stopSound();
                 SetMusicVolume(30);
             }
         }

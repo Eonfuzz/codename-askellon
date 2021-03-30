@@ -43,6 +43,7 @@ import { GENERIC_CHAT_SOUND_REF } from "./force/forces/force-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { TipEntity } from "./tips/tip-entity";
 import { AbilityHooks } from "./abilities/ability-hooks";
+import { BootAbilityHooks } from "./abilities/ability-hooks-boot";
 
 export const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export const labrynthIntro = new SoundRef("Sounds\\Theme\\TheLabrynth.mp3", true, true);
@@ -129,6 +130,9 @@ export class Game {
         EggEntity.getInstance();
 
         TipEntity.getInstance();
+
+        // Boot our abil hooks
+        BootAbilityHooks();
 
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 1500, mainShip.unit.y + 1500));

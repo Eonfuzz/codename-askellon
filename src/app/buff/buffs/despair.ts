@@ -108,10 +108,11 @@ export class Despair extends DynamicBuff {
             this.unit.addAbility(ABIL_ACCURACY_PENALTY_30);
             if (GetLocalPlayer() === this.unit.owner.handle && despairMusic.canPlaySound()) {
                 SetMusicVolume(0);
-                despairMusic.setVolume(60);
-                despairMusic.playSound();
-                this.jumpScareSound.playSound();
             }
+
+            despairMusic.setVolume(60);
+            despairMusic.playSoundForPlayer(this.unit.owner);
+            this.jumpScareSound.playSoundForPlayer(this.unit.owner);
 
             // If we dont got the buff cast that bad boi
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR)) {
@@ -138,9 +139,10 @@ export class Despair extends DynamicBuff {
             this.onChangeCallbacks.forEach(cb => cb(this));
 
             // End music and sounds
+            despairMusic.stopSound(true);
+            this.jumpScareSound.stopSound(true);
+            
             if (GetLocalPlayer() === this.unit.owner.handle) {
-                despairMusic.stopSound(true);
-                this.jumpScareSound.stopSound(true);
                 SetMusicVolume(30);
             }
             

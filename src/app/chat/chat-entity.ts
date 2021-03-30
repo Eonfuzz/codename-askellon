@@ -13,7 +13,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_GREATER_CANITE, ALIEN_MINION_HYDRA } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
@@ -276,6 +276,8 @@ export class ChatEntity extends Entity {
                             let t: number;
                             if (i >= 7) t = ALIEN_MINION_LARVA;
                             else if (i >= 5) t = ALIEN_MINION_FORMLESS;
+                            else if (i >= 4) t = ALIEN_MINION_GREATER_CANITE;
+                            else if (i >= 3) t = ALIEN_MINION_HYDRA;
                             else t = ALIEN_MINION_CANITE;    
                             CreateUnit(aiPlayer.handle, t, _x, _y, GetRandomInt(0, 360));                    
                         }

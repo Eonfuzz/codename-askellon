@@ -29,12 +29,11 @@ export class ScreamAbility extends AbilityWithDone {
                     const crew = pData.getCrewmember();
                     if (crew && crew.unit.isAlive()) {
                         crew.addDespair(new BuffInstanceDuration(this.casterUnit, 30));
-                        if (GetLocalPlayer() === pData.player.handle) {
-                            SOUND_ALIEN_SCREAM.playSound();
-                        }
                     }
                 }
             });
+            SOUND_ALIEN_SCREAM.setVolume(90);
+            SOUND_ALIEN_SCREAM.playSoundForPlayers(pInZone);
         }
         else {
             Log.Error("Scream caster not in any zone. DIS BE A BUG");

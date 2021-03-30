@@ -114,7 +114,7 @@ export class ChatSystem {
      * @param playerId 
      * @param message 
      */
-    public sendMessage(playerName: string, playerColor: string, message: string, messageTag?: string, sound?: SoundWithCooldown, ) {
+    public sendMessage(playerName: string, playerColor: string, message: string, messageTag?: string, sound?: SoundWithCooldown) {
         const timestamp = this.getGameTime();
         if (GetLocalPlayer() === this.player.handle) {
             if (this.messageIsValid(message)) {

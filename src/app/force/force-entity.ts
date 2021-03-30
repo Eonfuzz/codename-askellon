@@ -547,7 +547,7 @@ export class ForceEntity extends Entity {
                 hotkey: "c",
                 type: OPT_TYPES.ANTAGONST,
                 chanceToExist: 100,
-                count: (PlayerStateFactory.getInstance().playerCount > 8) ? 2 : 1
+                count: 1
             });
         // }
         

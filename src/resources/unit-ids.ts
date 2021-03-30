@@ -44,6 +44,7 @@ export const DEFAULT_ALIEN_FORM = WORM_ALIEN_FORM;
 
 export const ALIEN_MINION_EGG = FourCC('u006');
 export const ALIEN_MINION_CANITE = FourCC('u000');
+export const ALIEN_MINION_GREATER_CANITE = FourCC('u00A');
 export const ALIEN_MINION_LEECH = FourCC('u001');
 export const ALIEN_MINION_FORMLESS = FourCC('u002');
 export const ALIEN_MINION_HYDRA = FourCC('u009');

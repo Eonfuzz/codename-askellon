@@ -7,6 +7,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { CULT_FORCE_NAME } from "app/force/forces/force-names";
 import { CultistForce } from "app/force/forces/cultist/cultist-force";
 import { SFX_CONVOKE_CARRION } from "resources/sfx-paths";
+import { BUFF_ID_MADNESS } from "resources/buff-ids";
 
 export class CeremonialDaggerItemAbility extends AbilityWithDone {
 
@@ -64,11 +65,14 @@ export class CeremonialDaggerItemAbility extends AbilityWithDone {
             sfx.setPitch(rotData.pitch);
             sfx.destroy();
 
-            if (this.targetUnit.life >= 50) {
-                this.unit.damageTarget(this.targetUnit.handle, 25, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
-            }
+            const uHasInsanity = UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_MADNESS);
 
-            if (this.targetUnit.life <= 50) {
+            const doKill = uHasInsanity && this.targetUnit.life <= 200 || this.targetUnit.life <= 50;
+
+            if (!doKill) {
+                this.unit.damageTarget(this.targetUnit.handle, uHasInsanity ? 200 : 50, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+            }
+            else {
                 const cultistForce = PlayerStateFactory.getForce(CULT_FORCE_NAME) as CultistForce;
                 cultistForce.playSpinExplodeanimationFor(this.targetUnit, () => {
 

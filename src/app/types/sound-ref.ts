@@ -1,5 +1,6 @@
 import { GameTimeElapsed } from "./game-time-elapsed";
 import { getZFromXY } from "lib/utils";
+import { MapPlayer } from "w3ts/index";
 
 export class SoundRef {
     public sound: sound;
@@ -14,6 +15,27 @@ export class SoundRef {
 
         if (doKillWhenDone) {
             KillSoundWhenDone(this.sound);
+        }
+    }
+
+    /**
+     * This cannot be killed when done
+     * @param who 
+     */
+    public playSoundForPlayer(who: MapPlayer) {
+        // if (!who.isLocal()) this.setVolume(0);
+        // this.playSound(killSoundWhenDone);
+        if (!who.isLocal()) this.playSound();
+    }
+
+    public playSoundForPlayers(who: MapPlayer[]) {
+        // if (who.indexOf(MapPlayer.fromLocal()) < 0) {
+        //     this.setVolume(0);            
+        // }
+        // this.playSound(killSoundWhenDone);
+
+        if (who.indexOf(MapPlayer.fromLocal()) < 0) {
+            this.playSound();
         }
     }
 

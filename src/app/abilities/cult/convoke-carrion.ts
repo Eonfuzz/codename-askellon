@@ -43,25 +43,25 @@ export class ConvokeCarrionAbility extends AbilityWithDone {
             
 
             Timers.addTimedAction(5, () => {
-                const text = localOrCult ? `Rise from your shackles of mortality` : `${COL_MISC}< Strange Sounds >`;
+                const text = localOrCult ? `Rise from your shackles of mortality` : `${COL_MISC}< Strange Sounds >|r`;
                 ChatEntity.getInstance().postMessageFor(Players, `U̎ͩ̌ͬ̏̊̔͑ͯ̑ͦ͐̓̑͋͏̻̜̪͚̲̞̭̝͎̬̱͍́̕n͔̥̘̫̞͖͓̣͇͓͈̻͚͈̓͛ͭ́ͪ̅̾̔̓̾ͤ̇ͭͤ̀͡k̷̢̡̧̙̺͙̼̖̳͎̘̱̻̖̱̻ͦ͑ͨ̋̿̓ͨ͌̓̆ͭͫ͒͊͌̈ͭ͋̑n̶̷̹̬̞̭͉͔̯̞̘̭͕̼͖̻͇̯̙͎̤ͪͬ̂ͥͨ̐ͯ͘͠ỡ̛͈̤̼͉̳̮̅́̏ͦ̊̽̑̅̓͑̒̋ͭ͊ͦ̾͘͢w̸̙͓̣̪͔̞̗͉̳̙̭ͫ̒ͩ̿ͬ͆̃͛ͥ̈́̐͂͟n̴̢̨̛̝̱̮͕̑̐̃ͩ̉͌̍ͤͣ́`, COLOUR_CULT, text);
                 const sfx = new Effect(SFX, this.targetLoc.x, this.targetLoc.y);
                 sfx.destroy();
             });
             Timers.addTimedAction(10, () => {
-                const text = localOrCult ? `Leave the rivers of nyx` : `${COL_MISC}< Strange Sounds >`;
+                const text = localOrCult ? `Leave the rivers of nyx` : `${COL_MISC}< Strange Sounds >|r`;
                 ChatEntity.getInstance().postMessageFor(Players, `U̎ͩ̌ͬ̏̊̔͑ͯ̑ͦ͐̓̑͋͏̻̜̪͚̲̞̭̝͎̬̱͍́̕n͔̥̘̫̞͖͓̣͇͓͈̻͚͈̓͛ͭ́ͪ̅̾̔̓̾ͤ̇ͭͤ̀͡k̷̢̡̧̙̺͙̼̖̳͎̘̱̻̖̱̻ͦ͑ͨ̋̿̓ͨ͌̓̆ͭͫ͒͊͌̈ͭ͋̑n̶̷̹̬̞̭͉͔̯̞̘̭͕̼͖̻͇̯̙͎̤ͪͬ̂ͥͨ̐ͯ͘͠ỡ̛͈̤̼͉̳̮̅́̏ͦ̊̽̑̅̓͑̒̋ͭ͊ͦ̾͘͢w̸̙͓̣̪͔̞̗͉̳̙̭ͫ̒ͩ̿ͬ͆̃͛ͥ̈́̐͂͟n̴̢̨̛̝̱̮͕̑̐̃ͩ̉͌̍ͤͣ́`, COLOUR_CULT, text);
                 const sfx = new Effect(SFX, this.targetLoc.x, this.targetLoc.y);
                 sfx.destroy();
             });
             Timers.addTimedAction(16, () => {
-                const text = localOrCult ? `Rise beyond death our child of Carrion and continue` : `${COL_MISC}< Strange Sounds >`;
+                const text = localOrCult ? `Rise beyond death our child of Carrion and continue` : `${COL_MISC}< Strange Sounds >|r`;
                 ChatEntity.getInstance().postMessageFor(Players, `U̎ͩ̌ͬ̏̊̔͑ͯ̑ͦ͐̓̑͋͏̻̜̪͚̲̞̭̝͎̬̱͍́̕n͔̥̘̫̞͖͓̣͇͓͈̻͚͈̓͛ͭ́ͪ̅̾̔̓̾ͤ̇ͭͤ̀͡k̷̢̡̧̙̺͙̼̖̳͎̘̱̻̖̱̻ͦ͑ͨ̋̿̓ͨ͌̓̆ͭͫ͒͊͌̈ͭ͋̑n̶̷̹̬̞̭͉͔̯̞̘̭͕̼͖̻͇̯̙͎̤ͪͬ̂ͥͨ̐ͯ͘͠ỡ̛͈̤̼͉̳̮̅́̏ͦ̊̽̑̅̓͑̒̋ͭ͊ͦ̾͘͢w̸̙͓̣̪͔̞̗͉̳̙̭ͫ̒ͩ̿ͬ͆̃͛ͥ̈́̐͂͟n̴̢̨̛̝̱̮͕̑̐̃ͩ̉͌̍ͤͣ́`, COLOUR_CULT, text);
                 const sfx = new Effect(SFX, this.targetLoc.x, this.targetLoc.y);
                 sfx.destroy();
             });
             Timers.addTimedAction(22, () => {
-                const text = localOrCult ? `For the Carrion One` : `${COL_MISC}< Strange Sounds >`;
+                const text = localOrCult ? `For the Carrion One` : `${COL_MISC}< Strange Sounds >|r`;
                 ChatEntity.getInstance().postMessageFor(Players, `U̎ͩ̌ͬ̏̊̔͑ͯ̑ͦ͐̓̑͋͏̻̜̪͚̲̞̭̝͎̬̱͍́̕n͔̥̘̫̞͖͓̣͇͓͈̻͚͈̓͛ͭ́ͪ̅̾̔̓̾ͤ̇ͭͤ̀͡k̷̢̡̧̙̺͙̼̖̳͎̘̱̻̖̱̻ͦ͑ͨ̋̿̓ͨ͌̓̆ͭͫ͒͊͌̈ͭ͋̑n̶̷̹̬̞̭͉͔̯̞̘̭͕̼͖̻͇̯̙͎̤ͪͬ̂ͥͨ̐ͯ͘͠ỡ̛͈̤̼͉̳̮̅́̏ͦ̊̽̑̅̓͑̒̋ͭ͊ͦ̾͘͢w̸̙͓̣̪͔̞̗͉̳̙̭ͫ̒ͩ̿ͬ͆̃͛ͥ̈́̐͂͟n̴̢̨̛̝̱̮͕̑̐̃ͩ̉͌̍ͤͣ́`, COLOUR_CULT, text);
                 const sfx = new Effect(SFX, this.targetLoc.x, this.targetLoc.y);
                 sfx.destroy();
@@ -69,9 +69,9 @@ export class ConvokeCarrionAbility extends AbilityWithDone {
 
             SetItemInvulnerable(this.targetItem, true);
 
-            if (this.castPlayer.isLocal()) {
-                BlzSetAbilityPosY(ABIL_CULTIST_DARK_THRALL,2);
-            }
+            // if (this.castPlayer.isLocal()) {
+            //     BlzSetAbilityPosY(ABIL_CULTIST_DARK_THRALL,2);
+            // }
             Timers.addTimedAction(22, () => {
                 RemoveItem(this.targetItem);
                 let carrion = new Unit(GetPlayerId(carrionPlayer), CARRION_ID, this.targetLoc.x, this.targetLoc.y, 270);

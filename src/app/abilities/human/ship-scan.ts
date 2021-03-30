@@ -5,11 +5,11 @@ import { Ship } from "app/space/ships/ship-type";
 import { ShipState } from "app/space/ships/ship-state-type";
 import { SpaceEntity } from "app/space/space-module";
 
-const deepScanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
 export class ShipDeepScanAbility extends AbilityWithDone {
 
     private unit: Unit;
     private ship: Ship;
+    deepScanSound = new SoundRef("Sounds\\Ships\\deep_scan.mp3", false, true);
 
     
 
@@ -24,9 +24,7 @@ export class ShipDeepScanAbility extends AbilityWithDone {
         const mainShip = spaceEntity.mainShip
         const planet = spaceEntity.planet;
 
-        if (GetLocalPlayer() == this.unit.owner.handle) {
-            deepScanSound.playSound();
-        }
+        this.deepScanSound.playSoundForPlayer(this.unit.owner);
 
         if (mainShip && mainShip.unit && mainShip.unit.isAlive()) {
             PingMinimapForPlayer(this.unit.owner.handle, mainShip.unit.x, mainShip.unit.y, 3);
@@ -50,6 +48,7 @@ export class ShipDeepScanAbility extends AbilityWithDone {
     };
 
     public destroy() {
+        this.deepScanSound.destroy();
         this.ship = undefined;
         return true;
     };

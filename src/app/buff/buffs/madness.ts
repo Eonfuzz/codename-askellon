@@ -102,9 +102,7 @@ export class Madness extends DynamicBuff {
             if (oldVal < this.sanityDebuffAt && this.insanity >= this.sanityDebuffAt) {
                 // Apply insanity debuff sound
                 // Apply insanity buff
-                if (this.unit.owner.handle === GetLocalPlayer()) {
-                    this.cultistGodSoundByte.playSound();
-                }
+                this.cultistGodSoundByte.playSoundForPlayer(this.unit.owner);
                 if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_MADNESS)) {
                     // If we don't have another ticker apply the buff to the unit
                     DummyCast((dummy: unit) => {
@@ -308,10 +306,8 @@ export class Madness extends DynamicBuff {
         if (newStatus) {
             this.hookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.processChat(hook));
             // End music and sounds
-            if (GetLocalPlayer() === this.unit.owner.handle) {
-                whisperLoop.setVolume(0);
-                whisperLoop.playSound();
-            }
+            whisperLoop.setVolume(127);
+            whisperLoop.playSoundForPlayer(this.unit.owner);
             
             if (!this.insanityPreviewEffect) {
                 const source = this.instances.map(i => i.source)[0];
@@ -327,11 +323,7 @@ export class Madness extends DynamicBuff {
             UnitRemoveBuffBJ(BUFF_ID_MADNESS, this.unit.handle);
             this.onChangeCallbacks.forEach(cb => cb(this));
 
-            // End music and sounds
-            if (GetLocalPlayer() === this.unit.owner.handle) {
-                whisperLoop.stopSound(true);
-                // SetMusicVolume(30);
-            }
+            whisperLoop.stopSound(true);
             
             FogEntity.reset(this.unit.owner, 10);
             
