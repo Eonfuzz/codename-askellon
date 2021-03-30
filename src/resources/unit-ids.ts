@@ -54,6 +54,7 @@ export const ALIEN_STRUCTURE_TUMOR = FourCC('u005');
 
 export const UNIT_ID_DUMMY_CASTER = FourCC('dumy');
 export const UNIT_ID_CRATE = FourCC('h005');
+export const UNIT_ID_EXPLOSIVE_BARREL = FourCC('h00F');
 
 export const UNIT_ID_MANSION_DOOR = FourCC('n00H');
 

@@ -8339,3 +8339,9 @@ STRING 2043
 Q
 }
 
+STRING 2044
+// Units: h00F (Explosive Barrel|n|cff627781Why do we have these onboard?|r), Name (Name)
+{
+Explosive Barrel|n|cff627781Why do we have these onboard?|r
+}
+

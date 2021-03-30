@@ -35,6 +35,10 @@ export const SFX_PORTAL = "Doodads\\Cinematic\\ShimmeringPortal\\ShimmeringPorta
 export const SFX_BLACK_HOLE = "Models\\BlackHole.mdx";
 export const SFX_BUILDING_EXPLOSION = "Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl";
 export const SFX_FIRE_EXPLOSION = "Models\\NewMassiveEX.mdx";
+
+export const SFX_EXPLOSION_BIG = "Models\\sfx\\ExplosionBig.mdl";
+export const SFX_EXPLOSION_GROUND = "Models\\sfx\\ExplosionGround.mdl";
+
 export const SFX_AVATAR = "Abilities\\Spells\\Human\\Avatar\\AvatarCaster.mdl";
 export const SFX_HEAL = "Heal Green.mdx";
 
@@ -134,3 +138,5 @@ Preload(SFX_FIRE_SPEAR);
 Preload(SFX_FIRE_BOLT);
 Preload(SFX_FIRE_BALL);
 Preload(SFX_CONVOKE_CARRION);
+Preload(SFX_EXPLOSION_BIG);
+Preload(SFX_EXPLOSION_GROUND);

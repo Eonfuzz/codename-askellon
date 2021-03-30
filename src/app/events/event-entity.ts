@@ -5,7 +5,7 @@ import { Hooks } from "lib/Hooks";
 import { Trigger, Region, Unit, MapPlayer } from "w3ts/index";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH } from "resources/unit-ids";
+import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EXPLOSIVE_BARREL } from "resources/unit-ids";
 import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_ALIEN_MINION_EVOLVE, ABIL_U_DEX } from "resources/ability-ids";
@@ -38,7 +38,8 @@ export class EventEntity {
             const uType = u.typeId;
 
             if (uType == UNIT_ID_DUMMY_CASTER) return false;
-            if (uType == UNIT_ID_CRATE) return false;
+            if (uType == UNIT_ID_CRATE) return u.paused = true;
+            if (uType == UNIT_ID_EXPLOSIVE_BARREL) return u.paused = true;
             if (uType == SPACE_UNIT_ASTEROID) return false;
             if (uType == SPACE_UNIT_MINERAL) return false;
 

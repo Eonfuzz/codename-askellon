@@ -2,12 +2,12 @@ import { Trigger, Unit, Group, Rectangle, MapPlayer } from "w3ts";
 import { getZFromXY } from "lib/utils";
 import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, LASER_ITEM_ID, AT_ITEM_DRAGONFIRE_BLAST, SNIPER_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED, ITEM_ID_25_COINS, ITEM_ID_CRYO_GRENADE } from "app/weapons/weapon-constants";
 import { ITEM_TRIFEX_ID, ITEM_BARRICADES } from "resources/item-ids";
-import { SFX_CATAPULT_MISSILE } from "resources/sfx-paths";
+import { SFX_CATAPULT_MISSILE, SFX_EXPLOSION_GROUND } from "resources/sfx-paths";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { EventEntity } from "app/events/event-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { UNIT_ID_CRATE, UNIT_ID_MANSION_DOOR, UNIT_ID_STATION_SECURITY_TURRET, UNIT_ID_STATION_SECURITY_CAMERA } from "resources/unit-ids";
+import { UNIT_ID_CRATE, UNIT_ID_MANSION_DOOR, UNIT_ID_STATION_SECURITY_TURRET, UNIT_ID_STATION_SECURITY_CAMERA, UNIT_ID_EXPLOSIVE_BARREL } from "resources/unit-ids";
 import { LootTable } from "./loot-table/loot-table";
 import { GUN_LOOT_TABLE, MISC_ITEM_TABLE, MEDICAL_LOOT_TABLE } from "./loot-table/loot";
 import { Door } from "./door";
@@ -82,6 +82,11 @@ export class SecurityEntity extends Entity {
         crateDeath.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
         crateDeath.addCondition(Filter(() => GetUnitTypeId(GetDyingUnit()) === UNIT_ID_CRATE));
         crateDeath.addAction(() => this.onCrateDeath(Unit.fromHandle(GetDyingUnit())));
+
+        const barrelDeath = new Trigger();
+        barrelDeath.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
+        barrelDeath.addCondition(Filter(() => GetUnitTypeId(GetDyingUnit()) === UNIT_ID_EXPLOSIVE_BARREL));
+        barrelDeath.addAction(() => this.onBarrelDeath(Unit.fromHandle(GetDyingUnit())));
 
 
         // Start mineral crusher
@@ -284,6 +289,32 @@ export class SecurityEntity extends Entity {
 
         // Handle loot tables
         this.spawnLootOn(uX, uY); 
+    }
+
+    onBarrelDeath(who: Unit) {
+        const uX = who.x;
+        const uY = who.y;
+        const uZ = getZFromXY(uX, uY);
+
+        const sfx = AddSpecialEffect(SFX_EXPLOSION_GROUND, who.x, who.y);
+        BlzSetSpecialEffectZ(sfx, uZ+10);
+        DestroyEffect(sfx);
+        RemoveUnit(who.handle);
+
+        const killer = Unit.fromHandle(GetKillingUnit());
+        killer.damageAt(
+            0.2, 
+            300, 
+            uX, 
+            uY, 
+            200, 
+            false, 
+            false,
+            ATTACK_TYPE_SIEGE, 
+            DAMAGE_TYPE_FIRE, 
+            WEAPON_TYPE_WHOKNOWS
+        );
+
     }
 
     spawnLootOn(x: number, y: number) {

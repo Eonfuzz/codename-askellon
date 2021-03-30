@@ -20,6 +20,8 @@ import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstance } from "app/buff/buff-instance-type";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { COL_MISC, COL_ORANGE } from "resources/colours";
+import { SFX_BUILDING_EXPLOSION, SFX_EXPLOSION_BIG, SFX_EXPLOSION_GROUND } from "resources/sfx-paths";
+import { Vector3 } from "app/types/vector3";
 
 export class PerseusShip extends ShipWithFuel {
 
@@ -141,17 +143,25 @@ export class PerseusShip extends ShipWithFuel {
                 const cY = this.unit.y;
 
                 // Create explosive SFX!
-                let sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
-                sfx.scale = this.state === ShipState.inSpace ? 1 : 5;
+
+                let i = 0;
+                let origin = Vector3.fromWidget(this.unit.handle);
+                
+                let sfx = new Effect(SFX_BUILDING_EXPLOSION, origin.x, origin.y);
+                sfx.z = origin.z + 5;
                 sfx.destroy();
 
-                sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
-                sfx.scale = this.state === ShipState.inSpace ? 0.5 : 1;
-                sfx.destroy();
-
-                sfx = new Effect("Objects\\Spawnmodels\\Other\\NeutralBuildingExplosion\\NeutralBuildingExplosion.mdl", cX, cY);
-                sfx.scale = this.state === ShipState.inSpace ? 0.75 : 3;
-                sfx.destroy();
+                Timers.addTimedAction(0.2, () => {
+                    while (i < 360) {
+                        const p = origin.projectTowards2D(i, 200);
+                        let sfx = new Effect(SFX_EXPLOSION_GROUND, p.x, p.y);
+                        sfx.setYaw(GetRandomReal(0, 360));
+                        sfx.z = p.z + 5;
+                        sfx.destroy();
+                        
+                        i += 360 / 10;
+                    }
+                });
 
                 this.unit.destroy();
 
