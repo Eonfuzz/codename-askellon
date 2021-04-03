@@ -123,7 +123,7 @@ function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
 
   
   const w3iNameString = getStringNumberFromString(w3i.name);
-  w3i.name = `|cff627781Codename Askellon|r v${verNum}`;
+  w3i.name = `|cff627781Askellon|r v${verNum}`;
 
   w3iBuffer = w3i.save();
   fs.writeFileSync(w3iDir, toBuffer(w3iBuffer));

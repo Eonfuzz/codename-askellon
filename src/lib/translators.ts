@@ -51,12 +51,12 @@ export function PlayNewSound(soundPath: string, volume: number) {
     return result;
 }
 
-export function PlayNewSoundOnUnit(soundPath: string, unit: Unit, volume: number): sound {
+export function PlayNewSoundOnUnit(soundPath: string, unit: Unit, volume: number, pitch: number = 1): sound {
     const result = CreateSound(soundPath, false, true, true, 10, 10, "" );
     SetSoundDuration(result, GetSoundFileDuration(soundPath));
     SetSoundChannel(result, 0);
     SetSoundVolume(result, volume);
-    SetSoundPitch(result, 1.0);
+    SetSoundPitch(result, pitch);
     SetSoundDistances(result, 2000.0, 5000.0);
     SetSoundDistanceCutoff(result, 4500.0);
     // AttachSoundToUnit(result, unit.handle);

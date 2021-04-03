@@ -220,7 +220,7 @@ export class Minigun extends GunItem {
         let strayTarget = this.getStrayLocation(this.targetLoc, unit);
         let deltaTarget = strayTarget.subtract(casterLoc);
 
-        PlayNewSoundOnUnit("Sounds\\minigun-fire.wav", unit, 25);
+        const snd = PlayNewSoundOnUnit("Sounds\\minigun-fire.wav", unit, 25, 1 + 0.02 * this.spinStacks);
 
         let projectile = new Projectile(
             unit.handle,
