@@ -1,4 +1,4 @@
-import { Unit } from "w3ts/index";
+import { Effect, Unit } from "w3ts/index";
 import { Timers } from "app/timer-type";
 import { Log } from "lib/serilog/serilog";
 import { EventEntity } from "app/events/event-entity";
@@ -11,6 +11,10 @@ import { WorldEntity } from "app/world/world-entity";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { COL_MISC } from "resources/colours";
 import { PlayerState } from "app/force/player-type";
+import { PlayNewSoundOnUnit } from "lib/translators";
+import { SOUND_STR_ATTACH, SOUND_STR_SONIC_RES } from "resources/sounds";
+import { SFX_WEAK_SHIELD } from "resources/sfx-paths";
+import { getZFromXY } from "lib/utils";
 
 const PATHING_BLOCKER_BOTH = FourCC('YTfb');
 
@@ -26,7 +30,7 @@ export class Door {
     private pathingBlockers: destructable[] = [];
 
     // TODO
-    private isHorizontal = true;
+    private lockedFor = 0;
     private width = 600;
     // How much of the width can open
     private openableWidth = 450;
@@ -134,6 +138,9 @@ export class Door {
         if (this.isDead || !this.isPowered) {
             this.unit.name = `Security Door|n${COL_MISC}${this.isDead ? 'Broken' : 'Unpowered'}`;
         }
+        else if (this.lockedFor > 0) {
+            this.unit.name =  `Security Door|n${COL_MISC}Locked Remotely`;
+        }
         else {
             this.unit.name = `Security Door`;
         }        
@@ -144,7 +151,16 @@ export class Door {
     /**
      * Searches for nearby units, and opens the door if necessary
      */
-    public search() {
+    public search(delta: number) {
+
+        if (this.lockedFor > 0 && !this.isDead) {
+            this.lockedFor -= delta;
+
+            if (this.isOpen) this.update(false, true);
+            // Don't continue
+            return;
+        }
+
         // Don't auto update it the door is dead
         // Don't update if the door is unpowered
         if (this.isDead && !this.isOpen) this.update(true, true);
@@ -199,5 +215,27 @@ export class Door {
             iterator = iterator.add(iteration);
             distance += iteration.getLength();
         }
+    }
+
+    public lockFor(howLong: number) {
+        this.lockedFor = howLong;
+
+        const sfx = new Effect(SFX_WEAK_SHIELD, this.unit.x, this.unit.y);
+        sfx.z = getZFromXY(this.unit.x, this.unit.y) + 40;
+        sfx.scale = 2;
+
+        const snd = new SoundRef(SOUND_STR_SONIC_RES, false);
+        SetSoundPitch(snd.sound, 1.4);
+        snd.playSoundOnUnit(this.unit.handle, 127, true);
+
+        this.update(false, true);
+        this.checkOwnership();
+
+        Timers.addTimedAction(10, () => {
+            sfx.destroy();
+        })
+        Timers.addTimedAction(15.5, () => {
+            this.checkOwnership();
+        })
     }
 }

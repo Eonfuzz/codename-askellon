@@ -42,7 +42,7 @@ export class SoundRef {
     public playSoundOnUnit(unit: unit, volume: number, doKillWhenDone?: boolean) {
         SetSoundChannel(this.sound, 0);
         SetSoundVolume(this.sound, volume);
-        SetSoundPitch(this.sound, 1.0);
+        // SetSoundPitch(this.sound, 1.0);
         SetSoundDistances(this.sound, 2000.0, 10000.0);
         SetSoundDistanceCutoff(this.sound, 4500.0);
 
@@ -57,7 +57,7 @@ export class SoundRef {
     public playSoundOnPont(x: number, y: number, volume: number, doKillWhenDone?: boolean) {
         SetSoundChannel(this.sound, 0);
         SetSoundVolume(this.sound, volume);
-        SetSoundPitch(this.sound, 1.0);
+        // SetSoundPitch(this.sound, 1.0);
         SetSoundDistances(this.sound, 2000.0, 10000.0);
         SetSoundDistanceCutoff(this.sound, 4500.0);
         

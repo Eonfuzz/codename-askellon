@@ -256,7 +256,7 @@ export class SecurityEntity extends Entity {
     step() {
         for (let index = 0; index < this.doorsIterator.length; index++) {
             const door = this.doorsIterator[index];
-            door.search();
+            door.search(this._timerDelay);
         }
     }
 
@@ -335,5 +335,10 @@ export class SecurityEntity extends Entity {
         }
 
         ConveyorEntity.getInstance().checkItem(CreateItem(table.getItem(), x, y));
+    }
+
+
+    public findDoor(forUnit: Unit) {
+        return this.doors.get(forUnit.id);
     }
 }

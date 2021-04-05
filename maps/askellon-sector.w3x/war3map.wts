@@ -851,7 +851,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 276
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A038 (Remote Purge Service Tunnels), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -1867,7 +1867,7 @@ Dodge Roll Right
 }
 
 STRING 562
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2191,7 +2191,7 @@ W
 }
 
 STRING 636
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2917,7 +2917,7 @@ W
 }
 
 STRING 853
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -4825,12 +4825,6 @@ Q
 }
 
 STRING 1302
-// Units: n00P (|cff80ff80Security Targeting|r Terminal|n|cff627781Right Click to Use|r), Name (Name)
-{
-|cff80ff80Security Targeting|r Terminal|n|cff627781Right Click to Use|r
-}
-
-STRING 1303
 // Units: n00Q (|cff80ff80Security Targeting|r Terminal|n|cff627781Right Click to Use|r), Name (Name)
 {
 |cff80ff80Security Targeting|r Terminal|n|cff627781Right Click to Use|r
@@ -5143,7 +5137,7 @@ STRING 1375
 }
 
 STRING 1376
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A03C (Go Back To Abilities), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -5209,7 +5203,7 @@ Q
 }
 
 STRING 1388
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A03B (Lockdown), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -5638,34 +5632,10 @@ STRING 1468
 Improved Security Mainframe [|cffffcc003/4|r]
 }
 
-STRING 1469
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff627781Lore TODO|r|n|n|cffffcc00Restore Security Mainframe [2/4]|r|nRestores Security priviliges.|n|cff18bc9c- |cff00ffffScan for Crew|r |cff18bc9cnow available|r|r|n|cff18bc9c- Sight range for Station Security increased by 50|n- Hit Points for Station Security increased by 50|r|n|n|cff6f2583Infested|n- None|r
-}
-
-STRING 1470
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff627781Lore TODO|r|n|n|cffffcc00Improved Security Mainframe [3/4]|r|nUpgrades currently available software and hardware.|n|cff18bc9c- |cff00ffffScan for Alien|r |cff18bc9cnow available|r|r|n|cff18bc9c- Sight range for Station Security increased by 50|n- Hit Points for Station Security increased by 50|r|n|n|cff6f2583Infested|n- None|r
-}
-
 STRING 1471
 // Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
 {
 Restricted Clearance Security [|cffffcc004/4|r]
-}
-
-STRING 1472
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-Totally WIP this gives nothing but XP
-}
-
-STRING 1473
-// Upgrades: R00G (Iron Plating,Steel Plating,Mithril Plating), Name (Name)
-{
-Security Vision and Health
 }
 
 STRING 1474
@@ -5855,7 +5825,7 @@ STRING 1504
 }
 
 STRING 1505
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6625,7 +6595,7 @@ Q
 }
 
 STRING 1683
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6649,7 +6619,7 @@ W
 }
 
 STRING 1687
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -6928,7 +6898,7 @@ Q
 }
 
 STRING 1738
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8343,5 +8313,233 @@ STRING 2044
 // Units: h00F (Explosive Barrel|n|cff627781Why do we have these onboard?|r), Name (Name)
 {
 Explosive Barrel|n|cff627781Why do we have these onboard?|r
+}
+
+STRING 2045
+// Units: n00P (|cff80ff80Administration|r Terminal|n|cff627781Right Click to Use|r), Name (Name)
+{
+|cff80ff80Administration|r Terminal|n|cff627781Right Click to Use|r
+}
+
+STRING 2046
+// Units: n011 (|cff80ff80Administration|r Terminal|n|cff627781Right Click to Use|r), Name (Name)
+{
+|cff80ff80Administration|r Terminal|n|cff627781Right Click to Use|r
+}
+
+STRING 2047
+// Units: n011 (|cff80ff80Administration|r Terminal|n|cff627781Right Click to Use|r), EditorSuffix (Name - Editor Suffix)
+{
+- Invisible
+}
+
+STRING 2048
+// Abilities: A038 (Remote Purge Service Tunnels), Name (Name)
+{
+Remote Purge Service Tunnels
+}
+
+STRING 2050
+// Abilities: A038 (Remote Purge Service Tunnels), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|n|cff18bc9cRequires High Security Clearance|r|n|nAfter |cff18bc9c10 |rseconds; Fills the vents and service tunnels with an acidic gas, dealing |cff18bc9c20 + 2% Max Life damage|r per second to all units inside. Lasts |cff18bc9c60 |rseconds.|n|n|cffd45e19Occupational Health and Safety recommends you exit vents immediately after activation.|r|N|n|cff627781300 Seconds Cooldown|r
+}
+
+STRING 2051
+// Abilities: A038 (Remote Purge Service Tunnels), Tip (Tooltip - Normal)
+{
+Purge Service Tunnels
+}
+
+STRING 2052
+// Abilities: A038 (Remote Purge Service Tunnels), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff6277812 Seconds Cooldown|r
+}
+
+STRING 2053
+// Abilities: A038 (Remote Purge Service Tunnels), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 2054
+// Abilities: A038 (Remote Purge Service Tunnels), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 2055
+// Abilities: A039 (Cameras), Tip (Tooltip - Normal)
+{
+Security Cameras
+}
+
+STRING 2056
+// Abilities: A039 (Cameras), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781"Protection of Assets" is a core goal of Askellon's state of the art security.|r|n|nAll Security Cameras share vision while you are using this terminal.
+}
+
+STRING 2057
+// Abilities: A039 (Cameras), Name (Name)
+{
+Cameras
+}
+
+STRING 2058
+// Abilities: A039 (Cameras), EditorSuffix (Editor Suffix)
+{
+(TERMINAL)
+}
+
+STRING 2059
+// Abilities: A03A (Target Players), Name (Name)
+{
+Target Players
+}
+
+STRING 2060
+// Abilities: A03A (Target Players), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 2061
+// Abilities: A03A (Target Players), Ubertip (Tooltip - Normal - Extended)
+{
+Target players to have the Security fire at them.
+}
+
+STRING 2062
+// Abilities: A03A (Target Players), Tip (Tooltip - Normal)
+{
+Target Players
+}
+
+STRING 2063
+// Abilities: A03A (Target Players), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff6277812 Seconds Cooldown|r
+}
+
+STRING 2064
+// Abilities: A03A (Target Players), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 2065
+// Abilities: A03A (Target Players), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 2066
+// Abilities: A03B (Lockdown), Name (Name)
+{
+Lockdown
+}
+
+STRING 2069
+// Abilities: A03B (Lockdown), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The assumption of silence in the void is a common misconception, the void is an extremely loud and violent place; our ears just cannot hear it.|r|n|nPings the location of all space vessels.|n|n|cffd45e19"For when you are lost, lonely or both" - Tech|r|N|n|cff6277812 Seconds Cooldown|r
+}
+
+STRING 2070
+// Abilities: A03B (Lockdown), Tip (Tooltip - Normal)
+{
+Deep Scan
+}
+
+STRING 2071
+// Abilities: A03B (Lockdown), EditorSuffix (Editor Suffix)
+{
+( TERMINAL )
+}
+
+STRING 2072
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 2073
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 2074
+// Abilities: A03C (Go Back To Abilities), Name (Name)
+{
+Go Back To Abilities
+}
+
+STRING 2075
+// Abilities: A03C (Go Back To Abilities), Ubertip (Tooltip - Normal - Extended)
+{
+Accesses Administration Controlls
+}
+
+STRING 2076
+// Abilities: A03C (Go Back To Abilities), Tip (Tooltip - Normal)
+{
+Go Back
+}
+
+STRING 2077
+// Abilities: A03C (Go Back To Abilities), EditorSuffix (Editor Suffix)
+{
+(TERMINAL, ADMINISTRATION)
+}
+
+STRING 2078
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 2079
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Lore TODO|r|n|n|cffffcc00Restore Security Mainframe [2/4]|r|nRestores Security priviliges.|n|cff18bc9c- |cff00ffffScan for Crew|r |cff18bc9cnow available|r|r|n|cff18bc9c- Camera Vision Increased by 10%|n- Turret damage increased by 10%|n- Hit Points for Station Security increased by 50|n|n|cff6f2583Infested|n- None|r
+}
+
+STRING 2080
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Lore TODO|r|n|n|cffffcc00Improved Security Mainframe [3/4]|r|nUpgrades currently available software and hardware.|n|cff18bc9c- |cff00ffffScan for Alien|r |cff18bc9cnow available|r|r|n|cff18bc9c- Camera Vision Increased by 10%|n- Turret damage increased by 10%|n- Hit Points for Station Security increased by 50|n|r|n|cff6f2583Infested|n- None|r
+}
+
+STRING 2081
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Lore TODO|r|n|n|cffffcc00Improved Security Mainframe [4/4]|r|nUpgrades currently available software and hardware|r|n|cff18bc9c- Final Damage Upgrades Unlocked|n- Camera Vision Increased by 10%|n- Turret damage increased by 10%|n- Hit Points for Station Security increased by 50|n|r|n|cff6f2583Infested|n- None|r
+}
+
+STRING 2082
+// Upgrades: R00G (Iron Plating,Steel Plating,Mithril Plating), Name (Name)
+{
+Security Upgrades
+}
+
+STRING 2083
+// Upgrades: R00G (Iron Plating,Steel Plating,Mithril Plating), effect3 (Effect 3)
+{
+ratt
+}
+
+STRING 2084
+// Abilities: A03B (Lockdown), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Admirality often uses "Lockdowns" to prevent the spread of depressurization, but it can be swiftly adapted to temporarily stop the spread of infestation, or unwanted personel.|r|n|nLocks target door for |cff18bc9c15|r seconds.|r|n|n|cff62778120 Second Cooldown|r
+}
+
+STRING 2085
+// Abilities: A03B (Lockdown), Tip (Tooltip - Normal)
+{
+Manual Lockdown
 }
 

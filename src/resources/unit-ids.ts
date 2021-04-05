@@ -30,7 +30,8 @@ export const TERMINAL_VOID = FourCC('nVOI');
 export const TERMINAL_VOID_DUMMY = FourCC('hVOI')
 export const TERMINAL_PURGE = FourCC('n00G');
 export const TERMINAL_PURGE_DUMMY = FourCC('n00K');
-export const TERMINAL_SECURITY = FourCC('n00P');
+export const TERMINAL_ADMINISTRATION = FourCC('n00P');
+export const TERMINAL_ADMINISTRATION_DUMMY = FourCC('n011');
 export const TERMINAL_SECURITY_DUMMY = FourCC('n00Q');
 
 export const WORM_ALIEN_FORM = FourCC('N00C');

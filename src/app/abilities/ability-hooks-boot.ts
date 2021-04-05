@@ -60,7 +60,11 @@ import {
     ABIL_CULTIST_DARK_THRALL,
     ABIL_CULTIST_CONVOKE_CARRION,
     ABIL_ALIEN_LEAP_MINION,
-    ABIL_ALIEN_BERSERK_MINION
+    ABIL_ALIEN_BERSERK_MINION,
+    ABIL_ID_SECURITY_TARGETING,
+    ABIL_SYSTEM_PURGE_VENTS_BRIDGE,
+    ABIL_GO_BACK_TO_ADMIN_CONTROLS,
+    ABIL_ID_LOCKDOWN
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -122,6 +126,8 @@ import { ConvokeCarrionAbility} from "./cult/convoke-carrion"
 import { AbilityHooks } from "./ability-hooks";
 import { LeapBehaviour } from "./behaviours/minion-leap";
 import { BerserkBehaviour } from "./behaviours/minion-berserk";
+import { AdministrationBeginTargetingPlayersAbility } from "./station/begin-targeting";
+import { LockdownAbility } from "./station/lockdown";
 
 
 export const BootAbilityHooks = () => {
@@ -170,6 +176,8 @@ export const BootAbilityHooks = () => {
     AbilityHooks.AddAbility(ABIL_GENE_INSTANT_HEAL, () => new InstantHealAbility());
     AbilityHooks.AddAbility(ABIL_SYSTEM_REACTOR_DIAGNOSTICS, () => new ReactorDiagnosticsAbility());
     AbilityHooks.AddAbility(ABIL_SYSTEM_PURGE_VENTS, () => new VentPurgeAbility());
+    AbilityHooks.AddAbility(ABIL_SYSTEM_PURGE_VENTS_BRIDGE, () => new VentPurgeAbility());
+
     AbilityHooks.AddAbility(ABIL_WEP_MINIGUN_FULLER_AUTO, () => new MinigunFullerAutoAbility());
 
     ABIL_SECURITY_TARGET_ALL.forEach(a => {
@@ -198,7 +206,9 @@ export const BootAbilityHooks = () => {
     AbilityHooks.AddAbility(ABIL_ALIEN_WEBSHOT, () => new WebshotAbility());
     AbilityHooks.AddAbility(ABIL_ALIEN_BROODNEST, () => new BroodNestAbility());
     AbilityHooks.AddAbility(ABIL_ALIEN_WEBWALK, () => new ConealingWebsAbility());
-
+    AbilityHooks.AddAbility(ABIL_ID_SECURITY_TARGETING, () => new AdministrationBeginTargetingPlayersAbility());
+    AbilityHooks.AddAbility(ABIL_GO_BACK_TO_ADMIN_CONTROLS, () => new AdministrationBeginTargetingPlayersAbility());
+    AbilityHooks.AddAbility(ABIL_ID_LOCKDOWN, () => new LockdownAbility());
     /**
      * TEST BEHAVIOUR
      */

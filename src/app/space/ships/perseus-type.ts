@@ -172,7 +172,7 @@ export class PerseusShip extends ShipWithFuel {
                     this.state === ShipState.inSpace ? 250 : 500, 
                     cX, 
                     cY, 
-                    400, 
+                    350, 
                     false, 
                     false,
                     ATTACK_TYPE_SIEGE, 

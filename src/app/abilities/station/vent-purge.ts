@@ -5,7 +5,8 @@ import { COL_ORANGE, COL_INFO } from "resources/colours";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { ResearchFactory } from "app/research/research-factory";
-import { TECH_MAJOR_REACTOR } from "resources/ability-ids";
+import { ABIL_SYSTEM_PURGE_VENTS, ABIL_SYSTEM_PURGE_VENTS_BRIDGE, TECH_MAJOR_REACTOR } from "resources/ability-ids";
+import { GlobalCooldownAbilityEntity } from "../global-ability-entity";
 
 export const ventPurgeWarning = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
 export const ventPurgeWarmup = new SoundRef('Sounds\\SequencerActive.mp3', false);
@@ -26,6 +27,9 @@ export class VentPurgeAbility extends AbilityWithDone {
         ventPurgeWarmup.playSoundOnUnit(GetTriggerUnit(), 60);
 
         const rInstance = ResearchFactory.getInstance();
+
+        GlobalCooldownAbilityEntity.getInstance().onAbilityCast(this.casterUnit.handle, ABIL_SYSTEM_PURGE_VENTS);
+        GlobalCooldownAbilityEntity.getInstance().onAbilityCast(this.casterUnit.handle, ABIL_SYSTEM_PURGE_VENTS_BRIDGE);
 
         if (rInstance.getMajorUpgradeLevel(TECH_MAJOR_REACTOR) > 2 && rInstance.techHasOccupationBonus(TECH_MAJOR_REACTOR, 2)) {
             MessageAllPlayers(`[${COL_ORANGE}WARNING|r] PURGING SERVICE TUNNELS IN 7`);

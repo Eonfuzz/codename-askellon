@@ -7,6 +7,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { EventListener } from "app/events/event-type";
 import { Log } from "lib/serilog/serilog";
 import { Timers } from "app/timer-type";
+import { ABIL_ACTIVATE_SCAN_ALIENS, ABIL_ACTIVATE_SCAN_CREW, ABIL_SYSTEM_PURGE_VENTS, ABIL_SYSTEM_PURGE_VENTS_BRIDGE, ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS } from "resources/ability-ids";
 
 export class GlobalCooldownAbilityEntity extends Entity {
     private static instance: GlobalCooldownAbilityEntity;
@@ -160,7 +161,6 @@ export class GlobalCooldownAbilityEntity extends Entity {
     public onAbilityCast(u: unit, a: number) {
         // Is it in our registry
         const unitsListeningToAbility = this.abilitiesOnUnits.get(a);
-        if (!unitsListeningToAbility || unitsListeningToAbility.length == 0) return;
         
         // fetch CD
         const cooldown = BlzGetAbilityCooldown(a, GetUnitAbilityLevel(u, a)-1);
@@ -170,6 +170,7 @@ export class GlobalCooldownAbilityEntity extends Entity {
         // Add it to trackable entities
         this.globalCooldownActiveAbilities.push(a);
         
+        if (!unitsListeningToAbility || unitsListeningToAbility.length == 0) return;
         // Loop through all units listening....
         for (let index = 0; index < unitsListeningToAbility.length; index++) {
             const listeningUnit = unitsListeningToAbility[index];
@@ -213,3 +214,9 @@ export class GlobalCooldownAbilityEntity extends Entity {
         instance.globalCooldownEntries.push(abil);
     }
 }
+
+GlobalCooldownAbilityEntity.register(ABIL_SYSTEM_PURGE_VENTS_BRIDGE);
+GlobalCooldownAbilityEntity.register(ABIL_SYSTEM_PURGE_VENTS);
+GlobalCooldownAbilityEntity.register(ABIL_ACTIVATE_SCAN_ALIENS);
+GlobalCooldownAbilityEntity.register(ABIL_ACTIVATE_SCAN_CREW);
+GlobalCooldownAbilityEntity.register(ABIL_SYSTEM_REACTOR_DIVERT_WEAPONS);
