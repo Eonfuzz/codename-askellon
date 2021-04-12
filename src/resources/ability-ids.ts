@@ -188,7 +188,9 @@ export const ABIL_SECURITY_TARGET_ALL = [
 ];
 
 export const ABIL_DROP_MINERALS = FourCC('A01Y');
+export const ABIL_SHIP_AFTERBURNER = FourCC('A000');
 
+export const TECH_OUT_OF_COMBAT = FourCC('R00Q');
 
 export const ABIL_CULTIST_INFO = FourCC('A02I');
 export const ABIL_APPLY_MADNESS = FourCC('A02J');

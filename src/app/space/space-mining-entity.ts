@@ -12,7 +12,7 @@ import { Log } from "lib/serilog/serilog";
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MAJOR_VOID } from "resources/ability-ids";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { SPACE_UNIT_MINERAL } from "resources/unit-ids";
+import { SPACE_UNIT_MINERAL, SPACE_UNIT_MINERAL_RARE } from "resources/unit-ids";
 
 class MiningEvent {
     drillStartSound = new SoundRef("Sounds\\Ships\\LaserDrillStart.wav", false, false);
@@ -108,9 +108,7 @@ class MiningEvent {
                         new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), GetRandomReal(-1, 1)).normalise().multiplyN(45 * this.target.selectionScale));
                 }
 
-                const rng = (this.target.typeId === SPACE_UNIT_MINERAL) ? 100 : 0;
-
-                if (rng > 75) {
+                if (this.target.typeId === SPACE_UNIT_MINERAL_RARE) {
                     const minerals = this.source.getItemInSlot(1);
                     const charges = minerals.charges;
                     if (charges < 100) {
@@ -124,7 +122,7 @@ class MiningEvent {
                         minerals.charges = charges + 1 * (PlayerStateFactory.isSinglePlayer() ? 10 : 1);
                     }
                 }
-                UnitDamageTarget(this.source.handle, this.target.handle, 30, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
+                UnitDamageTarget(this.source.handle, this.target.handle, 300, false, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS);
                 if (!UnitAlive(this.target.handle)) return;
             }
             return true;

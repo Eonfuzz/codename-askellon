@@ -761,6 +761,9 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
+    u = BlzCreateUnitWithSkin(p, FourCC("nsgh"), 14117.2, -5903.0, 343.817, FourCC("nsgh"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nhyh"), 14306.4, -5899.8, 333.940, FourCC("nhyh"))
+    u = BlzCreateUnitWithSkin(p, FourCC("nhyh"), 13863.3, -6008.0, 290.542, FourCC("nhyh"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18400.0, -16480.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11520.0, -14592.0, 149.770, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11424.0, -14720.0, 213.502, FourCC("h005"))
@@ -1729,8 +1732,18 @@ function InitTrig_SetGeneticTesterLights()
     TriggerAddAction(gg_trg_SetGeneticTesterLights, Trig_SetGeneticTesterLights_Actions)
 end
 
+function Trig_Untitled_Trigger_001_Func001C()
+    if (GetUnitTypeId(GetTriggerUnit()) == FourCC("h007")) then
+        return true
+    end
+    if (GetUnitTypeId(GetTriggerUnit()) == FourCC("h00H")) then
+        return true
+    end
+    return false
+end
+
 function Trig_Untitled_Trigger_001_Conditions()
-    if (not (GetUnitTypeId(GetTriggerUnit()) == FourCC("h007"))) then
+    if (not Trig_Untitled_Trigger_001_Func001C()) then
         return false
     end
     return true

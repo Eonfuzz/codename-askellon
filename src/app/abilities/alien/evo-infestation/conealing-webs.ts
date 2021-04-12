@@ -89,7 +89,7 @@ export class ConealingWebsAbility extends AbilityWithDone {
             }
         }
 
-        if (ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit.id) == this.currentWebs) {
+        if (this.websSpawned == this.maxWebsSpawned) {
             this.done = true;
         }
     }

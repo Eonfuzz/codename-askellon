@@ -1,6 +1,6 @@
 import { InteractableData } from "../interactable-type";
 import { Unit } from "w3ts/index";
-import { SHIP_VOYAGER_UNIT, SPACE_UNIT_MINERAL, SPACE_UNIT_ASTEROID } from "resources/unit-ids";
+import { SHIP_VOYAGER_UNIT, SPACE_UNIT_MINERAL, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL_RARE } from "resources/unit-ids";
 import { TECH_MAJOR_VOID, HOLD_ORDER_ID } from "resources/ability-ids";
 import { ResearchFactory } from "app/research/research-factory";
 import { Interactables } from "../interactables";
@@ -44,7 +44,7 @@ export function InitMiningInteraction() {
             interactable.setTimeScale(1);
         }
     }
-    
-    Interactables.set(SPACE_UNIT_ASTEROID, asteroidInteraction);
+
     Interactables.set(SPACE_UNIT_MINERAL, asteroidInteraction);
+    Interactables.set(SPACE_UNIT_MINERAL_RARE, asteroidInteraction);
 }

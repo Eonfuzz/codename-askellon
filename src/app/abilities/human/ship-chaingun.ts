@@ -70,7 +70,8 @@ export class ShipChaingunAbility extends AbilityWithDone {
             .setVelocity(1500)
             .overrideFilter((projectile: Projectile) => {
                 let unit = GetFilterUnit(); 
-                return GetWidgetLife(unit) > 0.405 && GetUnitTypeId(unit) === SHIP_VOYAGER_UNIT 
+                // const uType = GetUnitTypeId(unit);
+                return GetWidgetLife(unit) > 0.405
                     && GetOwningPlayer(unit) !== this.unit.owner.handle &&
                     IsUnitType(unit, UNIT_TYPE_MAGIC_IMMUNE) == false;
             })

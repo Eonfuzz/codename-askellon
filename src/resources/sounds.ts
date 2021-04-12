@@ -9,8 +9,10 @@ export const SOUND_STR_SYNTH_HEAL = "Sounds\\SynthHeal.mp3";
 export const SOUND_STR_GENE_LOOP = "Sounds\\GeneticSequencerAmbience.mp3";
 export const SOUND_STR_SONIC_RES = "Sounds\\SonicRessonanceCast.mp3";
 export const SOUND_STR_ATTACH = "Sounds\\attachToGun.mp3";
+export const SOUND_STR_DOOM_STINGER = "Sounds\\doomStinger.mp3";
 
 Preload(SOUND_STR_SYNTH_HEAL);
 Preload(SOUND_STR_GENE_LOOP);
 Preload(SOUND_STR_SONIC_RES);
 Preload(SOUND_STR_ATTACH);
+Preload(SOUND_STR_DOOM_STINGER);

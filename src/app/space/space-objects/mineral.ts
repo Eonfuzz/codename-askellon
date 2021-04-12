@@ -34,7 +34,8 @@ export class Mineral extends SpaceObject {
         this.widget.setTimeScale(GetRandomReal(0.01, 0.1));
         SetUnitScalePercent(this.widget.handle, scaleFactor, scaleFactor, scaleFactor);
         this.widget.selectionScale = scaleFactor / 100;
-        this.widget.maxLife = 200 + MathRound(250 * (scaleFactor / 100) * (scaleFactor / 100));
+        this.widget.paused = true;
+        this.widget.maxLife = 2000 + MathRound(2500 * (scaleFactor / 100) * (scaleFactor / 100));
         this.widget.life = this.widget.maxLife;
         BlzSetUnitFacingEx(this.widget.handle, GetRandomReal(0, 360));
     }

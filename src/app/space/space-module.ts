@@ -31,6 +31,7 @@ import { AskellonEntity } from "app/station/askellon-entity";
 import { Quick } from "lib/Quick";
 import { getRectsGivenNamespace, getZFromXY } from "lib/utils";
 import { PlayerState } from "app/force/player-type";
+import { MineralRare } from "./space-objects/mineral-rare";
 
 // For ship bay instansiation
 declare const gg_rct_Space: rect;
@@ -73,25 +74,31 @@ export class SpaceEntity extends Entity {
 
         // try {
             // Create 200 midground asteroids
-            for (let index = 0; index < 300; index++) {
+            for (let index = 0; index < 250; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
                 new Asteroid(rX, rY, SpaceObjectType.midground).load();
             }
-            // Create 200 midground asteroids
-            for (let index = 0; index < 300; index++) {
+            // Create 200 midground minerals
+            for (let index = 0; index < 150; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
                 new Mineral(rX, rY, SpaceObjectType.midground).load();
             }
+            // Create 50 midground minerals (rare)
+            for (let index = 0; index < 75; index++) {
+                const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
+                const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
+                new MineralRare(rX, rY, SpaceObjectType.midground).load();
+            }
             // Create 400 background asteroids
-            for (let index = 0; index < 600; index++) {
+            for (let index = 0; index < 100; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
                 new Asteroid(rX, rY, SpaceObjectType.background).load();
             }
             // Create 100 foreground asteroids
-            for (let index = 0; index < 400; index++) {
+            for (let index = 0; index < 200; index++) {
                 const rX = GetRandomReal(this.spaceRect.minX, this.spaceRect.maxX);
                 const rY = GetRandomReal(this.spaceRect.minY, this.spaceRect.maxY);
                 new Asteroid(rX, rY, SpaceObjectType.foreground).load();
@@ -129,13 +136,6 @@ export class SpaceEntity extends Entity {
                 }
             });
         });
-
-        try {
-            this.initShips();
-        }
-        catch(e) {
-            Log.Error(`Failed initing ships ${e}`);
-        }
     }
     
     /**

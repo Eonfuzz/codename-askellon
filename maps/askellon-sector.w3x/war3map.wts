@@ -8132,11 +8132,6 @@ This unit is in a frenzy; it will attack and move faster.
 Player 1
 }
 
-STRING 2008
-{
-Crew
-}
-
 STRING 2013
 {
 Askellon
@@ -8145,11 +8140,6 @@ Askellon
 STRING 2014
 {
 Crew Member
-}
-
-STRING 2015
-{
-Zerg
 }
 
 STRING 2016
@@ -8583,5 +8573,33 @@ STRING 2092
 // Abilities: A03D (Build Turret), Name (Name)
 {
 Build Turret
+}
+
+STRING 2093
+{
+|cff627781The Crew|r
+}
+
+STRING 2094
+{
+https://discord.gg/nDMpQZm
+}
+
+STRING 2095
+// Units: h00H (Rare Mineral), Name (Name)
+{
+Rare Mineral
+}
+
+STRING 2096
+// Upgrades: R00Q (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Out of combat
+}
+
+STRING 2097
+// Upgrades: R00Q (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+In combat
 }
 

@@ -64,7 +64,8 @@ import {
     ABIL_ID_SECURITY_TARGETING,
     ABIL_SYSTEM_PURGE_VENTS_BRIDGE,
     ABIL_GO_BACK_TO_ADMIN_CONTROLS,
-    ABIL_ID_LOCKDOWN
+    ABIL_ID_LOCKDOWN,
+    ABIL_SHIP_AFTERBURNER
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -128,6 +129,7 @@ import { LeapBehaviour } from "./behaviours/minion-leap";
 import { BerserkBehaviour } from "./behaviours/minion-berserk";
 import { AdministrationBeginTargetingPlayersAbility } from "./station/begin-targeting";
 import { LockdownAbility } from "./station/lockdown";
+import { DisableAbilityInCombat } from "./behaviours/disable-ability-in-combat";
 
 
 export const BootAbilityHooks = () => {
@@ -217,4 +219,5 @@ export const BootAbilityHooks = () => {
     // AbilityHooks.AddBehaiour(ABIL_ALIEN_LEAP_MINION, () => new TestBehaviour());
     AbilityHooks.AddBehaiour(ABIL_ALIEN_LEAP_MINION, () => new LeapBehaviour());
     AbilityHooks.AddBehaiour(ABIL_ALIEN_BERSERK_MINION, () => new BerserkBehaviour());
+    AbilityHooks.AddBehaiour(ABIL_SHIP_AFTERBURNER, () => new DisableAbilityInCombat(ABIL_SHIP_AFTERBURNER));
 }

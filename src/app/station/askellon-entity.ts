@@ -67,7 +67,6 @@ export class AskellonEntity extends Entity {
     /**
      * Static API
      */
-
     public static getCurrentPower() {
         return this.getInstance().currentPower;
     }

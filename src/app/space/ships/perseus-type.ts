@@ -2,7 +2,7 @@ import { Unit, Effect, MapPlayer, Item, playerColors } from "w3ts/index";
 import { SpaceMovementEngine } from "../ship-movement-engine";
 import { Log } from "lib/serilog/serilog";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { UNIT_IS_FLY, HOLD_ORDER_ID } from "resources/ability-ids";
+import { UNIT_IS_FLY, HOLD_ORDER_ID, TECH_OUT_OF_COMBAT } from "resources/ability-ids";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { Ship, ShipWithFuel } from "./ship-type";
@@ -72,6 +72,7 @@ export class PerseusShip extends ShipWithFuel {
         this.unit.owner = who.owner;
         this.shipFuel -= 30;
 
+        who.owner.setTechResearched(TECH_OUT_OF_COMBAT, 1);
         if (who && who.owner) {
             this.unit.color = playerColors[ who.owner.id ].playerColor;
         }
@@ -227,6 +228,8 @@ export class PerseusShip extends ShipWithFuel {
             u.y = rPos.y;
             u.show = true;
             u.paused = false;
+
+            u.owner.setTechResearched(TECH_OUT_OF_COMBAT, 0);
 
             // If we have the entering unit was selected, select the ship too
             SelectUnitForPlayerSingle(u.handle, u.owner.handle);

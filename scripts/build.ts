@@ -118,11 +118,14 @@ function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
   let w3iBuffer = toArrayBuffer(buffer);
   let wtsBuffer = fs.readFileSync(wtsDir, "utf8");
 
-  const w3i = new War3MapW3i.File(w3iBuffer);
-  const wts = new War3MapWts.File(wtsBuffer);
+  const w3i = new War3MapW3i.File();
+  const wts = new War3MapWts.File();
 
   
-  const w3iNameString = getStringNumberFromString(w3i.name);
+  w3i.load(w3iBuffer);
+  wts.load(wtsBuffer);
+  
+  // const w3iNameString = getStringNumberFromString(w3i.name);
   w3i.name = `|cff627781Askellon|r v${verNum}`;
 
   w3iBuffer = w3i.save();

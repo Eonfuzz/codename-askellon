@@ -134,6 +134,8 @@ export class Game {
         // Boot our abil hooks
         BootAbilityHooks();
 
+        SpaceEntity.getInstance().initShips();
+
         const mainShip = SpaceEntity.getInstance().mainShip;
         mainShip.onMoveOrder(new Vector2(mainShip.unit.x + 1500, mainShip.unit.y + 1500));
 
