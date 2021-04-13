@@ -214,7 +214,7 @@ export const BootAbilityHooks = () => {
     /**
      * TEST BEHAVIOUR
      */
-    AbilityHooks.AddBehaiour(ABIL_CREWMEMBER_INFO, () => new TestBehaviour());
+    // AbilityHooks.AddBehaiour(ABIL_CREWMEMBER_INFO, () => new TestBehaviour());
     AbilityHooks.AddBehaiour(ABIL_CULTIST_DARK_THRALL, () => new CarrionReincarnationBehaviour());
     // AbilityHooks.AddBehaiour(ABIL_ALIEN_LEAP_MINION, () => new TestBehaviour());
     AbilityHooks.AddBehaiour(ABIL_ALIEN_LEAP_MINION, () => new LeapBehaviour());

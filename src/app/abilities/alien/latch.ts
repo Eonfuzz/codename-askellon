@@ -99,11 +99,11 @@ export class LatchAbility extends AbilityWithDone {
     };
 
     public step(delta: number) {
-        if (this.forceStop) return false;
+        if (this.forceStop) return this.done = true;;
 
         // Make sure our current unit or target exists
-        if (!this.unit || !this.unit.isAlive()) return false;
-        if (!this.targetUnit || !this.targetUnit.isAlive()) return false;
+        if (!this.unit || !this.unit.isAlive()) return this.done = true;;
+        if (!this.targetUnit || !this.targetUnit.isAlive()) return this.done = true;;
 
         // Are we currently latching?
         // Compare current orders

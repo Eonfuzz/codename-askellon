@@ -414,7 +414,7 @@ export class WeaponEntity extends Entity {
             if (unit.typeId === UNIT_ID_EGG_AUTO_HATCH || 
                 unit.typeId === UNIT_ID_EGG_AUTO_HATCH_LARGE) {
 
-                if (targetUnit.typeId === CREWMEMBER_UNIT_ID && !PlayerStateFactory.get(unit.owner).getForce().is(ALIEN_FORCE_NAME)) {
+                if (targetUnit.typeId === CREWMEMBER_UNIT_ID && !PlayerStateFactory.get(targetUnit.owner).getForce().is(ALIEN_FORCE_NAME)) {
                     unit.issueImmediateOrder("thunderclap");
                 }
                 else {

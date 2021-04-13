@@ -25,7 +25,7 @@ export class SoundRef {
     public playSoundForPlayer(who: MapPlayer) {
         // if (!who.isLocal()) this.setVolume(0);
         // this.playSound(killSoundWhenDone);
-        if (!who.isLocal()) this.playSound();
+        if (who.isLocal()) this.playSound();
     }
 
     public playSoundForPlayers(who: MapPlayer[]) {
