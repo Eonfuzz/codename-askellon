@@ -13,6 +13,9 @@ export const BRIDGE_CAPTAINS_TERMINAL = FourCC('n005');
 export const SPACE_UNIT_ASTEROID = FourCC('h002');
 export const SPACE_UNIT_MINERAL = FourCC('h007');
 export const SPACE_UNIT_MINERAL_RARE = FourCC('h00H');
+export const UNIT_ID_DEBRIS_1 = FourCC('h00I');
+export const UNIT_ID_DEBRIS_2 = FourCC('h00J');
+export const UNIT_ID_DEBRIS_3 = FourCC('h00K');
 
 export const TERMINAL_RELIGION_ALTAR = FourCC('n00R');
 export const TERMINAL_RELIGION = FourCC('n00A');

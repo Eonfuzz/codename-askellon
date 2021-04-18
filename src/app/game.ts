@@ -44,6 +44,8 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { TipEntity } from "./tips/tip-entity";
 import { AbilityHooks } from "./abilities/ability-hooks";
 import { BootAbilityHooks } from "./abilities/ability-hooks-boot";
+import { BootAbilityHooks2 } from "./abilities/ability-hooks-boot-2";
+import { Ability } from "./abilities/ability-type";
 
 export const warpStormSound = new SoundRef("Sounds\\WarpStorm.mp3", true, true);
 export const labrynthIntro = new SoundRef("Sounds\\Theme\\TheLabrynth.mp3", true, true);
@@ -102,6 +104,13 @@ export class Game {
         ConveyorEntity.getInstance();
         LeapEntity.getInstance();
 
+        AbilityHooks.getInstance();
+        // Boot our abil hooks
+        BootAbilityHooks();
+        BootAbilityHooks2();
+        // now check existing units
+        AbilityHooks.getInstance().checkExistingUnit();
+        
         ForceEntity.getInstance();
         SecurityEntity.getInstance();
         AskellonEntity.getInstance();
@@ -123,16 +132,13 @@ export class Game {
         // Relies on ALL the above
         SpaceEntity.getInstance();
         WeaponEntity.getInstance();
-        AbilityHooks.getInstance();
+
 
         AIEntity.getInstance();
         AntiMetaEntity.start();
         EggEntity.getInstance();
 
         TipEntity.getInstance();
-
-        // Boot our abil hooks
-        BootAbilityHooks();
 
         SpaceEntity.getInstance().initShips();
 

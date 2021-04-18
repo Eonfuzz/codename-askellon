@@ -53,11 +53,15 @@ export class Zone {
         else return this.zoneRegion.containsCoords(x, y);
     }
 
-    public getRandomPointInZone(): Vector2 {
+    /**
+     * Margin is how far away from the walls it should be
+     * @param margin 
+     */
+    public getRandomPointInZone(margin: number = 0): Vector2 {
         if (this.allRects.length === 0) return new Vector2(0,0);
         const idx = GetRandomInt(0, this.allRects.length - 1);
         const rect = this.allRects[idx];
-        return new Vector2(GetRandomReal(GetRectMinX(rect), GetRectMaxX(rect)), GetRandomReal(GetRectMinY(rect), GetRectMaxY(rect)));
+        return new Vector2(GetRandomReal(GetRectMinX(rect)+margin, GetRectMaxX(rect)-margin), GetRandomReal(GetRectMinY(rect)+margin, GetRectMaxY(rect)-margin));
     }
 
     /**

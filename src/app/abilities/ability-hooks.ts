@@ -6,8 +6,9 @@ import { Trigger, Unit } from "w3ts/index";
 import { Ability } from "./ability-type";
 import { Behaviour } from "./behaviour";
 import { ABILITY_HOOK } from "./hook-types";
-import { MessageAllPlayers } from "lib/utils";
+import { MessageAllPlayers, MessagePlayer } from "lib/utils";
 import { Timers } from "app/timer-type";
+import { SHIP_MAIN_ASKELLON } from "resources/unit-ids";
 
 /**
  * Interface to support adding / removal of ability hooks from ability funcs
@@ -119,6 +120,19 @@ export class AbilityHooks extends Entity {
                 this.behavioursForUnit.delete(UnitDex.eventUnit.id);
             }
         });
+
+    }
+
+    public checkExistingUnit() {
+        // Iterate across all pre-placed units
+        const world = GetWorldBounds();
+        // Detect units when they enter or leave the map
+        GroupEnumUnitsInRect(CreateGroup(), world, Filter(() => {
+            const u = GetFilterUnit();
+            this.checkBehaviourKeysFor(Unit.fromHandle(u));
+            return false;
+        }));
+
     }
 
     private unitCreatedEvent(u: Unit) {

@@ -187,6 +187,10 @@ export const ABIL_SECURITY_TARGET_ALL = [
     ABIL_SECURITY_TARGET_PLAYER_12,
 ];
 
+export const ABIL_DUMMY_FLAMESTRIKE = FourCC('A03E');
+export const ABIL_ID_REACTOR_PLATING = FourCC('A03F');
+export const ABIL_ID_GENERATOR_PLATING = FourCC('A03G');
+
 export const ABIL_DROP_MINERALS = FourCC('A01Y');
 export const ABIL_SHIP_AFTERBURNER = FourCC('A000');
 

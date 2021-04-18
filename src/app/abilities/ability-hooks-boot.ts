@@ -65,7 +65,9 @@ import {
     ABIL_SYSTEM_PURGE_VENTS_BRIDGE,
     ABIL_GO_BACK_TO_ADMIN_CONTROLS,
     ABIL_ID_LOCKDOWN,
-    ABIL_SHIP_AFTERBURNER
+    ABIL_SHIP_AFTERBURNER,
+    ABIL_LEAVE_ASKELLON_CONTROLS,
+    ABIL_ID_REACTOR_PLATING
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -121,7 +123,6 @@ import { PlaceBombAbility } from "./items/place-bomb";
 import { WebshotAbility } from "./alien/evo-infestation/webshot";
 import { BroodNestAbility } from "./alien/evo-infestation/broodnest";
 import { ConealingWebsAbility } from "./alien/evo-infestation/conealing-webs";
-import { TestBehaviour } from "./behaviours/test-behaviour";
 import { CarrionReincarnationBehaviour} from "./behaviours/carrion-reincarnation"
 import { ConvokeCarrionAbility} from "./cult/convoke-carrion"
 import { AbilityHooks } from "./ability-hooks";
@@ -130,6 +131,7 @@ import { BerserkBehaviour } from "./behaviours/minion-berserk";
 import { AdministrationBeginTargetingPlayersAbility } from "./station/begin-targeting";
 import { LockdownAbility } from "./station/lockdown";
 import { DisableAbilityInCombat } from "./behaviours/disable-ability-in-combat";
+import { AskellonDamageBehaviour } from "./behaviours/askellon-damage-behaviour";
 
 
 export const BootAbilityHooks = () => {
@@ -220,4 +222,5 @@ export const BootAbilityHooks = () => {
     AbilityHooks.AddBehaiour(ABIL_ALIEN_LEAP_MINION, () => new LeapBehaviour());
     AbilityHooks.AddBehaiour(ABIL_ALIEN_BERSERK_MINION, () => new BerserkBehaviour());
     AbilityHooks.AddBehaiour(ABIL_SHIP_AFTERBURNER, () => new DisableAbilityInCombat(ABIL_SHIP_AFTERBURNER));
+    AbilityHooks.AddBehaiour(ABIL_ASKELLON_BROADSIDE_LEFT, () => new AskellonDamageBehaviour());
 }

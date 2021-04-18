@@ -5,8 +5,8 @@ import { Hooks } from "lib/Hooks";
 import { Trigger, Region, Unit, MapPlayer } from "w3ts/index";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EXPLOSIVE_BARREL, SPACE_UNIT_MINERAL_RARE } from "resources/unit-ids";
-import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD } from "resources/sfx-paths";
+import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EXPLOSIVE_BARREL, SPACE_UNIT_MINERAL_RARE, UNIT_ID_DEBRIS_3, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_1 } from "resources/unit-ids";
+import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD, SFX_BUILDING_EXPLOSION } from "resources/sfx-paths";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_ALIEN_MINION_EVOLVE, ABIL_U_DEX } from "resources/ability-ids";
 import { UnitDex, UnitDexEvent } from "./unit-indexer";
@@ -61,6 +61,12 @@ export class EventEntity {
             Log.Verbose(`Death called for ${unit.name} ${unit.id}`);
             // Other things we gotta do
             // If it is a creep tumor, play the zerg building sfx
+            if (unit.typeId === UNIT_ID_DEBRIS_3 || unit.typeId === UNIT_ID_DEBRIS_2 || unit.typeId == UNIT_ID_DEBRIS_1) {
+                const sfx = AddSpecialEffect(SFX_BUILDING_EXPLOSION, unit.x, unit.y);
+                BlzSetSpecialEffectScale(sfx, 0.4);
+                DestroyEffect(sfx);
+                unit.destroy();
+            }
             if (unit.typeId === ALIEN_STRUCTURE_TUMOR) {
                 const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
                 BlzSetSpecialEffectScale(sfx, 0.4);

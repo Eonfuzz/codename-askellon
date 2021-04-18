@@ -94,9 +94,9 @@ export class PlayerStateFactory {
         return PlayerStateFactory.getInstance().get(who);
     }
 
-    public static getCrewmember(who: number)
-    public static getCrewmember(who: MapPlayer)
-    public static getCrewmember(who: MapPlayer | number)
+    public static getCrewmember(who: number): Crewmember | undefined
+    public static getCrewmember(who: MapPlayer): Crewmember | undefined
+    public static getCrewmember(who: MapPlayer | number): Crewmember | undefined
     public static getCrewmember(who: MapPlayer | number): Crewmember | undefined {
         const pData = PlayerStateFactory.get(who);
         

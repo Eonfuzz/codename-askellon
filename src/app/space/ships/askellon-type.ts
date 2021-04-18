@@ -27,6 +27,7 @@ export class AskellonShip extends Ship {
     constructor(state: ShipState, u: Unit) {
         super(state, u);
         u.paused = false;
+        u.life = 10000;
     }
 
     createEngine() {
@@ -73,6 +74,8 @@ export class AskellonShip extends Ship {
     }
 
     process(deltaTime: number, minX: number, maxX: number, minY: number, maxY: number) {
+        if (!this.unit || this.unit.invulnerable) return false;
+
         super.process(deltaTime, minX, maxX, minY, maxY);
 
         this.iconTicker -= deltaTime;
@@ -99,7 +102,6 @@ export class AskellonShip extends Ship {
         if (this.minimapIcon) {
             DestroyMinimapIcon(this.minimapIcon);
         }
-        Log.Information("Main ship dead, not yet implemented soz");
     }
 
     public onMoveOrder(targetLoc: Vector2) {

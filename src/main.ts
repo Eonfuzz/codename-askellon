@@ -5,9 +5,6 @@ import { StringSink } from "lib/serilog/string-sink";
 import { Log, LogLevel } from "lib/serilog/serilog";
 import { SendMessageToAdmin, SendMessageUnlogged } from "lib/translators";
 
-
-// Hello world from boar!
-
 function tsMain() {
     Log.Init([
         new StringSink(LogLevel.Debug, SendMessageToAdmin),

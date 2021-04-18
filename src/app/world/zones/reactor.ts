@@ -5,26 +5,28 @@ import { SoundRef } from "app/types/sound-ref";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { Log } from "lib/serilog/serilog";
 import { ZONE_TYPE } from "../zone-id";
-import { ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE } from "resources/item-ids";
+import { ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE, ITEM_REMOTE_BOMB } from "resources/item-ids";
 import { AskellonShip } from "app/space/ships/askellon-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { TECH_MINERALS_PROGRESS, TECH_MAJOR_VOID } from "resources/ability-ids";
-import { MessageAllPlayers } from "lib/utils";
-import { COL_GOLD, COL_TEAL, COL_ATTATCH } from "resources/colours";
+import { getZFromXY, MessageAllPlayers, MessagePlayer } from "lib/utils";
+import { COL_GOLD, COL_TEAL, COL_ATTATCH, COL_BAD } from "resources/colours";
 import { ResearchFactory } from "app/research/research-factory";
 import { PlayerState } from "app/force/player-type";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { Quick } from "lib/Quick";
 import { ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_CANITE, ALIEN_MINION_FORMLESS } from "resources/unit-ids";
 import { Timers } from "app/timer-type";
-import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
+import { SFX_ALIEN_BLOOD, SFX_BUILDING_EXPLOSION, SFX_EXPLOSION_GROUND } from "resources/sfx-paths";
 import { PlayNewSound } from "lib/translators";
 import { CreepEntity } from "app/creep/creep-entity";
+import { Vector2 } from "app/types/vector2";
 
 declare const gg_rct_reactoritemleft: rect;
 declare const gg_rct_reactoritemright: rect;
 declare const gg_rct_powercoresfx: rect;
+declare const udg_main_power_generator: unit;
 
 export class ReactorZone extends ShipZone {
 
@@ -34,6 +36,8 @@ export class ReactorZone extends ShipZone {
     private infestedOreDeliveryCounter: number = 0;
     private spawnableAreas: Rectangle[] = [];
 
+    private reactorUnit: Unit;
+
     constructor(id: ZONE_TYPE) {
         super(id);
 
@@ -42,6 +46,7 @@ export class ReactorZone extends ShipZone {
         this.sfx.scale = 0.6;
         this.sfx.setTimeScale(0.1);
 
+        this.reactorUnit = Unit.fromHandle(udg_main_power_generator);
         
         let idx = 1;
         let namespaceCheck = `gg_rct_MineralInfestationSpawn${idx++}`;
@@ -113,11 +118,13 @@ export class ReactorZone extends ShipZone {
 
             AskellonEntity.getInstance().mineralsDelivered += iStacks;
             if (ownerCrewmember && ownerCrewmember.role === ROLE_TYPES.PILOT) {
+                const mineralReward = 1 * iStacks;
                 itemOwner.setState(
                     PLAYER_STATE_RESOURCE_GOLD, 
-                    itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 1 * iStacks
+                    itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + mineralReward
                 );
                 ownerCrewmember.addExperience(iStacks);
+                MessagePlayer(ownerCrewmember.player, `Pilot MD Reward Programme: +${mineralReward} minerals`)
             }
             if (oreIsInfested) this.infestedOreDeliveryCounter += iStacks;
         }
@@ -128,13 +135,21 @@ export class ReactorZone extends ShipZone {
             
             AskellonEntity.getInstance().mineralsDelivered += iStacks;
             if (ownerCrewmember && ownerCrewmember.role === ROLE_TYPES.PILOT) {
+                const mineralReward =  4 * iStacks;
                 itemOwner.setState(
                     PLAYER_STATE_RESOURCE_GOLD, 
-                    itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + 4 * iStacks
+                    itemOwner.getState(PLAYER_STATE_RESOURCE_GOLD) + mineralReward
                 );
                 ownerCrewmember.addExperience(iStacks * 2);
+                MessagePlayer(ownerCrewmember.player, `Pilot MD Reward Programme: +${mineralReward} minerals`)
             }
             if (oreIsInfested) this.infestedOreDeliveryCounter += iStacks;
+        }
+        else if (type == ITEM_REMOTE_BOMB) {
+            MessageAllPlayers(`[${COL_BAD}DANGER|r] Explosive Item detected on reactor feed`);
+            const askellonUnit = AskellonEntity.getInstance().askellonUnit;
+            this.itemExplosion(new Vector2(GetItemX(item), GetItemY(item)));
+            askellonUnit.damageTarget(askellonUnit.handle, 1050, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
         }
         else {
             // Just refund 10 for now, whatever blizzard
@@ -205,5 +220,39 @@ export class ReactorZone extends ShipZone {
         }
 
         RemoveItem(item);
+    }
+
+    private itemExplosion(where: Vector2) {
+        let sfx = new Effect(SFX_BUILDING_EXPLOSION, where.x, where.y);
+        sfx.z = getZFromXY(where.x, where.y) + 5;
+        sfx.destroy();
+
+        let offset = 250;
+        this.reactorUnit.damageAt(0.1, 350, where.x, where.y, 200, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
+        
+        
+
+        Timers.addTimedAction(0.2, () => {
+            PlayNewSound("Sounds\\ExplosionBassHeavy.mp3", 127);
+            CameraSetSourceNoise(0, 0);
+
+            let mirrorLoc = Vector2.fromWidget(this.reactorUnit.handle).applyPolarOffset(this.reactorUnit.facing, GetRandomReal(0, 300));
+
+            let sfx = new Effect(SFX_EXPLOSION_GROUND, mirrorLoc.x+GetRandomReal(-100, 100), mirrorLoc.y+GetRandomReal(-100, 100));
+            sfx.destroy();
+            this.reactorUnit.damageTarget(this.reactorUnit.handle, 1500, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
+        
+
+            let i = 0;
+            while (i < 360) {
+                const p = where.applyPolarOffset(i, offset);
+                let sfx = new Effect(SFX_EXPLOSION_GROUND, p.x, p.y);
+                sfx.setYaw(GetRandomReal(0, 360));
+                sfx.z = getZFromXY(where.x, where.y) + 5;
+                sfx.destroy();
+                
+                i += 360 / 6;
+            }
+        });
     }
 }

@@ -217,6 +217,11 @@ export class ChatEntity extends Entity {
                     units.forEach(u => u.kill());
                 });
             }
+            else if (message == "-damage") {
+                GetPlayerUnitSelection(player, units => {
+                    units.forEach(u => u.damageTarget(u.handle, u.maxLife * 0.1, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS));
+                });
+            }
             else if (message == "-creep") {
                 GetPlayerCamLoc(player, (x, y) => {
                     const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, x, y, bj_UNIT_FACING);

@@ -217,8 +217,8 @@ export class PerseusShip extends ShipWithFuel {
 
     onLeaveShip(isDeath?: boolean) {
         const oldOwner = this.unit.owner;
-        this.unit.color = PlayerStateFactory.NeutralHostile.color;
         this.unit.owner = PlayerStateFactory.StationProperty;
+        this.unit.color = PlayerStateFactory.NeutralHostile.color;
 
         SetUnitAnimationByIndex(this.unit.handle, 3);
 

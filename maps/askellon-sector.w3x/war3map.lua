@@ -17,6 +17,7 @@ udg_genetic_test_lights = {}
 udg_genetic_sequencer_unit = nil
 udg_it = 0
 udg_genetic_splicer_unit = nil
+udg_main_power_generator = nil
 gg_rct_Space = nil
 gg_rct_FallZone1Land = nil
 gg_rct_GeneSplicer = nil
@@ -288,6 +289,8 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_trg_Set_Core = nil
+gg_unit_h00A_0191 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -570,7 +573,7 @@ function CreateBuildingsForPlayer21()
     gg_unit_h004_0069 = BlzCreateUnitWithSkin(p, FourCC("h004"), -25984.0, -15808.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -14400.0, -26304.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("h004"), -12224.0, -26304.0, 270.000, FourCC("h004"))
-    u = BlzCreateUnitWithSkin(p, FourCC("h00A"), -13376.0, -26432.0, 316.259, FourCC("h00A"))
+    gg_unit_h00A_0191 = BlzCreateUnitWithSkin(p, FourCC("h00A"), -13376.0, -26432.0, 316.259, FourCC("h00A"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -13349.2, -13391.0, 0.483, FourCC("n00H"))
     gg_unit_h004_0231 = BlzCreateUnitWithSkin(p, FourCC("h004"), -12992.0, -7424.0, 270.000, FourCC("h004"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -6403.0, -12283.9, 180.797, FourCC("n00H"))
@@ -1337,8 +1340,8 @@ function CreateRegions()
     gg_rct_mineralcrusherexiteast = Rect(-12032.0, -25344.0, -11904.0, -25248.0)
     gg_rct_ceast3 = Rect(-14720.0, -26624.0, -13824.0, -26496.0)
     gg_rct_cwest3 = Rect(-12800.0, -26624.0, -11904.0, -26496.0)
-    gg_rct_reactoritemleft = Rect(-13920.0, -26656.0, -13728.0, -26432.0)
-    gg_rct_reactoritemright = Rect(-12864.0, -26656.0, -12672.0, -26432.0)
+    gg_rct_reactoritemleft = Rect(-13952.0, -26688.0, -13760.0, -26464.0)
+    gg_rct_reactoritemright = Rect(-12864.0, -26656.0, -12576.0, -26432.0)
     gg_rct_powercoresfx = Rect(-13376.0, -26528.0, -13312.0, -26464.0)
     gg_rct_stationtempvision = Rect(-27840.0, -29728.0, 288.0, -1600.0)
     gg_rct_zonecargoavent1 = Rect(-24800.0, -17568.0, -24096.0, -15968.0)
@@ -1491,6 +1494,15 @@ end
 function InitTrig_SetKillzones()
     gg_trg_SetKillzones = CreateTrigger()
     TriggerAddAction(gg_trg_SetKillzones, Trig_SetKillzones_Actions)
+end
+
+function Trig_Set_Core_Actions()
+    udg_main_power_generator = gg_unit_h00A_0191
+end
+
+function InitTrig_Set_Core()
+    gg_trg_Set_Core = CreateTrigger()
+    TriggerAddAction(gg_trg_Set_Core, Trig_Set_Core_Actions)
 end
 
 function Trig_Set_Actions()
@@ -1761,6 +1773,7 @@ end
 
 function InitCustomTriggers()
     InitTrig_SetKillzones()
+    InitTrig_Set_Core()
     InitTrig_Set()
     InitTrig_SetHatch()
     InitTrig_SetFall()
@@ -1772,6 +1785,7 @@ end
 
 function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetKillzones)
+    ConditionalTriggerExecute(gg_trg_Set_Core)
     ConditionalTriggerExecute(gg_trg_Set)
     ConditionalTriggerExecute(gg_trg_SetHatch)
     ConditionalTriggerExecute(gg_trg_SetFall)

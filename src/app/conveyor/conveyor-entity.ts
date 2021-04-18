@@ -5,6 +5,7 @@ import { Timers } from "app/timer-type";
 import { Hooks } from "lib/Hooks";
 import { Log } from "lib/serilog/serilog";
 import { Quick } from "lib/Quick";
+import { UNIT_ID_DEBRIS_1, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_3 } from "resources/unit-ids";
 
 export class ConveyorEntity extends Entity {    
     private static instance: ConveyorEntity;
@@ -47,7 +48,12 @@ export class ConveyorEntity extends Entity {
         super();
 
         const tempGroup = CreateGroup();
-        const validUnits = Filter(() => true);
+        const validUnits = Filter(() => {
+            const u = GetFilterUnit();
+            const uType = GetUnitTypeId(u);
+            if (uType !== UNIT_ID_DEBRIS_1 && uType !== UNIT_ID_DEBRIS_2 && uType !== UNIT_ID_DEBRIS_3) return true;
+            return false;
+        });
 
         try {
             // We need to scan _g to find rects that match us

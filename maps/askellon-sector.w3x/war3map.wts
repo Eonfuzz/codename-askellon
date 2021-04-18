@@ -8603,3 +8603,57 @@ STRING 2097
 In combat
 }
 
+STRING 2098
+// Units: h00I (Debris), Name (Name)
+{
+Debris
+}
+
+STRING 2099
+// Units: h00I (Debris), EditorSuffix (Name - Editor Suffix)
+{
+(Variation 1)
+}
+
+STRING 2100
+// Units: h00J (Debris), Name (Name)
+{
+Debris
+}
+
+STRING 2101
+// Units: h00J (Debris), EditorSuffix (Name - Editor Suffix)
+{
+(Variation 2)
+}
+
+STRING 2102
+// Units: h00K (Debris), Name (Name)
+{
+Debris
+}
+
+STRING 2103
+// Units: h00K (Debris), EditorSuffix (Name - Editor Suffix)
+{
+(Variation 3)
+}
+
+STRING 2104
+// Abilities: A03E (ASKELLON - Damage Flamestrike), Name (Name)
+{
+ASKELLON - Damage Flamestrike
+}
+
+STRING 2105
+// Abilities: A03F (Reactor Core Hardened Skin), Name (Name)
+{
+Reactor Core Hardened Skin
+}
+
+STRING 2106
+// Abilities: A03G (Power Generator Hardened Skin), Name (Name)
+{
+Power Generator Hardened Skin
+}
+
