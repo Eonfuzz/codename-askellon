@@ -277,7 +277,9 @@ export class AskellonDamageBehaviour extends Behaviour {
                 let uType = explodeVariation === 1 ? UNIT_ID_DEBRIS_1 
                     : (explodeVariation === 2 ? UNIT_ID_DEBRIS_2 : UNIT_ID_DEBRIS_3);
                 
-                new Unit(PlayerStateFactory.StationProperty, uType, where.x, where.y, GetRandomReal(0, 360));
+                let debris = new Unit(PlayerStateFactory.StationProperty, uType, where.x, where.y, GetRandomReal(0, 360));
+                SetUnitAnimation(debris.handle, "birth")
+                QueueUnitAnimation(debris.handle,"stand")
             });
         })
     }
