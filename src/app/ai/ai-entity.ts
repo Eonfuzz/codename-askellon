@@ -14,9 +14,10 @@ import {  ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_STRUCTURE_TUMOR, ALI
 import { CreepEntity } from "app/creep/creep-entity";
 import { Timers } from "app/timer-type";
 import { NodeGraph } from "./graph-builder";
-import { ABIL_ALIEN_MINION_EVOLVE } from "resources/ability-ids";
+import { ABIL_ALIEN_MINION_EVOLVE, TECH_MAJOR_RELIGION } from "resources/ability-ids";
 import { AI_MAX_TUMORS } from "./agent-state";
 import { PlayerAgentCult } from "./player-agent-cult";
+import { ResearchFactory } from "app/research/research-factory";
 
 export class AIEntity extends Entity {
     private static instance: AIEntity;
@@ -141,14 +142,6 @@ export class AIEntity extends Entity {
         { // DO
             const instance = this.getInstance();
 
-            const abilLevel = whichUnit.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
-            if (abilLevel > 0) {
-                whichUnit.startAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
-                    BlzGetAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, 
-                        abilLevel - 1
-                ));
-            }
-
             // Check this unit currently isn't in the AI database
             const isAlreadyAgent = !!instance.playerAgents.find(a => a.hasAgent(whichUnit));
 
@@ -170,6 +163,15 @@ export class AIEntity extends Entity {
                     }
                     if (whichUnit.typeId === ALIEN_MINION_FORMLESS) {
                         CreepEntity.addCreepWithSource(256, whichUnit);
+                    }
+
+                    const abilLevel = whichUnit.getAbilityLevel(ABIL_ALIEN_MINION_EVOLVE);
+                    if (abilLevel > 0) {
+                        let cooldown = BlzGetAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, abilLevel - 1);
+                        if (z.id === ZONE_TYPE.CHURCH && ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_RELIGION, 1)) {
+                            cooldown = R2I(cooldown * 0.5);
+                        }
+                        whichUnit.startAbilityCooldown(ABIL_ALIEN_MINION_EVOLVE, cooldown);
                     }
 
                     WorldEntity.getInstance().travel(whichUnit, z.id);

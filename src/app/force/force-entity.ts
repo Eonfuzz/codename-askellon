@@ -1,6 +1,6 @@
 import { Log } from "../../lib/serilog/serilog";
 import { ForceType } from "./forces/force-type";
-import { Trigger, MapPlayer, Timer, Unit, playerColors, Force } from "w3ts";
+import { Trigger, MapPlayer, playerColors } from "w3ts";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 import { SoundRef } from "app/types/sound-ref";
 import { Aggression } from "./alliance/aggression-type";
@@ -24,7 +24,6 @@ import { Hooks } from "lib/Hooks";
 import { ChatEntity } from "app/chat/chat-entity";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { PlayerState } from "./player-type";
 import { CultistForce } from "./forces/cultist/cultist-force";
 import { COL_ALIEN, COL_ATTATCH, COL_GOOD } from "resources/colours";
 
@@ -161,7 +160,7 @@ export class ForceEntity extends Entity {
             const defenderForce = defenderPData ? defenderPData.getForce() : undefined;
 
             if (!defenderForce) return true;
-            else if (defenderForce.is(ALIEN_FORCE_NAME) && (defenderForce as AlienForce).isPlayerTransformed(player2)) return false;
+            else if (defenderForce.is(ALIEN_FORCE_NAME)) return false;
             return true;
         }
         // You cannot be aggressive against yourself
@@ -355,8 +354,8 @@ export class ForceEntity extends Entity {
 
         // Are we alien, and are we transformed?
         const pData = PlayerStateFactory.get(forPlayer);
-        const pIsAlienAndTransformed = pData && pData.getForce() && pData.getForce()
-            .is(ALIEN_FORCE_NAME) && (pData.getForce() as AlienForce).isPlayerTransformed(forPlayer);
+        const pIsAlien = pData && pData.getForce() && pData.getForce().is(ALIEN_FORCE_NAME);
+        const pIsAlienAndTransformed = pIsAlien && (pData.getForce() as AlienForce).isPlayerTransformed(forPlayer);
 
         // if (pData.getForce()) Log.Information(`${forPlayer.name} Force ${pData.getForce().name} is transformed ${pIsAlienAndTransformed}`);
 
@@ -375,8 +374,8 @@ export class ForceEntity extends Entity {
         // handle alien minion AI slots
         PlayerStateFactory.getAlienAI().forEach(alienAISlot => {
             // IF we are alien AND transformed, ally the players
-            alienAISlot.setAlliance(forPlayer, ALLIANCE_PASSIVE, pIsAlienAndTransformed);
-            forPlayer.setAlliance(alienAISlot, ALLIANCE_PASSIVE, pIsAlienAndTransformed);
+            alienAISlot.setAlliance(forPlayer, ALLIANCE_PASSIVE, pIsAlien);
+            forPlayer.setAlliance(alienAISlot, ALLIANCE_PASSIVE, pIsAlien);
         });
     }
 

@@ -27,7 +27,7 @@ export class AskellonShip extends Ship {
     constructor(state: ShipState, u: Unit) {
         super(state, u);
         u.paused = false;
-        u.life = 10000;
+        u.life = R2I(u.maxLife * 0.75);
     }
 
     createEngine() {

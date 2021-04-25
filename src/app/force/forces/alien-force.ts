@@ -1,7 +1,7 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, ABIL_ALIEN_EVOLVE_T1, ABIL_ALIEN_EVOLVE_T2, TECH_PLAYER_INFESTS, ABIL_ALIEN_EVOLVE_T3, ABIL_ALIEN_EVOLVE_T1_SPELLBOOK, ABIL_ALIEN_EVOLVE_T2_SPELLBOOK, ABIL_ALIEN_EVOLVE_T3_SPELLBOOK, ABIL_ALIEN_WEBSHOT, ABIL_ALIEN_BROODNEST, ABIL_ALIEN_WEBWALK } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, TECH_PLAYER_INFESTS, ABIL_ALIEN_WEBSHOT, ABIL_ALIEN_BROODNEST, ABIL_ALIEN_WEBWALK } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { PlayNewSound } from "lib/translators";
@@ -10,7 +10,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
-import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_RABBIT, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, WORM_ALIEN_FORM, DEFILER_ALIEN_FORM } from "resources/unit-ids";
+import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, DEFILER_ALIEN_FORM } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
@@ -25,23 +25,19 @@ import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { WorldEntity } from "app/world/world-entity";
 import { Timers } from "app/timer-type";
-import { COL_ALIEN, COL_TEAL, COL_GOLD, COL_MISC } from "resources/colours";
+import { COL_ALIEN, COL_TEAL, COL_GOLD } from "resources/colours";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
-import { PlayerState } from "../player-type";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { CrewmemberForce } from "./crewmember-force";
 import { MessagePlayer, MessageAllPlayers, CreateBlood } from "lib/utils";
 import { Quick } from "lib/Quick";
 import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
-import { ZONE_TYPE } from "app/world/zone-id";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
-import { ITEM_HUMAN_CORPSE } from "resources/item-ids";
 
 
 export const MAKE_UNCLICKABLE = false;
 
-const ALIEN_CHAT_SOUND_REF = new SoundWithCooldown(8, 'Sounds\\AlienChatSound.mp3', true);
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
@@ -56,7 +52,6 @@ export class AlienForce extends ForceType {
     private alienDeathTrigs = new Map<number, Trigger>();
     private alienKillsTrigger = new Trigger();
 
-    private isPickingAnotherAlienHost = false;
 
     constructor() {
         super();
@@ -206,6 +201,10 @@ export class AlienForce extends ForceType {
                 Timers.addTimedAction(1, () => alien.invulnerable = false);
                 VisionFactory.getInstance().setPlayervision(owner, VISION_TYPE.HUMAN);
 
+                // Now force ally with all alien units
+                PlayerStateFactory.getAlienAI().forEach(p => {
+                    owner.setAlliance(p, ALLIANCE_PASSIVE, true);
+                });
                 
                 return alien;
             }
@@ -260,7 +259,6 @@ export class AlienForce extends ForceType {
         if (forceHasPlayer) {
             const playerData = PlayerStateFactory.get(player);
             const crew = playerData.getCrewmember();
-            const alienForm = this.getAlienFormForPlayer(player);
             
             crew.unit.removeAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
 
@@ -330,7 +328,6 @@ export class AlienForce extends ForceType {
             else if (this.players.length === 0 && GameTimeElapsed.getTime() <= 8*60) {
                 const crewForce = PlayerStateFactory.getForce(CREW_FORCE_NAME) as CrewmemberForce;
                 if (crewForce.getPlayers().length > 1) {
-                    this.isPickingAnotherAlienHost = true;
                     Timers.addTimedAction(10, () => {
                         // Lastly check the player count
                         if (crewForce.getPlayers().length <= 1) return;
@@ -347,7 +344,6 @@ export class AlienForce extends ForceType {
                         this.addPlayer(pickedPlayer);
                         this.addPlayerMainUnit(crewPickedPlayer, pickedPlayer);
                         this.repickHost();
-                        this.isPickingAnotherAlienHost = false;
                     });
                 }
             }
@@ -412,7 +408,6 @@ export class AlienForce extends ForceType {
         const toShow = toAlien ? alien : unit.unit;
 
         // get the hiding unit's location and facing
-        const facing = toHide.facing;
         const pos = vectorFromUnit(toHide.handle);
         const unitWasSelected = true; //toHide.isSelected(who);
         const healthPercent = GetUnitLifePercent(toHide.handle);
@@ -646,11 +641,10 @@ export class AlienForce extends ForceType {
         const alienHost = this.getHost();
         const worldEnt = WorldEntity.getInstance();
         
-        this.getPlayers().forEach((player, i) => {
+        this.getPlayers().forEach((player) => {
             try {
                 // Now get their alien units and replace with the new evo
                 const unit = this.playerAlienUnits.get(player.id);
-                const pData = PlayerStateFactory.get(player);
                 const crew = PlayerStateFactory.getCrewmember(player);
                 
                 if (!unit) {

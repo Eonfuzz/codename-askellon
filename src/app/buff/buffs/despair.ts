@@ -43,8 +43,6 @@ export class Despair extends DynamicBuff {
         super();
         
         this.jumpScareSound = new SoundWithCooldown(10, "Sounds\\HeavyBreath.mp3");
-        despairMusic.setVolume(127);
-
         this.unit = who;
         this.prevUnitHealth = this.unit.getState(UNIT_STATE_LIFE);
     }
@@ -106,13 +104,13 @@ export class Despair extends DynamicBuff {
     public onStatusChange(newStatus: boolean) {
         if (newStatus) {
             this.unit.addAbility(ABIL_ACCURACY_PENALTY_30);
-            if (GetLocalPlayer() === this.unit.owner.handle && despairMusic.canPlaySound()) {
+            if (this.unit.owner.isLocal() && despairMusic.canPlaySound()) {
                 SetMusicVolume(0);
+                despairMusic.setVolume(60);
+                despairMusic.playSoundForPlayer(this.unit.owner);
+                this.jumpScareSound.playSoundForPlayer(this.unit.owner);
             }
 
-            despairMusic.setVolume(60);
-            despairMusic.playSoundForPlayer(this.unit.owner);
-            this.jumpScareSound.playSoundForPlayer(this.unit.owner);
 
             // If we dont got the buff cast that bad boi
             if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR)) {

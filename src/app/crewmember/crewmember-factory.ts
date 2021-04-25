@@ -1,15 +1,13 @@
 import { Crewmember } from "./crewmember-type";
 import { ROLE_NAMES, ROLE_TYPES, ROLE_SPAWN_LOCATIONS } from "../../resources/crewmember-names";
 import { Game } from "../game";
-import { Trigger, MapPlayer, Unit, Timer, playerColors } from "w3ts";
-import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, ITEM_ID_EMO_INHIB, ITEM_ID_REPAIR, ITEM_ID_NANOMED } from "../weapons/weapon-constants";
-import { ZONE_TYPE } from "../world/zone-id";
+import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
+import { BURST_RIFLE_ITEM_ID, SHOTGUN_ITEM_ID, ITEM_ID_REPAIR, ITEM_ID_NANOMED } from "../weapons/weapon-constants";
 import { ForceType } from "app/force/forces/force-type";
-import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQUIS_SMITE, ABIL_ITEM_EMOTIONAL_DAMP } from "resources/ability-ids";
+import { TECH_WEP_DAMAGE, ABIL_INQUIS_PURITY_SEAL, TECH_MAJOR_RELIGION, ABIL_INQUIS_SMITE } from "resources/ability-ids";
 import { CREWMEMBER_UNIT_ID } from "resources/unit-ids";
 import { ITEM_CAPTAINS_CIGAR, ITEM_COMEBACK_DRUG, ITEM_GENETIC_SAMPLER, ITEM_SIGNAL_BOOSTER } from "resources/item-ids";
 import { AlienForce } from "app/force/forces/alien-force";
-import { ForceEntity } from "app/force/force-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 
@@ -23,10 +21,7 @@ import { Quick } from "lib/Quick";
 import { Vector2 } from "app/types/vector2";
 import { Players } from "w3ts/globals/index";
 import { Log } from "lib/serilog/serilog";
-import { ChatEntity } from "app/chat/chat-entity";
 import { Timers } from "app/timer-type";
-import { MessagePlayer } from "lib/utils";
-import { COL_GOOD } from "resources/colours";
 import { PlayerState, PRIVS } from "app/force/player-type";
 
 const crwSkins = [FourCC('Crw0'), FourCC('Crw1')];
@@ -261,7 +256,6 @@ export class CrewFactory {
                 EventEntity.getInstance().addListener(new EventListener(EVENT_TYPE.MAJOR_UPGRADE_RESEARCHED, (self, data) => {
                     if (data.data.researched === TECH_MAJOR_RELIGION) {
                         const techLevel = data.data.level;
-                        const gotOccupationBonus = ResearchFactory.getInstance().techHasOccupationBonus(data.data.researched, techLevel);
 
                         if (nUnit && nUnit.isAlive()) {
                             SetUnitAbilityLevel(nUnit.handle, ABIL_INQUIS_PURITY_SEAL, techLevel + 1);

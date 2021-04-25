@@ -149,7 +149,8 @@ export class ReactorZone extends ShipZone {
             MessageAllPlayers(`[${COL_BAD}DANGER|r] Explosive Item detected on reactor feed`);
             const askellonUnit = AskellonEntity.getInstance().askellonUnit;
             this.itemExplosion(new Vector2(GetItemX(item), GetItemY(item)));
-            askellonUnit.damageTarget(askellonUnit.handle, 1050, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
+            askellonUnit.damageTarget(askellonUnit.handle, 1050 * iStacks, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
+            AskellonEntity.causePowerSurge(1 + iStacks);
         }
         else {
             // Just refund 10 for now, whatever blizzard

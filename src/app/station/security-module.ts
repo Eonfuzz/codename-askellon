@@ -303,8 +303,8 @@ export class SecurityEntity extends Entity {
 
         const killer = Unit.fromHandle(GetKillingUnit());
         killer.damageAt(
-            0.2, 
-            300, 
+            0.35, 
+            200, 
             uX, 
             uY, 
             200, 

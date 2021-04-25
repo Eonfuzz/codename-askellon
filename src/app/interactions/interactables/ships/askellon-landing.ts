@@ -8,6 +8,9 @@ import { Interactables } from "../interactables";
 
 export function initAskellonInteractions() {
     const interaction: InteractableData = {
+        getInteractionTime:  (source: Unit, interactable: Unit) => {
+            return 5;
+        },
         condition:  (source: Unit, interactable: Unit) => {
             // Make sure ships can't fly ships, lol.
             return source.typeId === SHIP_VOYAGER_UNIT;

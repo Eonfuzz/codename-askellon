@@ -6109,18 +6109,6 @@ STRING 1555
 Ave imperator! Health regeneration increased by 1
 }
 
-STRING 1556
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nReinstates religious dogma|n|cff18bc9c- |cffd45e19Purity Seals|r |cff18bc9cgrant that unit 1 permanent vitality when levelling up|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff18bc9c- The Inquisitor gains 1 vitality whenever a unit with a |cffd45e19Purity Seal|r |cff18bc9clevels up|r
-}
-
-STRING 1557
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nConsecration of Sacred Ground|n|cff18bc9c- Crew can pray at the altar to gain |cffd45e19Purity Seal|r|cff18bc9c|n- Being in the Cathedral heals 1 health a second|n-|cffd45e19 Purity Seals|r|cff18bc9c now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff18bc9cRegeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff18bc9c- |cffd45e19Purity Seal|r|cff18bc9c duration increased by 60 seconds|r
-}
-
 STRING 1558
 // Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
@@ -7523,12 +7511,6 @@ STRING 1880
 "Nova" NVA47 Explosive
 }
 
-STRING 1881
-// Items: I00T ("Nova" NVA47 Explosive), Ubertip (Tooltip - Extended)
-{
-|cff627781Intelligent metal cylinders quickly expand once placed into the ground, forming an instant and sturdy wall.|r|n|nPlaces a |cff18bc9cRemote Mine|r that can be remote detonated.|nDetonate by clicking on it; Dealing |cff18bc9c350 |rdamage.|n|n|cff62778140 Seconds Cooldown|r
-}
-
 STRING 1882
 // Items: I00T ("Nova" NVA47 Explosive), Description (Description)
 {
@@ -8655,5 +8637,23 @@ STRING 2106
 // Abilities: A03G (Power Generator Hardened Skin), Name (Name)
 {
 Power Generator Hardened Skin
+}
+
+STRING 2107
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781LORE TODO|r|n|n|cffffcc00Major Station Research [1/4]|r|nReinstates religious dogma|n|cff18bc9c- |cffd45e19Purity Seals|r |cff18bc9cgrant that unit 1 permanent vitality when levelling up|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff18bc9c- The Inquisitor gains 1 vitality whenever a unit with a |cffd45e19Purity Seal|r |cff18bc9clevels up|r|n|n|cff8a6df2Infestation [ALIEN]|n- Alien Minions spawned inside the Cathederal evolve 100% faster|r
+}
+
+STRING 2108
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nConsecration of Sacred Ground|n|cff18bc9c- Crew can pray at the altar to gain |cffd45e19Purity Seal|r|cff18bc9c|n- Being in the Cathedral heals 1 health a second|n-|cffd45e19 Purity Seals|r|cff18bc9c now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff18bc9cRegeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff18bc9c- |cffd45e19Purity Seal|r|cff18bc9c duration increased by 60 seconds|r|n|n|cff8a6df2Infestation [ALIEN]|n- Purity Seal instead does 50 damage while on low health|r
+}
+
+STRING 2109
+// Items: I00T ("Nova" NVA47 Explosive), Ubertip (Tooltip - Extended)
+{
+|cff627781Intelligent metal cylinders quickly expand once placed into the ground, forming an instant and sturdy wall.|r|n|nPlaces a |cff18bc9cRemote Mine|r that can be remote detonated.|nDetonate by clicking on it; Dealing |cff18bc9c350 |rdamage.|n|n|cffd45e19Warning: Do not feed this into the Reactor|r|n|n|cff62778140 Seconds Cooldown|r
 }
 

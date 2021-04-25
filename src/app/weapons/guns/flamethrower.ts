@@ -1,21 +1,19 @@
 import { Vector3 } from "../../types/vector3";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileMoverParabolic, ProjectileTargetStatic } from "../projectile/projectile-target";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { FLAME_THROWER_EXTENDED, FLAME_THROWER_ITEM, MINIGUN_EXTENDED, MINIGUN_ITEM } from "../../../resources/weapon-tooltips";
-import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
+import { Vector2 } from "../../types/vector2";
+import { FLAME_THROWER_EXTENDED, FLAME_THROWER_ITEM } from "../../../resources/weapon-tooltips";
+import { ArmableUnitWithItem } from "./unit-has-weapon";
 import { getZFromXY } from "lib/utils";
-import { MapPlayer, Force, Timer, Unit } from "w3ts/index";
+import { MapPlayer, Timer, Unit } from "w3ts/index";
 import { ForceEntity } from "app/force/force-entity";
 import { Timers } from "app/timer-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { SoundRef } from "app/types/sound-ref";
-import { ABIL_WEP_MINIGUN_FULLER_AUTO, ABIL_WEP_FLAMETHROWER, TECH_HAS_GENES_TIER_1, TECH_HAS_GENES_TIER_2, TECH_HAS_GENES_TIER_3 } from "resources/ability-ids";
-import { ITEM_WEP_FLAMETHROWER, ITEM_WEP_MINIGUN } from "resources/item-ids";
-import { InputManager } from "lib/TreeLib/InputManager/InputManager";
-import { Log } from "lib/serilog/serilog";
-import { SFX_ACID_AURA, SFX_DEMONHUNTER_MISSILE, SFX_FIRE, SFX_FIRE_BALL, SFX_FIRE_BOLT, SFX_FIRE_SPEAR, SFX_RED_SINGULARITY } from "resources/sfx-paths";
+import { ABIL_WEP_FLAMETHROWER, TECH_HAS_GENES_TIER_1, TECH_HAS_GENES_TIER_2, TECH_HAS_GENES_TIER_3 } from "resources/ability-ids";
+import { ITEM_WEP_FLAMETHROWER } from "resources/item-ids";
+import { SFX_FIRE, SFX_FIRE_BALL, SFX_FIRE_SPEAR } from "resources/sfx-paths";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
@@ -37,7 +35,7 @@ export class Flamethrower extends GunItem {
 
     private FIRE_TICK_RATE = 0.07;
     private FACING_TICK_RATE = 0.05;
-    private BASE_DPS = 73;
+    private BASE_DPS = 85;
     private DAMAGE_PER_HIT = this.BASE_DPS * this.FIRE_TICK_RATE;
 
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
@@ -69,7 +67,7 @@ export class Flamethrower extends GunItem {
 
         const targetLoc = new Vector3(this.deltaLoc.x + casterLoc.x, this.deltaLoc.y + casterLoc.y, targetLocation.z);
 
-        this.shootTimer.start(this.FACING_TICK_RATE, true, () => this.updateFacing(this.FACING_TICK_RATE))
+        this.shootTimer.start(this.FACING_TICK_RATE, true, () => this.updateFacing())
 
         const uLoc = Vector3.fromWidget(unit.handle);
         const dLoc = targetLoc.subtract(uLoc);
@@ -90,10 +88,9 @@ export class Flamethrower extends GunItem {
     };
 
     // Updates our target location based on facing
-    private updateFacing(delta: number) {
+    private updateFacing() {
         if (!this || !this.equippedTo || !this.equippedTo.unit) return;
 
-        const unit = this.equippedTo.unit;
 
         // const uLoc = Vector3.fromWidget(unit.handle);
         // const dLoc = this.targetLoc.subtract(uLoc);
@@ -252,11 +249,17 @@ export class Flamethrower extends GunItem {
         return newTooltip;
     }
 
+
+
     protected getItemTooltip(unit: Unit): string {
         const damage = this.getDamage(unit);
         return FLAME_THROWER_ITEM(this, damage);
     }
 
+    protected getAccuracy(caster: Unit) {
+        const accuracy = super.getAccuracy(caster);
+        return accuracy < 100 ? 100 : accuracy;
+    }
 
     public getDamage(unit: Unit): number {
         return MathRound( this.DAMAGE_PER_HIT * this.getDamageBonusMult());

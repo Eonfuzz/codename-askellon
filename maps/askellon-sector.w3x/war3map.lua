@@ -291,6 +291,9 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_rct_zonechurch3 = nil
+gg_rct_zonechurch4 = nil
+gg_rct_zonechurch5 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -764,10 +767,23 @@ function CreateNeutralHostile()
     local unitID
     local t
     local life
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21984.0, -11392.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21824.0, -11296.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21440.0, -9376.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21600.0, -9376.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21920.0, -9376.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21728.0, -9376.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19904.0, -9408.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18400.0, -16480.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -20384.0, -9408.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11520.0, -14592.0, 149.770, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19744.0, -9664.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19744.0, -9856.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19136.0, -12512.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11424.0, -14720.0, 213.502, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19040.0, -12512.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18528.0, -16352.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18912.0, -12512.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24160.0, -18400.0, 202.414, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18656.0, -16352.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -13888.0, -24416.0, 270.000, FourCC("h005"))
@@ -923,6 +939,7 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11616.0, -14912.0, 262.230, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -13824.0, -7072.0, 90.777, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -12704.0, -4512.0, 90.780, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19104.0, -12640.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11872.0, -14816.0, 60.312, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11424.0, -14560.0, 78.867, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -11296.0, -14528.0, 64.070, FourCC("h005"))
@@ -1018,6 +1035,8 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -13984.0, -23584.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2720.0, -18720.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2784.0, -18656.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18976.0, -12608.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19136.0, -12736.0, -29.903, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2720.0, -18656.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -2656.0, -18656.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -3136.0, -16064.0, 270.000, FourCC("h005"))
@@ -1145,6 +1164,14 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h00F"), -21438.4, -17512.1, 347.577, FourCC("h00F"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00F"), -20734.4, -17352.1, 347.577, FourCC("h00F"))
     u = BlzCreateUnitWithSkin(p, FourCC("h00F"), -20670.4, -19400.1, 347.577, FourCC("h00F"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19008.0, -12672.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18880.0, -12640.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19008.0, -12800.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -19136.0, -12832.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18880.0, -12736.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18880.0, -12864.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -18752.0, -12576.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h00F"), -18942.4, -12744.1, 274.960, FourCC("h00F"))
 end
 
 function CreateNeutralPassiveBuildings()
@@ -1153,6 +1180,7 @@ function CreateNeutralPassiveBuildings()
     local unitID
     local t
     local life
+    u = BlzCreateUnitWithSkin(p, FourCC("n009"), -17792.0, -11264.0, 270.000, FourCC("n009"))
     gg_unit_n001_0003 = BlzCreateUnitWithSkin(p, FourCC("n001"), -14784.0, -21056.0, 270.000, FourCC("n001"))
     gg_unit_n001_0005 = BlzCreateUnitWithSkin(p, FourCC("n001"), -15680.0, -15680.0, 270.000, FourCC("n001"))
     gg_unit_n004_0018 = BlzCreateUnitWithSkin(p, FourCC("n004"), -11329.3, -12742.6, 89.562, FourCC("n004"))
@@ -1463,6 +1491,9 @@ function CreateRegions()
     gg_rct_zonespacecontainer2 = Rect(23872.0, 5920.0, 25408.0, 6336.0)
     gg_rct_zonespacecontainer3 = Rect(24512.0, 6336.0, 24768.0, 8288.0)
     gg_rct_zonespacecontainer4 = Rect(23264.0, 8256.0, 26016.0, 10272.0)
+    gg_rct_zonechurch3 = Rect(-19680.0, -12224.0, -18560.0, -11872.0)
+    gg_rct_zonechurch4 = Rect(-18592.0, -12960.0, -17632.0, -10880.0)
+    gg_rct_zonechurch5 = Rect(-19264.0, -12992.0, -18560.0, -12384.0)
 end
 
 function Trig_SetKillzones_Actions()

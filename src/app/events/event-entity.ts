@@ -65,7 +65,7 @@ export class EventEntity {
                 const sfx = AddSpecialEffect(SFX_BUILDING_EXPLOSION, unit.x, unit.y);
                 BlzSetSpecialEffectScale(sfx, 0.4);
                 DestroyEffect(sfx);
-                unit.destroy();
+                // unit.destroy();
             }
             if (unit.typeId === ALIEN_STRUCTURE_TUMOR) {
                 const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
@@ -90,7 +90,6 @@ export class EventEntity {
 
         UnitDex.registerEvent(UnitDexEvent.DEINDEX, () => {
             const unit = UnitDex.eventUnit;
-
             Log.Verbose(`Remove called for ${unit.name} ${unit.id}`);
             // Unit is omega dead
             EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
