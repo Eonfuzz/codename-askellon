@@ -20,6 +20,7 @@ import { initTesterInteractions } from "./interactables/genetic-testing-facility
 import { initPlanetLandingInteraction } from "./interactables/ships/planet-landing";
 import { SmartTrigger } from "lib/SmartTrigger";
 import { intAltarInteraction } from "./interactables/cathederal-altar";
+import { intPlaceableTurretInteraction} from "./interactables/placeable-turrets";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -66,6 +67,7 @@ export class InteractionEntity extends Entity {
 
             initTesterInteractions();
             intAltarInteraction();
+            intPlaceableTurretInteraction();
             
             // Ship interactions
             InitMiningInteraction();

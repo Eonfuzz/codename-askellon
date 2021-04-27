@@ -8515,14 +8515,8 @@ STRING 2085
 Manual Lockdown
 }
 
-STRING 2086
-// Units: h00G (Turret), Name (Name)
-{
-Turret
-}
-
 STRING 2087
-// Units: h00G (Turret), EditorSuffix (Name - Editor Suffix)
+// Units: h00G (Turret|n|cff627781Right Click to Pack Up|r), EditorSuffix (Name - Editor Suffix)
 {
 Placeable
 }
@@ -8655,5 +8649,11 @@ STRING 2109
 // Items: I00T ("Nova" NVA47 Explosive), Ubertip (Tooltip - Extended)
 {
 |cff627781Intelligent metal cylinders quickly expand once placed into the ground, forming an instant and sturdy wall.|r|n|nPlaces a |cff18bc9cRemote Mine|r that can be remote detonated.|nDetonate by clicking on it; Dealing |cff18bc9c350 |rdamage.|n|n|cffd45e19Warning: Do not feed this into the Reactor|r|n|n|cff62778140 Seconds Cooldown|r
+}
+
+STRING 2110
+// Units: h00G (Turret|n|cff627781Right Click to Pack Up|r), Name (Name)
+{
+Turret|n|cff627781Right Click to Pack Up|r
 }
 

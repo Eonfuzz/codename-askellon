@@ -38,6 +38,7 @@ export const SFX_FIRE_EXPLOSION = "Models\\NewMassiveEX.mdx";
 
 export const SFX_EXPLOSION_BIG = "Models\\sfx\\ExplosionBig.mdl";
 export const SFX_EXPLOSION_GROUND = "Models\\sfx\\ExplosionGround.mdl";
+export const SFX_EXPLOSION_GROUND_NO_DIRT = "Models\\sfx\\ExplosionGround_NoDirt.mdl";
 
 export const SFX_AVATAR = "Abilities\\Spells\\Human\\Avatar\\AvatarCaster.mdl";
 export const SFX_HEAL = "Heal Green.mdx";
@@ -143,3 +144,4 @@ Preload(SFX_CONVOKE_CARRION);
 Preload(SFX_EXPLOSION_BIG);
 Preload(SFX_EXPLOSION_GROUND);
 Preload(SFX_WEAK_SHIELD);
+Preload(SFX_EXPLOSION_GROUND_NO_DIRT);

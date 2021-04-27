@@ -14,7 +14,7 @@ import { PlayNewSound } from "lib/translators";
 import { getZFromXY, MessageAllPlayers } from "lib/utils";
 import { ABIL_DUMMY_FLAMESTRIKE } from "resources/ability-ids";
 import { COL_BAD, COL_GOOD, COL_ORANGE } from "resources/colours";
-import { SFX_BUILDING_EXPLOSION, SFX_EXPLOSION_GROUND } from "resources/sfx-paths";
+import { SFX_BUILDING_EXPLOSION, SFX_EXPLOSION_GROUND, SFX_EXPLOSION_GROUND_NO_DIRT } from "resources/sfx-paths";
 import { UNIT_ID_DEBRIS_1, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_3 } from "resources/unit-ids";
 import { Players } from "w3ts/globals/index";
 import { Effect, Timer, TimerDialog, Unit } from "w3ts/index";
@@ -256,7 +256,7 @@ export class AskellonDamageBehaviour extends Behaviour {
                 let isNegative = GetRandomReal(0, 1) >= 0.5;
                 let mirrorLoc = Vector2.fromWidget(this.forUnit.handle).applyPolarOffset(isNegative ? -this.forUnit.facing+GetRandomReal(-30, 30) : this.forUnit.facing, GetRandomReal(0, 300));
 
-                let sfx = new Effect(SFX_EXPLOSION_GROUND, mirrorLoc.x+GetRandomReal(-100, 100), mirrorLoc.y+GetRandomReal(-100, 100));
+                let sfx = new Effect(SFX_EXPLOSION_GROUND_NO_DIRT, mirrorLoc.x+GetRandomReal(-100, 100), mirrorLoc.y+GetRandomReal(-100, 100));
                 sfx.destroy();
                 this.forUnit.damageTarget(this.forUnit.handle, 50, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
                 // subtract the damage dealt from the damage ticker

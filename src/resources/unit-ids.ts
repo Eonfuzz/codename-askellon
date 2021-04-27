@@ -17,6 +17,7 @@ export const UNIT_ID_DEBRIS_1 = FourCC('h00I');
 export const UNIT_ID_DEBRIS_2 = FourCC('h00J');
 export const UNIT_ID_DEBRIS_3 = FourCC('h00K');
 
+export const TERMINAL_PLACEABLE_TURRET = FourCC('h00G');
 export const TERMINAL_RELIGION_ALTAR = FourCC('n00R');
 export const TERMINAL_RELIGION = FourCC('n00A');
 export const TERMINAL_RELIGION_DUMMY = FourCC('n00B');
