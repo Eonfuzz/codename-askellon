@@ -38,7 +38,9 @@ export const VETERAN_USERS = [
     `Serendipity#11633`,
     `Isaac#1877`,
     `PrismaIllya#11412`,
-    `LordofRoses#1971`
+    `LordofRoses#1971`,
+    `hson6599#1700`,
+    `ElJames#1645`
 ];
 
 export class PlayerState {

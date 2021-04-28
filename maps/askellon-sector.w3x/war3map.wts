@@ -8521,26 +8521,8 @@ STRING 2087
 Placeable
 }
 
-STRING 2088
-// Items: I00U (Gatling Turret), Name (Name)
-{
-Gatling Turret
-}
-
-STRING 2089
-// Items: I00U (Gatling Turret), Tip (Tooltip - Basic)
-{
-Barricades
-}
-
-STRING 2090
-// Items: I00U (Gatling Turret), Ubertip (Tooltip - Extended)
-{
-|cff627781A compact turret made for the express purpose of moblity, this compact gatling turret is capable of firing over 1200 rounds of 12.5mm ammunition per minute.|r|n|nPlaces a |cff00ffffShip-Computer|r controlled |cff18bc9cturret|r that has |cff18bc9c200 |rhp and deals |cff18bc9c16|r damage per second.|n|n|cff6277812 Seconds Cooldown|r
-}
-
 STRING 2091
-// Items: I00U (Gatling Turret), Description (Description)
+// Items: I00U (Portable Auto-Turret), Description (Description)
 {
 Places a Turret
 }
@@ -8655,5 +8637,23 @@ STRING 2110
 // Units: h00G (Turret|n|cff627781Right Click to Pack Up|r), Name (Name)
 {
 Turret|n|cff627781Right Click to Pack Up|r
+}
+
+STRING 2111
+// Items: I00U (Portable Auto-Turret), Name (Name)
+{
+Portable Auto-Turret
+}
+
+STRING 2112
+// Items: I00U (Portable Auto-Turret), Tip (Tooltip - Basic)
+{
+Portable Auto-Turret
+}
+
+STRING 2113
+// Items: I00U (Portable Auto-Turret), Ubertip (Tooltip - Extended)
+{
+|cff627781A compact turret made for the express purpose of moblity, this compact gatling turret is capable of firing over 1200 rounds of 12.5mm ammunition per minute.|r|n|nPlaces a |cff00ffffStation Security|r controlled |cff18bc9cAuto-Turret|r that has |cff18bc9c200 |rhp and deals |cff18bc9c16|r damage per second.|n|n|cff18bc9cRight click on the turret to pick it up|r|n|n|cff6277812 Seconds Cooldown|r
 }
 

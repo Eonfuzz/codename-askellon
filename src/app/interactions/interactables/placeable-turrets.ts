@@ -6,12 +6,10 @@ import { MessagePlayer } from "lib/utils";
 import { COL_MISC } from "resources/colours";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { TERMINAL_PLACEABLE_TURRET } from "resources/unit-ids";
-import { ITEM_PLACEABLE_TURRET} from "resources/item-ids"
+import { ITEM_PLACEABLE_TURRET } from "resources/item-ids"
 
 export const intPlaceableTurretInteraction = () => {
-    
-    let i = 0;1
-    let turretOwner = [];
+    const turretOwner = [];
 
     const upgradeTerminalProcessing: InteractableData = {
         onStart: (fromUnit: Unit, targetUnit: Unit) => {
@@ -38,9 +36,14 @@ export const intPlaceableTurretInteraction = () => {
     }
     
     UnitDex.registerEvent(UnitDexEvent.INDEX, () => {
-        if (GetUnitTypeId(UnitDex.eventUnit.handle) == TERMINAL_PLACEABLE_TURRET){
+        if (GetUnitTypeId(UnitDex.eventUnit.handle) == TERMINAL_PLACEABLE_TURRET) {
                 turretOwner[UnitDex.eventUnit.id] = GetOwningPlayer(UnitDex.eventUnit.handle);
                 SetUnitOwner(UnitDex.eventUnit.handle, PlayerStateFactory.StationSecurity.handle, true);
+        }
+    });
+    UnitDex.registerEvent(UnitDexEvent.DEINDEX, () => {
+        if (GetUnitTypeId(UnitDex.eventUnit.handle) == TERMINAL_PLACEABLE_TURRET) {
+            delete turretOwner[UnitDex.eventUnit.id];
         }
     });
     Interactables.set(TERMINAL_PLACEABLE_TURRET, upgradeTerminalProcessing);
