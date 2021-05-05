@@ -32,6 +32,7 @@ import { Quick } from "lib/Quick";
 import { getRectsGivenNamespace, getZFromXY } from "lib/utils";
 import { PlayerState } from "app/force/player-type";
 import { MineralRare } from "./space-objects/mineral-rare";
+import { Timers } from "app/timer-type";
 
 // For ship bay instansiation
 declare const gg_rct_Space: rect;
@@ -171,8 +172,10 @@ export class SpaceEntity extends Entity {
 
                 // Also for now create a ship to sit in the dock
                 const ship = new PerseusShip(ShipState.inBay, Unit.fromHandle(
-                    CreateUnit(PlayerStateFactory.StationProperty.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
+                    CreateUnit(PlayerStateFactory.NeutralPassive.handle, SHIP_VOYAGER_UNIT, 0, 0, bj_UNIT_FACING))
                 );
+                ship.unit.owner = PlayerStateFactory.StationProperty;
+                
                 this.ships.push(ship);
 
                 WorldEntity.getInstance().travel(ship.unit, bay.ZONE);

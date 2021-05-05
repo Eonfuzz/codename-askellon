@@ -3,6 +3,7 @@ import { Unit } from "w3ts/index";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { Game } from "app/game";
 import { SecurityEntity } from "app/station/security-module";
+import { UNIT_ID_DEBRIS_1, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_3 } from "resources/unit-ids";
 
 const REPAIR_DURATION = 6;
 const REPAIR_TICK_EVERY = 1;
@@ -31,6 +32,11 @@ export class ItemRepairAbility extends AbilityWithDone {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
 
+        if (this.targetUnit.typeId === UNIT_ID_DEBRIS_1 || 
+            this.targetUnit.typeId === UNIT_ID_DEBRIS_2 || 
+            this.targetUnit.typeId === UNIT_ID_DEBRIS_3) {
+                this.targetUnit.kill();
+            }
 
         this.castOrderId = GetUnitCurrentOrder(this.unit.handle);
         return true;

@@ -27,9 +27,11 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { Vector2 } from "app/types/vector2";
 import { WorldEntity } from "app/world/world-entity";
 import { ShipZone } from "app/world/zone-types/ship-zone";
+import { PlayerState } from "app/force/player-type";
+import { COL_MISC } from "resources/colours";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
-const UNIT_ID_STATION_SECURITY_POWER = FourCC('h004');
+const UNIT_ID_STATION_SECURITY_POWER = FourCC('nMGN');
 export class SecurityEntity extends Entity {
     isDestroyedMap = new Map<number, boolean>();
 

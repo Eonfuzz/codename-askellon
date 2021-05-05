@@ -13,7 +13,7 @@ import { Log } from "lib/serilog/serilog";
 import { PlayNewSound } from "lib/translators";
 import { getZFromXY, MessageAllPlayers } from "lib/utils";
 import { ABIL_DUMMY_FLAMESTRIKE } from "resources/ability-ids";
-import { COL_BAD, COL_GOOD, COL_ORANGE } from "resources/colours";
+import { COL_BAD, COL_GOOD, COL_MISC, COL_ORANGE } from "resources/colours";
 import { SFX_BUILDING_EXPLOSION, SFX_EXPLOSION_GROUND, SFX_EXPLOSION_GROUND_NO_DIRT } from "resources/sfx-paths";
 import { UNIT_ID_DEBRIS_1, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_3 } from "resources/unit-ids";
 import { Players } from "w3ts/globals/index";
@@ -277,9 +277,11 @@ export class AskellonDamageBehaviour extends Behaviour {
                 let uType = explodeVariation === 1 ? UNIT_ID_DEBRIS_1 
                     : (explodeVariation === 2 ? UNIT_ID_DEBRIS_2 : UNIT_ID_DEBRIS_3);
                 
-                let debris = new Unit(PlayerStateFactory.StationProperty, uType, where.x, where.y, GetRandomReal(0, 360));
-                SetUnitAnimation(debris.handle, "birth")
-                QueueUnitAnimation(debris.handle,"stand")
+                let debris = new Unit(PlayerStateFactory.NeutralPassive, uType, where.x, where.y, GetRandomReal(0, 360));
+                debris.name = `Debris|n${COL_MISC}Destroy this|r`;
+                SetUnitAnimation(debris.handle, "birth");
+                QueueUnitAnimation(debris.handle,"stand");
+                debris.owner = PlayerStateFactory.StationProperty;
             });
         })
     }

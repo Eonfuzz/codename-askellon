@@ -20,6 +20,7 @@ import { CREWMEMBER_UNIT_ID, DESTR_ID_POWERED_LIGHT_BLUE, DESTR_ID_POWERED_LIGHT
 import { Vector2 } from "app/types/vector2";
 import { Zone } from "./zone-type";
 import { ZoneWithExits } from "./zone-with-exits";
+import { COL_BAD, COL_GOOD, COL_MISC } from "resources/colours";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
@@ -50,7 +51,13 @@ export class ShipZone extends ZoneWithExits {
         const matchingIndexes = [];
         udg_power_generator_zones.forEach((zone, index) => id === zone && matchingIndexes.push(index));
         matchingIndexes.forEach(index => {
-            this.powerGenerators.push(Unit.fromHandle(udg_power_generators[index+1]));
+            const g = Unit.fromHandle(udg_power_generators[index+1]);
+
+            g.owner = PlayerStateFactory.NeutralPassive;
+            g.name = `Power Generator [${COL_GOOD}Running|r]|n${COL_MISC}Powers the ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}|r`;
+            g.owner = PlayerStateFactory.StationProperty;
+
+            this.powerGenerators.push(g);
         });
 
         // Hook into station destruction events
@@ -87,9 +94,14 @@ export class ShipZone extends ZoneWithExits {
         });
     }
 
-    private onGeneratorDestroy(generator: Unit, source: Unit) {
+    private onGeneratorDestroy(g: Unit, source: Unit) {
         // Make sure we have generator in our array
-        if (this.powerGenerators.indexOf(generator) >= 0) {
+        if (this.powerGenerators.indexOf(g) >= 0) {
+
+            g.owner = PlayerStateFactory.NeutralPassive;
+            g.name = `Power Generator [${COL_BAD}Destroyed|r]|n${COL_MISC}Powers the ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}|r`;
+            g.owner = PlayerStateFactory.StationProperty;
+
             // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
             try {
                 this.updatePower(false);
@@ -100,9 +112,14 @@ export class ShipZone extends ZoneWithExits {
         }
     }
 
-    private onGeneratorRepair(generator: Unit, source: Unit) {
+    private onGeneratorRepair(g: Unit, source: Unit) {
         // Make sure we have generator in our array
-        if (this.powerGenerators.indexOf(generator) >= 0) {
+        if (this.powerGenerators.indexOf(g) >= 0) {
+            
+            g.owner = PlayerStateFactory.NeutralPassive;
+            g.name = `Power Generator [${COL_GOOD}Running|r]|n${COL_MISC}Powers the ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}|r`;
+            g.owner = PlayerStateFactory.StationProperty;
+
             // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
             if (this.powerShortRemaining <= 0 && this.hasActiveGenerators()) this.updatePower(true);
         }
