@@ -37,6 +37,7 @@ export class GeneticSamplerItemAbility extends AbilityWithDone {
         let alliance;
 
         const crew = PlayerStateFactory.getCrewmember(player);
+        let itemUserDataVal = -1;
 
         if (crew) {
             // Otherwise it's a player, get force
@@ -48,6 +49,7 @@ export class GeneticSamplerItemAbility extends AbilityWithDone {
             else {
                 alliance = GENE_SPLICE_ALLIANCE.HUMAN;
             }
+            itemUserDataVal = pData.player.id;
         }
         else if (PlayerStateFactory.isAlienAI(player)) {
             alliance = GENE_SPLICE_ALLIANCE.ALIEN
@@ -75,6 +77,7 @@ export class GeneticSamplerItemAbility extends AbilityWithDone {
         const item = CreateItem(iType, this.unit.x, this.unit.y);
         BlzSetItemName(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
         BlzSetItemTooltip(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
+        SetItemUserData(item, itemUserDataVal);
 
         if (alliance == GENE_SPLICE_ALLIANCE.PURE) {
             BlzSetItemExtendedTooltip(item, STR_GENETIC_SAMPLE_PURE(this.targetUnit.owner, this.targetUnit));
@@ -83,7 +86,6 @@ export class GeneticSamplerItemAbility extends AbilityWithDone {
         else {
             BlzSetItemExtendedTooltip(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));
             BlzSetItemDescription(item, STR_GENETIC_SAMPLE(this.targetUnit.owner, this.targetUnit));     
-            SetItemUserData(item, this.targetUnit.owner.id);
             
 
             const pColor = playerColors[this.targetUnit.owner.id];

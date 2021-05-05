@@ -21,7 +21,7 @@ import { Timers } from "app/timer-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
 import { AskellonEntity } from "app/station/askellon-entity";
 import { CreepEntity } from "app/creep/creep-entity";
-import { ITEM_WEP_NEOKATANA, ITEM_WEP_MINIGUN, ITEM_HUMAN_CORPSE, ITEM_COMEBACK_DRUG } from "resources/item-ids";
+import { ITEM_WEP_NEOKATANA, ITEM_WEP_MINIGUN, ITEM_HUMAN_CORPSE, ITEM_COMEBACK_DRUG, ITEM_GENETIC_SAMPLER } from "resources/item-ids";
 import { ResearchFactory } from "app/research/research-factory";
 import { TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { ALIEN_FORCE_NAME, OBSERVER_FORCE_NAME } from "app/force/forces/force-names";
@@ -312,6 +312,11 @@ export class ChatEntity extends Entity {
             else if (message == "-test minigun") {
                 GetPlayerCamLoc(player, (x, y) => {
                     CreateItem(ITEM_WEP_MINIGUN, x, y);
+                });
+            }
+            else if (message == "-test sampler") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    CreateItem(ITEM_GENETIC_SAMPLER, x, y);
                 });
             }
             else if (message == "-test thano") {

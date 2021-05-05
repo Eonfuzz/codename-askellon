@@ -1572,24 +1572,6 @@ STRING 465
 Purchase Emotion Inhibitor
 }
 
-STRING 468
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
-{
-Reboot Healthcare [|cffffcc001/4|r]
-}
-
-STRING 470
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
-{
-Reboot Gene Splicer [|cffffcc002/4|r]
-}
-
-STRING 473
-// Items: I007 (Emotion Inhibitor), Ubertip (Tooltip - Extended)
-{
-|cff627781These stimulants are used to keep low ranking soldiers in line without the need for a commander of lieutenant. This injector comes with a label saying "PROLONGED USED MAY HAVE PERMANENT SIDE EFFECTS" and several more things in dot points. Nothing to really care about... Except maybe that warning about reproduction problems thing.|r|n|nInject yourself with a cocktail of chemicals, hormones and drugs; temporarily removing the ability to feel emotions.|nYou become immmune to |cffffff00Resolve |rand |cff6f2583Despair |rfor the next |cff18bc9c15|r seconds.|n|n|cff62778130 Seconds Cooldown|r
-}
-
 STRING 474
 // Items: I007 (Emotion Inhibitor), Name (Name)
 {
@@ -5304,12 +5286,6 @@ STRING 1409
 |cff627781A rare mineral found in a strange sector of space; preliminary scans and tests shows it can be used as a steel substitute.|n|r|nFeed through conveyor belts to repair the Reactor, or it may be manually sold for a larger sum of money.|n|cff18bc9c- Repairs 5 HP per stack|n- Sells for 4 Credits per stack|r|n|n|cffd45e19Stacks up to 15|r
 }
 
-STRING 1410
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
-{
-Advanced Gene Splicer [|cffffcc003/4|r]
-}
-
 STRING 1411
 // Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
 {
@@ -6137,24 +6113,6 @@ STRING 1568
 // Abilities: A02C (Genetics INFESTATION - Perma Spawn), Name (Name)
 {
 Genetics INFESTATION - Perma Spawn
-}
-
-STRING 1571
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [1/4]|r|nReboots medical vendors and durg production.|n|cff18bc9c- Nano-Meds now purchasable|r|n|cff18bc9c- Emotion Inhibitors now Purchasable|r|n|n|cff8a6df2Infested|n- Despair still grants vision while under Emotion Inhibitors|r
-}
-
-STRING 1572
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [2/4]|r|nReboots the Gene Splicer.|n|cff18bc9c- Gene Splicer is now online|r|n|cff18bc9c- Tier 1 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Gene Splicing now grants bonus XP to both patient and sugeon|r|n|n|cff8a6df2Infested|n- Unlocks first genetic infestation|r
-}
-
-STRING 1573
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
-{
-|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [3/4]|r|nReboots the Gene Splicer.|n|cff18bc9c- Tier 2 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Emotion Inhibitor no longer prevents Resolve|r|n|n|cff8a6df2Infested|n- Any Splicing grants the Alien Host bonus XP|r
 }
 
 STRING 1574
@@ -8655,5 +8613,282 @@ STRING 2113
 // Items: I00U (Portable Auto-Turret), Ubertip (Tooltip - Extended)
 {
 |cff627781A compact turret made for the express purpose of moblity, this compact gatling turret is capable of firing over 1200 rounds of 12.5mm ammunition per minute.|r|n|nPlaces a |cff00ffffStation Security|r controlled |cff18bc9cAuto-Turret|r that has |cff18bc9c200 |rhp and deals |cff18bc9c16|r damage per second.|n|n|cff18bc9cRight click on the turret to pick it up|r|n|n|cff6277812 Seconds Cooldown|r
+}
+
+STRING 2115
+// Abilities: A03H (Ship Plating), Name (Name)
+{
+Ship Plating
+}
+
+STRING 2116
+// Abilities: A03H (Ship Plating), Tip (Tooltip - Normal)
+{
+Neosteel Plating
+}
+
+STRING 2117
+// Abilities: A03H (Ship Plating), EditorSuffix (Editor Suffix)
+{
+( Askellon )
+}
+
+STRING 2118
+// Abilities: A03H (Ship Plating), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Thick slabs of reinforced steel created within planets devoted to the forge; Neosteel is near impenetrable.|r|n|nReduces all damage taken by |cff18bc9c30|r, to a minimum of |cff18bc9c4|r damage.
+}
+
+STRING 2119
+// Abilities: A00I (Night Eye), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781A revolutionary mixture of Cybertech and Biotech; These "Night Eyes" leech off ambient electricity in the body, allowing for enhanced night vision.|r|n|nGrants the |cfff9a602Nightstalker|r power.|n|cff18bc9c[+] Passively ignore despair caused by Darkness|n[+] Activate to see all unseen units|n|n|cfff9a602Attribute Gain Per Level:|n|cff18bc9c+2.5 Will|r, |cff18bc9c+1 Will|r and |cffb52166-2 Accuracy|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 2120
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 2121
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Initialise Genetic Splicer [|cffffcc001/3|r]
+}
+
+STRING 2122
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [1/3]|r|nReboots the Gene Splicer.|n|cff18bc9c- Gene Splicer is now online|r|n|cff18bc9c- Tier 1 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Gene Splicing now grants bonus XP to both patient and sugeon|r|n|n|cff8a6df2Infested|n- Unlocks first genetic infestation|n- Despair still grants vision while under Emotion Inhibitors|r|r
+}
+
+STRING 2123
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Upload Safety Codes [|cffffcc002/3|r]
+}
+
+STRING 2124
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Ignore Medical Procedures [|cffffcc003/3|r]
+}
+
+STRING 2125
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [2/3]|r|nReboots the Gene Splicer.|n|cff18bc9c- Tier 2 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Emotion Inhibitor no longer prevents Resolve|r|n|n|cff8a6df2Infested|n- Any Splicing grants the Alien Host bonus XP|r
+}
+
+STRING 2126
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [3/3]|r|nWIP|r
+}
+
+STRING 2127
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Repair Blood Tester
+}
+
+STRING 2128
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 2129
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Repair Blood Tester [|cffffcc001/1|r]
+}
+
+STRING 2131
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Healthcare
+}
+
+STRING 2132
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Healthcare
+}
+
+STRING 2133
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Healthcare
+}
+
+STRING 2134
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 2135
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 2136
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+{
+- MAJOR
+}
+
+STRING 2137
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 2138
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 2139
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Upload Safety Codes [|cffffcc002/3|r]
+}
+
+STRING 2140
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Ignore Medical Procedures [|cffffcc003/3|r]
+}
+
+STRING 2141
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [2/3]|r|nReboots the Gene Splicer.|n|cff18bc9c- Tier 2 Genes are now available|r|n|n|n|cffffcc00Doctor Upgrade|n- Emotion Inhibitor no longer prevents Resolve|r|n|n|cff8a6df2Infested|n- Any Splicing grants the Alien Host bonus XP|r
+}
+
+STRING 2142
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Before the system crash Askellon was primarily a research vessel; these medical systems are extremely advanced compared to most ships under empire control. Be careful, if these advanced technologies were to be sabotaged it could spill disaster for her crew.|r|n|n|cffffcc00Major Station Research [3/3]|r|nWIP|r
+}
+
+STRING 2143
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
+{
+Prototype Splicing [|cffffcc004/4|r]
+}
+
+STRING 2144
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+Totally WIP this gives nothing but XP
+}
+
+STRING 2145
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 2146
+// Items: I007 (Emotion Inhibitor), Ubertip (Tooltip - Extended)
+{
+|cff627781Stimulants original designed to "dull" the mind of any heretic, this cocktail managed to avoid legality issues by becoming a mandatory military handout; often used to lessen the effect of mental traumas soldiers may feel on the battlefield.|r|n|nClears Insanity and grants immunity to Despair and Resolve for |cff18bc9c45|r seconds; |cffb52166Will is permanently reduced by 1.|r|n|n|cff627781120 Seconds Cooldown|r
+}
+
+STRING 2147
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Ubertip (Tooltip - Extended)
+{
+|cff627781Just your luck, the Askellon's blood testing facility was damaged during the warp the moment you need it.|r|n|n|cffffcc00Major Station Research [1/1]|r|nRepairs the Blood Tester.|n|cff18bc9c- Blood Tester is now online and ready to use|r|n|n|cff8a6df2Infested|n- The first test will always return the wrong result|r
+}
+
+STRING 2148
+{
+|Cffffff00Accuracy|R
+}
+
+STRING 2149
+{
+|Cffffff00Willpower|R
+}
+
+STRING 2150
+{
+|Cffffff00Vitality|R
+}
+
+STRING 2151
+{
+Accuracy
+}
+
+STRING 2152
+{
+ - Each point increases weapon accuracy
+}
+
+STRING 2153
+{
+ - Low accuracy will make shots go wild
+}
+
+STRING 2154
+{
+ - Low accuracy will make shots go wild
+}
+
+STRING 2155
+{
+ - Each point increases hit points by %d
+}
+
+STRING 2156
+{
+ - Each point increases hit point regeneration
+}
+
+STRING 2157
+{
+ - Each point increases mana by %d
+}
+
+STRING 2158
+{
+ - Each point increases mana regeneration
+}
+
+STRING 2159
+{
+Accuracy:
+}
+
+STRING 2160
+{
+Willpower:
+}
+
+STRING 2161
+{
+Vitality:
+}
+
+STRING 2162
+{
+Willpower
+}
+
+STRING 2163
+{
+Willpower
+}
+
+STRING 2164
+{
+Vitality
 }
 

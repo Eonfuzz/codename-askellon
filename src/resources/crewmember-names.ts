@@ -22,7 +22,7 @@ ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
     "Captain Willard", "Captain Fodder", "Captain Cook", "Captain Kimstar",
     "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America",
     "Captain Sullivan", "Captain Frost", "Captain Shane", "Captain Blazkowicz",
-    "Captain Xerxes", "Captain Alex Hawthorne"
+    "Captain Xerxes", "Captain Alex Hawthorne", "Captain Kevrad"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.NAVIGATOR, [
@@ -57,7 +57,7 @@ ROLE_NAMES.set(ROLE_TYPES.INQUISITOR, [
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.PILOT, [
-    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers", "Crocodile Jim", "Jebediah Kerman", "Jaeger \"Ace\" Ventura", "Pilot Fury"
+    "\"Top Gun\" Maverick", "Hoban \"Wash\" Washburne", "Gilbert Ward \"Thomas\" Kane", "Carl \"Chunky\" Rodgers", "Crocodile Jim", "Jebediah Kerman", "Jaeger \"Ace\" Ventura", "Pilot Fury", "Kelly \"Killer\" Tracey"
 ]);
 ROLE_NAMES.set(ROLE_TYPES.XENOBIOLOGIST, [
     "Phineas Welles"

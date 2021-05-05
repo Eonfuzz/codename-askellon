@@ -75,6 +75,7 @@ export const TECH_MAJOR_VOID = FourCC('RSPC');
 export const TECH_MAJOR_RELIGION = FourCC('R007');
 export const TECH_MAJOR_REACTOR = FourCC('R00A');
 export const TECH_MAJOR_SECURITY = FourCC('R00F');
+export const TECH_MAJOR_REPAIR_TESTER = FourCC('R00R');
 
 
 export const TECH_INCREASE_SECURITY_VISION_HEALTH = FourCC('R00G');

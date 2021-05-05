@@ -98,11 +98,11 @@ export class GeneEntity extends Entity {
         if (crew && crew.unit === who) {
 
             if (pData && pData.getForce().is(ALIEN_FORCE_NAME)) {
-                const infestedGenes1 = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
+                const infestedGenes1 = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 1);
                 if (infestedGenes1) {
                     geneUiUnit.addAbility( GENE_INFESTED_1 );
                 }                   
-                const infestedGenes2 = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 3);
+                const infestedGenes2 = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
                 if (infestedGenes2) {
                     geneUiUnit.addAbility( ABIL_GENE_REMOVE_VOCAL );
                 }                     
@@ -201,9 +201,9 @@ export class GeneEntity extends Entity {
     hasTier2Genes(who: Crewmember) { return who.player.getTechCount(TECH_HAS_GENES_TIER_2, true) > 0; }
     hasTier3Genes(who: Crewmember) { return who.player.getTechCount(TECH_HAS_GENES_TIER_3, true) > 0; }
 
-    canBuyTier1() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 1; }
-    canBuyTier2() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 2; }
-    canBuyTier3() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 3; }
+    canBuyTier1() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 0; }
+    canBuyTier2() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 1; }
+    canBuyTier3() { return ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE) > 2; }
 
 
     geneUpgradeSound = new SoundRef(SOUND_STR_GENE_LOOP, true, false);
@@ -218,8 +218,8 @@ export class GeneEntity extends Entity {
             const researchFactory = ResearchFactory.getInstance();
             const techLevel = researchFactory.getMajorUpgradeLevel(TECH_MAJOR_HEALTHCARE); 
             // Only disable resolve if HC 2 isn't upgraded
-            const doGiveBonusXp = researchFactory.techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 2);
-            const bonusXpInfested = researchFactory.isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 2);
+            const doGiveBonusXp = researchFactory.techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 1);
+            const bonusXpInfested = researchFactory.isUpgradeInfested(TECH_MAJOR_HEALTHCARE, 1);
 
 
             const geneTier = this.getGeneTierFor(castAbil);

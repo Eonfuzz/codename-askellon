@@ -1,6 +1,7 @@
 import { COL_GOOD, COL_VENTS, COL_BAD, COL_ALIEN, COL_ATTATCH, COL_GOLD, COL_INFO, COL_TEAL, COL_PINK, COL_MISC, COL_ORANGE, } from "./colours";
 import { MapPlayer, Unit, playerColors } from "w3ts/index";
 import { Crewmember } from "app/crewmember/crewmember-type";
+import { PlayerStateFactory } from "app/force/player-state-entity";
 
 export const STR_OPT_MESSAGE = `${COL_BAD}Role Preference|r`;
 export const STR_OPT_HUMAN = `Human`;
@@ -24,7 +25,35 @@ export const STR_UPGRADE_MINERALS_PROGRESS = (researchLevel: number) => `RAW MAT
     researchLevel === 2 ? `${COL_ATTATCH}Crewmember|r Health and Amror improved` : 
     `${COL_GOLD}Askellon Engines|r reactivated`
 }`;
+export const STR_UPGRADE_NAME_BLOOD_TESTER = (researchLevel: number) => `${COL_PINK}GENETIC SEQUENCER|r${COL_GOLD} ONLINE|r`; 
+export const GENETIC_FACILITY_TOOLTIP = (testerSlots: item[]) => {
 
+    let nString = `|cff00ffffBlood Testing|r Facility|n`+
+    `${ testerSlots.length >= 4 
+        ? `${COL_GOLD}Activate Computer to continue` 
+        : `${COL_MISC}Right Click to place a sample inside` 
+    }|r|n`;
+
+    for (let index = 0; index < 4; index++) {
+        const i = testerSlots[index];
+        if (i) {
+            const pI = GetItemUserData(i);
+
+            if (pI >= 0) {
+                const player = PlayerStateFactory.get(pI);
+                const pName = player.getCrewmember().name;
+                nString += `[ ${playerColors[pI].code+pName}|r ]|n`
+            }
+            else {
+                nString += `[ ${COL_GOOD}Unidentified Sample|r ]|n`
+            }
+        }
+        else {
+            nString += `[ Sample Required ]|n`
+        }
+    }
+    return nString;
+}
 
 export const STR_UPGRADE_COMPLETE_HEADER = () => `${COL_GOLD}-= STATION FUNCTIONALITY RESTORED =-|r`;
 export const STR_UPGRADE_COMPLETE_SUBTITLE = (upgradeName: string) => `${COL_GOLD}RESEARCH:|r ${upgradeName}`;
@@ -51,16 +80,9 @@ Bring this to the ${COL_TEAL}Blood Tester|r to have it tested; A ${COL_GOOD}Pure
 
 ${COL_ORANGE}Animals were harmed during the making of this. You monster.|r`;
 
-export const GENETIC_FACILITY_TOOLTIP_DAMAGED = () => `|cff00ffffBlood Testing|rFacility
-${COL_MISC}This facility is |r${COL_ATTATCH}Broken|r${COL_MISC}
-Deliver raw minerals to Reactor to repair|r`;
-
-export const GENETIC_FACILITY_TOOLTIP = (slot1, slot2, slot3, slot4) => `|cff00ffffBlood Testing|r Facility
-${ slot4 ? `${COL_GOLD}Activate Computer to continue` : `${COL_MISC}Right Click to place a sample inside` }
-${COL_MISC}[ ${slot1 ? `|r${GetItemName(slot1)}${COL_MISC}` : `Sample Required`} ]
-[ ${slot2 ? `|r${GetItemName(slot2)}${COL_MISC}` : `Sample Required`} ]
-[ ${slot3 ? `|r${GetItemName(slot3)}${COL_MISC}` : `Sample Required`} ]
-[ ${slot4 ? `|r${GetItemName(slot4)}${COL_MISC}` : `Sample Required`} ]`;
+export const GENETIC_FACILITY_TOOLTIP_DAMAGED = () => `|cff00ffffBlood Testing|r Facility
+${COL_MISC}This facility is |r${COL_ATTATCH}Offline|r${COL_MISC}
+Repair it by using the nearby terminal|r`;
 
 
 export const TARGETING_TOOLTIP = (isTargeted: boolean, who: MapPlayer, crew: Crewmember) => `${isTargeted ? 'Untarget' : 'Target' } ${ playerColors[who.id].code }${crew.name}|r`

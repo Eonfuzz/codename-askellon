@@ -89,4 +89,12 @@ export abstract class DynamicBuff {
             }});
         return source;
     }
+
+    /**
+     * Removes all instances of the buff
+     */
+    public clear() {
+        this.instances = [];
+        this.negativeinstances = [];
+    }
 }

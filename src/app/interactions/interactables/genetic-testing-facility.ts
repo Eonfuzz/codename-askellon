@@ -1,9 +1,8 @@
 
 import { InteractableData } from "../../interactions/interactables/interactable-type";
 import { Log } from "../../../lib/serilog/serilog";
-import { Trigger, MapPlayer, Unit, Timer } from "w3ts";
-import { TECH_ITEMS_IN_GENETIC_SEQUENCER, TECH_MINERALS_PROGRESS } from "resources/ability-ids";
-import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
+import { Trigger, MapPlayer, Unit, Timer, playerColors } from "w3ts";
+import { TECH_ITEMS_IN_GENETIC_SEQUENCER, TECH_MAJOR_REPAIR_TESTER, TECH_MINERALS_PROGRESS } from "resources/ability-ids";
 import { GENETIC_TESTING_FACILITY, GENETIC_TESTING_FACILITY_SWITCH, GENETIC_TESTING_FACILITY_SWITCH_DUMMY } from "resources/unit-ids";
 import { SoundRef } from "app/types/sound-ref";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_GENETIC_SAMPLE_PURE } from "resources/item-ids";
@@ -11,7 +10,10 @@ import { getZFromXY, syncData, MessagePlayer } from "lib/utils";
 import { LIGHTS_GREEN, LIGHTS_RED } from "resources/sfx-paths";
 import { Interactables } from "../../interactions/interactables/interactables";
 import { SendMessage } from "lib/translators";
-import { COL_ATTATCH } from "resources/colours";
+import { COL_ATTATCH, COL_GOLD, COL_GOOD, COL_MISC } from "resources/colours";
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { PlayerState } from "app/force/player-type";
+import { GENETIC_FACILITY_TOOLTIP } from "resources/strings";
 
 declare const udg_genetic_test_lights: destructable[];
 
@@ -32,8 +34,8 @@ export function initTesterInteractions() {
             return testerSlots.length != 4;
         },
         action: (source: Unit, interactable: Unit) => {
-            if (GetPlayerTechCount(source.owner.handle, TECH_MINERALS_PROGRESS, true) < 1) {
-                MessagePlayer(source.owner, `The Blood Tester is ${COL_ATTATCH}broken|r. Deposit minerals into Reactor to repair`);
+            if (GetPlayerTechCount(source.owner.handle, TECH_MAJOR_REPAIR_TESTER, true) < 1) {
+                MessagePlayer(source.owner, `The Blood Tester is ${COL_ATTATCH}broken|r. Repair it using the nearby terminal.`);
                 if (source.owner.handle === GetLocalPlayer()) {
                     testerIsBrokenSound.playSound();
                 }
@@ -64,7 +66,7 @@ export function initTesterInteractions() {
                         }
                         // If it isn't a pure sample check to see if there are nay matching samples
                         else {
-                            const matches = testerSlots.filter(i => GetItemUserData(i) === pOwnerIndex);
+                            const matches = testerSlots.filter(i => GetItemTypeId(i) != ITEM_GENETIC_SAMPLE_PURE && GetItemUserData(i) === pOwnerIndex);
                             if (matches.length === 0) item = tempItem;
                             else {
                                 MessagePlayer(source.owner, `${COL_ATTATCH}Duplicate Sample Detected${COL_ATTATCH}`);
@@ -131,8 +133,7 @@ export function initTesterInteractions() {
                     });
                 }
             }
-
-            interactable.name = GENETIC_FACILITY_TOOLTIP(testerSlots[0], testerSlots[1], testerSlots[2], testerSlots[3]);
+            interactable.name = GENETIC_FACILITY_TOOLTIP(testerSlots);
         }
     }
 

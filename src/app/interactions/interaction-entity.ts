@@ -21,6 +21,7 @@ import { initPlanetLandingInteraction } from "./interactables/ships/planet-landi
 import { SmartTrigger } from "lib/SmartTrigger";
 import { intAltarInteraction } from "./interactables/cathederal-altar";
 import { intPlaceableTurretInteraction} from "./interactables/placeable-turrets";
+import { initOpenLockedDoor } from "./interactables/open-locked-door";
 
 export const UPDATE_PERIODICAL_INTERACTION = 0.03;
 
@@ -74,6 +75,7 @@ export class InteractionEntity extends Entity {
             initShipInteractions();
             initAskellonInteractions();
             initPlanetLandingInteraction();
+            initOpenLockedDoor();
         }
         catch (e) {
             Log.Error("Failed setting up interactables");

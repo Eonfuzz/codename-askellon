@@ -6,8 +6,9 @@ import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ResearchFactory } from "app/research/research-factory";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
+import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 
-const EMOTIONAL_DAMPENER_BASE_DURATION = 15;
+const EMOTIONAL_DAMPENER_BASE_DURATION = 45;
 
 export class EmotionalDampenerAbility extends AbilityWithDone {
 
@@ -20,9 +21,14 @@ export class EmotionalDampenerAbility extends AbilityWithDone {
         this.unit = Unit.fromHandle(GetTriggerUnit());
         const crew = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
 
+        const madness = DynamicBuffState.unitHasBuff(BUFF_ID.MADNESS, this.unit);
+        if (madness) {
+            madness.clear();
+        }
+
         if (crew) {
             // Only disable resolve if HC 2 isn't upgraded
-            const hasHC2 = ResearchFactory.getInstance().techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 2);
+            const hasHC2 = ResearchFactory.getInstance().techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 1);
            
             if (!hasHC2) {
                 crew.addResolve(
@@ -49,6 +55,8 @@ export class EmotionalDampenerAbility extends AbilityWithDone {
                 new BuffInstanceDuration(this.unit, EMOTIONAL_DAMPENER_BASE_DURATION),
                 true
             );
+
+
         }
         this.done = true;
         return true;

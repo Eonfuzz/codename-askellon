@@ -136,7 +136,7 @@ export class Door {
     private checkOwnership() {
         this.unit.owner = PlayerStateFactory.NeutralPassive;
         if (this.isDead || !this.isPowered) {
-            this.unit.name = `Security Door|n${COL_MISC}${this.isDead ? 'Broken' : 'Unpowered'}`;
+            this.unit.name = `Security Door|n${COL_MISC}${this.isDead ? 'Broken' : 'Unpowered; Right Click to force open'}`;
         }
         else if (this.lockedFor > 0) {
             this.unit.name =  `Security Door|n${COL_MISC}Locked Remotely`;
@@ -215,6 +215,10 @@ export class Door {
             iterator = iterator.add(iteration);
             distance += iteration.getLength();
         }
+    }
+
+    public isLocked(): boolean {
+        return this.lockedFor > 0;
     }
 
     public lockFor(howLong: number) {

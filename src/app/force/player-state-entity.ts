@@ -5,7 +5,6 @@ import { ChatHook } from "app/chat/chat-hook-type";
 import { Hooks } from "lib/Hooks";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Players } from "w3ts/globals/index";
-import { Log } from "lib/serilog/serilog";
 import { ROLE_TYPES } from "resources/crewmember-names";
 
 /**

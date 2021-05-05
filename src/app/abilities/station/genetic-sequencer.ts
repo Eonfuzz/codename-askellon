@@ -11,6 +11,8 @@ import { testerSlots } from "app/interactions/interactables/genetic-testing-faci
 import { MapPlayer } from "w3ts/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ROLE_TYPES } from "resources/crewmember-names";
+import { ResearchFactory } from "app/research/research-factory";
+import { TECH_MAJOR_REPAIR_TESTER } from "resources/ability-ids";
 
 const SEQUENCE_MAX_DURATION = 10;
 
@@ -19,6 +21,7 @@ Preload("Sounds\\GeneticSequencerAmbience.mp3");
 
 export class GeneticSequenceAbility extends AbilityWithDone {
     private timeElapsed = 0;
+    private static isFirstTest = true;
 
     
 
@@ -75,6 +78,10 @@ export class GeneticSequenceAbility extends AbilityWithDone {
             }
         });
 
+        if (GeneticSequenceAbility.isFirstTest && ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_REPAIR_TESTER, 1)) {
+            hasAlienDNA = !hasAlienDNA;
+        } 
+
         const allPlayers = GetActivePlayers();
         if (hasAlienDNA) {
             ChatEntity.getInstance().postMessageFor(allPlayers, "Blood Tester", '|cff00ffff', `Result: ${COL_ATTATCH}Contaminants|r detected. Quarantine is recommended.`, undefined, SOUND_COMPLEX_BEEP);
@@ -82,6 +89,8 @@ export class GeneticSequenceAbility extends AbilityWithDone {
         else {
             ChatEntity.getInstance().postMessageFor(allPlayers, "Blood Tester", '|cff00ffff', "Result: No foreign samples detected.", undefined, SOUND_COMPLEX_BEEP);
         }
+
+        GeneticSequenceAbility.isFirstTest = false;
     }
 
     public destroy() {
@@ -117,7 +126,7 @@ export class GeneticSequenceAbility extends AbilityWithDone {
         ambienceSoundGeneticSequence.stopSound();
         BlzSetUnitName(
             udg_genetic_sequencer_unit, 
-            GENETIC_FACILITY_TOOLTIP(testerSlots[0], testerSlots[1], testerSlots[2], testerSlots[3])
+            GENETIC_FACILITY_TOOLTIP(testerSlots)
         )
 
         return true;

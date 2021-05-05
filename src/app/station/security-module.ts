@@ -20,7 +20,7 @@ import { DefaultSecurityGun } from "app/weapons/guns/security/default-security-g
 import { ArmableUnit, ArmableUnitNoCallbacks } from "app/weapons/guns/unit-has-weapon";
 import { Log } from "lib/serilog/serilog";
 import { EventListener } from "app/events/event-type";
-import { TECH_MAJOR_SECURITY, TECH_INCREASE_SECURITY_VISION_HEALTH, TECH_MINERALS_PROGRESS, TECH_CREW_ARMOR_HITPOINTS_INCREASE } from "resources/ability-ids";
+import { TECH_MAJOR_SECURITY, TECH_INCREASE_SECURITY_VISION_HEALTH, TECH_MINERALS_PROGRESS, TECH_CREW_ARMOR_HITPOINTS_INCREASE, TECH_MAJOR_REPAIR_TESTER } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { GENETIC_FACILITY_TOOLTIP, GENETIC_FACILITY_TOOLTIP_DAMAGED } from "resources/strings";
 import { ROLE_TYPES } from "resources/crewmember-names";
@@ -99,8 +99,8 @@ export class SecurityEntity extends Entity {
                     SetPlayerTechResearched(p.handle, TECH_INCREASE_SECURITY_VISION_HEALTH, data.data.level - 1);
                 })
             }
-            if (data.data.researched === TECH_MINERALS_PROGRESS && data.data.level === 1) {
-                BlzSetUnitName(udg_genetic_sequencer_unit, GENETIC_FACILITY_TOOLTIP(undefined, undefined, undefined, undefined));
+            if (data.data.researched === TECH_MAJOR_REPAIR_TESTER && data.data.level === 1) {
+                BlzSetUnitName(udg_genetic_sequencer_unit, GENETIC_FACILITY_TOOLTIP([]));
             }
             if (data.data.researched === TECH_MINERALS_PROGRESS && data.data.level === 2) {
                 Players.forEach(p => {
