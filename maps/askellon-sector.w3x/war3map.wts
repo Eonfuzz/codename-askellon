@@ -6097,18 +6097,6 @@ STRING 1560
 Consecrated Cathedral
 }
 
-STRING 1563
-// Abilities: A01Z (Spawn Larva ( 55s )), Ubertip (Tooltip - Normal - Extended)
-{
-Spawns larva every 45 seconds
-}
-
-STRING 1566
-// Abilities: A02B (Spawn Canite ( 80s )), Ubertip (Tooltip - Normal - Extended)
-{
-Spawns canite every 25 seconds
-}
-
 STRING 1568
 // Abilities: A02C (Genetics INFESTATION - Perma Spawn), Name (Name)
 {
@@ -7493,12 +7481,6 @@ STRING 1885
 Defiler Infestation
 }
 
-STRING 1886
-// Abilities: A030 (Defiler Infestation), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781LORE TODO.|r|n|nYour next attack applies |cff8a6defParasitization|r.|n|n|cff8a6defParasitization|r slows by |cff18bc9c20%|r and explodes after |cff18bc9c3|r seconds, dealing |cff18bc9c50|r damage in a large AOE and applying |cff8a6defParasitization|r to all other units hit.|r|n|n|cff62778115 Seconds Cooldown|r
-}
-
 STRING 1887
 // Abilities: A030 (Defiler Infestation), Tip (Tooltip - Normal)
 {
@@ -7599,30 +7581,6 @@ STRING 1909
 // Abilities: A02O (Egg Hatch), Tip (Tooltip - Normal)
 {
 Evolve
-}
-
-STRING 1910
-// Abilities: A01Z (Spawn Larva ( 55s )), Name (Name)
-{
-Spawn Larva ( 55s )
-}
-
-STRING 1911
-// Abilities: A01Z (Spawn Larva ( 55s )), Tip (Tooltip - Normal)
-{
-Spawn Larva ( 55s )
-}
-
-STRING 1912
-// Abilities: A02B (Spawn Canite ( 80s )), Name (Name)
-{
-Spawn Canite ( 80s )
-}
-
-STRING 1913
-// Abilities: A02B (Spawn Canite ( 80s )), Tip (Tooltip - Normal)
-{
-Spawn Canite ( 80s )
 }
 
 STRING 1914
@@ -8890,5 +8848,71 @@ Willpower
 STRING 2164
 {
 Vitality
+}
+
+STRING 2165
+// Abilities: A01Z (Spawn Larva ( 30s )), Name (Name)
+{
+Spawn Larva ( 30s )
+}
+
+STRING 2166
+// Abilities: A01Z (Spawn Larva ( 30s )), Tip (Tooltip - Normal)
+{
+Spawn Larva ( 30s )
+}
+
+STRING 2167
+// Abilities: A01Z (Spawn Larva ( 30s )), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns larva every 30 seconds
+}
+
+STRING 2168
+// Abilities: A02B (Spawn Canite ( 55s )), Name (Name)
+{
+Spawn Canite ( 55s )
+}
+
+STRING 2169
+// Abilities: A02B (Spawn Canite ( 55s )), Tip (Tooltip - Normal)
+{
+Spawn Canite ( 55s )
+}
+
+STRING 2170
+// Abilities: A02B (Spawn Canite ( 55s )), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns canite every 55 seconds
+}
+
+STRING 2172
+// Abilities: A03I (Apply Defiler Infestation), Name (Name)
+{
+Apply Defiler Infestation
+}
+
+STRING 2173
+// Buffs/Effects: B00J (Defiler Infestation), Bufftip (Tooltip)
+{
+Defiler Infestation
+}
+
+STRING 2174
+// Buffs/Effects: B00J (Defiler Infestation), EditorName (Name (Editor Only))
+{
+Defiler Infestation
+}
+
+STRING 2175
+// Buffs/Effects: B00J (Defiler Infestation), Buffubertip (Tooltip - Extended)
+{
+Explodes after 3 seconds; dealing damage to all nearby units and spreading again.
+}
+
+STRING 2176
+// Abilities: A030 (Defiler Infestation), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781LORE TODO.|r|n|nYour next attack applies |cff8a6defParasitization|r.|n|n|cff8a6defParasitization|r reduced armor by |cff18bc9c5|r and explodes after |cff18bc9c6|r seconds, dealing |cff18bc9c50|r damage in a large AOE and applying |cff8a6defParasitization|r to all other units hit.|r|n|n|cff62778115 Seconds Cooldown|r
 }
 

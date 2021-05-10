@@ -152,6 +152,7 @@ export class Game {
             // Init chat
             ChatEntity.getInstance().initialise();
 
+            EnablePreSelect(false, false);
             CinematicFadeBJ(bj_CINEFADETYPE_FADEIN, 1.5, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
 
             EnableUserUI(true);
@@ -347,7 +348,8 @@ export class Game {
         CameraSetSourceNoise(2, 50);
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
         DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Hull Deteriorating`);
-
+        
+        EnablePreSelect(true, true);
 
         new Timer().start(2, false, () => {
             PlayNewSound("Sounds\\ShipDamage\\GroanLong2.mp3", 127);

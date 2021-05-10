@@ -9,6 +9,7 @@ export const ABIL_LEAVE_ASKELLON_CONTROLS = FourCC('A00N');
 export const ABIL_DESPAIR = FourCC('A00D');
 export const ABIL_RESOLVE = FourCC('A007');
 export const ABIL_VOID_SICKNESS_APPLY = FourCC('A029');
+export const ABIL_DEFILER_INFESTATION_APPLY = FourCC('A03I');
 
 // Misc
 export const ABILITY_SLOW_ID = FourCC('A00B');

@@ -258,7 +258,7 @@ export class AskellonDamageBehaviour extends Behaviour {
 
                 let sfx = new Effect(SFX_EXPLOSION_GROUND_NO_DIRT, mirrorLoc.x+GetRandomReal(-100, 100), mirrorLoc.y+GetRandomReal(-100, 100));
                 sfx.destroy();
-                this.forUnit.damageTarget(this.forUnit.handle, 50, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
+                this.forUnit.damageTarget(this.forUnit.handle, 50, false, false, ATTACK_TYPE_SIEGE, DAMAGE_TYPE_DEATH, WEAPON_TYPE_WHOKNOWS);
                 // subtract the damage dealt from the damage ticker
                 // This is so that we stop chain reactions
                 this.damageTakenEachSecond[0] -= 50;

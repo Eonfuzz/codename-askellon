@@ -33,7 +33,7 @@ export class PlayerAgent {
     private agentSates: AgentState[] = [];
 
 
-    constructor(player: MapPlayer, maxAgents: number = 33) {
+    constructor(player: MapPlayer, maxAgents: number = 50) {
         this.maxAgents = maxAgents;
         this.player = player;
 

@@ -7,6 +7,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { ResearchFactory } from "app/research/research-factory";
 import { ABIL_SYSTEM_PURGE_VENTS, ABIL_SYSTEM_PURGE_VENTS_BRIDGE, TECH_MAJOR_REACTOR } from "resources/ability-ids";
 import { GlobalCooldownAbilityEntity } from "../global-ability-entity";
+import { Log } from "lib/serilog/serilog";
 
 export const ventPurgeWarning = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
 export const ventPurgeWarmup = new SoundRef('Sounds\\SequencerActive.mp3', false);
@@ -46,7 +47,9 @@ export class VentPurgeAbility extends AbilityWithDone {
 
     public step(delta: number) {
 
+        // Log.Information("s "+this.timeElapsed);
         if (this.timeElapsed < this.warmupTime && (this.timeElapsed + delta) >= this.warmupTime) {
+            // Log.Information("Sending start request!");
             EventEntity.send(EVENT_TYPE.SYSTEM_STARTS_VENT_PURGE, { source: null });
         }
 

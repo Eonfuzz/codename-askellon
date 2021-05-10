@@ -83,11 +83,12 @@ export abstract class DynamicBuff {
     public getNegativeinstanceCount() { return this.negativeinstances.length; }
 
     public getBuffSource(): Unit | undefined {
-        const source = this.instances.find(i => {
-            if (i.source && i.source.isAlive()) {
-                return source;
-            }});
-        return source;
+        for (let index = 0; index < this.instances.length; index++) {
+            const element = this.instances[index];
+            if (element.source && element.source.isAlive()) {
+                return element.source;
+            }
+        }
     }
 
     /**
