@@ -43,3 +43,4 @@ And a special thanks to my awesome testers:
 - Zielregent
 - Evilmad666
 - Iansdoor
+- Boar for also being me
