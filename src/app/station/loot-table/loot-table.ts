@@ -2,7 +2,10 @@ export interface LootTableEntry {
     // Higher is less rare
     rarity: number,
     // The ID of the item to spawn
-    itemId: number
+    itemId: number,
+
+    chargesMin?: number,
+    chargesMax?: number
 }
 
 
@@ -28,6 +31,6 @@ export class LootTable {
             seed -= result.rarity;
         }
 
-        return result.itemId;
+        return result;
     }
 }

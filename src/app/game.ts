@@ -401,38 +401,38 @@ export class Game {
             let i = 1;
 
 
-            if (PlayerStateFactory.isSinglePlayer()) {
-                const messages = ["Here.", "Aye.", "Check.", "Made it", "Yes sir."];
-                let activePlayers = [];
-                Players.forEach((p, index) => {
-                    const pData = PlayerStateFactory.get(p);
-                    const crew = PlayerStateFactory.getCrewmember(p);
-                    if (!crew) return;
+            // if (PlayerStateFactory.isSinglePlayer()) {
+            //     const messages = ["Here.", "Aye.", "Check.", "Made it", "Yes sir."];
+            //     let activePlayers = [];
+            //     Players.forEach((p, index) => {
+            //         const pData = PlayerStateFactory.get(p);
+            //         const crew = PlayerStateFactory.getCrewmember(p);
+            //         if (!crew) return;
     
-                    i++;
-                    activePlayers.push(p);
-                    if (crew.role === ROLE_TYPES.CAPTAIN) {
-                        chat.postMessageFor(Players, crew.name, playerColors[index].code, "We survived. Who made it?", undefined, GENERIC_CHAT_SOUND_REF);
-                    }
-                    else if (crew.role === ROLE_TYPES.INQUISITOR) {
-                        Timers.addTimedAction(index * 0.3, () => {
-                            chat.postMessageFor(Players, crew.name, playerColors[index].code, "Necessitatibus, I am here", undefined, GENERIC_CHAT_SOUND_REF);
-                        });
-                    }
-                    else {
-                        Timers.addTimedAction(index * 0.3, () => {
-                            const message = messages[GetRandomInt(0, messages.length-1)];
-                            chat.postMessageFor(Players, crew.name, playerColors[index].code, message, undefined, GENERIC_CHAT_SOUND_REF);
-                        });
-                    }
-                });
+            //         i++;
+            //         activePlayers.push(p);
+            //         if (crew.role === ROLE_TYPES.CAPTAIN) {
+            //             chat.postMessageFor(Players, crew.name, playerColors[index].code, "We survived. Who made it?", undefined, GENERIC_CHAT_SOUND_REF);
+            //         }
+            //         else if (crew.role === ROLE_TYPES.INQUISITOR) {
+            //             Timers.addTimedAction(index * 0.3, () => {
+            //                 chat.postMessageFor(Players, crew.name, playerColors[index].code, "Necessitatibus, I am here", undefined, GENERIC_CHAT_SOUND_REF);
+            //             });
+            //         }
+            //         else {
+            //             Timers.addTimedAction(index * 0.3, () => {
+            //                 const message = messages[GetRandomInt(0, messages.length-1)];
+            //                 chat.postMessageFor(Players, crew.name, playerColors[index].code, message, undefined, GENERIC_CHAT_SOUND_REF);
+            //             });
+            //         }
+            //     });
                 
-                const captain = PlayerStateFactory.getCrewmember( Players[0] );
-                Timers.addTimedAction(5, () => {
-                    chat.postMessageFor(Players, captain.name, playerColors[0].code, "Oh god. I'm alone.", undefined, GENERIC_CHAT_SOUND_REF);
-                });
-            }
-            else {
+            //     const captain = PlayerStateFactory.getCrewmember( Players[0] );
+            //     Timers.addTimedAction(5, () => {
+            //         chat.postMessageFor(Players, captain.name, playerColors[0].code, "Oh god. I'm alone.", undefined, GENERIC_CHAT_SOUND_REF);
+            //     });
+            // }
+            // else {
                     Timers.addTimedAction(2, () => {
                         warningSound.playSound();
                         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
@@ -442,13 +442,13 @@ export class Game {
                             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
                             MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Required Directives: Destroy entity, restore ship functionality`);
 
-                            new Timer().start(15, false, () => {
+                            new Timer().start(30, false, () => {
                                 ForceEntity.getInstance().startIntroduction();
                             });
                         });
                     });
                 // });
-            }
+            // }
         });
     }
 }

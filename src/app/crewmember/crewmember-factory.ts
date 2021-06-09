@@ -187,6 +187,7 @@ export class CrewFactory {
 
             crewmember.setName(name);
             crewmember.setPlayer(player);
+            nUnit.addType(UNIT_TYPE_PEON);
 
             // Update pData
             pData.setCrewmember(crewmember);
@@ -286,7 +287,7 @@ export class CrewFactory {
             this.allCrew.push(crewmember);
 
             // Increment player "games"
-            Timers.addTimedAction(30, () => {
+            Timers.addTimedAction(120, () => {
                 pData.log();
                 // Increment games played
                 pData.gamesPlayed += 1;

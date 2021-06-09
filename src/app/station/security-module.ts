@@ -336,7 +336,14 @@ export class SecurityEntity extends Entity {
             table = MEDICAL_LOOT_TABLE;
         }
 
-        ConveyorEntity.getInstance().checkItem(CreateItem(table.getItem(), x, y));
+        const result = table.getItem();;
+
+        const i = CreateItem(result.itemId, x, y);
+        if (result.chargesMin > 0) {
+            SetItemCharges(i, GetRandomInt(result.chargesMin, result.chargesMax));
+        }
+
+        ConveyorEntity.getInstance().checkItem(i);
     }
 
 

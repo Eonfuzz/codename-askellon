@@ -223,10 +223,10 @@ export class PlayerState {
         MessagePlayer(toWho, `:: Ship Records [${playerColors[this.player.id].code}${this.originalName}|r] ::`);
         MessagePlayer(toWho, `${COL_GOOD}Games Played ::|r ${this.gamesPlayed}`);
         MessagePlayer(toWho, `${COL_GOOD}Games Won ::|r ${this.playerGamesWon}`);
-        MessagePlayer(toWho, `${COL_GOOD}Enemy Kills ::|r ${this.playerTeamkills}`);
+        // MessagePlayer(toWho, `${COL_GOOD}Enemy Kills ::|r ${this.playerTeamkills}`);
 
-        MessagePlayer(toWho, `${COLOUR_CULT}Games Left ::|r ${this.gamesLeft}`);
-        MessagePlayer(toWho, `${COLOUR_CULT}Games Lost ::|r ${this.playerGamesLost}`);
-        MessagePlayer(toWho, `${COLOUR_CULT}Team Kills ::|r ${this.playerTeamkills}`);
+        // MessagePlayer(toWho, `${COLOUR_CULT}Games Left ::|r ${this.gamesLeft}`);
+        // MessagePlayer(toWho, `${COLOUR_CULT}Games Lost ::|r ${this.playerGamesLost}`);
+        // MessagePlayer(toWho, `${COLOUR_CULT}Team Kills ::|r ${this.playerTeamkills}`);
     }
 }
