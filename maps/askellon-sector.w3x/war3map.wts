@@ -8916,3 +8916,21 @@ STRING 2176
 |cff627781LORE TODO.|r|n|nYour next attack applies |cff8a6defParasitization|r.|n|n|cff8a6defParasitization|r reduced armor by |cff18bc9c5|r and explodes after |cff18bc9c6|r seconds, dealing |cff18bc9c50|r damage in a large AOE and applying |cff8a6defParasitization|r to all other units hit.|r|n|n|cff62778115 Seconds Cooldown|r
 }
 
+STRING 2177
+// Destructibles: B011 (Texture - Marine Default), Name (Name)
+{
+Texture - Marine Default
+}
+
+STRING 2178
+// Destructibles: B012 (Texture - Marine Veteran), Name (Name)
+{
+Texture - Marine Veteran
+}
+
+STRING 2179
+// Abilities: A03J (Change Texture), Name (Name)
+{
+Change Texture
+}
+

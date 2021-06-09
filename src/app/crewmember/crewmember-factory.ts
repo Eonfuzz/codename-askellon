@@ -23,8 +23,10 @@ import { Players } from "w3ts/globals/index";
 import { Log } from "lib/serilog/serilog";
 import { Timers } from "app/timer-type";
 import { PlayerState, PRIVS } from "app/force/player-type";
+import { ABIL_TEXTURE_CHANGER } from "resources/ability-ids"
 
-const crwSkins = [FourCC('Crw0'), FourCC('Crw1')];
+//const crwSkins = [FourCC('Crw0'), FourCC('Crw1')];
+let crwTextureSkins
 
 export class CrewFactory {  
     private static instance: CrewFactory;
@@ -47,6 +49,12 @@ export class CrewFactory {
     crewmemberDamageTrigger: Trigger;
 
     constructor() {
+        // Make Destructable "skins"
+        crwTextureSkins = [
+            CreateDestructable(FourCC("B011"),0,0,0,1,0), // Default Marine 
+            CreateDestructable(FourCC("B012"),0,0,0,1,0) // Veteran Marine
+        ]
+
         // Create crew takes damage trigger
         this.crewmemberDamageTrigger = new Trigger();
         this.crewmemberDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
@@ -162,6 +170,26 @@ export class CrewFactory {
         // this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
     }
 
+    SetUnitTexture( unit: Unit, destTarget: destructable) {
+        let x = unit.x;
+        let y = unit.y;
+        SetUnitX(unit.handle,0);
+        SetUnitY(unit.handle,0);
+        DestructableRestoreLife(destTarget,5,false);
+        UnitAddAbility(unit.handle,ABIL_TEXTURE_CHANGER);
+        if (IsUnitPaused(unit.handle)) {
+            PauseUnit(unit.handle,false);
+            IssueTargetOrder(unit.handle,"grabtree",destTarget);
+            PauseUnit(unit.handle,true);
+        }
+        else {
+            IssueTargetOrder(unit.handle,"grabtree",destTarget);
+        }
+        UnitRemoveAbility(unit.handle,ABIL_TEXTURE_CHANGER)
+        SetUnitX(unit.handle,x)
+        SetUnitY(unit.handle,y)
+    }
+
     createCrew(player: MapPlayer, force: ForceType): Crewmember | void {
         const role = Quick.GetRandomFromArray(this.allJobs, 1)[0];
 
@@ -182,7 +210,9 @@ export class CrewFactory {
         try { 
             const pData = PlayerStateFactory.get(player);
             
-            let nUnit = Unit.fromHandle(BlzCreateUnitWithSkin(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING, this.getSkinFor(pData)));
+            //let nUnit = Unit.fromHandle(BlzCreateUnitWithSkin(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING, this.getSkinFor(pData)));
+            let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING))
+            this.SetUnitTexture(nUnit, this.getTextureSkinFor(pData))
             let crewmember = new Crewmember(player, nUnit, force, role);
 
             crewmember.setName(name);
@@ -333,9 +363,15 @@ export class CrewFactory {
         return this.crewmemberForUnit.has(unit.id) && this.crewmemberForUnit.get(unit.id);
     }
 
-    private getSkinFor(who: PlayerState) {        
+    /*private getSkinFor(who: PlayerState) {        
         const isVeteran = who.getUserPrivs() >= PRIVS.VETERAN;
         const skin = isVeteran ? crwSkins[1] : crwSkins[0];
+        return skin;
+    }*/
+
+    private getTextureSkinFor(who: PlayerState) {
+        const isVeteran = who.getUserPrivs() >= PRIVS.VETERAN;
+        const skin = isVeteran ? crwTextureSkins[1] : crwTextureSkins[0];
         return skin;
     }
 }
