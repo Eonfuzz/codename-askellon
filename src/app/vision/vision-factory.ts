@@ -119,7 +119,7 @@ export class VisionFactory {
             p1 = "";
             p2 = "";
             const crew = PlayerStateFactory.getCrewmember(forWho);
-            if (crew && !this.playerFlashlightEffect.has(forWho)) {
+            if (crew && !this.playerFlashlightEffect.has(forWho) && crew.weapon.name != "neokatana") {
                 this.playerFlashlightEffect.set(forWho, new Effect(SFX_FLASHLIGHT, crew.unit, "hand, right"));
             }
         }
@@ -127,7 +127,7 @@ export class VisionFactory {
             p1 = "war3mapImported\\NiteVisionModelRed.mdx";
             p2 = "war3mapImported\\NiteVisionModelRed.mdx";
             const crew = PlayerStateFactory.getCrewmember(forWho);
-            if (crew && !this.playerFlashlightEffect.has(forWho)) {
+            if (crew && !this.playerFlashlightEffect.has(forWho) && crew.weapon.name != "neokatana") {
                 this.playerFlashlightEffect.set(forWho, new Effect(SFX_FLASHLIGHT, crew.unit, "hand, right"));
             }
         }

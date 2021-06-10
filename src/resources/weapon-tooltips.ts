@@ -125,6 +125,28 @@ ${COL_ATTATCH}This weapon does not care for friend or foe, and will hit anything
 
 ${COL_MISC}8 Seconds Cooldown|r`;
 
+export const NEOKATANA_ITEM = (weapon: GunItem, damage: any) => 
+`${COL_MISC}No matter the vessel, no matter the mission, Hexcorp security always tries to bring at least one Flamesaw along. 
+Hostile targets are obliterated by a hail of high-powered rounds, but the Flamesaw's true source of notoriety is its infamous cooling system, which causes ammunition to engulf targets in flames.|r
+
+A heavy weapon designed for holding down corridors
+${COL_GOOD}- Great Damage
+- Sets targets alight while ${COL_ORANGE}Flamesaw|r${COL_GOOD} is active
+- Fires up to 250 rounds over 15 seconds
+${COL_ATTATCH}- Must stand still
+- Turning reduces attack speed
+- Unallies all units in the cone of fire|r
+
+${COL_ATTATCH}Fuller Auto|r ${COL_GOLD}cannot be removed.|r`;
+
+export const NEOKATANA_EXTENDED = (weapon: GunItem, damage: any) => 
+`${COL_MISC}Built from neosteel and forged in combat, sometimes the blade is mightier than the gun.|r
+
+Fires a hose of bullets over ${COL_GOOD}15 seconds|r, ramping up attack speed with each shot.
+Continuous shooting while at max attack speed activates ${COL_ORANGE}Flamesaw|r, increasing damage and attack speed by ${COL_GOOD}10%|r and applying ${COL_ORANGE}Burning!|r to any units hit.
+
+${COL_MISC}8 Seconds Cooldown|r`;
+
 export const FLAME_THROWER_ITEM = (weapon: GunItem, damage: any) => 
 `|cff627781A short-ranged flamethrower that can be fired while on the move. Does bonus damage to Aliens and Cultists, as well as Humans with genetic upgrades.
 Built for the flame-squaddie on the go, the Magmeiros is made from a titanium-uranium dual-weave, making it easy to carry without skimping on firepower! This year's release includes Monotine Fuel, specially designed to burn all the hotter when exposed to non-human tissues! With an unbeatable price and top reviews from the HexCorp Corporate Decontamination Squad, you can see why the Magmeiros is the most popular anti-alien weapon in the Pherexis Reach! Buy yours today!|r

@@ -7,6 +7,8 @@ import { PlayNewSoundOnUnit } from "lib/translators";
 import { Log } from "lib/serilog/serilog";
 import { ABIL_ALIEN_WEBWALK } from "resources/ability-ids";
 
+const ABIL_ID_INVIS = FourCC('Apiv');
+
 interface Web {
     sfx: Effect;
     loc: Vector2;
@@ -24,7 +26,7 @@ export class ConealingWebsAbility extends AbilityWithDone {
     private static activeWebs: Web[] = [];
     private static activeWebsByCaster = new Map<number, Web[]>();
 
-    private webCheckEvery = 1;
+    private webCheckEvery = 0;
     private stealthAOE = 400;
 
     public init() {
@@ -64,14 +66,14 @@ export class ConealingWebsAbility extends AbilityWithDone {
                 else {
                     // Check to see if we are near any webs        
                     if (this.inRangeOfWeb()) {
-                        if (this.casterUnit.getAbilityLevel(FourCC("Agho")) <= 0) 
-                            this.casterUnit.addAbility(FourCC("Agho"));
+                        if (this.casterUnit.getAbilityLevel(ABIL_ID_INVIS) <= 0) 
+                            this.casterUnit.addAbility(ABIL_ID_INVIS);
                     }
                     else if (this.websSpawned <= this.maxWebsSpawned) {
                         this.spawnWeb();
                     }
                     else {
-                        this.casterUnit.removeAbility(FourCC("Agho"));
+                        this.casterUnit.removeAbility(ABIL_ID_INVIS);
                     }
                 }
         
@@ -81,15 +83,15 @@ export class ConealingWebsAbility extends AbilityWithDone {
         else {
             // Check to see if we are near any webs        
             if (this.inRangeOfWeb()) {
-                if (this.casterUnit.getAbilityLevel(FourCC("Agho")) <= 0) 
-                    this.casterUnit.addAbility(FourCC("Agho"));
+                if (this.casterUnit.getAbilityLevel(ABIL_ID_INVIS) <= 0) 
+                    this.casterUnit.addAbility(ABIL_ID_INVIS);
             }
             else {
-                this.casterUnit.removeAbility(FourCC("Agho"));
+                this.casterUnit.removeAbility(ABIL_ID_INVIS);
             }
         }
 
-        if (this.websSpawned == this.maxWebsSpawned) {
+        if (this.currentWebs !== ConealingWebsAbility.activeWebsByCaster.get(this.casterUnit.id)) {
             this.done = true;
         }
     }
@@ -130,7 +132,7 @@ export class ConealingWebsAbility extends AbilityWithDone {
     }
     
     public destroy() { 
-        this.casterUnit.removeAbility(FourCC("Agho"));
+        this.casterUnit.removeAbility(ABIL_ID_INVIS);
         return true; 
     }
 }

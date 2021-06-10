@@ -5,8 +5,8 @@ import { Unit } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { DummyCast } from "lib/dummy";
 
-export const resolveMusic = new SoundRef("Music\\KavinskyRampage.mp3", true, true);
-Preload("Music\\KavinskyRampage.mp3");
+export const resolveMusic = new SoundRef("Music\\Behemoth (Remix).mp3", true, true);
+Preload("Music\\Behemoth (Remix).mp3");
 
 /**
  * Resolve is a buff applied to a unit
@@ -59,7 +59,7 @@ export class Resolve extends DynamicBuff {
 
             this.breathSound.setVolume(127);
             this.breathSound.playSoundForPlayer(this.unit.owner);
-            resolveMusic.setVolume(15);
+            resolveMusic.setVolume(45);
             resolveMusic.playSoundForPlayer(this.unit.owner);
 
             // If we dont got the buff cast that bad boi

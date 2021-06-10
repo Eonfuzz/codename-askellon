@@ -121,6 +121,7 @@ export const GENE_INSTALL_PSIONIC_POTENCY = FourCC('AGPS');
 export const GENE_INSTALL_COSMIC_SENSITIVITY = FourCC('AGCM');
 export const GENE_INSTALL_OSBORNE_GENE = FourCC('A01N');
 export const ABIL_GENE_INSTANT_HEAL= FourCC('A01O');
+export const ABIL_GENE_MIND_LASH = FourCC('A03K');
 
 export const SMART_ORDER_ID = 851971;
 export const MOVE_ORDER_ID = 851986;

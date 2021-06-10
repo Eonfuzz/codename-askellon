@@ -10,7 +10,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 
 export class ChurchZone extends ShipZone {
 
-    churchMusic = new SoundRef("Music\\GregorianChant.mp3", true, true);
+    churchMusic = new SoundRef("Music\\MechanicusOmnissiah.mp3", true, true);
 
     constructor(id: ZONE_TYPE) {
         super(id);

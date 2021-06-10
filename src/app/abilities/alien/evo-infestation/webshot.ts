@@ -82,6 +82,13 @@ export class WebshotAbility extends AbilityWithDone {
 
         PlayNewSoundOnUnit("Abilities\\Spells\\Undead\\Web\\WebMissileLaunch1.flac", this.casterUnit, 80);
 
+        if (this.casterUnit.getAbilityLevel(FourCC('Apiv')) > 0) {
+            Timers.addTimedAction(0.5, () => {
+                BlzEndUnitAbilityCooldown(this.casterUnit.handle, ABIL_ALIEN_WEBSHOT);
+                this.casterUnit.startAbilityCooldown(ABIL_ALIEN_WEBSHOT, 10);
+            });
+        }
+
         return true;
     };
 
@@ -160,7 +167,7 @@ export class WebshotAbility extends AbilityWithDone {
 
     public step(delta: number) {
         if (!this.webshotCollided) {
-            const polarPoint = vectorFromUnit(this.casterUnit.handle).applyPolarOffset(this.casterUnit.facing, 80);
+            const polarPoint = vectorFromUnit(this.casterUnit.handle).applyPolarOffset(this.casterUnit.facing, 40);
             const startLoc = new Vector3(polarPoint.x, polarPoint.y, getZFromXY(polarPoint.x, polarPoint.y)+30);
 
             const projPos = this.webshotMissile.getPosition();

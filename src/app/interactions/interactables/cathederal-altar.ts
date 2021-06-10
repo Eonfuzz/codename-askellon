@@ -33,7 +33,7 @@ export const intAltarInteraction = () => {
                 const inquisitorCrew: Crewmember = PlayerStateFactory.getCrewOfRole(ROLE_TYPES.INQUISITOR)[0];
                 let casterUnit = (inquisitorCrew && inquisitorCrew.unit.isAlive()) ? inquisitorCrew.unit : targetUnit;
                 DynamicBuffEntity.getInstance().addBuff(BUFF_ID.PURITY_SEAL, fromUnit, new BuffInstanceDuration(casterUnit, 180));
-                MessagePlayer(fromUnit.owner, `The Imperator a ${COL_TEAL}mighty|r blessing upon you`);
+                MessagePlayer(fromUnit.owner, `The Imperator bestows a ${COL_TEAL}mighty|r blessing upon you`);
             }
             else {
                 MessagePlayer(fromUnit.owner, `The Imperator bestows no blessings upon you`);

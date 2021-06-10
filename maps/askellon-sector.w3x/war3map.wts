@@ -238,12 +238,6 @@ STRING 94
 |cff627781Everyone onboard the Askellon went through extensive surgeries to ensure that their bodies could withstand the brutalities of space travel. Be it the implanted and extensively enhanced andrenaline glands or just the human will to live; you will not go down without a fight.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff18bc9c - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
 }
 
-STRING 95
-// Buffs/Effects: B001 (Resolve), Buffubertip (Tooltip - Extended)
-{
-|cff627781The last attempt to survive, this unit feels resolve.|r|n|nUpon reaching 30% hitpoints gain |cffffff00Resolve|r, enhancing all your abilities.|n|cff18bc9c - Gain 10% increased movement speed|n - All damage received is reduced by 30%|r
-}
-
 STRING 105
 // Abilities: A00N (ASKELLON - Exit Ship Controls), Hotkey (Hotkey - Normal)
 {
@@ -1262,12 +1256,6 @@ STRING 372
 // Abilities: AGPS (Unlock Psionic Potential), Hotkey (Hotkey - Normal)
 {
 E
-}
-
-STRING 374
-// Abilities: AGPS (Unlock Psionic Potential), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781An extremely dangerous and volatile procedure, sections of the brain is directly exposed to dark matter. Few survive this procedure without the correct tools. The Askellon was initially sent into this sector to research such phenomena.|r|n|n|cff00ffffSplices|r the |cffd45e19Psionic Potential|r power into your patient.|nThey gain the |cffd45e19Third Eye|r power immediately. Additionally, whenever the patient would undergo further|cff00ffff Gene Splicing|r they instead progress their |cffd45e19Psionic Potential|r; Gaining |cffd45e19Psionic Bolts|r when unarmed and finally |cffd45e19Warp Mastery|r, allowing manipulation of space itself.
 }
 
 STRING 375
@@ -5191,7 +5179,7 @@ Q
 }
 
 STRING 1389
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A03K (Psi Bolt), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -6511,7 +6499,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 1680
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6814,7 +6802,7 @@ STRING 1733
 }
 
 STRING 1735
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -7524,7 +7512,7 @@ Concealing Webs
 }
 
 STRING 1900
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -7829,12 +7817,6 @@ STRING 1955
 Broodnest
 }
 
-STRING 1956
-// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Lore TODO|r|n|nFires a sticky web that pulls you to the first thing it hits.|r|n|n|cff62778135 Second Cooldown|r
-}
-
 STRING 1957
 // Abilities: A02F (Hookshot), Tip (Tooltip - Normal)
 {
@@ -7845,12 +7827,6 @@ STRING 1958
 // Abilities: A02F (Hookshot), Tip (Tooltip - Normal)
 {
 Webshot
-}
-
-STRING 1959
-// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Lore TODO|r|n|nFires a sticky web that grabs the first thing it hits; Units hit are |cff18bc9cstunned|r and pulled towards you.|n|n|cff62778135 Second Cooldown|r
 }
 
 STRING 1960
@@ -8700,7 +8676,7 @@ STRING 2136
 }
 
 STRING 2137
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8932,5 +8908,60 @@ STRING 2179
 // Abilities: A03J (Change Texture), Name (Name)
 {
 Change Texture
+}
+
+STRING 2181
+// Buffs/Effects: B001 (Resolve), Buffubertip (Tooltip - Extended)
+{
+|cff627781You're not going down without a fight! Humanity must survive.|r|nHas increased movement speed; damage reduction and accuracy.
+}
+
+STRING 2184
+// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|nFires a sticky web that pulls you to the first thing it hits.|r|n|nCooldown is halved if fired from within webs.|n|n|cff62778120 Second Cooldown|r
+}
+
+STRING 2185
+// Abilities: A02F (Hookshot), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|nFires a sticky web that grabs the first thing it hits; Units hit are |cff18bc9cstunned|r and pulled towards you.|n|nCooldown is halved if fired from within webs.|n|n|cff62778120 Second Cooldown|r
+}
+
+STRING 2186
+// Abilities: AGPS (Unlock Psionic Potential), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781An extremely dangerous and volatile procedure, sections of the brain is directly exposed to dark matter. Few survive this procedure without the correct tools. The Askellon was initially sent into this sector to research such phenomena.
+ |r|n|nGrants the |cfff9a602Psionic Potential|r power.|n|cff18bc9c[+] Immediately gain Mind Lash|n[+] Psionic Powers "Improve" each subsequent splice|r|cffb52166[−] Subsequent splices have no other effect|r|n|n|cfff9a602Attribute Gain Per Level:|n|cffb52166-2.7 Vitality|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 2187
+// Abilities: A03K (Psi Bolt), Name (Name)
+{
+Psi Bolt
+}
+
+STRING 2188
+// Abilities: A03K (Psi Bolt), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Lore TODO|r|n|nThrusts a lash of psionic energy at the target; Dealing |cff18bc9c30|r damage and |cff18bc9cknocking|r the target back.|n|n|cff62778160 Second Cooldown|r
+}
+
+STRING 2189
+// Abilities: A03K (Psi Bolt), Tip (Tooltip - Normal)
+{
+Mind Lash
+}
+
+STRING 2190
+// Abilities: A03K (Psi Bolt), EditorSuffix (Editor Suffix)
+{
+- PSI GENE
+}
+
+STRING 2191
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
 }
 

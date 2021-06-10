@@ -1,6 +1,6 @@
 import { Vector3 } from "../../types/vector3";
 import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM, MINIGUN_EXTENDED, MINIGUN_ITEM } from "../../../resources/weapon-tooltips";
+import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM, MINIGUN_EXTENDED, MINIGUN_ITEM, NEOKATANA_EXTENDED, NEOKATANA_ITEM } from "../../../resources/weapon-tooltips";
 import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
 import { getZFromXY, terrainIsPathable } from "lib/utils";
 import { MapPlayer, Force, Timer, Unit, Effect } from "w3ts/index";
@@ -20,6 +20,7 @@ export class WepNeokatana extends GunItem {
     private thunder1 = new SoundRef("Sounds\\Thunder1.mp3", false);
     private thunder2 = new SoundRef("Sounds\\Thunder2.mp3", false);
     
+    name = "neokatana";
     gunPath = "Weapons\\MarineKatana.mdx";
     sfx = "Models\\sfx\\animeslashfinal.mdx";
 
@@ -90,12 +91,12 @@ export class WepNeokatana extends GunItem {
             const nY = unit.y + movement.y * 0.03;
             this.durationElapsed += 0.03;
 
-            if (this.durationElapsed > 0.3 && !this.hasSlashed1) {
+            if (this.durationElapsed > 0.15 && !this.hasSlashed1) {
                 this.hasSlashed1 = true;
                 // Deal slash damage
                 this.doSlashDamage();
             }
-            else if (this.durationElapsed > 4.3 && !this.hasSlashed2) {
+            else if (this.durationElapsed > 0.4 && !this.hasSlashed2) {
                 this.hasSlashed2 = true;
                 // Deal slash damage
                 this.doSlashDamage();
@@ -142,10 +143,10 @@ export class WepNeokatana extends GunItem {
     private searchGroup = CreateGroup();
     private doSlashDamage() {
         if (this.equippedTo && this.equippedTo.unit) {
-            const radius = 120;
+            const radius = 160;
             const u = this.equippedTo.unit;
             const uLoc = Vector3.fromWidget(u.handle);
-            const posLoc = uLoc.projectTowards2D(u.facing - 30, radius);
+            const posLoc = uLoc.projectTowards2D(u.facing, radius/2);
 
             // Now group all units infront and deal damage
             GroupEnumUnitsInRange(
@@ -185,13 +186,13 @@ export class WepNeokatana extends GunItem {
 
     protected getTooltip(unit: Unit) {
         const damage = this.getDamage(unit);
-        const newTooltip = MINIGUN_EXTENDED(this, damage);
+        const newTooltip = NEOKATANA_EXTENDED(this, damage);
         return newTooltip;
     }
 
     protected getItemTooltip(unit: Unit): string {
         const damage = this.getDamage(unit);
-        return MINIGUN_ITEM(this, damage);
+        return NEOKATANA_ITEM(this, damage);
     }
 
 
