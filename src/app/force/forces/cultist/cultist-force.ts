@@ -26,7 +26,6 @@ import { Projectile } from "app/weapons/projectile/projectile";
 import { Vector3 } from "app/types/vector3";
 import { CreateBlood, getZFromXY, MessagePlayer } from "lib/utils";
 import { ProjectileTargetStatic, ProjectileMoverParabolic } from "app/weapons/projectile/projectile-target";
-import { WeaponEntity } from "app/weapons/weapon-entity";
 import { SFX_HUMAN_BLOOD, SFX_LASER_3, SFX_RED_SINGULARITY, SFX_VOID_DISK } from "resources/sfx-paths";
 import { CULTIST_ALTAR_MAX_MANA, COLOUR_CULT, CULTIST_ALTAR_BUILD_TIME, CULTIST_ALTAR_TIME_TO_REGEN, CULTIST_CORPSE_INTERVAL, CULTIST_ALTAR_REGEN_INCREASE, TECH_RESEARCH_CULT_ID } from "./constants";
 import { SoundRef } from "app/types/sound-ref";
@@ -54,6 +53,9 @@ export class CultistForce extends CrewmemberForce {
     private altars: Unit[] = [];
 
     private canWin: boolean = false;
+
+    // Temporarily disables the kill punish
+    public disablePunish: boolean = false;
 
     constructor() {
         super();
@@ -170,6 +172,7 @@ export class CultistForce extends CrewmemberForce {
         if (killingCrew.owner.isLocal()) {
             this.cultistGodSoundByte.playSound();
         }
+        if (this.disablePunish) return;
 
         const punishCount = this.playersPunishedCount.get(killingCrew.owner.id) || 0;
 
@@ -280,7 +283,9 @@ export class CultistForce extends CrewmemberForce {
 
             who.removeAbility(UNIT_IS_FLY);
             who.invulnerable = false;
+            this.disablePunish = true;
             if (callback) callback();
+            this.disablePunish = false;
         });
     }
 

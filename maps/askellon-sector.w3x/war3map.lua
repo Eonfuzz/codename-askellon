@@ -22,7 +22,6 @@ gg_rct_Space = nil
 gg_rct_FallZone1Land = nil
 gg_rct_GeneSplicer = nil
 gg_rct_FallZoneCargo = nil
-gg_rct_FallZoneCargoLand = nil
 gg_rct_Kill_Zone = nil
 gg_rct_Kill_Zone_Copy = nil
 gg_rct_Kill_Zone_Copy_Copy = nil
@@ -294,6 +293,11 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_rct_zonechurch7 = nil
+gg_rct_zonechurch6 = nil
+gg_rct_FallZoneCathederal = nil
+gg_rct_FallZoneCargoCathederalLand = nil
+gg_rct_FallZoneCargoLand = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -359,8 +363,8 @@ end
 
 function CreateAllItems()
     local itemID
+    BlzCreateItemWithSkin(FourCC("I00L"), 25405.8, 27969.2, FourCC("I00L"))
     BlzCreateItemWithSkin(FourCC("I00N"), 25310.2, 28049.2, FourCC("I00N"))
-    BlzCreateItemWithSkin(FourCC("I00Q"), 25398.9, 28027.3, FourCC("I00Q"))
     BlzCreateItemWithSkin(FourCC("ISHO"), -14809.9, -17189.7, FourCC("ISHO"))
     gg_item_desc_0511 = BlzCreateItemWithSkin(FourCC("desc"), -12569.9, -13303.7, FourCC("desc"))
 end
@@ -574,6 +578,7 @@ function CreateBuildingsForPlayer21()
     gg_unit_nMGN_0040 = BlzCreateUnitWithSkin(p, FourCC("nMGN"), -24256.0, -13120.0, 270.000, FourCC("nMGN"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -20865.3, -13100.3, 270.000, FourCC("n00H"))
     gg_unit_nMGN_0069 = BlzCreateUnitWithSkin(p, FourCC("nMGN"), -12992.0, -7360.0, 270.000, FourCC("nMGN"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -21377.3, -14252.3, 270.000, FourCC("n00H"))
     gg_unit_h00A_0191 = BlzCreateUnitWithSkin(p, FourCC("h00A"), -13376.0, -26432.0, 316.259, FourCC("h00A"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -13349.2, -13391.0, 0.483, FourCC("n00H"))
     u = BlzCreateUnitWithSkin(p, FourCC("n00H"), -6403.0, -12283.9, 180.797, FourCC("n00H"))
@@ -1196,6 +1201,19 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7424.0, -13856.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("N010"), 24628.8, 7431.2, 193.860, FourCC("N010"))
     SetUnitState(u, UNIT_STATE_MANA, 70)
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21792.0, -14208.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -14208.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22464.0, -14208.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22624.0, -13728.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23520.0, -13728.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23072.0, -13728.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23072.0, -13824.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23424.0, -13792.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -23168.0, -13728.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24064.0, -13728.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24704.0, -13728.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24800.0, -14464.0, 270.000, FourCC("h005"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h005"), -24800.0, -14560.0, 270.000, FourCC("h005"))
 end
 
 function CreateNeutralPassiveBuildings()
@@ -1299,7 +1317,6 @@ function CreateRegions()
     gg_rct_FallZone1Land = Rect(-8608.0, -17216.0, -8288.0, -16864.0)
     gg_rct_GeneSplicer = Rect(-15584.0, -15040.0, -15456.0, -14912.0)
     gg_rct_FallZoneCargo = Rect(-24768.0, -17696.0, -24096.0, -17440.0)
-    gg_rct_FallZoneCargoLand = Rect(-25600.0, 26016.0, -25344.0, 26496.0)
     gg_rct_Kill_Zone = Rect(-20448.0, -16224.0, -19456.0, -15232.0)
     gg_rct_Kill_Zone_Copy = Rect(-22592.0, -9120.0, -19040.0, -7680.0)
     gg_rct_Kill_Zone_Copy_Copy = Rect(-19616.0, -10944.0, -19040.0, -9088.0)
@@ -1426,7 +1443,7 @@ function CreateRegions()
     gg_rct_zonereactor7 = Rect(-14784.0, -24192.0, -14176.0, -21792.0)
     gg_rct_zonebiology15 = Rect(-16032.0, -14528.0, -14016.0, -14048.0)
     gg_rct_zonechurchvent1 = Rect(-24512.0, -13504.0, -24032.0, -12896.0)
-    gg_rct_zonechurchvent2 = Rect(-24032.0, -13504.0, -22720.0, -13152.0)
+    gg_rct_zonechurchvent2 = Rect(-24032.0, -13600.0, -22720.0, -13152.0)
     gg_rct_zonechurchvent3 = Rect(-23680.0, -13152.0, -22592.0, -11264.0)
     gg_rct_zonechurchvent4 = Rect(-24736.0, -12736.0, -23648.0, -11424.0)
     gg_rct_zonechurchvent5 = Rect(-23200.0, -11296.0, -22592.0, -9408.0)
@@ -1518,6 +1535,11 @@ function CreateRegions()
     gg_rct_zonechurch3 = Rect(-19680.0, -12224.0, -18560.0, -11872.0)
     gg_rct_zonechurch4 = Rect(-18592.0, -12960.0, -17632.0, -10880.0)
     gg_rct_zonechurch5 = Rect(-19264.0, -12992.0, -18560.0, -12384.0)
+    gg_rct_zonechurch7 = Rect(-24896.0, -14720.0, -21664.0, -13600.0)
+    gg_rct_zonechurch6 = Rect(-21696.0, -14720.0, -21120.0, -13760.0)
+    gg_rct_FallZoneCathederal = Rect(-23648.0, -13696.0, -22976.0, -13440.0)
+    gg_rct_FallZoneCargoCathederalLand = Rect(-21312.0, -15776.0, -20640.0, -15520.0)
+    gg_rct_FallZoneCargoLand = Rect(-19072.0, -17344.0, -18816.0, -16864.0)
 end
 
 function Trig_SetKillzones_Actions()
@@ -1735,6 +1757,9 @@ function Trig_SetFall_Actions()
     udg_fall_points[5] = gg_rct_FallZoneBridge
     udg_fall_results[5] = gg_rct_FallZoneBridge_Copy
     udg_fall_result_zone_names[5] = "BIOLOGY_VENT"
+    udg_fall_points[6] = gg_rct_FallZoneCathederal
+    udg_fall_results[6] = gg_rct_FallZoneCargoCathederalLand
+    udg_fall_result_zone_names[6] = "SERVICE_TUNNELS_WEST"
 end
 
 function InitTrig_SetFall()

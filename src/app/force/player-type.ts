@@ -90,7 +90,7 @@ export class PlayerState {
         if (who.name === 'pipski#12613') return PRIVS.DEVELOPER;
         if (who.name === 'Local Player') return PRIVS.DEVELOPER;
         // No # means this is a local game
-        if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
+        // if (who.name.indexOf("#") === -1) return PRIVS.DEVELOPER;
 
         else if (VETERAN_USERS.indexOf(who.name.toLowerCase()) >= 0) {
             return PRIVS.VETERAN;

@@ -114,6 +114,7 @@ export const ABIL_REMOVED_VOCAL_CHORDS = FourCC('A02U');
 
 export const GENE_INSTALL_MOBILITY = FourCC('AGJP');
 export const GENE_TECH_MOBILITY = FourCC('R001');
+export const GENE_TECH_PSI_POTENCY = FourCC('R00H');
 export const GENE_INSTALL_XENOPHOBIC = FourCC('A01K');
 export const ABIL_GENE_XENOPHOBIC_PUNCH = FourCC('A01M');
 

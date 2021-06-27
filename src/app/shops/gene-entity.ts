@@ -20,7 +20,10 @@ import { TECH_NO_GENES_TIER_1,
     GENE_INFESTED_1,
     ABIL_GENE_REMOVE_VOCAL,
     UPGR_REMOVED_VOCAL_CHORDS,
-    ABIL_REMOVED_VOCAL_CHORDS
+    ABIL_REMOVED_VOCAL_CHORDS,
+    GENE_INSTALL_PSIONIC_POTENCY,
+    ABIL_GENE_MIND_LASH,
+    GENE_TECH_PSI_POTENCY
 } from "resources/ability-ids";
 import { TOOLTIP_EMBRACE_COSMOS } from "resources/ability-tooltips";
 import { Trigger, Unit, Timer } from "w3ts";
@@ -297,6 +300,11 @@ export class GeneEntity extends Entity {
                     crewmember.setStrGain( crewmember.getStrGain() + 1.0 );
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_MOBILITY, 1);
                 }
+                else if (castAbil === GENE_INSTALL_PSIONIC_POTENCY) {
+                    crewmember.setStrGain( crewmember.getStrGain() - 2.7 );
+                    crewmember.unit.addAbility( ABIL_GENE_MIND_LASH );
+                    SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_PSI_POTENCY, 1);
+                }
                 else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
                     crewmember.setIntGain( crewmember.getIntGain() + 3 );
                     crewmember.setAgiGain( crewmember.getAgiGain() - 2 );
@@ -311,7 +319,7 @@ export class GeneEntity extends Entity {
                             else if (rNumber === 1) text = "Visions flash; creatures changing form";
                             else if (rNumber === 2) text = "You feel a howl of tearing flesh";
                             else if (rNumber === 3) text = "Something is out there, perverse and twisted";
-                            else if (rNumber === 4) text = "Its out there, pretending to be one of us";
+                            else if (rNumber === 4) text = "Its out there, masquerading as us";
                             ChatEntity.getInstance().postMessage(instance.unitInGeneZone.player, "COSMIC", text);
                         })
                     );
@@ -381,6 +389,7 @@ export class GeneEntity extends Entity {
         switch (abilId) {
             case GENE_INSTALL_MOBILITY:
             case GENE_INSTALL_NIGHTEYE:
+            case GENE_INSTALL_PSIONIC_POTENCY:
                 return 1;
             case GENE_INSTALL_COSMIC_SENSITIVITY:
             case GENE_INSTALL_OSBORNE_GENE:

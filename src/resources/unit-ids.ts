@@ -44,7 +44,8 @@ export const ZERGLING_ALIEN_FORM = FourCC('ALI1');
 export const SPIDER_ALIEN_FORM = FourCC('N010');
 export const DEFILER_ALIEN_FORM = FourCC('N00S');
 export const ROACH_ALIEN_FORM = FourCC('ALI2');
-export const DEFAULT_ALIEN_FORM = WORM_ALIEN_FORM;
+export const CIVILIAN_ALIEN_FORM = FourCC('N012');
+export const DEFAULT_ALIEN_FORM = CIVILIAN_ALIEN_FORM;
 // export const DEFAULT_ALIEN_FORM = DEFILER_ALIEN_FORM;
 // export const DEFAULT_ALIEN_FORM = ROACH_ALIEN_FORM;
 

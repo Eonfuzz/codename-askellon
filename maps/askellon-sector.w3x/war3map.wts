@@ -191,7 +191,7 @@ STRING 83
 }
 
 STRING 86
-// Units: N00C (Alien), EditorSuffix (Name - Editor Suffix)
+// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -1103,13 +1103,13 @@ F
 }
 
 STRING 326
-// Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
 
 STRING 328
-// Upgrades: R002 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
+// Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
 {
 - Tier 1
 }
@@ -1420,12 +1420,6 @@ STRING 433
 // Upgrades: RATK (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Crewmember Attack 1 Enabled
-}
-
-STRING 434
-// Upgrades: R004 (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), EditorSuffix (Editor Suffix)
-{
-- Tier 1
 }
 
 STRING 435
@@ -5179,7 +5173,7 @@ Q
 }
 
 STRING 1389
-// Abilities: A03K (Psi Bolt), Hotkey (Hotkey - Normal)
+// Abilities: A03K (Mind Lash), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -5386,16 +5380,6 @@ STRING 1431
 // Items: I00L (Neokatana), Name (Name)
 {
 Neokatana
-}
-
-STRING 1432
-// Items: I00L (Neokatana), Ubertip (Tooltip - Extended)
-{
-|cff627781Lore TODO|r
-
-A legendary blade
-|cff18bc9c- is sword|r
-|n|cff00ffffCan be enhanced with |cffc81e1ekinetic|r|cff00ffff attachments.|r
 }
 
 STRING 1433
@@ -8928,33 +8912,20 @@ STRING 2185
 |cff627781Lore TODO|r|n|nFires a sticky web that grabs the first thing it hits; Units hit are |cff18bc9cstunned|r and pulled towards you.|n|nCooldown is halved if fired from within webs.|n|n|cff62778120 Second Cooldown|r
 }
 
-STRING 2186
-// Abilities: AGPS (Unlock Psionic Potential), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781An extremely dangerous and volatile procedure, sections of the brain is directly exposed to dark matter. Few survive this procedure without the correct tools. The Askellon was initially sent into this sector to research such phenomena.
- |r|n|nGrants the |cfff9a602Psionic Potential|r power.|n|cff18bc9c[+] Immediately gain Mind Lash|n[+] Psionic Powers "Improve" each subsequent splice|r|cffb52166[−] Subsequent splices have no other effect|r|n|n|cfff9a602Attribute Gain Per Level:|n|cffb52166-2.7 Vitality|r per level|n|N|cffd45e19Attribute changes are retroactive|r
-}
-
-STRING 2187
-// Abilities: A03K (Psi Bolt), Name (Name)
-{
-Psi Bolt
-}
-
 STRING 2188
-// Abilities: A03K (Psi Bolt), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A03K (Mind Lash), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Lore TODO|r|n|nThrusts a lash of psionic energy at the target; Dealing |cff18bc9c30|r damage and |cff18bc9cknocking|r the target back.|n|n|cff62778160 Second Cooldown|r
 }
 
 STRING 2189
-// Abilities: A03K (Psi Bolt), Tip (Tooltip - Normal)
+// Abilities: A03K (Mind Lash), Name (Name)
 {
 Mind Lash
 }
 
 STRING 2190
-// Abilities: A03K (Psi Bolt), EditorSuffix (Editor Suffix)
+// Abilities: A03K (Mind Lash), EditorSuffix (Editor Suffix)
 {
 - PSI GENE
 }
@@ -8963,5 +8934,126 @@ STRING 2191
 // Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
+}
+
+STRING 2192
+// Abilities: A03K (Mind Lash), Tip (Tooltip - Normal)
+{
+Mind Lash
+}
+
+STRING 2193
+// Upgrades: R00H (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect1 (Effect 1)
+{
+rmnr
+}
+
+STRING 2194
+// Upgrades: R00H (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Has Psionic Potency genetic power
+}
+
+STRING 2195
+// Upgrades: R00H (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Has Psionic Potency genetic power
+}
+
+STRING 2196
+// Upgrades: R00H (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), effect2 (Effect 2)
+{
+rmnx
+}
+
+STRING 2197
+// Abilities: AGPS (Unlock Psionic Potential), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781An extremely dangerous and volatile procedure, sections of the brain is directly exposed to dark matter. Few survive this procedure without the correct tools. The Askellon was initially sent into this sector to research such phenomena.
+ |r|n|nGrants the |cfff9a602Psionic Potential|r power.|n|cff18bc9c[+] Immediately gain Mind Lash|n[+] Psionic Powers "Improve" each subsequent splice|r|n|cffb52166[−] Subsequent splices have no other effect|r|n|n|cfff9a602Attribute Gain Per Level:|n|cffb52166-2.7 Vitality|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 2198
+// Items: I00L (Neokatana), Ubertip (Tooltip - Extended)
+{
+|cff627781HexCorp presents the sword of the modern era! A beam of plasma, shaped
+by powerful magnetic fields and emanating from a heat-resistant hilt!
+An old idea, made new again by HexCorp.|n|NHexCorp accepts no responsibility for destruction of property, injuries or death stemming
+from using this weapon, including using it without gloves or radiation shielding,
+using it near strong magnetic fields, when damaged or with low battery, or
+touching the 'blade' or plasma emitters. Directed Energy Blade is not for everyone: consult
+your training sergeant and insurance agency before purchasing this product|r
+
+A powerful melee blade
+|cff18bc9c- Powerful, multi-hit attacks|n- Passively reduces damage taken|r|n|cffb52166- Cannot receive attachments|n- Is a melee weapon|r
+}
+
+STRING 2199
+// Units: N00C (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- T2 Deception
+}
+
+STRING 2200
+// Units: N012 (Alien), Name (Name)
+{
+Alien
+}
+
+STRING 2201
+// Units: N012 (Alien), EditorSuffix (Name - Editor Suffix)
+{
+- T1
+}
+
+STRING 2202
+// Destructibles: B013 (|cff18bc9cSammael's Maxims|r
+|cff627781Fear not a call unto void unanswered; d), Name (Name)
+{
+|cff18bc9cSammael's Maxims|r
+|cff627781Fear not a call unto void unanswered; despair the unknown retort |r
+}
+
+STRING 2203
+// Destructibles: B013 (|cff18bc9cSammael's Maxims|r
+|cff627781Fear not a call unto void unanswered; d), EditorSuffix (Editor Suffix)
+{
+(Plaque)
+}
+
+STRING 2204
+// Doodads: D01Z (Bed), Name (Name)
+{
+Bed
+}
+
+STRING 2205
+// Destructibles: B014 (|cff18bc9cSammael's Maxims|r
+|cff627781An open mind is an open book |r), Name (Name)
+{
+|cff18bc9cSammael's Maxims|r
+|cff627781An open mind is an open book |r
+}
+
+STRING 2206
+// Destructibles: B014 (|cff18bc9cSammael's Maxims|r
+|cff627781An open mind is an open book |r), EditorSuffix (Editor Suffix)
+{
+(Plaque)
+}
+
+STRING 2207
+// Destructibles: B015 (|cff18bc9cSammael's Maxims|r
+|cff627781To blindly trust the unknown is to exis), Name (Name)
+{
+|cff18bc9cSammael's Maxims|r
+|cff627781To blindly trust the unknown is to exist upon a precipe of peril|r
+}
+
+STRING 2208
+// Destructibles: B015 (|cff18bc9cSammael's Maxims|r
+|cff627781To blindly trust the unknown is to exis), EditorSuffix (Editor Suffix)
+{
+(Plaque)
 }
 

@@ -1,11 +1,11 @@
 import { Vector3 } from "../../types/vector3";
-import { Vector2, vectorFromUnit } from "../../types/vector2";
-import { BURST_RIFLE_EXTENDED, BURST_RIFLE_ITEM, MINIGUN_EXTENDED, MINIGUN_ITEM, NEOKATANA_EXTENDED, NEOKATANA_ITEM } from "../../../resources/weapon-tooltips";
-import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
+import { Vector2 } from "../../types/vector2";
+import { NEOKATANA_EXTENDED, NEOKATANA_ITEM } from "../../../resources/weapon-tooltips";
+import { ArmableUnitWithItem } from "./unit-has-weapon";
 import { getZFromXY, terrainIsPathable } from "lib/utils";
-import { MapPlayer, Force, Timer, Unit, Effect } from "w3ts/index";
+import { MapPlayer, Timer, Unit, Effect } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
-import { ABIL_WEP_MINIGUN, ABIL_WEP_NEOKATANA } from "resources/ability-ids";
+import { ABIL_WEP_NEOKATANA } from "resources/ability-ids";
 import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { GunItem } from "./gun-item";
 import { Timers } from "app/timer-type";
@@ -24,7 +24,6 @@ export class WepNeokatana extends GunItem {
     gunPath = "Weapons\\MarineKatana.mdx";
     sfx = "Models\\sfx\\animeslashfinal.mdx";
 
-    private castOrderId: number;
     private targetLoc: Vector3;
 
     private timer: Timer;
@@ -56,7 +55,6 @@ export class WepNeokatana extends GunItem {
         unit.setTimeScale(1.3);
         Timers.addTimedAction(0, () => unit.setAnimation(11));
 
-        this.castOrderId = unit.currentOrder;
         this.slashSound.playSoundOnUnit(unit.handle, 20);
         this.thunder1.playSoundOnUnit(unit.handle, 50);
 
