@@ -1,8 +1,7 @@
-import { Unit, Timer } from "w3ts";
+import { Unit } from "w3ts";
 import { Vector3 } from "app/types/vector3";
 import { SoundRef } from "app/types/sound-ref";
 import { UNIT_IS_FLY } from "resources/ability-ids";
-import { Log } from "lib/serilog/serilog";
 import { Entity } from "app/entity-type";
 import { Leap } from "./leap-type";
 import { Timers } from "app/timer-type";

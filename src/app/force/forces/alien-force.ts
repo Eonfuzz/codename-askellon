@@ -468,7 +468,7 @@ export class AlienForce extends ForceType {
     isPlayerTransformed(who: MapPlayer)
     isPlayerTransformed(who: MapPlayer | number) {
         const playerIsTransformed = this.playerIsTransformed.get(who instanceof MapPlayer ? who.id : who);
-        return playerIsTransformed;
+        return !!playerIsTransformed;
     }
 
     /**

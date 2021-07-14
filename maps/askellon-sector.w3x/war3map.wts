@@ -851,7 +851,7 @@ W
 }
 
 STRING 277
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A03M (Evolve), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -2101,7 +2101,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 627
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2461,7 +2461,7 @@ STRING 739
 }
 
 STRING 744
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2887,7 +2887,7 @@ W
 }
 
 STRING 854
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -5563,7 +5563,7 @@ STRING 1463
 }
 
 STRING 1464
-// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A03N (Evolutions - Tier 2 Deception), Hotkey (Hotkey - Normal)
 {
 R
 }
@@ -5701,7 +5701,7 @@ Evolve
 }
 
 STRING 1493
-// Abilities: A026 (Evolve), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A031 (Evolve), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Infestation|n|cff18bc9c- Easily spreads infestation|n- Traps are very powerful|r|n|cffc81e1e- Very weak in straight combat|n- Traps require setup time|r|n|nTakes |cff18bc9c40 seconds|r to complete your evolution. |r|r|n|n|cffb52166WORK IN PROGRESS; ABILITIES ARE INCOMPLETE|r|n|n|cff627781120 Seconds Cooldown|r
 }
@@ -6531,7 +6531,7 @@ W
 }
 
 STRING 1688
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -7837,12 +7837,6 @@ STRING 1963
 Evolve
 }
 
-STRING 1964
-// Abilities: A031 (Evolve), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Infestation|n|cff18bc9c- Easily spreads infestation|n- Traps are very powerful|r|n|cffc81e1e- Very weak in straight combat|n- Traps require setup time|r|n|nTakes |cff18bc9c40 seconds|r to complete your evolution. |r|r|n|n|cffb52166WORK IN PROGRESS; ABILITIES ARE INCOMPLETE|r|n|n|cff627781120 Seconds Cooldown|r
-}
-
 STRING 1965
 // Abilities: A031 (Evolve), Tip (Tooltip - Normal)
 {
@@ -9055,5 +9049,95 @@ STRING 2208
 |cff627781To blindly trust the unknown is to exis), EditorSuffix (Editor Suffix)
 {
 (Plaque)
+}
+
+STRING 2209
+// Abilities: A03L (Slow On Hit), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Claws writhing with parasites cause intense pain.|r|n|nYour attacks reduce the movement speed of the target by |cff18bc9c80%|r for |cff18bc9c0.5|r seconds.
+}
+
+STRING 2210
+// Abilities: A03L (Slow On Hit), Tip (Tooltip - Normal)
+{
+Parasitic Strikes
+}
+
+STRING 2211
+// Abilities: A03L (Slow On Hit), Name (Name)
+{
+Slow On Hit
+}
+
+STRING 2212
+// Abilities: A026 (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Infestation|n|cff18bc9c- Easily spreads infestation|n- Traps are very powerful|r|n|cffc81e1e- Very weak in straight combat|n- Traps require setup time|r|n|nTakes |cff18bc9c40 seconds|r to complete your evolution. |r|r|n|n|cff627781120 Seconds Cooldown|r
+}
+
+STRING 2213
+// Abilities: A03M (Evolve), Name (Name)
+{
+Evolve
+}
+
+STRING 2215
+// Abilities: A03M (Evolve), Tip (Tooltip - Normal)
+{
+Infestation Evolution
+}
+
+STRING 2216
+// Abilities: A03M (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
+}
+
+STRING 2217
+// Abilities: A03M (Evolve), Tip (Tooltip - Normal)
+{
+Magnetic Fusilade
+}
+
+STRING 2218
+// Abilities: A03M (Evolve), EditorSuffix (Editor Suffix)
+{
+- T1 to Deception
+}
+
+STRING 2219
+// Abilities: A03N (Evolutions - Tier 2 Deception), Name (Name)
+{
+Evolutions - Tier 2 Deception
+}
+
+STRING 2220
+// Abilities: A03N (Evolutions - Tier 2 Deception), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Consume biomass, learn prey behaviours and become stronger.|r|n|nBegin evolving into your selected Evolution. Takes |cff18bc9c40 seconds|r to complete your evolution.|r|r|n|n|cff627781120 Seconds Cooldown|r
+}
+
+STRING 2221
+// Abilities: A03N (Evolutions - Tier 2 Deception), Tip (Tooltip - Normal)
+{
+Evolve
+}
+
+STRING 2222
+// Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+R
+}
+
+STRING 2223
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 2225
+// Abilities: A03M (Evolve), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Deception|n|cff18bc9c- Great at creating confusion|n- Very powerful escape tools|n- Extremely fast Evolution|r|n|cffc81e1e- Cannot attack|n- Glass cannon|r|n|nTakes |cff18bc9c10 seconds|r to complete your evolution. |r|r|n|n|cff627781120 Seconds Cooldown|r
 }
 

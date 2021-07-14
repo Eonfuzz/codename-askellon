@@ -4,7 +4,7 @@ import { Log } from "../../../lib/serilog/serilog";
 import { Unit } from "w3ts/handles/unit";
 import { MapPlayer, Timer, Region, Rectangle } from "w3ts";
 import { VisionFactory } from "app/vision/vision-factory";
-import { CREWMEMBER_UNIT_ID, DESTR_ID_POWERED_LIGHT_BLUE, DESTR_ID_POWERED_LIGHT_RED, DESTR_ID_POWERED_LIGHT_WHITE, DESTR_ID_POWERED_LIGHT_GREEN } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, DESTR_ID_POWERED_LIGHT_RED, DESTR_ID_POWERED_LIGHT_WHITE, DESTR_ID_POWERED_LIGHT_GREEN } from "resources/unit-ids";
 import { Zone } from "./zone-type";
 
 export interface pathway { entrance: Unit, exit: Unit, leadsTo: Zone };

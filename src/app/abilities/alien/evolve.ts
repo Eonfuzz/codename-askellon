@@ -14,6 +14,7 @@ import { EventEntity } from "app/events/event-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import { WORM_ALIEN_FORM } from "resources/unit-ids";
 
 const CREATE_SFX_EVERY = 0.06;
 const EGG_SACK = "Doodads\\Dungeon\\Terrain\\EggSack\\EggSack0.mdl";
@@ -43,6 +44,8 @@ export class EvolveAbility extends AbilityWithDone {
         super();
         this.timeElapsed = 0;
         this.toForm = toWhichForm;
+
+        if (toWhichForm === WORM_ALIEN_FORM) this.duration = 8;
     }
 
     public init() {

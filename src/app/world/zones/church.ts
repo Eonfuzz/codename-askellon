@@ -63,7 +63,7 @@ export class ChurchZone extends ShipZone {
         if (isCrew && crewmember) {
             if (GetLocalPlayer() === unit.owner.handle) {
                 this.churchMusic.playSound();
-                SetMusicVolume(5);
+                SetMusicVolume(0);
                 this.churchMusic.setVolume(30)
             }
             const techLevelChurch = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION);

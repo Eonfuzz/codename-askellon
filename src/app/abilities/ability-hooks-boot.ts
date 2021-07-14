@@ -67,7 +67,8 @@ import {
     ABIL_ID_LOCKDOWN,
     ABIL_SHIP_AFTERBURNER,
     ABIL_LEAVE_ASKELLON_CONTROLS,
-    ABIL_ID_REACTOR_PLATING
+    ABIL_ID_REACTOR_PLATING,
+    ABIL_ALIEN_EVOLVE_T2_INFESTATION
 } from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
@@ -97,7 +98,7 @@ import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { DiodeEjectAbility } from "./human/diode-ejector";
 import { NeuralTakeoverAbility } from "./alien/neural-takeover";
-import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, DEFILER_ALIEN_FORM, SPIDER_ALIEN_FORM } from "resources/unit-ids";
+import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, DEFILER_ALIEN_FORM, SPIDER_ALIEN_FORM, WORM_ALIEN_FORM } from "resources/unit-ids";
 import { ShipChaingunAbility } from "./human/ship-chaingun";
 import { HellfireGrenadeAbility } from "./human/hellfire-grenade";
 import { FrenzyAbility } from "./alien/frenzy";
@@ -143,6 +144,7 @@ export const BootAbilityHooks = () => {
     AbilityHooks.AddAbility(ABIL_ALIEN_CHARGE, () => new BusterChargeAbility());
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T1, () => new EvolveAbility(ZERGLING_ALIEN_FORM));
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T2, () => new EvolveAbility(ROACH_ALIEN_FORM));
+    AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T2_INFESTATION, () => new EvolveAbility(WORM_ALIEN_FORM));
 
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T2_SPIDER, () => new EvolveAbility(SPIDER_ALIEN_FORM));
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T3_DEFILER, () => new EvolveAbility(DEFILER_ALIEN_FORM));

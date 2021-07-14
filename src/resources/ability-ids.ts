@@ -40,6 +40,7 @@ export const ABIL_ALIEN_EVOLVE_T2_SPELLBOOK = FourCC('A028');
 export const ABIL_ALIEN_EVOLVE_T3 = FourCC('A00Y');
 export const ABIL_ALIEN_EVOLVE_T3_SPELLBOOK = FourCC('A00Y');
 export const ABIL_ALIEN_EVOLVE_ARMOR = FourCC('A00V');
+export const ABIL_ALIEN_EVOLVE_T2_INFESTATION = FourCC('A03M');
 
 export const ABIL_ALIEN_MINION_EVOLVE = FourCC('A01R');
 export const ABIL_ALIEN_MINION_PLACE_EGG = FourCC('A01S');

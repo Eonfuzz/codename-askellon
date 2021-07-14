@@ -40,14 +40,14 @@ export class BroodNestAbility extends AbilityWithDone {
             if (GetRandomReal(0, 100) <= chance) eggType1 = UNIT_ID_EGG_AUTO_HATCH_LARGE;
             if (GetRandomReal(0, 100) <= chance) eggType2 = UNIT_ID_EGG_AUTO_HATCH_LARGE;
 
-            // const zone = WorldEntity.getInstance().getPointZone(x, y);
-            const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, placeLoc.x, placeLoc.y, bj_UNIT_FACING);
-            CreepEntity.addCreepWithSource(600, tumor);
-
-            const floor = WorldEntity.getInstance().getPointZone(placeLoc.x, placeLoc.y);
-            // Force our unit to travel too
-            WorldEntity.getInstance().travel(tumor, floor.id);
         }
+        const floor = WorldEntity.getInstance().getPointZone(placeLoc.x, placeLoc.y);
+        // const zone = WorldEntity.getInstance().getPointZone(x, y);
+        const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, placeLoc.x, placeLoc.y, bj_UNIT_FACING);
+        CreepEntity.addCreepWithSource(600, tumor);
+        // Force our unit to travel too
+        WorldEntity.getInstance().travel(tumor, floor.id);
+
         // Two more eggs
         this.eggUnits.push(
             new Unit(PlayerStateFactory.AlienAIPlayer1, eggType1, placeLoc.x + GetRandomReal(-100, 100), placeLoc.y + GetRandomReal(-30, 30), bj_UNIT_FACING)
