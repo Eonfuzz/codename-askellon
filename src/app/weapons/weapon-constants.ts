@@ -22,3 +22,4 @@ export const ITEM_ID_REPAIR = FourCC('I005');
 export const ITEM_ID_EMO_INHIB = FourCC('I007');
 export const ITEM_ID_25_COINS = FourCC('I008');
 export const ITEM_ID_CRYO_GRENADE = FourCC('I009');
+export const ITEM_ID_FLARES = FourCC('I00V');

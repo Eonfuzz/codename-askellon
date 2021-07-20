@@ -13,7 +13,6 @@ import { EVENT_TYPE } from "app/events/event-enum";
 
 import { WorldEntity } from "app/world/world-entity";
 import { EventListener } from "app/events/event-type";
-import { ResearchFactory } from "app/research/research-factory";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { Hooks } from "lib/Hooks";
@@ -24,9 +23,7 @@ import { Log } from "lib/serilog/serilog";
 import { Timers } from "app/timer-type";
 import { PlayerState, PRIVS } from "app/force/player-type";
 import { ABIL_TEXTURE_CHANGER } from "resources/ability-ids"
-
-//const crwSkins = [FourCC('Crw0'), FourCC('Crw1')];
-let crwTextureSkins
+import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 
 export class CrewFactory {  
     private static instance: CrewFactory;
@@ -49,12 +46,6 @@ export class CrewFactory {
     crewmemberDamageTrigger: Trigger;
 
     constructor() {
-        // Make Destructable "skins"
-        crwTextureSkins = [
-            CreateDestructable(FourCC("B011"),0,0,0,1,0), // Default Marine 
-            CreateDestructable(FourCC("B012"),0,0,0,1,0) // Veteran Marine
-        ]
-
         // Create crew takes damage trigger
         this.crewmemberDamageTrigger = new Trigger();
         this.crewmemberDamageTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
@@ -140,22 +131,35 @@ export class CrewFactory {
                 let crew = this.createCrew(player, force) as Crewmember;
                 // crew.updateTooltips(this.game.weaponModule);
 
+                SelectUnitAddForPlayer(crew.unit.handle, player.handle);
+
                 if (crew && force === aForce) {
                     const aUnit = aForce.getAlienFormForPlayer(player);
+                    aUnit.owner = PlayerStateFactory.AlienAIPlayer1;
+
                     // Cancel pause
                     aUnit.show = true;
                     aUnit.pauseEx(false);
                     aUnit.x = crew.unit.x - 20;
                     aUnit.y = crew.unit.y - 300;
                     
+                    crew.unit.setAnimation("death");
                     crew.unit.pauseEx(true);
                     aUnit.issueOrderAt("move", crew.unit.x, crew.unit.y);
-                    new Timer().start(1.5, false, () => {
-                        crew.unit.setAnimation("death");
-                        crew.unit.pauseEx(false);
+                    
+                    new Timer().start(1, false, () => {
+                        aUnit.setAnimation("attack");
+                    })
 
+                    new Timer().start(1.5, false, () => {
+                        
+                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, aUnit.x, aUnit.y));
+                        DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, crew.unit.x, crew.unit.y));
+                                               
                         aUnit.pauseEx(true);
+                        crew.unit.pauseEx(false);
                         aUnit.show = false;
+                        aUnit.owner = crew.unit.owner;
                     })
                 }
                 else if (!crew) {
@@ -170,12 +174,15 @@ export class CrewFactory {
         // this.crewTimer.start(DELTA_CHECK, true, () => this.processCrew(DELTA_CHECK));
     }
 
-    SetUnitTexture( unit: Unit, destTarget: destructable) {
+    SetUnitTexture( unit: Unit, destructibleId: number) {
+        const destTarget = CreateDestructable(destructibleId,0,0,0,1,0);
+        DestructableRestoreLife(destTarget,5,false);
+
         let x = unit.x;
         let y = unit.y;
         SetUnitX(unit.handle,0);
         SetUnitY(unit.handle,0);
-        DestructableRestoreLife(destTarget,5,false);
+
         UnitAddAbility(unit.handle,ABIL_TEXTURE_CHANGER);
         if (IsUnitPaused(unit.handle)) {
             PauseUnit(unit.handle,false);
@@ -185,9 +192,9 @@ export class CrewFactory {
         else {
             IssueTargetOrder(unit.handle,"grabtree",destTarget);
         }
-        UnitRemoveAbility(unit.handle,ABIL_TEXTURE_CHANGER)
-        SetUnitX(unit.handle,x)
-        SetUnitY(unit.handle,y)
+        UnitRemoveAbility(unit.handle,ABIL_TEXTURE_CHANGER);
+        SetUnitX(unit.handle,x);
+        SetUnitY(unit.handle,y);
     }
 
     createCrew(player: MapPlayer, force: ForceType): Crewmember | void {
@@ -212,7 +219,8 @@ export class CrewFactory {
             
             //let nUnit = Unit.fromHandle(BlzCreateUnitWithSkin(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING, this.getSkinFor(pData)));
             let nUnit = Unit.fromHandle(CreateUnit(player.handle, CREWMEMBER_UNIT_ID, spawnLocation.x, spawnLocation.y, bj_UNIT_FACING))
-            this.SetUnitTexture(nUnit, this.getTextureSkinFor(pData))
+
+            this.SetUnitTexture(nUnit, this.getTextureSkinFor(pData));
             let crewmember = new Crewmember(player, nUnit, force, role);
 
             crewmember.setName(name);
@@ -371,7 +379,7 @@ export class CrewFactory {
 
     private getTextureSkinFor(who: PlayerState) {
         const isVeteran = who.getUserPrivs() >= PRIVS.VETERAN;
-        const skin = isVeteran ? crwTextureSkins[1] : crwTextureSkins[0];
+        const skin = isVeteran ? FourCC("B012") : FourCC("B011");
         return skin;
     }
 }

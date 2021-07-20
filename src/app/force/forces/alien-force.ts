@@ -7,10 +7,10 @@ import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tool
 import { PlayNewSound } from "lib/translators";
 import { Trigger, MapPlayer, Unit, playerColors } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
-import { SoundWithCooldown } from "app/types/sound-ref";
+import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
-import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, DEFILER_ALIEN_FORM } from "resources/unit-ids";
+import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, DEFILER_ALIEN_FORM, ALIEN_STRUCTURE_HATCHERY } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
@@ -25,19 +25,19 @@ import { Players } from "w3ts/globals/index";
 import { DynamicBuffState } from "app/buff/dynamic-buff-state";
 import { WorldEntity } from "app/world/world-entity";
 import { Timers } from "app/timer-type";
-import { COL_ALIEN, COL_TEAL, COL_GOLD } from "resources/colours";
+import { COL_ALIEN, COL_TEAL, COL_GOLD, COL_ATTATCH } from "resources/colours";
 import { SOUND_ALIEN_GROWL } from "resources/sounds";
 import { ChatEntity } from "app/chat/chat-entity";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
 import { CrewmemberForce } from "./crewmember-force";
-import { MessagePlayer, MessageAllPlayers, CreateBlood } from "lib/utils";
+import { MessagePlayer, MessageAllPlayers, CreateBlood, getRectsGivenNamespace } from "lib/utils";
 import { Quick } from "lib/Quick";
 import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 
 export const MAKE_UNCLICKABLE = false;
-
+export const warningSound = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
 
 export class AlienForce extends ForceType {
     name = ALIEN_FORCE_NAME;
@@ -56,6 +56,35 @@ export class AlienForce extends ForceType {
     constructor() {
         super();
         
+        Timers.addTimedAction(20, () => {
+            const r = Quick.GetRandomFromArray(getRectsGivenNamespace(`hatcheryspawn`), 1);
+            
+            if (r.length > 0) {
+                const x = GetRectCenterX(r[0]);
+                const y = GetRectCenterY(r[0]);
+                const hatchery = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_HATCHERY, x, y, bj_UNIT_FACING);
+
+                const zone = WorldEntity.getInstance().getPointZone(x, y);   
+
+                Timers.addTimedAction(18, () => {
+                    warningSound.playSound();
+                    PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                    MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Diagnostic logs are indicating an unknown alien entity boarded USSR Askellon during warp procedures`);
+    
+                    Timers.addTimedAction(1, () => {
+                        PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
+                        MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Required Directives: Destroy entity at ${zone.getName()}, restore ship functionality`);
+    
+                    });
+                });
+
+                const t = new Trigger();
+                t.registerUnitEvent(hatchery, EVENT_UNIT_DEATH);
+                t.addAction(() => { EventEntity.send(EVENT_TYPE.EV_HATCHERY_DEATH, { source: Unit.fromHandle(GetKillingUnit() )}); });
+            }
+
+        });
+
         // Show vision on despair gain
         EventEntity.getInstance().addListener(new EventListener(
             EVENT_TYPE.CREW_GAIN_DESPAIR, 
@@ -500,9 +529,9 @@ export class AlienForce extends ForceType {
         return super.getActiveUnitFor(who);
     }
 
-    getAlienFormForPlayer(who: number)
-    getAlienFormForPlayer(who: MapPlayer)
-    public getAlienFormForPlayer(who: MapPlayer | number) {
+    getAlienFormForPlayer(who: number): Unit 
+    getAlienFormForPlayer(who: MapPlayer): Unit 
+    public getAlienFormForPlayer(who: MapPlayer | number): Unit {
         return this.playerAlienUnits.get(who instanceof MapPlayer ? who.id : who);
     }
 

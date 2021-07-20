@@ -10,6 +10,7 @@ import { getZFromXY } from "lib/utils";
 import { ABILITY_SLOW_ID, ABIL_ALIEN_ACID_POOL } from "resources/ability-ids";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { DummyCast } from "lib/dummy";
+import { ALIEN_STRUCTURE_HATCHERY } from "resources/unit-ids";
 
 const DAMAGE_PER_SECOND = 35;
 
@@ -49,13 +50,18 @@ export class AcidPoolAbility extends AbilityWithDone {
         const startLoc = new Vector3(polarPoint.x, polarPoint.y, getZFromXY(polarPoint.x, polarPoint.y)+30);
 
         const deltaTarget = this.targetLoc.subtract(startLoc);
-        
+        let timescale = 1;
+
+        if (this.casterUnit.typeId === ALIEN_STRUCTURE_HATCHERY) {
+            startLoc.z += 250;
+            timescale = 0.4;
+        }
 
         const projectile = new Projectile(
             this.casterUnit.handle,
             startLoc,
             new ProjectileTargetStatic(deltaTarget),
-            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(35))
+            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(35), timescale)
         )
         .onDeath((proj: Projectile) => { return this.createPool(proj.getPosition()); })
         .onCollide(() => true);

@@ -719,25 +719,25 @@ W
 }
 
 STRING 240
-// Abilities: A026 (Evolve), Hotkey (Hotkey - Normal)
-{
-W
-}
-
-STRING 241
 // Abilities: A02G (Concealing Webs), Hotkey (Hotkey - Normal)
 {
 W
 }
 
-STRING 242
+STRING 241
 // Abilities: A031 (Evolve), Hotkey (Hotkey - Normal)
 {
 W
 }
 
-STRING 243
+STRING 242
 // Abilities: A035 (Convoke Carrion), Hotkey (Hotkey - Normal)
+{
+W
+}
+
+STRING 243
+// Abilities: A038 (Remote Purge Service Tunnels), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -845,13 +845,13 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 276
-// Abilities: A038 (Remote Purge Service Tunnels), Hotkey (Hotkey - Normal)
+// Abilities: A03M (Evolve), Hotkey (Hotkey - Normal)
 {
 W
 }
 
 STRING 277
-// Abilities: A03M (Evolve), Hotkey (Hotkey - Normal)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2101,7 +2101,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 627
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2461,7 +2461,7 @@ STRING 739
 }
 
 STRING 744
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2887,7 +2887,7 @@ W
 }
 
 STRING 854
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -4855,13 +4855,13 @@ Magnetic Fusilade
 }
 
 STRING 1319
-// Abilities: A026 (Evolve), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A027 (Evolve), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
 }
 
 STRING 1320
-// Abilities: A026 (Evolve), Tip (Tooltip - Normal)
+// Abilities: A027 (Evolve), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
@@ -5707,31 +5707,25 @@ STRING 1493
 }
 
 STRING 1494
-// Abilities: A026 (Evolve), Tip (Tooltip - Normal)
+// Abilities: A031 (Evolve), Tip (Tooltip - Normal)
 {
 Infestation Evolution
 }
 
 STRING 1495
-// Abilities: A027 (Evolve), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A02O (Egg Hatch), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
 }
 
 STRING 1496
-// Abilities: A027 (Evolve), Tip (Tooltip - Normal)
+// Abilities: A02O (Egg Hatch), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
 
-STRING 1497
-// Abilities: A026 (Evolve), EditorSuffix (Editor Suffix)
-{
-- T1 to Infestor
-}
-
 STRING 1498
-// Abilities: A026 (Evolve), Name (Name)
+// Abilities: A027 (Evolve), Name (Name)
 {
 Evolve
 }
@@ -5755,13 +5749,13 @@ Psionic Evolution
 }
 
 STRING 1502
-// Abilities: A02O (Egg Hatch), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A02P (Create Tumor), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
 }
 
 STRING 1503
-// Abilities: A02O (Egg Hatch), Tip (Tooltip - Normal)
+// Abilities: A02P (Create Tumor), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
@@ -6130,7 +6124,7 @@ Fuller Auto
 }
 
 STRING 1587
-// Units: N010 (Alien), Name (Name)
+// Units: N012 (Alien), Name (Name)
 {
 Alien
 }
@@ -6531,7 +6525,7 @@ W
 }
 
 STRING 1688
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -6750,19 +6744,19 @@ You shouldn't be seeing this
 }
 
 STRING 1727
-// Abilities: A027 (Evolve), Name (Name)
+// Abilities: A028 (Evolutions - Tier 2 Aggressive), Tip (Tooltip - Normal)
 {
 Evolve
 }
 
 STRING 1728
-// Abilities: A02P (Create Tumor), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
 }
 
 STRING 1729
-// Abilities: A02P (Create Tumor), Tip (Tooltip - Normal)
+// Abilities: A02Q (Bestow Madness), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
@@ -6834,13 +6828,13 @@ Spawn Tumor
 }
 
 STRING 1743
-// Abilities: A02Q (Bestow Madness), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A031 (Evolve), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
 }
 
 STRING 1744
-// Abilities: A02Q (Bestow Madness), Tip (Tooltip - Normal)
+// Abilities: A031 (Evolve), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
@@ -6858,13 +6852,13 @@ X
 }
 
 STRING 1751
-// Abilities: A031 (Evolve), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A03M (Evolve), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
 }
 
 STRING 1752
-// Abilities: A031 (Evolve), Tip (Tooltip - Normal)
+// Abilities: A03M (Evolve), Tip (Tooltip - Normal)
 {
 Magnetic Fusilade
 }
@@ -7538,7 +7532,7 @@ You shouldn't be seeing this
 }
 
 STRING 1907
-// Abilities: A028 (Evolutions - Tier 2 Aggressive), Tip (Tooltip - Normal)
+// Abilities: A02O (Egg Hatch), Tip (Tooltip - Normal)
 {
 Evolve
 }
@@ -7550,7 +7544,7 @@ You shouldn't be seeing this
 }
 
 STRING 1909
-// Abilities: A02O (Egg Hatch), Tip (Tooltip - Normal)
+// Abilities: A031 (Evolve), Name (Name)
 {
 Evolve
 }
@@ -7778,7 +7772,7 @@ STRING 1951
 }
 
 STRING 1952
-// Units: N010 (Alien), EditorSuffix (Name - Editor Suffix)
+// Abilities: A031 (Evolve), EditorSuffix (Editor Suffix)
 {
 - Infestor T2
 }
@@ -7832,21 +7826,15 @@ STRING 1962
 }
 
 STRING 1963
-// Abilities: A031 (Evolve), Name (Name)
+// Abilities: A032 (Evolutions - Tier 2 Infestation), Tip (Tooltip - Normal)
 {
 Evolve
 }
 
 STRING 1965
-// Abilities: A031 (Evolve), Tip (Tooltip - Normal)
+// Abilities: A03M (Evolve), Tip (Tooltip - Normal)
 {
 Infestation Evolution
-}
-
-STRING 1966
-// Abilities: A031 (Evolve), EditorSuffix (Editor Suffix)
-{
-- Infestor T2
 }
 
 STRING 1967
@@ -7862,7 +7850,7 @@ STRING 1968
 }
 
 STRING 1969
-// Abilities: A032 (Evolutions - Tier 2 Infestation), Tip (Tooltip - Normal)
+// Abilities: A03M (Evolve), Name (Name)
 {
 Evolve
 }
@@ -8967,31 +8955,10 @@ STRING 2197
  |r|n|nGrants the |cfff9a602Psionic Potential|r power.|n|cff18bc9c[+] Immediately gain Mind Lash|n[+] Psionic Powers "Improve" each subsequent splice|r|n|cffb52166[−] Subsequent splices have no other effect|r|n|n|cfff9a602Attribute Gain Per Level:|n|cffb52166-2.7 Vitality|r per level|n|N|cffd45e19Attribute changes are retroactive|r
 }
 
-STRING 2198
-// Items: I00L (Neokatana), Ubertip (Tooltip - Extended)
-{
-|cff627781HexCorp presents the sword of the modern era! A beam of plasma, shaped
-by powerful magnetic fields and emanating from a heat-resistant hilt!
-An old idea, made new again by HexCorp.|n|NHexCorp accepts no responsibility for destruction of property, injuries or death stemming
-from using this weapon, including using it without gloves or radiation shielding,
-using it near strong magnetic fields, when damaged or with low battery, or
-touching the 'blade' or plasma emitters. Directed Energy Blade is not for everyone: consult
-your training sergeant and insurance agency before purchasing this product|r
-
-A powerful melee blade
-|cff18bc9c- Powerful, multi-hit attacks|n- Passively reduces damage taken|r|n|cffb52166- Cannot receive attachments|n- Is a melee weapon|r
-}
-
 STRING 2199
 // Units: N00C (Alien), EditorSuffix (Name - Editor Suffix)
 {
 - T2 Deception
-}
-
-STRING 2200
-// Units: N012 (Alien), Name (Name)
-{
-Alien
 }
 
 STRING 2201
@@ -9069,34 +9036,10 @@ STRING 2211
 Slow On Hit
 }
 
-STRING 2212
-// Abilities: A026 (Evolve), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Infestation|n|cff18bc9c- Easily spreads infestation|n- Traps are very powerful|r|n|cffc81e1e- Very weak in straight combat|n- Traps require setup time|r|n|nTakes |cff18bc9c40 seconds|r to complete your evolution. |r|r|n|n|cff627781120 Seconds Cooldown|r
-}
-
 STRING 2213
-// Abilities: A03M (Evolve), Name (Name)
+// Abilities: A03N (Evolutions - Tier 2 Deception), Tip (Tooltip - Normal)
 {
 Evolve
-}
-
-STRING 2215
-// Abilities: A03M (Evolve), Tip (Tooltip - Normal)
-{
-Infestation Evolution
-}
-
-STRING 2216
-// Abilities: A03M (Evolve), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781A pintle mantled turret sits comfortably under the cockpit. Some pilots claim the hum and shake of its magnetic rails opens a path to nirvana. Others say they're just looking for excuses to fire this thing.|r|n|nFires |cff18bc9c10 high callibre|r rounds a second for the next 6 seocnds. Each round deals |cff18bc9c30 damage|r. Inertia from the Fusilade |cffc81e1emassively reduces acceleration|r.|r|n|n|cffd45e19"Until the rollout of inertial-dampening systems, recoil-related collisions were the second-biggest killer of Purseus pilots in combat situations."|r|n|n|cff62778110 Seconds Cooldown|r
-}
-
-STRING 2217
-// Abilities: A03M (Evolve), Tip (Tooltip - Normal)
-{
-Magnetic Fusilade
 }
 
 STRING 2218
@@ -9117,27 +9060,270 @@ STRING 2220
 |cff627781Consume biomass, learn prey behaviours and become stronger.|r|n|nBegin evolving into your selected Evolution. Takes |cff18bc9c40 seconds|r to complete your evolution.|r|r|n|n|cff627781120 Seconds Cooldown|r
 }
 
-STRING 2221
-// Abilities: A03N (Evolutions - Tier 2 Deception), Tip (Tooltip - Normal)
-{
-Evolve
-}
-
 STRING 2222
 // Upgrades: R00F (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 R
 }
 
-STRING 2223
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
-STRING 2225
+STRING 2226
 // Abilities: A03M (Evolve), Ubertip (Tooltip - Normal - Extended)
 {
-|cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Deception|n|cff18bc9c- Great at creating confusion|n- Very powerful escape tools|n- Extremely fast Evolution|r|n|cffc81e1e- Cannot attack|n- Glass cannon|r|n|nTakes |cff18bc9c10 seconds|r to complete your evolution. |r|r|n|n|cff627781120 Seconds Cooldown|r
+|cff627781Spread our influence. Consume their ships.|r|n|nEvolve down the path of Deception|n|cff18bc9c- Great at creating confusion|n- Diverse evolution tree|n- Extremely fast Evolution|r|n|cffc81e1e- Cannot attack|n- Glass cannon|r|n|nTakes |cff18bc9c10 seconds|r to complete your evolution. |r|r|n|n|cff627781120 Seconds Cooldown|r
+}
+
+STRING 2227
+// Units: uHTC (Hatchery), Name (Name)
+{
+Hatchery
+}
+
+STRING 2228
+// Units: uHTC (Hatchery), EditorSuffix (Name - Editor Suffix)
+{
+ (Spawned, Infestation)
+}
+
+STRING 2229
+// Units: uHTC (Hatchery), Tip (Tooltip - Basic)
+{
+Hatchery
+}
+
+STRING 2230
+// Abilities: A026 (Neokatana Hardened SKin), Name (Name)
+{
+Neokatana Hardened SKin
+}
+
+STRING 2231
+// Abilities: A026 (Neokatana Hardened SKin), Tip (Tooltip - Normal)
+{
+Power Field
+}
+
+STRING 2232
+// Abilities: A026 (Neokatana Hardened SKin), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781An orb of force protects the wielder of the Neokatana.|r|n|nReduces all damage taken by |cff18bc9c7|r, to a minimum of |cff18bc9c3|r damage.
+}
+
+STRING 2233
+// Abilities: A03O (Build Hatchery), Name (Name)
+{
+Build Hatchery
+}
+
+STRING 2234
+// Abilities: A03P (Spawn Greater Canite ( 55s )), Name (Name)
+{
+Spawn Greater Canite ( 55s )
+}
+
+STRING 2235
+// Abilities: A03P (Spawn Greater Canite ( 55s )), Tip (Tooltip - Normal)
+{
+Spawn Canite ( 55s )
+}
+
+STRING 2236
+// Abilities: A03P (Spawn Greater Canite ( 55s )), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns canite every 55 seconds
+}
+
+STRING 2237
+// Abilities: A03Q (Spawn Hydra ( 65s )), Name (Name)
+{
+Spawn Hydra ( 65s )
+}
+
+STRING 2238
+// Abilities: A03Q (Spawn Hydra ( 65s )), Tip (Tooltip - Normal)
+{
+Spawn Canite ( 55s )
+}
+
+STRING 2239
+// Abilities: A03Q (Spawn Hydra ( 65s )), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns canite every 55 seconds
+}
+
+STRING 2240
+// Abilities: A03R (Spawn Formless ( 80s )), Name (Name)
+{
+Spawn Formless ( 80s )
+}
+
+STRING 2241
+// Abilities: A03R (Spawn Formless ( 80s )), Tip (Tooltip - Normal)
+{
+Spawn Canite ( 55s )
+}
+
+STRING 2242
+// Abilities: A03R (Spawn Formless ( 80s )), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns canite every 55 seconds
+}
+
+STRING 2243
+// Abilities: A03S (Reduce Auto Attack To Zero), Name (Name)
+{
+Reduce Auto Attack To Zero
+}
+
+STRING 2244
+// Abilities: A03S (Reduce Auto Attack To Zero), Ubertip (Tooltip - Normal - Extended)
+{
+Reduces Damage Done To Zero
+}
+
+STRING 2245
+// Abilities: A03S (Reduce Auto Attack To Zero), Researchubertip (Tooltip - Learn - Extended)
+{
+Reduces Damage Done To Zero
+}
+
+STRING 2246
+// Abilities: A03S (Reduce Auto Attack To Zero), Researchtip (Tooltip - Learn)
+{
+Damage Nullified
+}
+
+STRING 2247
+// Abilities: A03S (Reduce Auto Attack To Zero), Tip (Tooltip - Normal)
+{
+Damage Nullified
+}
+
+STRING 2248
+// Abilities: A03T (Berserk), EditorSuffix (Editor Suffix)
+{
+(Hatchery)
+}
+
+STRING 2249
+// Abilities: A03U (Spawn Larva ( 30s ) 3), Name (Name)
+{
+Spawn Larva ( 30s ) 3
+}
+
+STRING 2250
+// Abilities: A03U (Spawn Larva ( 30s ) 3), Tip (Tooltip - Normal)
+{
+Spawn Larva ( 30s )
+}
+
+STRING 2251
+// Abilities: A03U (Spawn Larva ( 30s ) 3), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns larva every 30 seconds
+}
+
+STRING 2252
+// Abilities: A03V (Spawn Larva ( 30s ) 2), Name (Name)
+{
+Spawn Larva ( 30s ) 2
+}
+
+STRING 2253
+// Abilities: A03V (Spawn Larva ( 30s ) 2), Tip (Tooltip - Normal)
+{
+Spawn Larva ( 30s )
+}
+
+STRING 2254
+// Abilities: A03V (Spawn Larva ( 30s ) 2), Ubertip (Tooltip - Normal - Extended)
+{
+Spawns larva every 30 seconds
+}
+
+STRING 2255
+// Abilities: A03W (Spawn Alien Horde), Name (Name)
+{
+Spawn Alien Horde
+}
+
+STRING 2256
+// Abilities: A03W (Spawn Alien Horde), Hotkey (Hotkey - Normal)
+{
+X
+}
+
+STRING 2257
+// Abilities: A03W (Spawn Alien Horde), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The Alien organism replicates itself by cell duplication.|r|n|nPlaces a clutch of |cff8a6df2Eggs|r at your feet; These hatch after |cff18bc9c80 |rseconds or when a player walks nearby.|n|n|cffd45e19Hatched eggs spawn powerful AI controlled minions.|r|n|n|cff62778145 Second Cooldown|r|r
+}
+
+STRING 2258
+// Abilities: A03W (Spawn Alien Horde), Tip (Tooltip - Normal)
+{
+Broodnest
+}
+
+STRING 2259
+// Abilities: A03W (Spawn Alien Horde), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The Alien organism replicates itself by cell duplication.|r|n|nPlaces a clutch of |cff8a6df2Greater Eggs|r at your feet; These hatch after |cff18bc9c80 |rseconds or when a player walks nearby.|n|n|cffd45e19Hatched eggs spawn powerful AI controlled minions.|r|n|n|cff62778145 Second Cooldown|r|r
+}
+
+STRING 2260
+// Abilities: A03W (Spawn Alien Horde), Tip (Tooltip - Normal)
+{
+Broodnest
+}
+
+STRING 2261
+// Abilities: A03O (Build Hatchery), Ubertip (Tooltip - Normal - Extended)
+{
+Builds a |cff8a6df2Hatchery|r. |n|nThe |cff8a6df2Hatchery|r is a powerful tumor, that spawns additional |cff8a6df2aliens|r over time and has impressive defensive capabilities.|n|n|cff627781600 Second Cooldown|r|r
+}
+
+STRING 2262
+// Abilities: A03O (Build Hatchery), Tip (Tooltip - Normal)
+{
+Spawn Hatchery
+}
+
+STRING 2263
+// Abilities: A03O (Build Hatchery), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 2264
+// Items: I00L (Neokatana), Ubertip (Tooltip - Extended)
+{
+|cff627781HexCorp presents the sword of the modern era! A beam of plasma, shaped by powerful magnetic fields and emanating from a heat-resistant hilt! An old idea, made new again by HexCorp.|n|NHexCorp accepts no responsibility for destruction of property, injuries or death stemming from using this weapon, including using it without gloves or radiation shielding, using it near strong magnetic fields, when damaged or with low battery, or touching the 'blade' or plasma emitters. Directed Energy Blade is not for everyone: consult your training sergeant and insurance agency before purchasing this product|r
+
+A powerful melee blade
+|cff18bc9c- Powerful, multi-hit attacks|n- Passively reduces damage taken|r|n|cffb52166- Cannot receive attachments|n- Is a melee weapon|r
+}
+
+STRING 2265
+// Items: I00V (Flares), Name (Name)
+{
+Flares
+}
+
+STRING 2266
+// Items: I00V (Flares), Ubertip (Tooltip - Extended)
+{
+|cff627781LORE TODO|n|r|nFires a flare to target point, granting vision and revealing invisible units. Lasts 10 seconds.|n|n|cff62778120 Seconds Cooldown|r
+}
+
+STRING 2267
+// Items: I00V (Flares), Tip (Tooltip - Basic)
+{
+Purchase Flares
+}
+
+STRING 2268
+// Items: I00V (Flares), Description (Description)
+{
+Reveals areas
 }
 

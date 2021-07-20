@@ -54,9 +54,7 @@ import {
     ABIL_ALIEN_WEBSHOT,
     ABIL_ALIEN_BROODNEST,
     ABIL_ALIEN_WEBWALK,
-    ABIL_ALIEN_EVOLVE_T2_SPIDER,
     ABIL_ALIEN_EVOLVE_T3_DEFILER,
-    ABIL_CREWMEMBER_INFO,
     ABIL_CULTIST_DARK_THRALL,
     ABIL_CULTIST_CONVOKE_CARRION,
     ABIL_ALIEN_LEAP_MINION,
@@ -66,10 +64,7 @@ import {
     ABIL_GO_BACK_TO_ADMIN_CONTROLS,
     ABIL_ID_LOCKDOWN,
     ABIL_SHIP_AFTERBURNER,
-    ABIL_LEAVE_ASKELLON_CONTROLS,
-    ABIL_ID_REACTOR_PLATING,
-    ABIL_ALIEN_EVOLVE_T2_INFESTATION
-} from "resources/ability-ids";
+    ABIL_ALIEN_EVOLVE_T2_INFESTATION} from "resources/ability-ids";
 import { AT_ABILITY_DRAGONFIRE_BLAST, SNIPER_ABILITY_ID } from "app/weapons/weapon-constants";
 import { DragonFireBlastAbility } from "./human/dragonfire-blast";
 import { EmotionalDampenerAbility } from "./human/emotional-dampener";
@@ -98,7 +93,7 @@ import { EmbraceCosmosAbility } from "./human/cosmos-embrace";
 import { CryoGrenadeAbility } from "./human/cryo-grenade";
 import { DiodeEjectAbility } from "./human/diode-ejector";
 import { NeuralTakeoverAbility } from "./alien/neural-takeover";
-import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, DEFILER_ALIEN_FORM, SPIDER_ALIEN_FORM, WORM_ALIEN_FORM } from "resources/unit-ids";
+import { ZERGLING_ALIEN_FORM, ROACH_ALIEN_FORM, DEFILER_ALIEN_FORM, WORM_ALIEN_FORM } from "resources/unit-ids";
 import { ShipChaingunAbility } from "./human/ship-chaingun";
 import { HellfireGrenadeAbility } from "./human/hellfire-grenade";
 import { FrenzyAbility } from "./alien/frenzy";
@@ -145,8 +140,6 @@ export const BootAbilityHooks = () => {
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T1, () => new EvolveAbility(ZERGLING_ALIEN_FORM));
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T2, () => new EvolveAbility(ROACH_ALIEN_FORM));
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T2_INFESTATION, () => new EvolveAbility(WORM_ALIEN_FORM));
-
-    AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T2_SPIDER, () => new EvolveAbility(SPIDER_ALIEN_FORM));
     AbilityHooks.AddAbility(ABIL_ALIEN_EVOLVE_T3_DEFILER, () => new EvolveAbility(DEFILER_ALIEN_FORM));
     AbilityHooks.AddAbility(ABIL_ALIEN_LATCH, () => new LatchAbility());
     AbilityHooks.AddAbility(ABIL_ALIEN_LEAP, () => new LeapAbility());

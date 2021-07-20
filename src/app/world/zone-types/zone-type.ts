@@ -64,6 +64,10 @@ export class Zone {
         return new Vector2(GetRandomReal(GetRectMinX(rect)+margin, GetRectMaxX(rect)-margin), GetRandomReal(GetRectMinY(rect)+margin, GetRectMaxY(rect)-margin));
     }
 
+    public getName(): string {
+        return ZONE_TYPE_TO_ZONE_NAME.get(this.id);
+    }
+
     /**
      * Unit enters the zone
      * @param unit 

@@ -189,14 +189,19 @@ export class AbilityHooks extends Entity {
         if (behaviours && behaviours.length > 0) {
             for (let index = 0; index < behaviours.length; index++) {
                 const b = behaviours[index];
-                b.onEvent(ev);
-                if (b.doDestroy()) {
-                    b.destroy();
-                    behaviours.splice(index--, 1);
-                    if (behaviours.length === 0) {
-                        this.behavioursForUnit.delete(u.id);
-                    }
-                }       
+                try {
+                    b.onEvent(ev);
+                    if (b.doDestroy()) {
+                        b.destroy();
+                        behaviours.splice(index--, 1);
+                        if (behaviours.length === 0) {
+                            this.behavioursForUnit.delete(u.id);
+                        }
+                    }    
+                }
+                catch(e) {
+                    Log.Error("Behaviour Error: ", e);
+                }   
             }
         }
     }

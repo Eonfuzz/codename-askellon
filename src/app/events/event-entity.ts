@@ -5,7 +5,7 @@ import { Hooks } from "lib/Hooks";
 import { Trigger, Region, Unit, MapPlayer } from "w3ts/index";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EXPLOSIVE_BARREL, SPACE_UNIT_MINERAL_RARE, UNIT_ID_DEBRIS_3, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_1 } from "resources/unit-ids";
+import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EXPLOSIVE_BARREL, SPACE_UNIT_MINERAL_RARE, UNIT_ID_DEBRIS_3, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_1, ALIEN_STRUCTURE_HATCHERY } from "resources/unit-ids";
 import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD, SFX_BUILDING_EXPLOSION } from "resources/sfx-paths";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_ALIEN_MINION_EVOLVE, ABIL_U_DEX } from "resources/ability-ids";
@@ -49,6 +49,10 @@ export class EventEntity {
                 DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, u.x, u.y));
                 u.setAbilityLevel(ABIL_ALIEN_MINION_EVOLVE, 2);
             }
+            else if (uType === ALIEN_STRUCTURE_HATCHERY) {
+                DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, u.x, u.y));
+                u.owner = PlayerStateFactory.AlienAIPlayer1;
+            }
             // Check to see if controller is alien AI
             if (PlayerStateFactory.isAlienAI(u.owner)) {
                 EventEntity.send(EVENT_TYPE.REGISTER_AS_AI_ENTITY, { source: u });
@@ -70,6 +74,13 @@ export class EventEntity {
             if (unit.typeId === ALIEN_STRUCTURE_TUMOR) {
                 const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
                 BlzSetSpecialEffectScale(sfx, 0.4);
+                DestroyEffect(sfx);
+                unit.destroy();
+                EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });
+            }
+            if (unit.typeId === ALIEN_STRUCTURE_HATCHERY) {
+                const sfx = AddSpecialEffect(SFX_ZERG_BUILDING_DEATH, unit.x, unit.y);
+                BlzSetSpecialEffectScale(sfx, 1.2);
                 DestroyEffect(sfx);
                 unit.destroy();
                 EventEntity.send(EVENT_TYPE.UNIT_REMOVED_FROM_GAME, { source: unit });

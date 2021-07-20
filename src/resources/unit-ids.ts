@@ -41,7 +41,6 @@ export const TERMINAL_SECURITY_DUMMY = FourCC('n00Q');
 
 export const WORM_ALIEN_FORM = FourCC('N00C');
 export const ZERGLING_ALIEN_FORM = FourCC('ALI1');
-export const SPIDER_ALIEN_FORM = FourCC('N010');
 export const DEFILER_ALIEN_FORM = FourCC('N00S');
 export const ROACH_ALIEN_FORM = FourCC('ALI2');
 export const CIVILIAN_ALIEN_FORM = FourCC('N012');
@@ -57,6 +56,8 @@ export const ALIEN_MINION_FORMLESS = FourCC('u002');
 export const ALIEN_MINION_HYDRA = FourCC('u009');
 export const ALIEN_MINION_LARVA = FourCC('u004');
 export const ALIEN_STRUCTURE_TUMOR = FourCC('u005');
+export const ALIEN_STRUCTURE_HATCHERY = FourCC('uHTC');
+export const ALIEN_STRUCTURE_TENTACLE = FourCC('u003');
 
 
 export const UNIT_ID_DUMMY_CASTER = FourCC('dumy');

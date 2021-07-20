@@ -86,4 +86,6 @@ export enum EVENT_TYPE {
     
     // Debug events
     DEBUG_WEAPONS,
+
+    EV_HATCHERY_DEATH,
 }

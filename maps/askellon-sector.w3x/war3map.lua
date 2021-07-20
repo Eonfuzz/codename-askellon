@@ -230,6 +230,11 @@ gg_rct_zonespacecontainer4 = nil
 gg_rct_zonechurch3 = nil
 gg_rct_zonechurch4 = nil
 gg_rct_zonechurch5 = nil
+gg_rct_zonechurch7 = nil
+gg_rct_zonechurch6 = nil
+gg_rct_FallZoneCathederal = nil
+gg_rct_FallZoneCargoCathederalLand = nil
+gg_rct_FallZoneCargoLand = nil
 gg_trg_SetKillzones = nil
 gg_trg_Set_Core = nil
 gg_trg_Set = nil
@@ -293,11 +298,16 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
-gg_rct_zonechurch7 = nil
-gg_rct_zonechurch6 = nil
-gg_rct_FallZoneCathederal = nil
-gg_rct_FallZoneCargoCathederalLand = nil
-gg_rct_FallZoneCargoLand = nil
+gg_rct_hatcheryspawn1 = nil
+gg_rct_hatcheryspawn2 = nil
+gg_rct_hatcheryspawn3 = nil
+gg_rct_hatcheryspawn4 = nil
+gg_rct_hatcheryspawn5 = nil
+gg_rct_hatcheryspawn6 = nil
+gg_rct_hatcheryspawn7 = nil
+gg_rct_hatcheryspawn8 = nil
+gg_rct_hatcheryspawn9 = nil
+gg_rct_hatcheryspawn10 = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -1199,8 +1209,6 @@ function CreateNeutralHostile()
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7104.0, -14080.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7168.0, -13888.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -7424.0, -13856.0, 270.000, FourCC("h005"))
-    u = BlzCreateUnitWithSkin(p, FourCC("N010"), 24628.8, 7431.2, 193.860, FourCC("N010"))
-    SetUnitState(u, UNIT_STATE_MANA, 70)
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -21792.0, -14208.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22112.0, -14208.0, 270.000, FourCC("h005"))
     u = BlzCreateUnitWithSkin(p, FourCC("h005"), -22464.0, -14208.0, 270.000, FourCC("h005"))
@@ -1470,13 +1478,13 @@ function CreateRegions()
     gg_rct_spawncaptain1 = Rect(-13632.0, -4384.0, -13504.0, -4288.0)
     gg_rct_spawndoctor1 = Rect(-15456.0, -16288.0, -15328.0, -16192.0)
     gg_rct_spawninquisitor1 = Rect(-20160.0, -9728.0, -20032.0, -9632.0)
-    gg_rct_spawnengineer1 = Rect(-13376.0, -25344.0, -13248.0, -25248.0)
-    gg_rct_spawnsecurityguard1 = Rect(-13344.0, -21120.0, -13216.0, -21024.0)
+    gg_rct_spawnengineer1 = Rect(-12160.0, -23680.0, -12032.0, -23584.0)
+    gg_rct_spawnsecurityguard1 = Rect(-14560.0, -23488.0, -14432.0, -23360.0)
     gg_rct_spawnsecurityguard2 = Rect(-13792.0, -10976.0, -13664.0, -10880.0)
-    gg_rct_spawnsecurityguard4 = Rect(-5568.0, -12032.0, -5440.0, -11936.0)
-    gg_rct_spawnpilot2 = Rect(-25760.0, -18976.0, -25632.0, -18880.0)
-    gg_rct_spawnpilot3 = Rect(-1024.0, -17248.0, -896.0, -17152.0)
-    gg_rct_spawnpilot4 = Rect(-2944.0, -18944.0, -2816.0, -18848.0)
+    gg_rct_spawnsecurityguard4 = Rect(-4640.0, -13824.0, -4512.0, -13728.0)
+    gg_rct_spawnpilot2 = Rect(-26912.0, -18912.0, -26784.0, -18816.0)
+    gg_rct_spawnpilot3 = Rect(-12512.0, -10976.0, -12384.0, -10880.0)
+    gg_rct_spawnpilot4 = Rect(-384.0, -18400.0, -256.0, -18304.0)
     gg_rct_zonebiology16 = Rect(-14176.0, -11488.0, -13248.0, -10496.0)
     gg_rct_zonebiology17 = Rect(-13248.0, -11808.0, -11808.0, -10176.0)
     gg_rct_FallZoneBio = Rect(-11680.0, -14304.0, -11008.0, -14048.0)
@@ -1526,7 +1534,7 @@ function CreateRegions()
     gg_rct_zonearmory9 = Rect(-8768.0, -15552.0, -8160.0, -15296.0)
     gg_rct_zonearmory10 = Rect(-8992.0, -15072.0, -8704.0, -13856.0)
     gg_rct_zonearmory11 = Rect(-9280.0, -14656.0, -8832.0, -14272.0)
-    gg_rct_spawnsecurityguard3 = Rect(-7360.0, -14080.0, -7232.0, -13984.0)
+    gg_rct_spawnsecurityguard3 = Rect(-8160.0, -12288.0, -8032.0, -12160.0)
     gg_rct_spawnpilot1 = Rect(-11232.0, -16672.0, -11104.0, -16576.0)
     gg_rct_zonespacecontainer1 = Rect(23488.0, 4960.0, 25792.0, 5952.0)
     gg_rct_zonespacecontainer2 = Rect(23872.0, 5920.0, 25408.0, 6336.0)
@@ -1540,6 +1548,16 @@ function CreateRegions()
     gg_rct_FallZoneCathederal = Rect(-23648.0, -13696.0, -22976.0, -13440.0)
     gg_rct_FallZoneCargoCathederalLand = Rect(-21312.0, -15776.0, -20640.0, -15520.0)
     gg_rct_FallZoneCargoLand = Rect(-19072.0, -17344.0, -18816.0, -16864.0)
+    gg_rct_hatcheryspawn1 = Rect(-18208.0, -11392.0, -18048.0, -11232.0)
+    gg_rct_hatcheryspawn2 = Rect(-23392.0, -14240.0, -23232.0, -14080.0)
+    gg_rct_hatcheryspawn3 = Rect(-20704.0, -17440.0, -20544.0, -17280.0)
+    gg_rct_hatcheryspawn4 = Rect(-13728.0, -21216.0, -13568.0, -21056.0)
+    gg_rct_hatcheryspawn5 = Rect(-3136.0, -18048.0, -2976.0, -17888.0)
+    gg_rct_hatcheryspawn6 = Rect(-5568.0, -12032.0, -5408.0, -11872.0)
+    gg_rct_hatcheryspawn7 = Rect(-7136.0, -10272.0, -6976.0, -10112.0)
+    gg_rct_hatcheryspawn8 = Rect(-24576.0, -18176.0, -24416.0, -18016.0)
+    gg_rct_hatcheryspawn9 = Rect(-13376.0, -25248.0, -13248.0, -25152.0)
+    gg_rct_hatcheryspawn10 = Rect(-8352.0, -14752.0, -8224.0, -14656.0)
 end
 
 function Trig_SetKillzones_Actions()

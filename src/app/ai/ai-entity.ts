@@ -10,7 +10,7 @@ import { WorldEntity } from "app/world/world-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
-import {  ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA } from "resources/unit-ids";
+import {  ALIEN_MINION_FORMLESS, ALIEN_MINION_CANITE, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_STRUCTURE_HATCHERY } from "resources/unit-ids";
 import { CreepEntity } from "app/creep/creep-entity";
 import { Timers } from "app/timer-type";
 import { NodeGraph } from "./graph-builder";
@@ -45,7 +45,7 @@ export class AIEntity extends Entity {
 
         // Create agents
         PlayerStateFactory.getAlienAI().forEach(p => {
-            const agent = new PlayerAgent(p, 33);
+            const agent = new PlayerAgent(p, 50);
             this.playerAgents.push(agent);
             this.playerToAgent.set(agent.player.id, agent);
             // Set max count of tumors
@@ -60,9 +60,10 @@ export class AIEntity extends Entity {
          * Listen to create AI minion requests
          */
         EventEntity.listen(new EventListener(EVENT_TYPE.REGISTER_AS_AI_ENTITY, (self, ev) => {
-            // Log.Information("Register as AI entity called");
+            // Log.Information("Register as AI entity called "+ev.source.name);
             // Dont register tumors as AI entities
             if (!ev.source.isUnitType( UNIT_TYPE_STRUCTURE )) {
+                // Log.Information("Adding: "+ev.source.name);
                 AIEntity.addAgent(ev.source);
             }
             // But DO add them to the map
@@ -71,13 +72,15 @@ export class AIEntity extends Entity {
                 if (z) {
                     WorldEntity.getInstance().travel(ev.source, z.id);
                 }
+                if (ev.source.typeId === ALIEN_STRUCTURE_HATCHERY) {
+                    CreepEntity.addCreepWithSource(1200, ev.source);
+                }
             }
         }));
 
         this.unitBuildTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH);
         this.unitBuildTrigger.addAction(() => {
             const building = Unit.fromHandle(GetConstructedStructure());
-
             // Now see if we need to register it as creep
             if (GetUnitTypeId(GetConstructedStructure()) === ALIEN_STRUCTURE_TUMOR) {
                 CreepEntity.addCreepWithSource(600, building);

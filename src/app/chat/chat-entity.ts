@@ -13,7 +13,7 @@ import { EVENT_TYPE } from "app/events/event-enum";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { Hooks } from "lib/Hooks";
-import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_GREATER_CANITE, ALIEN_MINION_HYDRA } from "resources/unit-ids";
+import { CREWMEMBER_UNIT_ID, ALIEN_MINION_CANITE, ALIEN_MINION_LEECH, ALIEN_MINION_FORMLESS, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_GREATER_CANITE, ALIEN_MINION_HYDRA, ALIEN_STRUCTURE_HATCHERY } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
 import { ZONE_TYPE } from "app/world/zone-id";
 import { AIEntity } from "app/ai/ai-entity";
@@ -226,6 +226,11 @@ export class ChatEntity extends Entity {
                 GetPlayerCamLoc(player, (x, y) => {
                     const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_TUMOR, x, y, bj_UNIT_FACING);
                     CreepEntity.addCreepWithSource(600, tumor);
+                });
+            }
+            else if (message == "-hatchery") {
+                GetPlayerCamLoc(player, (x, y) => {
+                    const tumor = new Unit(PlayerStateFactory.AlienAIPlayer1, ALIEN_STRUCTURE_HATCHERY, x, y, bj_UNIT_FACING);
                 });
             }
             else if (message == "-flare") {

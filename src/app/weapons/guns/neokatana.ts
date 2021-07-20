@@ -5,7 +5,7 @@ import { ArmableUnitWithItem } from "./unit-has-weapon";
 import { getZFromXY, terrainIsPathable } from "lib/utils";
 import { MapPlayer, Timer, Unit, Effect } from "w3ts/index";
 import { SoundRef } from "app/types/sound-ref";
-import { ABIL_WEP_NEOKATANA } from "resources/ability-ids";
+import { ABIL_NEOKATANA_PASSIVE, ABIL_WEP_NEOKATANA } from "resources/ability-ids";
 import { ITEM_WEP_MINIGUN } from "resources/item-ids";
 import { GunItem } from "./gun-item";
 import { Timers } from "app/timer-type";
@@ -175,10 +175,12 @@ export class WepNeokatana extends GunItem {
     public onAdd(caster: ArmableUnitWithItem) {
         super.onAdd(caster);        
         this.equippedTo.unit.addAnimationProps("swim", true);
+        this.equippedTo.unit.addAbility(ABIL_NEOKATANA_PASSIVE);
     }
 
     public onRemove() {
         this.equippedTo.unit.addAnimationProps("swim", false);
+        this.equippedTo.unit.removeAbility(ABIL_NEOKATANA_PASSIVE);
         super.onRemove();
     }
 
