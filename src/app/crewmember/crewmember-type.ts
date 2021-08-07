@@ -104,15 +104,12 @@ export class Crewmember extends ArmableUnitWithItem {
         }
         // GetUnitLifePercent
         if (!resolveActive && hpPercentage <= 0.3) {
+            BlzSetEventDamage(GetEventDamage() * 0.7);
             DynamicBuffEntity.getInstance().addBuff(
                 BUFF_ID.RESOLVE, 
                 this.unit, 
                 new BuffInstanceCallback(this.unit, () => GetUnitLifePercent(this.unit.handle) <= 30)
             );
-        }
-        
-        if (resolveActive) {
-            BlzSetEventDamage(GetEventDamage() * 0.7);
         }
     }
 
