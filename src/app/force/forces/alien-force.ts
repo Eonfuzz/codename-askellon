@@ -677,7 +677,7 @@ export class AlienForce extends ForceType {
                 const crew = PlayerStateFactory.getCrewmember(player);
                 
                 if (!unit) {
-                    Log.Information("wtf no unit for alien")
+                    Log.Information("No unit for alien? : "+player.name);
                 }
 
                 // Is our "Current" unit hidden?

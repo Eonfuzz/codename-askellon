@@ -1,18 +1,13 @@
 import { AbilityWithDone } from "../ability-type";
 import { Unit } from "w3ts/handles/unit";
-import { VISION_TYPE } from "app/vision/vision-type";
 import { WorldEntity } from "app/world/world-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
-import { VisionFactory } from "app/vision/vision-factory";
 import { DynamicBuffEntity } from "app/buff/dynamic-buff-entity";
 import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
-import { EventEntity } from "app/events/event-entity";
-import { Gun } from "app/weapons/guns/gun";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Timers } from "app/timer-type";
 import { ABIL_GENE_XENOPHOBIC_PUNCH } from "resources/ability-ids";
-import { Log } from "lib/serilog/serilog";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { SFX_AVATAR } from "resources/sfx-paths";
 import { getZFromXY } from "lib/utils";
@@ -35,7 +30,6 @@ export class XenophobicAbility extends AbilityWithDone {
     private equippedGun: GunItem;
     private crewmember: Crewmember;
 
-    private abilTooltipHandle: number;
 
 
     
@@ -95,7 +89,6 @@ export class XenophobicAbility extends AbilityWithDone {
             this.unit.removeAbility(ABIL_GENE_XENOPHOBIC_PUNCH);
             TooltipEntity.getInstance().unregisterTooltip(this.unit, TOOLTIP_FISTS);
 
-            const z = WorldEntity.getInstance().getUnitZone(this.unit);
             const crew = CrewFactory.getInstance().getCrewmemberForUnit(this.unit);
 
             // Check if unit has gun

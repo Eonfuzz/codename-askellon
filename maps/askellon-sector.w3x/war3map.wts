@@ -5407,7 +5407,7 @@ A
 }
 
 STRING 1437
-// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
+// Abilities: ASHO (Attack - Harkon's Blitzer), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
@@ -6678,7 +6678,7 @@ Repair Neokatana
 }
 
 STRING 1716
-// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
+// Abilities: ASHO (Attack - Harkon's Blitzer), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
@@ -7339,14 +7339,8 @@ STRING 1857
 Fists
 }
 
-STRING 1858
-// Abilities: A01M (Attack - Fists), Ubertip (Tooltip - Normal - Extended)
-{
-Punch Shit Yo
-}
-
 STRING 1859
-// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
@@ -7358,13 +7352,13 @@ Katana
 }
 
 STRING 1861
-// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A01A (Attack - Minigun), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
 
 STRING 1862
-// Abilities: A02N (Repair Neokatana), Ubertip (Tooltip - Normal - Extended)
+// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
@@ -9325,5 +9319,23 @@ STRING 2268
 // Items: I00V (Flares), Description (Description)
 {
 Reveals areas
+}
+
+STRING 2269
+// Abilities: A01M (Attack - Fists), Ubertip (Tooltip - Normal - Extended)
+{
+Fists of honor
+}
+
+STRING 2270
+// Abilities: A022 (Attack - Neokatana), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 2271
+// Abilities: A02N (Repair Neokatana), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
 }
 

@@ -87,9 +87,6 @@ export class Resolve extends DynamicBuff {
                 this.damageTrigger.registerUnitEvent(this.unit, EVENT_UNIT_DAMAGING);
                 this.damageTrigger.addAction(() => this.onResolveDamage());
             }
-            else {
-                Log.Error("Damage trigger already exists for unit! Please report this");
-            }
         }
         else {
             this.unit.removeAbility(ABIL_ACCURACY_BONUS_30);
@@ -101,9 +98,6 @@ export class Resolve extends DynamicBuff {
             if (this.damageTrigger) {
                 this.damageTrigger.destroy();
                 this.damageTrigger = undefined;
-            }
-            else {
-                Log.Error("Damage trigger doesnt exist for unit! Please report this");
             }
         }
     }

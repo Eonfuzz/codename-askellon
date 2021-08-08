@@ -16,6 +16,7 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { GunItem } from "./gun-item";
 import { Timers } from "app/timer-type";
+import { Log } from "lib/serilog/serilog";
 
 export class Shotgun extends GunItem {
 
