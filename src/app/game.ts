@@ -85,15 +85,17 @@ export class Game {
 
         SuspendTimeOfDay(true);
         
+        
         CinematicFilterGenericBJ(5, BLEND_MODE_NONE, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0, 0, 0 ,0 ,0);
         DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 5, `Loading, please wait`);
-        BlzHideOriginFrames(true);
-        BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
-        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);
         // Cinematic
     }
 
-    public startGame() {
+    public startGame() {     
+        BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
+        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);   
+        BlzHideOriginFrames(true);
+
         InputManager.getInstance();
         GameTimeElapsed.getInstance();
         // Load our helper objects
@@ -168,6 +170,8 @@ export class Game {
         EventEntity.listen(EVENT_TYPE.EV_HATCHERY_DEATH, () => {
             PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
             MessageAllPlayers(`[${COL_GOOD}SUCCESS|r] Alien Entity destroyed!`);
+            ChatEntity.getInstance().postMessageFor(Players, "Reward", COL_GOLD, "Entity Down! +1000 XP, +700 Credts|r");
+                
             CrewFactory.getInstance().allCrew.forEach(crew => {
                 if (crew && crew.unit.isAlive()) {
                     crew.addExperience(1000);
@@ -176,8 +180,7 @@ export class Game {
                         PLAYER_STATE_RESOURCE_GOLD, 
                         crew.player.getState(PLAYER_STATE_RESOURCE_GOLD) + 700
                     );
-                    ChatEntity.getInstance().postMessageFor(Players, "Reward", COL_GOLD, "Entity Down! +1000 XP, +700 Credts|r");
-                }
+                   }
             });
             Timers.addTimedAction(10, () => {
                 PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
@@ -327,7 +330,6 @@ export class Game {
         mainShip.engine.goToAStop();
 
         BlzHideOriginFrames(false);
-        BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), true);
 
         this.portalSFX.destroy();
         Players.forEach(p => mainShip.unit.shareVision(p, false));
@@ -349,8 +351,6 @@ export class Game {
             if (PlayerStateFactory.isSinglePlayer()) {
                 Players.forEach(p => p.setState(PLAYER_STATE_RESOURCE_GOLD, 999999));
             }
-
-            UIEntity.start();
         }
         catch (e) {
             Log.Error(e);
@@ -363,6 +363,7 @@ export class Game {
             BlzFrameSetVisible(BlzGetOriginFrame(ORIGIN_FRAME_COMMAND_BUTTON, i), true);            
         }
         
+
         Players.forEach(p => {            
             SetCameraFieldForPlayer(p.handle, CAMERA_FIELD_TARGET_DISTANCE, bj_CAMERA_DEFAULT_DISTANCE, 0);
         });
@@ -372,6 +373,7 @@ export class Game {
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
         DisplayTextToForce(bj_FORCE_ALL_PLAYERS, `[${COL_ATTATCH}CRITICAL|r] Hull Deteriorating`);
         
+        UIEntity.start();
         EnablePreSelect(true, true);
 
         new Timer().start(2, false, () => {

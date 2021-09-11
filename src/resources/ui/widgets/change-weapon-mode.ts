@@ -89,7 +89,8 @@ export class WeaponModeWidget extends UiWidget {
 
         const frame = Frame.fromHandle(buttonFrame);
         frame.setSize(this.buttonHeight, this.buttonHeight);
-        frame.setAbsPoint(FRAMEPOINT_CENTER, 0.605, this.getFrameY(index));
+        // frame.setAbsPoint(FRAMEPOINT_CENTER, 0.605, this.getFrameY(index));
+        frame.setAbsPoint(FRAMEPOINT_CENTER, 0.788, this.getFrameY(index));
         // frame.text = text;
         this.frameEventTrigger.triggerRegisterFrameEvent(frame, FRAMEEVENT_CONTROL_CLICK);
 
@@ -125,7 +126,7 @@ export class WeaponModeWidget extends UiWidget {
     }
 
     private getFrameY(index: number) {
-        return 0.07 + 0.001*0.66*index + this.buttonHeight * index;
+        return 0.05 + 0.001*0.66*index + this.buttonHeight * index;
     }
 
     update(forWho: MapPlayer) {

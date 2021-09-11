@@ -6350,12 +6350,6 @@ STRING 1649
 Altar of Carrion
 }
 
-STRING 1654
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781LORE TODO|r|n|n|cffffcc00Major Station Research [4/4]|r|nConnects to tertiary modules|n|cff18bc9c- TODO|r|n|n|cffffcc00Occupation Bonus [ENGINEER]|r|n|cff18bc9c- TODO|r|n|n|cff8a6df2Infestation [ALIEN]|n- TODO|r
-}
-
 STRING 1655
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
@@ -8011,25 +8005,6 @@ STRING 2022
 W
 }
 
-STRING 2023
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nUnlocks new abilities at the |cffb52166Altar of Carrion|r.
-
-}
-
-STRING 2024
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781Give control of your soul to the Crows of Carion.|r|n|nUnlocks |cffb52166Convoke Carrion|r, resurrecting a corpse as an immortal undead thrall.|n|nYour are now considered |cffb52166evil|r; The game will not finish until you win or die.
-}
-
-STRING 2025
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
-{
-|cff627781Rip the world asunder to bring a new era of hunger.|r|n|nOpens a portal to the |cffb52166Carrion Realm|r; You may now |cffb52166kill|r any player without penalty.
-}
-
 STRING 2026
 {
 6+
@@ -9337,5 +9312,61 @@ STRING 2271
 // Abilities: A02N (Repair Neokatana), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 2272
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nBeseeches the Carrion One, unlocking |cffb52166Bestow Insanity|r.|n|nThe first of four rituals
+
+}
+
+STRING 2273
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nGrants a |cffb52166Ceremonial Dagger|r; Killing Insane players with the dagger grants |cff18bc9cpermanent bonuses|r and generates |cffb52166Worship|r.|n|nThe second of four rituals
+
+}
+
+STRING 2274
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Give control of your soul to the Crows of Carion.|r|n|nUnlocks |cffb52166Convoke Carrion|r, resurrecting a corpse as an immortal undead thrall.|n|nYour are now considered |cffb52166evil|r; The game will not finish until you win or die.|n|nThe third of four rituals
+}
+
+STRING 2275
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
+{
+|cff627781Rip the world asunder to bring a new era of hunger.|r|n|nOpens a portal to the |cffb52166Carrion Realm|r; You may now |cffb52166kill|r any player without penalty.|n|nThe final ritual
+}
+
+STRING 2276
+{
+Users in the discord receive a unique Veteran skin!
+}
+
+STRING 2277
+{
+Worship:
+}
+
+STRING 2278
+{
+Worship
+}
+
+STRING 2279
+{
+Gold is gained overtime based on hero level
+}
+
+STRING 2280
+{
+Worship is a unique Cultist only resource, it generates slowly over time from an Altar.
+}
+
+STRING 2282
+{
+|Cff00ff00discord.gg|nnDMpQZm
 }
 

@@ -2,7 +2,7 @@ import { Log } from "../../../../lib/serilog/serilog";
 import { ForceType } from "../force-type";
 import { ABIL_ALTAR_IS_BUILT, ABIL_APPLY_MADNESS, ABIL_CREWMEMBER_INFO, ABIL_CULTIST_GIFT_MADNESS, ABIL_CULTIST_INFO, UNIT_IS_FLY } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
-import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer, Effect, Item } from "w3ts";
+import { MapPlayer, Unit, W3TS_HOOK, playerColors, Trigger, Timer, Effect, Item, Quest } from "w3ts";
 import { cultistTooltip, resolveTooltip } from "resources/ability-tooltips";
 import { EVENT_TYPE } from "app/events/event-enum";
 
@@ -20,7 +20,7 @@ import { PlayerState } from "../../player-type";
 import { Players } from "w3ts/globals/index";
 import { CREWMEMBER_UNIT_ID, UNIT_ID_CULTIST_ALTAR } from "resources/unit-ids";
 import { Timers } from "app/timer-type";
-import { COL_MISC, COL_ATTATCH } from "resources/colours";
+import { COL_MISC, COL_ATTATCH, COL_GOLD, COL_ALIEN, COL_BAD } from "resources/colours";
 import { Vector2, vectorFromUnit } from "app/types/vector2";
 import { Projectile } from "app/weapons/projectile/projectile";
 import { Vector3 } from "app/types/vector3";
@@ -32,6 +32,8 @@ import { SoundRef } from "app/types/sound-ref";
 import { ITEM_CEREMONIAL_DAGGER, ITEM_HUMAN_CORPSE } from "resources/item-ids";
 import { PlayNewSound, PlayNewSoundOnUnit } from "lib/translators";
 import { UPGR_DUMM_HAS_ACTIVE_ALTAR } from "resources/upgrade-ids";
+import { ChatEntity } from "app/chat/chat-entity";
+import { SOUND_EVIL_LATIN } from "resources/sounds";
 
 export class CultistForce extends CrewmemberForce {
     name = CULT_FORCE_NAME;
@@ -207,7 +209,7 @@ export class CultistForce extends CrewmemberForce {
         }
     }
 
-    public playSpinExplodeanimationFor(who: Unit, callback: () => void) {
+    public playSpinExplodeanimationFor(who: Unit, callback: () => void, doKill: boolean = true) {
         who.paused = true;
         who.addAbility(UNIT_IS_FLY);
         who.setflyHeight(250, 50);
@@ -246,41 +248,44 @@ export class CultistForce extends CrewmemberForce {
         });
         Timers.addTimedAction(4.8, () => {
             PlayNewSoundOnUnit("Sounds\\Thunder2.mp3", who, 50);
+
             let sfx = AddSpecialEffect(SFX_RED_SINGULARITY, who.x, who.y);
             BlzSetSpecialEffectZ(sfx, getZFromXY(who.x, who.y) + 250);
             DestroyEffect(sfx);    
 
-            sfx = AddSpecialEffect(SFX_HUMAN_BLOOD, who.x, who.y);
-            BlzSetSpecialEffectZ(sfx, getZFromXY(who.x, who.y) + 150);
-            DestroyEffect(sfx);
+            if (doKill) {
 
-            for (let index = 0; index < 8; index++) {
-                const tLoc = vectorFromUnit(who.handle);
+                sfx = AddSpecialEffect(SFX_HUMAN_BLOOD, who.x, who.y);
+                BlzSetSpecialEffectZ(sfx, getZFromXY(who.x, who.y) + 150);
+                DestroyEffect(sfx);
 
-                const unitHeight = getZFromXY(tLoc.x, tLoc.y);
-                const startLoc = new Vector3(tLoc.x, tLoc.y, unitHeight + 250)
-    
-                const newTarget = new Vector3(
-                    startLoc.x + this.getRandomOffset(),
-                    startLoc.y + this.getRandomOffset(),
-                    unitHeight
-                );
-    
-                const projStartLoc = new Vector3(startLoc.x, startLoc.y, startLoc.z);
-                const projectile = new Projectile(
-                    who.handle, 
-                    projStartLoc,
-                    new ProjectileTargetStatic(newTarget.subtract(startLoc)),
-                    new ProjectileMoverParabolic(projStartLoc, newTarget, Deg2Rad(GetRandomReal(60,85)))
-                )
-                .onDeath(proj => CreateBlood(proj.getPosition().x, proj.getPosition().y))
-                .onCollide(() => true);
-    
-                projectile.addEffect("Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdl", new Vector3(0, 0, 0), newTarget.subtract(startLoc).normalise(), 1);
-    
-                EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: who, data: { projectile: projectile }});
+                for (let index = 0; index < 8; index++) {
+                    const tLoc = vectorFromUnit(who.handle);
+
+                    const unitHeight = getZFromXY(tLoc.x, tLoc.y);
+                    const startLoc = new Vector3(tLoc.x, tLoc.y, unitHeight + 250)
+        
+                    const newTarget = new Vector3(
+                        startLoc.x + this.getRandomOffset(),
+                        startLoc.y + this.getRandomOffset(),
+                        unitHeight
+                    );
+        
+                    const projStartLoc = new Vector3(startLoc.x, startLoc.y, startLoc.z);
+                    const projectile = new Projectile(
+                        who.handle, 
+                        projStartLoc,
+                        new ProjectileTargetStatic(newTarget.subtract(startLoc)),
+                        new ProjectileMoverParabolic(projStartLoc, newTarget, Deg2Rad(GetRandomReal(60,85)))
+                    )
+                    .onDeath(proj => CreateBlood(proj.getPosition().x, proj.getPosition().y))
+                    .onCollide(() => true);
+        
+                    projectile.addEffect("Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdl", new Vector3(0, 0, 0), newTarget.subtract(startLoc).normalise(), 1);
+        
+                    EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: who, data: { projectile: projectile }});
+                }
             }
-
             who.removeAbility(UNIT_IS_FLY);
             who.invulnerable = false;
             this.disablePunish = true;
@@ -323,27 +328,49 @@ export class CultistForce extends CrewmemberForce {
         const research = GetResearched();
         const researchLevel = GetPlayerTechCount(player.handle, research, true);
 
+        
+        SOUND_EVIL_LATIN.setVolume(300);
+        SOUND_EVIL_LATIN.playSound();
 
-        if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
 
-        if (researchLevel === 1 && altar && pData) {
-            const unit = pData.getUnit();
-            const spawnLoc = Vector2.fromWidget(altar.handle);
-            const deltaLoc = spawnLoc.add( Vector2.fromWidget(unit.handle).subtract(spawnLoc).multiplyN(0.5));
-            const sfx = new Effect(SFX_VOID_DISK, deltaLoc.x, deltaLoc.y);
-            sfx.scale = 0.8;
-            sfx.setColor(150, 20, 30);
-            Timers.addTimedAction(1, () => {
-                sfx.destroy();
-                const i = CreateItem(ITEM_CEREMONIAL_DAGGER, deltaLoc.x, deltaLoc.y);
-                if (UnitInventoryCount(unit.handle) < UnitInventorySize(unit.handle)) {
-                    unit.addItem(Item.fromHandle(i));
-                }
-            });
-        }
-        if (researchLevel === 2 && altar && pData) {
-            this.canWin = true;
-        }
+        Timers.addTimedAction(3, () => {
+            ChatEntity.getInstance().postMessageFor(Players, `U̎ͩ̌ͬ̏̊̔͑ͯ̑ͦ͐̓̑͋͏̻̜̪͚̲̞̭̝͎̬̱͍́̕n͔̥̘̫̞͖͓̣͇͓͈̻͚͈̓͛ͭ́ͪ̅̾̔̓̾ͤ̇ͭͤ̀͡k̷̢̡̧̙̺͙̼̖̳͎̘̱̻̖̱̻ͦ͑ͨ̋̿̓ͨ͌̓̆ͭͫ͒͊͌̈ͭ͋̑n̶̷̹̬̞̭͉͔̯̞̘̭͕̼͖̻͇̯̙͎̤ͪͬ̂ͥͨ̐ͯ͘͠ỡ̛͈̤̼͉̳̮̅́̏ͦ̊̽̑̅̓͑̒̋ͭ͊ͦ̾͘͢w̸̙͓̣̪͔̞̗͉̳̙̭ͫ̒ͩ̿ͬ͆̃͛ͥ̈́̐͂͟n̴̢̨̛̝̱̮͕̑̐̃ͩ̉͌̍ͤͣ́`, COLOUR_CULT, `<< CULTIST CHANT >>`);
+        });
+
+        const u = pData.getUnit();
+        this.playSpinExplodeanimationFor(u, () => {
+            u.setflyHeight(0, 0);
+            u.paused = false;
+
+                
+            if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
+
+            if (researchLevel === 1 && altar && pData) {
+                SOUND_EVIL_LATIN.stopSound();
+            }
+            else if (researchLevel === 2 && altar && pData) {
+                Timers.addTimedAction(4, () => SOUND_EVIL_LATIN.stopSound());
+                this.canWin = true;
+                
+                const unit = pData.getUnit();
+                const spawnLoc = Vector2.fromWidget(altar.handle);
+                const deltaLoc = spawnLoc.add( Vector2.fromWidget(unit.handle).subtract(spawnLoc).multiplyN(0.5));
+                const sfx = new Effect(SFX_VOID_DISK, deltaLoc.x, deltaLoc.y);
+                sfx.scale = 0.8;
+                sfx.setColor(150, 20, 30);
+                Timers.addTimedAction(1, () => {
+                    sfx.destroy();
+                    const i = CreateItem(ITEM_CEREMONIAL_DAGGER, deltaLoc.x, deltaLoc.y);
+                    if (UnitInventoryCount(unit.handle) < UnitInventorySize(unit.handle)) {
+                        unit.addItem(Item.fromHandle(i));
+                    }
+                });
+            }
+            else if (researchLevel === 3 && altar && pData) {
+                Timers.addTimedAction(8, () => SOUND_EVIL_LATIN.stopSound());
+                this.canWin = true;
+            }
+        }, false);
     }
 
     /**

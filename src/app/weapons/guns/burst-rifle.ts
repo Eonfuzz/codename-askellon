@@ -34,7 +34,7 @@ export class BurstRifle extends GunItem {
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 2);
         caster.setAttackCooldown( 
-            BlzGetAbilityCooldown(this.getAbilityId(), caster.getAbilityLevel(this.getAbilityId())) * 1.3, 
+            BlzGetAbilityCooldown(this.getAbilityId(), caster.getAbilityLevel(this.getAbilityId())), 
             0
         );
     }

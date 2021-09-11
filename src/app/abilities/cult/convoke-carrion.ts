@@ -34,8 +34,8 @@ export class ConvokeCarrionAbility extends AbilityWithDone {
             const pData = PlayerStateFactory.get(MapPlayer.fromHandle(carrionPlayer));
             const localOrCult = (pData && pData.player.isLocal()) || this.castPlayer.isLocal();
 
-            SOUND_EVIL_LATIN.setVolume(300);
-            SOUND_EVIL_LATIN.playSound();
+            // SOUND_EVIL_LATIN.setVolume(300);
+            // SOUND_EVIL_LATIN.playSound();
 
             SetItemInvulnerable(this.targetItem, true);
 
