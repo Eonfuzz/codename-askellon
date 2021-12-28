@@ -28,5 +28,10 @@ function tsMain() {
 
     Main();
   }
+
+  function tsConfig() {
+    PlayMusic("Music\\MechanicusOmnissiah.mp3");
+  }
   
   addScriptHook(W3TS_HOOK.MAIN_AFTER, tsMain);
+//   addScriptHook(W3TS_HOOK.CONFIG_AFTER, tsConfig);

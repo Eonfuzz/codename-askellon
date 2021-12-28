@@ -27,6 +27,8 @@ export class EmotionalDampenerAbility extends AbilityWithDone {
         }
 
         if (crew) {
+            this.unit.intelligence = this.unit.intelligence - 1;
+            
             // Only disable resolve if HC 2 isn't upgraded
             const hasHC2 = ResearchFactory.getInstance().techHasOccupationBonus(TECH_MAJOR_HEALTHCARE, 1);
            

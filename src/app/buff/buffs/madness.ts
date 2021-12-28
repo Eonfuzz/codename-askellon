@@ -20,6 +20,8 @@ import { Quick } from "lib/Quick";
 import { FogEntity, FogTransition } from "app/vision/fog-entity";
 import { SFX_BURNING_RAGE_PURPLE } from "resources/sfx-paths";
 import { randomWords } from "resources/words";
+import { CULT_FORCE_NAME } from "app/force/forces/force-names";
+import { CultistForce } from "app/force/forces/cultist/cultist-force";
 
 export const whisperLoop = new SoundRef("Sounds\\whisperLoop.mp3", true, true);
 Preload("Sounds\\whisperLoop.mp3");
@@ -40,8 +42,6 @@ export const INSANTIY_TICK = 1;
  */
 export class Madness extends DynamicBuff {
     id = BUFF_ID.MADNESS;
-
-    private unit: Unit;
     protected doesStack = false;
     private hookId: number;
     private timeElapsed = 0;
@@ -63,13 +63,15 @@ export class Madness extends DynamicBuff {
     private insanityPreviewEffect!: Effect;
 
     constructor(who: Unit) {
-        super();        
-
-        this.unit = who;
+        super();
     }
 
     public addInstance(unit: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {
         super.addInstance(unit, instance, isNegativeInstance);
+
+        if (this.instances.length > 1) {
+            this.insanityTicker += this.maxInsanity * 0.33;
+        }
     }
 
     public process(gametime: number, delta: number): boolean {
@@ -83,9 +85,9 @@ export class Madness extends DynamicBuff {
             const oldVal = this.insanity;
             this.insanityTicker -= INSANTIY_TICK;
 
-            const hasPuritySeal = UnitHasBuffBJ(this.unit.handle, BUFF_ID_PURITY_SEAL);
+            const hasPuritySeal = UnitHasBuffBJ(this.who.handle, BUFF_ID_PURITY_SEAL);
             // Only increment insanity status while it has despair
-            if (UnitHasBuffBJ(this.unit.handle, BUFF_ID_DESPAIR) && !hasPuritySeal) {
+            if (UnitHasBuffBJ(this.who.handle, BUFF_ID_DESPAIR) && !hasPuritySeal) {
                 this.insanity++;
             }
             else if (hasPuritySeal) {
@@ -102,16 +104,16 @@ export class Madness extends DynamicBuff {
             if (oldVal < this.sanityDebuffAt && this.insanity >= this.sanityDebuffAt) {
                 // Apply insanity debuff sound
                 // Apply insanity buff
-                this.cultistGodSoundByte.playSoundForPlayer(this.unit.owner);
-                if (!UnitHasBuffBJ(this.unit.handle, BUFF_ID_MADNESS)) {
+                this.cultistGodSoundByte.playSoundForPlayer(this.who.owner);
+                if (!UnitHasBuffBJ(this.who.handle, BUFF_ID_MADNESS)) {
                     // If we don't have another ticker apply the buff to the unit
                     DummyCast((dummy: unit) => {
-                        SetUnitX(dummy, this.unit.x);
-                        SetUnitY(dummy, this.unit.y + 50);
-                        IssueTargetOrder(dummy, "faeriefire", this.unit.handle);
+                        SetUnitX(dummy, this.who.x);
+                        SetUnitY(dummy, this.who.y + 50);
+                        IssueTargetOrder(dummy, "faeriefire", this.who.handle);
                     }, ABIL_APPLY_MADNESS);
 
-                    FogEntity.transition(this.unit.owner, {
+                    FogEntity.transition(this.who.owner, {
                         fStart: 950,
                         fEnd: 2200,
                         density: 1,
@@ -119,19 +121,19 @@ export class Madness extends DynamicBuff {
                     }, 15);
                 }
             }
-            else if (this.insanity > this.sanityDebuffAt && this.unit.show && !UnitHasBuffBJ(this.unit.handle, BUFF_ID_MADNESS)) {
+            else if (this.insanity > this.sanityDebuffAt && this.who.show && !UnitHasBuffBJ(this.who.handle, BUFF_ID_MADNESS)) {
                 // If we don't have another ticker apply the buff to the unit
                 DummyCast((dummy: unit) => {
-                    SetUnitX(dummy, this.unit.x);
-                    SetUnitY(dummy, this.unit.y + 50);
-                    IssueTargetOrder(dummy, "faeriefire", this.unit.handle);
+                    SetUnitX(dummy, this.who.x);
+                    SetUnitY(dummy, this.who.y + 50);
+                    IssueTargetOrder(dummy, "faeriefire", this.who.handle);
                 }, ABIL_APPLY_MADNESS);
             }
             else if (oldVal >= this.sanityDebuffAt && this.insanity < this.sanityDebuffAt) {
                 // Remove buff
                 whisperLoop.setVolume( 0 );
-                UnitRemoveBuffBJ(BUFF_ID_MADNESS, this.unit.handle);
-                FogEntity.transition(this.unit.owner, {
+                UnitRemoveBuffBJ(BUFF_ID_MADNESS, this.who.handle);
+                FogEntity.transition(this.who.owner, {
                     fStart: 950,
                     fEnd: 3000,
                     density: 1,
@@ -139,12 +141,13 @@ export class Madness extends DynamicBuff {
                 }, 10);
             }
 
+            // Update our audio volume for whispers~!
+            if (GetLocalPlayer() === this.who.owner.handle) {
+                const v = Quick.Clamp(255 * (this.insanity / this.maxInsanity) - 127, 0, 127);
+                whisperLoop.setVolume( MathRound(v) );
+            }
             
             if (this.insanity > this.sanityDebuffAt) {
-                if (GetLocalPlayer() === this.unit.owner.handle) {
-                    const v = Math.min(127,  127 - 127 * (this.maxInsanity - this.insanity) / 10);
-                    whisperLoop.setVolume( MathRound(v) );
-                }
                 
                 this.hallucinationIn -= INSANTIY_TICK;
                 if (this.hallucinationIn <= 0) {
@@ -170,27 +173,27 @@ export class Madness extends DynamicBuff {
             let x, y, z;
             switch(spawnSide) {
                 case 1:
-                    x = this.unit.x + GetRandomReal(-bounds, bounds);
-                    y = this.unit.y + bounds;
+                    x = this.who.x + GetRandomReal(-bounds, bounds);
+                    y = this.who.y + bounds;
                     break;
                 case 2:
-                    x = this.unit.x + GetRandomReal(-bounds, bounds);
-                    y = this.unit.y - bounds;
+                    x = this.who.x + GetRandomReal(-bounds, bounds);
+                    y = this.who.y - bounds;
                     break;
                 case 3:
-                    x = this.unit.x + bounds;
-                    y = this.unit.y + GetRandomReal(-bounds, bounds);
+                    x = this.who.x + bounds;
+                    y = this.who.y + GetRandomReal(-bounds, bounds);
                     break;
                 case 4:
-                    x = this.unit.x - bounds;
-                    y = this.unit.y + GetRandomReal(-bounds, bounds);
+                    x = this.who.x - bounds;
+                    y = this.who.y + GetRandomReal(-bounds, bounds);
                     break;
             }
 
             z = getZFromXY(x, y) + 5;
 
-            const x2 = this.unit.x + GetRandomReal(-bounds, bounds);
-            const y2 = this.unit.y + GetRandomReal(-bounds, bounds);
+            const x2 = this.who.x + GetRandomReal(-bounds, bounds);
+            const y2 = this.who.y + GetRandomReal(-bounds, bounds);
             const z2 = getZFromXY(x2, y2);
 
             const origin = new Vector3(x, y, z);
@@ -202,7 +205,7 @@ export class Madness extends DynamicBuff {
                 const target = new Vector3(x2, y2, z2);
                 const deltaTarget = target.subtract(origin)
                 const projectile = new Projectile(
-                    this.unit.handle,
+                    this.who.handle,
                     origin,
                     new ProjectileTargetStatic(deltaTarget)
                 )
@@ -224,7 +227,7 @@ export class Madness extends DynamicBuff {
                 });
 
                 // Now add effect
-                const isLocal = GetLocalPlayer() === this.unit.owner.handle;
+                const isLocal = GetLocalPlayer() === this.who.owner.handle;
                 const sfxString = this.getMadnessModel(1);
                 const sfx = projectile.addEffect(
                     isLocal ? sfxString : "", 
@@ -234,13 +237,13 @@ export class Madness extends DynamicBuff {
                 this.projectileTimestamp.set(projectile, GameTimeElapsed.getTime());
                 BlzSetSpecialEffectColorByPlayer(sfx,  MapPlayer.fromIndex(GetRandomInt(0, 12)).handle);
                 BlzPlaySpecialEffect(sfx, ANIM_TYPE_WALK);
-                EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: this.unit, data: { projectile: projectile }});
+                EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: this.who, data: { projectile: projectile }});
             }
             else {
                 const target = new Vector3(x, y, -10);
                 const deltaTarget = target.subtract(origin);
                 const projectile = new Projectile(
-                    this.unit.handle,
+                    this.who.handle,
                     origin,
                     new ProjectileTargetStatic(deltaTarget)
                 )
@@ -262,7 +265,7 @@ export class Madness extends DynamicBuff {
                 });
 
                 // Now add effect
-                const isLocal = GetLocalPlayer() === this.unit.owner.handle;
+                const isLocal = GetLocalPlayer() === this.who.owner.handle;
                 const sfxString = this.getMadnessModel(0);
                 const sfx = projectile.addEffect(
                     isLocal ? sfxString : "", 
@@ -272,7 +275,7 @@ export class Madness extends DynamicBuff {
                 this.projectileTimestamp.set(projectile, GameTimeElapsed.getTime());
                 BlzSetSpecialEffectColorByPlayer(sfx,  MapPlayer.fromIndex(GetRandomInt(0, 12)).handle);
                 BlzPlaySpecialEffect(sfx, ANIM_TYPE_STAND);
-                EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: this.unit, data: { projectile: projectile }});
+                EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: this.who, data: { projectile: projectile }});
             }
         }
         catch(e) {
@@ -303,32 +306,44 @@ export class Madness extends DynamicBuff {
 
 
     public onStatusChange(newStatus: boolean) {
+        const cultForce = PlayerStateFactory.getForce(CULT_FORCE_NAME) as CultistForce;
+        const buffSource = this.getBuffSource().owner;
+
         if (newStatus) {
             this.hookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.processChat(hook));
             // End music and sounds
-            whisperLoop.setVolume(127);
-            whisperLoop.playSoundForPlayer(this.unit.owner);
+            whisperLoop.setVolume(0);
+            whisperLoop.playSoundForPlayer(this.who.owner);
+            whisperLoop.setVolume(0);
+
+            if (buffSource && cultForce.getPlayerHasGraveGift(buffSource) === true) {
+                this.who.shareVision(buffSource, true);
+            }
             
             if (!this.insanityPreviewEffect) {
                 const source = this.instances.map(i => i.source)[0];
                 if (!this.insanityPreviewEffect) {
                     // Lets create a preview above the unit's head
                     let sfx = source.owner.isLocal() ? SFX_BURNING_RAGE_PURPLE : "";
-                    this.insanityPreviewEffect = new Effect(sfx, this.unit, "overhead");
+                    this.insanityPreviewEffect = new Effect(sfx, this.who, "overhead");
                 }
             }
         }
         else {
             // Also remove resolve buff
-            UnitRemoveBuffBJ(BUFF_ID_MADNESS, this.unit.handle);
+            UnitRemoveBuffBJ(BUFF_ID_MADNESS, this.who.handle);
             this.onChangeCallbacks.forEach(cb => cb(this));
 
             whisperLoop.stopSound(true);
             
-            FogEntity.reset(this.unit.owner, 10);
+            FogEntity.reset(this.who.owner, 10);
             
             this.cultistGodSoundByte.destroy();
             ChatEntity.getInstance().removeHook(this.hookId);
+
+            if (buffSource && cultForce.getPlayerHasGraveGift(buffSource) === true) {
+                this.who.shareVision(buffSource, false);
+            }
 
             if (this.insanityPreviewEffect) {
                 this.insanityPreviewEffect.destroy();

@@ -42,7 +42,7 @@ export class GiftOfMadnessAbility extends AbilityWithDone {
             const u = Unit.fromHandle(GetEnumUnit());
             const owningForce = PlayerStateFactory.get(u.owner);
 
-            if (owningForce && owningForce.getForce() && !owningForce.getForce().is(ALIEN_FORCE_NAME)) {
+            // if (owningForce && owningForce.getForce() && !owningForce.getForce().is(ALIEN_FORCE_NAME)) {
                 if (u.owner.isLocal()) {
                     sfx = "";
                     volume = 0;
@@ -52,7 +52,7 @@ export class GiftOfMadnessAbility extends AbilityWithDone {
                     u,
                     new BuffInstanceDuration(this.casterUnit, 300)
                 );
-            }
+            // }
         });
 
         PlayNewSoundAt("Sounds\\HorrorRiser.mp3", this.targetLoc.x, this.targetLoc.y, volume);

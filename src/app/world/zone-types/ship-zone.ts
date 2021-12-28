@@ -2,7 +2,7 @@ import { ZONE_TYPE, ZONE_TYPE_TO_ZONE_NAME } from "../zone-id";
 import { Log } from "../../../lib/serilog/serilog";
 
 import { Unit } from "w3ts/handles/unit";
-import { MapPlayer, Timer, Region, Rectangle } from "w3ts";
+import { MapPlayer, Timer, Region, Rectangle, Effect } from "w3ts";
 import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
@@ -21,6 +21,8 @@ import { Vector2 } from "app/types/vector2";
 import { Zone } from "./zone-type";
 import { ZoneWithExits } from "./zone-with-exits";
 import { COL_BAD, COL_GOOD, COL_MISC } from "resources/colours";
+import { PlayNewSoundAt } from "lib/translators";
+import { SFX_LIGHTNING_BOLT } from "resources/sfx-paths";
 
 const LIGHT_CLACK = "Sounds\\LightClack.mp3";
 declare const udg_power_generators: Array<unit>;
@@ -102,6 +104,9 @@ export class ShipZone extends ZoneWithExits {
             g.name = `Power Generator [${COL_BAD}Destroyed|r]|n${COL_MISC}Powers the ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}|r`;
             g.owner = PlayerStateFactory.StationProperty;
 
+            new Effect(SFX_LIGHTNING_BOLT, g.x, g.y).destroy();
+            PlayNewSoundAt("Sounds\\PowerDown.mp3", g.x, g.y, 127);
+
             // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was destroyed!");
             try {
                 this.updatePower(false);
@@ -119,6 +124,8 @@ export class ShipZone extends ZoneWithExits {
             g.owner = PlayerStateFactory.NeutralPassive;
             g.name = `Power Generator [${COL_GOOD}Running|r]|n${COL_MISC}Powers the ${ZONE_TYPE_TO_ZONE_NAME.get(this.id)}|r`;
             g.owner = PlayerStateFactory.StationProperty;
+
+            PlayNewSoundAt("Sounds\\powerUp.mp3", g.x, g.y, 127);
 
             // Log.Information("Generator for "+ZONE_TYPE[this.id]+" was repaired!!");
             if (this.powerShortRemaining <= 0 && this.hasActiveGenerators()) this.updatePower(true);

@@ -152,7 +152,7 @@ export class ConveyorEntity extends Entity {
             const x = GetItemX(item);
             const y = GetItemY(item);
             
-            if (IsItemVisible(item) && !IsItemOwned(item)) {
+            if (GetWidgetLife(item) > 0 && IsItemVisible(item) && !IsItemOwned(item)) {
                 const isWithinNorth = this.conveyorPushNorthRegion.containsCoords(x, y);
                 if (isWithinNorth && northIdx == -1) this.itemMoveNorth.push(item);
                 else if (!isWithinNorth && northIdx != -1) Quick.Slice(this.itemMoveNorth, northIdx);

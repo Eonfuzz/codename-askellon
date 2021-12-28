@@ -108,7 +108,7 @@ function getStringNumberFromString(whichString: string) {
   return Number(whichString.split("_")[1]);
 }
 
-function updateStrings(wtsDir: string, w3iDir: string, verNum: string) {
+function updateStrings(wtsDir: string | undefined, w3iDir: string | undefined, verNum: string) {
   if (!wtsDir) throw Error("wts not found");
   if (!w3iDir) throw Error("w3i not found");
 

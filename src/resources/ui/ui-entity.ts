@@ -163,29 +163,23 @@ export class UIEntity extends Entity {
         BlzFrameSetAbsPoint(fh, FRAMEPOINT_TOPRIGHT, 1, 1)
         
         //Upkeep
-        fh = BlzGetFrameByName("ResourceBarUpkeepText", 0)
-        BlzFrameSetTextColor(fh,BlzConvertColor(255,0,255,150))
-        BlzFrameSetAbsPoint(fh, FRAMEPOINT_TOPRIGHT, .77, 0.5965)
+        fh = BlzGetFrameByName("ResourceBarUpkeepText", 0);
+        BlzFrameSetAbsPoint(fh, FRAMEPOINT_TOPRIGHT, .77, 0.5975);
+        BlzFrameSetTextColor(fh,BlzConvertColor(255, 114, 137, 218));
+        BlzFrameSetText(fh, "discord.gg/nDMpQZm");
+        BlzFrameSetFont(fh, "UI\\Font\\LVCMono.otf", 0.007, 1);
         
         //Gold
-        fh = BlzGetFrameByName("ResourceBarGoldText", 0)
-        BlzFrameSetTextColor(fh,BlzConvertColor(255,0,255,255))
-        BlzFrameSetAbsPoint(fh, FRAMEPOINT_TOPRIGHT, 0.595, 0.5965)
+        fh = BlzGetFrameByName("ResourceBarGoldText", 0);
+        BlzFrameSetTextColor(fh,BlzConvertColor(255,0,255,255));
+        BlzFrameSetAbsPoint(fh, FRAMEPOINT_TOPRIGHT, 0.595, 0.5965);
+        BlzFrameSetFont(fh, "UI\\Font\\LVCMono.otf", 0.011, 1);
         
         //Lumber
-        fh = BlzGetFrameByName("ResourceBarLumberText", 0)
-        BlzFrameSetAbsPoint(fh, FRAMEPOINT_TOPRIGHT, 0.69, 0.5965)
-        BlzFrameSetTextColor(fh,BlzConvertColor(255,100,255,200))
-        
-        // //Mutagens
-        // let MutagenText = BlzCreateFrameByType("TEXT", "income", BlzGetFrameByName("ConsoleUIBackdrop", 0), "ResourceBarGoldText", 0)
-        // BlzFrameSetTextColor(MutagenText,BlzConvertColor(255,200,255,200))
-        // BlzFrameSetTextAlignment(MutagenText,TEXT_JUSTIFY_MIDDLE,TEXT_JUSTIFY_RIGHT)
-        // BlzFrameSetLevel(MutagenText, 1)
-        // BlzFrameClearAllPoints(MutagenText)
-        // BlzFrameSetAbsPoint(MutagenText, FRAMEPOINT_TOPRIGHT, 0.69, 0.5795)
-        // BlzFrameSetSize(MutagenText, 0.8, 0.01)
-        // BlzFrameSetText(MutagenText,"Mutagens: +8")
+        fh = BlzGetFrameByName("ResourceBarLumberText", 0);
+        BlzFrameSetAbsPoint(fh, FRAMEPOINT_TOPRIGHT, 0.69, 0.5965);
+        BlzFrameSetTextColor(fh,BlzConvertColor(255,181, 33, 102));
+        BlzFrameSetFont(fh, "UI\\Font\\LVCMono.otf", 0.011, 1);
         
         //Bottom UI & Idle Worker Icon
         fh = BlzGetFrameByName("ConsoleUI", 0)

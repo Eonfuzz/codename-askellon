@@ -3,6 +3,7 @@
     "outDir": ".",
     "baseUrl": "./src",
     "allowJs": true,
+    "strict": false,
     "target": "es6",
     "lib": [
       "es6"

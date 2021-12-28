@@ -217,6 +217,11 @@ export const ABIL_CULTIST_GIFT_MADNESS = FourCC('A02Q');
 export const ABIL_CULTIST_DARK_THRALL = FourCC('A034');
 export const ABIL_CULTIST_CONVOKE_CARRION = FourCC('A035');
 
+export const ABIL_CULTIST_T1_PERNICIOUS_POWER = FourCC('A03Y');
+export const ABIL_CULTIST_T1_GLUTTONY = FourCC('A03Z');
+export const ABIL_CULTIST_T1_GRAVE_GIFT = FourCC('A03X');
+export const ABIL_CULTIST_T2_DELICIOUS_DECAY = FourCC('A040');
+
 export const ABIL_MOVESPEED_BONUS_30 = FourCC('A02Y');
 export const ABIL_LIFE_REGEN_BONUS_25 = FourCC('A02Y');
 export const ABIL_MAX_LIFE_BONUS_200 = FourCC('A02X');

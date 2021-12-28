@@ -76,7 +76,7 @@ export class AbilityHooks extends Entity {
         });
 
         const castAbilityTrigger = new Trigger();
-        castAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_CAST);
+        castAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
         castAbilityTrigger.addAction(() => {
             const u = Unit.fromHandle(GetTriggerUnit());
 

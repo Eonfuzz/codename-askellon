@@ -45,6 +45,14 @@ export abstract class DynamicBuff {
      * @param delta 
      */
     public process(timestamp: number, delta: number): boolean {
+        // First check unit status
+        if (!this.who.isAlive()) {
+            this.isActive = false;
+            this.onStatusChange(this.isActive);
+            return false;
+        }
+
+        // If it's still alive, check our instance count
         const hadPositive = this.instances.length > 0 && this.who.isAlive();
         const hadNegative = this.negativeinstances.length > 0;
 
@@ -81,6 +89,7 @@ export abstract class DynamicBuff {
 
     public getInstanceCount() { return this.instances.length; }
     public getNegativeinstanceCount() { return this.negativeinstances.length; }
+    public hasNoInstances() { return this.instances.length == 0 && this.negativeinstances.length == 0; }
 
     public getBuffSource(): Unit | undefined {
         for (let index = 0; index < this.instances.length; index++) {

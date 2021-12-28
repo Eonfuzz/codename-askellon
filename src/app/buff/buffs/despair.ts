@@ -32,7 +32,6 @@ export class Despair extends DynamicBuff {
     private jumpScareSound: SoundWithCooldown;
 
     private unit: Unit;
-    private prevUnitHealth: number;
     protected doesStack = false;
 
     private checkForDespairBuffTicker: number = 0;
@@ -44,7 +43,6 @@ export class Despair extends DynamicBuff {
         
         this.jumpScareSound = new SoundWithCooldown(10, "Sounds\\HeavyBreath.mp3");
         this.unit = who;
-        this.prevUnitHealth = this.unit.getState(UNIT_STATE_LIFE);
     }
 
     public addInstance(unit: Unit, instance: BuffInstance, isNegativeInstance?: boolean) {

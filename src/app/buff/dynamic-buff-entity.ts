@@ -86,11 +86,10 @@ export class DynamicBuffEntity extends Entity {
         let i = 0;
         while (i < buffState.buffs.length) {
             const buff = buffState.buffs[i];
-            const isActive = buff.process(timestamp, this._timerDelay);
+            buff.process(timestamp, this._timerDelay);
 
             // If we aren't active we need to do stuff
-            const iC = buff.getInstanceCount() + buff.getNegativeinstanceCount();
-            if (!isActive && iC <= 0) {
+            if (!buff.getIsActive() && buff.hasNoInstances()) {
                 // Log.Information("destorying buff "+buff.id+" for unit!");
                 const buffsForUnit = buffState.buffsByUnit.get(buff.who.id);
                 const idx = buffsForUnit.indexOf(buff);

@@ -12,8 +12,9 @@ import { SecurityTerminal } from "./security-terminal-instance";
 import { Log } from "lib/serilog/serilog";
 import { BridgeTerminal } from "./bridge-terminal-instance";
 import { GeneticTerminal } from "./genetic-tester";
-import { BRIDGE_CAPTAINS_TERMINAL, GENETIC_TESTING_FACILITY_SWITCH, TERMINAL_ADMINISTRATION, TERMINAL_ADMINISTRATION_DUMMY, TERMINAL_GENE, TERMINAL_SECURITY_DUMMY } from "resources/unit-ids";
+import { BRIDGE_CAPTAINS_TERMINAL, GENETIC_TESTING_FACILITY_SWITCH, TERMINAL_ADMINISTRATION, TERMINAL_ADMINISTRATION_DUMMY, TERMINAL_GENE, TERMINAL_SECURITY_DUMMY, UNIT_ID_CULTIST_ALTAR } from "resources/unit-ids";
 import { AdministrationTerminal } from "./administration-terminal-instance";
+import { CultTerminal } from "./cult-terminal";
 
 const firstTerminalSound = new SoundRef("Sounds\\Captain\\captain_welcome_online.mp3", false, true);
 const terminalSounds = [
@@ -67,6 +68,9 @@ export class TerminalEntity extends Entity {
             switch(terminal.typeId) {
                 case BRIDGE_CAPTAINS_TERMINAL:
                     instance = new BridgeTerminal(unit, terminal);
+                    break;
+                case UNIT_ID_CULTIST_ALTAR:
+                    instance = new CultTerminal(unit, terminal);
                     break;
                 case TERMINAL_SECURITY_DUMMY:
                 case TERMINAL_ADMINISTRATION:

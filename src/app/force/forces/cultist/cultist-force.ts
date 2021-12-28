@@ -47,6 +47,8 @@ export class CultistForce extends CrewmemberForce {
     private altarToPlayer: Map<number, MapPlayer> = new Map<number, MapPlayer>();
     private playerAltarIsBuilt: Map<number, boolean> = new Map<number, boolean>();
     private playersPunishedCount: Map<number, number> = new Map<number, number>();
+    private playerHasPerniciousPower = new Map<number, boolean>();
+    private playerHasGraveGift = new Map<number, boolean>();
 
     private playerKillingPunish = new Trigger();
     private onCultistUpgrade = new Trigger();
@@ -109,9 +111,6 @@ export class CultistForce extends CrewmemberForce {
                 }
             });
         });
-        this.onCultistUpgrade.registerAnyUnitEvent(EVENT_PLAYER_UNIT_RESEARCH_FINISH);
-        this.onCultistUpgrade.addCondition(() => GetResearched() === TECH_RESEARCH_CULT_ID);
-        this.onCultistUpgrade.addAction(() => this.onCultistResearch(Unit.fromHandle(GetTriggerUnit())));
 
         this.onAltarDeath.addAction(() => this.onAltarDeathEv(Unit.fromHandle(GetTriggerUnit())));
 
@@ -128,18 +127,28 @@ export class CultistForce extends CrewmemberForce {
         return altarForPlayer && altarForPlayer === altar;
     }
 
-    private getPlayerAltar(who: number): Unit | undefined {
+    public getPlayerAltar(who: number): Unit | undefined {
         const u = this.playerToAltar.get(who);
         if (u && u.isAlive()) return u;
         return undefined;
     }
 
-    private getPlayerFromAltar(who: Unit): MapPlayer {
+    public getPlayerFromAltar(who: Unit): MapPlayer {
         const p = this.altarToPlayer.get(who.id);
         if (p) return p;
         return undefined;
     }
 
+    public setPlayerHasPerniciousPower(who: MapPlayer, state: boolean) {
+        this.playerHasPerniciousPower.set(who.id, state);
+    }
+    public setPlayerHasGraveGift(who: MapPlayer, state: boolean) {
+        this.playerHasGraveGift.set(who.id, state);
+    }
+
+    public getPlayerHasGraveGift(who: MapPlayer) {
+        return this.playerHasGraveGift.get(who.id);
+    }
     private onAltarDeathEv(altar: Unit, ignorePunishment?: boolean) {
         const owner = this.getPlayerFromAltar(altar);
         if (!owner) return;
@@ -321,12 +330,10 @@ export class CultistForce extends CrewmemberForce {
         }
     }
 
-    private onCultistResearch(altarTerminal: Unit) {
+    public onCultistResearch(altarTerminal: Unit, research: number, researchLevel: number) {
         const player = altarTerminal.owner;
         const altar = this.getPlayerAltar(player.id);
         const pData = PlayerStateFactory.get(player);
-        const research = GetResearched();
-        const researchLevel = GetPlayerTechCount(player.handle, research, true);
 
         
         SOUND_EVIL_LATIN.setVolume(300);
@@ -341,9 +348,11 @@ export class CultistForce extends CrewmemberForce {
         this.playSpinExplodeanimationFor(u, () => {
             u.setflyHeight(0, 0);
             u.paused = false;
-
+            pData.player.setTechResearched(TECH_RESEARCH_CULT_ID, researchLevel);
                 
-            if (GetLocalPlayer() === player.handle) this.cultistGodSoundByte.playSound();
+            if (player.isLocal()) {
+                this.cultistGodSoundByte.playSound();
+            }
 
             if (researchLevel === 1 && altar && pData) {
                 SOUND_EVIL_LATIN.stopSound();
@@ -352,19 +361,6 @@ export class CultistForce extends CrewmemberForce {
                 Timers.addTimedAction(4, () => SOUND_EVIL_LATIN.stopSound());
                 this.canWin = true;
                 
-                const unit = pData.getUnit();
-                const spawnLoc = Vector2.fromWidget(altar.handle);
-                const deltaLoc = spawnLoc.add( Vector2.fromWidget(unit.handle).subtract(spawnLoc).multiplyN(0.5));
-                const sfx = new Effect(SFX_VOID_DISK, deltaLoc.x, deltaLoc.y);
-                sfx.scale = 0.8;
-                sfx.setColor(150, 20, 30);
-                Timers.addTimedAction(1, () => {
-                    sfx.destroy();
-                    const i = CreateItem(ITEM_CEREMONIAL_DAGGER, deltaLoc.x, deltaLoc.y);
-                    if (UnitInventoryCount(unit.handle) < UnitInventorySize(unit.handle)) {
-                        unit.addItem(Item.fromHandle(i));
-                    }
-                });
             }
             else if (researchLevel === 3 && altar && pData) {
                 Timers.addTimedAction(8, () => SOUND_EVIL_LATIN.stopSound());
@@ -432,6 +428,12 @@ export class CultistForce extends CrewmemberForce {
                     // Add 1 lumber for now
                     const player = MapPlayer.fromIndex(p);
                     player.setState(PLAYER_STATE_RESOURCE_LUMBER, player.getState(PLAYER_STATE_RESOURCE_LUMBER) + 1);
+                    if (this.playerHasPerniciousPower.get(player.id) === true) {
+                        const u = PlayerStateFactory.getCrewmember(player.id);
+                        if (u && u.unit.isAlive()) {
+                            u.unit.intelligence += 1;
+                        }
+                    }
                 }
             }
        });

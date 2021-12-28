@@ -11,16 +11,18 @@ export class IncomeWidget extends UiWidget {
     constructor() {
         super();
 
+        const font = 'LVCMono.otf';
+
         
         //Income
-        this.income = BlzCreateFrameByType("TEXT", "income", BlzGetFrameByName("ConsoleUIBackdrop", 0), "ResourceBarGoldText", 0)
-        BlzFrameSetTextColor(this.income, BlzConvertColor(255,150,255,255))
-        BlzFrameSetTextAlignment(this.income,TEXT_JUSTIFY_MIDDLE,TEXT_JUSTIFY_RIGHT)
-        BlzFrameSetLevel(this.income, 1)
-        BlzFrameClearAllPoints(this.income)
-        BlzFrameSetAbsPoint(this.income, FRAMEPOINT_TOPRIGHT, 0.595, 0.5795)
-        BlzFrameSetSize(this.income, 0.8, 0.01)
-        
+        this.income = BlzCreateFrameByType("TEXT", "income", BlzGetFrameByName("ConsoleUIBackdrop", 0), "ResourceBarGoldText", 0);
+        BlzFrameSetTextColor(this.income, BlzConvertColor(255,150,255,255));
+        BlzFrameSetTextAlignment(this.income,TEXT_JUSTIFY_MIDDLE,TEXT_JUSTIFY_RIGHT);
+        BlzFrameSetFont(this.income, "UI\\Font\\" + font, 0.009, 1);
+        BlzFrameSetLevel(this.income, 1);
+        BlzFrameClearAllPoints(this.income);
+        BlzFrameSetAbsPoint(this.income, FRAMEPOINT_TOPRIGHT, 0.595, 0.5795);
+        BlzFrameSetSize(this.income, 0.8, 0.01);
     }
 
     update(forWho: MapPlayer) {

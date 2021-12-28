@@ -851,7 +851,7 @@ W
 }
 
 STRING 277
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A03Y (First Ritual: Pernicious Power), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -2101,7 +2101,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 627
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2461,7 +2461,7 @@ STRING 739
 }
 
 STRING 744
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2887,7 +2887,7 @@ W
 }
 
 STRING 854
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -5179,7 +5179,7 @@ Q
 }
 
 STRING 1390
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A03X (First Ritual: Grave Gift), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -5497,7 +5497,7 @@ STRING 1451
 }
 
 STRING 1452
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A040 (Second Ritual: Delicious Decay), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -6434,12 +6434,6 @@ STRING 1673
 Weapons Tech Upgrade
 }
 
-STRING 1674
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Eldritch Ritual - Apotheosis
-}
-
 STRING 1675
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
@@ -6477,13 +6471,13 @@ Q
 }
 
 STRING 1681
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
 
 STRING 1682
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6519,7 +6513,7 @@ W
 }
 
 STRING 1688
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -6537,7 +6531,7 @@ ranged
 }
 
 STRING 1692
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
 {
 Rite of Initiation
 }
@@ -6780,13 +6774,13 @@ Q
 }
 
 STRING 1736
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
 
 STRING 1737
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -6869,12 +6863,6 @@ STRING 1758
 Bestow Madness
 }
 
-STRING 1762
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Rite of Initiation
-}
-
 STRING 1763
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
 {
@@ -6883,18 +6871,6 @@ Edificial Sacrifice
 
 STRING 1764
 // Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-ascension
-}
-
-STRING 1765
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Edificial Sacrifice
-}
-
-STRING 1766
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
 ascension
 }
@@ -7940,7 +7916,7 @@ Dark Thrall
 }
 
 STRING 1993
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8103,7 +8079,7 @@ STRING 2042
 }
 
 STRING 2043
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8617,7 +8593,7 @@ Q
 }
 
 STRING 2138
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8659,7 +8635,7 @@ Totally WIP this gives nothing but XP
 }
 
 STRING 2145
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -9368,5 +9344,125 @@ Worship is a unique Cultist only resource, it generates slowly over time from an
 STRING 2282
 {
 |Cff00ff00discord.gg|nnDMpQZm
+}
+
+STRING 2285
+// Abilities: A03Y (First Ritual: Pernicious Power), Name (Name)
+{
+First Ritual: Pernicious Power
+}
+
+STRING 2286
+// Abilities: A03Y (First Ritual: Pernicious Power), Tip (Tooltip - Normal)
+{
+First Ritual: Pernicious Power
+}
+
+STRING 2287
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 2288
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 2289
+// Abilities: A03X (First Ritual: Grave Gift), Name (Name)
+{
+First Ritual: Grave Gift
+}
+
+STRING 2290
+// Abilities: A03X (First Ritual: Grave Gift), Tip (Tooltip - Normal)
+{
+First Ritual: Grave Gift
+}
+
+STRING 2293
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+The First Ritual
+}
+
+STRING 2294
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+The Second Ritual
+}
+
+STRING 2295
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+The Third Ritual
+}
+
+STRING 2296
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+The Final Ritual
+}
+
+STRING 2299
+// Abilities: A03Z (First Ritual: Greed and Gluttony), Name (Name)
+{
+First Ritual: Greed and Gluttony
+}
+
+STRING 2300
+// Abilities: A03Z (First Ritual: Greed and Gluttony), Tip (Tooltip - Normal)
+{
+First Ritual: Greed and Gluttony
+}
+
+STRING 2303
+// Abilities: A03X (First Ritual: Grave Gift), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Say the words that sear your ears and form a covenant with the Circle of Carrion.|r|n|nUnlocks |cffb52166Bestow Madness|r and grants the following Ritual Path bonus.|n|n|cffb52166Grave Gift|r: Immediately afflicts all Players with |cffb52166Madness|r; Additionally, Players that are |cffb52166Insane|r now grant you vision.|n|n|cffd45e19The first of four rituals; Completing a ritual removes all current ritual options and unlocks the next tier.|r
+}
+
+STRING 2304
+// Abilities: A03Y (First Ritual: Pernicious Power), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Seek strength in the feast and form a covenant with the Circle of Carrion.|r|n|nUnlocks |cffb52166Bestow Insanity|r and grants the following Ritual Path bonus.|n|n|cffb52166Pernicious Power|r: Gaining worship from the Altar now also grants you |cff18bc9c+1 Willpower|r. Immediately gain the |cff18bc9cPsionic Potential|r gene power.|n|n|cffd45e19The first of four rituals; Completing a ritual removes all current ritual options and unlocks the next tier.|r
+}
+
+STRING 2305
+// Abilities: A03Z (First Ritual: Greed and Gluttony), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Hastily bargain and form a covenant with the Circle of Carrion.|r|n|nUnlocks |cffb52166Bestow Insanity|r and grants the following Ritual Path bonus.|n|n|cffb52166Greed and Gluttony|r: Gain |cff18bc9c1000 gold|r; This ritual does not cost |cffb52166Worship|r.|n|n|cffd45e19The first of four rituals; Completing a ritual removes all current ritual options and unlocks the next tier.|r
+}
+
+STRING 2306
+// Abilities: A03Z (First Ritual: Greed and Gluttony), Hotkey (Hotkey - Normal)
+{
+E
+}
+
+STRING 2307
+// Abilities: A040 (Second Ritual: Delicious Decay), Name (Name)
+{
+Second Ritual: Delicious Decay
+}
+
+STRING 2308
+// Abilities: A040 (Second Ritual: Delicious Decay), Tip (Tooltip - Normal)
+{
+Second Ritual: Delicious Decay
+}
+
+STRING 2309
+// Abilities: A040 (Second Ritual: Delicious Decay), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Break the bond of Soul and Flesh and strengthen your pact with the Circle of Carrion.|r|n|nYou can now attain |cff18bc9cVictory|r and your existence stops others from winning; Unlocks |cffb52166Convoke Carrion|r and also grants the following Ritual Path bonus.|n|n|cffb52166Delicious Decay|r: Obtain a |cffb52166Sacrifical Dagger|r that greatly increases your |cff18bc9cpower|r if it kills players|n|n|cffd45e19The secondof four rituals; Completing a ritual removes all current ritual options and unlocks the next tier.|r
+}
+
+STRING 2310
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
 }
 
