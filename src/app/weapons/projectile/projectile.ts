@@ -146,9 +146,9 @@ export class Projectile {
             let newPosition = this.position.add(velocityToApply);
             this.position = newPosition;
 
-            // Now update attached sfx
-            this.sfx.forEach(sfx => sfx.updatePosition(this.position));
-
+            // Now update attached 
+            this.sfx.forEach(sfx => sfx.updatePosition(this.position, velocityToApply));
+            
             if (this.reachedEnd(velocityToApply)) this.doDestroy = true;
             // Return distance travelled
             return velocityToApply;

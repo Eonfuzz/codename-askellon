@@ -378,8 +378,8 @@ export class CrewFactory {
     }*/
 
     private getTextureSkinFor(who: PlayerState) {
-        const isVeteran = who.getUserPrivs() >= PRIVS.VETERAN;
-        const skin = isVeteran ? FourCC("B012") : FourCC("B011");
-        return skin;
+        if (who.getUserPrivs() == PRIVS.DEVELOPER) return FourCC("B016");
+        else if (who.getUserPrivs() >= PRIVS.VETERAN) return FourCC("B012");
+        return FourCC("B012");
     }
 }

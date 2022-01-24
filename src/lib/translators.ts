@@ -15,7 +15,7 @@ export function getYawPitchRollFromVector(vector: Vector3): {yaw: number, pitch:
     return {
         yaw: Atan2(vector.y, vector.x),
         pitch: Asin(vector.z),
-        roll: 0 // TODO
+        roll: -1*Math.atan2(vector.z, vector.to2D().getLength())
     };
 }
 

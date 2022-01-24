@@ -24,12 +24,16 @@ export class ProjectileSFX {
         BlzSetSpecialEffectYaw(this.sfx, this.yaw);
     }
 
-    updatePosition(currentPosition: Vector3) {
+    updatePosition(currentPosition: Vector3, velocityChange?: Vector3) {
         BlzSetSpecialEffectPosition(this.sfx,
             currentPosition.x + this.offset.x,
             currentPosition.y + this.offset.y,
             currentPosition.z + this.offset.z
         );
+
+        if (velocityChange) {
+            BlzSetSpecialEffectPitch(this.sfx, -1*Math.atan2(velocityChange.z, velocityChange.to2D().getLength()));
+        }
     }
 
     setScale(scale: number) {
