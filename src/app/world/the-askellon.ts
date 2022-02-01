@@ -10,6 +10,7 @@ import { ShipZone } from "./zone-types/ship-zone";
 import { VentZone } from "./zone-types/vent-zone";
 import { ZoneWithExits } from "./zone-types/zone-with-exits";
 import { BridgeZoneVent } from "./zones/bridge-vent";
+import { Quick } from "lib/Quick";
 
 // Small damage
 // Will not cause damage to interior
@@ -152,9 +153,9 @@ export class TheAskellon {
         // }
     }
 
-    private getRandomZone() {
-        let items = Array.from(this.floors);
-        return items[GetRandomInt(0, items.length - 1)];
+    private getRandomZone() : ZoneWithExits {
+        const key = Quick.getRandomKey(this.floors);
+        return this.floors.get(key);
     }
 
 

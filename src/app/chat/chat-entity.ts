@@ -4,7 +4,7 @@ import { ChatSystem } from "./chat-system";
 import { Log, LogLevel } from "lib/serilog/serilog";
 import {  SoundWithCooldown } from "app/types/sound-ref";
 import { COL_GOD, COL_ATTATCH, COL_SYS, COL_MISC_MESSAGE, COL_ALIEN } from "resources/colours";
-import { syncData, GetActivePlayers, GetPlayerCamLoc, MessagePlayer, GetPlayerUnitSelection } from "lib/utils";
+import { syncData, GetActivePlayers, GetPlayerCamLoc, MessagePlayer, GetPlayerUnitSelection, MessageAllPlayers } from "lib/utils";
 import { ChatHook } from "./chat-hook-type";
 import { Entity } from "app/entity-type";
 import { EventEntity } from "app/events/event-entity";
@@ -435,8 +435,8 @@ export class ChatEntity extends Entity {
                     // Get zone at loc
                     MessagePlayer(player, "Tp: "+x+", "+y);
                     const zone = WorldEntity.getInstance().getPointZone(x, y);
-                    if (zone) Log.Information("Zone: "+ZONE_TYPE[zone.id]);
-                    else Log.Information("No Zone");
+                    if (zone) MessagePlayer(player, "Zone: "+ZONE_TYPE[zone.id]);
+                    else MessagePlayer(player, "No Zone");
 
                     GetPlayerUnitSelection(player, units => {
                         units.forEach(u => {
@@ -638,7 +638,10 @@ export class ChatEntity extends Entity {
     }
 
     public postMessageFor(players: MapPlayer[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundWithCooldown) {
+        
+        MessageAllPlayers("Post message!");
         players.forEach(p => {
+            MessageAllPlayers("Player: "+p.id);
             const cHandler = this.chatHandlers.get(p.id);
             if (cHandler) cHandler.sendMessage(fromName, color, message, messageTag, sound);
         });            

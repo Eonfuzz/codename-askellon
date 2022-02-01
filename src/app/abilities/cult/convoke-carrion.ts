@@ -74,7 +74,7 @@ export class ConvokeCarrionAbility extends AbilityWithDone {
             // }
             Timers.addTimedAction(22, () => {
                 RemoveItem(this.targetItem);
-                let carrion = new Unit(GetPlayerId(carrionPlayer), CARRION_ID, this.targetLoc.x, this.targetLoc.y, 270);
+                let carrion = new Unit(MapPlayer.fromHandle(carrionPlayer), CARRION_ID, this.targetLoc.x, this.targetLoc.y, 270);
                 if (pData && pData.getCrewmember()) {
                     carrion.nameProper = pData.getCrewmember().name;
                 }

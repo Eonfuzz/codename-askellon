@@ -1,6 +1,6 @@
 import { Vector3 } from "../app/types/vector3";
 import { Unit } from "w3ts/handles/unit";
-import { getZFromXY } from "./utils";
+import { getZFromXY, MessageAllPlayers } from "./utils";
 import { Players } from "w3ts/globals/index";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { PRIVS } from "app/force/player-type";
@@ -28,7 +28,8 @@ export function SendMessage(this: void, msg: any): void {
 }
 
 export function SendMessageUnlogged(this: void, msg: any): void {
-    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `${msg}`);
+    MessageAllPlayers(`${this}`);
+    MessageAllPlayers(`${msg}`);
 }
 
 export function SendMessageToAdmin(this: void, msg: any): void {

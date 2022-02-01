@@ -3,13 +3,18 @@ export namespace Quick {
 
 
     export function Tokenize(val: string) {
-        const result = [];
-        const str = string.gmatch(val, "%S+");
+        return val.split(" ");
+    }
 
-        for (const [x, y, z] of str) {
-            result.push(x);
+    // returns random key from Set or Map
+    export function getRandomKey(collection) {
+        let index = Math.floor(Math.random() * collection.size);
+        let cntr = 0;
+        for (let key of collection.keys()) {
+            if (cntr++ === index) {
+                return key;
+            }
         }
-        return result;
     }
 
     export function ReplaceVowelWith(str: string, fnc: (char: string) => string) {

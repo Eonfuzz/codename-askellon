@@ -8336,16 +8336,6 @@ STRING 2092
 Build Turret
 }
 
-STRING 2093
-{
-|cff627781The Crew|r
-}
-
-STRING 2094
-{
-https://discord.gg/nDMpQZm
-}
-
 STRING 2095
 // Units: h00H (Rare Mineral), Name (Name)
 {
@@ -9470,5 +9460,15 @@ STRING 2311
 // Destructibles: B016 (Texture - Marine Developer), Name (Name)
 {
 Texture - Marine Developer
+}
+
+STRING 2312
+{
+Crew
+}
+
+STRING 2313
+{
+Join Our Discord
 }
 

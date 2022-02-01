@@ -231,7 +231,9 @@ export class Game {
 
         SetCameraTargetController(mainShip.unit.handle, 0, 0, false);
 
-        Timers.addTimedAction(0.5, () => {            
+        MessageAllPlayers("ADding Timed actions!");   
+        Timers.addTimedAction(0.5, () => {         
+            MessageAllPlayers("Starting nav test");   
             ChatEntity.getInstance().postMessageFor(Players, "Navigator", "|cff4328ef", "They're right behind us!", undefined, GENERIC_CHAT_SOUND_REF);
         });
         Timers.addTimedAction(2, () => {            

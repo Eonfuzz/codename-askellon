@@ -124,6 +124,7 @@ export function compileMap(config: IProjectConfig) {
 
   logger.info("Transpiling TypeScript to Lua...");
   execSync('tstl -p tsconfig.json', { stdio: 'inherit' });
+  logger.info(`Post tstl`);
 
   if (!fs.existsSync(tsLua)) {
     logger.error(`Could not find "${tsLua}"`);
@@ -139,6 +140,7 @@ export function compileMap(config: IProjectConfig) {
   }
 
   try {
+    logger.info(`Trying contents`);
     let contents = fs.readFileSync(mapLua).toString() + fs.readFileSync(tsLua).toString();
     contents = processScriptIncludes(contents);
 

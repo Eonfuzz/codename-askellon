@@ -4,7 +4,6 @@ import { GunItem } from "./gun-item";
 
 export abstract class ArmableUnit {
     public unit: Unit;
-    public weapon: Gun | undefined;
 
     constructor(unit: Unit) {
         this.unit = unit;
@@ -19,7 +18,6 @@ export abstract class ArmableUnitWithItem extends ArmableUnit {
 }
 
 export class ArmableUnitNoCallbacks extends ArmableUnit {
-    public unit: Unit;
     public weapon: Gun | undefined;
 
     constructor(unit: Unit) {

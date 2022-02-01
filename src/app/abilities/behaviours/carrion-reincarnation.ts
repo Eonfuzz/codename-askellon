@@ -7,8 +7,6 @@ import { UNIT_IS_FLY } from "resources/ability-ids";
 const REVIVE_TIME = 30;
 
 export class CarrionReincarnationBehaviour extends Behaviour {
-
-    protected forUnit!: Unit;
     private reviveRate: number;
     private isReviving = false;
 

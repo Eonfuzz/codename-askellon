@@ -10,7 +10,6 @@ import { Unit } from "w3ts/index";
 export abstract class GunItem extends Gun {
     item: item;
     attachment: Attachment | undefined;
-    equippedTo: ArmableUnitWithItem;
 
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(equippedTo);
