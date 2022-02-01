@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "outDir": ".",
     "baseUrl": "./src",
     "allowJs": true,
-    "strict": false,
     "target": "es6",
     "lib": [
       "es6"
@@ -15,15 +13,19 @@
         "../node_modules/*/lib/index",
         "../node_modules/*/index",
         "../node_modules/*/dist/index",
-        "../node_modules/*",
+        "../node_modules/*"
       ]
     },
     "plugins": [
       {
-        "transform": "war3-transformer"
+        "transform": "war3-transformer",
+        "mapDir": "E:/codename-askellon/maps/askellon-sector.w3x",
+        "entryFile": "E:/codename-askellon/src/main.ts",
+        "outputDir": "E:/codename-askellon/dist/askellon-sector.w3x"
       }
     ],
     "types": [
+      "lua-types/core/index",
       "lua-types/core/coroutine",
       "lua-types/core/global",
       "lua-types/core/math",
@@ -42,7 +44,7 @@
     ]
   },
   "include": [
-    "src", "src/app/world/.ts"
+    "src"
   ],
   "exclude": [],
   "tstl": {

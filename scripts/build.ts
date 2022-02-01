@@ -1,10 +1,10 @@
 import * as fs from "fs-extra";
-import War3Map from "mdx-m3-viewer/src/parsers/w3x/map";
-import War3MapW3i from "mdx-m3-viewer/src/parsers/w3x/w3i";
-import War3MapWts from "mdx-m3-viewer/src/parsers/w3x/wts";
+import War3MapW3i from "mdx-m3-viewer/dist/cjs/parsers/w3x/w3i";
+import War3MapWts from "mdx-m3-viewer/dist/cjs/parsers/w3x/wts";
+import War3Map from "mdx-m3-viewer/dist/cjs/parsers/w3x/map";
+
 import * as path from "path";
 import { compileMap, getFilesInDirectory, loadJsonFile, logger, toArrayBuffer, toBuffer } from "./utils";
-import { FILE_EXISTS } from "mdx-m3-viewer/src/parsers/mpq/constants";
 
 function main() {
   const config = loadJsonFile("config.json");
@@ -51,15 +51,6 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     const archivePath = path.relative(dir, fileName);
     const imported = map.import(archivePath, contents);
 
-    // if (fileName.indexOf(".blp") !== -1 || fileName.indexOf(".mp3") !== -1) {
-      // const file = map.archive.files.find((e) => e.name === archivePath);
-      // if (file) {
-      //   file.rawBuffer = contents;
-      //   file.block.compressedSize = contents.byteLength;
-      //   file.block.flags = FILE_EXISTS;
-      // }
-    // }
-
     if (!imported) {
       logger.warn("Failed to import " + archivePath);
       continue;
@@ -74,12 +65,12 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     return;
   }
   else {
-    // logger.info("Saved archive");
+    logger.info("Saved archive");
   }
 
   fs.writeFileSync(output, new Uint8Array(result));
 
-  // logger.info("Finished!");
+  logger.info("Finished!");
 }
 
 export function prepDirForCreate(output: string, dir: string, verNum: string) {
