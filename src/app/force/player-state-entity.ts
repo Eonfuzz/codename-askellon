@@ -186,4 +186,15 @@ export class PlayerStateFactory {
         });
         return result;
     }
+
+    public static isValidPlayer(who: MapPlayer) {
+        if (PlayerStateFactory.isAlienAI(who)) return false;
+        if (who === PlayerStateFactory.CultistAIPlayer) return false;
+        if (who === PlayerStateFactory.NeutralHostile) return false;
+        if (who === PlayerStateFactory.NeutralPassive) return false;
+        if (who === PlayerStateFactory.UnknownPlayer) return false;
+        if (who === PlayerStateFactory.StationProperty) return false;
+        if (who === PlayerStateFactory.StationSecurity) return false;
+        return true;
+    }
 }

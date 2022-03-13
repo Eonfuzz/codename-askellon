@@ -14,6 +14,7 @@ export interface IProjectConfig {
   launchArgs: string[];
   winePath?: string;
   winePrefix?: string;
+  version: string;
 }
 
 /**

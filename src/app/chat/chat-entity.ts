@@ -639,9 +639,9 @@ export class ChatEntity extends Entity {
 
     public postMessageFor(players: MapPlayer[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundWithCooldown) {
         
-        MessageAllPlayers("Post message!");
+        // MessageAllPlayers("Post message!");
         players.forEach(p => {
-            MessageAllPlayers("Player: "+p.id);
+            // MessageAllPlayers("Player: "+p.id);
             const cHandler = this.chatHandlers.get(p.id);
             if (cHandler) cHandler.sendMessage(fromName, color, message, messageTag, sound);
         });            

@@ -18,8 +18,12 @@ function main() {
   if (!fs.existsSync(config.outputFolder)) {
     fs.mkdirSync(config.outputFolder);
   }
+  const fileName = config.mapFolder.replace('.w3x', `-${config.version}.w3x`);
+  const buildDir = `${config.outputFolder}/${fileName}`;
+  const sourceDir = `./dist/${config.mapFolder}`;
 
-  createMapFromDir(`${config.outputFolder}/${config.mapFolder}`, `./dist/${config.mapFolder}`);
+  prepDirForCreate(buildDir, sourceDir, config.version);
+  createMapFromDir(buildDir, sourceDir, config.version);
 }
 
 /**
@@ -27,9 +31,15 @@ function main() {
  * @param output The output filename
  * @param dir The directory to create the archive from
  */
-export function createMapFromDir(output: string, dir: string) {
+export function createMapFromDir(output: string, dir: string, verNum: string) {
   const map = new War3Map();
   const files = getFilesInDirectory(dir);
+
+  updateStrings(
+    files.find(filename => filename.indexOf(".wts") >= 0), 
+    files.find(filename => filename.indexOf(".w3i") >= 0), 
+    verNum
+  );
 
   map.archive.resizeHashtable(files.length);
 
@@ -43,6 +53,7 @@ export function createMapFromDir(output: string, dir: string) {
       continue;
     }
   }
+  
 
   const result = map.save();
 

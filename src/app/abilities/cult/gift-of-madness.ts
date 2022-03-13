@@ -40,7 +40,7 @@ export class GiftOfMadnessAbility extends AbilityWithDone {
         );
         ForGroup(this.damageGroup, () => {
             const u = Unit.fromHandle(GetEnumUnit());
-            const owningForce = PlayerStateFactory.get(u.owner);
+            if (!PlayerStateFactory.isValidPlayer(u.owner)) return;
 
             // if (owningForce && owningForce.getForce() && !owningForce.getForce().is(ALIEN_FORCE_NAME)) {
                 if (u.owner.isLocal()) {
