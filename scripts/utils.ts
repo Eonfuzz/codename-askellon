@@ -188,7 +188,8 @@ export const logger = createLogger({
 
 
 function moveModulesToMain(mapScript: string, tsScript: string) {
+  // console.log(mapScript);
   mapScript = mapScript.replace(`    InitCustomTriggers()`, `\t${tsScript}\n    InitCustomTriggers()`);
-  mapScript = mapScript.replace(`return require("src.main", ...)`, `require("src.main")`);
+  mapScript = mapScript.replace(`return require("src.main")`, `require("src.main")`);
   return mapScript;
 }

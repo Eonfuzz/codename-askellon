@@ -9,8 +9,8 @@ tsMain();
 
 function tsMain() {
     Log.Init([
-        // new StringSink(LogLevel.Debug, SendMessageToAdmin),
-        new StringSink(LogLevel.Debug, SendMessageUnlogged),
+        new StringSink(LogLevel.Debug, SendMessageToAdmin),
+        // new StringSink(LogLevel.Debug, SendMessageUnlogged),
     ]);
 
     function Main(){
