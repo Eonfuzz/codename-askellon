@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
-    "strict": false,
-    "allowJs": false,
-    "outDir": ".",
-    "baseUrl": "./src",
-    "forceConsistentCasingInFileNames": true,
-    "target": "ESNext",
+    "baseUrl": "src",
+    "allowJs": true,
+    "target": "es6",
     "lib": [
       "ESNext"
     ],
@@ -16,8 +13,8 @@
         "../node_modules/*/lib/index",
         "../node_modules/*/index",
         "../node_modules/*/dist/index",
-        "../node_modules/*/dist/cjs/index",
-        "../node_modules/*"
+        "../node_modules/*",
+        "./*"
       ]
     },
     "plugins": [
@@ -29,7 +26,7 @@
       }
     ],
     "types": [
-      "typescript-to-lua/language-extensions",
+      "lua-types/core/index",
       "lua-types/core/coroutine",
       "lua-types/core/global",
       "lua-types/core/math",

@@ -5,6 +5,8 @@ import { StringSink } from "lib/serilog/string-sink";
 import { Log, LogLevel } from "lib/serilog/serilog";
 import { SendMessageToAdmin, SendMessageUnlogged } from "lib/translators";
 
+tsMain();
+
 function tsMain() {
     Log.Init([
         // new StringSink(LogLevel.Debug, SendMessageToAdmin),
@@ -27,11 +29,4 @@ function tsMain() {
     }
 
     Main();
-  }
-
-  function tsConfig() {
-    PlayMusic("Music\\MechanicusOmnissiah.mp3");
-  }
-  
-  addScriptHook(W3TS_HOOK.MAIN_AFTER, tsMain);
-//   addScriptHook(W3TS_HOOK.CONFIG_AFTER, tsConfig);
+}

@@ -140,8 +140,7 @@ export function compileMap(config: IProjectConfig) {
   }
 
   try {
-    logger.info(`Trying contents`);
-    let contents = fs.readFileSync(mapLua).toString() + fs.readFileSync(tsLua).toString();
+    let contents = moveModulesToMain(fs.readFileSync(mapLua).toString(), fs.readFileSync(tsLua).toString());
     contents = processScriptIncludes(contents);
 
     if (config.minifyScript) {
@@ -186,3 +185,10 @@ export const logger = createLogger({
     }),
   ]
 });
+
+
+function moveModulesToMain(mapScript: string, tsScript: string) {
+  mapScript = mapScript.replace(`    InitCustomTriggers()`, `\t${tsScript}\n    InitCustomTriggers()`);
+  mapScript = mapScript.replace(`return require("src.main", ...)`, `require("src.main")`);
+  return mapScript;
+}
