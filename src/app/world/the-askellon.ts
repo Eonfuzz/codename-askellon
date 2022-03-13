@@ -153,7 +153,8 @@ export class TheAskellon {
     }
 
     private getRandomZone() {
-        let items = Array.from(this.floors);
+        // let items = [Array.from(this.floors)];
+        let items = [];
         return items[GetRandomInt(0, items.length - 1)];
     }
 

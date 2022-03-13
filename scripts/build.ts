@@ -1,10 +1,9 @@
 import * as fs from "fs-extra";
-import War3Map from "mdx-m3-viewer/src/parsers/w3x/map";
-import War3MapW3i from "mdx-m3-viewer/src/parsers/w3x/w3i";
-import War3MapWts from "mdx-m3-viewer/src/parsers/w3x/wts";
 import * as path from "path";
+
+import War3Map from "mdx-m3-viewer/dist/cjs/parsers/w3x/map"
 import { compileMap, getFilesInDirectory, loadJsonFile, logger, toArrayBuffer, toBuffer } from "./utils";
-import { FILE_EXISTS } from "mdx-m3-viewer/src/parsers/mpq/constants";
+import War3MapW3i from "mdx-m3-viewer/dist/cjs/parsers/w3x/w3i/file";
 
 function main() {
   const config = loadJsonFile("config.json");
@@ -51,22 +50,12 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     const archivePath = path.relative(dir, fileName);
     const imported = map.import(archivePath, contents);
 
-    // if (fileName.indexOf(".blp") !== -1 || fileName.indexOf(".mp3") !== -1) {
-      // const file = map.archive.files.find((e) => e.name === archivePath);
-      // if (file) {
-      //   file.rawBuffer = contents;
-      //   file.block.compressedSize = contents.byteLength;
-      //   file.block.flags = FILE_EXISTS;
-      // }
-    // }
-
     if (!imported) {
       logger.warn("Failed to import " + archivePath);
       continue;
     }
   }
 
-  // logger.info("Saving archive...");
   const result = map.save();
 
   if (!result) {
@@ -74,12 +63,11 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     return;
   }
   else {
-    // logger.info("Saved archive");
+    logger.info("Saved archive");
   }
 
   fs.writeFileSync(output, new Uint8Array(result));
 
-  // logger.info("Finished!");
 }
 
 export function prepDirForCreate(output: string, dir: string, verNum: string) {
@@ -104,30 +92,14 @@ export function prepDirForCreate(output: string, dir: string, verNum: string) {
   }
 }
 
-function getStringNumberFromString(whichString: string) {
-  return Number(whichString.split("_")[1]);
-}
-
 function updateStrings(wtsDir: string | undefined, w3iDir: string | undefined, verNum: string) {
   if (!wtsDir) throw Error("wts not found");
   if (!w3iDir) throw Error("w3i not found");
 
-  const buffer = fs.readFileSync(w3iDir);
-  if (!buffer) throw Error("w3i buffer not found");
-
-  let w3iBuffer = toArrayBuffer(buffer);
-  let wtsBuffer = fs.readFileSync(wtsDir, "utf8");
-
-  const w3i = new War3MapW3i.File();
-  const wts = new War3MapWts.File();
-
-  
+  let w3iBuffer = toArrayBuffer(fs.readFileSync(w3iDir));
+  const w3i = new War3MapW3i();  
   w3i.load(w3iBuffer);
-  wts.load(wtsBuffer);
-  
-  // const w3iNameString = getStringNumberFromString(w3i.name);
   w3i.name = `|cff627781Askellon|r v${verNum}`;
-
   w3iBuffer = w3i.save();
   fs.writeFileSync(w3iDir, toBuffer(w3iBuffer));
 }
