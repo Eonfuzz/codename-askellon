@@ -204,16 +204,22 @@ export class Door {
         let iteration = faceVec.multiplyN(this.pathingTileSize * 2);
 
 
-        while (distance < (this.width + this.pathingTileSize)) {
-            if (isOpen && (distance > ((this.width - this.openableWidth) / 2)) && (distance < ((this.width + this.openableWidth) / 2))) {
-            }
-            else {
-                const pblocker = CreateDestructable(PATHING_BLOCKER_BOTH, iterator.x, iterator.y, 0, 1, 0);   
-                this.pathingBlockers.push(pblocker); 
-            }
+        try {
+            while (distance < (this.width + this.pathingTileSize)) {
+                    if (isOpen && (distance > ((this.width - this.openableWidth) / 2)) && (distance < ((this.width + this.openableWidth) / 2))) {
+                    }
+                    else {
+                        const pblocker = CreateDestructable(PATHING_BLOCKER_BOTH, iterator.x, iterator.y, 0, 1, 0);   
+                        this.pathingBlockers.push(pblocker); 
+                    }
 
-            iterator = iterator.add(iteration);
-            distance += iteration.getLength();
+                    iterator = iterator.add(iteration);
+                    distance += iteration.getLength();
+            }
+        }
+        catch (e) {
+            Log.Error("DOOR ISSUE. REPORT IT TO ME, THANKS.");
+            return;
         }
     }
 

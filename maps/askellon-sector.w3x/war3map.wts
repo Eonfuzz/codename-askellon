@@ -737,7 +737,7 @@ W
 }
 
 STRING 243
-// Abilities: A038 (Remote Purge Service Tunnels), Hotkey (Hotkey - Normal)
+// Abilities: A03M (Evolve), Hotkey (Hotkey - Normal)
 {
 W
 }
@@ -845,13 +845,13 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 276
-// Abilities: A03M (Evolve), Hotkey (Hotkey - Normal)
+// Abilities: A03Y (First Ritual: Pernicious Power), Hotkey (Hotkey - Normal)
 {
 W
 }
 
 STRING 277
-// Abilities: A03Y (First Ritual: Pernicious Power), Hotkey (Hotkey - Normal)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2101,7 +2101,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 627
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2461,7 +2461,7 @@ STRING 739
 }
 
 STRING 744
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2887,7 +2887,7 @@ W
 }
 
 STRING 854
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -3004,54 +3004,6 @@ STRING 899
 // Abilities: A013 (Punishing Smite), Hotkey (Hotkey - Normal)
 {
 E
-}
-
-STRING 910
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Religious Dogma 
-}
-
-STRING 911
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Religious Dogma - 1
-}
-
-STRING 912
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Religious Dogma - 2
-}
-
-STRING 913
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Religious Dogma - 3
-}
-
-STRING 914
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Religious Dogma - 4
-}
-
-STRING 915
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Religious Dogma - 2
-}
-
-STRING 916
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Religious Dogma - 3
-}
-
-STRING 917
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Religious Dogma - 4
 }
 
 STRING 924
@@ -4872,12 +4824,6 @@ STRING 1321
 Q
 }
 
-STRING 1322
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Reactor Systems - Tier 1
-}
-
 STRING 1323
 // Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Ubertip (Tooltip - Extended)
 {
@@ -4938,30 +4884,6 @@ STRING 1332
 |cff627781Fluff TODO.|r|n|nUpgrades your personal weapons, increasing all damage by |cff18bc9c10%|r.|n|cff18bc9cCurrent Damage Bonus: 136%|r|n|cffd45e19New Damage Bonus: 160%|r
 }
 
-STRING 1333
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Reactor Systems - Tier 1
-}
-
-STRING 1334
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Reactor Systems - Tier 2
-}
-
-STRING 1335
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Reactor Systems - Tier 3
-}
-
-STRING 1336
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
-{
-Reactor Systems - Tier 4
-}
-
 STRING 1337
 // Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
 {
@@ -4998,28 +4920,10 @@ STRING 1342
 Upgrade Weapon Damage [10/10]
 }
 
-STRING 1343
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Reactor Systems - Tier 2
-}
-
-STRING 1344
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Reactor Systems - Tier 3
-}
-
 STRING 1345
 // Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
 {
 Weapons Tech Upgrade
-}
-
-STRING 1346
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
-{
-Reactor Systems - Tier 4
 }
 
 STRING 1347
@@ -5617,7 +5521,7 @@ A
 }
 
 STRING 1479
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A03A (Target Players), Hotkey (Hotkey - Normal)
 {
 A
 }
@@ -5767,7 +5671,7 @@ STRING 1504
 }
 
 STRING 1505
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A041 (Alert), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -6483,7 +6387,7 @@ Q
 }
 
 STRING 1683
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -6513,7 +6417,7 @@ W
 }
 
 STRING 1688
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -6786,7 +6690,7 @@ Q
 }
 
 STRING 1738
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8175,7 +8079,7 @@ Target Players
 }
 
 STRING 2060
-// Abilities: A03A (Target Players), Hotkey (Hotkey - Normal)
+// Abilities: A038 (Remote Purge Service Tunnels), Hotkey (Hotkey - Normal)
 {
 E
 }
@@ -8235,7 +8139,7 @@ STRING 2071
 }
 
 STRING 2072
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8481,7 +8385,7 @@ STRING 2119
 }
 
 STRING 2120
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 A
 }
@@ -8848,7 +8752,7 @@ STRING 2190
 }
 
 STRING 2191
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -9348,12 +9252,6 @@ STRING 2286
 First Ritual: Pernicious Power
 }
 
-STRING 2287
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
-{
-W
-}
-
 STRING 2288
 // Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
@@ -9470,5 +9368,136 @@ Crew
 STRING 2313
 {
 Join Our Discord
+}
+
+STRING 2314
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Dogmatic Theory [|cffffcc001/4|r]
+}
+
+STRING 2315
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Dogmatic Theory [|cffffcc001/4|r]
+}
+
+STRING 2316
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Dogmatic Theory [|cffffcc002/4|r]
+}
+
+STRING 2317
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Dogmatic Theory [|cffffcc003/4|r]
+}
+
+STRING 2318
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Dogmatic Theory [|cffffcc004/4|r]
+}
+
+STRING 2319
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Dogmatic Theory [|cffffcc002/4|r]
+}
+
+STRING 2320
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Dogmatic Theory [|cffffcc003/4|r]
+}
+
+STRING 2321
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Dogmatic Theory [|cffffcc004/4|r]
+}
+
+STRING 2322
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems [|cffffcc001/4|r]
+}
+
+STRING 2323
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems [|cffffcc001/4|r]
+}
+
+STRING 2324
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems [|cffffcc002/4|r]
+}
+
+STRING 2325
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems [|cffffcc003/4|r]
+}
+
+STRING 2326
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Tip (Tooltip)
+{
+Reactor Systems [|cffffcc004/4|r]
+}
+
+STRING 2327
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems [|cffffcc002/4|r]
+}
+
+STRING 2328
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems [|cffffcc003/4|r]
+}
+
+STRING 2329
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Name (Name)
+{
+Reactor Systems [|cffffcc004/4|r]
+}
+
+STRING 2330
+// Abilities: A041 (Alert), Name (Name)
+{
+Alert
+}
+
+STRING 2332
+// Abilities: A041 (Alert), Tip (Tooltip - Normal)
+{
+Alert Crew
+}
+
+STRING 2333
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
+}
+
+STRING 2334
+// Abilities: A041 (Alert), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781The Askellon's Command Protocols require captain authentication to make large, sweeping announcements to the crew.|r|n|nPings and reveals an area for the Crew. Lasts |cff18bc9c30|r Seconds.|n|n|cff627781120 Seconds Cooldown|r
+}
+
+STRING 2335
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+A
+}
+
+STRING 2336
+{
+Initialising
 }
 

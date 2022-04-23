@@ -18,6 +18,7 @@ udg_genetic_sequencer_unit = nil
 udg_it = 0
 udg_genetic_splicer_unit = nil
 udg_main_power_generator = nil
+udg_original_names = __jarray("")
 gg_rct_Space = nil
 gg_rct_FallZone1Land = nil
 gg_rct_GeneSplicer = nil
@@ -308,6 +309,7 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
+gg_trg_SetNames = nil
 function InitGlobals()
     local i = 0
     i = 0
@@ -359,6 +361,12 @@ function InitGlobals()
         i = i + 1
     end
     udg_it = 0
+    i = 0
+    while (true) do
+        if ((i > 1)) then break end
+        udg_original_names[i] = ""
+        i = i + 1
+    end
 end
 
 function CreateAllDestructables()
@@ -1606,6 +1614,30 @@ function InitTrig_SetKillzones()
     TriggerAddAction(gg_trg_SetKillzones, Trig_SetKillzones_Actions)
 end
 
+function Trig_SetNames_Func001Func002C()
+    if (not (GetPlayerController(GetEnumPlayer()) == MAP_CONTROL_USER)) then
+        return false
+    end
+    return true
+end
+
+function Trig_SetNames_Func001A()
+    udg_original_names[GetConvertedPlayerId(GetEnumPlayer())] = GetPlayerName(GetEnumPlayer())
+    if (Trig_SetNames_Func001Func002C()) then
+        SetPlayerName(GetEnumPlayer(), "TRIGSTR_2336")
+    else
+    end
+end
+
+function Trig_SetNames_Actions()
+    ForForce(GetPlayersAll(), Trig_SetNames_Func001A)
+end
+
+function InitTrig_SetNames()
+    gg_trg_SetNames = CreateTrigger()
+    TriggerAddAction(gg_trg_SetNames, Trig_SetNames_Actions)
+end
+
 function Trig_Set_Core_Actions()
     udg_main_power_generator = gg_unit_h00A_0191
 end
@@ -1886,6 +1918,7 @@ end
 
 function InitCustomTriggers()
     InitTrig_SetKillzones()
+    InitTrig_SetNames()
     InitTrig_Set_Core()
     InitTrig_Set()
     InitTrig_SetHatch()
@@ -1898,6 +1931,7 @@ end
 
 function RunInitializationTriggers()
     ConditionalTriggerExecute(gg_trg_SetKillzones)
+    ConditionalTriggerExecute(gg_trg_SetNames)
     ConditionalTriggerExecute(gg_trg_Set_Core)
     ConditionalTriggerExecute(gg_trg_Set)
     ConditionalTriggerExecute(gg_trg_SetHatch)

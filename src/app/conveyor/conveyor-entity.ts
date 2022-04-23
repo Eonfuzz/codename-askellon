@@ -1,4 +1,4 @@
-import { Region, Trigger, Rectangle } from "w3ts/index";
+import { Region, Trigger, Rectangle, Unit } from "w3ts/index";
 import { UNIT_IS_FLY } from "resources/ability-ids";
 import { Entity } from "app/entity-type";
 import { Timers } from "app/timer-type";
@@ -187,6 +187,8 @@ export class ConveyorEntity extends Entity {
     }
 
     checkUnit(unit: unit) {
+        if (IsUnitIdType(GetUnitTypeId(unit), UNIT_TYPE_STRUCTURE)) return;
+        
         const northIdx = this.unitMoveNorth.indexOf(unit);
         const southIdx = this.unitMoveSouth.indexOf(unit);
         const eastIdx = this.unitMoveEast.indexOf(unit);

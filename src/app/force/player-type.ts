@@ -74,7 +74,7 @@ export class PlayerState {
 
     constructor(player: MapPlayer) {
         this.player = player;
-        this.originalName = player.name;
+        this.originalName = _G["udg_original_names"][player.id] || 'Unknown';
         this.originalColour = player.color;
     }
 

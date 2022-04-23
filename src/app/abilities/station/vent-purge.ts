@@ -19,9 +19,6 @@ export class VentPurgeAbility extends AbilityWithDone {
 
     private purgeMaxDuration = 120;
 
-
-    
-
     public init() {
         super.init();
         ventPurgeWarning.playSound();

@@ -38,7 +38,7 @@ export class TipEntity extends Entity {
     }
 
     showNextTip() {
-        if (ALL_TIPS.length > 0) {
+        if (ALL_TIPS && ALL_TIPS.length > 0) {
             const tip = Quick.GetRandomFromArray(ALL_TIPS)[0];
             Quick.Slice(ALL_TIPS, ALL_TIPS.indexOf(tip));
 

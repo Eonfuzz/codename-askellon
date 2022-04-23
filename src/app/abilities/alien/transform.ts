@@ -18,24 +18,26 @@ import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { SmartTrigger } from "lib/SmartTrigger";
 
 
-const CREATE_SFX_EVERY = 0.06;
-const MEAT_SFX = [
-    "Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdl", 
-    // "Units\\Undead\\Abomination\\AbominationExplosion.mdl",
-];
-const SFX_HUMAN_BLOOD = "Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLargeDeathExplode.mdl";
-const SFX_ALIEN_BLOOD = "Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl";
-const SFX_BLOOD_EXPLODE = "Units\\Undead\\Abomination\\AbominationExplosion.mdl";
-
-const MEAT_AOE = 450;
-const MEAT_AOE_MIN = 150;
-const DURATION_TO_ALIEN = 0.5;
-const DURATION_TO_HUMAN = 0.5;
 
 export class TransformAbility extends AbilityWithDone {
 
+    private static CREATE_SFX_EVERY = 0.06;
+    private static MEAT_SFX = [
+        "Abilities\\Weapons\\MeatwagonMissile\\MeatwagonMissile.mdl", 
+        // "Units\\Undead\\Abomination\\AbominationExplosion.mdl",
+    ];
+    private static SFX_HUMAN_BLOOD = "Objects\\Spawnmodels\\Orc\\OrcLargeDeathExplode\\OrcLargeDeathExplode.mdl";
+    private static SFX_ALIEN_BLOOD = "Objects\\Spawnmodels\\Undead\\UndeadLargeDeathExplode\\UndeadLargeDeathExplode.mdl";
+    private static SFX_BLOOD_EXPLODE = "Units\\Undead\\Abomination\\AbominationExplosion.mdl";
+    
+    private static MEAT_AOE = 450;
+    private static MEAT_AOE_MIN = 150;
+    private static DURATION_TO_ALIEN = 0.5;
+    private static DURATION_TO_HUMAN = 0.5;
+
+
     private timeElapsed: number;
-    private timeElapsedSinceSFX: number = CREATE_SFX_EVERY;
+    private timeElapsedSinceSFX: number = TransformAbility.CREATE_SFX_EVERY;
 
     private orderTrigger = new SmartTrigger();
     private previousOrder: number | undefined;
@@ -49,7 +51,7 @@ export class TransformAbility extends AbilityWithDone {
 
         this.timeElapsed = 0;
         this.toAlien = toAlienFromHuman;
-        this.duration = (this.toAlien ? DURATION_TO_ALIEN : DURATION_TO_HUMAN);
+        this.duration = (this.toAlien ? TransformAbility.DURATION_TO_ALIEN : TransformAbility.DURATION_TO_HUMAN);
     }
 
     public init() {
@@ -84,7 +86,7 @@ export class TransformAbility extends AbilityWithDone {
             return false;
         }
 
-        if (this.timeElapsedSinceSFX >= CREATE_SFX_EVERY && this.casterUnit) {
+        if (this.timeElapsedSinceSFX >= TransformAbility.CREATE_SFX_EVERY && this.casterUnit) {
             this.timeElapsedSinceSFX = 0;
             const tLoc = vectorFromUnit(this.casterUnit.handle);
 
@@ -123,20 +125,20 @@ export class TransformAbility extends AbilityWithDone {
 
     private getRandomOffset(): number {
         const isNegative = GetRandomInt(0, 1);
-        return (isNegative == 1 ? -1 : 1) * Math.max(MEAT_AOE_MIN, GetRandomInt(0, MEAT_AOE));
+        return (isNegative == 1 ? -1 : 1) * Math.max(TransformAbility.MEAT_AOE_MIN, GetRandomInt(0, TransformAbility.MEAT_AOE));
     }
 
     private getBloodEffect(): string {
         const deltaPercent = this.timeElapsed / this.duration;
         const t = GetRandomReal(deltaPercent, deltaPercent * 2);
         if (this.toAlien) {
-            return t > 0.5 ? SFX_ALIEN_BLOOD : SFX_HUMAN_BLOOD;
+            return t > 0.5 ? TransformAbility.SFX_ALIEN_BLOOD : TransformAbility.SFX_HUMAN_BLOOD;
         }
-        return t > 0.5 ? SFX_HUMAN_BLOOD : SFX_ALIEN_BLOOD;
+        return t > 0.5 ? TransformAbility.SFX_HUMAN_BLOOD : TransformAbility.SFX_ALIEN_BLOOD;
     }
 
     private getRandomSFX() {
-        return MEAT_SFX[GetRandomInt(0, MEAT_SFX.length-1)]
+        return TransformAbility.MEAT_SFX[GetRandomInt(0, TransformAbility.MEAT_SFX.length-1)]
     }
 
     private bloodSplash(where: Vector3) {

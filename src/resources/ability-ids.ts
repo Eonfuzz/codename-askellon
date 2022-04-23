@@ -232,3 +232,4 @@ export const ABIL_ALIEN_WEBSHOT = FourCC('A02F');
 export const ABIL_ALIEN_BROODNEST = FourCC('A02E');
 export const ABIL_ALIEN_DEFILER_INFESTATION = FourCC('A030');
 export const ABIL_ALIEN_WEBWALK = FourCC('A02G');
+export const ABIL_STATION_ALERT = FourCC('A041');

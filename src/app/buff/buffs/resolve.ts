@@ -16,7 +16,7 @@ Preload("Music\\Behemoth (Remix).mp3");
  * Can be applied multiple times and from multiple sources
  */
 export class Resolve extends DynamicBuff {
-    protected static DAMAGE_COUNTER_DURATION = 10;
+    protected static DAMAGE_COUNTER_DURATION = 25;
 
     id = BUFF_ID.RESOLVE;
 

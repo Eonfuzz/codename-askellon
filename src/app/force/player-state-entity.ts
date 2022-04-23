@@ -197,4 +197,8 @@ export class PlayerStateFactory {
         if (who === PlayerStateFactory.StationSecurity) return false;
         return true;
     }
+
+    public static getPlayers(): MapPlayer[] {
+        return Players.filter(p => this.isValidPlayer(p));
+    }
 }

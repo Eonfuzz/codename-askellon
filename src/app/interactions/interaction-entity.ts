@@ -84,40 +84,42 @@ export class InteractionEntity extends Entity {
     }
 
     beginInteraction() {
-        const trigUnit = Unit.fromHandle(GetTriggerUnit());
-        const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
-        const targetUnitType = targetUnit.typeId;
+        {
+            const trigUnit = Unit.fromHandle(GetTriggerUnit());
+            const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
+            const targetUnitType = targetUnit.typeId;
 
-        // Log.Information("BEING INTERACT TRACKING");
+            // Log.Information("BEING INTERACT TRACKING");
 
-        // First of all make sure we don't have one already
-        const foundMatch = this.interactions.find(i => i.unit === trigUnit && i.targetUnit === targetUnit);
-        if (foundMatch) {
-            return;
-        }
+            // First of all make sure we don't have one already
+            const foundMatch = this.interactions.find(i => i.unit === trigUnit && i.targetUnit === targetUnit);
+            if (foundMatch) {
+                return;
+            }
 
-        // Check our cooldown
-        if (!this.checkCooldown(trigUnit)) return;// Log.Information("Interace cooldown!");
+            // Check our cooldown
+            if (!this.checkCooldown(trigUnit)) return;// Log.Information("Interace cooldown!");
 
-        // Check to see if we have it in our interactable data
-        const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
+            // Check to see if we have it in our interactable data
+            const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
-        if (interact && (!interact.condition || interact.condition(trigUnit, targetUnit))) {
-            const interactionTime = interact.getInteractionTime !== undefined
-                ? interact.getInteractionTime(trigUnit, targetUnit) : 1.3;
-            const interactionDistance = interact.getInteractionDistance !== undefined
-                ? interact.getInteractionDistance(trigUnit, targetUnit) : 350;
+            if (interact && (!interact.condition || interact.condition(trigUnit, targetUnit))) {
+                const interactionTime = interact.getInteractionTime !== undefined
+                    ? interact.getInteractionTime(trigUnit, targetUnit) : 1.3;
+                const interactionDistance = interact.getInteractionDistance !== undefined
+                    ? interact.getInteractionDistance(trigUnit, targetUnit) : 350;
 
-            const newInteraction = new InteractionEvent(
-                GetTriggerUnit(), 
-                GetOrderTargetUnit(), 
-                interactionTime * (1 + 1 * (1 - trigUnit.life/trigUnit.maxLife)),
-                interactionDistance,
-                interact,
-                GetPlayerController(trigUnit.owner.handle) ===  MAP_CONTROL_COMPUTER ? false : !interact.hideInteractionBar
-            );
-            newInteraction.startInteraction();
-            this.interactions.push(newInteraction);
+                const newInteraction = new InteractionEvent(
+                    GetTriggerUnit(), 
+                    GetOrderTargetUnit(), 
+                    interactionTime * (1 + 1 * (1 - trigUnit.life/trigUnit.maxLife)),
+                    interactionDistance,
+                    interact,
+                    GetPlayerController(trigUnit.owner.handle) ===  MAP_CONTROL_COMPUTER ? false : !interact.hideInteractionBar
+                );
+                newInteraction.startInteraction();
+                this.interactions.push(newInteraction);
+            }
         }
     }
 
