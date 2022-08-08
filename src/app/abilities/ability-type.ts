@@ -1,8 +1,12 @@
+import { Vector2 } from "app/types/vector2";
+import { Vector3 } from "app/types/vector3";
 import { Unit } from "w3ts/index";
 
 export abstract class Ability {
-    protected casterUnit!: Unit;
-    protected spellLevel!: number;
+    public casterUnit!: Unit;
+    public spellLevel!: number;
+    public targetUnit?: Unit;
+    public targetLocation?: Vector2;
 
     /**
      * Inits the ability
@@ -10,6 +14,12 @@ export abstract class Ability {
     public init(): boolean {
         this.casterUnit = Unit.fromEvent();
         this.spellLevel = this.casterUnit.getAbilityLevel(GetSpellAbilityId());
+        if (GetSpellTargetX() != undefined) {
+            this.targetLocation = new Vector2(GetSpellTargetX(), GetSpellTargetY());
+        }
+        if (GetSpellTargetUnit() != undefined) {
+            this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
+        }
         return true;
     }
     /**

@@ -358,43 +358,6 @@ export class WeaponEntity extends Entity {
 
             u.facing = a;
         });
-    
-        this.weaponShootTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
-        this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0))
-        this.weaponShootTrigger.addAction(() => {
-            let unit = Unit.fromHandle(GetTriggerUnit());
-
-            const pData = PlayerStateFactory.get(unit.owner);
-            const isSmartCast = (pData && pData.getAttackType() === WeaponEntityAttackType.SMART);
-
-            const targetLoc : Vector3 = new Vector3(0, 0, 0);
-            if (isSmartCast) {
-                const mLoc = InputManager.getLastMouseCoordinate(unit.owner.handle);
-                targetLoc.x = mLoc.x;
-                targetLoc.y = mLoc.y;
-            }
-            else {
-                targetLoc.x = GetSpellTargetX();
-                targetLoc.y = GetSpellTargetY();
-            }
-            
-            targetLoc.z = getZFromXY(targetLoc.x, targetLoc.y);
-
-            // Get unit weapon instance
-            const weapon = this.getGunForUnit(unit);
-            if (weapon) {
-                // If we are targeting a unit pass the event over to the force module
-                const targetedUnit = GetSpellTargetUnit();
-                if (targetedUnit) {
-                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
-                }
-                
-                weapon.onShoot(
-                    unit, 
-                    targetLoc
-                );
-            }
-        })
 
         // Handle start of the attack
         const attackTrigger = new Trigger();
@@ -426,6 +389,43 @@ export class WeaponEntity extends Entity {
 
         this.weaponAttackTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
         this.weaponAttackTrigger.addCondition(Condition(() => BlzGetEventIsAttack()));
+
+        this.weaponShootTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.weaponShootTrigger.addCondition(Condition(() => this.weaponAbilityIds.indexOf(GetSpellAbilityId()) >= 0));
+
+    
+        this.weaponShootTrigger.addAction(() => {
+            let unit = Unit.fromHandle(GetTriggerUnit());
+
+            const pData = PlayerStateFactory.get(unit.owner);
+            const isSmartCast = (pData && pData.getAttackType() === WeaponEntityAttackType.SMART);
+
+            const targetLoc : Vector3 = new Vector3(0, 0, 0);
+            if (isSmartCast) {
+                const mLoc = InputManager.getLastMouseCoordinate(unit.owner.handle);
+                targetLoc.x = mLoc.x;
+                targetLoc.y = mLoc.y;
+            }
+            else {
+                targetLoc.x = GetSpellTargetX();
+                targetLoc.y = GetSpellTargetY();
+            }
+            
+            targetLoc.z = getZFromXY(targetLoc.x, targetLoc.y);
+
+            // Get unit weapon instance
+            const weapon = this.getGunForUnit(unit);
+            if (weapon) {
+                // If we are targeting a unit pass the event over to the force module
+                const targetedUnit = GetSpellTargetUnit();
+                if (targetedUnit) {
+                    ForceEntity.getInstance().aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
+                }
+                
+                weapon.onShoot(unit, targetLoc);
+            }
+        })
+
         this.weaponAttackTrigger.addAction(() => {
             let unit = Unit.fromHandle(GetEventDamageSource());
             let targetUnit = Unit.fromHandle(BlzGetEventDamageTarget())
@@ -445,10 +445,7 @@ export class WeaponEntity extends Entity {
                     ForceEntity.getInstance().aggressionBetweenTwoPlayers(unit.owner, Unit.fromHandle(targetedUnit).owner);
                 }
                 
-                weapon.onShoot(
-                    unit, 
-                    targetLocation
-                );
+                weapon.onShoot(unit, targetLocation);
             }
         });
     }

@@ -1,34 +1,23 @@
 import { Vector3 } from "../../types/vector3";
-import { Gun } from "./gun";
-import { Crewmember } from "../../crewmember/crewmember-type";
 import { Projectile } from "../projectile/projectile";
 import { ProjectileTargetStatic } from "../projectile/projectile-target";
 import { SHOTGUN_EXTENDED, SHOTGUN_ITEM } from "../../../resources/weapon-tooltips";
-import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
-import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
+import { PlayNewSoundOnUnit } from "../../../lib/translators";
+import { ArmableUnitWithItem } from "./unit-has-weapon";
 import { SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
 import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
 import { MapPlayer, Unit } from "w3ts/index";
 import { SFX_SHOCKWAVE } from "resources/sfx-paths";
-import { CrewFactory } from "app/crewmember/crewmember-factory";
 import { ForceEntity } from "app/force/force-entity";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
-import { GunItem } from "./gun-item";
 import { Timers } from "app/timer-type";
-import { Log } from "lib/serilog/serilog";
+import { Shotgun } from "./shotgun";
 
-export class Shotgun extends GunItem {
-
-    gunPath = "Weapons\\MarineHarkons.mdx";
-    
-    protected unitsHit = new Map<number, number>();
-
+export class ShotgunDefault extends Shotgun {
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(item, equippedTo);
         // Define spread and bullet distance
-        this.spreadAOE = 240;
-        this.bulletDistance = 240;
     }
 
     public applyWeaponAttackValues(unit: Unit) {
@@ -45,6 +34,41 @@ export class Shotgun extends GunItem {
     public onShoot(unit: Unit, targetLocation: Vector3): void {
         super.onShoot(unit, targetLocation);
 
+        // Clear units hit
+        this.unitsHit.clear();
+
+        const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", unit, 50);
+        const NUM_BULLETS = 6;
+
+        let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
+        const angleDeg = casterLoc.angle2Dto(targetLocation);
+
+        const deltaLocs = getPointsInRangeWithSpread(
+            angleDeg - 18,
+            angleDeg + 18,
+            NUM_BULLETS,
+            this.bulletDistance,
+            1.3
+        );
+
+        const centerTargetLoc = casterLoc.projectTowards2D(angleDeg, this.bulletDistance*1.9);
+        centerTargetLoc.z = getZFromXY(centerTargetLoc.x, centerTargetLoc.y);
+
+        // Do nothing if the central projectile hits
+        this.fireProjectile(unit, centerTargetLoc, true);
+        
+        deltaLocs.forEach((loc, index) => {
+            const nX = casterLoc.x + loc.x;
+            const nY = casterLoc.y + loc.y;
+            const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
+            this.fireProjectile(unit, targetLoc, false)
+        });
+
+        Timers.addTimedAction(1.6, () => {
+            if (this.equippedTo && this.equippedTo.unit) {
+                KillSoundWhenDone( PlayNewSoundOnUnit("Sounds\\ShotgunPump.wav", this.equippedTo.unit, 30) );
+            }
+        })
     };
 
     protected fireProjectile(unit: Unit, targetLocation: Vector3, isCentralProjectile: boolean): void {
@@ -76,27 +100,6 @@ export class Shotgun extends GunItem {
         EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: unit, data: { projectile }});
     }
     
-    protected onProjectileCollide(projectile: Projectile, collidesWith: unit) {
-        projectile.setDestroy(true);
-        if (this.equippedTo) {
-            const timesUnitHit = this.unitsHit.get(GetHandleId(collidesWith)) || 0;
-            this.unitsHit.set(GetHandleId(collidesWith), timesUnitHit + 1);
-
-            const damage = this.getDamage(this.equippedTo.unit) / Pow(1.25, timesUnitHit);
-            UnitDamageTarget(
-                projectile.source, 
-                collidesWith, 
-                damage, 
-                false, 
-                true, 
-                ATTACK_TYPE_PIERCE, 
-                DAMAGE_TYPE_NORMAL, 
-                WEAPON_TYPE_WOOD_MEDIUM_STAB
-            );
-            ForceEntity.getInstance().aggressionBetweenTwoPlayers(this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)));
-        }
-    }
-
     protected getTooltip(unit: Unit) {
         const minDistance = this.spreadAOE-this.getStrayValue(unit) / 2;
         const newTooltip = SHOTGUN_EXTENDED(

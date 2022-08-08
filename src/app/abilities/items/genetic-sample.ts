@@ -15,14 +15,9 @@ export enum GENE_SPLICE_ALLIANCE {
 
 export class GeneticSamplerItemAbility extends AbilityWithDone {
 
-    private unit: Unit;
-    private targetUnit: Unit;
-
-    
-
     public init() {
         super.init();
-        this.unit = Unit.fromHandle(GetTriggerUnit());
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());        
         
         return true;
@@ -30,7 +25,7 @@ export class GeneticSamplerItemAbility extends AbilityWithDone {
 
     public step(delta: number) {
 
-        const unitHasSpareItemSlot = UnitInventoryCount(this.unit.handle) < UnitInventorySize(this.unit.handle);
+        const unitHasSpareItemSlot = UnitInventoryCount(this.casterUnit.handle) < UnitInventorySize(this.casterUnit.handle);
 
         const player = this.targetUnit.owner;
 
@@ -74,7 +69,7 @@ export class GeneticSamplerItemAbility extends AbilityWithDone {
                 break;
         }
         
-        const item = CreateItem(iType, this.unit.x, this.unit.y);
+        const item = CreateItem(iType, this.casterUnit.x, this.casterUnit.y);
         BlzSetItemName(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
         BlzSetItemTooltip(item, `Genetic Sample: ${COL_MISC}${this.targetUnit.name}|r`);
         SetItemUserData(item, itemUserDataVal);
@@ -98,11 +93,11 @@ export class GeneticSamplerItemAbility extends AbilityWithDone {
         }
 
         if (unitHasSpareItemSlot) {
-            UnitAddItem(this.unit.handle, item);
+            UnitAddItem(this.casterUnit.handle, item);
         }
 
-        const sfx = AddSpecialEffect("Objects\\Spawnmodels\\Orc\\Orcblood\\BattrollBlood.mdl", this.unit.x, this.unit.y);
-        BlzSetSpecialEffectZ(sfx, getZFromXY(this.unit.x, this.unit.y) + 30);
+        const sfx = AddSpecialEffect("Objects\\Spawnmodels\\Orc\\Orcblood\\BattrollBlood.mdl", this.casterUnit.x, this.casterUnit.y);
+        BlzSetSpecialEffectZ(sfx, getZFromXY(this.casterUnit.x, this.casterUnit.y) + 30);
         DestroyEffect(sfx);
 
         this.done = true; 

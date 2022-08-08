@@ -21,9 +21,6 @@ import { BUFF_ID_NANOMED, BUFF_ID_TRIFEX, BUFF_ID_FEAST, BUFF_ID_REGENERATION } 
 
 export class LatchAbility extends AbilityWithDone {
 
-    private unit: Unit;
-    private targetUnit: Unit;
-
     private forceStop: boolean = false;
     private castOrder: number;
 
@@ -44,9 +41,9 @@ export class LatchAbility extends AbilityWithDone {
 
     public init() {
         super.init();
-        this.unit = Unit.fromHandle(GetTriggerUnit());
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
-        this.castOrder = this.unit.currentOrder;
+        this.castOrder = this.casterUnit.currentOrder;
 
         this.travelListener = new EventListener(
             EVENT_TYPE.CREW_CHANGES_FLOOR, 
@@ -58,9 +55,9 @@ export class LatchAbility extends AbilityWithDone {
             (self, data) => this.onLatchedGainsXp(data)
         );
 
-        this.unit.setPathing(false);
+        this.casterUnit.setPathing(false);
 
-        AddGhost(this.unit);
+        AddGhost(this.casterUnit);
 
         // Increment infest upgrade
         this.targetUnit.owner.setTechResearched(TECH_PLAYER_INFESTS, 
@@ -68,9 +65,9 @@ export class LatchAbility extends AbilityWithDone {
         );
 
         this.onUnitchangeOrder = new Trigger();
-        this.onUnitchangeOrder.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_ORDER);
-        this.onUnitchangeOrder.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_POINT_ORDER);
-        this.onUnitchangeOrder.registerUnitEvent(this.unit, EVENT_UNIT_ISSUED_TARGET_ORDER);
+        this.onUnitchangeOrder.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_ORDER);
+        this.onUnitchangeOrder.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_POINT_ORDER);
+        this.onUnitchangeOrder.registerUnitEvent(this.casterUnit, EVENT_UNIT_ISSUED_TARGET_ORDER);
 
         this.onUnitchangeOrder.addAction(() => this.onOrderChange());
 
@@ -80,20 +77,20 @@ export class LatchAbility extends AbilityWithDone {
             // Create that hook
             
             this.latchChatHookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.stepChat(hook));
-            this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
+            this.casterUnit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
         }
         /**
          * Helps testing and debugging
          */
         if (PlayerStateFactory.isSinglePlayer()) {
-            this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
+            this.casterUnit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 1);
         }
-        this.unit.owner.setTechResearched(TECH_LATCHED_IN_WHATEVER, 1);
+        this.casterUnit.owner.setTechResearched(TECH_LATCHED_IN_WHATEVER, 1);
 
         // Clear any aggression
-        ForceEntity.getInstance().repairAllAlliances(this.unit.owner);
+        ForceEntity.getInstance().repairAllAlliances(this.casterUnit.owner);
 
-        this.unit.invulnerable = true;
+        this.casterUnit.invulnerable = true;
 
         return true;
     };
@@ -102,12 +99,12 @@ export class LatchAbility extends AbilityWithDone {
         if (this.forceStop) return this.done = true;;
 
         // Make sure our current unit or target exists
-        if (!this.unit || !this.unit.isAlive()) return this.done = true;;
+        if (!this.casterUnit || !this.casterUnit.isAlive()) return this.done = true;;
         if (!this.targetUnit || !this.targetUnit.isAlive()) return this.done = true;;
 
         // Are we currently latching?
         // Compare current orders
-        const isLatching = this.castOrder === this.unit.currentOrder;
+        const isLatching = this.castOrder === this.casterUnit.currentOrder;
 
         // Kill if we aren't
         if (!isLatching) {
@@ -118,8 +115,8 @@ export class LatchAbility extends AbilityWithDone {
         this.duration += delta;
 
         // Otherwise continue...
-        this.unit.x = this.targetUnit.x;
-        this.unit.y = this.targetUnit.y;
+        this.casterUnit.x = this.targetUnit.x;
+        this.casterUnit.y = this.targetUnit.y;
 
         // Need to check for buffs on host
         if (UnitHasBuffBJ(this.targetUnit.handle, BUFF_ID_NANOMED) 
@@ -135,8 +132,8 @@ export class LatchAbility extends AbilityWithDone {
         if (this.eatAbilStackCount > 0 && this.damageTicker >= 1) {
             this.damageTicker = 0;
 
-            if (ForceEntity.getInstance().canFight(this.unit.owner, this.targetUnit.owner)) {
-                UnitDamageTarget(this.unit.handle, 
+            if (ForceEntity.getInstance().canFight(this.casterUnit.owner, this.targetUnit.owner)) {
+                UnitDamageTarget(this.casterUnit.handle, 
                     this.targetUnit.handle, 
                     5 * this.eatAbilStackCount, 
                     true, 
@@ -153,7 +150,7 @@ export class LatchAbility extends AbilityWithDone {
 
     private stepChat(hook: ChatHook) {
 
-        if (hook.who === this.unit.owner) {
+        if (hook.who === this.casterUnit.owner) {
             const pData = PlayerStateFactory.get(this.targetUnit.owner);
             const crew = pData.getCrewmember();
 
@@ -182,12 +179,12 @@ export class LatchAbility extends AbilityWithDone {
             }
 
             // Force our unit to travel too
-            WorldEntity.getInstance().travel(this.unit, newFloor.id);
+            WorldEntity.getInstance().travel(this.casterUnit, newFloor.id);
             // Snap camera
             // if (this.unit.isSelected(this.unit.owner)) {
                 const t = new Timer();
                 t.start(0, false, () => {
-                    PanCameraToTimedForPlayer(this.unit.owner.handle, this.targetUnit.x, this.targetUnit.y, 0);
+                    PanCameraToTimedForPlayer(this.casterUnit.owner.handle, this.targetUnit.x, this.targetUnit.y, 0);
                     t.destroy();
                 });
             // }
@@ -202,7 +199,7 @@ export class LatchAbility extends AbilityWithDone {
         if (data.source === this.targetUnit) {
             const amountGained = data.data.value / 2;
             EventEntity.getInstance().sendEvent(EVENT_TYPE.CREW_GAIN_EXPERIENCE, {
-                source: this.unit,
+                source: this.casterUnit,
                 data: { value: amountGained }
             });
         }
@@ -228,8 +225,8 @@ export class LatchAbility extends AbilityWithDone {
 
             if (this.eatAbilStackCount == 1) {
                 DummyCast((dummy) => {
-                    SetUnitX(dummy, this.unit.x);
-                    SetUnitY(dummy, this.unit.y + 50);
+                    SetUnitX(dummy, this.casterUnit.x);
+                    SetUnitY(dummy, this.casterUnit.y + 50);
                     IssueTargetOrder(dummy, "faeriefire", this.targetUnit.handle);
                 }, FourCC('A021'));
             }
@@ -257,11 +254,11 @@ export class LatchAbility extends AbilityWithDone {
 
             DestroyGroup(group);
 
-            AddGhost(this.unit);
+            AddGhost(this.casterUnit);
 
             const t = new Timer();
             t.start(2, false, () => {
-                RemoveGhost(this.unit);
+                RemoveGhost(this.casterUnit);
                 t.destroy();
             });
         }
@@ -269,19 +266,19 @@ export class LatchAbility extends AbilityWithDone {
 
     public destroy() { 
         try {
-            this.unit.invulnerable = false;
+            this.casterUnit.invulnerable = false;
             UnitRemoveBuffBJ(BUFF_ID_FEAST, this.targetUnit.handle);
-            if (this.unit && this.unit.isAlive()) {
+            if (this.casterUnit && this.casterUnit.isAlive()) {
                 // Set cooldowns
-                BlzStartUnitAbilityCooldown(this.unit.handle, ABIL_ALIEN_LATCH, 60);
-                this.unit.setPathing(true);
+                BlzStartUnitAbilityCooldown(this.casterUnit.handle, ABIL_ALIEN_LATCH, 60);
+                this.casterUnit.setPathing(true);
 
                 // Delay removal of ghost for 0.5 seconds           
                 // this.unit.setScale(0.9, 0.9, 0.9);
                 if (!this.isCastingSurvivalInstincts) {
                     const t = new Timer();
                     t.start(0.5, false, () => {
-                        RemoveGhost(this.unit);
+                        RemoveGhost(this.casterUnit);
                         t.destroy();
                     });
                 }
@@ -296,8 +293,8 @@ export class LatchAbility extends AbilityWithDone {
             if (this.latchChatHookId) {
                 ChatEntity.getInstance().removeHook(this.latchChatHookId);
             }
-            this.unit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 0);
-            this.unit.owner.setTechResearched(TECH_LATCHED_IN_WHATEVER, 0);
+            this.casterUnit.owner.setTechResearched(TECH_LATCHED_IN_HUMAN, 0);
+            this.casterUnit.owner.setTechResearched(TECH_LATCHED_IN_WHATEVER, 0);
         }
         catch(e) {
             Log.Error(e);

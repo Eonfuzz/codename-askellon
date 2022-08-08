@@ -59,6 +59,8 @@ export enum EVENT_TYPE {
 
     INTERACT_TERMINAL,
 
+    // Calls the ability module
+    ABILITY_CAST,
     // Adds a projectile, data.projectile = projectile to add
     ADD_PROJECTILE,
     // Unequips a weapon, data.weapon = weapon to drop, data.item = item source

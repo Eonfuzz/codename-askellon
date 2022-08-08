@@ -22,7 +22,7 @@ ROLE_NAMES.set(ROLE_TYPES.CAPTAIN, [
     "Captain Willard", "Captain Fodder", "Captain Cook", "Captain Kimstar",
     "Captain Picard", "Captain Jakov", "Captain Shepherd", "Captain America",
     "Captain Sullivan", "Captain Frost", "Captain Shane", "Captain Blazkowicz",
-    "Captain Xerxes", "Captain Alex Hawthorne", "Captain Kevrad"
+    "Captain Xerxes", "Captain Alex Hawthorne", "Captain Kevrad", "Captain Mayday"
 ]);
 
 ROLE_NAMES.set(ROLE_TYPES.NAVIGATOR, [

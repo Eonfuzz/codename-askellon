@@ -23,7 +23,7 @@ A
 }
 
 STRING 21
-// Items: I000 (Burst Rifle), Name (Name)
+// Items: I00W (Burst Rifle), Name (Name)
 {
 Burst Rifle
 }
@@ -1271,7 +1271,7 @@ Korhal Wall
 }
 
 STRING 381
-// Items: ISHO (Harkons Blitzer), Name (Name)
+// Items: I00X (Harkons Blitzer), Name (Name)
 {
 Harkons Blitzer
 }
@@ -1295,7 +1295,7 @@ STRING 384
 }
 
 STRING 385
-// Items: ISHO (Harkons Blitzer), Ubertip (Tooltip - Extended)
+// Items: ISHO (Customisable Harkons Blitzer), Ubertip (Tooltip - Extended)
 {
 |cff627781Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
 Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
@@ -1315,7 +1315,7 @@ Enhanced Mobility
 }
 
 STRING 387
-// Items: ISHO (Harkons Blitzer), Tip (Tooltip - Basic)
+// Items: ISHO (Customisable Harkons Blitzer), Tip (Tooltip - Basic)
 {
 Purchase Harkon's Blitzer
 }
@@ -1591,13 +1591,13 @@ STRING 483
 }
 
 STRING 484
-// Items: I000 (Burst Rifle), Tip (Tooltip - Basic)
+// Items: I000 (Customisable Burst Rifle), Tip (Tooltip - Basic)
 {
 Purchase Burst Rifle
 }
 
 STRING 485
-// Items: I000 (Burst Rifle), Ubertip (Tooltip - Extended)
+// Items: I000 (Customisable Burst Rifle), Ubertip (Tooltip - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
 Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
@@ -1730,7 +1730,7 @@ E
 }
 
 STRING 537
-// Items: I000 (Burst Rifle), Description (Description)
+// Items: I000 (Customisable Burst Rifle), Description (Description)
 {
 Weapon: Fires a burst of 6 shots
 }
@@ -1748,7 +1748,7 @@ Weapon: Laser that gets stronger with successive shots
 }
 
 STRING 540
-// Items: ISHO (Harkons Blitzer), Description (Description)
+// Items: ISHO (Customisable Harkons Blitzer), Description (Description)
 {
 Weapon: Fires a powerful but short range blast
 }
@@ -5527,7 +5527,7 @@ A
 }
 
 STRING 1480
-// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A042 (Attack - Harkon's Blitzer), Hotkey (Hotkey - Normal)
 {
 A
 }
@@ -9491,7 +9491,7 @@ STRING 2334
 }
 
 STRING 2335
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: RDAM (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 A
 }
@@ -9499,5 +9499,135 @@ A
 STRING 2336
 {
 Initialising
+}
+
+STRING 2337
+// Items: I000 (Customisable Burst Rifle), Name (Name)
+{
+Customisable Burst Rifle
+}
+
+STRING 2338
+// Items: ISHO (Customisable Harkons Blitzer), Name (Name)
+{
+Customisable Harkons Blitzer
+}
+
+STRING 2339
+// Items: I00W (Burst Rifle), Tip (Tooltip - Basic)
+{
+Purchase Burst Rifle
+}
+
+STRING 2340
+// Items: I00W (Burst Rifle), Ubertip (Tooltip - Extended)
+{
+|cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. 
+Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r
+
+The standard issue rifle; ideal for thinning hordes and can dish out serious damage across all ranges.
+|cff18bc9c- 6 shot burst
+- Each shot does 18 damage
+- Short cooldown|n- Has an underbarrel shotgun|r
+}
+
+STRING 2341
+// Items: I00W (Burst Rifle), Description (Description)
+{
+Weapon: Fires a burst of 6 shots
+}
+
+STRING 2342
+// Items: I00X (Harkons Blitzer), Ubertip (Tooltip - Extended)
+{
+|cff627781Harkon was a talented mercenary who never could quite find a mercenary company to join, not for want of trying or lack of skill, but for the fact that noone else could survive the insane odds that he casually threw himself into. 
+Over the twenty years of his career, he had only one constant companion, and that was his custom-made, hand-engineered, reinforced combat shotgun. The design was sold off after he vanished, and even now there's a shady guy at every port selling 'the real Harkon Blitzer'|r
+
+A close ranged shotgun that deals good damage
+|cff18bc9c- Fires a spread of 6 shots
+- Unaffected by Accuracy|n- Can be fired twice in quick succession|r
+}
+
+STRING 2343
+// Items: I00X (Harkons Blitzer), Tip (Tooltip - Basic)
+{
+Purchase Harkon's Blitzer
+}
+
+STRING 2344
+// Items: I00X (Harkons Blitzer), Description (Description)
+{
+Weapon: Fires a powerful but short range blast
+}
+
+STRING 2345
+// Items: I00Y ("Destructor" Pattern Burst Rifle), Name (Name)
+{
+"Destructor" Pattern Burst Rifle
+}
+
+STRING 2346
+// Items: I00Y ("Destructor" Pattern Burst Rifle), Tip (Tooltip - Basic)
+{
+Purchase "Destructor" Pattern Burst Rifle
+}
+
+STRING 2347
+// Items: I00Y ("Destructor" Pattern Burst Rifle), Ubertip (Tooltip - Extended)
+{
+|cff627781An alternative pattern to the basic Burst Rifle, originally designed for warfare on high-grav planets. The Destructor fires higher caliber rounds and features an underbarrel rail-rifle.|r
+
+A high caliber rifle, excellent at long range combat.
+|cff18bc9c- 2 shot burst
+- Each shot does 30 damage
+- Longer cooldown|n- Has an underbarrel rail-rifle|r
+}
+
+STRING 2348
+// Items: I00Y ("Destructor" Pattern Burst Rifle), Description (Description)
+{
+Weapon: Fires a burst of 2 shots
+}
+
+STRING 2349
+// Abilities: A042 (Attack - Harkon's Blitzer), Name (Name)
+{
+Attack - Harkon's Blitzer
+}
+
+STRING 2350
+// Abilities: A042 (Attack - Harkon's Blitzer), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 2351
+// Abilities: A042 (Attack - Harkon's Blitzer), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Harkon's Blitzer
+}
+
+STRING 2352
+// Abilities: A042 (Attack - Harkon's Blitzer), Tip (Tooltip - Normal)
+{
+[|cffffff00A|r] - Harkon's Blitzer
+}
+
+STRING 2353
+// Abilities: A042 (Attack - Harkon's Blitzer), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
+}
+
+STRING 2354
+// Abilities: A042 (Attack - Harkon's Blitzer), EditorSuffix (Editor Suffix)
+{
+(Secondary)
+}
+
+STRING 2355
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+A
 }
 

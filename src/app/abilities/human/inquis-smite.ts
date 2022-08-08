@@ -17,7 +17,6 @@ export const smiteSound = new SoundRef("Sounds\\InquisitorSmite.mp3", false);
 export class SmiteAbility extends AbilityWithDone {
 
     private unit: Unit;
-    private targetUnit: Unit;
 
     private isImpure: boolean = false;
 

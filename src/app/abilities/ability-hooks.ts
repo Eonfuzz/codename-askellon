@@ -9,6 +9,9 @@ import { ABILITY_HOOK } from "./hook-types";
 import { MessageAllPlayers, MessagePlayer } from "lib/utils";
 import { Timers } from "app/timer-type";
 import { SHIP_MAIN_ASKELLON } from "resources/unit-ids";
+import { EventEntity } from "app/events/event-entity";
+import { EVENT_TYPE } from "app/events/event-enum";
+import { EmulateCast } from "./emulate-cast-type";
 
 /**
  * Interface to support adding / removal of ability hooks from ability funcs
@@ -121,6 +124,9 @@ export class AbilityHooks extends Entity {
             }
         });
 
+        EventEntity.listen(EVENT_TYPE.ABILITY_CAST, (ev, data) => {
+            this.emulateCast(data.data as EmulateCast);
+        });
     }
 
     public checkExistingUnit() {
@@ -213,6 +219,18 @@ export class AbilityHooks extends Entity {
     private unitCastsSpell() {
         const id = GetSpellAbilityId();
         const ability = AbilityHooks.Ability(id);
+        if (ability && ability.init()) {
+            this.abilities.push(ability);
+        }
+    }
+
+    private emulateCast(opt: EmulateCast) {
+        const id = opt.spellId;
+        const ability = AbilityHooks.Ability(id);
+        ability.targetLocation = opt.targetLocation;
+        ability.casterUnit = opt.caster;
+        ability.targetUnit = opt.target;
+
         if (ability && ability.init()) {
             this.abilities.push(ability);
         }

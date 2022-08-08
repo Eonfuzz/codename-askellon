@@ -12,9 +12,6 @@ const REPAIR_AMOUNT = 100;
 
 export class ItemRepairAbility extends AbilityWithDone {
 
-    private unit: Unit;
-    private targetUnit: Unit;
-
     private timeElapsed = 0;
     private timeElapsedSinceLastRepair = 0;
     private castOrderId: number;
@@ -29,7 +26,7 @@ export class ItemRepairAbility extends AbilityWithDone {
             return false;
         }
         
-        this.unit = Unit.fromHandle(GetTriggerUnit());
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
 
         if (this.targetUnit.typeId === UNIT_ID_DEBRIS_1 || 
@@ -38,7 +35,7 @@ export class ItemRepairAbility extends AbilityWithDone {
                 this.targetUnit.kill();
             }
 
-        this.castOrderId = GetUnitCurrentOrder(this.unit.handle);
+        this.castOrderId = GetUnitCurrentOrder(this.casterUnit.handle);
         return true;
     };
 
@@ -46,7 +43,7 @@ export class ItemRepairAbility extends AbilityWithDone {
         this.timeElapsed += delta;
         this.timeElapsedSinceLastRepair += delta;
 
-        if (GetUnitCurrentOrder(this.unit.handle) != this.castOrderId) {
+        if (GetUnitCurrentOrder(this.casterUnit.handle) != this.castOrderId) {
             // Log.Information(GetUnitCurrentOrder(this.unit.handle)+" Does not match "+REPAIR_ORDER_ID);
             return false;
         }
@@ -58,12 +55,12 @@ export class ItemRepairAbility extends AbilityWithDone {
             this.targetUnit.life = this.targetUnit.life + REPAIR_AMOUNT;
 
             // Notify game of the healing
-            SecurityEntity.getInstance().onSecurityHeal(this.targetUnit.handle, this.unit.handle);
+            SecurityEntity.getInstance().onSecurityHeal(this.targetUnit.handle, this.casterUnit.handle);
 
             // If the unit is full health lets end the repair
             if (this.targetUnit.life >= this.targetUnit.maxLife) { 
-                this.unit.pauseEx(true);
-                this.unit.pauseEx(false);
+                this.casterUnit.pauseEx(true);
+                this.casterUnit.pauseEx(false);
                 this.done = true;
                 return false;
             }
@@ -72,7 +69,7 @@ export class ItemRepairAbility extends AbilityWithDone {
         if (this.timeElapsed >= 0.5) {
             const v = MathRound(Math.max(Sin(this.timeElapsed * bj_PI * 2 + bj_PI/2), 0) * 100);
             this.targetUnit.setVertexColor(255 - v, 255 - v, 255, 255);
-            this.unit.setVertexColor(255 - v, 255 - v, 255, 255);
+            this.casterUnit.setVertexColor(255 - v, 255 - v, 255, 255);
         }
 
         if (this.timeElapsed >= REPAIR_DURATION) this.done = true;
@@ -80,7 +77,7 @@ export class ItemRepairAbility extends AbilityWithDone {
 
     public destroy() { 
         this.targetUnit.setVertexColor(255, 255, 255, 255);
-        this.unit.setVertexColor(255, 255 , 255, 255);
+        this.casterUnit.setVertexColor(255, 255 , 255, 255);
         return true;
     };
 }

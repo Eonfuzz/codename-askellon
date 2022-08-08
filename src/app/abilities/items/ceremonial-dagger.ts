@@ -10,21 +10,14 @@ import { SFX_CONVOKE_CARRION } from "resources/sfx-paths";
 import { BUFF_ID_MADNESS } from "resources/buff-ids";
 
 export class CeremonialDaggerItemAbility extends AbilityWithDone {
-
-    private unit: Unit;
-    private targetUnit: Unit;
     private targetLoc: Vector3;
-
     private desiredDistance = 120;
     private dashSpeed = 600;
-
     private distanceMoved = 0;
-
-    
 
     public init() {
         super.init();
-        this.unit = Unit.fromHandle(GetTriggerUnit());
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());        
         
         this.targetLoc = Vector3.fromWidget(this.targetUnit.handle);
@@ -35,15 +28,15 @@ export class CeremonialDaggerItemAbility extends AbilityWithDone {
         // update target loc
         this.targetLoc = Vector3.fromWidget(this.targetUnit.handle);
         // Get our current loc
-        const uLoc = Vector3.fromWidget(this.unit.handle);
+        const uLoc = Vector3.fromWidget(this.casterUnit.handle);
 
         const dLoc = this.targetLoc.subtract(uLoc);
         const travelVec = dLoc.normalise().multiplyN(this.dashSpeed * delta);
 
         this.distanceMoved += this.dashSpeed * delta;
 
-        this.unit.x += travelVec.x;
-        this.unit.y += travelVec.y;
+        this.casterUnit.x += travelVec.x;
+        this.casterUnit.y += travelVec.y;
         
         if (dLoc.getLength() <= this.desiredDistance) {
 
@@ -58,7 +51,7 @@ export class CeremonialDaggerItemAbility extends AbilityWithDone {
             
             const rotData = getYawPitchRollFromVector(sfxLoc.subtract(uLoc));
     
-            PlayNewSoundOnUnit("Sounds\\Slash.mp3", this.unit, 40);
+            PlayNewSoundOnUnit("Sounds\\Slash.mp3", this.casterUnit, 40);
 
             sfx.setYaw(rotData.yaw);
             sfx.setRoll(rotData.roll);
@@ -70,13 +63,13 @@ export class CeremonialDaggerItemAbility extends AbilityWithDone {
             const doKill = uHasInsanity && this.targetUnit.life <= 200 || this.targetUnit.life <= 50;
 
             if (!doKill) {
-                this.unit.damageTarget(this.targetUnit.handle, uHasInsanity ? 200 : 50, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+                this.casterUnit.damageTarget(this.targetUnit.handle, uHasInsanity ? 200 : 50, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
             }
             else {
                 const cultistForce = PlayerStateFactory.getForce(CULT_FORCE_NAME) as CultistForce;
                 cultistForce.playSpinExplodeanimationFor(this.targetUnit, () => {
 
-                    this.unit.damageTarget(this.targetUnit.handle, 999999, true, false, 
+                    this.casterUnit.damageTarget(this.targetUnit.handle, 999999, true, false, 
                         ATTACK_TYPE_HERO, 
                         DAMAGE_TYPE_UNKNOWN,
                         WEAPON_TYPE_WHOKNOWS
@@ -86,15 +79,15 @@ export class CeremonialDaggerItemAbility extends AbilityWithDone {
                     this.targetUnit.show = false;
 
                     if (this.targetUnit.isHero()) {
-                        const sfx = new Effect(SFX_CONVOKE_CARRION, this.unit.x, this.unit.y);
-                        sfx.z = getZFromXY(this.unit.x, this.unit.y) + 10;
+                        const sfx = new Effect(SFX_CONVOKE_CARRION, this.casterUnit.x, this.casterUnit.y);
+                        sfx.z = getZFromXY(this.casterUnit.x, this.casterUnit.y) + 10;
                         sfx.destroy();
 
-                        this.unit.strength += 7;
-                        this.unit.intelligence += 5;
-                        this.unit.owner.setState(
+                        this.casterUnit.strength += 7;
+                        this.casterUnit.intelligence += 5;
+                        this.casterUnit.owner.setState(
                             PLAYER_STATE_RESOURCE_LUMBER, 
-                            this.unit.owner.getState(PLAYER_STATE_RESOURCE_LUMBER) + 1
+                            this.casterUnit.owner.getState(PLAYER_STATE_RESOURCE_LUMBER) + 1
                         );
                     }
                 });    

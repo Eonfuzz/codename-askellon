@@ -16,16 +16,13 @@ export const puritySealSounds = [
 
 export class PuritySealAbility extends AbilityWithDone {
 
-    private unit: Unit;
-    private targetUnit: Unit;
-
     public init() {
         super.init();
-        this.unit = Unit.fromHandle(GetTriggerUnit());
+        this.casterUnit = Unit.fromHandle(GetTriggerUnit());
         this.targetUnit = Unit.fromHandle(GetSpellTargetUnit());
 
         const sound = puritySealSounds[GetRandomInt(0, puritySealSounds.length - 1)];
-        sound.playSoundOnUnit(this.unit.handle, 70);
+        sound.playSoundOnUnit(this.casterUnit.handle, 70);
 
         return true;
     };
@@ -37,10 +34,9 @@ export class PuritySealAbility extends AbilityWithDone {
         const buffFound = DynamicBuffEntity.getInstance().addBuff(
             BUFF_ID.PURITY_SEAL, 
             this.targetUnit,
-            new BuffInstanceDuration(this.unit, hasIncreasedDuration ? 240 : 180)
+            new BuffInstanceDuration(this.casterUnit, hasIncreasedDuration ? 240 : 180)
         ) as PuritySeal;
 
-        
         this.done = true;
         return false;
     };
