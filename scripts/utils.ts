@@ -142,6 +142,7 @@ export function compileMap(config: IProjectConfig) {
 
   try {
     let contents = moveModulesToMain(fs.readFileSync(mapLua).toString(), fs.readFileSync(tsLua).toString());
+    contents = prependPairsReplace(contents);
     contents = processScriptIncludes(contents);
 
     if (config.minifyScript) {
@@ -193,4 +194,33 @@ function moveModulesToMain(mapScript: string, tsScript: string) {
   mapScript = mapScript.replace(`    InitCustomTriggers()`, `\t${tsScript}\n    InitCustomTriggers()`);
   mapScript = mapScript.replace(`return require("src.main")`, `require("src.main")`);
   return mapScript;
+}
+
+/**
+ * A hacky thing to change how pairs work
+ * @param mapScript 
+ */
+function prependPairsReplace(mapScript: string) {
+  const luaString = `
+do
+  oldPairs = pairs
+  local _k = {}
+  function pairs(t, s)
+      for k in oldPairs(t) do
+          _k[#_k+1] = k
+      end
+      table.sort(_k, s)
+      local i = 0
+      return function()
+          i = i+1
+          if _k[i] then
+              local val = _k[i]
+              _k[i] = nil
+              return val, t[val]
+          end
+      end
+  end
+end
+`
+  return luaString+mapScript;
 }

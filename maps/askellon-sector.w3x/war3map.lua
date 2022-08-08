@@ -247,6 +247,7 @@ gg_rct_hatcheryspawn8 = nil
 gg_rct_hatcheryspawn9 = nil
 gg_rct_hatcheryspawn10 = nil
 gg_trg_SetKillzones = nil
+gg_trg_SetNames = nil
 gg_trg_Set_Core = nil
 gg_trg_Set = nil
 gg_trg_SetHatch = nil
@@ -309,7 +310,6 @@ gg_dest_B003_2137 = nil
 gg_dest_B003_2138 = nil
 gg_dest_B003_2139 = nil
 gg_dest_B003_2136 = nil
-gg_trg_SetNames = nil
 function InitGlobals()
     local i = 0
     i = 0
