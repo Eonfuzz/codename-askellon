@@ -83,6 +83,7 @@ export enum EVENT_TYPE {
 
 
     ADD_BUFF_INSTANCE,
+    ADD_BEHAVIOUR_INSTANCE,
 
     WORLD_EVENT_SOLAR,
     

@@ -8,11 +8,12 @@ import { vectorFromUnit } from "app/types/vector2";
 import { ProjectileMoverParabolic, ProjectileTargetStatic } from "app/weapons/projectile/projectile-target";
 import { LeapEntity } from "app/leap-engine/leap-entity";
 import { Leap } from "app/leap-engine/leap-type";
-import { ABIL_ALIEN_WEBSHOT } from "resources/ability-ids";
+import { ABIL_ALIEN_WEBSHOT, ABIL_STUN_25 } from "resources/ability-ids";
 import { PlayNewSoundOnUnit } from "lib/translators";
 import { Log } from "lib/serilog/serilog";
 import { SFX_ALIEN_ACID_BALL } from "resources/sfx-paths";
 import { Timers } from "app/timer-type";
+import { DummyCast } from "lib/dummy";
 
 const MISSILE_LAUNCH_EFFECT = "Abilities\\Spells\\Undead\\Web\\Webmissile.mdl";
 const MISSILE_EFFECT = "Models\\sfx\\CocoonMissile.mdx";
@@ -33,6 +34,7 @@ export class WebshotAbility extends AbilityWithDone {
     private leapInstance: Leap;
     private webshotGoal: Vector3;
     private finishedLeaping: boolean = false;
+    private webshotCanPull: boolean = true;
 
     private prevFogModifier: fogmodifier;
 
@@ -54,8 +56,9 @@ export class WebshotAbility extends AbilityWithDone {
             this.casterUnit.handle,
             startLoc,
             new ProjectileTargetStatic(deltaTarget),
-            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(35))
+            new ProjectileMoverParabolic(startLoc, this.targetLoc, Deg2Rad(35), 1.3)
         )
+        .setCollisionRadius(60)
         .onDeath(() => this.onCollide())
         .onCollide((self, who) => this.onCollide(Unit.fromHandle(who)));
 
@@ -109,7 +112,7 @@ export class WebshotAbility extends AbilityWithDone {
             this.webshotCollided = true;
             if (withWho != undefined) {
                 // If this is the second level abil we need to pull them to us
-                if (this.casterUnit.getAbilityLevel(ABIL_ALIEN_WEBSHOT) >= 2 && !IsUnitIdType(withWho.typeId, UNIT_TYPE_STRUCTURE)) {
+                if (this.webshotCanPull && !IsUnitIdType(withWho.typeId, UNIT_TYPE_STRUCTURE)) {
                     who = withWho;
 
                     startVec = Vector3.fromWidget(withWho.handle);
@@ -159,6 +162,17 @@ export class WebshotAbility extends AbilityWithDone {
 
     private onJumpPullFinish(withWho: Unit) {
         this.finishedLeaping = true;
+
+        if (withWho && this.casterUnit && withWho.handle !== this.casterUnit.handle) {
+            
+            const unit = withWho.handle;
+            DummyCast((dummy: unit) => {
+                SetUnitAbilityLevel(dummy, ABIL_STUN_25, 6);
+                SetUnitX(dummy, GetUnitX(unit));
+                SetUnitY(dummy, GetUnitY(unit));
+                IssueTargetOrder(dummy, "thunderbolt", unit);
+            }, ABIL_STUN_25);
+        }
 
         if (withWho != undefined) {
             withWho.pauseEx(false);

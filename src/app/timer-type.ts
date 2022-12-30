@@ -98,6 +98,12 @@ export class Timers {
         return Timers.getInstance().timedActionCallbacks.push({ time, action });
     }
 
+    public static async awaitTime(time: number) {
+        return new Promise<void>(resolve => {
+            Timers.getInstance().timedActionCallbacks.push({ time, action: () => resolve() })
+        });
+    }
+
     /**
      * This increments by the seconds
      * Use for long lasting effects or counters

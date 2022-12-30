@@ -127,6 +127,11 @@ export class AbilityHooks extends Entity {
         EventEntity.listen(EVENT_TYPE.ABILITY_CAST, (ev, data) => {
             this.emulateCast(data.data as EmulateCast);
         });
+
+        EventEntity.listen(EVENT_TYPE.ADD_BEHAVIOUR_INSTANCE, (ev, data) => {
+            Log.Information("Add behaviour instance!");
+            this.createBehaviour(data.data?.behaviour(), data.source)
+        });
     }
 
     public checkExistingUnit() {
@@ -179,14 +184,19 @@ export class AbilityHooks extends Entity {
         if (u.getAbilityLevel(abilId) > 0) {
             // Log.Information(`Found behaviour for unit:  ${u.name}`)
             const behaviour = AbilityHooks.Behaviour(abilId);
-            if (behaviour && behaviour.init(u)) {
-                this.behaviours.push(behaviour);
-                const behaviours = this.behavioursForUnit.get(u.id) || [];
-
-                behaviours.push(behaviour);
-                this.behavioursForUnit.set(u.id, behaviours);
-
+            if (behaviour) {
+                this.createBehaviour(behaviour, u);
             }
+        }
+    }
+
+    private createBehaviour(behaviour: Behaviour, forUnit: Unit) {
+        if (behaviour.init(forUnit)) {
+            const behaviours = this.behavioursForUnit.get(forUnit.id) || [];
+            behaviours.push(behaviour);
+
+            this.behaviours.push(behaviour);
+            this.behavioursForUnit.set(forUnit.id, behaviours);
         }
     }
 

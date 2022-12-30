@@ -51,6 +51,7 @@ import { Timers } from "app/timer-type";
 import { COL_MISC, COL_TEAL } from "resources/colours";
 import { UPGR_DUMMY_WILL_BECOME_ALIEN_ON_DEATH } from "resources/upgrade-ids";
 import { SmartTrigger } from "lib/SmartTrigger";
+import { PsionicPotentialBehaviour } from "app/abilities/behaviours/psionic-potential";
 
 declare const udg_genetic_splicer_unit: unit;
 interface GeneInstance {
@@ -301,9 +302,14 @@ export class GeneEntity extends Entity {
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_MOBILITY, 1);
                 }
                 else if (castAbil === GENE_INSTALL_PSIONIC_POTENCY) {
+                    Log.Information("Installing gene...");
+
                     crewmember.setStrGain( crewmember.getStrGain() - 2.7 );
-                    crewmember.unit.addAbility( ABIL_GENE_MIND_LASH );
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_PSI_POTENCY, 1);
+                    EventEntity.getInstance().sendEvent(EVENT_TYPE.ADD_BEHAVIOUR_INSTANCE, { 
+                        source: crewmember.unit,
+                        data: { behaviour: () => new PsionicPotentialBehaviour() } 
+                    })
                 }
                 else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
                     crewmember.setIntGain( crewmember.getIntGain() + 3 );

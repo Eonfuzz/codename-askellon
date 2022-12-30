@@ -55,6 +55,11 @@
     "noImplicitSelf": true,
     "luaBundle": "dist/tstl_output.lua",
     "luaBundleEntry": "./src/main.ts",
-    "sourceMapTraceback": false
+    "sourceMapTraceback": false,
+    "luaPlugins": [
+      {
+        "name": "./scripts/main.debug.ts"
+      }
+    ]
   }
 }

@@ -1,7 +1,7 @@
 import { Log } from "../../../lib/serilog/serilog";
 import { ForceType } from "./force-type";
 import { vectorFromUnit, Vector2 } from "app/types/vector2";
-import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, TECH_PLAYER_INFESTS, ABIL_ALIEN_WEBSHOT, ABIL_ALIEN_BROODNEST, ABIL_ALIEN_WEBWALK } from "resources/ability-ids";
+import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPGRADE, TECH_PLAYER_INFESTS, ABIL_ALIEN_WEBSHOT, ABIL_ALIEN_BROODNEST, ABIL_ALIEN_WEBWALK, ABIL_REPLACE_ALIEN_2_DECEPTION, ABIL_REPLACE_ALIEN_2_CANITE, ABIL_REPLACE_ALIEN_1, ABIL_REPLACE_ALIEN_3_ROACH, ABIL_REPLACE_ALIEN_3_INFESTOR } from "resources/ability-ids";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { PlayNewSound } from "lib/translators";
@@ -10,7 +10,7 @@ import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
 import { BUFF_ID, BUFF_ID_ROACH_ARMOR } from "resources/buff-ids";
-import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, DEFILER_ALIEN_FORM, ALIEN_STRUCTURE_HATCHERY } from "resources/unit-ids";
+import { DEFAULT_ALIEN_FORM, CREWMEMBER_UNIT_ID, UNIT_ID_NEUTRAL_BEAR, ALIEN_MINION_FORMLESS, UNIT_ID_NEUTRAL_DOG, UNIT_ID_NEUTRAL_STAG, ALIEN_MINION_CANITE, ALIEN_MINION_LARVA, DEFILER_ALIEN_FORM, ALIEN_STRUCTURE_HATCHERY, WORM_ALIEN_FORM, ZERGLING_ALIEN_FORM, CIVILIAN_ALIEN_FORM, ROACH_ALIEN_FORM, UNIT_ID_STATION_SECURITY_TURRET } from "resources/unit-ids";
 import { VISION_TYPE } from "app/vision/vision-type";
 import { ResearchFactory } from "app/research/research-factory";
 import { EventListener } from "app/events/event-type";
@@ -34,6 +34,7 @@ import { MessagePlayer, MessageAllPlayers, CreateBlood, getRectsGivenNamespace }
 import { Quick } from "lib/Quick";
 import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
 import { GameTimeElapsed } from "app/types/game-time-elapsed";
+import { UnitTransformer } from "lib/unit-transformer";
 
 
 export const MAKE_UNCLICKABLE = false;
@@ -51,6 +52,8 @@ export class AlienForce extends ForceType {
 
     private alienDeathTrigs = new Map<number, Trigger>();
     private alienKillsTrigger = new Trigger();
+
+    private attackCommandTimer = 1;
 
 
     constructor() {
@@ -158,8 +161,9 @@ export class AlienForce extends ForceType {
 
                 // Add the transform ability
                 who.unit.addAbility(ABIL_TRANSFORM_HUMAN_ALIEN);
-                alien = Unit.fromHandle(CreateUnit(owner.handle, 
-                    this.currentAlienEvolution, 
+                alien = Unit.fromHandle(this.transformer.apply(
+                    who.player.handle, 
+                    this.formToReplaceAbility(this.currentAlienEvolution), 
                     unitLocation.x, 
                     unitLocation.y, 
                     who.unit.facing
@@ -640,6 +644,7 @@ export class AlienForce extends ForceType {
     public onTick(delta: number) {
         super.onTick(delta);
 
+        this.attackCommandTimer += delta;
         this.deltaTicker += delta;
         // Every few seconds, ping alien players to all aliens
         if (this.deltaTicker >= 30) {
@@ -659,8 +664,43 @@ export class AlienForce extends ForceType {
                 });
             });
         }
+
+        if (this.attackCommandTimer >= 0.5) {
+            this.attackCommandTimer -= 0.5;
+            const group = CreateGroup();
+
+            this.players.forEach(p => {
+                const isTransformed = this.isPlayerTransformed(p);
+                if (isTransformed) {
+                    const alienUnit = this.getAlienFormForPlayer(p);
+                    if (alienUnit) {
+                        GroupEnumUnitsInRange(
+                            group, 
+                            alienUnit.x, 
+                            alienUnit.y,
+                            1000,
+                            Filter(() => GetUnitTypeId(GetFilterUnit()) === UNIT_ID_STATION_SECURITY_TURRET)
+                        );
+                        ForGroup(group, () => {
+                            const u = GetEnumUnit();
+                            IssueTargetOrder(u, 'attack', alienUnit.handle);
+                        });
+                    }
+                }
+            });
+            DestroyGroup(group);
+        }
     }
 
+    private formToReplaceAbility(form: number) {
+        if (form === CIVILIAN_ALIEN_FORM) return ABIL_REPLACE_ALIEN_1;
+        if (form === WORM_ALIEN_FORM) return ABIL_REPLACE_ALIEN_2_DECEPTION;
+        if (form === ZERGLING_ALIEN_FORM) return ABIL_REPLACE_ALIEN_2_CANITE;
+        if (form === ROACH_ALIEN_FORM) return ABIL_REPLACE_ALIEN_3_ROACH;
+        if (form === DEFILER_ALIEN_FORM) return ABIL_REPLACE_ALIEN_3_INFESTOR;
+    }
+
+    private transformer = new UnitTransformer();
     /**
      * Evolves the alien host and all spawn
      */
@@ -669,6 +709,7 @@ export class AlienForce extends ForceType {
         this.currentAlienEvolution = newForm;
         const alienHost = this.getHost();
         const worldEnt = WorldEntity.getInstance();
+        const replaceAbil = this.formToReplaceAbility(newForm);
         
         this.getPlayers().forEach((player) => {
             try {
@@ -704,11 +745,13 @@ export class AlienForce extends ForceType {
                     const oldAlienDeath = this.alienDeathTrigs.get(unit.id);
                     oldAlienDeath.destroy();
                     this.alienDeathTrigs.delete(unit.id);
-                    // Now call replace func
-                    ReplaceUnitBJ(unit.handle, newForm, 1);
 
-                    const replacedUnit = GetLastReplacedUnitBJ();
-                    const alien = Unit.fromHandle(replacedUnit);
+                    let x = unit.x, y = unit.y, facing = unit.facing;
+                    unit.destroy();
+
+                    const alien = Unit.fromHandle(
+                        this.transformer.apply(crew.player.handle, replaceAbil, x, y, facing)
+                    );
 
                     this.registerAlienDeath(alien);
 
@@ -723,6 +766,7 @@ export class AlienForce extends ForceType {
                     // alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
             
                     alien.name = 'Alien Host';
+                    alien.nameProper = 'Alien Host';
                     alien.color = PLAYER_COLOR_PURPLE;
 
                     // Now we need to also set alien spawn penalties
@@ -758,10 +802,12 @@ export class AlienForce extends ForceType {
 
             alien.setScale(scale * 0.9, scale * 0.9, scale * 0.9);
             alien.name = 'Alien Spawn';
+            alien.nameProper = 'Alien Spawn';
             SetPlayerTechResearched(alien.owner.handle, UPGR_DUMMY_IS_ALIEN_HOST, 0);
         }
         else {
             alien.name = 'Alien Host';
+            alien.nameProper = 'Alien Host';
             const scale = alien.getField(UNIT_RF_SCALING_VALUE) as number;
 
             alien.setScale(scale * 1.05, scale * 1.05, scale * 1.05);

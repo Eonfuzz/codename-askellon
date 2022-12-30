@@ -115,7 +115,6 @@ export class ShotgunDefault extends Shotgun {
         return SHOTGUN_ITEM(this, damage);
     }
 
-
     public getDamage(unit: Unit): number {
         return MathRound(35 * this.getDamageBonusMult());
     }

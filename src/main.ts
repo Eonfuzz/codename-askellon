@@ -14,7 +14,6 @@ function tsMain() {
     ]);
 
     function Main(){
-
         const askellon = Game.getInstance();
 
         const gameStart = new Timer();

@@ -191,7 +191,7 @@ export const logger = createLogger({
 
 function moveModulesToMain(mapScript: string, tsScript: string) {
   // console.log(mapScript);
-  mapScript = mapScript.replace(`    InitCustomTriggers()`, `\t${tsScript}\n    InitCustomTriggers()`);
+  mapScript = mapScript.replace(`\nInitCustomTriggers()`, `\n${tsScript}\nInitCustomTriggers()`);
   mapScript = mapScript.replace(`return require("src.main")`, `require("src.main")`);
   return mapScript;
 }
@@ -202,25 +202,30 @@ function moveModulesToMain(mapScript: string, tsScript: string) {
  */
 function prependPairsReplace(mapScript: string) {
   const luaString = `
+  local debugTextString = ""
 do
   oldPairs = pairs
   local _k = {}
-  function pairs(t, s)
-      for k in oldPairs(t) do
+  local i
+  local t
+  local function iter()
+      i = i + 1
+      if _k[i] then
+          local val = _k[i]
+          _k[i] = nil
+          return val, t[val]
+      end
+  end
+  function pairs(tab, s)
+      t = tab
+      for k in oldPairs(tab) do
           _k[#_k+1] = k
       end
       table.sort(_k, s)
-      local i = 0
-      return function()
-          i = i+1
-          if _k[i] then
-              local val = _k[i]
-              _k[i] = nil
-              return val, t[val]
-          end
-      end
+      i = 0
+      return iter
   end
 end
-`
+`;
   return luaString+mapScript;
 }

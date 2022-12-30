@@ -47,7 +47,7 @@ export class ForceEntity extends Entity {
     // new id for the next aggresison item
     private aggressionId = 0;
     // Key is ${p1}::${p2}
-    private aggressionLog = new Map<string, Aggression[]>();
+    private aggressionLog = new Map<string, Aggression>();
     private allAggressionLogs: Aggression[] = [];
 
 
@@ -151,11 +151,15 @@ export class ForceEntity extends Entity {
      * @param player2 
      */
     public canFight(player1: MapPlayer, player2: MapPlayer) : boolean | string {
+        {
         // Aggression is always OK by security
         if (player1 === PlayerStateFactory.StationSecurity) return true;
         // We can never have tracked aggression against aliens
         if (PlayerStateFactory.isAlienAI(player2)) return true;
         if (PlayerStateFactory.isAlienAI(player1)) {
+            // Always true that alien AI can hit station
+            if (player2 === PlayerStateFactory.StationSecurity) return true;
+
             const defenderPData = PlayerStateFactory.get(player2);
             const defenderForce = defenderPData ? defenderPData.getForce() : undefined;
 
@@ -180,6 +184,7 @@ export class ForceEntity extends Entity {
             if (!aggressionValid) return false;
         }
         return aggressionKey;
+        }
     }
 
     /**
@@ -190,26 +195,46 @@ export class ForceEntity extends Entity {
      * @returns boolean if aggression was allowed
      */
     private addAggressionLog(player1: MapPlayer, player2: MapPlayer): boolean {
-        const key = this.canFight(player1, player2);
-        if (key === false) return false;
-        // Dont alter alliances if you're attacking alien or neutral hostile
-        if (key === true) return true;
+        {
+            const key = this.canFight(player1, player2);
+            if (key === false) return false;
+            // Dont alter alliances if you're attacking alien or neutral hostile
+            if (key === true) return true;
 
-        const newItem = {
-            id: this.aggressionId++,
-            aggressor: player1,
-            defendant: player2,
-            timeStamp: GameTimeElapsed.getTime(),
-            remainingDuration: 30,
-            key: key
-        };
+            const newItemDuration = 30;
 
-        const logs = this.aggressionLog.get(newItem.key) || [];
-        logs.push(newItem);
-        this.aggressionLog.set(newItem.key, logs);
-        this.allAggressionLogs.push(newItem);
+            // We don't care how many logs there are
+            // This is the newest
+            const existingLog = this.aggressionLog.get(key);
+            if (!existingLog) {
+                const newItem = {
+                    id: this.aggressionId++,
+                    aggressor: player1,
+                    defendant: player2,
+                    timeStamp: GameTimeElapsed.getTime(),
+                    remainingDuration: newItemDuration,
+                    key: key
+                };
 
-        return true;
+                this.aggressionLog.set(newItem.key, newItem);
+                this.allAggressionLogs.push(newItem);
+
+                // Find the old aggression log and remove it
+                for (let index = 0; index < this.allAggressionLogs.length; index++) {
+                    const element = this.allAggressionLogs[index];
+                    if (element === existingLog) {
+                        this.allAggressionLogs.splice(index, 1);
+                        break;
+                    }
+                }
+            }
+            else if (existingLog.remainingDuration < newItemDuration) {
+                existingLog.remainingDuration = newItemDuration;
+                existingLog.timeStamp = GameTimeElapsed.getTime();
+            }
+
+            return true;
+        }
     }
 
     /**
@@ -240,6 +265,7 @@ export class ForceEntity extends Entity {
      * If there are none remaining between players we re-ally them
      */
     step() {
+        {
         PlayerStateFactory.getInstance().forces.forEach(force => force.onTick(this._timerDelay));
         if (this.allAggressionLogs.length === 0) return;
 
@@ -254,33 +280,25 @@ export class ForceEntity extends Entity {
             // Remove the instance if needed
             if (instance.remainingDuration <= 0) {
                 // Okay we're removing the instance
-                // Remove it from the combat logs
-                const logs = this.aggressionLog.get(key) as Aggression[];
+                // Remove it from our map
+                this.aggressionLog.delete(key);
+                
+                // Now clear up extras
+                const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
+                const defenderIsSecurityAndPlayerTargeted = instance.defendant == PlayerStateFactory.StationSecurity && PlayerStateFactory.isTargeted(instance.aggressor);
+                const defenderIsSecurityAndPlayerAlien = instance.defendant == PlayerStateFactory.StationSecurity && alienForce.isPlayerTransformed(instance.aggressor);
+                
+                // If the defendant is station security, we need to make sure we ARE targeted
+                if (!defenderIsSecurityAndPlayerTargeted && !defenderIsSecurityAndPlayerAlien) {
+                    // We have no more combat instances between these two players
+                    // Ally them
 
-                const idx = logs.indexOf(instance);
-                logs.splice(idx, 1);
+                    instance.aggressor.setAlliance(instance.defendant, ALLIANCE_PASSIVE, true);
+                    instance.defendant.setAlliance(instance.aggressor, ALLIANCE_PASSIVE, true);
+                    // Delete it from aggression log
 
-                this.aggressionLog.set(key, logs);
-
-                if (logs.length === 0) {
-                    const alienForce = PlayerStateFactory.getForce(ALIEN_FORCE_NAME) as AlienForce;
-
-                    const defenderIsSecurityAndPlayerTargeted = instance.defendant == PlayerStateFactory.StationSecurity && PlayerStateFactory.isTargeted(instance.aggressor);
-                    const defenderIsSecurityAndPlayerAlien = instance.defendant == PlayerStateFactory.StationSecurity && alienForce.isPlayerTransformed(instance.aggressor);
-                    
-
-                    // If the defendant is station security, we need to make sure we ARE targeted
-                    if (!defenderIsSecurityAndPlayerTargeted && !defenderIsSecurityAndPlayerAlien) {
-                        // We have no more combat instances between these two players
-                        // Ally them
-    
-                        instance.aggressor.setAlliance(instance.defendant, ALLIANCE_PASSIVE, true);
-                        instance.defendant.setAlliance(instance.aggressor, ALLIANCE_PASSIVE, true);
-                        // Delete it from aggression log
-
-                    }
-                    this.aggressionLog.delete(key);
                 }
+                this.aggressionLog.delete(key);
             }
             else {
                 nextTickLogs.push(instance);
@@ -288,7 +306,7 @@ export class ForceEntity extends Entity {
         }
 
         this.allAggressionLogs = nextTickLogs;
-        // Log.Information("Aggression Tick!");
+        }
     }
 
     private getLogKey(aggressor: MapPlayer, defendant: MapPlayer): string {
@@ -328,12 +346,12 @@ export class ForceEntity extends Entity {
         let players = GetActivePlayers();
         players.forEach(p => {
             const key = this.getLogKey(p, forPlayer);
-            const instances = this.aggressionLog.get(key);
-            if (instances) {
+            const instance = this.aggressionLog.get(key);
+            if (instance) {
                 this.aggressionLog.delete(key);
 
                 // Filter it out of the aggression logs
-                this.allAggressionLogs = this.allAggressionLogs.filter(x => instances.indexOf(x) == -1);
+                this.allAggressionLogs = this.allAggressionLogs.filter(x => x.key !== instance.key);
 
                 forPlayer.setAlliance(p, ALLIANCE_PASSIVE, true);
                 p.setAlliance(forPlayer, ALLIANCE_PASSIVE, true);

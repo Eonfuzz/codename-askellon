@@ -61,7 +61,7 @@ export class AskellonEntity extends Entity {
         const spaceY = GetRectCenterY(gg_rct_Space);
         // Unit.fromHandle(CreateUnit(PlayerStateFactory.NeutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, 45));
         this.askellonUnit = Unit.fromHandle(CreateUnit(PlayerStateFactory.NeutralPassive.handle, SHIP_MAIN_ASKELLON, spaceX, spaceY, 45));
-        this.askellonUnit.setTimeScale(0.1);
+        this.askellonUnit.setTimeScale(0.01);
     }
 
     /**

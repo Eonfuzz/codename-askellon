@@ -2431,7 +2431,7 @@ STRING 723
 }
 
 STRING 724
-// Units: ALI2 (Alien), Name (Name)
+// Units: ALI1 (Alien), Propernames (Proper Names)
 {
 Alien
 }
@@ -3139,7 +3139,7 @@ STRING 945
 }
 
 STRING 948
-// Units: N00C (Alien), Name (Name)
+// Units: ALI2 (Alien), Name (Name)
 {
 Alien
 }
@@ -3526,30 +3526,6 @@ STRING 1042
 // Abilities: A004 (Equip Weapon), Ubertip (Tooltip - Normal - Extended)
 {
 |cff627781Powered by galvanic rails, this old rifle has been in active circulation since the Yulvin succession wars. Now many corporations produce upgrades and attachments that further improve upon its baseline functionality.|r|n|nFires a short burst of six bullets |cff00ffffACCURACY-MINACCURAC|rY away. Each bullet does |cff18bc9cDAMAGE damage|r.|n|n|cffff0000If all six rounds hit the same target, this weapon will apply BREAK.|r
-}
-
-STRING 1045
-// Abilities: A01B (Oversized Weaponry), Name (Name)
-{
-Oversized Weaponry
-}
-
-STRING 1046
-// Abilities: A01B (Oversized Weaponry), Tip (Tooltip - Normal)
-{
-Oversized Autoloader
-}
-
-STRING 1047
-// Abilities: A01B (Oversized Weaponry), EditorSuffix (Editor Suffix)
-{
-[Minigun Slow]
-}
-
-STRING 1048
-// Abilities: A01B (Oversized Weaponry), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Lore TODO|r|n|nEach bullet fired increases attack speed by |cff18bc9c5%|r, |cff18bc9cstacking |rup to |cff18bc9c80%|r. The heavy loading mechanism |cffff0000passively reduces|r your movement speed by |cff18bc9c30|r.
 }
 
 STRING 1049
@@ -4135,7 +4111,7 @@ STRING 1183
 }
 
 STRING 1187
-// Units: N00S (Alien), Name (Name)
+// Units: ALI2 (Alien), Propernames (Proper Names)
 {
 Alien
 }
@@ -6028,7 +6004,7 @@ Fuller Auto
 }
 
 STRING 1587
-// Units: N012 (Alien), Name (Name)
+// Units: N00C (Alien), Name (Name)
 {
 Alien
 }
@@ -6067,24 +6043,6 @@ STRING 1604
 // Items: I00N (Corpse), Description (Description)
 {
 It's a body
-}
-
-STRING 1605
-// Abilities: A02H (Corpse Slow), Name (Name)
-{
-Corpse Slow
-}
-
-STRING 1606
-// Abilities: A02H (Corpse Slow), Tip (Tooltip - Normal)
-{
-Oversized Autoloader
-}
-
-STRING 1607
-// Abilities: A02H (Corpse Slow), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Lore TODO|r|n|nEach bullet fired increases attack speed by |cff18bc9c5%|r, |cff18bc9cstacking |rup to |cff18bc9c80%|r. The heavy loading mechanism |cffff0000passively reduces|r your movement speed by |cff18bc9c30|r.
 }
 
 STRING 1609
@@ -6369,7 +6327,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 1680
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Abilities: A01B (Mind Blast), Hotkey (Hotkey - Normal)
 {
 Q
 }
@@ -6672,7 +6630,7 @@ STRING 1733
 }
 
 STRING 1735
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 Q
 }
@@ -7358,7 +7316,7 @@ Concealing Webs
 }
 
 STRING 1900
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -8481,7 +8439,7 @@ STRING 2136
 }
 
 STRING 2137
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -9253,7 +9211,7 @@ First Ritual: Pernicious Power
 }
 
 STRING 2288
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 Q
 }
@@ -9629,5 +9587,119 @@ STRING 2355
 // Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
 {
 A
+}
+
+STRING 2356
+// Abilities: A043 (No Building Damage), Name (Name)
+{
+No Building Damage
+}
+
+STRING 2357
+// Abilities: A044 (50%  Building Damage), Name (Name)
+{
+50%  Building Damage
+}
+
+STRING 2358
+// Abilities: S001 (Chaos (Critter -> Turret)), Name (Name)
+{
+Chaos (Critter -> Turret)
+}
+
+STRING 2359
+// Abilities: S002 (Chaos (Critter -> Alien 1)), Name (Name)
+{
+Chaos (Critter -> Alien 1)
+}
+
+STRING 2360
+// Abilities: S003 (Chaos (Critter -> Alien T2 Deception)), Name (Name)
+{
+Chaos (Critter -> Alien T2 Deception)
+}
+
+STRING 2361
+// Abilities: S004 (Chaos (Critter -> Alien T2 Canite)), Name (Name)
+{
+Chaos (Critter -> Alien T2 Canite)
+}
+
+STRING 2362
+// Abilities: S005 (Chaos (Critter -> Alien T3 Roach)), Name (Name)
+{
+Chaos (Critter -> Alien T3 Roach)
+}
+
+STRING 2363
+// Abilities: S006 (Chaos (Critter -> Alien T3 Infestor)), Name (Name)
+{
+Chaos (Critter -> Alien T3 Infestor)
+}
+
+STRING 2364
+// Abilities: S007 (Chaos (Critter -> Zombie)), Name (Name)
+{
+Chaos (Critter -> Zombie)
+}
+
+STRING 2365
+// Units: N00C (Alien), Propernames (Proper Names)
+{
+Alien
+}
+
+STRING 2366
+// Units: N00S (Alien), Name (Name)
+{
+Alien
+}
+
+STRING 2367
+// Units: N00S (Alien), Propernames (Proper Names)
+{
+Alien
+}
+
+STRING 2368
+// Units: N012 (Alien), Name (Name)
+{
+Alien
+}
+
+STRING 2369
+// Units: N012 (Alien), Propernames (Proper Names)
+{
+Alien
+}
+
+STRING 2370
+// Abilities: A01B (Mind Blast), Name (Name)
+{
+Mind Blast
+}
+
+STRING 2371
+// Abilities: A01B (Mind Blast), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781A small sliver of the next step of mankind.|r|n|nDrives a spike of |cff63B7B7Psionic|r energy at the target, dealing |cff18bc9c50 |Rdamage, increased by |cff18bc9c200%|r of your Willpower|r|n|n|cff63B7B7Psionic|r: Damage dealt is increased by |cff18bc9c50%|r|n|cff627781(This ability has a bonus effect while you have resolve, or the target has Despair or Insanity)|r|n|n|cff62778130 Seconds Cooldown|r
+}
+
+STRING 2372
+// Abilities: A01B (Mind Blast), Tip (Tooltip - Normal)
+{
+Mind Blast
+}
+
+STRING 2373
+// Abilities: A01B (Mind Blast), EditorSuffix (Editor Suffix)
+{
+- Ability
+}
+
+STRING 2374
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Hotkey (Hotkey)
+{
+Q
 }
 

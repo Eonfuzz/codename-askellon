@@ -1,4 +1,4 @@
-import { FIRE_ARMOR_REDUCTION } from "resources/ability-ids";
+import { ABIL_ACCURACY_PENALTY_15, FIRE_ARMOR_REDUCTION } from "resources/ability-ids";
 import { BUFF_ID } from "resources/buff-ids";
 import { SFX_FIRE } from "resources/sfx-paths";
 import { DynamicBuff } from "../dynamic-buff-type";
@@ -53,9 +53,11 @@ export class onFire extends DynamicBuff {
     public onStatusChange(newStatus: boolean) {
         if (newStatus) {
             this.who.addAbility(FIRE_ARMOR_REDUCTION);
+            this.who.addAbility(ABIL_ACCURACY_PENALTY_15);
         }
         else {
             this.who.removeAbility(FIRE_ARMOR_REDUCTION);
+            this.who.removeAbility(ABIL_ACCURACY_PENALTY_15);
             this.fireSfx.forEach(sfx => DestroyEffect(sfx));
         }
     }

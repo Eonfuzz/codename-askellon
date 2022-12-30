@@ -123,6 +123,7 @@ export class WeaponEntity extends Entity {
 
 
     _timerDelay = 0.02;
+    // private MISSILES_PROCESSED_PER_TICK = 10;
     /**
      * Loops through and updates all projectiles
      * @param DELTA_TIME The time passed since last loop, used to get real time value of velocity
@@ -130,6 +131,8 @@ export class WeaponEntity extends Entity {
     step() {
 
         let i = 0;
+        // const toProcess = Math.min(this.projectiles.length, this.MISSILES_PROCESSED_PER_TICK);
+
         while (i < this.projectiles.length) {
             const projectile = this.projectiles[i];
             

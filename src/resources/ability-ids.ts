@@ -65,6 +65,7 @@ export const ABIL_ITEM_REPAIR = FourCC('A00J');
 export const ABIL_ITEM_TRIFEX = FourCC('A00P');
 
 export const ABIL_ACCURACY_PENALTY_30 = FourCC('A00E');
+export const ABIL_ACCURACY_PENALTY_15 = FourCC('A01B');
 export const ABIL_ACCURACY_BONUS_30 = FourCC('A00F');
 
 export const FIRE_ARMOR_REDUCTION = FourCC('AFIR');
@@ -110,6 +111,7 @@ export const GENE_INSTALL_NIGHTEYE = FourCC('A00I');
 export const ABIL_GENE_NIGHTEYE = FourCC('A033');
 export const ABIL_GENE_COSMIC = FourCC('ACSM');
 export const ABIL_GENE_XENOPHOBIC = FourCC('A01L');
+export const ABIL_GENE_PSION_SPIKE = FourCC('A01B');
 export const ABIL_GENE_REMOVE_VOCAL = FourCC('A02T');
 export const UPGR_REMOVED_VOCAL_CHORDS = FourCC('R00N');
 export const ABIL_REMOVED_VOCAL_CHORDS = FourCC('A02U');
@@ -233,3 +235,12 @@ export const ABIL_ALIEN_BROODNEST = FourCC('A02E');
 export const ABIL_ALIEN_DEFILER_INFESTATION = FourCC('A030');
 export const ABIL_ALIEN_WEBWALK = FourCC('A02G');
 export const ABIL_STATION_ALERT = FourCC('A041');
+export const ABIL_MECH_CRITTER = FourCC('Amec');
+export const ABIL_REPLACE_TURRET = FourCC('S001');
+export const ABIL_REPLACE_ZOBMIE = FourCC('S007');
+
+export const ABIL_REPLACE_ALIEN_1 = FourCC('S002');
+export const ABIL_REPLACE_ALIEN_2_CANITE = FourCC('S004');
+export const ABIL_REPLACE_ALIEN_2_DECEPTION = FourCC('S003');
+export const ABIL_REPLACE_ALIEN_3_INFESTOR = FourCC('S006');
+export const ABIL_REPLACE_ALIEN_3_ROACH = FourCC('S005');

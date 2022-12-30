@@ -20,15 +20,14 @@ import { DefaultSecurityGun } from "app/weapons/guns/security/default-security-g
 import { ArmableUnit, ArmableUnitNoCallbacks } from "app/weapons/guns/unit-has-weapon";
 import { Log } from "lib/serilog/serilog";
 import { EventListener } from "app/events/event-type";
-import { TECH_MAJOR_SECURITY, TECH_INCREASE_SECURITY_VISION_HEALTH, TECH_MINERALS_PROGRESS, TECH_CREW_ARMOR_HITPOINTS_INCREASE, TECH_MAJOR_REPAIR_TESTER } from "resources/ability-ids";
+import { TECH_MAJOR_SECURITY, TECH_INCREASE_SECURITY_VISION_HEALTH, TECH_MINERALS_PROGRESS, TECH_CREW_ARMOR_HITPOINTS_INCREASE, TECH_MAJOR_REPAIR_TESTER, ABIL_REPLACE_TURRET } from "resources/ability-ids";
 import { Players } from "w3ts/globals/index";
 import { GENETIC_FACILITY_TOOLTIP, GENETIC_FACILITY_TOOLTIP_DAMAGED } from "resources/strings";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { Vector2 } from "app/types/vector2";
 import { WorldEntity } from "app/world/world-entity";
 import { ShipZone } from "app/world/zone-types/ship-zone";
-import { PlayerState } from "app/force/player-type";
-import { COL_MISC } from "resources/colours";
+import { UnitTransformer } from "lib/unit-transformer";
 
 // const UNIT_ID_STATION_SECURITY_TURRET = FourCC('');
 const UNIT_ID_STATION_SECURITY_POWER = FourCC('nMGN');
@@ -47,6 +46,7 @@ export class SecurityEntity extends Entity {
 
     private doors = new Map<number, Door>();
     private doorsIterator: Door[] = [];
+    private transformer?: UnitTransformer;
 
     private stationSecurityDamageTrigger = new Trigger();
     constructor() {
@@ -121,7 +121,8 @@ export class SecurityEntity extends Entity {
 
     private unitIterateSetup(u: Unit) {
         const uType = u.typeId;
-        
+    
+
         // if (uType === UNIT_ID_STATION_SECURITY_TURRET) return true;
         if (uType !== UNIT_ID_STATION_SECURITY_POWER &&
             uType !== UNIT_ID_MANSION_DOOR &&
@@ -130,15 +131,6 @@ export class SecurityEntity extends Entity {
 
         this.stationSecurityDamageTrigger.registerUnitEvent(u, EVENT_UNIT_DAMAGING);
 
-        if (u.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
-            u.color = PLAYER_COLOR_LIGHT_GRAY;
-            const point = Vector2.fromWidget(u.handle);
-            const zone = WorldEntity.getInstance().getPointZone(point.x, point.y) as ShipZone || undefined;
-
-            if (zone && zone.addTurret) {
-                zone.addTurret(u);
-            }
-        }
 
         if (u.typeId === UNIT_ID_MANSION_DOOR) {
             if (!this.doors.has(u.id)) {
@@ -148,8 +140,24 @@ export class SecurityEntity extends Entity {
             }
         }
         else if (u.typeId === UNIT_ID_STATION_SECURITY_TURRET) {
+            if (!this.transformer) this.transformer = new UnitTransformer();
+            
+            let x = u.x, y = u.y, facing = u.facing;
+            u.destroy();
+            const replacementUnit = this.transformer.apply(u.owner.handle, ABIL_REPLACE_TURRET, x, y, facing);
+
+            let replacement = Unit.fromHandle(replacementUnit);
+            this.stationSecurityDamageTrigger.registerUnitEvent(replacement, EVENT_UNIT_DAMAGING);
+
+            replacement.color = PLAYER_COLOR_LIGHT_GRAY;
+            const point = Vector2.fromWidget(replacement.handle);
+            const zone = WorldEntity.getInstance().getPointZone(point.x, point.y) as ShipZone || undefined;
+
+            if (zone && zone.addTurret) {
+                zone.addTurret(replacement);
+            }
             // Add a gun to the turret
-            WeaponEntity.getInstance().registerWeaponForUnit(new DefaultSecurityGun( new ArmableUnitNoCallbacks(u) ));
+            WeaponEntity.getInstance().registerWeaponForUnit(new DefaultSecurityGun( new ArmableUnitNoCallbacks(replacement) ));
         }
 
         return false;

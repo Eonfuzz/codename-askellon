@@ -1,3 +1,15 @@
+import { ABIL_MECH_CRITTER } from "resources/ability-ids";
+
+let dummyUnit;
+
+export function GetDummyUnit() {
+    if (!dummyUnit) {
+        // Create a dummy unit for all abilities
+        dummyUnit = CreateUnit(Player(25), FourCC('dumy'), 0, 0, bj_UNIT_FACING);
+        ShowUnit(dummyUnit, false);
+    }
+    return dummyUnit; 
+}
 
 /**
  * passes the dummy unit as a parameter to the callback
@@ -6,12 +18,11 @@
  */
 export function DummyCast(callback: (dummy: unit) => void, abilityToCast: number) {
     { // DO
-        // Create a dummy unit for all abilities
-        const dummyUnit = CreateUnit(Player(25), FourCC('dumy'), 0, 0, bj_UNIT_FACING);
-        ShowUnit(dummyUnit, false);
+        const dummyUnit = GetDummyUnit();
         UnitAddAbility(dummyUnit, abilityToCast);
+        ShowUnit(dummyUnit, true);
         callback(dummyUnit);
-
-        UnitApplyTimedLife(dummyUnit, 0, 3);
+        ShowUnit(dummyUnit, false);
     } // END
 }
+

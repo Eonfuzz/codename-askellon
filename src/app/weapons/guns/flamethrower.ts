@@ -19,6 +19,7 @@ import { BUFF_ID } from "resources/buff-ids";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { GunItem } from "./gun-item";
 import { PlayerStateFactory } from "app/force/player-state-entity";
+import * as Quick from "lib/quick";
 import { ALIEN_FORCE_NAME, CULT_FORCE_NAME } from "app/force/forces/force-names";
 
 export class Flamethrower extends GunItem {
@@ -38,10 +39,13 @@ export class Flamethrower extends GunItem {
     private BASE_DPS = 85;
     private DAMAGE_PER_HIT = this.BASE_DPS * this.FIRE_TICK_RATE;
 
+    private unitsHitMap = new Map<number, number>();
+    private unitsHit = [];
+
     constructor(item: item, equippedTo: ArmableUnitWithItem) {
         super(item, equippedTo);
         // Define spread and bullet distance
-        this.spreadAOE = 50;
+        this.spreadAOE = 300;
         this.bulletDistance = 750;
     }
 
@@ -59,6 +63,10 @@ export class Flamethrower extends GunItem {
     public onShoot(unit: Unit, targetLocation: Vector3): void {
         super.onShoot(unit, targetLocation);
 
+        // Clear the units hit array
+        this.unitsHitMap = new Map();
+        this.unitsHit = []; 
+
         this.duration = this.maxDuration;
         this.flamerSound.playSoundOnUnit(unit.handle, 60);
 
@@ -67,7 +75,6 @@ export class Flamethrower extends GunItem {
 
         const targetLoc = new Vector3(this.deltaLoc.x + casterLoc.x, this.deltaLoc.y + casterLoc.y, targetLocation.z);
 
-        this.shootTimer.start(this.FACING_TICK_RATE, true, () => this.updateFacing())
 
         const uLoc = Vector3.fromWidget(unit.handle);
         const dLoc = targetLoc.subtract(uLoc);
@@ -87,18 +94,6 @@ export class Flamethrower extends GunItem {
         });
     };
 
-    // Updates our target location based on facing
-    private updateFacing() {
-        if (!this || !this.equippedTo || !this.equippedTo.unit) return;
-
-
-        // const uLoc = Vector3.fromWidget(unit.handle);
-        // const dLoc = this.targetLoc.subtract(uLoc);
-
-        // SetUnitLookAt(unit.handle, "bone_turret", unit.handle, dLoc.x, dLoc.y, 0);
-        // unit.setAnimation(1);
-    }
-
     private fireProjectile(unit: Unit) {
         this.duration -= this.FIRE_TICK_RATE;
 
@@ -106,6 +101,12 @@ export class Flamethrower extends GunItem {
         if (this.duration <= 0) {
             return this.onStopShooting();
         }
+
+        for (let index = 0; index < this.unitsHit.length; index++) {
+            const element = this.unitsHit[index];
+            this.unitsHitMap.set(element, this.unitsHitMap.get(element) - this.FIRE_TICK_RATE);
+        }
+        
             
         let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)+10).projectTowardsGunModel(unit.handle);
         const targetLoc = new Vector3(casterLoc.x + this.deltaLoc.x, casterLoc.y + this.deltaLoc.y, casterLoc.z);
@@ -122,9 +123,15 @@ export class Flamethrower extends GunItem {
         );
         projectile
             .setCollisionRadius(25)
-            .onCollide((projectile: Projectile, collidesWith: unit) => 
-                this.onProjectileCollide(projectile, collidesWith)
-            )
+            .onCollide((projectile: Projectile, collidesWith: unit) => {
+                const h = GetHandleId(collidesWith);
+                const t = this.unitsHitMap.get(h);
+                if (t === undefined || t  <= 0) {
+                    this.onProjectileCollide(projectile, collidesWith);
+                    return true;
+                }
+                return false;
+            })
             
         projectile.addEffect(
             SFX_FIRE,
@@ -188,6 +195,8 @@ export class Flamethrower extends GunItem {
 
             const owningPlayer = MapPlayer.fromHandle(GetOwningPlayer(collidesWith));
             const pData = PlayerStateFactory.get(owningPlayer);
+            const collidingUnit = Unit.fromHandle(collidesWith);
+            const isMechanical = collidingUnit.isUnitType(UNIT_TYPE_MECHANICAL);
 
             let damageMult = 1;
 
@@ -205,6 +214,14 @@ export class Flamethrower extends GunItem {
             ) {
                 damageMult = 1.5;
             }
+
+            // Reduced damage to mechanical
+            if (isMechanical) damageMult = damageMult * 0.4;
+
+            if (!this.unitsHitMap.has(collidingUnit.id)) {
+                this.unitsHit.push(collidingUnit.id);
+            }
+            this.unitsHitMap.set(collidingUnit.id, 1);
 
             UnitDamageTarget(
                 projectile.source, 
@@ -227,10 +244,12 @@ export class Flamethrower extends GunItem {
                 this.equippedTo.unit.owner, MapPlayer.fromHandle(GetOwningPlayer(collidesWith)
             ));
                 
-            DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
-                Unit.fromHandle(collidesWith), 
-                new BuffInstanceDuration(this.equippedTo.unit, 10)
-            );
+            if (!isMechanical) {
+                DynamicBuffEntity.getInstance().addBuff(BUFF_ID.FIRE, 
+                    collidingUnit, 
+                    new BuffInstanceDuration(this.equippedTo.unit, 10)
+                );
+            }
         }
     }
 
@@ -245,7 +264,7 @@ export class Flamethrower extends GunItem {
 
     protected getTooltip(unit: Unit) {
         const damage = this.getDamage(unit);
-        const newTooltip = FLAME_THROWER_EXTENDED(damage / this.FIRE_TICK_RATE);
+        const newTooltip = FLAME_THROWER_EXTENDED(damage);
         return newTooltip;
     }
 
@@ -257,12 +276,16 @@ export class Flamethrower extends GunItem {
     }
 
     protected getAccuracy(caster: Unit) {
-        const accuracy = super.getAccuracy(caster);
-        return accuracy < 100 ? 100 : accuracy;
+        let accuracy = super.getAccuracy(caster);
+        if (accuracy < 100) {
+            return accuracy + (100 - accuracy) / 2
+        }
+        return accuracy;
     }
+    
 
     public getDamage(unit: Unit): number {
-        return MathRound( this.DAMAGE_PER_HIT * this.getDamageBonusMult());
+        return MathRound( this.BASE_DPS * this.getDamageBonusMult());
     }
 
     public getAbilityId() { return ABIL_WEP_FLAMETHROWER; }

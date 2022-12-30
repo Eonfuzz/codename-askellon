@@ -7,7 +7,7 @@ import { SHOTGUN_EXTENDED, SHOTGUN_ITEM } from "../../../resources/weapon-toolti
 import { PlayNewSoundOnUnit, staticDecorator } from "../../../lib/translators";
 import { ArmableUnit, ArmableUnitWithItem } from "./unit-has-weapon";
 import { SHOTGUN_ABILITY_ID, SHOTGUN_ITEM_ID } from "../weapon-constants";
-import { getPointsInRangeWithSpread, getZFromXY } from "lib/utils";
+import { getPointsInRangeWithSpread, getZFromXY, MessageAllPlayers } from "lib/utils";
 import { MapPlayer, Unit } from "w3ts/index";
 import { SFX_SHOCKWAVE } from "resources/sfx-paths";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
@@ -29,6 +29,8 @@ export class Shotgun extends GunItem {
         // Define spread and bullet distance
         this.spreadAOE = 240;
         this.bulletDistance = 240;
+
+        // MessageAllPlayers("New Shotugn!");
     }
 
     public applyWeaponAttackValues(unit: Unit) {
@@ -45,10 +47,47 @@ export class Shotgun extends GunItem {
     public onShoot(unit: Unit, targetLocation: Vector3): void {
         super.onShoot(unit, targetLocation);
 
+        // Clear units hit
+        this.unitsHit.clear();
+
+        const sound = PlayNewSoundOnUnit("Sounds\\ShotgunShoot.mp3", unit, 50);
+        const NUM_BULLETS = 6;
+
+        let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
+        const angleDeg = casterLoc.angle2Dto(targetLocation);
+
+        const deltaLocs = getPointsInRangeWithSpread(
+            angleDeg - 18,
+            angleDeg + 18,
+            NUM_BULLETS,
+            this.bulletDistance,
+            1.3
+        );
+
+        const centerTargetLoc = casterLoc.projectTowards2D(angleDeg, this.bulletDistance*1.9);
+        centerTargetLoc.z = getZFromXY(centerTargetLoc.x, centerTargetLoc.y);
+
+        // Do nothing if the central projectile hits
+        this.fireProjectile(unit, centerTargetLoc, true);
+        
+        deltaLocs.forEach((loc, index) => {
+            const nX = casterLoc.x + loc.x;
+            const nY = casterLoc.y + loc.y;
+            const targetLoc = new Vector3(nX, nY, getZFromXY(nX, nY));
+            this.fireProjectile(unit, targetLoc, false)
+        });
+
+        Timers.addTimedAction(1.6, () => {
+            if (this.equippedTo && this.equippedTo.unit) {
+                KillSoundWhenDone( PlayNewSoundOnUnit("Sounds\\ShotgunPump.wav", this.equippedTo.unit, 30) );
+            }
+        })
     };
 
     protected fireProjectile(unit: Unit, targetLocation: Vector3, isCentralProjectile: boolean): void {
         // print("Target "+targetLocation.toString())
+        // MessageAllPlayers("Shotgun Shoot!!");
+
         let casterLoc = new Vector3(unit.x, unit.y, getZFromXY(unit.x, unit.y)).projectTowardsGunModel(unit.handle);
         let deltaTarget = targetLocation.subtract(casterLoc);
 
