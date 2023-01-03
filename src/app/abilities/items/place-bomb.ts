@@ -1,5 +1,5 @@
 import { AbilityWithDone } from "../ability-type";
-import { Effect, Group, Item, MapPlayer, Unit } from "w3ts/index";
+import { Effect, getElapsedTime, Group, Item, MapPlayer, Unit } from "w3ts/index";
 import { ITEM_GENETIC_SAMPLE, ITEM_GENETIC_SAMPLE_INFESTED, ITEM_MINERAL_REACTIVE, ITEM_MINERAL_VALUABLE, ITEM_REMOTE_BOMB } from "resources/item-ids";
 import { Vector2 } from "app/types/vector2";
 import { ConveyorEntity } from "app/conveyor/conveyor-entity";
@@ -16,7 +16,6 @@ import { SFX_BLUE_BALL } from "resources/sfx-paths";
 import { FilterAnyUnit, FilterIsAlive } from "resources/filters";
 import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 export class PlaceBombAbility extends AbilityWithDone {
 
@@ -69,7 +68,7 @@ export class PlaceBombAbility extends AbilityWithDone {
         }
 
 
-        this.placementTimestamp = GameTimeElapsed.getTime();
+        this.placementTimestamp = getElapsedTime();
 
         // Now add mouse hook
         const cbCont = InputManager.addMouseReleaseCallback(MOUSE_BUTTON_TYPE_LEFT, key => {
@@ -136,7 +135,7 @@ export class PlaceBombAbility extends AbilityWithDone {
     };
 
     private onClick() {
-        if (GameTimeElapsed.getTime() - this.placementTimestamp <= 3) return;
+        if (getElapsedTime() - this.placementTimestamp <= 3) return;
 
         // We are exploding, Remove the callbacks
         InputManager.removeMouseCallback(this.mouseHook);

@@ -1,7 +1,7 @@
 import { SoundRef } from "../../types/sound-ref";
 import { ABIL_APPLY_MADNESS } from "resources/ability-ids";
 import { BUFF_ID, BUFF_ID_DESPAIR, BUFF_ID_PURITY_SEAL, BUFF_ID_MADNESS } from "resources/buff-ids";
-import { Unit, MapPlayer, Effect } from "w3ts/index";
+import { Unit, MapPlayer, Effect, getElapsedTime } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
@@ -15,7 +15,6 @@ import { Projectile } from "app/weapons/projectile/projectile";
 import { Vector3 } from "app/types/vector3";
 import { getZFromXY } from "lib/utils";
 import { ProjectileTargetStatic } from "app/weapons/projectile/projectile-target";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 import { Quick } from "lib/Quick";
 import { FogEntity } from "app/vision/fog-entity";
 import { SFX_BURNING_RAGE_PURPLE } from "resources/sfx-paths";
@@ -213,7 +212,7 @@ export class Madness extends DynamicBuff {
                 .onCollide((projectile, who) => true)
                 .onDeath((projectile: Projectile) => {
                     const lifeTime = this && this.projectileTimestamp && this.projectileTimestamp.get(projectile);
-                    if (lifeTime && (GameTimeElapsed.getTime() - lifeTime) <= 10) {
+                    if (lifeTime && (getElapsedTime() - lifeTime) <= 10) {
                         return false;
                     }
                     else {
@@ -234,7 +233,7 @@ export class Madness extends DynamicBuff {
                     new Vector3(0, 0, 0), deltaTarget.normalise(), 
                     0.8
                 );
-                this.projectileTimestamp.set(projectile, GameTimeElapsed.getTime());
+                this.projectileTimestamp.set(projectile, getElapsedTime());
                 BlzSetSpecialEffectColorByPlayer(sfx,  MapPlayer.fromIndex(GetRandomInt(0, 12)).handle);
                 BlzPlaySpecialEffect(sfx, ANIM_TYPE_WALK);
                 EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: this.who, data: { projectile: projectile }});
@@ -251,7 +250,7 @@ export class Madness extends DynamicBuff {
                 .onCollide((projectile, who) => true)
                 .onDeath((projectile: Projectile) => {
                     const lifeTime = this && this.projectileTimestamp && this.projectileTimestamp.get(projectile);
-                    if (lifeTime && (GameTimeElapsed.getTime() - lifeTime) <= 10) {
+                    if (lifeTime && (getElapsedTime() - lifeTime) <= 10) {
                         return false;
                     }
                     else {
@@ -272,7 +271,7 @@ export class Madness extends DynamicBuff {
                     new Vector3(0, 0, 0), new Vector3(GetRandomReal(-1, 1), GetRandomReal(-1, 1), 0), 
                     0.8
                 );
-                this.projectileTimestamp.set(projectile, GameTimeElapsed.getTime());
+                this.projectileTimestamp.set(projectile, getElapsedTime());
                 BlzSetSpecialEffectColorByPlayer(sfx,  MapPlayer.fromIndex(GetRandomInt(0, 12)).handle);
                 BlzPlaySpecialEffect(sfx, ANIM_TYPE_STAND);
                 EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: this.who, data: { projectile: projectile }});

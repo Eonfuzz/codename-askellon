@@ -655,4 +655,8 @@ export class ChatEntity extends Entity {
         this.postMessageFor([player], name, COL_MISC_MESSAGE, `${message}|r`);
     }
 
+    public static postMessageFor(players: MapPlayer[], fromName: string, color: string, message: string, messageTag?: string, sound?: SoundWithCooldown) {
+        this.getInstance().postMessageFor(players, fromName, color, message, messageTag, sound);
+    }
+
 }

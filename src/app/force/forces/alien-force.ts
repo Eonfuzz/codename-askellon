@@ -5,7 +5,7 @@ import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPG
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { PlayNewSound } from "lib/translators";
-import { Trigger, MapPlayer, Unit, playerColors } from "w3ts";
+import { Trigger, MapPlayer, Unit, playerColors, getElapsedTime } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
@@ -33,7 +33,6 @@ import { CrewmemberForce } from "./crewmember-force";
 import { MessagePlayer, MessageAllPlayers, CreateBlood, getRectsGivenNamespace } from "lib/utils";
 import { Quick } from "lib/Quick";
 import { UPGR_DUMMY_IS_ALIEN_HOST } from "resources/upgrade-ids";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 import { UnitTransformer } from "lib/unit-transformer";
 
 
@@ -358,7 +357,7 @@ export class AlienForce extends ForceType {
                 this.repickHost();
             }
             // Otherwise if the game time is less than five minutes, pick a new host
-            else if (this.players.length === 0 && GameTimeElapsed.getTime() <= 8*60) {
+            else if (this.players.length === 0 && getElapsedTime() <= 8*60) {
                 const crewForce = PlayerStateFactory.getForce(CREW_FORCE_NAME) as CrewmemberForce;
                 if (crewForce.getPlayers().length > 1) {
                     Timers.addTimedAction(10, () => {

@@ -1,6 +1,5 @@
 import { Trigger, MapPlayer, Timer, Effect, playerColors } from "w3ts";
 import { Log } from "lib/serilog/serilog";
-import { GameTimeElapsed } from "./types/game-time-elapsed";
 import { SoundRef } from "./types/sound-ref";
 import { ZONE_TYPE } from "./world/zone-id";
 import { SFX_PORTAL, SFX_BLACK_HOLE } from "resources/sfx-paths";
@@ -47,6 +46,7 @@ import { BootAbilityHooks } from "./abilities/ability-hooks-boot";
 import { BootAbilityHooks2 } from "./abilities/ability-hooks-boot-2";
 import { Ability } from "./abilities/ability-type";
 import { EVENT_TYPE } from "./events/event-enum";
+import { IntroCinematic } from "./cinematics/intro-cinematic";
 
 export class Game {
     private static instance: Game;
@@ -60,6 +60,8 @@ export class Game {
     }
 
     public stationSecurity: any;
+    
+    private introCinematic = new IntroCinematic();
 
     constructor() {
         // Load the UI
@@ -82,18 +84,18 @@ export class Game {
         SuspendTimeOfDay(true);
         
         
+        EnableUserUI(false);
         CinematicFilterGenericBJ(5, BLEND_MODE_NONE, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0, 0, 0 ,0 ,0);
         DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 5, `Loading, please wait`);
         // Cinematic
     }
 
-    public startGame() {     
+    public async startGame() {     
         BlzFrameSetAllPoints(BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME, 0), BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0));
         BlzFrameSetVisible(BlzGetFrameByName("ConsoleUIBackdrop",0), false);   
         BlzHideOriginFrames(true);
 
         InputManager.getInstance();
-        GameTimeElapsed.getInstance();
         // Load our helper objects
         // Load order is VERY important
         EventEntity.getInstance();
@@ -141,11 +143,21 @@ export class Game {
 
         SpaceEntity.getInstance().initShips();
 
+        PlayerStateFactory.getInstance();
+
+
+        await this.introCinematic.setupIntro();
+
         // Init chat
         ChatEntity.getInstance().initialise();
 
         // Start role selection
         ForceEntity.getInstance().getOpts((optResults) => this.postOptResults(optResults));
+
+        await this.introCinematic.intro();
+
+
+
         
         // listen to hatchery death event
         EventEntity.listen(EVENT_TYPE.EV_HATCHERY_DEATH, () => {
@@ -174,7 +186,7 @@ export class Game {
 
     postOptResults(optResults: OptResult[]) {
         try {
-
+            this.introCinematic.introInteriorCinematic();
             // Init forces
             ForceEntity.getInstance().initForcesFor(optResults);       
 

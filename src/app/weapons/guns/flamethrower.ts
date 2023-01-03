@@ -35,9 +35,9 @@ export class Flamethrower extends GunItem {
     private shootTimer = new Timer();
 
     private FIRE_TICK_RATE = 0.07;
-    private FACING_TICK_RATE = 0.05;
+    private DAMAGE_TICK_RATE = 0.5;
     private BASE_DPS = 85;
-    private DAMAGE_PER_HIT = this.BASE_DPS * this.FIRE_TICK_RATE;
+    private DAMAGE_PER_HIT = this.BASE_DPS * this.DAMAGE_TICK_RATE;
 
     private unitsHitMap = new Map<number, number>();
     private unitsHit = [];
@@ -51,7 +51,7 @@ export class Flamethrower extends GunItem {
 
     public applyWeaponAttackValues(unit: Unit) {
         BlzSetUnitWeaponIntegerField(this.equippedTo.unit.handle, UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, 5);
-        this.equippedTo.unit.setBaseDamage(MathRound(this.getDamage(unit) / this.FIRE_TICK_RATE - 1), 0);
+        this.equippedTo.unit.setBaseDamage(MathRound(this.getDamage(unit) / this.DAMAGE_TICK_RATE - 1), 0);
         unit.acquireRange = this.bulletDistance * 0.8;
         BlzSetUnitWeaponRealField(this.equippedTo.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, this.bulletDistance * 0.7);
         unit.setAttackCooldown( 
@@ -221,7 +221,7 @@ export class Flamethrower extends GunItem {
             if (!this.unitsHitMap.has(collidingUnit.id)) {
                 this.unitsHit.push(collidingUnit.id);
             }
-            this.unitsHitMap.set(collidingUnit.id, 1);
+            this.unitsHitMap.set(collidingUnit.id, this.DAMAGE_TICK_RATE);
 
             UnitDamageTarget(
                 projectile.source, 
@@ -272,7 +272,7 @@ export class Flamethrower extends GunItem {
 
     protected getItemTooltip(unit: Unit): string {
         const damage = this.getDamage(unit);
-        return FLAME_THROWER_ITEM(this, damage);
+        return FLAME_THROWER_ITEM(this, damage / this.DAMAGE_TICK_RATE);
     }
 
     protected getAccuracy(caster: Unit) {
@@ -285,7 +285,7 @@ export class Flamethrower extends GunItem {
     
 
     public getDamage(unit: Unit): number {
-        return MathRound( this.BASE_DPS * this.getDamageBonusMult());
+        return MathRound( this.DAMAGE_PER_HIT * this.getDamageBonusMult());
     }
 
     public getAbilityId() { return ABIL_WEP_FLAMETHROWER; }

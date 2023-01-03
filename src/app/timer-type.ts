@@ -1,5 +1,7 @@
 import { Log } from "lib/serilog/serilog";
 import { Hooks } from "lib/Hooks";
+import { Trigger } from "w3ts";
+import { Quick } from "lib/Quick";
 
 /**
  * Provides timers for other classes,
@@ -19,49 +21,51 @@ export class Timers {
     }
 
     private fastTimerCallbacks: Function[] = [];
-    private readonly fastTimer: trigger;
+    private readonly fastTimer: Trigger;
 
-    private timedActionCallbacks: {time: number, action: Function}[] = [];
+    private timedActionCallbacks: {time: number, action: Function, name?: string}[] = [];
 
     
-    private readonly slowTimer: trigger;
-    private slowTimedActionCallbacks: {time: number, action: Function}[] = [];
+    private readonly slowTimer: Trigger;
+    private slowTimedActionCallbacks: {time: number, action: Function, name?: string}[] = [];
 
     private constructor() {
-        this.fastTimer = CreateTrigger();
-        TriggerRegisterTimerEvent(this.fastTimer, 0.01, true);
-        TriggerAddAction(this.fastTimer, () => {
-            this.fastTimerCallbacks.forEach((callback) => {
+        this.fastTimer = new Trigger();
+        this.fastTimer.registerTimerEvent(0.01, true);
+        this.fastTimer.addAction(() => {
+            // Iterate our core modules first
+            for (let index = 0; index < this.fastTimerCallbacks.length; index++) {
+                const callback = this.fastTimerCallbacks[index];
                 try {
                     callback();
                 }
                 catch (e) {
-                    Log.Error(e);
+                    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `err: ${e}`);
+                    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, debug.traceback());
                 }
-            });
-            
-            let i = 0;
-            while (i < this.timedActionCallbacks.length) {
-               this.timedActionCallbacks[i].time -= 0.01;
-               if (this.timedActionCallbacks[i].time <= 0) {
-                   try {
-                        this.timedActionCallbacks[i].action();
-                        this.timedActionCallbacks[i] = this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
-                        delete this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
+            }
+
+            // Iterate timed callbacks
+            for (let index = 0; index < this.timedActionCallbacks.length; index++) {
+                const item = this.timedActionCallbacks[index];
+                item.time -= 0.01;
+
+                if (item.time <= 0) {
+                    try {
+                        item.action();
                     }
                     catch (e) {
-                        Log.Error(`FastTimer ${e}`);
-                        delete this.timedActionCallbacks[this.timedActionCallbacks.length - 1];
+                        DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `err: ${e}`);
+                        DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, debug.traceback());
                     }
-               } 
-               else {
-                   i++;
-               }
+                    Quick.Slice(this.timedActionCallbacks, index--);
+                }  
             }
         });
-        this.slowTimer = CreateTrigger();
-        TriggerRegisterTimerEvent(this.slowTimer, 1, true);
-        TriggerAddAction(this.slowTimer, () => {
+
+        this.slowTimer = new Trigger();
+        this.slowTimer.registerTimerEvent(1, true);
+        this.slowTimer.addAction(() => {
             let i = 0;
             while (i < this.slowTimedActionCallbacks.length) {
                this.slowTimedActionCallbacks[i].time -= 1;
@@ -94,14 +98,17 @@ export class Timers {
         return Timers.getInstance().addFastTimerCallback(func);
     }
 
-    public static addTimedAction(time: number, action: Function) {
-        return Timers.getInstance().timedActionCallbacks.push({ time, action });
+    public static addTimedAction(time: number, action: Function, name?: string) {
+        return Timers.getInstance().timedActionCallbacks.push({ time, action, name });
     }
 
-    public static async awaitTime(time: number) {
-        return new Promise<void>(resolve => {
-            Timers.getInstance().timedActionCallbacks.push({ time, action: () => resolve() })
-        });
+    public static async wait(time: number, debugName?: string) {
+        // if (debugName) DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, debugName+": added");
+        return await new Promise<void>(r => this.addTimedAction(time, () => {
+            // if (debugName) DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, debugName+": resolving");
+            r();
+            // if (debugName) DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, debugName+": resolved");
+        }, debugName));
     }
 
     /**

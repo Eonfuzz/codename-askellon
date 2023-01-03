@@ -142,7 +142,7 @@ export function compileMap(config: IProjectConfig) {
 
   try {
     let contents = moveModulesToMain(fs.readFileSync(mapLua).toString(), fs.readFileSync(tsLua).toString());
-    contents = prependPairsReplace(contents);
+    // contents = prependPairsReplace(contents);
     contents = processScriptIncludes(contents);
 
     if (config.minifyScript) {
@@ -192,40 +192,40 @@ export const logger = createLogger({
 function moveModulesToMain(mapScript: string, tsScript: string) {
   // console.log(mapScript);
   mapScript = mapScript.replace(`\nInitCustomTriggers()`, `\n${tsScript}\nInitCustomTriggers()`);
-  mapScript = mapScript.replace(`return require("src.main")`, `require("src.main")`);
+  mapScript = mapScript.replace(`return require("src.main", ...)`, `require("src.main")`);
   return mapScript;
 }
 
-/**
- * A hacky thing to change how pairs work
- * @param mapScript 
- */
-function prependPairsReplace(mapScript: string) {
-  const luaString = `
-  local debugTextString = ""
-do
-  oldPairs = pairs
-  local _k = {}
-  local i
-  local t
-  local function iter()
-      i = i + 1
-      if _k[i] then
-          local val = _k[i]
-          _k[i] = nil
-          return val, t[val]
-      end
-  end
-  function pairs(tab, s)
-      t = tab
-      for k in oldPairs(tab) do
-          _k[#_k+1] = k
-      end
-      table.sort(_k, s)
-      i = 0
-      return iter
-  end
-end
-`;
-  return luaString+mapScript;
-}
+// /**
+//  * A hacky thing to change how pairs work
+//  * @param mapScript 
+//  */
+// function prependPairsReplace(mapScript: string) {
+//   const luaString = `
+//   local debugTextString = ""
+// do
+//   oldPairs = pairs
+//   local _k = {}
+//   local i
+//   local t
+//   local function iter()
+//       i = i + 1
+//       if _k[i] then
+//           local val = _k[i]
+//           _k[i] = nil
+//           return val, t[val]
+//       end
+//   end
+//   function pairs(tab, s)
+//       t = tab
+//       for k in oldPairs(tab) do
+//           _k[#_k+1] = k
+//       end
+//       table.sort(_k, s)
+//       i = 0
+//       return iter
+//   end
+// end
+// `;
+//   return luaString+mapScript;
+// }

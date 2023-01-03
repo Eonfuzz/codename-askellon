@@ -1,7 +1,6 @@
-import { Unit } from "w3ts/index";
+import { getElapsedTime, Unit } from "w3ts/index";
 import { BuffInstance } from "./buff-instance-type";
 import { Game } from "app/game";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 export class BuffInstanceDuration extends BuffInstance {
     endTimestamp: number;
@@ -9,7 +8,7 @@ export class BuffInstanceDuration extends BuffInstance {
     constructor(source: Unit, dur: number) {
         super(source);
 
-        this.endTimestamp = GameTimeElapsed.getTime() + dur;
+        this.endTimestamp = getElapsedTime() + dur;
     }
 
     public isActive(currentTimeStamp: number) {

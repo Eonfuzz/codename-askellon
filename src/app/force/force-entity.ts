@@ -1,6 +1,6 @@
 import { Log } from "../../lib/serilog/serilog";
 import { ForceType } from "./forces/force-type";
-import { Trigger, MapPlayer, playerColors } from "w3ts";
+import { Trigger, MapPlayer, playerColors, getElapsedTime } from "w3ts";
 import { STR_OPT_CULT, STR_OPT_ALIEN, STR_OPT_HUMAN } from "resources/strings";
 import { SoundRef } from "app/types/sound-ref";
 import { Aggression } from "./alliance/aggression-type";
@@ -8,7 +8,6 @@ import { Entity } from "app/entity-type";
 import { EventListener } from "app/events/event-type";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { OptResult, OptSelection } from "./opt/opt-selection-factory";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 // Entities and factories
 import { EventEntity } from "app/events/event-entity";
@@ -211,7 +210,7 @@ export class ForceEntity extends Entity {
                     id: this.aggressionId++,
                     aggressor: player1,
                     defendant: player2,
-                    timeStamp: GameTimeElapsed.getTime(),
+                    timeStamp: getElapsedTime(),
                     remainingDuration: newItemDuration,
                     key: key
                 };
@@ -230,7 +229,7 @@ export class ForceEntity extends Entity {
             }
             else if (existingLog.remainingDuration < newItemDuration) {
                 existingLog.remainingDuration = newItemDuration;
-                existingLog.timeStamp = GameTimeElapsed.getTime();
+                existingLog.timeStamp = getElapsedTime();
             }
 
             return true;
@@ -573,10 +572,10 @@ export class ForceEntity extends Entity {
 
         const timerTrig = new Trigger();
 
-        // const timerDialog = CreateTimerDialog(timer);
-        // TimerDialogDisplay(timerDialog, true);
+        const timerDialog = CreateTimerDialog(timer);
+        TimerDialogDisplay(timerDialog, true);
         timerTrig.addAction(() => {
-            // TimerDialogDisplay(timerDialog, false);
+            TimerDialogDisplay(timerDialog, false);
             const results = optSelection.endOptSelection();
             callback(results);
         });

@@ -1,7 +1,7 @@
 import { InteractionEvent } from "./interaction-event";
 import { initElevators, initHatches } from "./interactables/elevator";
 import { SMART_ORDER_ID, MOVE_ORDER_ID } from "resources/ability-ids";
-import { Trigger, Unit, Timer } from "w3ts";
+import { Trigger, Unit, Timer, getElapsedTime } from "w3ts";
 import { initVendingInteraction } from "./interactables/vendor";
 import { Log } from "lib/serilog/serilog";
 import { Entity } from "app/entity-type";
@@ -10,7 +10,6 @@ import { Hooks } from "lib/Hooks";
 import { InitMiningInteraction } from "./interactables/ships/mining";
 import { initShipInteractions } from "./interactables/ships/ship";
 import { initAskellonInteractions } from "./interactables/ships/askellon-landing";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 import { EventListener } from "app/events/event-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
@@ -89,8 +88,6 @@ export class InteractionEntity extends Entity {
             const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
             const targetUnitType = targetUnit.typeId;
 
-            // Log.Information("BEING INTERACT TRACKING");
-
             // First of all make sure we don't have one already
             const foundMatch = this.interactions.find(i => i.unit === trigUnit && i.targetUnit === targetUnit);
             if (foundMatch) {
@@ -103,6 +100,7 @@ export class InteractionEntity extends Entity {
             // Check to see if we have it in our interactable data
             const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
+            // Log.Information("Check conds");
             if (interact && (!interact.condition || interact.condition(trigUnit, targetUnit))) {
                 const interactionTime = interact.getInteractionTime !== undefined
                     ? interact.getInteractionTime(trigUnit, targetUnit) : 1.3;
@@ -144,7 +142,7 @@ export class InteractionEntity extends Entity {
     }
 
     private checkCooldown(who: Unit) {
-        const ourGameTime = GameTimeElapsed.getTime();
+        const ourGameTime = getElapsedTime();
         const lastInteraction = this.unitInteractionTimeStamp.get(who.id) || 0;
 
         return (ourGameTime - lastInteraction) >= 3;
@@ -153,7 +151,7 @@ export class InteractionEntity extends Entity {
     private setInteractTimeStamp(who: Unit) {
         if (PlayerStateFactory.isAlienAI(who.owner)) return;
         
-        const ourGameTime = GameTimeElapsed.getTime();
+        const ourGameTime = getElapsedTime();
         this.unitInteractionTimeStamp.set(who.id, ourGameTime);
     }
 }

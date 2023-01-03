@@ -1,10 +1,9 @@
 import { BuffInstance } from "../buff-instance-type";
 import { SoundRef } from "../../types/sound-ref";
 import { BUFF_ID } from "resources/buff-ids";
-import { Unit } from "w3ts/index";
+import { getElapsedTime, Unit } from "w3ts/index";
 import { DynamicBuff } from "../dynamic-buff-type";
 import { BuffInstanceDuration } from "../buff-instance-duration-type";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 
 /**
@@ -34,7 +33,7 @@ export class flashFreeze extends DynamicBuff {
         if (!isNegativeInstance) {
             if (instance instanceof BuffInstanceDuration) {
                 const i = instance as BuffInstanceDuration;
-                const duration = i.endTimestamp - GameTimeElapsed.getTime();
+                const duration = i.endTimestamp - getElapsedTime();
                 this.remainingDuration = (duration > this.remainingDuration) 
                     ? duration 
                     : this.remainingDuration;

@@ -1,6 +1,5 @@
-import { GameTimeElapsed } from "./game-time-elapsed";
 import { getZFromXY } from "lib/utils";
-import { MapPlayer } from "w3ts/index";
+import { getElapsedTime, MapPlayer } from "w3ts/index";
 
 export class SoundRef {
     public sound: sound;
@@ -98,7 +97,7 @@ export class SoundWithCooldown extends SoundRef {
      * @param currentTime 
      */
     public canPlaySound() {
-        const currentTime = GameTimeElapsed.getTime();
+        const currentTime = getElapsedTime();
         const doPlaySound = !this.timePlayed || ((currentTime - this.timePlayed) > this.cooldown);
 
         if (doPlaySound) {

@@ -39,7 +39,7 @@ export class SyncSaveLoad {
         let assemble = "";
         let noOfChunks = math.ceil(toCompile.length / chunkSize);
 
-        xpcall(() => {
+        // xpcall(() => {
             for (let i = 0; i < toCompile.length; i++) {
                 assemble += toCompile.charAt(i);
                 if (assemble.length >= chunkSize) {
@@ -53,7 +53,7 @@ export class SyncSaveLoad {
                 Preload(`")\ncall BlzSendSyncData("${this.syncPrefix}","${header + assemble}")\ncall S2I("`);
                 //Final curtain call
             }
-        }, Log.Error);
+        // }, Log.Error);
         PreloadGenEnd(filename);
     }
 
@@ -78,7 +78,7 @@ export class SyncSaveLoad {
     }
 
     private onSync() {
-        xpcall(() => {
+        // xpcall(() => {
 
             const readData = BlzGetTriggerSyncData();
             let totalChunkSize = EncodingHex.ToNumber(readData.substr(0, 8));
@@ -99,7 +99,7 @@ export class SyncSaveLoad {
             } else {
                 Log.Warning(`Syncronised data in ${SyncSaveLoad.name} when there is no promise present for player: ${GetPlayerName(GetTriggerPlayer())}`);
             }
-        }, Log.Error);
+        // }, Log.Error);
     }
 }
 

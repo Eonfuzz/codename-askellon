@@ -53,7 +53,6 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
       continue;
     }
   }
-  
 
   const result = map.save();
 
@@ -61,11 +60,10 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
     logger.error("Failed to save archive.");
     return;
   }
-  else {
-    logger.info("Saved archive");
-  }
 
   fs.writeFileSync(output, new Uint8Array(result));
+
+  logger.info("Finished!");
 
 }
 

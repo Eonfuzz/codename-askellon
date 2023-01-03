@@ -25,9 +25,9 @@ export class InputManagerKeyboardHandler {
                     if ((isDown && callback.pressType == PressType.PRESS)
                         || (!isDown && callback.pressType == PressType.RELEASE)) {
                         callback.triggeringPlayer = GetTriggerPlayer();
-                        xpcall(() => {
+                        // xpcall(() => {
                             callback.callback(callback);
-                        }, Log.Error);
+                        // }, Log.Error);
                     }
                 }
             }

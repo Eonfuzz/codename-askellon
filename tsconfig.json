@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "allowJs": true,
     "target": "es6",
     "lib": [
-      "ESNext"
+      "es6"
     ],
     "moduleResolution": "classic",
     "paths": {
@@ -54,12 +54,6 @@
     "luaLibImport": "require",
     "noImplicitSelf": true,
     "luaBundle": "dist/tstl_output.lua",
-    "luaBundleEntry": "./src/main.ts",
-    "sourceMapTraceback": false,
-    "luaPlugins": [
-      {
-        "name": "./scripts/main.debug.ts"
-      }
-    ]
+    "luaBundleEntry": "./src/main.ts"
   }
 }

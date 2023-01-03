@@ -4,7 +4,7 @@ import {MouseCallback} from "./MouseCallback";
 import { Vector2 } from "app/types/vector2";
 import { Log } from "lib/serilog/serilog";
 import { Quick } from "lib/Quick";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
+
 export class InputManagerMouseHandler {
 
     constructor() {

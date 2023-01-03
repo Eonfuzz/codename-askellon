@@ -37,12 +37,11 @@ export module Log {
         let logEvents: LogEvent[] = [];
 
         const matcher = string.gmatch(message, '{.-}');
-        let match: string;
         let text: string;
         let n: number = 0;
         let i: number = 0;
-        // @ts-ignore
-        while (match = matcher()) {
+
+        for (let [match] of matcher) {
             let [s, e] = string.find(message, match, 1, true);
             if (!s || !e) {
                 continue;

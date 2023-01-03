@@ -1,10 +1,9 @@
-import { Unit } from "w3ts/index";
+import { getElapsedTime, Unit } from "w3ts/index";
 import { BUFF_ID } from "resources/buff-ids";
 import { Log } from "lib/serilog/serilog";
 import { Entity } from "app/entity-type";
 import { DynamicBuff } from "./dynamic-buff-type";
 import { BuffInstance } from "./buff-instance-type";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
 
 import { flashFreeze } from "./buffs/flash-freeze";
 import { Trifex } from "./buffs/trifex";
@@ -79,7 +78,7 @@ export class DynamicBuffEntity extends Entity {
 
     _timerDelay = 0.3;
     step() {
-        const timestamp = GameTimeElapsed.getTime();
+        const timestamp = getElapsedTime();
 
         const buffState = DynamicBuffState.getInstance();
 

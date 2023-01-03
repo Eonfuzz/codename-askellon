@@ -1,5 +1,6 @@
 #ignore node modules
 node_modules/
+node_modules_bak/
 dist/
 .vscode/
 maps/askellon-sector.w3x.backup/

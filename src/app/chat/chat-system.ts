@@ -3,8 +3,7 @@
  * Converted to Typescript by Boar
  */
 import { SoundWithCooldown } from "app/types/sound-ref";
-import { MapPlayer } from "w3ts";
-import { GameTimeElapsed } from "app/types/game-time-elapsed";
+import { getElapsedTime, MapPlayer } from "w3ts";
 import { COL_MISC } from "resources/colours";
 
 const MAX_CHAT_MESSAGES = 6;
@@ -26,7 +25,7 @@ export class ChatSystem {
     /**
      * Delegate for gametime
      */
-    private getGameTime() { return GameTimeElapsed.getTime(); }
+    private getGameTime() { return getElapsedTime(); }
 
     /**
      * Gets the player's chat colour
