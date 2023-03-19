@@ -75,7 +75,7 @@ export class ForceEntity extends Entity {
 
         // Init and listen for experience gain calls
         eventEntity.addListener(new EventListener(EVENT_TYPE.CREW_GAIN_EXPERIENCE, (self, data) => {
-            const pData = PlayerStateFactory.get(data.source.owner);
+            const pData = PlayerStateFactory.get(data.source.owner.id);
 
             if (pData) {
                 if (!data.data.value) Log.Error("Player gaining nil experience");
@@ -115,7 +115,7 @@ export class ForceEntity extends Entity {
          * Now try to load in all the players
          */
         players.forEach(p => {
-            const pData = PlayerStateFactory.get(p);
+            const pData = PlayerStateFactory.get(p.id);
             if (pData) {
                 pData.load(() => {
                     const crew = pData.getCrewmember();
@@ -132,14 +132,20 @@ export class ForceEntity extends Entity {
     }
 
     public onForceTakeOrDealDamage(damagingUnit: unit, damagedUnit: unit) {
-        const damagingPlayer = MapPlayer.fromHandle(GetOwningPlayer(damagingUnit));
-        const damagedPlayer = MapPlayer.fromHandle(GetOwningPlayer(damagedUnit));
+        {
+        const p1 = GetPlayerId(GetOwningPlayer(damagingUnit));
+        const p2 = GetPlayerId(GetOwningPlayer(damagedUnit));
 
-        const p1Data = PlayerStateFactory.get(damagingPlayer);
-        const p2Data = PlayerStateFactory.get(damagedPlayer);
+        const p1Data = PlayerStateFactory.get(p1);
+        const p2Data = PlayerStateFactory.get(p2);
 
-        if (p2Data && p2Data.getForce()) p2Data.getForce().onTakeDamage(damagedPlayer, damagingPlayer, damagedUnit, damagingUnit);
-        if (p1Data && p1Data.getForce()) p1Data.getForce().onDealDamage(damagingPlayer, damagedPlayer, damagingUnit, damagedUnit);
+        if (p2Data && p2Data.getForce()) {
+            p2Data.getForce().onTakeDamage(MapPlayer.fromIndex(p2), MapPlayer.fromIndex(p1), damagedUnit, damagingUnit);
+        }
+        if (p1Data && p1Data.getForce()) {
+            p1Data.getForce().onDealDamage(MapPlayer.fromIndex(p1), MapPlayer.fromIndex(p2),  damagingUnit, damagedUnit);
+        }
+        }
     }
 
     /**
@@ -159,8 +165,9 @@ export class ForceEntity extends Entity {
             // Always true that alien AI can hit station
             if (player2 === PlayerStateFactory.StationSecurity) return true;
 
-            const defenderPData = PlayerStateFactory.get(player2);
-            const defenderForce = defenderPData ? defenderPData.getForce() : undefined;
+            const defenderPData = PlayerStateFactory.get(player2.id);
+            if (!defenderPData) return true;
+            const defenderForce = defenderPData.getForce();
 
             if (!defenderForce) return true;
             else if (defenderForce.is(ALIEN_FORCE_NAME)) return false;
@@ -177,7 +184,7 @@ export class ForceEntity extends Entity {
         // Only care about force logic if we aren't already hostiles
         if (!this.aggressionLog.has(aggressionKey)) {
             // Now check force logic
-            const attackerForce = PlayerStateFactory.get(player1).getForce();
+            const attackerForce = PlayerStateFactory.get(player1.id).getForce();
             const aggressionValid = attackerForce.aggressionIsValid(player1, player2);
             // If the force says this aint valid, well it aint valid
             if (!aggressionValid) return false;
@@ -263,9 +270,16 @@ export class ForceEntity extends Entity {
      * Update aggression logs
      * If there are none remaining between players we re-ally them
      */
-    step() {
-        {
-        PlayerStateFactory.getInstance().forces.forEach(force => force.onTick(this._timerDelay));
+    step() { {
+        const instance = PlayerStateFactory.getInstance();
+        if (!instance) return;
+
+        const playerForces = instance.forces;
+        for (let index = 0; index < playerForces.length; index++) {
+            const force = playerForces[index];
+            force.onTick(this._timerDelay);
+        }
+
         if (this.allAggressionLogs.length === 0) return;
 
         const nextTickLogs = [];
@@ -305,8 +319,7 @@ export class ForceEntity extends Entity {
         }
 
         this.allAggressionLogs = nextTickLogs;
-        }
-    }
+    } }
 
     private getLogKey(aggressor: MapPlayer, defendant: MapPlayer): string {
         const p1Id = aggressor.id;
@@ -319,7 +332,7 @@ export class ForceEntity extends Entity {
     private setPlayerSecurityTargetState(who: MapPlayer, isTargeted: boolean) {
         PlayerStateFactory.setTargeted(who, isTargeted);
         
-        const pData = PlayerStateFactory.get(who);
+        const pData = PlayerStateFactory.get(who.id);
         const pIsAlienAndTransformed = pData && pData.getForce() && pData.getForce()
             .is(ALIEN_FORCE_NAME) && (pData.getForce() as AlienForce).isPlayerTransformed(who);
 
@@ -366,7 +379,7 @@ export class ForceEntity extends Entity {
         forPlayer.setAlliance(PlayerStateFactory.NeutralHostile, ALLIANCE_PASSIVE, false);
 
         // Are we alien, and are we transformed?
-        const pData = PlayerStateFactory.get(forPlayer);
+        const pData = PlayerStateFactory.get(forPlayer.id);
         const pIsAlien = pData && pData.getForce() && pData.getForce().is(ALIEN_FORCE_NAME);
         const pIsAlienAndTransformed = pIsAlien && (pData.getForce() as AlienForce).isPlayerTransformed(forPlayer);
 
@@ -450,7 +463,7 @@ export class ForceEntity extends Entity {
 
 
                 Players.forEach(p => {
-                    const pData = PlayerStateFactory.get(p);
+                    const pData = PlayerStateFactory.get(p.id);
                     if (pData) {
                         if (pData.getForce() && !pData.getForce().is(OBSERVER_FORCE_NAME)) {
                             pData.gamesLeft -= 1;
@@ -601,7 +614,7 @@ export class ForceEntity extends Entity {
             force = this.getForceFromName(forceName);
         }
 
-        PlayerStateFactory.get(player).setForce(force);
+        PlayerStateFactory.get(player.id).setForce(force);
         force.addPlayer(player);
     }
     
@@ -612,14 +625,14 @@ export class ForceEntity extends Entity {
     private playerLeavesGame(who: MapPlayer) {
 
         // Check to see if they were originally in obs force
-        const pData = PlayerStateFactory.get(who);
+        const pData = PlayerStateFactory.get(who.id);
         if (pData && pData.getForce() && pData.getForce().is(OBSERVER_FORCE_NAME)) return false;
 
         // const playerLeaveSound = new SoundRef('Sound\\Interface\\QuestFailed.flac', false, true);
         // playerLeaveSound.playSound();
         const c = playerColors[who.id].code;
         Players.forEach(player => {
-            ChatEntity.getInstance().postSystemMessage(player, `${c}${PlayerStateFactory.get(who).originalName}|r has left the game!`);            
+            ChatEntity.getInstance().postSystemMessage(player, `${c}${PlayerStateFactory.get(who.id).originalName}|r has left the game!`);            
         });
 
         // Kill all units they woned
@@ -633,7 +646,7 @@ export class ForceEntity extends Entity {
 
     public startIntroduction() {
         Players.forEach(player => {
-            const pData = PlayerStateFactory.get(player);
+            const pData = PlayerStateFactory.get(player.id);
             if (pData) {
                 const force = pData.getForce();
                 if (force) {

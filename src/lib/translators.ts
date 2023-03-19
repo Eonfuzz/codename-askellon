@@ -35,7 +35,7 @@ export function SendMessageUnlogged(this: void, msg: any): void {
 export function SendMessageToAdmin(this: void, msg: any): void {
     Players.forEach(p => {
         const _p = PlayerStateFactory.get(p);
-        if (_p && _p.getUserPrivs() >+ PRIVS.MODERATOR) 
+        if (_p && _p.getUserPrivs() >= PRIVS.MODERATOR) 
             DisplayTimedTextToPlayer(p.handle, 0, 0, 10, `${msg}`);
     });
 }

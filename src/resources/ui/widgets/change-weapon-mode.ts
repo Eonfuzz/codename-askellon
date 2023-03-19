@@ -116,9 +116,8 @@ export class WeaponModeWidget extends UiWidget {
         BlzFrameSetScale(spriteFrame, 0.5);
         BlzFrameSetModel(spriteFrame, "selecter1.mdx", 0);
         BlzFrameSetVisible(spriteFrame, false);
-
         
-        const pData = PlayerStateFactory.get(MapPlayer.fromLocal());
+        const pData = PlayerStateFactory.get(MapPlayer.fromLocal().id);
         if (pData) {
             BlzFrameSetVisible(spriteFrame, t === pData.getAttackType());
         }

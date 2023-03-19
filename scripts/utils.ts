@@ -15,6 +15,7 @@ export interface IProjectConfig {
   winePath?: string;
   winePrefix?: string;
   version: string;
+  debug: boolean;
 }
 
 /**

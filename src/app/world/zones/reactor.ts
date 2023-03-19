@@ -38,6 +38,9 @@ export class ReactorZone extends ShipZone {
 
     private reactorUnit: Unit;
 
+    private STEP_INTERVAL = 0.5;
+    private stepCounter = 0;
+
     constructor(id: ZONE_TYPE) {
         super(id);
 
@@ -61,10 +64,10 @@ export class ReactorZone extends ShipZone {
         super.onLeave(unit);
 
         
-        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner.id);
         const isCrew = crewmember && crewmember.unit === unit;
 
-        if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
+        if (isCrew && GetLocalPlayer() === unit.owner.handle) {
             // Stop Play music
             this.reactorLoop.stopSound();
             SetMusicVolume(20);
@@ -75,7 +78,7 @@ export class ReactorZone extends ShipZone {
         super.onEnter(unit);
 
         
-        const crewmember = PlayerStateFactory.getCrewmember(unit.owner);
+        const crewmember = PlayerStateFactory.getCrewmember(unit.owner.id);
         const isCrew = crewmember && crewmember.unit === unit;
 
         if (isCrew && crewmember && GetLocalPlayer() === unit.owner.handle) {
@@ -95,9 +98,13 @@ export class ReactorZone extends ShipZone {
             this.processItem(GetEnumItem());
         });
 
-        const tint = 155 + MathRound(AskellonEntity.getPowerPercent() * 100);
-        this.sfx.setColor(tint, tint, tint);
-        this.sfx.scale = 0.4 + AskellonEntity.getPowerPercent() * 0.6;
+        this.stepCounter += delta;
+        if (this.stepCounter >= this.STEP_INTERVAL) {
+            this.stepCounter -= this.STEP_INTERVAL;
+            const tint = 155 + MathRound(AskellonEntity.getPowerPercent() * 100);
+            this.sfx.setColor(tint, tint, tint);
+            this.sfx.scale = 0.4 + AskellonEntity.getPowerPercent() * 0.6;
+        }
     }
 
     private processItem(item: item) {
@@ -106,7 +113,7 @@ export class ReactorZone extends ShipZone {
         const itemOwner = MapPlayer.fromIndex( GetItemUserData(item) );
         const oldMineralCount = AskellonEntity.getInstance().mineralsDelivered;
 
-        const ownerCrewmember = PlayerStateFactory.getCrewmember(itemOwner);
+        const ownerCrewmember = PlayerStateFactory.getCrewmember(itemOwner.id);
         const oreIsInfested = ResearchFactory.getInstance().isUpgradeInfested(TECH_MAJOR_VOID, 3);
 
         // If it is blue minerals

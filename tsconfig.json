@@ -54,6 +54,11 @@
     "luaLibImport": "require",
     "noImplicitSelf": true,
     "luaBundle": "dist/tstl_output.lua",
-    "luaBundleEntry": "./src/main.ts"
+    "luaBundleEntry": "./src/main.ts",
+    "luaPlugins": [
+      {
+        "name": "./scripts/main.debug.ts"
+      }
+    ]
   }
 }

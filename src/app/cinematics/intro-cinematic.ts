@@ -18,7 +18,7 @@ import { Log } from "lib/serilog/serilog";
 import { getYawPitchRollFromVector, PlayNewSound } from "lib/translators";
 import { GetActivePlayers, MessageAllPlayers } from "lib/utils";
 import { COL_ATTATCH, COL_ORANGE } from "resources/colours";
-import { SFX_BLACK_HOLE, SFX_LASER_1 } from "resources/sfx-paths";
+import { SFX_BLACK_HOLE, SFX_LASER_1, SFX_LASER_5 } from "resources/sfx-paths";
 import { UIEntity } from "resources/ui/ui-entity";
 import { UNIT_ID_DUMMY_CASTER } from "resources/unit-ids";
 import { Effect, MapPlayer, Timer, Unit } from "w3ts";
@@ -110,7 +110,7 @@ export class IntroCinematic {
             this.engineerChatMessages(),
             this.systemChatMessages(),
             this.shipSounds(),
-            this.hostileProjectiles(mainShip.unit, hostileDummy)
+            // this.hostileProjectiles(mainShip.unit, hostileDummy)
         ]);
 
         return;
@@ -176,23 +176,26 @@ export class IntroCinematic {
     }
 
     private async hostileProjectiles(mainShip: Unit, hostileDummy: Unit) {
-        const shipLoc = Vector3.fromWidget(mainShip.handle);
-        const sourceLoc = Vector3.fromWidget(mainShip.handle).add(new Vector3(-600, -600, 0));
+        const shipLoc = Vector3.fromWidget(mainShip.handle).add(new Vector3(1200, 1200, 0));
+        const sourceLoc = Vector3.fromWidget(mainShip.handle).projectTowards2D(90, 1800);
+        
+        // const snd1 = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
+        // const snd2 = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
+        // const snd3 = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
 
         // const hostileDummy = new Unit(PlayerStateFactory.AlienAIPlayer1, UNIT_ID_DUMMY_CASTER, sourceLoc.x, sourceLoc.y);
 
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        await Timers.wait(0.5);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        await Timers.wait(1);        
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-        this.spawnProj(hostileDummy, shipLoc, sourceLoc);
+        for (let index = 0; index < 20; index++) {
+            // snd1.playSound();
+            this.spawnProj(hostileDummy, shipLoc, sourceLoc);
+            await Timers.wait(0.2);       
+            // snd2.playSound(); 
+            this.spawnProj(hostileDummy, shipLoc, sourceLoc);
+            await Timers.wait(0.2);   
+            // snd3.playSound();
+            this.spawnProj(hostileDummy, shipLoc, sourceLoc);   
+            await Timers.wait(1.6);         
+        }
     }
 
     private spawnProj(forDummy: Unit, shipLoc: Vector3, sourceLoc: Vector3) {
@@ -202,9 +205,9 @@ export class IntroCinematic {
             45
         ));
         const goalLoc = shipLoc.add(new Vector3(
-            Math.random() * 300 - 150, 
-            Math.random() * 300 - 150, 
-            5
+            Math.random() * 600 - 300, 
+            Math.random() * 600 - 300, 
+            20
         ));
         const deltaLoc = goalLoc.subtract(startLoc);
 
@@ -213,9 +216,9 @@ export class IntroCinematic {
             startLoc,
             new ProjectileTargetStatic(deltaLoc)
         )
-        .setVelocity(450)
+        .setVelocity(2000)
         .onCollide(() => true);
-        projectile.addEffect(SFX_LASER_1, new Vector3(0, 0, 0), deltaLoc.normalise(), 1);
+        projectile.addEffect(SFX_LASER_5, new Vector3(0, 0, 0), deltaLoc.normalise(), 1);
         EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: forDummy, data: { projectile: projectile }});
     }
 

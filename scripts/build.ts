@@ -65,6 +65,8 @@ export function createMapFromDir(output: string, dir: string, verNum: string) {
 
   logger.info("Finished!");
 
+  // map.getMapInformation();
+
 }
 
 export function prepDirForCreate(output: string, dir: string, verNum: string) {
@@ -95,7 +97,7 @@ function updateStrings(wtsDir: string | undefined, w3iDir: string | undefined, v
 
   let w3iBuffer = toArrayBuffer(fs.readFileSync(w3iDir));
   const w3i = new War3MapW3i();  
-  w3i.load(w3iBuffer);
+  w3i.load(w3iBuffer, true);
   w3i.name = `|cff627781Askellon|r v${verNum}`;
   w3iBuffer = w3i.save();
   fs.writeFileSync(w3iDir, toBuffer(w3iBuffer));

@@ -31,7 +31,7 @@ export class IncomeWidget extends UiWidget {
         if (this.updateTicker < 0) {
             this.updateTicker = 6;
 
-            const crew = PlayerStateFactory.getCrewmember(forWho);
+            const crew = PlayerStateFactory.getCrewmember(forWho.id);
 
             if (crew && crew.unit && crew.unit.isAlive()) {
                 BlzFrameSetText(this.income,"Income: +"+crew.getIncome());

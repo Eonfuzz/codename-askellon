@@ -6,12 +6,14 @@ import { Hooks } from "lib/Hooks";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { Players } from "w3ts/globals/index";
 import { ROLE_TYPES } from "resources/crewmember-names";
+import { Entity } from "app/entity-type";
+import { MessageAllPlayers } from "lib/utils";
 
 /**
  * A factory that stores all player data
  * Crewmember, Force etc
  */
-export class PlayerStateFactory {
+export class PlayerStateFactory extends Entity {
     private static instance: PlayerStateFactory;
 
     public static getInstance() {        
@@ -29,10 +31,15 @@ export class PlayerStateFactory {
     // Are players targeted?
     private securityTargetState = new Map<number, boolean>();
 
+    _timerDelay = 50;
+    
+
     /**
      * Constructor
      */
     constructor() {
+        super();
+
         const playerCount = Players.filter(p => {
             return p.controller === MAP_CONTROL_USER && p.slotState === PLAYER_SLOT_STATE_PLAYING;
         });
@@ -62,20 +69,25 @@ export class PlayerStateFactory {
         });
     }
 
-    public get(who: MapPlayer): PlayerState
-    public get(who: number): PlayerState
-    public get(who: MapPlayer | number): PlayerState
-    public get(who: MapPlayer | number): PlayerState {
+    step(): void {}
+
+    public get(who: number): PlayerState {
         if (!who) return;
 
-        const pId = who instanceof MapPlayer ? who.id : who;
-        const player = MapPlayer.fromIndex(pId);
-        if (this.state.has(pId)) {
-            return this.state.get(pId);
+        
+        // MessageAllPlayers(`${who}`);
+
+        const inState = this.state.get(who);
+        if (inState) {
+            return inState;
         }
-        else if (player.slotState === PLAYER_SLOT_STATE_PLAYING && player.controller === MAP_CONTROL_USER) {
-            const nState = new PlayerState(player);
-            this.state.set(pId, nState);
+        
+        if (!PlayerStateFactory.isValidPlayerById(who)) {
+            return;
+        }
+        else {
+            const nState = new PlayerState(MapPlayer.fromIndex(who));
+            this.state.set(who, nState);
             return nState;
         }
     }
@@ -86,18 +98,21 @@ export class PlayerStateFactory {
     /**
      * Static API
      */
-    public static get(who: number): PlayerState;
-    public static get(who: MapPlayer): PlayerState;
-    public static get(who: MapPlayer | number): PlayerState;
-    public static get(who: MapPlayer | number): PlayerState {
-        return PlayerStateFactory.getInstance().get(who);
+    public static get(who: number | MapPlayer): PlayerState {
+        return PlayerStateFactory.getInstance().get(
+            type(who) === 'number' 
+            ? (who as number) 
+            : (who as MapPlayer).id
+        );
     }
 
-    public static getCrewmember(who: number): Crewmember | undefined
-    public static getCrewmember(who: MapPlayer): Crewmember | undefined
-    public static getCrewmember(who: MapPlayer | number): Crewmember | undefined
-    public static getCrewmember(who: MapPlayer | number): Crewmember | undefined {
-        const pData = PlayerStateFactory.get(who);
+    public static getCrewmember(who: number): Crewmember | undefined 
+    public static getCrewmember(who: MapPlayer): Crewmember | undefined 
+    public static getCrewmember(who: number | MapPlayer): Crewmember | undefined {
+        const pData = PlayerStateFactory.get(type(who) === 'number' 
+            ? (who as number) 
+            : (who as MapPlayer).id
+        );
         
         if (pData) {
             const crewmember = pData.getCrewmember();
@@ -107,8 +122,15 @@ export class PlayerStateFactory {
     }
 
     public static getForce(forceName: string) {
+        {
         const instance = PlayerStateFactory.getInstance();
-        return instance.forces.filter(f => f.is(forceName))[0];
+        for (let index = 0; index < instance.forces.length; index++) {
+            const force = instance.forces[index];
+            if (force && force.is(forceName)) {
+                return force;
+            } 
+        }
+        }
     }
     // Players
     public static StationProperty = MapPlayer.fromIndex(21);
@@ -132,7 +154,7 @@ export class PlayerStateFactory {
      * @param hook 
      */
     public static doChat(hook: ChatHook) {
-        const pData = PlayerStateFactory.get(hook.who);
+        const pData = PlayerStateFactory.get(hook.who.id);
         const force = pData.getForce();
 
         hook.recipients     = force.getChatRecipients(hook);
@@ -163,42 +185,53 @@ export class PlayerStateFactory {
     }
 
     public static isAlienAI(who: MapPlayer) {
-        return who === this.AlienAIPlayer1 || who === this.AlienAIPlayer2 || who === this.AlienAIPlayer3;
+        if (who === PlayerStateFactory.AlienAIPlayer1) return true;
+        if (who === PlayerStateFactory.AlienAIPlayer2) return true;
+        if (who === PlayerStateFactory.AlienAIPlayer3) return true;
+        return false;
+    }
+
+    public static isAlienAIById(who: number) {
+        return who === PlayerStateFactory.AlienAIPlayer1.id || who === PlayerStateFactory.AlienAIPlayer2.id  || who === PlayerStateFactory.AlienAIPlayer3.id;
     }
 
     public static getAlienAI() {
-        return [this.AlienAIPlayer1, this.AlienAIPlayer2, this.AlienAIPlayer3];
+        return [PlayerStateFactory.AlienAIPlayer1, PlayerStateFactory.AlienAIPlayer2, PlayerStateFactory.AlienAIPlayer3];
     }
 
     public static isTargeted(who: MapPlayer) {
-        return this.getInstance().securityTargetState.get(who.id);
+        return PlayerStateFactory.getInstance().securityTargetState.get(who.id);
     }
 
     public static setTargeted(who: MapPlayer, to: boolean) {
-        this.getInstance().securityTargetState.set(who.id, to);
+        PlayerStateFactory.getInstance().securityTargetState.set(who.id, to);
     }
 
     public static getCrewOfRole(role: ROLE_TYPES): Crewmember[] {
         let result = [];
         Players.forEach(p => {
-            const crew = this.getCrewmember(p);
+            const crew = PlayerStateFactory.getCrewmember(p.id);
             if (crew && crew.role === role) result.push(crew);
         });
         return result;
     }
 
-    public static isValidPlayer(who: MapPlayer) {
-        if (PlayerStateFactory.isAlienAI(who)) return false;
-        if (who === PlayerStateFactory.CultistAIPlayer) return false;
-        if (who === PlayerStateFactory.NeutralHostile) return false;
-        if (who === PlayerStateFactory.NeutralPassive) return false;
-        if (who === PlayerStateFactory.UnknownPlayer) return false;
-        if (who === PlayerStateFactory.StationProperty) return false;
-        if (who === PlayerStateFactory.StationSecurity) return false;
+    public static isValidPlayerById(who: number) {
+        if (PlayerStateFactory.isAlienAIById(who)) return false;
+        if (who === PlayerStateFactory.CultistAIPlayer.id) return false;
+        if (who === PlayerStateFactory.NeutralHostile.id) return false;
+        if (who === PlayerStateFactory.NeutralPassive.id) return false;
+        if (who === PlayerStateFactory.UnknownPlayer.id) return false;
+        if (who === PlayerStateFactory.StationProperty.id) return false;
+        if (who === PlayerStateFactory.StationSecurity.id) return false;
         return true;
     }
 
+    public static isValidPlayer(who: MapPlayer) {
+        return PlayerStateFactory.isValidPlayerById(who.id);
+    }
+
     public static getPlayers(): MapPlayer[] {
-        return Players.filter(p => this.isValidPlayer(p));
+        return Players.filter(p => PlayerStateFactory.isValidPlayer(p));
     }
 }

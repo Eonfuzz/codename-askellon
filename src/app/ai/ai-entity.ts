@@ -200,6 +200,7 @@ export class AIEntity extends Entity {
     }
 
     public static debug() {
+        Log.Information("Debug logging!");
         const i = this.getInstance();
         i.playerAgents.forEach( p => p.log());
     }

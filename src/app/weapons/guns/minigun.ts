@@ -73,13 +73,13 @@ export class Minigun extends GunItem {
     
     public onAdd(caster: ArmableUnitWithItem) {
         super.onAdd(caster);
-        this.equippedTo.unit.addAbility(ABIL_WEP_MINIGUN_OVERSIZED);
+        // this.equippedTo.unit.addAbility(ABIL_WEP_MINIGUN_OVERSIZED);
         this.equippedTo.unit.addAbility(ABIL_WEP_MINIGUN_FULLER_AUTO);
         this.equippedTo.unit.startAbilityCooldown(ABIL_WEP_MINIGUN_FULLER_AUTO, 20);
     }
 
     public onRemove() {
-        this.equippedTo.unit.removeAbility(ABIL_WEP_MINIGUN_OVERSIZED);
+        // this.equippedTo.unit.removeAbility(ABIL_WEP_MINIGUN_OVERSIZED);
         this.equippedTo.unit.removeAbility(ABIL_WEP_MINIGUN_FULLER_AUTO);
         super.onRemove();
     }

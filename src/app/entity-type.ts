@@ -11,6 +11,8 @@ export abstract class Entity {
     private _internalTimer: number = 0;
     protected _timerDelay: number = 0.01;
 
+    private counter = 0;
+
     public constructor() {
         if (Entity.entityLoop == null) {
             Entity.entityLoop = () => {
@@ -31,6 +33,8 @@ export abstract class Entity {
             Timers.getInstance().addFastTimerCallback(Entity.entityLoop);
         }
         Entity.entities.push(this);
+
+        _G["ENTITIES_"+this.counter++] = this;
     }
 
     abstract step(): void;
