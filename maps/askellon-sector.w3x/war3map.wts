@@ -851,13 +851,13 @@ W
 }
 
 STRING 277
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A045 (Blink), Hotkey (Hotkey - Normal)
 {
 W
 }
 
 STRING 278
-// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Abilities: A045 (Blink), Researchhotkey (Hotkey - Learn)
 {
 W
 }
@@ -2101,13 +2101,13 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 627
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 628
-// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RWEP (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2461,7 +2461,7 @@ STRING 739
 }
 
 STRING 744
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2857,7 +2857,7 @@ Upgrade Weapon Damage [10/10]
 }
 
 STRING 849
-// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: RSPC (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -2887,7 +2887,7 @@ W
 }
 
 STRING 854
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -5653,7 +5653,7 @@ Q
 }
 
 STRING 1506
-// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R007 (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -6375,13 +6375,13 @@ W
 }
 
 STRING 1688
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
 
 STRING 1689
-// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+// Upgrades: R00A (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
 {
 W
 }
@@ -8745,13 +8745,6 @@ STRING 2196
 rmnx
 }
 
-STRING 2197
-// Abilities: AGPS (Unlock Psionic Potential), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781An extremely dangerous and volatile procedure, sections of the brain is directly exposed to dark matter. Few survive this procedure without the correct tools. The Askellon was initially sent into this sector to research such phenomena.
- |r|n|nGrants the |cfff9a602Psionic Potential|r power.|n|cff18bc9c[+] Immediately gain Mind Lash|n[+] Psionic Powers "Improve" each subsequent splice|r|n|cffb52166[−] Subsequent splices have no other effect|r|n|n|cfff9a602Attribute Gain Per Level:|n|cffb52166-2.7 Vitality|r per level|n|N|cffd45e19Attribute changes are retroactive|r
-}
-
 STRING 2199
 // Units: N00C (Alien), EditorSuffix (Name - Editor Suffix)
 {
@@ -9644,18 +9637,6 @@ STRING 2374
 Q
 }
 
-STRING 2375
-// Abilities: A045 (Blink), Ubertip (Tooltip - Normal - Extended)
-{
-|cff627781Observation of another dimension drives you forward.|r|n|nBlinks |cff18bc9c300|r units forward.|n|n|cff63B7B7Psionic|r: Refunds |cff18bc9c50%|r mana cost|n|cff627781(This ability has a bonus effect while you have resolve, or the target has Despair or Insanity)|r|n|n|cff6277815 Seconds Cooldown|r
-}
-
-STRING 2376
-// Abilities: A045 (Blink), Researchubertip (Tooltip - Learn - Extended)
-{
-|cff627781Observation of another dimension drives you forward.|r|n|nBlinks |cff18bc9c300|r units forward.|n|n|cff63B7B7Psionic|r: Refunds |cff18bc9c50%|r mana cost|n|cff627781(This ability has a bonus effect while you have resolve, or the target has Despair or Insanity)|r|n|n|cff6277815 Seconds Cooldown|r
-}
-
 STRING 2377
 // Abilities: A045 (Blink), Tip (Tooltip - Normal)
 {
@@ -9684,5 +9665,36 @@ STRING 2381
 // Abilities: A02H (Psionic), Tip (Tooltip - Normal)
 {
 Psionic
+}
+
+STRING 2382
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 2383
+// Upgrades: R00M (Iron Forged Swords,Steel Forged Swords,Mithril Forged Swords), Hotkey (Hotkey)
+{
+W
+}
+
+STRING 2384
+// Abilities: AGPS (Unlock Psionic Potential), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781An extremely dangerous and volatile procedure, sections of the brain is directly exposed to dark matter. Few survive this procedure without the correct tools. The Askellon was initially sent into this sector to research such phenomena.
+ |r|n|nGrants the |cfff9a602Psionic Potential|r power.|n|cff18bc9c[+] Immediately gain Mind Lash|n[+] Psionic Powers "Improve" over time|n[+] Has no effect on Aliens|r|n|cffb52166[−] Can no longer receive genes|r|n|n|cfff9a602Attribute Gain Per Level:|n|cffb52166-2.7 Vitality|r per level|n|N|cffd45e19Attribute changes are retroactive|r
+}
+
+STRING 2385
+// Abilities: A045 (Blink), Ubertip (Tooltip - Normal - Extended)
+{
+|cff627781Observation of another dimension drives you forward.|r|n|nBlinks to a location.|n|n|cff63B7B7Psionic|r: Refunds |cff18bc9c50%|r mana cost|n|cff627781(This ability has a bonus effect while you have resolve, or the target has Despair or Insanity)|r|n|n|cff6277815 Seconds Cooldown|r
+}
+
+STRING 2386
+// Abilities: A045 (Blink), Researchubertip (Tooltip - Learn - Extended)
+{
+|cff627781Observation of another dimension drives you forward.|r|n|nBlinks to a location.|n|n|cff63B7B7Psionic|r: Refunds |cff18bc9c50%|r mana cost|n|cff627781(This ability has a bonus effect while you have resolve, or the target has Despair or Insanity)|r|n|n|cff6277815 Seconds Cooldown|r
 }
 

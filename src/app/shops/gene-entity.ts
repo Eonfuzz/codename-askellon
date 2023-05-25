@@ -302,12 +302,25 @@ export class GeneEntity extends Entity {
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_MOBILITY, 1);
                 }
                 else if (castAbil === GENE_INSTALL_PSIONIC_POTENCY) {
-                    crewmember.setStrGain( crewmember.getStrGain() - 2.7 );
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_PSI_POTENCY, 1);
-                    EventEntity.getInstance().sendEvent(EVENT_TYPE.ADD_BEHAVIOUR_INSTANCE, { 
-                        source: crewmember.unit,
-                        data: { behaviour: () => new PsionicPotentialBehaviour() } 
-                    })
+
+                    SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1, 1);
+                    SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_2, 1);
+                    SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_3, 1);
+
+                    instance.source.player.setTechResearched(TECH_NO_GENES_TIER_1, 0);
+                    instance.source.player.setTechResearched(TECH_NO_GENES_TIER_2, 0);
+                    instance.source.player.setTechResearched(TECH_NO_GENES_TIER_3, 0);
+
+                    crewmember.setStrGain( crewmember.getStrGain() - 2.7 );
+
+                    // This has no effect on aliens
+                    if (!targetIsAlien) {
+                        EventEntity.getInstance().sendEvent(EVENT_TYPE.ADD_BEHAVIOUR_INSTANCE, { 
+                            source: crewmember.unit,
+                            data: { behaviour: () => new PsionicPotentialBehaviour() } 
+                        })
+                    }
                 }
                 else if (castAbil === GENE_INSTALL_COSMIC_SENSITIVITY) {
                     crewmember.setIntGain( crewmember.getIntGain() + 3 );

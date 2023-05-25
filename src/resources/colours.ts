@@ -17,6 +17,7 @@ export const COL_MISC = COL_GREY;
 export const COL_INFO = `|cff00ffff`;
 export const COL_RESOLVE = `|cffffff00`;
 export const COL_ALIEN = `|cff8a6df2`;
+export const COL_PSIONIC = `|cff63B7B7`;
 
 // MECHANIC COLOURS
 export const COL_FREEZE = COL_TEAL;
