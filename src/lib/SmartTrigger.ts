@@ -21,15 +21,16 @@ export class SmartTrigger extends Trigger {
     }
 
     public destroy() {
-        // Destroy our conditions
-        for (let index = 0; index < this.conditions.length; index++) {
-            const cnd = this.conditions[index];
-            TriggerRemoveCondition(this.handle, cnd);
-        }
-        for (let index = 0; index < this.actions.length; index++) {
-            const action = this.actions[index];
-            TriggerRemoveAction(this.handle, action);
-        }
-        super.destroy();
+        DisableTrigger(this.handle);
+        // // Destroy our conditions
+        // for (let index = 0; index < this.conditions.length; index++) {
+        //     const cnd = this.conditions[index];
+        //     TriggerRemoveCondition(this.handle, cnd);
+        // }
+        // for (let index = 0; index < this.actions.length; index++) {
+        //     const action = this.actions[index];
+        //     TriggerRemoveAction(this.handle, action);
+        // }
+        // super.destroy();
     }
 }

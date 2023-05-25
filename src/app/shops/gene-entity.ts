@@ -302,8 +302,6 @@ export class GeneEntity extends Entity {
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_MOBILITY, 1);
                 }
                 else if (castAbil === GENE_INSTALL_PSIONIC_POTENCY) {
-                    Log.Information("Installing gene...");
-
                     crewmember.setStrGain( crewmember.getStrGain() - 2.7 );
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_PSI_POTENCY, 1);
                     EventEntity.getInstance().sendEvent(EVENT_TYPE.ADD_BEHAVIOUR_INSTANCE, { 
@@ -364,7 +362,7 @@ export class GeneEntity extends Entity {
                 // Grant XP for ALL ALiENS
                 else if (bonusXpInfested) {
         
-                    let text = "Humans alter their bodies";
+                    let text = "Someone is using the Gene Splicer";
                     const alienPlayers = alienForce.getPlayers();
         
                     for (let index = 0; index < alienPlayers.length; index++) {

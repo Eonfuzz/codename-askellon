@@ -83,6 +83,7 @@ export const SFX_BURNING_RAGE_RED = "Models\\sfx\\Burning Rage Red.mdx";
 export const SFX_BURNING_RAGE_PURPLE = "Models\\sfx\\Burning Rage Purple.mdx";
 
 export const SFX_CONVOKE_CARRION = "Models\\sfx\\AnnihilationBlast2.mdx";
+export const SFX_SHINY_MAGIC_MISSILE = "Models\\sfx\\VeryShinyMagicOrb.mdx";
 
 // Preload SFX
 Preload(SFX_WINDWAVE);
@@ -145,3 +146,4 @@ Preload(SFX_EXPLOSION_BIG);
 Preload(SFX_EXPLOSION_GROUND);
 Preload(SFX_WEAK_SHIELD);
 Preload(SFX_EXPLOSION_GROUND_NO_DIRT);
+Preload(SFX_SHINY_MAGIC_MISSILE);

@@ -42,6 +42,7 @@ export class UnitTransformer {
     }
 
     public destroy() {
+        // DisableTrigger(this.trigger);
         DestroyTrigger(this.trigger);
     }
 }
