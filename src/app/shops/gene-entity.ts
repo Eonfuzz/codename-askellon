@@ -304,13 +304,12 @@ export class GeneEntity extends Entity {
                 else if (castAbil === GENE_INSTALL_PSIONIC_POTENCY) {
                     SetPlayerTechResearched(instance.unitInGeneZone.player.handle, GENE_TECH_PSI_POTENCY, 1);
 
-                    SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_1, 1);
-                    SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_2, 1);
-                    SetPlayerTechResearched(instance.unitInGeneZone.player.handle, TECH_HAS_GENES_TIER_3, 1);
-
                     instance.source.player.setTechResearched(TECH_NO_GENES_TIER_1, 0);
                     instance.source.player.setTechResearched(TECH_NO_GENES_TIER_2, 0);
                     instance.source.player.setTechResearched(TECH_NO_GENES_TIER_3, 0);
+                    instance.unitInGeneZone.player.setTechResearched(TECH_HAS_GENES_TIER_1, 1);
+                    instance.unitInGeneZone.player.setTechResearched(TECH_HAS_GENES_TIER_2, 1);
+                    instance.unitInGeneZone.player.setTechResearched(TECH_HAS_GENES_TIER_3, 1);
 
                     crewmember.setStrGain( crewmember.getStrGain() - 2.7 );
 
