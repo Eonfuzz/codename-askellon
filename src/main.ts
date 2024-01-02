@@ -7,13 +7,27 @@ import { SendMessageToAdmin, SendMessageUnlogged } from "lib/translators";
 
 tsMain();
 
+
 function tsMain() {
     Log.Init([
         new StringSink(LogLevel.Debug, SendMessageToAdmin),
         // new StringSink(LogLevel.Debug, SendMessageUnlogged),
     ]);
 
-    function Main(){
+    // Override Trigger Behaviour
+    const realTriggerAddAction = TriggerAddAction;
+    //@ts-ignore
+    TriggerAddAction = (whichTrigger: trigger, actionfunc: () => void) => {
+        realTriggerAddAction(whichTrigger, () => {
+          try {
+            actionfunc();
+          } catch (e) {
+            Log.Error(`Trigger: ${e} `);
+          }
+        });
+      };
+
+    function Main() {
         const askellon = Game.getInstance();
 
         const gameStart = new Timer();

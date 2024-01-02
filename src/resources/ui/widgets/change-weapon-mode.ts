@@ -56,19 +56,19 @@ export class WeaponModeWidget extends UiWidget {
             const crew = data.crewmember;
             const mode = data.data.mode;
             
-            if (crew.player.isLocal()) {
-                this.buttonActivateAuto.getChild(1).visible = false;
-                this.buttonActivateTargeted.getChild(1).visible = false;
-                this.buttonActivateSmart.getChild(1).visible = false;
+            if (crew?.player.isLocal()) {
+                this.buttonActivateAuto.getChild(1)!.visible = false;
+                this.buttonActivateTargeted.getChild(1)!.visible = false;
+                this.buttonActivateSmart.getChild(1)!.visible = false;
 
                 if (mode === WeaponEntityAttackType.ATTACK) {
-                    this.buttonActivateAuto.getChild(1).visible = true;          
+                    this.buttonActivateAuto.getChild(1)!.visible = true;          
                 } 
                 else if (mode === WeaponEntityAttackType.CAST) {
-                    this.buttonActivateTargeted.getChild(1).visible = true;       
+                    this.buttonActivateTargeted.getChild(1)!.visible = true;       
                 } 
                 else if (mode === WeaponEntityAttackType.SMART) {
-                    this.buttonActivateSmart.getChild(1).visible = true;
+                    this.buttonActivateSmart.getChild(1)!.visible = true;
                 }
 
             }
@@ -88,25 +88,29 @@ export class WeaponModeWidget extends UiWidget {
             BlzFrameSetTexture(buttonIconFrame, "ReplaceableTextures\\CommandButtons\\BTNMove", 0, true);
 
         const frame = Frame.fromHandle(buttonFrame);
-        frame.setSize(this.buttonHeight, this.buttonHeight);
-        // frame.setAbsPoint(FRAMEPOINT_CENTER, 0.605, this.getFrameY(index));
-        frame.setAbsPoint(FRAMEPOINT_CENTER, 0.788, this.getFrameY(index));
-        // frame.text = text;
-        this.frameEventTrigger.triggerRegisterFrameEvent(frame, FRAMEEVENT_CONTROL_CLICK);
+        if (frame) {
+            frame.setSize(this.buttonHeight, this.buttonHeight);
+            // frame.setAbsPoint(FRAMEPOINT_CENTER, 0.605, this.getFrameY(index));
+            frame.setAbsPoint(FRAMEPOINT_CENTER, 0.788, this.getFrameY(index));
+            // frame.text = text;
+            this.frameEventTrigger.triggerRegisterFrameEvent(frame, FRAMEEVENT_CONTROL_CLICK);
 
-        // Add tooltips
-        const tooltip = Frame.fromHandle(BlzCreateFrame("BoxedText", buttonFrame, 0, 0));
-        frame.setTooltip(tooltip);
-        tooltip.setAbsPoint(FRAMEPOINT_CENTER, 0.81 - this.tooltipWidth / 2, 0.2);
-        tooltip.setSize(this.tooltipWidth, this.tooltipHeight);
-        
-        tooltip.getChild(0).text = `${COL_GOLD}Gameplay Option|r`;
-        if (t === WeaponEntityAttackType.ATTACK) {
-            tooltip.getChild(1).text = `Enables ${COL_GOLD}Auto Attacking|r for weapons|n|n${COLOUR_CULT_GREEN}Only one mode can be active|r`;
-        } else if (t === WeaponEntityAttackType.CAST) {
-            tooltip.getChild(1).text = `Enables ${COL_GOLD}Target Cast|r for weapons|n|n${COLOUR_CULT_GREEN}Only one mode can be active|r`;
-        } else if (t === WeaponEntityAttackType.SMART) {
-            tooltip.getChild(1).text = `Enables ${COL_GOLD}Smart Cast|r for weapons|n|n${COLOUR_CULT_GREEN}Only one mode can be active|r`;
+            // Add tooltips
+            const tooltip = Frame.fromHandle(BlzCreateFrame("BoxedText", buttonFrame, 0, 0));
+            if (tooltip) {
+                frame.setTooltip(tooltip);
+                tooltip.setAbsPoint(FRAMEPOINT_CENTER, 0.81 - this.tooltipWidth / 2, 0.2);
+                tooltip.setSize(this.tooltipWidth, this.tooltipHeight);
+                
+                (tooltip.getChild(0) as Frame).text = `${COL_GOLD}Gameplay Option|r`;
+                if (t === WeaponEntityAttackType.ATTACK) {
+                    tooltip.getChild(1)!.text = `Enables ${COL_GOLD}Auto Attacking|r for weapons|n|n${COLOUR_CULT_GREEN}Only one mode can be active|r`;
+                } else if (t === WeaponEntityAttackType.CAST) {
+                    tooltip.getChild(1)!.text = `Enables ${COL_GOLD}Target Cast|r for weapons|n|n${COLOUR_CULT_GREEN}Only one mode can be active|r`;
+                } else if (t === WeaponEntityAttackType.SMART) {
+                    tooltip.getChild(1)!.text = `Enables ${COL_GOLD}Smart Cast|r for weapons|n|n${COLOUR_CULT_GREEN}Only one mode can be active|r`;
+                }
+            }
         }
 
         // Sprite frames

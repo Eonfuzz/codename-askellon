@@ -94,6 +94,14 @@ export class BurstRifle extends GunItem {
     private onProjectileCollide(projectile: Projectile, collidesWith: unit) {
         projectile.setDestroy(true);
         if (this.equippedTo) {
+            
+            projectile.addEffect(
+                "war3mapImported\\Bullet.mdx",
+                new Vector3(0, 0, 0),
+                new Vector3(0, 0, 0),
+                1.4
+            );
+
             UnitDamageTarget(
                 projectile.source, 
                 collidesWith, 

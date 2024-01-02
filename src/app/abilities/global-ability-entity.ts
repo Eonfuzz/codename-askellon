@@ -134,7 +134,7 @@ export class GlobalCooldownAbilityEntity extends Entity {
      * @param u 
      */
     private onUnitRemove(u: Unit) {
-        
+
         const uAbils = this.unitsListeningToAbility.get(u.id);
         if (!uAbils) return;
 

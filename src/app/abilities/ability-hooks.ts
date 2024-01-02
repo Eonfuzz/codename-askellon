@@ -82,8 +82,6 @@ export class AbilityHooks extends Entity {
         castAbilityTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
         castAbilityTrigger.addAction(() => {
             const u = Unit.fromHandle(GetTriggerUnit());
-
-            // showOverheadText(u.x, u.y, 88, 171, 174, 255, `${GetAbilityName(GetSpellAbilityId())}`);
             this.unitCastsSpell();
             this.sendBehaviourEvent(u, ABILITY_HOOK.UnitCastsAbility);
         });
@@ -156,22 +154,52 @@ export class AbilityHooks extends Entity {
     }
 
     private unitAttacks(attackingUnit: unit) {
-        this.sendBehaviourEvent(Unit.fromHandle(attackingUnit), ABILITY_HOOK.UnitAttacks);
+        if (attackingUnit !== undefined) {
+            this.sendBehaviourEvent(Unit.fromHandle(attackingUnit), ABILITY_HOOK.UnitAttacks);
+        }
+        else {
+            Log.Error("Null unit passed to unitAttacks");
+        }
     }
     private unitAttacked(attackedUnit: unit) {
-        this.sendBehaviourEvent(Unit.fromHandle(attackedUnit), ABILITY_HOOK.UnitIsAttacked);
+        if (attackedUnit !== undefined) {
+            this.sendBehaviourEvent(Unit.fromHandle(attackedUnit), ABILITY_HOOK.UnitIsAttacked);
+        }
+        else {
+            Log.Error("Null unit passed to unitAttacked");
+        }
     }
     private unitPreDamaged(damagedUnit: unit) {
-        this.sendBehaviourEvent(Unit.fromHandle(damagedUnit), ABILITY_HOOK.PreUnitTakesDamage);
+        if (damagedUnit !== undefined) {
+            this.sendBehaviourEvent(Unit.fromHandle(damagedUnit), ABILITY_HOOK.PreUnitTakesDamage);
+        }
+        else {
+            Log.Error("Null unit passed to unitPreDamaged");
+        }
     }
     private unitPreDamaging(damagingUnit: unit) {
-        this.sendBehaviourEvent(Unit.fromHandle(damagingUnit), ABILITY_HOOK.PreUnitDealsDamage);
+        if (damagingUnit !== undefined) {
+            this.sendBehaviourEvent(Unit.fromHandle(damagingUnit), ABILITY_HOOK.PreUnitDealsDamage);
+        }
+        else {
+            Log.Error("Null unit passed to unitPreDamaging");
+        }
     }
     private unitPostDamaged(damagedUnit: unit) {
-        this.sendBehaviourEvent(Unit.fromHandle(damagedUnit), ABILITY_HOOK.PostUnitTakesDamage);
+        if (damagedUnit !== undefined) {
+            this.sendBehaviourEvent(Unit.fromHandle(damagedUnit), ABILITY_HOOK.PostUnitTakesDamage);
+        }
+        else {
+            Log.Error("Null unit passed to unitPostDamaged");
+        }
     }
     private unitPostDamaging(damagingUnit: unit) {
-        this.sendBehaviourEvent(Unit.fromHandle(damagingUnit), ABILITY_HOOK.PostUnitDealsDamage);
+        if (damagingUnit !== undefined) {
+            this.sendBehaviourEvent(Unit.fromHandle(damagingUnit), ABILITY_HOOK.PostUnitDealsDamage);
+        }
+        else {
+            Log.Error("Null unit passed to PostDamaging");
+        }
     }
 
     private checkBehaviourKeysFor(u: Unit) {
@@ -200,24 +228,26 @@ export class AbilityHooks extends Entity {
         }
     }
 
-    private sendBehaviourEvent(u: Unit, ev: ABILITY_HOOK) {
-        const behaviours = this.behavioursForUnit.get(u.id);
-        if (behaviours && behaviours.length > 0) {
-            for (let index = 0; index < behaviours.length; index++) {
-                const b = behaviours[index];
-                try {
-                    b.onEvent(ev);
-                    if (b.doDestroy()) {
-                        b.destroy();
-                        behaviours.splice(index--, 1);
-                        if (behaviours.length === 0) {
-                            this.behavioursForUnit.delete(u.id);
-                        }
-                    }    
+    private sendBehaviourEvent(u: Unit | undefined, ev: ABILITY_HOOK) {
+        if (u && u.id) {
+            const behaviours = this.behavioursForUnit.get(u.id);
+            if (behaviours && behaviours.length > 0) {
+                for (let index = 0; index < behaviours.length; index++) {
+                    const b = behaviours[index];
+                    try {
+                        b.onEvent(ev);
+                        if (b.doDestroy()) {
+                            b.destroy();
+                            behaviours.splice(index--, 1);
+                            if (behaviours.length === 0) {
+                                this.behavioursForUnit.delete(u.id);
+                            }
+                        }    
+                    }
+                    catch(e) {
+                        Log.Error("Behaviour Error: ", e);
+                    }   
                 }
-                catch(e) {
-                    Log.Error("Behaviour Error: ", e);
-                }   
             }
         }
     }

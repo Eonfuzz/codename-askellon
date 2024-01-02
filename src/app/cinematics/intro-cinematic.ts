@@ -82,7 +82,6 @@ export class IntroCinematic {
         this.portalSfx = portalSFX;
         this.warpStormSound.playSound();
 
-        const hostileDummy = new Unit(MapPlayer.fromIndex(25), FourCC('dumy'), 0, 0, bj_UNIT_FACING);
 
 
         for (let i = 0; i < 12; i++) {
@@ -102,7 +101,7 @@ export class IntroCinematic {
 
         SetCameraTargetController(mainShip.unit.handle, 0, 0, false);
 
-        
+        // const hostileDummy = new Unit(MapPlayer.fromIndex(25), FourCC('dumy'), 0, 0, bj_UNIT_FACING);
         await Promise.all([ 
             this.captainChatMessages(),
             this.inquistorChatMessages(),
@@ -110,7 +109,7 @@ export class IntroCinematic {
             this.engineerChatMessages(),
             this.systemChatMessages(),
             this.shipSounds(),
-            // this.hostileProjectiles(mainShip.unit, hostileDummy)
+            // this.hostileProjectiles(mainShip.unit)
         ]);
 
         return;
@@ -167,34 +166,43 @@ export class IntroCinematic {
         await Timers.wait(2);        
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
         MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] Simulation results: VESSEL DAMAGED 80%, VESSEL DESTROYED 19%`);
+        CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
 
         await Timers.wait(2);
         PlayNewSound("Sounds\\ComplexBeep.mp3", 127);
         MessageAllPlayers(`[${COL_ATTATCH}DANGER|r] WARP ENTITY INTERCEPTING VESSEL`);
-        CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 4, "ReplaceableTextures\\CameraMasks\\Black_mask.blp", 0, 0, 0, 0);
         EnableUserUI(true);
     }
 
-    private async hostileProjectiles(mainShip: Unit, hostileDummy: Unit) {
-        const shipLoc = Vector3.fromWidget(mainShip.handle).add(new Vector3(1200, 1200, 0));
-        const sourceLoc = Vector3.fromWidget(mainShip.handle).projectTowards2D(90, 1800);
+    private async hostileProjectiles(mainShip: Unit) {
         
         // const snd1 = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
         // const snd2 = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
         // const snd3 = new SoundRef("Sounds\\ExplosionBassHeavy.mp3", false, true);
 
-        // const hostileDummy = new Unit(PlayerStateFactory.AlienAIPlayer1, UNIT_ID_DUMMY_CASTER, sourceLoc.x, sourceLoc.y);
+        await Timers.wait(0.1);
+        let sourceLoc = Vector3.fromWidget(mainShip.handle)
+            .projectTowards2D(mainShip.facing, -2000)
+            .add(new Vector3(-200 + 400 * Math.random(), -200 + 400 * Math.random(), 0));
+        const hostileDummy = new Unit(PlayerStateFactory.NeutralHostile, UNIT_ID_DUMMY_CASTER, sourceLoc.x, sourceLoc.y);
+
+
 
         for (let index = 0; index < 20; index++) {
+            let shipLoc = Vector3.fromWidget(mainShip.handle);
+            let sourceLoc = Vector3.fromWidget(mainShip.handle)
+                .projectTowards2D(mainShip.facing, -2000)
+                .add(new Vector3(-200 + 400 * Math.random(), -200 + 400 * Math.random(), 0));
+
             // snd1.playSound();
             this.spawnProj(hostileDummy, shipLoc, sourceLoc);
-            await Timers.wait(0.2);       
+            await Timers.wait(0.2);
             // snd2.playSound(); 
             this.spawnProj(hostileDummy, shipLoc, sourceLoc);
             await Timers.wait(0.2);   
             // snd3.playSound();
             this.spawnProj(hostileDummy, shipLoc, sourceLoc);   
-            await Timers.wait(1.6);         
+            await Timers.wait(0.2 + Math.random() * 1);         
         }
     }
 
@@ -216,8 +224,9 @@ export class IntroCinematic {
             startLoc,
             new ProjectileTargetStatic(deltaLoc)
         )
-        .setVelocity(2000)
-        .onCollide(() => true);
+            .setVelocity(2000)
+            .onCollide(() => true);
+
         projectile.addEffect(SFX_LASER_5, new Vector3(0, 0, 0), deltaLoc.normalise(), 1);
         EventEntity.send(EVENT_TYPE.ADD_PROJECTILE, { source: forDummy, data: { projectile: projectile }});
     }

@@ -344,10 +344,10 @@ export class SecurityEntity extends Entity {
             table = MEDICAL_LOOT_TABLE;
         }
 
-        const result = table.getItem();;
+        const result = table.getItem();
 
         const i = CreateItem(result.itemId, x, y);
-        if (result.chargesMin > 0) {
+        if (result.chargesMin != undefined && result.chargesMin > 0 && result.chargesMax != undefined) {
             SetItemCharges(i, GetRandomInt(result.chargesMin, result.chargesMax));
         }
 

@@ -17,9 +17,10 @@ class CustomPrinter extends tstl.LuaPrinter {
   private config: IProjectConfig;
 
   private blacklist = [
-    'onForceTakeOrDealDamage',
-    'addAggressionLog',
-    'aggressionBetweenTwoPlayers'
+    // 'onForceTakeOrDealDamage',
+    // 'addAggressionLog',
+    // 'aggressionBetweenTwoPlayers',
+    'DisplayTimedTextToPlayer',
   ];
 
   private blacklistCalc = new RegExp(this.blacklist.join('|'));
@@ -41,10 +42,7 @@ class CustomPrinter extends tstl.LuaPrinter {
         // console.log("Source: "+source);
         if (source.includes('.ts')) {
           const text = originalResult.toString();
-
-          const blacklist = [];
           const containsBlacklisted = !!text.match(this.blacklistCalc);
-          // console.log("text: "+text);
           if (text.includes('local') && !containsBlacklisted) {
             const tabs = text.split(regex);
             const tabSpacer = (tabs && tabs[1].length > 0) ? tabs[1] : undefined;
@@ -56,6 +54,9 @@ class CustomPrinter extends tstl.LuaPrinter {
               const uuid = createGuid();
               app = `${tabSpacer}if (MessageAllPlayers~=nil) then\n${tabSpacer}    MessageAllPlayers("uuid ${uuid}")\n${tabSpacer}end\n`;
             }
+          }
+          else if (containsBlacklisted) {
+            console.log("Blacklisted Func: "+text);
           }
         }
         // if (originalResult.source)

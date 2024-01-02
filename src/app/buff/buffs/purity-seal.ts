@@ -98,8 +98,10 @@ export class PuritySeal extends DynamicBuff {
             EventEntity.getInstance().addListener(this.levelUpTracker);
         }
         else {
-            this.damageTracker.destroy();
-            this.damageTracker = undefined;
+            if (this.damageTracker) {
+                this.damageTracker.destroy();
+                this.damageTracker = undefined;
+            }
             EventEntity.getInstance().removeListener(this.levelUpTracker);
             this.levelUpTracker = undefined;
 

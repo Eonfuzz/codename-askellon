@@ -129,10 +129,15 @@ export class UnitDex {
 
     private static onGameStart() {
         DestroyTimer(GetExpiredTimer());
-        for (let index = 0; index < this.counter; index++) {
+        for (let index = 1; index < this.counter; index++) {
             this.lastIndex = index;
             this.eventUnit = this.unit[index];
-            this.indexTrig[UnitDexEvent.INDEX].exec();
+            if (this.eventUnit?.handle) {
+                this.indexTrig[UnitDexEvent.INDEX].exec();
+            }
+            else {
+                Log.Error(`UDexGameStart: Unit not found at ${index} of ${this.counter}`)
+            }
         }
         this.lastIndex = this.counter;
         this.initialized = true;

@@ -1,4 +1,4 @@
-import { MapPlayer, playerColors, Unit } from "w3ts/index";
+import { Color, MapPlayer, playerColors, Unit } from "w3ts/index";
 import { ForceType } from "./forces/force-type";
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { WeaponEntityAttackType } from "app/weapons/weapon-attack-type";
@@ -50,7 +50,7 @@ export class PlayerState {
     private crewmember: Crewmember;
     
     public originalName: string;
-    public originalColour: playercolor;
+    public originalColour: Color;
 
     // The player experience shared across all agents
     private playerExperience: number = 0;
@@ -75,7 +75,7 @@ export class PlayerState {
     constructor(player: MapPlayer) {
         this.player = player;
         this.originalName = _G["udg_original_names"][player.id] || 'Unknown';
-        this.originalColour = player.color;
+        this.originalColour =  playerColors[player.id];
     }
 
     getUserPrivs(): PRIVS {

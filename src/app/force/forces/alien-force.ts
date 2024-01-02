@@ -5,7 +5,7 @@ import { ABIL_TRANSFORM_HUMAN_ALIEN, TECH_MAJOR_HEALTHCARE, TECH_ROACH_DUMMY_UPG
 import { Crewmember } from "app/crewmember/crewmember-type";
 import { alienTooltipToAlien, alienTooltipToHuman } from "resources/ability-tooltips";
 import { PlayNewSound } from "lib/translators";
-import { Trigger, MapPlayer, Unit, playerColors, getElapsedTime } from "w3ts";
+import { Trigger, MapPlayer, Unit, playerColors, getElapsedTime, playerColorNames } from "w3ts";
 import { ROLE_TYPES } from "resources/crewmember-names";
 import { SoundRef, SoundWithCooldown } from "app/types/sound-ref";
 import { STR_CHAT_ALIEN_HOST, STR_CHAT_ALIEN_SPAWN, STR_CHAT_ALIEN_TAG, STR_ALIEN_DEATH } from "resources/strings";
@@ -125,10 +125,11 @@ export class AlienForce extends ForceType {
             const killingUnit = Unit.fromHandle(GetKillingUnit());
 
             const validKillingPlayer = 
+                killingUnit != undefined && (
                 // If it's an alien AI killer
                 PlayerStateFactory.isAlienAI(killingUnit.owner) ||
                 // If it's a player killer
-                (this.hasPlayer(killingUnit.owner) && this.getAlienFormForPlayer(killingUnit.owner) === killingUnit);
+                (this.hasPlayer(killingUnit.owner) && this.getAlienFormForPlayer(killingUnit.owner) === killingUnit));
             const validDyingUnit = !this.hasPlayer(dyingUnit.owner) && !PlayerStateFactory.isAlienAI(dyingUnit.owner) && dyingUnit.typeId !== CREWMEMBER_UNIT_ID;
             const validDyingType = !IsUnitType(dyingUnit.handle, UNIT_TYPE_MECHANICAL);
 
@@ -178,11 +179,7 @@ export class AlienForce extends ForceType {
                 TooltipEntity.getInstance().registerTooltip(who, alienTooltipToHuman);
 
                 this.registerAlienDeath(alien);
-                // Also register the crewmember for the event
-                // this.registerAlienDealsDamage(who);
 
-
-                // TODO Change how vision is handled
                 const pData = PlayerStateFactory.get(owner);
                 const crewmember = pData.getCrewmember();                
 
@@ -192,7 +189,6 @@ export class AlienForce extends ForceType {
                 }
 
                 this.applyAlienMinionHost(alien, owner === this.alienHost);
-                // alien.nameProper = "|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|n|nAlien";
 
                 // Add ability tooltip
                 TooltipEntity.getInstance().registerTooltip(who, alienTooltipToAlien);
@@ -334,7 +330,7 @@ export class AlienForce extends ForceType {
             // Ensure player name reverts
             const pData = PlayerStateFactory.get(player);
             player.name = pData.originalName;
-            player.color = pData.originalColour;
+            player.color = pData.originalColour.playerColor;
 
             PlayNewSound("Sounds\\Nazgul.wav", 50);
             Players.forEach(p => {
@@ -403,9 +399,10 @@ export class AlienForce extends ForceType {
                 const alienUnit = this.getAlienFormForPlayer(player);
 
                 this.setHost(player);
+                playerColorNames
                 this.applyAlienMinionHost(alienUnit, true);
                 this.players.forEach(p => {
-                    MessagePlayer(p, `|cff${pData.originalColour}${crew.name}|r${COL_ALIEN} is your new host.`);
+                    MessagePlayer(p, `${pData.originalColour.code}${crew.name}|r${COL_ALIEN} is your new host.`);
                 });
             }
 
@@ -420,7 +417,7 @@ export class AlienForce extends ForceType {
 
     transform(who: MapPlayer, toAlien: boolean): Unit | void {
         this.playerIsTransformed.set(who.id, toAlien);
-
+        
         const alien = this.playerAlienUnits.get(who.id);
         let unit = this.playerUnits.get(who.id);
 
@@ -484,7 +481,7 @@ export class AlienForce extends ForceType {
             // Ensure player name reverts
             const pData = PlayerStateFactory.get(who);
             who.name = pData.originalName;
-            who.color = pData.originalColour;
+            who.color = pData.originalColour.playerColor;
 
             // Post event
             EventEntity.getInstance().sendEvent(EVENT_TYPE.ALIEN_TRANSFORM_CREW, { crewmember: crewmember, source: alien });
