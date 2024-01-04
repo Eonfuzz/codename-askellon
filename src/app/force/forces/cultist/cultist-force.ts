@@ -179,7 +179,7 @@ export class CultistForce extends CrewmemberForce {
     }
 
     private onCrewmemberDeath(dyingCrew: Unit, killingCrew: Unit) {
-        if (!this.hasPlayer(killingCrew.owner)) return;
+        if (!killingCrew || !this.hasPlayer(killingCrew.owner)) return;
         if (killingCrew.owner.isLocal()) {
             this.cultistGodSoundByte.playSound();
         }

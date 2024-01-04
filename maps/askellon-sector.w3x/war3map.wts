@@ -9698,3 +9698,39 @@ STRING 2387
 |cff627781The Human Regulation Project ultimately proved useless; lasting only until the first breakthrough.|r|n|nYou are |cff63B7B7Psionic|r and become stronger every |cff63B7B7Solar Event|r; spells gained strain the user, costing |cffc81e1eWillpower * 2|r health each cast.|n|nAdditionally, while under |cff18bc9c40% mana|r you gain |cff18bc9c10 mana|r and lose |cffc81e1e-5 health|r per second.|n|r|n|cff62778760 Seconds Cooldown|r
 }
 
+STRING 2388
+// Units: n010 (Kelly Tracey |n|cff627781Gone too soon|r), Name (Name)
+{
+Kelly Tracey |n|cff627781Gone too soon|r
+}
+
+STRING 2389
+// Units: u00B (Roach), Name (Name)
+{
+Roach
+}
+
+STRING 2390
+// Units: u00B (Roach), EditorSuffix (Name - Editor Suffix)
+{
+( Minion T2 )
+}
+
+STRING 2391
+// Abilities: A046 (Roach Hardened Skin), Name (Name)
+{
+Roach Hardened Skin
+}
+
+STRING 2392
+// Units: u00C (Swarmling), Name (Name)
+{
+Swarmling
+}
+
+STRING 2393
+// Units: u00C (Swarmling), EditorSuffix (Name - Editor Suffix)
+{
+( Minion T0 )
+}
+

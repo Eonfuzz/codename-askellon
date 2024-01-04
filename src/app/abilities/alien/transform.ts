@@ -8,7 +8,7 @@ import { SMART_ORDER_ID, ABIL_TRANSFORM_ALIEN_HUMAN, ABIL_TRANSFORM_HUMAN_ALIEN 
 import { Trigger, Unit, Timer, MapPlayer } from "w3ts";
 import { Log } from "lib/serilog/serilog";
 import { getZFromXY, getRandomBlood, CreateBlood, AddGhost, RemoveGhost } from "lib/utils";
-import { WORM_ALIEN_FORM, CREWMEMBER_UNIT_ID } from "resources/unit-ids";
+import { WORM_ALIEN_FORM, CREWMEMBER_UNIT_ID, ALIEN_MINION_SWARMLING } from "resources/unit-ids";
 import { FilterIsAlive } from "resources/filters";
 import { WeaponEntity } from "app/weapons/weapon-entity";
 import { ForceEntity } from "app/force/force-entity";
@@ -16,6 +16,7 @@ import { ALIEN_FORCE_NAME } from "app/force/forces/force-names";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { SmartTrigger } from "lib/SmartTrigger";
+import { WorldEntity } from "app/world/world-entity";
 
 
 
@@ -143,7 +144,13 @@ export class TransformAbility extends AbilityWithDone {
 
     private bloodSplash(where: Vector3) {
         // Create a blood effect
-        // CreateBlood(where.x, where.y);
+        if (this.toAlien) {
+            const zone = WorldEntity.getInstance().getPointZone(where.x, where.y);   
+            if (zone) {
+                CreateUnit(PlayerStateFactory.AlienAIPlayer1.handle, ALIEN_MINION_SWARMLING, where.x, where.y, GetRandomReal(0, 360));
+                UnitApplyTimedLife(GetLastCreatedUnit(), FourCC('BLTF'), 15);
+            }
+        }
         return true;
     }
     

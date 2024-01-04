@@ -8,6 +8,16 @@ import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Vector2 } from "app/types/vector2";
 
+const MINING_DISTANCE_NORMAL = 400;
+const MINING_DISTANCE_EMPOWERED = MINING_DISTANCE_NORMAL * 1.33;
+
+const calcMiningDistance = () => {
+    if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 2) {
+        return MINING_DISTANCE_EMPOWERED;
+    }
+    return MINING_DISTANCE_NORMAL;
+}
+
 /**
  * Yes, mining is counted as an interaction
  */
@@ -24,10 +34,7 @@ export function InitMiningInteraction() {
             return 20;
         },
         getInteractionDistance:  (source: Unit, interactable: Unit) => {
-            if (ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_VOID) >= 2) {
-                return 400 * 1.33;
-            }
-            return 400;
+            return calcMiningDistance();
         },
         onStart: (source: Unit, interactable: Unit) => {
             EventEntity.send(EVENT_TYPE.SHIP_STARTS_MINING, { source: source, data: { target: interactable }});
@@ -35,8 +42,8 @@ export function InitMiningInteraction() {
         onCancel: (source: Unit, interactable: Unit) => {
             EventEntity.send(EVENT_TYPE.SHIP_STOPS_MINING, { source: source, data: { target: interactable }});
         },
-        onRefocus: (source: Unit, interactable: Unit) => {
-            if (Vector2.fromWidget(source.handle).distanceTo(Vector2.fromWidget(interactable.handle)) <= this.getInteractionDistance(source, interactable))
+        onRefocus: (source: Unit, interactable: Unit) => {            
+            if (Vector2.fromWidget(source.handle).distanceTo(Vector2.fromWidget(interactable.handle)) <= calcMiningDistance())
                 EventEntity.send(EVENT_TYPE.SHIP_STARTS_MINING, { source: source, data: { target: interactable }});
         },
         action: (source: Unit, interactable: Unit) => {

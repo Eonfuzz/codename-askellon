@@ -5,7 +5,7 @@ import { Hooks } from "lib/Hooks";
 import { Trigger, Region, Unit, MapPlayer } from "w3ts/index";
 import { Players } from "w3ts/globals/index";
 import { Timers } from "app/timer-type";
-import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EXPLOSIVE_BARREL, SPACE_UNIT_MINERAL_RARE, UNIT_ID_DEBRIS_3, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_1, ALIEN_STRUCTURE_HATCHERY } from "resources/unit-ids";
+import { UNIT_ID_DUMMY_CASTER, UNIT_ID_CRATE, SPACE_UNIT_ASTEROID, SPACE_UNIT_MINERAL, ALIEN_STRUCTURE_TUMOR, ALIEN_MINION_LARVA, ALIEN_MINION_EGG, ALIEN_MINION_CANITE, UNIT_ID_EGG_AUTO_HATCH_LARGE, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EXPLOSIVE_BARREL, SPACE_UNIT_MINERAL_RARE, UNIT_ID_DEBRIS_3, UNIT_ID_DEBRIS_2, UNIT_ID_DEBRIS_1, ALIEN_STRUCTURE_HATCHERY, ALIEN_MINION_ROACH } from "resources/unit-ids";
 import { SFX_ZERG_BUILDING_DEATH, SFX_ZERG_LARVA_DEATH, SFX_ZERG_EGG_DEATH, SFX_ALIEN_BLOOD, SFX_BUILDING_EXPLOSION } from "resources/sfx-paths";
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ABIL_ALIEN_MINION_EVOLVE, ABIL_U_DEX } from "resources/ability-ids";
@@ -89,6 +89,12 @@ export class EventEntity {
                 unit.show = false;
                 const sfx = AddSpecialEffect(SFX_ZERG_LARVA_DEATH, unit.x, unit.y);
                 BlzSetSpecialEffectScale(sfx, 0.6);
+                DestroyEffect(sfx);
+            }
+            else if (unit.typeId === ALIEN_MINION_ROACH) {
+                unit.show = false;
+                const sfx = AddSpecialEffect(SFX_ZERG_LARVA_DEATH, unit.x, unit.y);
+                BlzSetSpecialEffectScale(sfx, 1.5);
                 DestroyEffect(sfx);
             }
             else if (unit.typeId === ALIEN_MINION_EGG || unit.typeId === UNIT_ID_EGG_AUTO_HATCH || unit.typeId == UNIT_ID_EGG_AUTO_HATCH_LARGE) {

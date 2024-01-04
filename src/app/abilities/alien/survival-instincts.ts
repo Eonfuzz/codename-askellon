@@ -8,6 +8,9 @@ import { getZFromXY, AddGhost, RemoveGhost, CreateBlood } from "lib/utils";
 import { FilterIsAlive } from "resources/filters";
 import { ForceEntity } from "app/force/force-entity";
 import { WeaponEntity } from "app/weapons/weapon-entity"
+import { PlayerStateFactory } from "app/force/player-state-entity";
+import { ALIEN_MINION_SWARMLING } from "resources/unit-ids";
+import { WorldEntity } from "app/world/world-entity";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -90,7 +93,7 @@ export class SurvivalInstinctsAbility extends AbilityWithDone {
             WeaponEntity.getInstance().addProjectile(projectile);
         }
 
-        if (this.timeElapsed < this.duration) {
+        if (this.timeElapsed > this.duration) {
             this.done = true;
         }
     };
@@ -111,8 +114,12 @@ export class SurvivalInstinctsAbility extends AbilityWithDone {
     }
 
     private bloodSplash(where: Vector3) {
-        // CreateBlood(where.x, where.y);
-        return false;
+        const zone = WorldEntity.getInstance().getPointZone(where.x, where.y);   
+        if (zone) {
+            CreateUnit(PlayerStateFactory.AlienAIPlayer1.handle, ALIEN_MINION_SWARMLING, where.x, where.y, GetRandomReal(0, 360));
+            UnitApplyTimedLife(GetLastCreatedUnit(), FourCC('BLTF'), 15);
+        }
+        return true;
     }
     
     public destroy() {

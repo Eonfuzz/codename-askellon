@@ -54,7 +54,7 @@ DamageBonusSiege=1.00,1.00,1.00,1.00,1.25,1.00,1.00,1.00
 DisplayEnemyInventory=0
 EtherealDamageBonus=1.00,1.00,1.00,1.00,1.00,1.00,1.00
 FollowRange=100.0
-IntManaBonus=5.0
+IntManaBonus=2.5
 ItemStackingEnabled=1
 MaxHeroLevel=20
 MaxUnitSpeed=522.0
@@ -65,5 +65,5 @@ NeedHeroXPFormulaB=250.0
 NeedHeroXPFormulaC=0.0
 PawnItemRate=0.25
 StrAttackBonus=0.0
-StrHitPointBonus=5.0
+StrHitPointBonus=2.5
 

@@ -306,7 +306,7 @@ export class Madness extends DynamicBuff {
 
     public onStatusChange(newStatus: boolean) {
         const cultForce = PlayerStateFactory.getForce(CULT_FORCE_NAME) as CultistForce;
-        const buffSource = this.getBuffSource().owner;
+        const buffSource = this.getBuffSource()?.owner;
 
         if (newStatus) {
             this.hookId = ChatEntity.getInstance().addHook((hook: ChatHook) => this.processChat(hook));

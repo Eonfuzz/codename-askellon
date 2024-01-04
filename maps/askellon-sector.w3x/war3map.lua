@@ -1295,6 +1295,7 @@ u = BlzCreateUnitWithSkin(p, FourCC("n003"), -7350.3, -12601.3, 90.000, FourCC("
 gg_unit_n001_0328 = BlzCreateUnitWithSkin(p, FourCC("n001"), -6976.0, -8320.0, 270.000, FourCC("n001"))
 u = BlzCreateUnitWithSkin(p, FourCC("nWEP"), -6976.0, -11712.0, 270.000, FourCC("nWEP"))
 gg_unit_n002_0344 = BlzCreateUnitWithSkin(p, FourCC("n002"), -6272.0, -8960.0, 270.000, FourCC("n002"))
+u = BlzCreateUnitWithSkin(p, FourCC("n010"), -15424.3, -11769.9, 337.158, FourCC("n010"))
 gg_unit_n001_0366 = BlzCreateUnitWithSkin(p, FourCC("n001"), -4416.0, -12992.0, 270.000, FourCC("n001"))
 u = BlzCreateUnitWithSkin(p, FourCC("n00G"), -6337.6, -8457.8, 270.000, FourCC("n00G"))
 u = BlzCreateUnitWithSkin(p, FourCC("nVOI"), -2688.3, -17742.5, 270.000, FourCC("nVOI"))

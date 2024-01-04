@@ -1,7 +1,7 @@
 import { Unit } from "w3ts/handles/unit";
 import { AbilityWithDone } from "app/abilities/ability-type";
 import { PlayerStateFactory } from "app/force/player-state-entity";
-import { ALIEN_MINION_CANITE, ALIEN_MINION_FORMLESS, ALIEN_MINION_GREATER_CANITE, ALIEN_MINION_HYDRA, ALIEN_MINION_LARVA, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
+import { ALIEN_MINION_CANITE, ALIEN_MINION_FORMLESS, ALIEN_MINION_GREATER_CANITE, ALIEN_MINION_HYDRA, ALIEN_MINION_LARVA, ALIEN_MINION_ROACH, ALIEN_MINION_SWARMLING, UNIT_ID_EGG_AUTO_HATCH, UNIT_ID_EGG_AUTO_HATCH_LARGE } from "resources/unit-ids";
 import { Vector2 } from "app/types/vector2";
 import { WorldEntity } from "app/world/world-entity";
 import { SFX_ALIEN_BLOOD } from "resources/sfx-paths";
@@ -54,6 +54,7 @@ export class SpawnAlienHordeAbility extends AbilityWithDone {
                 const i = GetRandomInt(1,10);
                 let t: number;
                 if (i >= 7) t = ALIEN_MINION_LARVA;
+                else if (i >= 6) t = ALIEN_MINION_ROACH;
                 else if (i >= 5) t = ALIEN_MINION_FORMLESS;
                 else if (i >= 4) t = ALIEN_MINION_GREATER_CANITE;
                 else if (i >= 3) t = ALIEN_MINION_HYDRA;
@@ -61,7 +62,7 @@ export class SpawnAlienHordeAbility extends AbilityWithDone {
                 
                 DestroyEffect(AddSpecialEffect(SFX_ALIEN_BLOOD, _x, _y));
                     
-                CreateUnit(aiPlayer.handle, t, _x, _y, GetRandomInt(0, 360));                    
+                CreateUnit(aiPlayer.handle, t, _x, _y, GetRandomInt(0, 360));         
             }         
         }
         

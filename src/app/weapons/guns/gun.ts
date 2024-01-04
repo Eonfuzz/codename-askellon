@@ -45,6 +45,7 @@ export abstract class Gun {
 
     public onRemove() {
         if (this.equippedTo) {
+            this.gunEffect.scale = 0.01;
             this.gunEffect.destroy();
             this.equippedTo.unit.addAnimationProps("alternate", true);
 

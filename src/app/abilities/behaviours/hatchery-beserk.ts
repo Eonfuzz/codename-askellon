@@ -33,6 +33,9 @@ export class HatcheryBehaviour extends Behaviour {
 
                 const originZone = WorldEntity.getInstance().getPointZone(this.forUnit.x, this.forUnit.y);             
                 const targetZone = WorldEntity.getInstance().getPointZone(target.x, target.y); 
+
+                // Reduce hatchery damage to zero
+                BlzSetEventDamage(0);
                 
                 if (originZone === targetZone) {
                     if  (this.forUnit.getAbilityCooldownRemaining(ABIL_ALIEN_ACID_POOL) <= 0) {

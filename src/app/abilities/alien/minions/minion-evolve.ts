@@ -2,7 +2,7 @@ import { AbilityWithDone } from "app/abilities/ability-type";
 import { EventEntity } from "app/events/event-entity";
 import { EVENT_TYPE } from "app/events/event-enum";
 import { Unit } from "w3ts/index";
-import { ALIEN_MINION_CANITE, ALIEN_MINION_FORMLESS, ALIEN_MINION_GREATER_CANITE, ALIEN_MINION_HYDRA, ALIEN_MINION_LARVA } from "resources/unit-ids";
+import { ALIEN_MINION_CANITE, ALIEN_MINION_FORMLESS, ALIEN_MINION_GREATER_CANITE, ALIEN_MINION_HYDRA, ALIEN_MINION_LARVA, ALIEN_MINION_ROACH, ALIEN_MINION_SWARMLING } from "resources/unit-ids";
 
 export class MinionEvolveAbility extends AbilityWithDone {
 
@@ -13,12 +13,19 @@ export class MinionEvolveAbility extends AbilityWithDone {
         let target: number;
         let scale = 1;
 
-        if (unit.typeId === ALIEN_MINION_LARVA) {
+        if (unit.typeId === ALIEN_MINION_LARVA || unit.typeId === ALIEN_MINION_SWARMLING) {
             target = ALIEN_MINION_CANITE;
             scale = 0.9;
         }
         else if (unit.typeId === ALIEN_MINION_CANITE) {
-            target = GetRandomReal(0, 100) > 50 ? ALIEN_MINION_HYDRA : ALIEN_MINION_GREATER_CANITE;
+            const seed = GetRandomReal(0, 100);
+            if (seed <= 33) {
+                target = ALIEN_MINION_HYDRA;    
+            } else if (seed <= 66) {
+                target = ALIEN_MINION_GREATER_CANITE;
+            } else {
+                target = ALIEN_MINION_ROACH;
+            }
             scale = 1.2;
         }
         else if (unit.typeId === ALIEN_MINION_GREATER_CANITE) {
