@@ -84,9 +84,11 @@ export class InteractionEntity extends Entity {
 
     beginInteraction() {
         {
+            Log.Information("Starting interaction!");
             const trigUnit = Unit.fromHandle(GetTriggerUnit());
             const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
 
+            Log.Information(`Unit: ${trigUnit.name} trying to use ${targetUnit.name}`)
             if (trigUnit && targetUnit) {
                 const targetUnitType = targetUnit.typeId;
 
