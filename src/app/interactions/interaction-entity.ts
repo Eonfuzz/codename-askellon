@@ -88,24 +88,29 @@ export class InteractionEntity extends Entity {
             const trigUnit = Unit.fromHandle(GetTriggerUnit());
             const targetUnit = Unit.fromHandle(GetOrderTargetUnit());
 
-            Log.Information(`Unit: ${trigUnit.name} trying to use ${targetUnit.name}`)
+            Log.Information(`Unit: ${trigUnit.name} trying to use ${targetUnit.name}`);
             if (trigUnit && targetUnit) {
                 const targetUnitType = targetUnit.typeId;
 
                 // First of all make sure we don't have one already
                 const foundMatch = this.interactions.find(i => i.unit === trigUnit && i.targetUnit === targetUnit);
                 if (foundMatch) {
+                    Log.Information(`Found matching interaction already, cancelling`);
                     return;
                 }
 
                 // Check our cooldown
-                if (!this.checkCooldown(trigUnit)) return;
+                if (!this.checkCooldown(trigUnit)) {
+                    Log.Information(`Internal Cooldown failed`);
+                    return;
+                }
 
                 // Check to see if we have it in our interactable data
                 const interact = Interactables.has(targetUnitType) && Interactables.get(targetUnitType);
 
                 // Log.Information("Check conds");
                 if (interact && (!interact.condition || interact.condition(trigUnit, targetUnit))) {
+                    Log.Information(`Conditions passed`);
                     const interactionTime = interact.getInteractionTime !== undefined
                         ? interact.getInteractionTime(trigUnit, targetUnit) : 1.3;
                     const interactionDistance = interact.getInteractionDistance !== undefined
