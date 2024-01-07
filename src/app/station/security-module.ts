@@ -311,7 +311,8 @@ export class SecurityEntity extends Entity {
         DestroyEffect(sfx);
         RemoveUnit(who.handle);
 
-        const killer = Unit.fromHandle(GetKillingUnit());
+        const killer = Unit.fromHandle(GetKillingUnit()) || who;
+
         killer.damageAt(
             0.35, 
             200, 
@@ -324,7 +325,6 @@ export class SecurityEntity extends Entity {
             DAMAGE_TYPE_FIRE, 
             WEAPON_TYPE_WHOKNOWS
         );
-
     }
 
     spawnLootOn(x: number, y: number) {

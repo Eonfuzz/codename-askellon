@@ -104,7 +104,7 @@ export class CultistResearchAbility extends AbilityWithDone {
                                 crew.unit,
                                 new BuffInstanceDuration(this.owningCultHuman, 300)
                             );
-                            ChatEntity.getInstance().postMessageFor([crew.unit.owner], "?", COLOUR_CULT, "You feel a chill go down your spine");
+                            ChatEntity.getInstance().postMessageFor([crew.unit.owner], "?", COLOUR_CULT, "The chant echos in your skull, faint whispers and violent dreams.");
                         }
                     }
                 }

@@ -158,7 +158,7 @@ export class AbilityHooks extends Entity {
             this.sendBehaviourEvent(Unit.fromHandle(attackingUnit), ABILITY_HOOK.UnitAttacks);
         }
         else {
-            Log.Error("Null unit passed to unitAttacks");
+            // Log.Error("Null unit passed to unitAttacks");
         }
     }
     private unitAttacked(attackedUnit: unit) {
@@ -166,7 +166,7 @@ export class AbilityHooks extends Entity {
             this.sendBehaviourEvent(Unit.fromHandle(attackedUnit), ABILITY_HOOK.UnitIsAttacked);
         }
         else {
-            Log.Error("Null unit passed to unitAttacked");
+            // Log.Error("Null unit passed to unitAttacked");
         }
     }
     private unitPreDamaged(damagedUnit: unit) {
@@ -174,7 +174,7 @@ export class AbilityHooks extends Entity {
             this.sendBehaviourEvent(Unit.fromHandle(damagedUnit), ABILITY_HOOK.PreUnitTakesDamage);
         }
         else {
-            Log.Error("Null unit passed to unitPreDamaged");
+            // Log.Error("Null unit passed to unitPreDamaged");
         }
     }
     private unitPreDamaging(damagingUnit: unit) {
@@ -182,7 +182,7 @@ export class AbilityHooks extends Entity {
             this.sendBehaviourEvent(Unit.fromHandle(damagingUnit), ABILITY_HOOK.PreUnitDealsDamage);
         }
         else {
-            Log.Error("Null unit passed to unitPreDamaging");
+            // Log.Error("Null unit passed to unitPreDamaging");
         }
     }
     private unitPostDamaged(damagedUnit: unit) {
@@ -190,7 +190,7 @@ export class AbilityHooks extends Entity {
             this.sendBehaviourEvent(Unit.fromHandle(damagedUnit), ABILITY_HOOK.PostUnitTakesDamage);
         }
         else {
-            Log.Error("Null unit passed to unitPostDamaged");
+            // Log.Error("Null unit passed to unitPostDamaged");
         }
     }
     private unitPostDamaging(damagingUnit: unit) {
@@ -198,7 +198,7 @@ export class AbilityHooks extends Entity {
             this.sendBehaviourEvent(Unit.fromHandle(damagingUnit), ABILITY_HOOK.PostUnitDealsDamage);
         }
         else {
-            Log.Error("Null unit passed to PostDamaging");
+            // Log.Error("Null unit passed to PostDamaging");
         }
     }
 

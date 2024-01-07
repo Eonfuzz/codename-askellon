@@ -24,11 +24,11 @@ export abstract class DynamicBuff {
         this.who = unit;
 
         if (isNegativeInstance) {
-            // this.isActive = false;
+            this.isActive = false;
             this.negativeinstances.push(instance);
         }
         else {
-            // this.isActive = true;
+            this.isActive = true;
             this.instances.push(instance);
         }
 

@@ -367,8 +367,8 @@ export class CrewFactory {
         return `NAME NOT FOUND ${role}`;
     }
 
-    getCrewmemberForUnit(unit: Unit): Crewmember | void {
-        return this.crewmemberForUnit.has(unit.id) && this.crewmemberForUnit.get(unit.id);
+    getCrewmemberForUnit(unit: Unit): Crewmember | undefined {
+        return unit && this.crewmemberForUnit.has(unit.id) && this.crewmemberForUnit.get(unit.id);
     }
 
     /*private getSkinFor(who: PlayerState) {        

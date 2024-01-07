@@ -36,8 +36,6 @@ export class AskellonDamageBehaviour extends Behaviour {
 
     private isInMeltdown = false;
 
-    private shipIsDead = false;
-
     constructor() {
         super();
         // MessageAllPlayers("Creating test behaviour");
@@ -50,7 +48,7 @@ export class AskellonDamageBehaviour extends Behaviour {
 
     public onEvent(event: ABILITY_HOOK) {
         // MessageAllPlayers(`${this.forUnit.name} :: `+ABILITY_HOOK[event]);
-        if (this.shipIsDead && event === ABILITY_HOOK.PostUnitTakesDamage) {
+        if (!AskellonEntity.isAlive() && event === ABILITY_HOOK.PostUnitTakesDamage) {
             BlzSetEventDamage(0);
         }
         else if (event === ABILITY_HOOK.PostUnitTakesDamage) {
@@ -104,8 +102,7 @@ export class AskellonDamageBehaviour extends Behaviour {
                 t.start(80, false, () => {
                     dialog.display = false;
                     this.askellonDestructionAlarm.destroy();
-
-                    this.shipIsDead = true;
+                    AskellonEntity.setIsAlive(false);
                     this.isInMeltdown = false;
                     CinematicFadeBJ(bj_CINEFADETYPE_FADEOUTIN, 2, "ReplaceableTextures\\CameraMasks\\White_mask.blp", 0.00, 0.00, 0.00, 0);           
                     EnableUserUI(true);
@@ -234,7 +231,7 @@ export class AskellonDamageBehaviour extends Behaviour {
             SetUnitY(unit, where.y + 50);
             IssuePointOrder(unit, 'flamestrike', where.x, where.y);
             
-        }, ABIL_DUMMY_FLAMESTRIKE);
+        }, ABIL_DUMMY_FLAMESTRIKE, true);
 
         CameraSetSourceNoise(5, 50);
         Timers.addTimedAction(4, () => {                

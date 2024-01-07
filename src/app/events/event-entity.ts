@@ -131,7 +131,6 @@ export class EventEntity {
             listeners.push(listener);
             // No apply the change
             this.eventListeners.set(listener.eventType, listeners);
-
         });
         return this;
     }
@@ -147,9 +146,11 @@ export class EventEntity {
     }
 
     removeListener(listener: EventListener) {
-        // Get the list of listeners
-        const listeners = this.eventListeners.get(listener.eventType) || [];
-        this.eventListeners.set(listener.eventType, listeners.filter(l => l != listener));
+        if (listener) {
+            // Get the list of listeners
+            const listeners = this.eventListeners.get(listener.eventType) || [];
+            this.eventListeners.set(listener.eventType, listeners.filter(l => l != listener));
+        }
     }
 
 

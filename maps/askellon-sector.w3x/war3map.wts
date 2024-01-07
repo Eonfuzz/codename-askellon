@@ -1013,19 +1013,19 @@ STRING 306
 }
 
 STRING 307
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Healthcare
 }
 
 STRING 308
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Healthcare
 }
 
 STRING 309
-// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
 {
 Healthcare
 }
@@ -8282,12 +8282,6 @@ STRING 2108
 |cff627781LORE TODO|r|n|n|cffffcc00Major Station Research [2/4]|r|nConsecration of Sacred Ground|n|cff18bc9c- Crew can pray at the altar to gain |cffd45e19Purity Seal|r|cff18bc9c|n- Being in the Cathedral heals 1 health a second|n-|cffd45e19 Purity Seals|r|cff18bc9c now heal for 50 while on low health|n- |cffd45e19Purity Seal |r|cff18bc9cRegeneration and Damage reduction is increased by 50%|r|n|n|cffffcc00Occupation Bonus [INQUISITOR]|r|n|cff18bc9c- |cffd45e19Purity Seal|r|cff18bc9c duration increased by 60 seconds|r|n|n|cff8a6df2Infestation [ALIEN]|n- Purity Seal instead does 50 damage while on low health|r
 }
 
-STRING 2109
-// Items: I00T ("Nova" NVA47 Explosive), Ubertip (Tooltip - Extended)
-{
-|cff627781Intelligent metal cylinders quickly expand once placed into the ground, forming an instant and sturdy wall.|r|n|nPlaces a |cff18bc9cRemote Mine|r that can be remote detonated.|nDetonate by clicking on it; Dealing |cff18bc9c350 |rdamage.|n|n|cffd45e19Warning: Do not feed this into the Reactor|r|n|n|cff62778140 Seconds Cooldown|r
-}
-
 STRING 2110
 // Units: h00G (Turret|n|cff627781Right Click to Pack Up|r), Name (Name)
 {
@@ -8400,24 +8394,6 @@ STRING 2129
 // Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Tip (Tooltip)
 {
 Repair Blood Tester [|cffffcc001/1|r]
-}
-
-STRING 2131
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
-{
-Healthcare
-}
-
-STRING 2132
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
-{
-Healthcare
-}
-
-STRING 2133
-// Upgrades: R00R (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
-{
-Healthcare
 }
 
 STRING 2134
@@ -9732,5 +9708,29 @@ STRING 2393
 // Units: u00C (Swarmling), EditorSuffix (Name - Editor Suffix)
 {
 ( Minion T0 )
+}
+
+STRING 2394
+// Items: I00T ("Nova" NVA47 Explosive), Ubertip (Tooltip - Extended)
+{
+|cff627781Intelligent metal cylinders quickly expand once placed into the ground, forming an instant and sturdy wall.|r|n|nPlaces a |cff18bc9cRemote Mine|r that can be remote detonated.|nDetonate by clicking on it; Dealing |cff18bc9c1000|R damage to structures, or |cff18bc9c350|r damage units.|n|n|cffd45e19Warning: Do not feed this into the Reactor|r|n|n|cff62778140 Seconds Cooldown|r
+}
+
+STRING 2395
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Gene Splicer Enabled
+}
+
+STRING 2396
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Gene Splicer Upgraded
+}
+
+STRING 2397
+// Upgrades: RMED (Troll Regeneration,Improved Troll Regeneration,Advanced Troll Regeneration), Name (Name)
+{
+Gene Splicer Perfected
 }
 

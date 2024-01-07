@@ -11,6 +11,7 @@ import { WeaponEntity } from "app/weapons/weapon-entity"
 import { PlayerStateFactory } from "app/force/player-state-entity";
 import { ALIEN_MINION_SWARMLING } from "resources/unit-ids";
 import { WorldEntity } from "app/world/world-entity";
+import { BUFF_ID_REGENERATION } from "resources/buff-ids";
 
 
 const CREATE_SFX_EVERY = 0.06;
@@ -117,7 +118,7 @@ export class SurvivalInstinctsAbility extends AbilityWithDone {
         const zone = WorldEntity.getInstance().getPointZone(where.x, where.y);   
         if (zone) {
             CreateUnit(PlayerStateFactory.AlienAIPlayer1.handle, ALIEN_MINION_SWARMLING, where.x, where.y, GetRandomReal(0, 360));
-            UnitApplyTimedLife(GetLastCreatedUnit(), FourCC('BLTF'), 15);
+            UnitApplyTimedLife(GetLastCreatedUnit(), BUFF_ID_REGENERATION, 15);
         }
         return true;
     }

@@ -53,6 +53,7 @@ export class AskellonEntity extends Entity {
     public reactorWarningSound = new SoundRef("Sounds\\ReactorWarning.mp3", false, true);
 
     public askellonUnit: Unit;
+    public isAlive: boolean = true;
 
     constructor() {
         super();
@@ -124,12 +125,28 @@ export class AskellonEntity extends Entity {
             Quick.GetRandomFromArray(this.poweredFloors, howManyFloors).forEach(floor => {
                 let howLong = GetRandomReal(40+60*(severity/3), 60+120*(severity/3)); 
                 DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `[${COL_ATTATCH}DANGER|r] Power Surge Detected :: ${ZONE_TYPE_TO_ZONE_NAME.get(floor)}`);
-                EventEntity.send(EVENT_TYPE.STATION_POWER_OUT, { source: null, data: { zone: floor, duration: howLong }})
+                this.causePowerSurgeToFloor(floor, howLong);
             });
         }
         catch(e) {
             Log.Information(e);
         }
+    }
 
+    public static causePowerSurgeToFloor(floor: ZONE_TYPE, duration: number) {
+        if (this.poweredFloors.indexOf(floor) >= 0) {
+            EventEntity.send(EVENT_TYPE.STATION_POWER_OUT, { source: null, data: { zone: floor, duration }})
+        }
+    }
+
+    public setIsAlive(state: boolean) {
+        this.isAlive = state;
+    }
+    
+    public static isAlive() {
+        return AskellonEntity.getInstance().isAlive;
+    }
+    public static setIsAlive(state: boolean) {
+        return AskellonEntity.getInstance().setIsAlive(state);
     }
 }

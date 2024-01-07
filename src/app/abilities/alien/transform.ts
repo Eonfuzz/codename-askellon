@@ -17,6 +17,7 @@ import { PlayerStateFactory } from "app/force/player-state-entity";
 import { BuffInstanceDuration } from "app/buff/buff-instance-duration-type";
 import { SmartTrigger } from "lib/SmartTrigger";
 import { WorldEntity } from "app/world/world-entity";
+import { BUFF_ID_REGENERATION } from "resources/buff-ids";
 
 
 
@@ -148,7 +149,7 @@ export class TransformAbility extends AbilityWithDone {
             const zone = WorldEntity.getInstance().getPointZone(where.x, where.y);   
             if (zone) {
                 CreateUnit(PlayerStateFactory.AlienAIPlayer1.handle, ALIEN_MINION_SWARMLING, where.x, where.y, GetRandomReal(0, 360));
-                UnitApplyTimedLife(GetLastCreatedUnit(), FourCC('BLTF'), 15);
+                UnitApplyTimedLife(GetLastCreatedUnit(), BUFF_ID_REGENERATION, 15);
             }
         }
         return true;

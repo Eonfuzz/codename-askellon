@@ -515,20 +515,23 @@ export class ChatEntity extends Entity {
                 const isObserver = PlayerStateFactory.get(player).getForce().is(OBSERVER_FORCE_NAME);
 
                 Players.forEach(p => {
-                    const pData = PlayerStateFactory.get(p);
-                    const crew = PlayerStateFactory.getCrewmember(p);
-                    const showIsAlien = pIsAlien && pData && pData.getForce().is(ALIEN_FORCE_NAME);
+                    if (p.controller === MAP_CONTROL_USER) {
+                        const pData = PlayerStateFactory.get(p);
+                        const crew = PlayerStateFactory.getCrewmember(p);
 
-                    if (crew) {
-                        const pStr = `#${p.id+1}: ${playerColors[p.id].code}${crew.name}|r ${pData.originalName}`
-                        if (isObserver) {
-                            MessagePlayer(player,  `${pStr} ( ${pData.getForce().name} )`);
-                        }
-                        else if (pIsAlien && showIsAlien) {
-                            MessagePlayer(player,  `${pStr} ( ${pData.getForce().name} )`);
-                        }
-                        else {
-                            MessagePlayer(player,  pStr);
+                        const showIsAlien = pIsAlien && pData && pData.getForce().is(ALIEN_FORCE_NAME);
+
+                        if (crew) {
+                            const pStr = `#${p.id+1}: ${playerColors[p.id].code}${crew.name}|r ${pData.originalName}`
+                            if (isObserver) {
+                                MessagePlayer(player,  `${pStr} ( ${pData.getForce().name} )`);
+                            }
+                            else if (pIsAlien && showIsAlien) {
+                                MessagePlayer(player,  `${pStr} ( ${pData.getForce().name} )`);
+                            }
+                            else {
+                                MessagePlayer(player,  pStr);
+                            }
                         }
                     }                        
                 });

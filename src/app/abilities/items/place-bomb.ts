@@ -12,10 +12,12 @@ import { MouseInputContainer } from "lib/TreeLib/InputManager/MouseInputContaine
 import { MouseCallback } from "lib/TreeLib/InputManager/MouseCallback";
 import { PlayNewSoundAt } from "lib/translators";
 import { Log } from "lib/serilog/serilog";
-import { SFX_BLUE_BALL } from "resources/sfx-paths";
+import { SFX_BLUE_BALL, SFX_FORTRESS_DEATH } from "resources/sfx-paths";
 import { FilterAnyUnit, FilterIsAlive } from "resources/filters";
 import { ForceEntity } from "app/force/force-entity";
 import { CrewFactory } from "app/crewmember/crewmember-factory";
+import { AskellonEntity } from "app/station/askellon-entity";
+import { WorldEntity } from "app/world/world-entity";
 
 export class PlaceBombAbility extends AbilityWithDone {
 
@@ -147,6 +149,15 @@ export class PlaceBombAbility extends AbilityWithDone {
         // Create and play an explosion sound
         PlayNewSoundAt("Sounds\\RemoteBombCharge.wav", this.bomb.x, this.bomb.y, 127);
 
+                
+        const sfx = AddSpecialEffect(SFX_FORTRESS_DEATH, this.bomb.x, this.bomb.y);
+        BlzSetSpecialEffectHeight(sfx,  getZFromXY(this.bomb.x, this.bomb.y) + 5);
+        BlzSetSpecialEffectYaw(sfx, GetRandomInt(0, 360) * bj_DEGTORAD);
+        BlzSetSpecialEffectScale(sfx, 0.5);
+        BlzSetSpecialEffectTimeScale(sfx, 0.7);
+        BlzSetSpecialEffectTime(sfx, 0);
+        DestroyEffect(sfx);
+
         // We are detonating
         this.detonating = true;
         this.orbEffect = new Effect(SFX_BLUE_BALL, this.bomb.x, this.bomb.y);
@@ -196,12 +207,18 @@ export class PlaceBombAbility extends AbilityWithDone {
 
         // Otherwise continue onwards
         const crew = CrewFactory.getInstance().getCrewmemberForUnit(unit);
-        let damageMult = 1;
-        if (crew) damageMult = crew.getDamageBonusMult();
+        const typeMult = (unit.isUnitType(UNIT_TYPE_MECHANICAL) || unit.isUnitType(UNIT_TYPE_STRUCTURE)) ? 2 : 1;
+
+        const world = WorldEntity.getInstance();
+        const zone = world.getPointZone(this.casterUnit.x, this.casterUnit.y) || world.getUnitZone(this.casterUnit);
+        if (zone) {
+            AskellonEntity.causePowerSurgeToFloor(zone.id, 30);
+            this.casterUnit.damageTarget(AskellonEntity.getInstance().askellonUnit.handle, 500, true, true, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_UNKNOWN, WEAPON_TYPE_WHOKNOWS);
+        }
 
         this.unit.damageTarget(
             unit.handle, 
-            350 * damageMult, 
+            350 * (crew?.getDamageBonusMult() || 1) * typeMult, 
             true, 
             true, 
             ATTACK_TYPE_MAGIC, 

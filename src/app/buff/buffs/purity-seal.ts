@@ -73,20 +73,26 @@ export class PuritySeal extends DynamicBuff {
     }
 
     public onStatusChange(newStatus: boolean) {
+        // Log.Information(`Purity seal for ${this.who.name} set to ${newStatus}`);
+        
         if (newStatus) {
-
             const tLevel = ResearchFactory.getInstance().getMajorUpgradeLevel(TECH_MAJOR_RELIGION)
             this.doHealWhileLow = tLevel >= 2;
 
             // Do stuff
-            this.damageTracker = new Trigger();
-            this.damageTracker.registerUnitEvent(this.who, EVENT_UNIT_DAMAGING);
-            this.damageTracker.addAction(() => this.onUnitTakesDamage());
+            if (!this.damageTracker) {
+                this.damageTracker = new Trigger();
+                this.damageTracker.registerUnitEvent(this.who, EVENT_UNIT_DAMAGING);
+                this.damageTracker.addAction(() => this.onUnitTakesDamage());
+            }
 
-            this.levelUpTracker = new EventListener(
-                EVENT_TYPE.HERO_LEVEL_UP, 
-                (self, data) => this.onUnitLevelup(data.source)
-            );
+            if (!this.levelUpTracker) {
+                this.levelUpTracker = new EventListener(
+                    EVENT_TYPE.HERO_LEVEL_UP, 
+                    (self, data) => this.onUnitLevelup(data.source)
+                );
+                EventEntity.getInstance().addListener(this.levelUpTracker);
+            }
 
             DummyCast((dummy: unit) => {
                 SetUnitAbilityLevel(dummy, ABIL_INQUIS_PURITY_SEAL_DUMMY, tLevel+1);
@@ -95,15 +101,16 @@ export class PuritySeal extends DynamicBuff {
                 IssueTargetOrder(dummy, "innerfire", this.who.handle);
             }, ABIL_INQUIS_PURITY_SEAL_DUMMY);
 
-            EventEntity.getInstance().addListener(this.levelUpTracker);
         }
         else {
             if (this.damageTracker) {
                 this.damageTracker.destroy();
                 this.damageTracker = undefined;
             }
-            EventEntity.getInstance().removeListener(this.levelUpTracker);
-            this.levelUpTracker = undefined;
+            if (this.levelUpTracker) {
+                EventEntity.getInstance().removeListener(this.levelUpTracker);
+                this.levelUpTracker = undefined;
+            }
 
             // Remove purity buff
             UnitRemoveBuffBJ(BUFF_ID_PURITY_SEAL, this.who.handle);
