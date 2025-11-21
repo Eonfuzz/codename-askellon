@@ -70,7 +70,17 @@ export class SpaceEntity extends Entity {
         this.spaceObjects   = [];
         this.shipBays       = [];
 
-
+        //We need to hide terrain when viewing space
+        const SPACE_VIEW_BUFFER: number = 1000.0;
+        const SPACE_MAX_X: number = GetRectMaxX(gg_rct_Space) + SPACE_VIEW_BUFFER;
+        const SPACE_MAX_Y: number = GetRectMaxY(gg_rct_Space) + SPACE_VIEW_BUFFER;
+        const SPACE_MIN_X: number = GetRectMinX(gg_rct_Space) - SPACE_VIEW_BUFFER;
+        const SPACE_MIN_Y: number = GetRectMinY(gg_rct_Space) - SPACE_VIEW_BUFFER;
+        TimerStart(CreateTimer(),0.02,true, () => {
+            const x: number = GetCameraEyePositionX();
+            const y = GetCameraEyePositionY();
+            BlzShowTerrain(x > SPACE_MAX_X || x < SPACE_MIN_X || y > SPACE_MAX_Y || x < SPACE_MIN_Y)
+        });
         this.initShipAbilities();
 
         // try {
